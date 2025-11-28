@@ -1,0 +1,31 @@
+@import "color.scss";
+
+
+#sideBar{
+  width: 264px;
+}
+
+.side-logo{
+  height: 80px;
+  padding: 18px 22px;
+
+  > p{font-size: 24px; font-weight: 600;}
+
+}
+
+.nav-section{
+  margin-top: 24px;
+  .nav-title{
+    padding-left: 20px; color: $text-tertiary;
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  .nav-menu-icon{
+    width: 36px; align-items: center; justify-content: center;
+    height: 36px; font-size: 20px;
+    display: flex;
+  }
+  .menu-arrow{
+    padding: 0 12px; font-size: 16px;
+  }
+}

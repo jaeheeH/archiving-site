@@ -1,0 +1,51 @@
+
+@mixin btn-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+// 개별 사이즈
+@mixin btn-size($h) {
+  height: $h;
+  line-height: $h;
+  font-size: 14px
+}
+
+@mixin btn-line-primary{
+  border: 1px solid $primary-point;
+  color: $primary-point;
+
+  &:hover{
+    background-color: $primary-point;
+    color: #fff;
+  }
+}
+
+// 실제 클래스 생성
+.btn-line-36 {
+  @include btn-base; 
+  @include btn-line-primary; 
+  @include btn-size(36px);
+}
+
+.btn-line-40 {
+  @include btn-base;
+  @include btn-size(40px);
+
+}
+.btn-line-48 {
+  @include btn-base;
+  @include btn-size(48px);
+}
+
+.btn-sumit{
+  background: $system-gray-900;
+  color: #fff;
+}
+
+

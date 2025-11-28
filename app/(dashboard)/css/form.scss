@@ -1,0 +1,41 @@
+
+@mixin text-form{
+  padding: 14px 16px;
+  border-color: $system-gray-300;
+}
+
+
+.input-text-36{
+  @include text-form;
+  font-size: 14px; line-height: 20px; border-radius: 4px
+}
+
+.textArea{
+  @include text-form; 
+  font-size: 14px; line-height: 20px; min-height: 150px;
+}
+
+.tag-box{
+  @include text-form;
+
+  .tag-item{
+    padding: 8px; display: flex; gap: 4px;
+    background: $system-gray-900;
+    color: #fff; align-items: center; border-radius: 4px;
+    
+    span{font-size: 12px; line-height: 16px;}
+
+    button{width: 12px; height: 16px; display: flex; justify-content: center; align-items: center;}
+
+    input{font-size: 12px; line-height: 16px; max-width: 80px;}
+  }
+
+}
+
+
+.form-label{
+  width: 100%;
+  display: flex; flex-direction: column; gap: 8px;
+  
+  label{ color: $text-tertiary; font-size: 14px; }
+}

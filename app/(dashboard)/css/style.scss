@@ -1,0 +1,123 @@
+
+@import "color.scss";
+@import "button.scss";
+@import "form.scss";
+
+.dashboard-Contents{
+  position: relative;
+  
+  > div > .dashboard-Header{
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky;
+    top: 0; width: 100%; background: #fff; z-index: 9;
+    height: 3.5rem;  
+    padding: 16px 40px;
+
+    h1{margin-bottom: 0; font-size: 1rem; line-height: 1.5;}
+  }
+
+  > div > .dashboard-container{
+    padding: 16px 40px;
+  }
+}
+
+
+
+@mixin text-ellipsis($l){
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-line-clamp:$l;
+}
+
+
+.galleryCard{
+  .galleryTitle{ @include text-ellipsis(1); margin-bottom: 8px; }
+  .gallery-description{ color: $text-secondary; line-height: 1.5; }
+  .tag-items{
+    display: flex; gap: 4px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+    .tag{
+      padding: 2px 8px;
+      background: $system-gray-100;
+      font-size: 12px; border-radius: 4px;
+      line-height: 1.5;
+      flex-shrink:0;
+      color: $text-tertiary;
+    }
+  }
+}
+
+.viewModeList{
+  button{
+    width: 40px;
+    height: 40px; font-size: 20px;
+    color: $text-tertiary;
+
+    &.on{
+      background: $text-primary;
+      color: #fff;
+    }
+  }
+}
+
+.galleryCard.list{
+  display: flex;
+
+  > .imgItem{
+    width: 160px; height: 160px;
+    position: relative;
+    min-width: 160px;
+
+    > img{
+      position: absolute;
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      height: 100%;
+      width: 100%;
+    }
+  }
+  .gallery-description{ @include text-ellipsis(3);}
+}
+
+.galleryCard.masonry{
+  .gallery-description{ @include text-ellipsis(2); }
+}
+
+.galleryCard.grid{
+  display: flex;
+  flex-direction: column;
+
+  
+  .gallery-description{ @include text-ellipsis(2); }
+}
+
+
+
+.toast-ui.success{
+  background: rgba($color: $system-success-600, $alpha: 0.9);
+  color: $system-success-100;
+
+  .toast-title{font-size: 14px;}
+}
+
+.toast-ui.error{
+  background: rgba($color: $system-error-600, $alpha: 0.9);
+  color: $system-error-100;
+
+  .toast-title{font-size: 14px; line-height: 20px;}
+}
+.toast-ui.warning{
+  background: rgba($color: $system-warning-600, $alpha: 0.9);
+  color: $system-warning-100;
+
+  .toast-title{font-size: 14px; line-height: 20px;}
+}
+
+.modalContents{
+  position: relative;
+
+  .modalTitle{ position: sticky; top: 0; background: #fff; }
+  .modalBottom{position: sticky; bottom: 0; background: #fff; justify-content: center;}
+}
