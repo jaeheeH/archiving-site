@@ -19,7 +19,8 @@
       "Bash(npm install:*)",
       "Bash(vercel --prod:*)",
       "Bash(cat:*)",
-      "Bash(git push)"
+      "Bash(git push)",
+      "Bash(git show:*)"
     ],
     "deny": [],
     "ask": []
