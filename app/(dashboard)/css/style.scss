@@ -1,7 +1,7 @@
 
-@import "color.scss";
-@import "button.scss";
-@import "form.scss";
+@use "color.scss" as *;
+@use "button.scss" as *;
+@use "form.scss" as *;
 
 .dashboard-Contents{
   position: relative;

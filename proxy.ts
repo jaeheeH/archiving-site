@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { supabase, user, supabaseResponse } = await updateSession(req);
   const { pathname } = req.nextUrl;
 
