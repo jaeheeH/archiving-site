@@ -14,7 +14,9 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(del nul)",
-      "Bash(echo:*)"
+      "Bash(echo:*)",
+      "Bash(npx vercel:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []
