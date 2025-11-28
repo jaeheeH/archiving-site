@@ -16,7 +16,10 @@
       "Bash(del nul)",
       "Bash(echo:*)",
       "Bash(npx vercel:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(vercel --prod:*)",
+      "Bash(cat:*)",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []
