@@ -20,7 +20,8 @@
       "Bash(vercel --prod:*)",
       "Bash(cat:*)",
       "Bash(git push)",
-      "Bash(git show:*)"
+      "Bash(git show:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": [],
     "ask": []
