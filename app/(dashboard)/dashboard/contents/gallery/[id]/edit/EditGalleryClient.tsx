@@ -10,8 +10,8 @@ import CategorySelect from "@/components/CategorySelect";
 
 interface EditGalleryClientProps {
   id: string;
-  onClose: () => void;
-  onSaveSuccess: () => void;
+  onClose?: () => void;
+  onSaveSuccess?: () => void;
 }
 
 export default function EditGalleryClient({
@@ -186,8 +186,8 @@ export default function EditGalleryClient({
       }
 
       addToast("수정 완료!", "success");
-      onSaveSuccess();
-      onClose();
+      onSaveSuccess?.();
+      onClose?.();
     } catch (error: any) {
       console.error("save 함수 에러:", error);
       addToast(`저장 중 오류: ${error.message}`, "error");

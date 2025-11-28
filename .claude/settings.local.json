@@ -21,7 +21,9 @@
       "Bash(cat:*)",
       "Bash(git push)",
       "Bash(git show:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(pnpm build:*)",
+      "Bash(del \"C:\\Users\\user\\Desktop\\archiving-site\\app\\(dashboard)\\dashboard\\contents\\gallery\\[id]\\page.tsx\")"
     ],
     "deny": [],
     "ask": []

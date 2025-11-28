@@ -71,7 +71,7 @@ export async function PATCH(req: NextRequest, { params }: Props) {
     // 1. 권한 검증 (작성자 또는 관리자)
     const permCheck = await checkGalleryOwnershipOrAdmin(galleryId);
     if (!permCheck.authorized) {
-      return permCheck.error;
+      return permCheck.error!;
     }
 
     // 2. 요청 데이터 파싱
@@ -140,7 +140,7 @@ export async function DELETE(req: NextRequest, { params }: Props) {
     // 1. 권한 검증
     const permCheck = await checkGalleryOwnershipOrAdmin(galleryId);
     if (!permCheck.authorized) {
-      return permCheck.error;
+      return permCheck.error!;
     }
 
     // 2. Admin 클라이언트로 삭제

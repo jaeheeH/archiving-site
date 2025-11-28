@@ -216,7 +216,7 @@ export async function POST(req: NextRequest) {
       // 일반 사용자 권한 검증
       const permCheck = await checkGalleryEditPermission();
       if (!permCheck.authorized) {
-        return permCheck.error;
+        return permCheck.error!;
       }
     }
 

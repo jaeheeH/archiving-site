@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   try {
     // 1. 권한 검증
     const permCheck = await checkGalleryEditPermission();
-    if (!permCheck.authorized) return permCheck.error;
+    if (!permCheck.authorized) return permCheck.error!;
 
     if (!apiKey) {
       return NextResponse.json(

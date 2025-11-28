@@ -35,7 +35,7 @@ export default function UserRow({
 }: Props) {
   const [showMenu, setShowMenu] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLTableDataCellElement>(null);
 
   // 메뉴 외부 클릭 시 닫기
   useEffect(() => {

@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
     // 1. 권한 검증
     const permCheck = await checkGalleryEditPermission();
     if (!permCheck.authorized) {
-      return permCheck.error;
+      return permCheck.error!;
     }
 
     // 2. 요청 데이터 파싱

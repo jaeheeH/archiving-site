@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -19,7 +19,7 @@ type GalleryItem = {
   gemini_tags: string[];
 };
 
-export default function GalleryPage() {
+function GalleryContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -260,5 +260,13 @@ export default function GalleryPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function GalleryPage() {
+  return (
+    <Suspense fallback={<div className="p-6">불러오는 중...</div>}>
+      <GalleryContent />
+    </Suspense>
   );
 }
