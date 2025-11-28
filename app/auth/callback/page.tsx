@@ -45,7 +45,7 @@ export default function AuthCallback() {
           .update(updateData)
           .eq("id", user.id);
 
-        router.push("/");
+        router.push("/dashboard");
       } else if (error) {
         console.error("Auth error:", error);
         router.push("/login?error=auth");
