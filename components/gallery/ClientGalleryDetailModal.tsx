@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SimilarGalleryModal from "./SimilarGalleryModal";
 
 interface ClientGalleryDetailModalProps {
   id: number;
@@ -28,6 +29,7 @@ export default function ClientGalleryDetailModal({
 }: ClientGalleryDetailModalProps) {
   const [gallery, setGallery] = useState<GalleryDetail | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showSimilarModal, setShowSimilarModal] = useState(false);
 
   useEffect(() => {
     fetchGalleryDetail();
@@ -188,10 +190,36 @@ export default function ClientGalleryDetailModal({
                   })}
                 </p>
               </div>
+
+              {/* 액션 버튼 */}
+              <div className="pt-4 border-t">
+                <button
+                  onClick={() => setShowSimilarModal(true)}
+                  className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  <i className="ri-image-line mr-2"></i>
+                  유사 이미지 보기
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* 유사 이미지 모달 */}
+      {showSimilarModal && gallery && (
+        <SimilarGalleryModal
+          galleryId={id}
+          title={gallery.title}
+          onClose={() => setShowSimilarModal(false)}
+          onSelectImage={(newId) => {
+            if (onChangeId) {
+              onChangeId(newId);
+              setShowSimilarModal(false);
+            }
+          }}
+        />
+      )}
     </div>
   );
 }
