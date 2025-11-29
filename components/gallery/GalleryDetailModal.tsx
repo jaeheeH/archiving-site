@@ -7,6 +7,9 @@ import SimilarGalleryModal from "./SimilarGalleryModal";
 interface GalleryDetailModalProps {
   id: number;
   onClose: () => void;
+  onEdit?: (id: number) => void;
+  onDelete?: (id: number) => void;
+  onDeleted?: () => void;
 }
 
 type GalleryDetail = {
@@ -25,11 +28,29 @@ type GalleryDetail = {
 export default function GalleryDetailModal({
   id,
   onClose,
+  onEdit,
+  onDelete,
+  onDeleted,
 }: GalleryDetailModalProps) {
   const [gallery, setGallery] = useState<GalleryDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [showSimilarModal, setShowSimilarModal] = useState(false);
   const supabase = createClient();
+
+  const handleEdit = () => {
+    onEdit?.(id);
+    onClose();
+  };
+
+  const handleDelete = async () => {
+    if (!confirm("정말 삭제하시겠습니까?")) return;
+
+    if (onDelete) {
+      onDelete(id);
+      onClose();
+      onDeleted?.();
+    }
+  };
 
   useEffect(() => {
     fetchGalleryDetail();
@@ -185,7 +206,7 @@ export default function GalleryDetailModal({
                 </div>
 
                 {/* 액션 버튼 */}
-                <div className="pt-4 border-t">
+                <div className="pt-4 border-t space-y-2">
                   <button
                     onClick={() => setShowSimilarModal(true)}
                     className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
@@ -193,6 +214,26 @@ export default function GalleryDetailModal({
                     <i className="ri-image-line mr-2"></i>
                     유사 이미지 보기
                   </button>
+
+                  {onEdit && (
+                    <button
+                      onClick={handleEdit}
+                      className="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                    >
+                      <i className="ri-edit-line mr-2"></i>
+                      수정
+                    </button>
+                  )}
+
+                  {onDelete && (
+                    <button
+                      onClick={handleDelete}
+                      className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                    >
+                      <i className="ri-delete-bin-line mr-2"></i>
+                      삭제
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
