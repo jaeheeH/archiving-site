@@ -3,11 +3,8 @@ import { createClient } from "@/lib/supabase/client";
 
 /**
  * GET /api/gallery/tags/top
- * 태그 조회 (필터용)
+ * 상위 10개 태그 조회 (필터용)
  * 권한: 모두 가능
- *
- * 쿼리 파라미터:
- * - limit: 가져올 태그 개수 (기본값: 전체, 0이면 전체)
  *
  * 응답:
  * {
@@ -22,8 +19,6 @@ import { createClient } from "@/lib/supabase/client";
 export async function GET(req: NextRequest) {
   try {
     const supabase = await createClient();
-    const { searchParams } = new URL(req.url);
-    const limit = Number(searchParams.get("limit")) || 0; // 0 = 전체
 
     // 1. 모든 갤러리 아이템의 tags와 gemini_tags 조회
     const { data: galleryItems, error } = await supabase
@@ -64,18 +59,14 @@ export async function GET(req: NextRequest) {
       }
     });
 
-    // 3. 태그 정렬 및 제한
-    let topTags = Object.entries(tagCount)
+    // 3. 상위 10개 태그 추출
+    const topTags = Object.entries(tagCount)
       .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
       .map(([tag, count]) => ({
         tag,
         count,
       }));
-
-    // limit이 0보다 크면 해당 개수만큼만 반환
-    if (limit > 0) {
-      topTags = topTags.slice(0, limit);
-    }
 
     return NextResponse.json({
       success: true,

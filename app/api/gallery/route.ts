@@ -1,12 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/client";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkGalleryEditPermission } from "@/lib/supabase/gallery-utils";
 
 /**
  * GET /api/gallery
- * 갤러리 목록 조회 (페이지네이션)
+ * 갤러리 목록 조회 (페이지네이션 + 검색 + 필터)
  * 권한: 모두 가능
+ * 
+ * 쿼리 파라미터:
+ * - page: 페이지 번호 (기본값: 1)
+ * - limit: 페이지당 개수 (기본값: 10)
+ * - search: 검색어 (선택)
+ * - tags: 필터링할 태그 (쉼표 구분, AND 조건)
+ * 
+ * 예시:
+ * /api/gallery?page=1&limit=36&search=바다&tags=풍경,바다
  */
 export async function GET(req: NextRequest) {
   try {
@@ -16,15 +25,17 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
+    const search = searchParams.get("search") || "";
+    const tagsParam = searchParams.get("tags") || "";
     const offset = (page - 1) * limit;
 
-    // 전체 개수 조회
-    const { count } = await supabase
-      .from("gallery")
-      .select("*", { count: "exact", head: true });
+    // 필터링할 태그 배열로 변환
+    const filterTags = tagsParam
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag.length > 0);
 
-    // 데이터 조회
-    const { data, error } = await supabase
+    let query = supabase
       .from("gallery")
       .select(
         `
@@ -39,10 +50,36 @@ export async function GET(req: NextRequest) {
         author,
         gemini_tags,
         gemini_description
-      `
-      )
+      `,
+        { count: "exact" }
+      );
+
+    // 검색어 적용 (fulltext search)
+    if (search.trim()) {
+      // to_tsquery를 사용한 검색 (다중 단어 AND 조건)
+      const searchQuery = search
+        .trim()
+        .split(/\s+/)
+        .map((word) => `${word}:*`)
+        .join(" & ");
+
+      query = query.textSearch("search_vector", searchQuery);
+    }
+
+    // 태그 필터 적용 (AND 조건: 모든 태그를 포함해야 함)
+    if (filterTags.length > 0) {
+      for (const tag of filterTags) {
+        // tags 또는 gemini_tags 중 하나라도 해당 태그를 포함하면 OK
+        query = query.or(`tags.cs.{${tag}},gemini_tags.cs.{${tag}}`);
+      }
+    }
+
+    // 정렬 및 페이지네이션
+    query = query
       .order("created_at", { ascending: false })
       .range(offset, offset + limit - 1);
+
+    const { data, error, count } = await query;
 
     if (error) {
       throw error;
@@ -58,6 +95,10 @@ export async function GET(req: NextRequest) {
         limit,
         total: count || 0,
         totalPages,
+      },
+      filters: {
+        search,
+        tags: filterTags,
       },
     });
   } catch (error: any) {
