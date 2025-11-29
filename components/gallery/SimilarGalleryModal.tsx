@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ToastProvider";
+import GalleryDetailModal from "./GalleryDetailModal";
 
 interface SimilarItem {
   id: number;
@@ -15,15 +16,20 @@ interface SimilarGalleryModalProps {
   galleryId: number;
   title: string;
   onClose: () => void;
+  onEdit?: (id: number) => void;
+  onDelete?: (id: number) => void;
 }
 
 export default function SimilarGalleryModal({
   galleryId,
   title,
   onClose,
+  onEdit,
+  onDelete,
 }: SimilarGalleryModalProps) {
   const [loading, setLoading] = useState(true);
   const [similar, setSimilar] = useState<SimilarItem[]>([]);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const { addToast } = useToast();
 
   useEffect(() => {
@@ -99,7 +105,8 @@ export default function SimilarGalleryModal({
               {similar.map((item) => (
                 <div
                   key={item.id}
-                  className="border rounded-lg overflow-hidden hover:shadow-lg transition"
+                  className="border rounded-lg overflow-hidden hover:shadow-lg transition cursor-pointer"
+                  onClick={() => setSelectedId(item.id)}
                 >
                   <div className="aspect-square overflow-hidden bg-gray-100">
                     <img
@@ -130,6 +137,20 @@ export default function SimilarGalleryModal({
           )}
         </div>
       </div>
+
+      {/* 선택된 이미지 상세 모달 */}
+      {selectedId && (
+        <GalleryDetailModal
+          id={selectedId}
+          onClose={() => setSelectedId(null)}
+          onEdit={onEdit}
+          onDelete={(id) => {
+            onDelete?.(id);
+            // 삭제된 항목을 유사 이미지 목록에서 제거
+            setSimilar((prev) => prev.filter((item) => item.id !== id));
+          }}
+        />
+      )}
     </div>
   );
 }

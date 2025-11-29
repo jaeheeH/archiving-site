@@ -247,6 +247,8 @@ export default function GalleryDetailModal({
           galleryId={id}
           title={gallery.title}
           onClose={() => setShowSimilarModal(false)}
+          onEdit={onEdit}
+          onDelete={onDelete}
         />
       )}
     </>
