@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Midjourney, FaceBook } from "@/components/BusinessLogo";
 import SimilarGalleryModal from "./SimilarGalleryModal";
+import GalleryDetailModal from "./GalleryDetailModal";
 
 type GalleryCardProps = {
   id: number;
@@ -26,6 +27,7 @@ export default function GalleryCard({
   onEdit,
 }: GalleryCardProps) {
   const [showSimilarModal, setShowSimilarModal] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
 
   const imgClass = {
     masonry: "w-full h-auto object-cover",
@@ -44,7 +46,10 @@ export default function GalleryCard({
         className={`galleryCard group relative border rounded-lg overflow-hidden bg-white hover:shadow ${imgItemClass}`}
       >
         {/* 이미지: Pinterest처럼 비율 그대로 */}
-        <div className="imgItem">
+        <div
+          className="imgItem cursor-pointer"
+          onClick={() => setShowDetailModal(true)}
+        >
           <img src={imageUrl} alt={title} className={imgClass} />
         </div>
 
@@ -106,6 +111,11 @@ export default function GalleryCard({
           )}
         </div>
       </div>
+
+      {/* 상세 보기 모달 */}
+      {showDetailModal && (
+        <GalleryDetailModal id={id} onClose={() => setShowDetailModal(false)} />
+      )}
 
       {/* 유사 이미지 모달 */}
       {showSimilarModal && (

@@ -120,7 +120,7 @@ export default function SimilarGalleryModal({
                     <div className="flex items-center justify-between ">
                       <span className="text-xs text-gray-500">유사도</span>
                       <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
-                        {Math.round(item.similarity * 100000000)}%
+                        {Math.round(item.similarity * 100)}%
                       </span>
                     </div>
                   </div>

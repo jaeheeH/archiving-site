@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 export default function CategorySelect({ value, setValue }: any) {
-  const baseCategories = ["Midjourney", "GPT", "Stable Diffusion", "Photoshop", "Blender"];
+  const baseCategories = ["Midjourney", "GPT", "Stable Diffusion", "Photoshop", "Nano Banana"];
 
   const [custom, setCustom] = useState("");
   const all = [...baseCategories, ...(custom ? [custom] : [])];
