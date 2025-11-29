@@ -58,6 +58,14 @@ export default function GalleryDetailModal({
     fetchGalleryDetail();
   }, [id]);
 
+  // 스크롤 고정
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
+
   const fetchGalleryDetail = async () => {
     try {
       setLoading(true);
@@ -122,7 +130,7 @@ export default function GalleryDetailModal({
                 <img
                   src={gallery.image_url}
                   alt={gallery.title}
-                  className="w-full h-auto rounded-lg"
+                  className="w-full h-auto rounded-lg sticky top-0"
                 />
               </div>
 

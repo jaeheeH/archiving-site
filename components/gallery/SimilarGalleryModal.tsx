@@ -65,6 +65,14 @@ export default function SimilarGalleryModal({
     fetchSimilar();
   }, [galleryId, addToast]);
 
+  // 스크롤 고정
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
+
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"

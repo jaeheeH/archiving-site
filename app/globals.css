@@ -8,7 +8,7 @@ html, body {
 
 .modal-contents{margin-bottom: 0;}
 .modal-contents .sticky{ background: #fff; z-index: 4; }
-.modal-contents-detail{max-height: 60vh;}
+.modal-contents-detail{max-height: 60vh; overflow-y: auto;}
 
 @keyframes slide-in {
   from {
