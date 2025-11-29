@@ -58,25 +58,26 @@ function GalleryContent() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchInput);
+      setPage(1); // 검색어 변경 시 1페이지로 리셋
     }, 300);
     return () => clearTimeout(timer);
   }, [searchInput]);
 
-  // URL 업데이트
-  const updateUrl = (newPage: number, newSearch: string, newTags: string[]) => {
+  // URL 업데이트 (디바운스된 검색어 변경 시에만 실행)
+  useEffect(() => {
     const params = new URLSearchParams();
-    params.set("page", String(newPage));
+    params.set("page", String(page));
 
-    if (newSearch.trim()) {
-      params.set("search", newSearch.trim());
+    if (debouncedSearch.trim()) {
+      params.set("search", debouncedSearch.trim());
     }
 
-    if (newTags.length > 0) {
-      params.set("tags", newTags.join(","));
+    if (selectedTags.length > 0) {
+      params.set("tags", selectedTags.join(","));
     }
 
     router.push(`${pathname}?${params.toString()}`);
-  };
+  }, [page, debouncedSearch, selectedTags]);
 
   // 갤러리 데이터 조회
   const fetchGallery = async (pageNum: number, search: string, tags: string[]) => {
@@ -144,14 +145,12 @@ function GalleryContent() {
       : [...selectedTags, tag];
 
     setSelectedTags(newTags);
-    setPage(1);
-    updateUrl(1, debouncedSearch, newTags);
+    setPage(1); // 필터 변경 시 1페이지로 리셋
   };
 
   // 페이지 변경
   const updatePage = (pageNum: number) => {
     setPage(pageNum);
-    updateUrl(pageNum, debouncedSearch, selectedTags);
   };
 
   // 검색어/필터 변경 시 갤러리 재조회
@@ -318,7 +317,6 @@ function GalleryContent() {
                   onClick={() => {
                     setSelectedTags([]);
                     setPage(1);
-                    updateUrl(1, debouncedSearch, []);
                   }}
                   className="px-3 py-1 text-sm text-red-500 hover:text-red-700"
                 >
