@@ -123,24 +123,46 @@ function GalleryContent() {
     }
   };
 
-  // 상위 10개 태그 조회
-  const fetchTopTags = async () => {
-    try {
-      setLoadingTags(true);
-      const res = await fetch("/api/gallery/tags/top");
 
-      if (!res.ok) {
-        throw new Error("태그 조회 실패");
-      }
+// fetchTopTags 함수 내부 수정
 
-      const data = await res.json();
-      setTopTags(data.tags || []);
-    } catch (error) {
-      console.error("❌ 태그 조회 에러:", error);
-    } finally {
-      setLoadingTags(false);
+const fetchTopTags = async (search: string, tags: string[]) => {
+  try {
+    // setLoadingTags(true); // 로딩 필요 시 주석 해제
+
+    const params = new URLSearchParams();
+
+    // 검색어가 있고 빈 문자열이 아닐 때만 추가
+    if (search && search.trim() !== "") {
+      params.set("search", search.trim());
     }
-  };
+
+    // 태그 배열이 있고 비어있지 않을 때만 추가
+    if (tags && tags.length > 0) {
+      params.set("tags", tags.join(","));
+    }
+
+    // 파라미터가 없으면 그냥 /api/gallery/tags/top 호출 (전체 조회)
+    const queryString = params.toString();
+    const url = `/api/gallery/tags/top${queryString ? `?${queryString}` : ""}`;
+
+    const res = await fetch(url);
+
+    if (!res.ok) {
+      // 에러 내용을 콘솔에 찍어보기
+      const errData = await res.json();
+      console.error("서버 에러 응답:", errData);
+      throw new Error("태그 조회 실패");
+    }
+
+    const data = await res.json();
+    setTopTags(data.tags || []);
+  } catch (error) {
+    console.error("❌ 태그 조회 에러:", error);
+  } finally {
+    setLoadingTags(false);
+  }
+};
 
   // 검색어 변경
   const handleSearchChange = (value: string) => {
@@ -170,8 +192,9 @@ function GalleryContent() {
 
   // 초기 로드
   useEffect(() => {
-    fetchTopTags();
-  }, []);
+    // 갤러리 리스트뿐만 아니라, 태그 목록(숫자)도 같이 갱신!
+    fetchTopTags(debouncedSearch, selectedTags);
+  }, [debouncedSearch, selectedTags]);
 
   useEffect(() => {
     const saved = localStorage.getItem("gallery_view_mode");
@@ -305,10 +328,16 @@ function GalleryContent() {
             </div>
           </div>
 
-          {/* 태그 필터 */}
-          {!loadingTags && topTags.length > 0 && (
+          {/* 태그 필터 영역 */}
+          {!loadingTags && (topTags.length > 0 || selectedTags.length > 0) && (
             <div className="flex flex-wrap gap-2 items-center">
-              <span className="text-sm font-medium text-gray-600">태그 필터:</span>
+              
+              {/* '태그 필터:' 라벨은 태그 목록이 있을 때만 보여주는 게 깔끔함 */}
+              {topTags.length > 0 && (
+                <span className="text-sm font-medium text-gray-600">태그 필터:</span>
+              )}
+
+              {/* 상위 태그 목록 뿌리기 */}
               {topTags.map((item) => (
                 <button
                   key={item.tag}
@@ -322,13 +351,15 @@ function GalleryContent() {
                   {item.tag} ({item.count})
                 </button>
               ))}
+
+              {/* ✅ 필터 초기화 버튼: 선택된 태그가 있으면 무조건 보임 */}
               {selectedTags.length > 0 && (
                 <button
                   onClick={() => {
                     setPage(1);
                     setSelectedTags([]);
                   }}
-                  className="px-3 py-1 text-sm text-red-500 hover:text-red-700"
+                  className="px-3 py-1 text-sm text-red-500 hover:text-red-700 flex items-center gap-1"
                 >
                   <i className="ri-close-line"></i> 필터 초기화
                 </button>

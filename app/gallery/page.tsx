@@ -264,7 +264,7 @@ function GalleryContent() {
           {/* 태그 필터 */}
           {!loadingTags && topTags.length > 0 && (
             <div className="flex flex-wrap gap-2 items-center">
-              <span className="text-sm font-medium text-gray-600">태그 필터:</span>
+              
               {topTags.map((item) => (
                 <button
                   key={item.tag}
@@ -349,7 +349,7 @@ function GalleryContent() {
                 )}
                 {(item.gemini_tags || item.tags).length > 0 && (
                   <div className="flex flex-wrap gap-1">
-                    {(item.gemini_tags || item.tags).slice(0, 3).map((tag, i) => (
+                    {(item.gemini_tags || item.tags).slice(0, 10).map((tag, i) => (
                       <span
                         key={i}
                         className="text-xs px-2 py-1 bg-gray-100 rounded-full"
