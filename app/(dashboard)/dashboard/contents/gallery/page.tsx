@@ -62,12 +62,12 @@ function GalleryContent() {
     return () => clearTimeout(timer);
   }, [searchInput]);
 
-  // 검색어/태그 변경 시 페이지 1로 리셋
+  // 검색어 변경 시 페이지 1로 리셋
   useEffect(() => {
-    if (debouncedSearch !== searchFromUrl || selectedTags.join(",") !== tagsFromUrl) {
+    if (debouncedSearch !== searchFromUrl) {
       setPage(1);
     }
-  }, [debouncedSearch, selectedTags]);
+  }, [debouncedSearch]);
 
   // URL 업데이트 (히스토리 쌓지 않고 replace)
   useEffect(() => {
@@ -149,6 +149,8 @@ function GalleryContent() {
 
   // 태그 토글
   const handleTagToggle = (tag: string) => {
+    setPage(1); // 먼저 페이지 1로 리셋
+
     const newTags = selectedTags.includes(tag)
       ? selectedTags.filter((t) => t !== tag)
       : [...selectedTags, tag];
@@ -323,6 +325,7 @@ function GalleryContent() {
               {selectedTags.length > 0 && (
                 <button
                   onClick={() => {
+                    setPage(1);
                     setSelectedTags([]);
                   }}
                   className="px-3 py-1 text-sm text-red-500 hover:text-red-700"
