@@ -10,6 +10,7 @@ interface GalleryDetailModalProps {
   onEdit?: (id: number) => void;
   onDelete?: (id: number) => void;
   onDeleted?: () => void;
+  onChangeId?: (id: number) => void;
 }
 
 type GalleryDetail = {
@@ -31,6 +32,7 @@ export default function GalleryDetailModal({
   onEdit,
   onDelete,
   onDeleted,
+  onChangeId,
 }: GalleryDetailModalProps) {
   const [gallery, setGallery] = useState<GalleryDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -97,7 +99,7 @@ export default function GalleryDetailModal({
   return (
     <>
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 modal-contents"
         onClick={handleBackdropClick}
       >
         <div className="bg-white rounded-lg max-w-5xl w-full max-h-[90vh] overflow-y-auto">
@@ -113,7 +115,7 @@ export default function GalleryDetailModal({
           </div>
 
           {/* 본문 */}
-          <div className="p-6">
+          <div className="p-6 modal-contents-detail">
             <div className="grid md:grid-cols-2 gap-6">
               {/* 이미지 */}
               <div className="relative">
@@ -249,6 +251,12 @@ export default function GalleryDetailModal({
           onClose={() => setShowSimilarModal(false)}
           onEdit={onEdit}
           onDelete={onDelete}
+          onSelectImage={(newId) => {
+            if (onChangeId) {
+              onChangeId(newId);
+              setShowSimilarModal(false);
+            }
+          }}
         />
       )}
     </>

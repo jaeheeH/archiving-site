@@ -6,6 +6,10 @@ html, body {
 }
 @custom-variant dark (&:is(.dark *));
 
+.modal-contents{margin-bottom: 0;}
+.modal-contents .sticky{ background: #fff; z-index: 4; }
+.modal-contents-detail{max-height: 60vh;}
+
 @keyframes slide-in {
   from {
     opacity: 0;

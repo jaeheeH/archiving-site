@@ -24,6 +24,7 @@ export default function GalleryCard({
   onEdit,
 }: GalleryCardProps) {
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [currentId, setCurrentId] = useState(id);
 
   const imgClass = {
     masonry: "w-full h-auto object-cover",
@@ -44,7 +45,10 @@ export default function GalleryCard({
         {/* 이미지: Pinterest처럼 비율 그대로 */}
         <div
           className="imgItem cursor-pointer"
-          onClick={() => setShowDetailModal(true)}
+          onClick={() => {
+            setCurrentId(id);
+            setShowDetailModal(true);
+          }}
         >
           <img src={imageUrl} alt={title} className={imgClass} />
         </div>
@@ -70,10 +74,11 @@ export default function GalleryCard({
       {/* 상세 보기 모달 */}
       {showDetailModal && (
         <GalleryDetailModal
-          id={id}
+          id={currentId}
           onClose={() => setShowDetailModal(false)}
           onEdit={onEdit}
           onDelete={onDelete}
+          onChangeId={setCurrentId}
         />
       )}
     </>
