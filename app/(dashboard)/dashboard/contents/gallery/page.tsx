@@ -123,11 +123,11 @@ function GalleryContent() {
     }
   };
 
-  // 상위 태그 조회
+  // 전체 태그 조회 (limit 없이)
   const fetchTopTags = async () => {
     try {
       setLoadingTags(true);
-      const res = await fetch("/api/gallery/tags/top");
+      const res = await fetch("/api/gallery/tags/top"); // limit 파라미터 없으면 전체
 
       if (!res.ok) {
         throw new Error("태그 조회 실패");
