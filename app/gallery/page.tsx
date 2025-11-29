@@ -2,6 +2,7 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import ClientGalleryDetailModal from "@/components/gallery/ClientGalleryDetailModal";
 
 type GalleryItem = {
   id: number;
@@ -184,7 +185,7 @@ function GalleryContent() {
 
   const layoutClass = {
     masonry:
-      "columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-6 gap-2 space-y-2",
+      "columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-4 gap-2 space-y-2",
     grid:
       "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2",
     list: "gap-2 grid grid-cols-2",
@@ -403,58 +404,13 @@ function GalleryContent() {
         )}
       </div>
 
-      {/* 상세 모달 (간단 버전) */}
+      {/* 상세 모달 */}
       {selectedId !== null && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-          onClick={() => setSelectedId(null)}
-        >
-          <div
-            className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {(() => {
-              const item = gallery.find((g) => g.id === selectedId);
-              if (!item) return null;
-
-              return (
-                <>
-                  <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">{item.title}</h2>
-                    <button
-                      onClick={() => setSelectedId(null)}
-                      className="text-gray-500 hover:text-gray-700 text-2xl"
-                    >
-                      <i className="ri-close-line"></i>
-                    </button>
-                  </div>
-                  <div className="p-6">
-                    <img
-                      src={item.image_url}
-                      alt={item.title}
-                      className="w-full h-auto rounded-lg mb-4"
-                    />
-                    {item.description && (
-                      <p className="text-gray-700 mb-4">{item.description}</p>
-                    )}
-                    {(item.gemini_tags || item.tags).length > 0 && (
-                      <div className="flex flex-wrap gap-2">
-                        {(item.gemini_tags || item.tags).map((tag, i) => (
-                          <span
-                            key={i}
-                            className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </>
-              );
-            })()}
-          </div>
-        </div>
+        <ClientGalleryDetailModal
+          id={selectedId}
+          onClose={() => setSelectedId(null)}
+          onChangeId={setSelectedId}
+        />
       )}
     </div>
   );
