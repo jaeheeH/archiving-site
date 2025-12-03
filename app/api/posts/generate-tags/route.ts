@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
     const result = await model.generateContent(prompt);
     const jsonText = result.response.text();
 
-    let parsedData = { tags: [] };
+    let parsedData: { tags: string[] } = { tags: [] };
     try {
       parsedData = JSON.parse(jsonText);
     } catch (e) {

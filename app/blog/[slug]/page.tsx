@@ -43,10 +43,7 @@ export default function BlogDetailPage() {
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
-        horizontalRule: false,
-      }),
-      HorizontalRule,
+      StarterKit as any,
       Image,
       ReadOnlyImageGalleryNode,
       ReadOnlyColumnsNode,

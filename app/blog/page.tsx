@@ -9,6 +9,7 @@ interface Post {
   subtitle: string | null;
   summary: string | null;
   slug: string;
+  is_published: boolean;
   published_at: string | null;
   created_at: string;
   title_image_url: string | null;

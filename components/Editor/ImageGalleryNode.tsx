@@ -295,8 +295,8 @@ const ImageGalleryComponent = ({
     // Check if dragged outside gallery bounds
     if (galleryRef.current && activatorEvent && 'clientY' in activatorEvent) {
       const rect = galleryRef.current.getBoundingClientRect();
-      const dragEndY = activatorEvent.clientY + delta.y;
-      const dragEndX = activatorEvent.clientX + delta.x;
+      const dragEndY = (activatorEvent as any).clientY + delta.y;
+      const dragEndX = (activatorEvent as any).clientX + delta.x;
 
       const isOutside =
         dragEndY < rect.top ||

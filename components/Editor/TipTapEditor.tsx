@@ -28,9 +28,9 @@ export default function TipTapEditor({ value, onChange }: TipTapEditorProps) {
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
+      (StarterKit.configure({
         codeBlock: false, // 기본 코드블록 비활성화
-      }),
+      }) as any),
       Image.configure({
         allowBase64: true,
         HTMLAttributes: {
@@ -133,28 +133,28 @@ export default function TipTapEditor({ value, onChange }: TipTapEditorProps) {
       <div style={{ padding: '10px', borderBottom: '1px solid #eee', display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
         {/* 텍스트 스타일 */}
         <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
+          onClick={() => (editor as any).chain().focus().toggleBold().run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive('bold') ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="굵게"
         >
           <i className="ri-bold"></i>
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
+          onClick={() => (editor as any).chain().focus().toggleItalic().run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive('italic') ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="기울임"
         >
           <i className="ri-italic"></i>
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          onClick={() => (editor as any).chain().focus().toggleUnderline().run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive('underline') ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="밑줄"
         >
           <i className="ri-underline"></i>
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
+          onClick={() => (editor as any).chain().focus().toggleStrike().run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive('strike') ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="취소선"
         >
@@ -165,21 +165,21 @@ export default function TipTapEditor({ value, onChange }: TipTapEditorProps) {
 
         {/* 헤딩 */}
         <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          onClick={() => (editor as any).chain().focus().toggleHeading({ level: 1 }).run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive('heading', { level: 1 }) ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="헤딩 1"
         >
           <i className="ri-h-1"></i>
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          onClick={() => (editor as any).chain().focus().toggleHeading({ level: 2 }).run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive('heading', { level: 2 }) ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="헤딩 2"
         >
           <i className="ri-h-2"></i>
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          onClick={() => (editor as any).chain().focus().toggleHeading({ level: 3 }).run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive('heading', { level: 3 }) ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="헤딩 3"
         >
@@ -190,21 +190,21 @@ export default function TipTapEditor({ value, onChange }: TipTapEditorProps) {
 
         {/* 정렬 */}
         <button
-          onClick={() => editor.chain().focus().setTextAlign('left').run()}
+          onClick={() => (editor as any).chain().focus().setTextAlign('left').run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive({ textAlign: 'left' }) ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="왼쪽 정렬"
         >
           <i className="ri-align-left"></i>
         </button>
         <button
-          onClick={() => editor.chain().focus().setTextAlign('center').run()}
+          onClick={() => (editor as any).chain().focus().setTextAlign('center').run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive({ textAlign: 'center' }) ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="가운데 정렬"
         >
           <i className="ri-align-center"></i>
         </button>
         <button
-          onClick={() => editor.chain().focus().setTextAlign('right').run()}
+          onClick={() => (editor as any).chain().focus().setTextAlign('right').run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive({ textAlign: 'right' }) ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="오른쪽 정렬"
         >
@@ -215,14 +215,14 @@ export default function TipTapEditor({ value, onChange }: TipTapEditorProps) {
 
         {/* 리스트 */}
         <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          onClick={() => (editor as any).chain().focus().toggleBulletList().run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive('bulletList') ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="순서 없는 목록"
         >
           <i className="ri-list-unordered"></i>
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          onClick={() => (editor as any).chain().focus().toggleOrderedList().run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive('orderedList') ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="순서 있는 목록"
         >
@@ -233,21 +233,21 @@ export default function TipTapEditor({ value, onChange }: TipTapEditorProps) {
 
         {/* 인용구 & 코드 */}
         <button
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          onClick={() => (editor as any).chain().focus().toggleBlockquote().run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive('blockquote') ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="인용구"
         >
           <i className="ri-double-quotes-l"></i>
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+          onClick={() => (editor as any).chain().focus().toggleCodeBlock().run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive('codeBlock') ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="코드 블록"
         >
           <i className="ri-code-box-line"></i>
         </button>
         <button
-          onClick={() => editor.chain().focus().toggleCode().run()}
+          onClick={() => (editor as any).chain().focus().toggleCode().run()}
           style={{ padding: '5px 10px', cursor: 'pointer', backgroundColor: editor.isActive('code') ? '#ddd' : '#fff', border: '1px solid #ccc', borderRadius: '4px' }}
           title="인라인 코드"
         >
