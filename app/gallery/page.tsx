@@ -340,7 +340,7 @@ function GalleryContent() {
                   }
                 />
               </div>
-              <div className="p-4">
+              <div className="p-4 hidden">
                 <h2 className="font-medium text-sm mb-1">{item.title}</h2>
                 {item.description && (
                   <p className="text-xs text-gray-600 line-clamp-2 mb-2">

@@ -65,7 +65,7 @@ export async function POST(req: NextRequest, { params }: Props) {
     // 요청 데이터 파싱
     const body = await req.json();
     const limit = body.limit || 10;
-    const similarityThreshold = 0.8; // 80% 이상 유사
+    const similarityThreshold = 0.75; // 80% 이상 유사
 
     // 1. 현재 이미지의 embedding 조회
     const { data: currentGallery, error: currentError } = await supabase
