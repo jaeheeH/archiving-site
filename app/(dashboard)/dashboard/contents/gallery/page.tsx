@@ -15,6 +15,8 @@ type GalleryItem = {
   title: string;
   description?: string;
   image_url: string;
+  image_width: number;
+  image_height: number;
   tags: string[];
   gemini_tags: string[];
 };
@@ -395,19 +397,21 @@ const fetchTopTags = async (search: string, tags: string[]) => {
             </div>
           )}
 
-          {gallery.map((item) => (
-            <GalleryCard
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              description={item.description}
-              imageUrl={item.image_url}
-              tags={item.gemini_tags || item.tags}
-              viewMode={viewMode}
-              onDelete={deleteItem}
-              onEdit={handleEditClick}
-            />
-          ))}
+{gallery.map((item) => (
+  <GalleryCard
+    key={item.id}
+    id={item.id}
+    title={item.title}
+    description={item.description}
+    imageUrl={item.image_url}
+    imageWidth={item.image_width}        // ← 추가
+    imageHeight={item.image_height}      // ← 추가
+    tags={item.gemini_tags || item.tags}
+    viewMode={viewMode}
+    onDelete={deleteItem}
+    onEdit={handleEditClick}
+  />
+))}
         </div>
 
         {/* 페이지네이션 */}

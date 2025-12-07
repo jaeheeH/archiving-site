@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import SimilarGalleryModal from "./SimilarGalleryModal";
 
@@ -18,6 +19,8 @@ type GalleryDetail = {
   title: string;
   description?: string;
   image_url: string;
+  image_width: number;
+  image_height: number;
   tags: string[];
   gemini_tags: string[];
   gemini_description?: string;
@@ -125,13 +128,20 @@ export default function GalleryDetailModal({
           {/* 본문 */}
           <div className="p-6 modal-contents-detail">
             <div className="grid md:grid-cols-2 gap-6">
-              {/* 이미지 */}
+              {/* 이미지 - Next.js Image 최적화 */}
               <div className="relative">
-                <img
-                  src={gallery.image_url}
-                  alt={gallery.title}
-                  className="w-full h-auto rounded-lg sticky top-0"
-                />
+                <div className="relative w-full" style={{ aspectRatio: `${gallery.image_width} / ${gallery.image_height}` }}>
+                  <Image
+                    src={gallery.image_url}
+                    alt={gallery.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-contain rounded-lg"
+                    placeholder="blur"
+                    blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f3f4f6' width='16' height='9'/%3E%3C/svg%3E"
+                    priority
+                  />
+                </div>
               </div>
 
               {/* 정보 */}

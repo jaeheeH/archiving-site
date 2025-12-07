@@ -77,7 +77,7 @@ export async function GET(request: Request) {
 
     const { data, error } = await supabase
       .from('posts')
-      .select('id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count')
+      .select('id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id')
       .eq('type', type)
       .order('created_at', { ascending: false });
 

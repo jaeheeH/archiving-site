@@ -103,7 +103,7 @@ export async function POST(req: NextRequest, { params }: Props) {
     // 2. 모든 gallery 아이템의 embedding 조회 (현재 이미지 제외)
     const { data: allGalleries, error: allError } = await supabase
       .from("gallery")
-      .select("id, title, image_url, description, embedding")
+      .select("id, title, image_url, image_width, image_height, description, embedding")
       .neq("id", galleryId)
       .not("embedding", "is", null);
 

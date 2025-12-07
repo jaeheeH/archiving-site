@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Image from '@tiptap/extension-image';
+import ImageExtension from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
@@ -44,7 +45,7 @@ export default function BlogDetailPage() {
   const editor = useEditor({
     extensions: [
       StarterKit as any,
-      Image,
+      ImageExtension,
       ReadOnlyImageGalleryNode,
       ReadOnlyColumnsNode,
       Link.configure({
@@ -123,13 +124,18 @@ export default function BlogDetailPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header Image */}
+      {/* Header Image - 16:9 비율, 반응형 높이 */}
       {post.title_image_url && (
-        <div className="w-full h-96 bg-gray-200 overflow-hidden">
-          <img
+        <div className="relative w-full h-56 md:h-80 lg:h-96 bg-gray-200 overflow-hidden">
+          <Image
             src={post.title_image_url}
             alt={post.title}
-            className="w-full h-full object-cover"
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23d1d5db' width='16' height='9'/%3E%3C/svg%3E"
           />
         </div>
       )}
@@ -154,13 +160,14 @@ export default function BlogDetailPage() {
         {post.subtitle && (
           <p className="text-xl text-gray-600 mb-6">{post.subtitle}</p>
         )}
-        {/* Subtitle */}
+
+        {/* Summary */}
         {post.summary && (
           <p className="text-lg text-gray-600 mb-6">{post.summary}</p>
         )}
 
         {/* Meta Info */}
-        <div className="flex items-center gap-6 text-sm text-gray-500 mb-8 pb-8 border-b">
+        <div className="flex items-center gap-6 text-sm text-gray-500 mb-8 pb-8 border-b flex-wrap">
           <span>
             {new Date(post.published_at || post.created_at).toLocaleDateString('ko-KR', {
               year: 'numeric',

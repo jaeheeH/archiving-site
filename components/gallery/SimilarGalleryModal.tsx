@@ -1,14 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useToast } from "@/components/ToastProvider";
 
 interface SimilarItem {
   id: number;
   title: string;
   image_url: string;
+  image_width: number;
+  image_height: number;
   similarity: number;
-  description : string;
+  description: string;
 }
 
 interface SimilarGalleryModalProps {
@@ -80,7 +83,6 @@ export default function SimilarGalleryModal({
             <h1 className="text-xl font-semibold">
               "{title}"와 비슷한 이미지
             </h1>
-
           </div>
           <button
             onClick={onClose}
@@ -103,43 +105,72 @@ export default function SimilarGalleryModal({
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {similar.map((item) => (
-                <div
+                <SimilarImageCard
                   key={item.id}
-                  className="border rounded-lg overflow-hidden hover:shadow-lg transition cursor-pointer"
-                  onClick={() => {
-                    if (onSelectImage) {
-                      onSelectImage(item.id);
-                      onClose();
-                    }
-                  }}
-                >
-                  <div className="aspect-square overflow-hidden bg-gray-100">
-                    <img
-                      src={item.image_url}
-                      alt={item.title}
-                      className="w-full h-full object-cover hover:scale-105 transition"
-                    />
-                  </div>
-                  <div className="p-3">
-                    <h3 className="font-medium text-sm truncate mb-1">
-                      {item.title}
-                    </h3>
-                    {item.description && (
-                      <p className="text-xs text-gray-600 line-clamp-2 mb-2">
-                        {item.description}
-                      </p>
-                    )}
-                    <div className="flex items-center justify-between ">
-                      <span className="text-xs text-gray-500">유사도</span>
-                      <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
-                        {Math.round(item.similarity * 100)}%
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                  item={item}
+                  onSelectImage={onSelectImage}
+                  onClose={onClose}
+                />
               ))}
             </div>
           )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * 유사 이미지 카드 컴포넌트
+ * 정사각형 비율로 표시
+ */
+function SimilarImageCard({
+  item,
+  onSelectImage,
+  onClose,
+}: {
+  item: SimilarItem;
+  onSelectImage?: (id: number) => void;
+  onClose: () => void;
+}) {
+  return (
+    <div
+      className="border rounded-lg overflow-hidden hover:shadow-lg transition cursor-pointer group"
+      onClick={() => {
+        if (onSelectImage) {
+          onSelectImage(item.id);
+          onClose();
+        }
+      }}
+    >
+      {/* 이미지 - 정사각형 비율 */}
+      <div className="relative w-full aspect-square bg-gray-100 overflow-hidden">
+        <Image
+          src={item.image_url}
+          alt={item.title}
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%23f3f4f6' width='1' height='1'/%3E%3C/svg%3E"
+        />
+      </div>
+
+      {/* 정보 */}
+      <div className="p-3">
+        <h3 className="font-medium text-sm truncate mb-1">{item.title}</h3>
+
+        {item.description && (
+          <p className="text-xs text-gray-600 line-clamp-2 mb-2">
+            {item.description}
+          </p>
+        )}
+
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-gray-500">유사도</span>
+          <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
+            {Math.round(item.similarity * 100)}%
+          </span>
         </div>
       </div>
     </div>

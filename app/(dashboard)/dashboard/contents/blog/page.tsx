@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 
 interface Post {
   id: string;
@@ -18,11 +19,17 @@ interface Post {
   category_id: string | null;
   view_count?: number;
   scrap_count?: number;
+  author_id: string;
 }
 
 interface Category {
   id: string;
   name: string;
+}
+
+interface User {
+  id: string;
+  role: string;
 }
 
 type SortType = 'latest' | 'oldest' | 'popular';
@@ -37,17 +44,56 @@ export default function BlogPage() {
   const [sortType, setSortType] = useState<SortType>('latest');
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [authors, setAuthors] = useState<Record<string, User>>({});
 
   useEffect(() => {
+    fetchCurrentUser();
     fetchPosts();
     fetchCategories();
   }, []);
+
+  const fetchCurrentUser = async () => {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user) {
+      const { data: profile } = await supabase
+        .from('users')
+        .select('id, role')
+        .eq('id', user.id)
+        .single();
+
+      if (profile) {
+        setCurrentUser(profile);
+      }
+    }
+  };
 
   const fetchPosts = async () => {
     try {
       const res = await fetch('/api/posts?type=blog');
       const data = await res.json();
-      setPosts(data.data || []);
+      const postsData = data.data || [];
+      setPosts(postsData);
+
+      // 작성자 정보 가져오기
+      const authorIds = [...new Set(postsData.map((p: Post) => p.author_id))];
+      if (authorIds.length > 0) {
+        const supabase = createClient();
+        const { data: authorsData } = await supabase
+          .from('users')
+          .select('id, role')
+          .in('id', authorIds);
+
+        if (authorsData) {
+          const authorsMap: Record<string, User> = {};
+          authorsData.forEach((author) => {
+            authorsMap[author.id] = author;
+          });
+          setAuthors(authorsMap);
+        }
+      }
     } catch (error) {
       console.error('Failed to fetch posts:', error);
     } finally {
@@ -163,6 +209,31 @@ export default function BlogPage() {
     if (!categoryId) return '미분류';
     const category = categories.find((cat) => cat.id === categoryId);
     return category?.name || '미분류';
+  };
+
+  const canEditPost = (post: Post): boolean => {
+    if (!currentUser) return false;
+
+    // admin은 모든 글 수정 가능
+    if (currentUser.role === 'admin') return true;
+
+    // sub-admin은 admin이 작성한 글 제외하고 수정 가능
+    if (currentUser.role === 'sub-admin') {
+      const authorRole = authors[post.author_id]?.role;
+      return authorRole !== 'admin';
+    }
+
+    // editor는 자기 글만 수정 가능
+    if (currentUser.role === 'editor') {
+      return currentUser.id === post.author_id;
+    }
+
+    return false;
+  };
+
+  const canDeletePost = (post: Post): boolean => {
+    // 삭제 권한은 수정 권한과 동일
+    return canEditPost(post);
   };
 
   const filteredPosts = posts
@@ -456,18 +527,30 @@ export default function BlogPage() {
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <Link
-                          href={`/dashboard/contents/blog/${post.id}/edit`}
-                          className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition"
-                        >
-                          수정
-                        </Link>
-                        <button
-                          onClick={() => handleDelete(post.id)}
-                          className="px-3 py-1.5 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
-                        >
-                          삭제
-                        </button>
+                        {canEditPost(post) ? (
+                          <Link
+                            href={`/dashboard/contents/blog/${post.id}/edit`}
+                            className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition"
+                          >
+                            수정
+                          </Link>
+                        ) : (
+                          <span className="px-3 py-1.5 text-sm bg-gray-50 text-gray-400 rounded cursor-not-allowed">
+                            수정
+                          </span>
+                        )}
+                        {canDeletePost(post) ? (
+                          <button
+                            onClick={() => handleDelete(post.id)}
+                            className="px-3 py-1.5 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                          >
+                            삭제
+                          </button>
+                        ) : (
+                          <span className="px-3 py-1.5 text-sm bg-gray-50 text-gray-400 rounded cursor-not-allowed">
+                            삭제
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>

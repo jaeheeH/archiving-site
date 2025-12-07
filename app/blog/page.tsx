@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface Post {
@@ -139,13 +140,18 @@ export default function BlogListPage() {
                 href={`/blog/${post.slug}`}
                 className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden group"
               >
-                {/* Thumbnail */}
-                <div className="w-full h-48 bg-gray-100 overflow-hidden">
+                {/* Thumbnail - 16:9 비율 */}
+                <div className="relative w-full aspect-video bg-gray-100 overflow-hidden">
                   {post.title_image_url ? (
-                    <img
+                    <Image
                       src={post.title_image_url}
                       alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      priority={false}
+                      placeholder="blur"
+                      blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f3f4f6' width='16' height='9'/%3E%3C/svg%3E"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400">

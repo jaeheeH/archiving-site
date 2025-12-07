@@ -1,8 +1,10 @@
 // app/api/posts/[id]/route.ts
 
 import { createClient } from '@supabase/supabase-js';
+import { createServerClient } from '@supabase/ssr';
 import { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
+import { canDeletePost, canEditPost } from '@/lib/permissions';
 
 // temp 이미지를 정식 폴더로 이동하는 헬퍼 함수
 async function moveImagesToPostFolder(
@@ -100,10 +102,56 @@ export async function PUT(
 ) {
   try {
     const { id } = await params;
+    const cookieStore = await cookies();
+
+    // 세션 확인용 클라이언트
+    const supabaseAuth = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll();
+          },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options)
+              );
+            } catch {}
+          },
+        },
+      }
+    );
+
+    // DB 작업용 Service Role 클라이언트
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
+
+    // 현재 사용자 확인
+    const { data: { user } } = await supabaseAuth.auth.getUser();
+    if (!user) {
+      return Response.json(
+        { error: '로그인이 필요합니다' },
+        { status: 401 }
+      );
+    }
+
+    // 현재 사용자 정보 조회
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('id, role')
+      .eq('id', user.id)
+      .single();
+
+    if (!currentUser) {
+      return Response.json(
+        { error: '사용자 정보를 찾을 수 없습니다' },
+        { status: 404 }
+      );
+    }
 
     const body = await request.json();
     const {
@@ -152,6 +200,28 @@ export async function PUT(
       );
     }
 
+    // 작성자 정보 조회
+    const { data: author } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', existingPost.author_id)
+      .single();
+
+    // 권한 체크
+    const hasPermission = canEditPost({
+      currentUserId: currentUser.id,
+      currentUserRole: currentUser.role,
+      postAuthorId: existingPost.author_id,
+      authorRole: author?.role,
+    });
+
+    if (!hasPermission) {
+      return Response.json(
+        { error: '이 글을 수정할 권한이 없습니다' },
+        { status: 403 }
+      );
+    }
+
     // published_at 로직:
     // - 이미 발행된 적 있으면 기존 시간 유지
     // - 처음 발행하는 경우에만 현재 시간 설정
@@ -163,23 +233,10 @@ export async function PUT(
     }
 
     // temp 이미지를 정식 폴더로 이동
-    const cookieStore = await cookies();
-    const authToken = cookieStore.get('sb-access-token')?.value ||
-                      cookieStore.get('sb-127.0.0.1-auth-token')?.value ||
-                      cookieStore.get('sb-localhost-auth-token')?.value;
-
-    let userId = existingPost.author_id;
-    if (authToken) {
-      const { data: { user } } = await supabase.auth.getUser(authToken);
-      if (user) {
-        userId = user.id;
-      }
-    }
-
     const updatedContent = await moveImagesToPostFolder(
       supabase,
       content,
-      userId,
+      currentUser.id,
       existingPost.type,
       id
     );
@@ -236,17 +293,92 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
+    const cookieStore = await cookies();
+
+    // 세션 확인용 클라이언트
+    const supabaseAuth = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll();
+          },
+          setAll(cookiesToSet) {
+            try {
+              cookiesToSet.forEach(({ name, value, options }) =>
+                cookieStore.set(name, value, options)
+              );
+            } catch {}
+          },
+        },
+      }
+    );
+
+    // DB 작업용 Service Role 클라이언트
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
 
-    // 먼저 포스트 정보를 가져와서 type 확인
+    // 현재 사용자 확인
+    const { data: { user } } = await supabaseAuth.auth.getUser();
+    if (!user) {
+      return Response.json(
+        { error: '로그인이 필요합니다' },
+        { status: 401 }
+      );
+    }
+
+    // 현재 사용자 정보 조회
+    const { data: currentUser } = await supabase
+      .from('users')
+      .select('id, role')
+      .eq('id', user.id)
+      .single();
+
+    if (!currentUser) {
+      return Response.json(
+        { error: '사용자 정보를 찾을 수 없습니다' },
+        { status: 404 }
+      );
+    }
+
+    // 포스트 정보를 가져와서 권한 확인
     const { data: post } = await supabase
       .from('posts')
-      .select('type')
+      .select('type, author_id')
       .eq('id', id)
       .single();
+
+    if (!post) {
+      return Response.json(
+        { error: '포스트를 찾을 수 없습니다' },
+        { status: 404 }
+      );
+    }
+
+    // 작성자 정보 조회
+    const { data: author } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', post.author_id)
+      .single();
+
+    // 권한 체크
+    const hasPermission = canDeletePost({
+      currentUserId: currentUser.id,
+      currentUserRole: currentUser.role,
+      postAuthorId: post.author_id,
+      authorRole: author?.role,
+    });
+
+    if (!hasPermission) {
+      return Response.json(
+        { error: '이 글을 삭제할 권한이 없습니다' },
+        { status: 403 }
+      );
+    }
 
     // 포스트 삭제
     const { error } = await supabase

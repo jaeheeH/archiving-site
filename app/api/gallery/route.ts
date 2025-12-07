@@ -43,6 +43,8 @@ export async function GET(req: NextRequest) {
         title,
         description,
         image_url,
+        image_width,
+        image_height,
         created_at,
         tags,
         category,

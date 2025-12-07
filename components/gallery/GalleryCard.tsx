@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import GalleryDetailModal from "./GalleryDetailModal";
 
 type GalleryCardProps = {
@@ -7,6 +8,8 @@ type GalleryCardProps = {
   title: string;
   description?: string;
   imageUrl: string;
+  imageWidth: number;
+  imageHeight: number;
   tags: string[];
   onDelete?: (id: number) => void;
   viewMode: "masonry" | "grid" | "list";
@@ -18,6 +21,8 @@ export default function GalleryCard({
   title,
   description,
   imageUrl,
+  imageWidth,
+  imageHeight,
   tags,
   onDelete,
   viewMode,
@@ -26,11 +31,6 @@ export default function GalleryCard({
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [currentId, setCurrentId] = useState(id);
 
-  const imgClass = {
-    masonry: "w-full h-auto object-cover",
-    grid: "w-full aspect-square object-cover",
-    list: "object-cover ",
-  }[viewMode];
   const imgItemClass = {
     masonry: "masonry",
     grid: "grid",
@@ -42,17 +42,57 @@ export default function GalleryCard({
       <div
         className={`galleryCard group relative border rounded-lg overflow-hidden bg-white hover:shadow ${imgItemClass}`}
       >
-        {/* 이미지: Pinterest처럼 비율 그대로 */}
+        {/* 이미지 - Next.js Image 최적화 */}
         <div
-          className="imgItem cursor-pointer"
+          className="imgItem cursor-pointer overflow-hidden"
           onClick={() => {
             setCurrentId(id);
             setShowDetailModal(true);
           }}
         >
-          <img src={imageUrl} alt={title} className={imgClass} />
+          {viewMode === "masonry" ? (
+            // Masonry: 원본 비율 유지
+            <div className="relative w-full" style={{ aspectRatio: `${imageWidth} / ${imageHeight}` }}>
+              <Image
+                src={imageUrl}
+                alt={title}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                placeholder="blur"
+                blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f3f4f6' width='16' height='9'/%3E%3C/svg%3E"
+              />
+            </div>
+          ) : viewMode === "grid" ? (
+            // Grid: 정사각형 비율
+            <div className="relative w-full aspect-square">
+              <Image
+                src={imageUrl}
+                alt={title}
+                fill
+                sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                placeholder="blur"
+                blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%23f3f4f6' width='1' height='1'/%3E%3C/svg%3E"
+              />
+            </div>
+          ) : (
+            // List: 고정 높이
+            <div className="relative w-full h-48">
+              <Image
+                src={imageUrl}
+                alt={title}
+                fill
+                sizes="(max-width: 640px) 100vw, 50vw"
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                placeholder="blur"
+                blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f3f4f6' width='16' height='9'/%3E%3C/svg%3E"
+              />
+            </div>
+          )}
         </div>
 
+        {/* 정보 */}
         <div className="p-4">
           <h2 className="font-medium galleryTitle">{title}</h2>
           {description && (

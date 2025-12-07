@@ -1,14 +1,17 @@
-"use client";
+'use client';
 
-import { useEffect, useState, Suspense } from "react";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import ClientGalleryDetailModal from "@/components/gallery/ClientGalleryDetailModal";
+import { useEffect, useState, Suspense } from 'react';
+import Image from 'next/image';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import ClientGalleryDetailModal from '@/components/gallery/ClientGalleryDetailModal';
 
 type GalleryItem = {
   id: number;
   title: string;
   description?: string;
   image_url: string;
+  image_width: number;
+  image_height: number;
   tags: string[];
   gemini_tags: string[];
 };
@@ -24,18 +27,18 @@ function GalleryContent() {
   const pathname = usePathname();
 
   // URL에서 파라미터 가져오기
-  const pageFromUrl = Number(searchParams.get("page") || 1);
-  const searchFromUrl = searchParams.get("search") || "";
-  const tagsFromUrl = searchParams.get("tags") || "";
+  const pageFromUrl = Number(searchParams.get('page') || 1);
+  const searchFromUrl = searchParams.get('search') || '';
+  const tagsFromUrl = searchParams.get('tags') || '';
 
   // 상태 관리
-  const [viewMode, setViewMode] = useState<"masonry" | "grid" | "list">("masonry");
+  const [viewMode, setViewMode] = useState<'masonry' | 'grid' | 'list'>('masonry');
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(pageFromUrl);
   const [searchInput, setSearchInput] = useState(searchFromUrl);
   const [selectedTags, setSelectedTags] = useState<string[]>(
-    tagsFromUrl ? tagsFromUrl.split(",") : []
+    tagsFromUrl ? tagsFromUrl.split(',') : []
   );
   const [topTags, setTopTags] = useState<TopTag[]>([]);
   const [loadingTags, setLoadingTags] = useState(true);
@@ -64,14 +67,14 @@ function GalleryContent() {
   // URL 업데이트 (히스토리 쌓지 않고 replace)
   useEffect(() => {
     const params = new URLSearchParams();
-    params.set("page", String(page));
+    params.set('page', String(page));
 
     if (debouncedSearch.trim()) {
-      params.set("search", debouncedSearch.trim());
+      params.set('search', debouncedSearch.trim());
     }
 
     if (selectedTags.length > 0) {
-      params.set("tags", selectedTags.join(","));
+      params.set('tags', selectedTags.join(','));
     }
 
     const newUrl = `${pathname}?${params.toString()}`;
@@ -86,21 +89,21 @@ function GalleryContent() {
       setLoading(true);
 
       const params = new URLSearchParams();
-      params.set("page", String(pageNum));
-      params.set("limit", String(limit));
+      params.set('page', String(pageNum));
+      params.set('limit', String(limit));
 
       if (search.trim()) {
-        params.set("search", search.trim());
+        params.set('search', search.trim());
       }
 
       if (tags.length > 0) {
-        params.set("tags", tags.join(","));
+        params.set('tags', tags.join(','));
       }
 
       const res = await fetch(`/api/gallery?${params.toString()}`);
 
       if (!res.ok) {
-        throw new Error("갤러리 조회 실패");
+        throw new Error('갤러리 조회 실패');
       }
 
       const data = await res.json();
@@ -108,7 +111,7 @@ function GalleryContent() {
       setGallery(data.data || []);
       setTotalPages(data.pagination.totalPages);
     } catch (error) {
-      console.error("❌ Fetch 에러:", error);
+      console.error('❌ Fetch 에러:', error);
     } finally {
       setLoading(false);
     }
@@ -118,16 +121,16 @@ function GalleryContent() {
   const fetchTopTags = async () => {
     try {
       setLoadingTags(true);
-      const res = await fetch("/api/gallery/tags/top");
+      const res = await fetch('/api/gallery/tags/top');
 
       if (!res.ok) {
-        throw new Error("태그 조회 실패");
+        throw new Error('태그 조회 실패');
       }
 
       const data = await res.json();
       setTopTags(data.tags || []);
     } catch (error) {
-      console.error("❌ 태그 조회 에러:", error);
+      console.error('❌ 태그 조회 에러:', error);
     } finally {
       setLoadingTags(false);
     }
@@ -165,14 +168,14 @@ function GalleryContent() {
   }, []);
 
   useEffect(() => {
-    const saved = localStorage.getItem("gallery_view_mode");
-    if (saved === "masonry" || saved === "grid" || saved === "list") {
+    const saved = localStorage.getItem('gallery_view_mode');
+    if (saved === 'masonry' || saved === 'grid' || saved === 'list') {
       setViewMode(saved);
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("gallery_view_mode", viewMode);
+    localStorage.setItem('gallery_view_mode', viewMode);
   }, [viewMode]);
 
   if (loading && gallery.length === 0) {
@@ -184,11 +187,9 @@ function GalleryContent() {
   }
 
   const layoutClass = {
-    masonry:
-      "columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-4 gap-2 space-y-2",
-    grid:
-      "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2",
-    list: "gap-2 grid grid-cols-2",
+    masonry: 'columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-4 gap-2 space-y-2',
+    grid: 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2',
+    list: 'gap-2 grid grid-cols-2',
   }[viewMode];
 
   return (
@@ -216,7 +217,7 @@ function GalleryContent() {
               {searchInput && (
                 <button
                   onClick={() => {
-                    setSearchInput("");
+                    setSearchInput('');
                     setPage(1);
                   }}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
@@ -227,33 +228,33 @@ function GalleryContent() {
             </div>
             <div className="flex gap-2">
               <button
-                onClick={() => setViewMode("masonry")}
+                onClick={() => setViewMode('masonry')}
                 className={`px-3 py-2 border rounded ${
-                  viewMode === "masonry"
-                    ? "bg-blue-500 text-white border-blue-500"
-                    : "bg-white text-gray-700 border-gray-300"
+                  viewMode === 'masonry'
+                    ? 'bg-blue-500 text-white border-blue-500'
+                    : 'bg-white text-gray-700 border-gray-300'
                 }`}
               >
                 <i className="ri-layout-masonry-line"></i>
               </button>
 
               <button
-                onClick={() => setViewMode("grid")}
+                onClick={() => setViewMode('grid')}
                 className={`px-3 py-2 border rounded ${
-                  viewMode === "grid"
-                    ? "bg-blue-500 text-white border-blue-500"
-                    : "bg-white text-gray-700 border-gray-300"
+                  viewMode === 'grid'
+                    ? 'bg-blue-500 text-white border-blue-500'
+                    : 'bg-white text-gray-700 border-gray-300'
                 }`}
               >
                 <i className="ri-layout-grid-line"></i>
               </button>
 
               <button
-                onClick={() => setViewMode("list")}
+                onClick={() => setViewMode('list')}
                 className={`px-3 py-2 border rounded ${
-                  viewMode === "list"
-                    ? "bg-blue-500 text-white border-blue-500"
-                    : "bg-white text-gray-700 border-gray-300"
+                  viewMode === 'list'
+                    ? 'bg-blue-500 text-white border-blue-500'
+                    : 'bg-white text-gray-700 border-gray-300'
                 }`}
               >
                 <i className="ri-list-view"></i>
@@ -264,15 +265,14 @@ function GalleryContent() {
           {/* 태그 필터 */}
           {!loadingTags && topTags.length > 0 && (
             <div className="flex flex-wrap gap-2 items-center">
-              
               {topTags.map((item) => (
                 <button
                   key={item.tag}
                   onClick={() => handleTagToggle(item.tag)}
                   className={`px-3 py-1 text-sm rounded-full border transition-colors ${
                     selectedTags.includes(item.tag)
-                      ? "bg-blue-500 text-white border-blue-500"
-                      : "bg-white text-gray-700 border-gray-300 hover:border-blue-500"
+                      ? 'bg-blue-500 text-white border-blue-500'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-blue-500'
                   }`}
                 >
                   {item.tag} ({item.count})
@@ -303,7 +303,7 @@ function GalleryContent() {
               )}
               {selectedTags.length > 0 && (
                 <span>
-                  {debouncedSearch && " / "} 태그: <strong>{selectedTags.join(", ")}</strong>
+                  {debouncedSearch && ' / '} 태그: <strong>{selectedTags.join(', ')}</strong>
                 </span>
               )}
               <span className="ml-2">총 {gallery.length}개</span>
@@ -316,51 +316,18 @@ function GalleryContent() {
           {gallery.length === 0 && (
             <div className="text-gray-500 col-span-full text-center py-12">
               {debouncedSearch || selectedTags.length > 0
-                ? "검색 결과가 없습니다."
-                : "등록된 이미지가 없습니다."}
+                ? '검색 결과가 없습니다.'
+                : '등록된 이미지가 없습니다.'}
             </div>
           )}
 
           {gallery.map((item) => (
-            <div
+            <GalleryItemImage
               key={item.id}
-              className="group relative border rounded-lg overflow-hidden bg-white hover:shadow-lg transition cursor-pointer"
+              item={item}
+              viewMode={viewMode}
               onClick={() => setSelectedId(item.id)}
-            >
-              <div className="overflow-hidden">
-                <img
-                  src={item.image_url}
-                  alt={item.title}
-                  className={
-                    viewMode === "masonry"
-                      ? "w-full h-auto object-cover"
-                      : viewMode === "grid"
-                      ? "w-full aspect-square object-cover"
-                      : "w-full h-48 object-cover"
-                  }
-                />
-              </div>
-              <div className="p-4 hidden">
-                <h2 className="font-medium text-sm mb-1">{item.title}</h2>
-                {item.description && (
-                  <p className="text-xs text-gray-600 line-clamp-2 mb-2">
-                    {item.description}
-                  </p>
-                )}
-                {(item.gemini_tags || item.tags).length > 0 && (
-                  <div className="flex flex-wrap gap-1">
-                    {(item.gemini_tags || item.tags).slice(0, 10).map((tag, i) => (
-                      <span
-                        key={i}
-                        className="text-xs px-2 py-1 bg-gray-100 rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
+            />
           ))}
         </div>
 
@@ -384,8 +351,8 @@ function GalleryContent() {
                   onClick={() => updatePage(pageNum)}
                   className={`px-4 py-2 border rounded ${
                     page === pageNum
-                      ? "bg-blue-500 text-white border-blue-500"
-                      : "bg-white hover:bg-gray-50"
+                      ? 'bg-blue-500 text-white border-blue-500'
+                      : 'bg-white hover:bg-gray-50'
                   }`}
                 >
                   {pageNum}
@@ -412,6 +379,84 @@ function GalleryContent() {
           onChangeId={setSelectedId}
         />
       )}
+    </div>
+  );
+}
+
+/**
+ * 갤러리 아이템 이미지 컴포넌트
+ * Masonry/Grid/List 레이아웃에 따라 다르게 렌더링
+ */
+function GalleryItemImage({
+  item,
+  viewMode,
+  onClick,
+}: {
+  item: GalleryItem;
+  viewMode: 'masonry' | 'grid' | 'list';
+  onClick: () => void;
+}) {
+  if (viewMode === 'masonry') {
+    // Masonry: 원본 비율 유지
+    return (
+      <div
+        className="group relative border rounded-lg overflow-hidden bg-white hover:shadow-lg transition cursor-pointer break-inside-avoid"
+        onClick={onClick}
+      >
+        <div className="relative w-full" style={{ aspectRatio: `${item.image_width} / ${item.image_height}` }}>
+          <Image
+            src={item.image_url}
+            alt={item.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f3f4f6' width='16' height='9'/%3E%3C/svg%3E"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (viewMode === 'grid') {
+    // Grid: 정사각형 비율
+    return (
+      <div
+        className="group relative border rounded-lg overflow-hidden bg-white hover:shadow-lg transition cursor-pointer"
+        onClick={onClick}
+      >
+        <div className="relative w-full aspect-square">
+          <Image
+            src={item.image_url}
+            alt={item.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3Crect fill='%23f3f4f6' width='1' height='1'/%3E%3C/svg%3E"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // List: 고정 높이
+  return (
+    <div
+      className="group relative border rounded-lg overflow-hidden bg-white hover:shadow-lg transition cursor-pointer"
+      onClick={onClick}
+    >
+      <div className="relative w-full h-48">
+        <Image
+          src={item.image_url}
+          alt={item.title}
+          fill
+          sizes="(max-width: 640px) 100vw, 50vw"
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f3f4f6' width='16' height='9'/%3E%3C/svg%3E"
+        />
+      </div>
     </div>
   );
 }
