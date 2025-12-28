@@ -148,10 +148,12 @@ export default function HomeBlogSection() {
               {/* 콘텐츠 */}
               <div className="flex-1 flex flex-col">
 
-                {/* 제목 */}
-                <p className="text-xs text-gray-600 mb-1 line-clamp-1 text-">
-                  {post.subtitle}
-                </p>
+                {/* 소제목 */}
+                {post.subtitle ? (
+                  <p className="text-xs text-gray-600 mb-1 line-clamp-1 text-">
+                    {post.subtitle}
+                  </p>
+                ) : ( "")}
                 {/* 제목 */}
                 <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
                   {post.title}

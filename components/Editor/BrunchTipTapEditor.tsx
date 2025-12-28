@@ -9,8 +9,9 @@ import TextAlign from '@tiptap/extension-text-align';
 import Placeholder from '@tiptap/extension-placeholder';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import BubbleMenuExtension from '@tiptap/extension-bubble-menu';
+import { Table, TableRow, TableHeader, TableCell } from '@tiptap/extension-table';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { JSONContent } from '@tiptap/react';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { DraggableImage } from './DraggableImageNode';
@@ -25,22 +26,21 @@ interface BrunchTipTapEditorProps {
 export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEditorProps) {
   const { uploadImage, uploading } = useImageUpload();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showTableMenu, setShowTableMenu] = useState(false);
 
   const editor = useEditor({
     extensions: [
       (StarterKit.configure({
-        horizontalRule: false, // 기본 구분선 끄기 (아래 커스텀 설정 사용)
+        horizontalRule: false,
         dropcursor: {
           color: '#00c4c4',
           width: 2,
         },
-        // 리스트 기능은 StarterKit에 기본 포함되어 있습니다 (bulletList, orderedList, listItem)
       }) as any),
-      // BubbleMenu 확장 등록 (필수)
       BubbleMenuExtension,
       HorizontalRule.configure({
         HTMLAttributes: {
-          class: 'my-8 border-t border-gray-300 w-1/2 mx-auto', // 중앙 정렬 스타일
+          class: 'my-8 border-t border-gray-300 w-1/2 mx-auto',
         },
       }),
       Placeholder.configure({
@@ -48,10 +48,23 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
         emptyEditorClass:
           'is-editor-empty before:content-[attr(data-placeholder)] before:text-gray-300 before:float-left before:pointer-events-none',
       }),
-      // 커스텀 노드 등록
+      // 커스텀 노드
       DraggableImage,
       ImageGalleryNode,
       ColumnsNode,
+      
+      // 테이블 확장 추가
+      Table.configure({
+        resizable: true,
+        handleWidth: 4,
+        cellMinWidth: 50,
+        lastColumnResizable: true,
+        allowTableNodeSelection: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
+
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
@@ -63,10 +76,9 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
         types: ['heading', 'paragraph', 'image', 'imageGallery'],
       }),
     ],
-    content: value, // 초기값 (비동기 데이터는 useEffect로 처리)
+    content: value,
     editorProps: {
       attributes: {
-        // prose 클래스가 ul, ol 스타일(list-disc, list-decimal)을 자동으로 잡아줍니다.
         class: 'prose prose-lg max-w-none focus:outline-none min-h-[500px]',
       },
     },
@@ -76,7 +88,6 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
     immediatelyRender: false,
   });
 
-  // [수정됨] 비동기 데이터 로드 시 에디터 내용 업데이트 (flushSync 에러 방지)
   useEffect(() => {
     if (editor && value && editor.isEmpty) {
       setTimeout(() => {
@@ -93,25 +104,35 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
     };
   }, [editor]);
 
-  // [수정됨] 이미지 업로드 핸들러 (다중 파일 지원 & 갤러리 자동 변환)
+  // 메뉴 밖 클릭 시 닫기
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.table-menu')) {
+        setShowTableMenu(false);
+      }
+    };
+
+    if (showTableMenu) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [showTableMenu]);
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0 || !editor) return;
 
     try {
-      // 1. 모든 이미지를 병렬 업로드
       const uploadPromises = files.map((file) => uploadImage(file, 'posts/content'));
       const results = await Promise.all(uploadPromises);
       const validUrls = results.filter((url): url is string => url !== null);
 
       if (validUrls.length === 0) return;
 
-      // 2. 개수에 따른 처리
       if (validUrls.length === 1) {
-        // 단일 이미지 -> 일반 이미지 노드
         editor.chain().focus().setImage({ src: validUrls[0] }).run();
       } else {
-        // 다중 이미지 -> 갤러리 노드
         editor
           .chain()
           .focus()
@@ -124,13 +145,11 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
           })
           .run();
         
-        // 갤러리 뒤에 빈 줄 추가 (작성 편의성)
         editor.chain().focus().enter().run();
       }
     } catch (error) {
       console.error('Upload failed:', error);
     } finally {
-      // 입력 초기화
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
@@ -147,7 +166,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
 
   return (
     <div className="relative article-editor">
-      {/* 1. 버블 메뉴 (드래그 시 등장) */}
+      {/* 1. 버블 메뉴 */}
       {editor && (
         <BubbleMenu
           editor={editor}
@@ -244,6 +263,86 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
           <i className="ri-layout-column-line"></i>
         </button>
 
+        {/* 테이블 드롭다운 */}
+        <div className="relative table-menu">
+          <button
+            onClick={() => setShowTableMenu(!showTableMenu)}
+            className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition"
+            title="테이블 삽입"
+          >
+            <i className="ri-table-2"></i>
+          </button>
+          
+          {/* 드롭다운 메뉴 */}
+          {showTableMenu && (
+            <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded shadow-lg z-50 w-40">
+              <button
+                onClick={() => {
+                  (editor as any)
+                    .chain()
+                    .focus()
+                    .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+                    .run();
+                  setShowTableMenu(false);
+                }}
+                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
+              >
+                <i className="ri-table-2 mr-2"></i>테이블 삽입
+              </button>
+              <button
+                onClick={() => {
+                  (editor as any).chain().focus().addRowAfter().run();
+                  setShowTableMenu(false);
+                }}
+                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm border-t"
+                disabled={!editor.isActive('table')}
+              >
+                <i className="ri-arrow-down-line mr-2"></i>행 추가
+              </button>
+              <button
+                onClick={() => {
+                  (editor as any).chain().focus().addColumnAfter().run();
+                  setShowTableMenu(false);
+                }}
+                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm border-t"
+                disabled={!editor.isActive('table')}
+              >
+                <i className="ri-arrow-right-line mr-2"></i>열 추가
+              </button>
+              <button
+                onClick={() => {
+                  (editor as any).chain().focus().deleteRow().run();
+                  setShowTableMenu(false);
+                }}
+                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm border-t text-red-600"
+                disabled={!editor.isActive('table')}
+              >
+                <i className="ri-delete-row mr-2"></i>행 삭제
+              </button>
+              <button
+                onClick={() => {
+                  (editor as any).chain().focus().deleteColumn().run();
+                  setShowTableMenu(false);
+                }}
+                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-600"
+                disabled={!editor.isActive('table')}
+              >
+                <i className="ri-delete-column mr-2"></i>열 삭제
+              </button>
+              <button
+                onClick={() => {
+                  (editor as any).chain().focus().deleteTable().run();
+                  setShowTableMenu(false);
+                }}
+                className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm border-t text-red-600"
+                disabled={!editor.isActive('table')}
+              >
+                <i className="ri-delete-bin-line mr-2"></i>테이블 삭제
+              </button>
+            </div>
+          )}
+        </div>
+
         <div className="w-px h-5 bg-gray-200 mx-2"></div>
 
         {/* 인용구 */}
@@ -268,10 +367,9 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
           <i className="ri-code-box-line"></i>
         </button>
 
-        {/* ========== [추가됨] 리스트 버튼 영역 시작 ========== */}
         <div className="w-px h-5 bg-gray-200 mx-2"></div>
 
-        {/* 글머리 기호 (Bullet List) */}
+        {/* 글머리 기호 */}
         <button
           onClick={() => (editor as any).chain().focus().toggleBulletList().run()}
           className={`p-2 hover:bg-gray-100 rounded transition ${
@@ -282,7 +380,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
           <i className="ri-list-unordered"></i>
         </button>
 
-        {/* 번호 매기기 (Ordered List) */}
+        {/* 번호 매기기 */}
         <button
           onClick={() => (editor as any).chain().focus().toggleOrderedList().run()}
           className={`p-2 hover:bg-gray-100 rounded transition ${
@@ -292,7 +390,6 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
         >
           <i className="ri-list-ordered"></i>
         </button>
-        {/* ========== [추가됨] 리스트 버튼 영역 끝 ========== */}
 
         <div className="w-px h-5 bg-gray-200 mx-2"></div>
 
@@ -323,12 +420,12 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
         </button>
       </div>
 
-      {/* 3. 파일 입력 (다중 선택 가능) */}
+      {/* 3. 파일 입력 */}
       <input
         ref={fileInputRef}
         type="file"
         accept="image/*"
-        multiple // [중요] 다중 파일 선택 활성화
+        multiple
         onChange={handleImageUpload}
         className="hidden"
       />

@@ -9,6 +9,7 @@ import ImageExtension from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
+import { Table, TableRow, TableHeader, TableCell } from '@tiptap/extension-table';
 
 import { ReadOnlyImageGalleryNode } from '@/components/Editor/ReadOnlyImageGalleryNode';
 import { ReadOnlyColumnsNode } from '@/components/Editor/ReadOnlyColumnsNode';
@@ -50,6 +51,16 @@ export default function BlogDetailPage() {
       ImageExtension,
       ReadOnlyImageGalleryNode,
       ReadOnlyColumnsNode,
+      Table.configure({
+        resizable: true,
+        handleWidth: 4,
+        cellMinWidth: 50,
+        lastColumnResizable: true,
+        allowTableNodeSelection: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
       Link.configure({
         openOnClick: true,
       }),
@@ -211,8 +222,6 @@ export default function BlogDetailPage() {
           {post.title}
         </h1>
 
-
-
         {/* Summary */}
         {post.summary && (
           <p className=" text-gray-600 mb-6">{post.summary}</p>
@@ -243,8 +252,6 @@ export default function BlogDetailPage() {
             <EditorContent editor={editor} />
           </div>
         </article>
-
-        
 
         {/* Back Button */}
         <div className="mt-12 pt-8 border-t">
