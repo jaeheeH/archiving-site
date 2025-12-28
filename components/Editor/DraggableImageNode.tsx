@@ -157,13 +157,7 @@ const DraggableImageComponent = ({ node, updateAttributes, deleteNode, getPos, e
           onClick={handleImageClick}
           className="brunch-image cursor-pointer hover:opacity-95 transition"
           draggable="false"
-          style={{
-            maxWidth: '100%',
-            height: 'auto',
-            borderRadius: '4px',
-            margin: '2em 0',
-            display: 'block'
-          }}
+
         />
         {isSelected && (
           <div className="absolute top-2 right-2 bg-[#00c4c4] text-white px-3 py-1.5 rounded-full text-xs font-bold z-10 shadow-md">

@@ -18,7 +18,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
   const router = useRouter();
   const { addToast } = useToast();
   const { uploadImage, uploading: isUploading } = useImageUpload();
-  
+
   const titleImageInputRef = useRef<HTMLInputElement>(null);
 
   // 상태 관리
@@ -30,7 +30,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
   const [loading, setLoading] = useState(false);
   const [categoryId, setCategoryId] = useState('');
   const [tags, setTags] = useState<string[]>([]);
-  
+
   // AI 태그 생성 로딩 상태
   const [generatingTags, setGeneratingTags] = useState(false);
 
@@ -42,7 +42,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
       try {
         const res = await fetch(`/api/posts/${postId}`);
         if (!res.ok) throw new Error('Failed to fetch post');
-        
+
         const { data } = await res.json();
         setTitle(data.title);
         setSubtitle(data.subtitle || '');
@@ -87,7 +87,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         body: JSON.stringify({
           title,
           subtitle,
-          content, 
+          content,
         }),
       });
 
@@ -98,7 +98,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         const errorMsg = data.error || '태그 생성 실패';
         // 404 모델 에러 등 구체적인 상황 체크
         if (errorMsg.includes('404') || errorMsg.includes('not found')) {
-            throw new Error('AI 모델을 찾을 수 없습니다. (서버 설정을 확인해주세요)');
+          throw new Error('AI 모델을 찾을 수 없습니다. (서버 설정을 확인해주세요)');
         }
         throw new Error(errorMsg);
       }
@@ -140,22 +140,22 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
       let finalSummary = summary;
       if (!finalSummary && (title || content)) {
         try {
-            const summaryResponse = await fetch('/api/posts/generate-summary', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, subtitle, content }),
-            });
+          const summaryResponse = await fetch('/api/posts/generate-summary', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, subtitle, content }),
+          });
 
-            if (summaryResponse.ok) {
-                const summaryData = await summaryResponse.json();
-                if (summaryData.summary) {
-                    finalSummary = summaryData.summary;
-                    setSummary(finalSummary); // UI 업데이트
-                    console.log('Summary generated:', finalSummary);
-                }
+          if (summaryResponse.ok) {
+            const summaryData = await summaryResponse.json();
+            if (summaryData.summary) {
+              finalSummary = summaryData.summary;
+              setSummary(finalSummary); // UI 업데이트
+              console.log('Summary generated:', finalSummary);
             }
+          }
         } catch (error) {
-            console.error('요약 생성 실패 (저장은 계속 진행):', error);
+          console.error('요약 생성 실패 (저장은 계속 진행):', error);
         }
       }
 
@@ -197,10 +197,10 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         router.push('/dashboard/contents/blog');
       } else {
         if (response.status === 401) {
-            addToast('로그인이 만료되었습니다.', 'error');
-            router.push('/login');
+          addToast('로그인이 만료되었습니다.', 'error');
+          router.push('/login');
         } else {
-            throw new Error(result.error || '저장 실패');
+          throw new Error(result.error || '저장 실패');
         }
       }
     } catch (error: any) {
@@ -213,7 +213,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
   return (
     <div className="min-h-screen bg-white pb-32">
       <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-gray-100 z-50 transition-all">
-        <div className="max-w-[700px] mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
           <button
             onClick={() => router.back()}
             className="p-2 -ml-2 text-gray-400 hover:text-gray-900 transition-colors rounded-full hover:bg-gray-100"
@@ -241,63 +241,65 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         </div>
       </header>
 
-      <main className="max-w-[700px] mx-auto px-6 pt-24">
+      <main className="max-w-4xl mx-auto px-6 pt-24">
         
         {/* 제목 이미지 영역 */}
         <div className="group relative mb-10 transition-all">
-            {titleImageUrl ? (
-                <div className="relative rounded-xl overflow-hidden shadow-sm aspect-[21/9]">
-                    <img src={titleImageUrl} alt="Cover" className="w-full h-full object-cover" />
-                    <button 
-                        onClick={() => setTitleImageUrl('')}
-                        className="absolute top-3 right-3 p-2 bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm hover:bg-black/70"
-                    >
-                        <i className="ri-close-line"></i>
-                    </button>
-                </div>
-            ) : (
-                <button
-                    onClick={() => titleImageInputRef.current?.click()}
-                    disabled={isUploading}
-                    className="flex items-center gap-2 text-gray-400 hover:text-gray-600 transition-colors py-2"
-                >
-                    <i className="ri-image-add-line text-xl"></i>
-                    <span className="text-sm">커버 이미지 추가</span>
-                </button>
-            )}
-            <input 
-                ref={titleImageInputRef}
-                type="file" 
-                accept="image/*" 
-                onChange={handleTitleImageUpload} 
-                className="hidden" 
-            />
+          {titleImageUrl ? (
+            <div className="relative rounded-xl overflow-hidden shadow-sm aspect-[21/9]">
+              <img src={titleImageUrl} alt="Cover" className="w-full h-full object-cover" />
+              <button 
+                onClick={() => setTitleImageUrl('')}
+                className="absolute top-3 right-3 p-2 bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm hover:bg-black/70"
+              >
+                <i className="ri-close-line"></i>
+              </button>
+            </div>
+          ) : (
+            <>
+              <button
+                onClick={() => titleImageInputRef.current?.click()}
+                disabled={isUploading}
+                className="flex items-center gap-2 text-gray-400 hover:text-gray-600 transition-colors py-2"
+              >
+                <i className="ri-image-add-line text-xl"></i>
+                <span className="text-sm">커버 이미지 추가</span>
+              </button>
+            </>
+          )}
+          <input 
+            ref={titleImageInputRef}
+            type="file" 
+            accept="image/*" 
+            onChange={handleTitleImageUpload} 
+            className="hidden" 
+          />
         </div>
 
         {/* 제목 & 부제목 */}
         <div className="space-y-4 mb-12">
-            <input
+          <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="제목을 입력하세요"
             className="w-full text-4xl font-bold placeholder-gray-200 outline-none bg-transparent"
             autoFocus
-            />
-            <input
+          />
+          <input
             type="text"
             value={subtitle}
             onChange={(e) => setSubtitle(e.target.value)}
             placeholder="소제목을 입력하세요 (선택)"
             className="w-full text-xl text-gray-500 font-light placeholder-gray-200 outline-none bg-transparent"
-            />
-            <textarea
+          />
+          <textarea
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
             placeholder="요약글 (저장 시 AI가 자동 생성합니다)"
             rows={3}
             className="w-full text-base text-gray-600 placeholder-gray-300 outline-none bg-transparent border-t border-gray-100 pt-4 resize-none"
-            />
+          />
         </div>
 
         {/* 메타데이터 (태그/카테고리) 영역 */}
@@ -305,7 +307,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
           
           {/* AI 태그 생성 버튼 */}
           <div className="absolute top-4 right-4">
-             <button
+            <button
               onClick={handleGenerateTags}
               disabled={generatingTags}
               className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full transition-all border ${

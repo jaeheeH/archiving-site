@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.0-flash', // 빠르고 효율적인 모델
       generationConfig: {
-        maxOutputTokens: 200, // 너무 길지 않게 제한
+        maxOutputTokens: 800, // 너무 길지 않게 제한
         temperature: 0.3,
       },
     });
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
       - Content: "${textContent.substring(0, 3000)}"
 
       Requirements:
-      1. Create a concise summary (2-3 sentences).
+      1. Create a concise summary (4-6 sentences).
       2. It should be engaging, like a preview text for a blog card.
       3. Language: Korean (Hangul).
       4. Plain text only (no markdown).

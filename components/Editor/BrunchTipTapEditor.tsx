@@ -34,6 +34,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
           color: '#00c4c4',
           width: 2,
         },
+        // 리스트 기능은 StarterKit에 기본 포함되어 있습니다 (bulletList, orderedList, listItem)
       }) as any),
       // BubbleMenu 확장 등록 (필수)
       BubbleMenuExtension,
@@ -65,6 +66,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
     content: value, // 초기값 (비동기 데이터는 useEffect로 처리)
     editorProps: {
       attributes: {
+        // prose 클래스가 ul, ol 스타일(list-disc, list-decimal)을 자동으로 잡아줍니다.
         class: 'prose prose-lg max-w-none focus:outline-none min-h-[500px]',
       },
     },
@@ -144,7 +146,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
   }
 
   return (
-    <div className="relative">
+    <div className="relative article-editor">
       {/* 1. 버블 메뉴 (드래그 시 등장) */}
       {editor && (
         <BubbleMenu
@@ -265,6 +267,32 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
         >
           <i className="ri-code-box-line"></i>
         </button>
+
+        {/* ========== [추가됨] 리스트 버튼 영역 시작 ========== */}
+        <div className="w-px h-5 bg-gray-200 mx-2"></div>
+
+        {/* 글머리 기호 (Bullet List) */}
+        <button
+          onClick={() => (editor as any).chain().focus().toggleBulletList().run()}
+          className={`p-2 hover:bg-gray-100 rounded transition ${
+            editor.isActive('bulletList') ? 'text-blue-500 bg-blue-50' : 'text-gray-500'
+          }`}
+          title="글머리 기호 목록"
+        >
+          <i className="ri-list-unordered"></i>
+        </button>
+
+        {/* 번호 매기기 (Ordered List) */}
+        <button
+          onClick={() => (editor as any).chain().focus().toggleOrderedList().run()}
+          className={`p-2 hover:bg-gray-100 rounded transition ${
+            editor.isActive('orderedList') ? 'text-blue-500 bg-blue-50' : 'text-gray-500'
+          }`}
+          title="번호 매기기 목록"
+        >
+          <i className="ri-list-ordered"></i>
+        </button>
+        {/* ========== [추가됨] 리스트 버튼 영역 끝 ========== */}
 
         <div className="w-px h-5 bg-gray-200 mx-2"></div>
 

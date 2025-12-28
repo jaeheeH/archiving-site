@@ -11,6 +11,24 @@ import TagInput from "@/components/TagInput";
 import CategorySelectModal from "@/components/CategorySelectModal";
 import CategorySelect from "@/components/CategorySelect";
 
+/**
+ * 이미지 파일에서 크기(width, height) 감지
+ */
+const getImageDimensions = (file: File): Promise<{ width: number; height: number }> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        resolve({ width: img.width, height: img.height });
+      };
+      img.onerror = reject;
+      img.src = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  });
+};
+
 export default function CreateGalleryPage() {
   const router = useRouter();
   const { addToast } = useToast();
@@ -117,13 +135,16 @@ export default function CreateGalleryPage() {
         return;
       }
 
-      // 1. Storage에 이미지 업로드
+      // 1. 이미지 크기 감지
+      const { width, height } = await getImageDimensions(imageFile);
+
+      // 2. Storage에 이미지 업로드
       const imageUrl = await uploadImage(imageFile);
 
-      // 2. Gemini로 이미지 분석
+      // 3. Gemini로 이미지 분석
       const analysisResult = await analyzeImage(imageUrl);
 
-      // 3. API를 통해 gallery 생성
+      // 4. API를 통해 gallery 생성 (이미지 크기 포함)
       const aiTags = Array.isArray(analysisResult.tags) ? analysisResult.tags : [];
 
       const res = await fetch("/api/gallery", {
@@ -133,6 +154,8 @@ export default function CreateGalleryPage() {
           title,
           description,
           image_url: imageUrl,
+          image_width: width,        // ✅ 추가
+          image_height: height,      // ✅ 추가
           tags: [...tags, ...aiTags],
           category,
           range,

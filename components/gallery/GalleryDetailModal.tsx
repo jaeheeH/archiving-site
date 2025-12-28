@@ -73,13 +73,15 @@ export default function GalleryDetailModal({
     try {
       setLoading(true);
       const res = await fetch(`/api/gallery/${id}`);
-
+  
       if (!res.ok) {
-        throw new Error("갤러리 조회 실패");
+        const errorData = await res.json();
+        throw new Error(errorData.error || "갤러리 조회 실패");
       }
-
-      const data = await res.json();
-      setGallery(data.data);
+  
+      const { data: galleryData } = await res.json();
+      console.log("📥 갤러리 데이터:", galleryData);  // 디버깅용
+      setGallery(galleryData);
     } catch (error) {
       console.error("갤러리 상세 조회 에러:", error);
     } finally {

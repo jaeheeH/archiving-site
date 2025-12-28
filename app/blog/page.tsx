@@ -67,7 +67,6 @@ export default function BlogListPage() {
 
   const filteredPosts = posts.filter((post) => {
     if (selectedCategory === 'all') return true;
-    if (selectedCategory === 'uncategorized') return post.category_id === null;
     return post.category_id === selectedCategory;
   });
 
@@ -80,46 +79,34 @@ export default function BlogListPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-white border-b">
-        <div className="max-w-6xl mx-auto px-4 py-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Blog</h1>
-          <p className="text-gray-600">총 {filteredPosts.length}개의 글</p>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <h1 className="text-5xl font-bold text-gray-900 mb-2">BLOG</h1>
+        <p className="text-xl text-gray-600">총 {filteredPosts.length}개의 글</p>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 pb-16">
         {/* Category Filter */}
-        <div className="mb-8 flex gap-2 flex-wrap">
+        <div className="mb-12 flex gap-2 flex-wrap">
           <button
             onClick={() => setSelectedCategory('all')}
-            className={`px-4 py-2 rounded-lg transition text-sm ${
+            className={`px-4 py-2 rounded-lg transition text-sm font-medium ${
               selectedCategory === 'all'
                 ? 'bg-blue-600 text-white'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             전체
-          </button>
-          <button
-            onClick={() => setSelectedCategory('uncategorized')}
-            className={`px-4 py-2 rounded-lg transition text-sm ${
-              selectedCategory === 'uncategorized'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            미분류
           </button>
           {categories.map((category) => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`px-4 py-2 rounded-lg transition text-sm ${
+              className={`px-4 py-2 rounded-lg transition text-sm font-medium ${
                 selectedCategory === category.id
                   ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               {category.name}
@@ -129,19 +116,19 @@ export default function BlogListPage() {
 
         {/* Posts Grid */}
         {filteredPosts.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-12 text-center">
-            <p className="text-gray-500">작성된 글이 없습니다</p>
+          <div className="bg-gray-50 rounded-lg p-12 text-center">
+            <p className="text-gray-500 text-lg">작성된 글이 없습니다</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.map((post) => (
               <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden group"
+                className="group flex flex-col h-full hover:opacity-80 transition"
               >
                 {/* Thumbnail - 16:9 비율 */}
-                <div className="relative w-full aspect-video bg-gray-100 overflow-hidden">
+                <div className="relative w-full aspect-video bg-gray-100 rounded-lg overflow-hidden mb-4">
                   {post.title_image_url ? (
                     <Image
                       src={post.title_image_url}
@@ -149,43 +136,46 @@ export default function BlogListPage() {
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      priority={false}
+                      quality={75}
                       placeholder="blur"
                       blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f3f4f6' width='16' height='9'/%3E%3C/svg%3E"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-400">
-                      <i className="ri-image-line text-5xl"></i>
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                      <i className="ri-image-2-line text-4xl text-gray-400"></i>
                     </div>
                   )}
                 </div>
 
                 {/* Content */}
-                <div className="p-5">
+                <div className="flex-1 flex flex-col">
                   {/* Category Badge */}
-                  <div className="mb-2">
-                    <span className="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded">
+                  <div className="mb-3">
+                    <span className="inline-block px-3 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
                       {getCategoryName(post.category_id)}
                     </span>
                   </div>
 
+                  {/* Subtitle */}
+                  {post.subtitle && (
+                    <p className="text-gray-600 text-sm mb-1 line-clamp-1">{post.subtitle}</p>
+                  )}
+
                   {/* Title */}
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition">
                     {post.title}
                   </h2>
 
-                  {/* Subtitle */}
-                  {post.subtitle && (
-                    <p className="text-gray-600 text-sm mb-2 line-clamp-1">{post.subtitle}</p>
-                  )}
 
                   {/* Summary */}
                   {post.summary && (
-                    <p className="text-gray-500 text-sm mb-4 line-clamp-3">{post.summary}</p>
+                    <p className="text-gray-500 text-sm mb-4 line-clamp-2 flex-1">
+                      {post.summary}
+                    </p>
                   )}
 
                   {/* Meta Info */}
-                  <div className="flex items-center justify-between text-xs text-gray-500">
+                  <div className="flex items-center justify-between text-xs text-gray-500 pt-4 border-t border-gray-100">
                     <span>{new Date(post.published_at || post.created_at).toLocaleDateString('ko-KR')}</span>
                     <div className="flex items-center gap-3">
                       <span className="flex items-center gap-1">

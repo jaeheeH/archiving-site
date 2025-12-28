@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import BrunchWriteEditor from '@/components/Editor/BrunchWriteEditor';
+import '../../css/style.scss';
 
 export default function EditBlogPage() {
   const params = useParams();

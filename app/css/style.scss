@@ -1,0 +1,43 @@
+
+
+
+
+
+
+$container : 1280px;
+
+.contents{
+  width: 100%;
+  max-width: $container;
+  width: 100%;
+  display: block;
+}
+
+header{
+  .contents{
+    max-width: $container;
+    margin: 0 auto;
+    justify-content: space-between;
+    display: flex;
+
+    height: 64px; align-items: center;
+
+    .client-header-left{
+      .client-header-logo{
+        font-size: 20px;
+        font-weight: 500;
+      }
+    }
+    .client-header-menu{
+      display: flex;
+      gap: 20px; font-weight: 500;
+      font-size: 16px;
+      text-transform: uppercase;
+
+      .active{
+        
+      }
+    }
+  }
+}
+

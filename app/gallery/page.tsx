@@ -187,21 +187,15 @@ function GalleryContent() {
   }
 
   const layoutClass = {
-    masonry: 'columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-4 gap-2 space-y-2',
+    masonry: 'columns-2 sm:columns-2 md:columns-4 lg:columns-5 xl:columns-6 gap-2 space-y-2',
     grid: 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2',
     list: 'gap-2 grid grid-cols-2',
   }[viewMode];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* 헤더 */}
-      <header className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold">갤러리</h1>
-        </div>
-      </header>
+    <div className="min-h-screen contents mx-auto py-6">
 
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div>
         {/* 검색 및 필터 */}
         <div className="mb-6 space-y-4">
           {/* 검색창 및 뷰 모드 */}

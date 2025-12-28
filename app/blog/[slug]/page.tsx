@@ -9,9 +9,11 @@ import ImageExtension from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
-import HorizontalRule from '@tiptap/extension-horizontal-rule';
+
 import { ReadOnlyImageGalleryNode } from '@/components/Editor/ReadOnlyImageGalleryNode';
 import { ReadOnlyColumnsNode } from '@/components/Editor/ReadOnlyColumnsNode';
+import { optimizeImageUrl } from '@/lib/image-optimizer';
+import '../../css/blog/view.scss';
 
 interface Post {
   id: string;
@@ -80,6 +82,53 @@ export default function BlogDetailPage() {
     }
   }, [post?.category_id]);
 
+  // 에디터 렌더링 후 이미지 최적화
+  useEffect(() => {
+    const optimizeEditorImages = () => {
+      try {
+        const images = document.querySelectorAll('.tiptap-content img');
+        console.log('Found images:', images.length);
+        
+        images.forEach((img: Element) => {
+          const src = img.getAttribute('src');
+          if (src && src.includes('supabase.co')) {
+            // WebP로 최적화된 URL 생성
+            const optimizedSrc = optimizeImageUrl(src, {
+              width: 1000,
+              format: 'webp',
+              quality: 75,
+            });
+            
+            // 반응형 srcset 생성
+            const srcset = [
+              `${optimizeImageUrl(src, { width: 400, format: 'webp', quality: 75 })} 400w`,
+              `${optimizeImageUrl(src, { width: 800, format: 'webp', quality: 75 })} 800w`,
+              `${optimizeImageUrl(src, { width: 1200, format: 'webp', quality: 75 })} 1200w`,
+            ].join(', ');
+            
+            // 속성 적용
+            img.setAttribute('src', optimizedSrc);
+            img.setAttribute('srcset', srcset);
+            img.setAttribute('sizes', '(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1200px');
+            img.setAttribute('loading', 'lazy');
+            img.setAttribute('decoding', 'async');
+            
+            console.log('Optimized image:', {
+              original: src,
+              optimized: optimizedSrc,
+            });
+          }
+        });
+      } catch (error) {
+        console.warn('Image optimization failed:', error);
+      }
+    };
+
+    // 에디터 렌더링 완료 후 최적화
+    const timer = setTimeout(optimizeEditorImages, 300);
+    return () => clearTimeout(timer);
+  }, [post?.content]);
+
   const fetchPost = async () => {
     try {
       const res = await fetch(`/api/posts/slug/${slug}?type=blog`);
@@ -124,7 +173,7 @@ export default function BlogDetailPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header Image - 16:9 비율, 반응형 높이 */}
+      {/* Header Image - Next.js Image 최적화 */}
       {post.title_image_url && (
         <div className="relative w-full h-56 md:h-80 lg:h-96 bg-gray-200 overflow-hidden">
           <Image
@@ -134,6 +183,7 @@ export default function BlogDetailPage() {
             sizes="100vw"
             className="object-cover"
             priority
+            quality={75}
             placeholder="blur"
             blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23d1d5db' width='16' height='9'/%3E%3C/svg%3E"
           />
@@ -141,7 +191,7 @@ export default function BlogDetailPage() {
       )}
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="max-w-4xl mx-auto px-4 py-12 article-editor">
         {/* Category */}
         {category && (
           <div className="mb-4">
@@ -151,19 +201,21 @@ export default function BlogDetailPage() {
           </div>
         )}
 
+        {/* Subtitle */}
+        {post.subtitle && (
+          <p className=" text-gray-600 mb-2">{post.subtitle}</p>
+        )}
+        
         {/* Title */}
-        <h1 className="text-4xl md:text-3xl font-bold text-gray-900 mb-4">
+        <h1 className="text-2xl md:text-2xl font-bold text-gray-900 mb-4">
           {post.title}
         </h1>
 
-        {/* Subtitle */}
-        {post.subtitle && (
-          <p className="text-xl text-gray-600 mb-6">{post.subtitle}</p>
-        )}
+
 
         {/* Summary */}
         {post.summary && (
-          <p className="text-lg text-gray-600 mb-6">{post.summary}</p>
+          <p className=" text-gray-600 mb-6">{post.summary}</p>
         )}
 
         {/* Meta Info */}
@@ -192,115 +244,7 @@ export default function BlogDetailPage() {
           </div>
         </article>
 
-        <style jsx global>{`
-          .tiptap-content .ProseMirror {
-            outline: none;
-            min-height: 200px;
-          }
-
-          .tiptap-content .ProseMirror > * + * {
-            margin-top: 0.75em;
-          }
-
-          .tiptap-content .ProseMirror h1,
-          .tiptap-content .ProseMirror h2,
-          .tiptap-content .ProseMirror h3,
-          .tiptap-content .ProseMirror h4,
-          .tiptap-content .ProseMirror h5,
-          .tiptap-content .ProseMirror h6 {
-            line-height: 1.3;
-            font-weight: 700;
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-          }
-
-          .tiptap-content .ProseMirror h1 {
-            font-size: 2em;
-          }
-
-          .tiptap-content .ProseMirror h2 {
-            font-size: 1.5em;
-          }
-
-          .tiptap-content .ProseMirror h3 {
-            font-size: 1.25em;
-          }
-
-          .tiptap-content .ProseMirror p {
-            margin: 0;
-            line-height: 1.7;
-          }
-
-          .tiptap-content .ProseMirror ul,
-          .tiptap-content .ProseMirror ol {
-            padding-left: 1.5em;
-            margin: 1em 0;
-          }
-
-          .tiptap-content .ProseMirror li {
-            margin: 0.5em 0;
-          }
-
-          .tiptap-content .ProseMirror code {
-            background-color: #f3f4f6;
-            padding: 0.2em 0.4em;
-            border-radius: 0.25em;
-            font-size: 0.9em;
-            font-family: 'Courier New', Courier, monospace;
-          }
-
-          .tiptap-content .ProseMirror pre {
-            background-color: #1e293b;
-            color: #e2e8f0;
-            padding: 1em;
-            border-radius: 0.5em;
-            overflow-x: auto;
-            margin: 1.5em 0;
-          }
-
-          .tiptap-content .ProseMirror pre code {
-            background: none;
-            color: inherit;
-            padding: 0;
-            font-size: 0.875em;
-          }
-
-          .tiptap-content .ProseMirror blockquote {
-            border-left: 4px solid #e5e7eb;
-            padding-left: 1em;
-            margin: 1.5em 0;
-            color: #6b7280;
-            font-style: italic;
-          }
-
-          .tiptap-content .ProseMirror img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 0.5em;
-            margin: 1.5em 0;
-          }
-
-          .tiptap-content .ProseMirror a {
-            color: #3b82f6;
-            text-decoration: underline;
-          }
-
-          .tiptap-content .ProseMirror a:hover {
-            color: #2563eb;
-          }
-
-          .tiptap-content .ProseMirror strong {
-            font-weight: 700;
-          }
-
-          .tiptap-content .ProseMirror em {
-            font-style: italic;
-          }
-
-          .tiptap-content .ProseMirror u {
-            text-decoration: underline;
-          }
-        `}</style>
+        
 
         {/* Back Button */}
         <div className="mt-12 pt-8 border-t">

@@ -26,7 +26,8 @@
       "Bash(del \"C:\\Users\\user\\Desktop\\archiving-site\\app\\(dashboard)\\dashboard\\contents\\gallery\\[id]\\page.tsx\")",
       "Bash(git checkout:*)",
       "Bash(grep:*)",
-      "Bash(pnpm add:*)"
+      "Bash(pnpm add:*)",
+      "Bash(pnpm update:*)"
     ],
     "deny": [],
     "ask": []
