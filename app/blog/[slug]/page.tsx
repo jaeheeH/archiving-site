@@ -211,16 +211,23 @@ export default function BlogDetailPage() {
         method: 'POST',
       });
 
+      const data = await res.json();
+
       if (res.ok) {
-        const data = await res.json();
-        console.log('View count response:', data);
+        console.log('✅ View count response:', data);
         setViewCount(data.viewCount);
       } else {
-        const error = await res.json();
-        console.error('View count error:', error);
+        console.error('❌ View count error:', {
+          status: res.status,
+          data: data
+        });
+        // 에러여도 현재 조회수는 표시
+        if (data.viewCount !== undefined) {
+          setViewCount(data.viewCount);
+        }
       }
     } catch (error) {
-      console.error('Failed to record view:', error);
+      console.error('❌ Failed to record view:', error);
     }
   };
 
