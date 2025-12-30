@@ -83,7 +83,7 @@ export default function HomeGallerySection() {
                 className="group cursor-pointer"
               >
                 {/* 이미지 컨테이너 */}
-                <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                <div className="relative aspect-square  rounded-md overflow-hidden mb-4 shadow-md group-hover:shadow-lg transition-shadow duration-300">
                   <Image
                     src={item.image_url}
                     alt={item.title}

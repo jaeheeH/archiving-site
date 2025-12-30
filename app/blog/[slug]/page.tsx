@@ -10,6 +10,7 @@ import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import { Table, TableRow, TableHeader, TableCell } from '@tiptap/extension-table';
+import { createClient } from '@/lib/supabase/client';
 
 import { ReadOnlyImageGalleryNode } from '@/components/Editor/ReadOnlyImageGalleryNode';
 import { ReadOnlyColumnsNode } from '@/components/Editor/ReadOnlyColumnsNode';
@@ -29,6 +30,7 @@ interface Post {
   category_id: string | null;
   view_count: number;
   scrap_count: number;
+  userScraped: boolean;
 }
 
 interface Category {
@@ -44,6 +46,12 @@ export default function BlogDetailPage() {
   const [post, setPost] = useState<Post | null>(null);
   const [category, setCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isScraped, setIsScraped] = useState(false);
+  const [scrapCount, setScrapCount] = useState(0);
+  const [viewCount, setViewCount] = useState(0);
+  const [user, setUser] = useState<{ id: string } | null>(null);
+  const [hasRecordedView, setHasRecordedView] = useState(false);
+  const [isScrapping, setIsScrapping] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -75,8 +83,19 @@ export default function BlogDetailPage() {
   });
 
   useEffect(() => {
+    fetchCurrentUser();
+  }, []);
+
+  useEffect(() => {
     fetchPost();
   }, [slug]);
+
+  useEffect(() => {
+    if (post && !hasRecordedView) {
+      recordView();
+      setHasRecordedView(true);
+    }
+  }, [post, hasRecordedView]);
 
   useEffect(() => {
     if (post?.content && editor && editor.isEmpty) {
@@ -140,17 +159,31 @@ export default function BlogDetailPage() {
     return () => clearTimeout(timer);
   }, [post?.content]);
 
+  const fetchCurrentUser = async () => {
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    } catch (error) {
+      console.error('Failed to fetch user:', error);
+      setUser(null);
+    }
+  };
+
   const fetchPost = async () => {
     try {
-      const res = await fetch(`/api/posts/slug/${slug}?type=blog`);
-      const data = await res.json();
+      setLoading(true);
+      const res = await fetch(`/api/posts/by-slug/${slug}`);
 
-      if (!data.data || !data.data.is_published) {
-        router.push('/blog');
-        return;
+      if (!res.ok) {
+        throw new Error('포스트를 찾을 수 없습니다');
       }
 
-      setPost(data.data);
+      const data = await res.json();
+      setPost(data);
+      setIsScraped(data.userScraped);
+      setScrapCount(data.scrap_count);
+      setViewCount(data.view_count);
     } catch (error) {
       console.error('Failed to fetch post:', error);
       router.push('/blog');
@@ -170,6 +203,62 @@ export default function BlogDetailPage() {
     }
   };
 
+  const recordView = async () => {
+    if (!post) return;
+
+    try {
+      const res = await fetch(`/api/posts/${post.id}/view`, {
+        method: 'POST',
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setViewCount(data.viewCount);
+      }
+    } catch (error) {
+      console.error('Failed to record view:', error);
+    }
+  };
+
+  const handleScrapToggle = async () => {
+    // 로그인 확인
+    if (!user) {
+      alert('로그인이 필요합니다');
+      router.push(`/auth/login?redirect=${window.location.pathname}`);
+      return;
+    }
+
+    if (!post || isScrapping) return;
+
+    try {
+      setIsScrapping(true);
+      const res = await fetch(`/api/posts/${post.id}/scrap`, {
+        method: 'POST',
+      });
+
+      if (res.status === 401) {
+        alert('로그인이 필요합니다');
+        router.push(`/auth/login?redirect=${window.location.pathname}`);
+        return;
+      }
+
+      if (!res.ok) {
+        const error = await res.json();
+        alert(error.error || '오류가 발생했습니다');
+        return;
+      }
+
+      const data = await res.json();
+      setIsScraped(data.scraped);
+      setScrapCount(data.scrapCount);
+    } catch (error) {
+      console.error('Failed to toggle scrap:', error);
+      alert('오류가 발생했습니다');
+    } finally {
+      setIsScrapping(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -183,7 +272,7 @@ export default function BlogDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen ">
       {/* Header Image - Next.js Image 최적화 */}
       {post.title_image_url && (
         <div className="relative w-full h-56 md:h-80 lg:h-96 bg-gray-200 overflow-hidden">
@@ -228,22 +317,34 @@ export default function BlogDetailPage() {
         )}
 
         {/* Meta Info */}
-        <div className="flex items-center gap-6 text-sm text-gray-500 mb-8 pb-8 border-b flex-wrap">
-          <span>
-            {new Date(post.published_at || post.created_at).toLocaleDateString('ko-KR', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </span>
-          <span className="flex items-center gap-1">
-            <i className="ri-eye-line"></i>
-            조회 {post.view_count || 0}
-          </span>
-          <span className="flex items-center gap-1">
-            <i className="ri-bookmark-line"></i>
-            스크랩 {post.scrap_count || 0}
-          </span>
+        <div className="flex items-center justify-between text-sm text-gray-500 mb-8 pb-8 border-b flex-wrap gap-4">
+          <div className="flex items-center gap-6 flex-wrap">
+            <span>
+              {new Date(post.published_at || post.created_at).toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </span>
+            <span className="flex items-center gap-1">
+              <i className="ri-eye-line"></i>
+              조회 {viewCount}
+            </span>
+          </div>
+
+          {/* 스크랩 버튼 */}
+          <button
+            onClick={handleScrapToggle}
+            disabled={isScrapping}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ${
+              isScraped
+                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            } disabled:opacity-50 disabled:cursor-not-allowed`}
+          >
+            <i className={`ri-bookmark-${isScraped ? 'fill' : 'line'}`}></i>
+            <span>스크랩 {scrapCount}</span>
+          </button>
         </div>
 
         {/* Article Content */}

@@ -37,7 +37,7 @@ export default function HomeBlogSection() {
     try {
       setLoading(true);
       // 발행된 최신 블로그 글 6개 조회
-      const res = await fetch("/api/posts?type=blog&limit=6&sort=published_at");
+      const res = await fetch("/api/posts?type=blog&limit=6&offset=0");
       if (!res.ok) throw new Error("Failed to fetch posts");
 
       const data = await res.json();
@@ -78,9 +78,9 @@ export default function HomeBlogSection() {
 
   if (loading) {
     return (
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-bold mb-12">블로그</h2>
+      <section className="py-16 px-4 ">
+        <div className="contents mx-auto">
+          <h2 className="text-2xl font-bold mb-12">블로그</h2>
           <div className="text-center text-gray-500 py-16">
             <div className="inline-block">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-400"></div>
@@ -93,8 +93,8 @@ export default function HomeBlogSection() {
 
   if (posts.length === 0) {
     return (
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-16 px-4 ">
+        <div className="contents mx-auto">
           <h2 className="text-4xl font-bold mb-12">블로그</h2>
           <div className="text-center text-gray-500 py-16">
             블로그 글이 없습니다.
@@ -105,10 +105,13 @@ export default function HomeBlogSection() {
   }
 
   return (
-    <section className="py-16 px-4 bg-white">
+    <section className="py-16 px-4 col-span-3">
       <div className="contents mx-auto">
-        <div className="flex items-center justify-between mb-12">
-          <h2 className="text-4xl font-bold">블로그</h2>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="mb-2 text-2xl font-bold">BLOG ARCHIVE</h2>
+            <p className="text-gray-600">기술적 회고와 인사이트 기록</p>
+          </div>
           <Link
             href="/blog"
             className="text-sm font-medium text-gray-600 hover:text-gray-900 transition"
@@ -127,7 +130,7 @@ export default function HomeBlogSection() {
             >
               {/* 이미지 */}
               {post.title_image_url ? (
-                <div className="relative w-64 aspect-video bg-gray-200 rounded-md overflow-hidden  align-middle">
+                <div className="relative w-40 aspect-video  rounded-md overflow-hidden  align-middle">
                   <Image
                     src={post.title_image_url}
                     alt={post.title}
@@ -147,13 +150,14 @@ export default function HomeBlogSection() {
 
               {/* 콘텐츠 */}
               <div className="flex-1 flex flex-col">
-
-                {/* 소제목 */}
-                {post.subtitle ? (
-                  <p className="text-xs text-gray-600 mb-1 line-clamp-1 text-">
-                    {post.subtitle}
+                {/* 카테고리 */}
+                {post.category_id && categories[post.category_id] && (
+                  <p className="text-xs text-blue-600 font-bold mb-1 line-clamp-1">
+                    [{categories[post.category_id]}]
                   </p>
-                ) : ( "")}
+                )}
+
+                
                 {/* 제목 */}
                 <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
                   {post.title}

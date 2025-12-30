@@ -4,6 +4,7 @@
 html, body {
   font-family: 'Pretendard', sans-serif;
 }
+
 @custom-variant dark (&:is(.dark *));
 
 .modal-contents{margin-bottom: 0;}

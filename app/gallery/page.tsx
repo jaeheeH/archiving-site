@@ -193,8 +193,17 @@ function GalleryContent() {
   }[viewMode];
 
   return (
-    <div className="min-h-screen contents mx-auto py-6">
-
+    <div className="min-h-screen contents mx-auto py-12">
+      <div className="max-w-7xl mx-auto  mb-8">
+        <h1 className="text-4xl md:text-4xl font-bold tracking-tight text-gray-900 mb-4">
+          EXHIBITION EVENT <br></br>
+          SCHEDULE
+          </h1>
+          <p className="text-gray-500 text-lg max-w-2xl leading-relaxed ">
+            서울을 중심으로 열리는 주요 전시, <br></br>
+            디자인 컨퍼런스, 팝업 스토어 일정을 큐레이션합니다.
+          </p>
+      </div>
       <div>
         {/* 검색 및 필터 */}
         <div className="mb-6 space-y-4">

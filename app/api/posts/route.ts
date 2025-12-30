@@ -69,23 +69,48 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type') || 'blog';
+    const limit = parseInt(searchParams.get('limit') || '12', 10);
+    const offset = parseInt(searchParams.get('offset') || '0', 10);
 
     const supabase = createSupabaseClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
 
+    // 1. 발행된 글의 총 개수 조회
+    const { count } = await supabase
+      .from('posts')
+      .select('*', { count: 'exact', head: true })
+      .eq('type', type)
+      .eq('is_published', true)
+      .not('published_at', 'is', null);
+
+    // 2. 페이지네이션된 데이터 조회
     const { data, error } = await supabase
       .from('posts')
       .select('id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id')
       .eq('type', type)
-      .order('created_at', { ascending: false });
+      .eq('is_published', true)
+      .not('published_at', 'is', null)
+      .order('published_at', { ascending: false })
+      .range(offset, offset + limit - 1);
 
     if (error) {
       return Response.json({ error: error.message }, { status: 400 });
     }
 
-    return Response.json({ data }, { status: 200 });
+    return Response.json(
+      { 
+        data,
+        pagination: {
+          total: count || 0,
+          limit,
+          offset,
+          hasMore: (offset + limit) < (count || 0)
+        }
+      },
+      { status: 200 }
+    );
   } catch (err) {
     console.error('API 에러:', err);
     return Response.json({ error: '서버 오류' }, { status: 500 });

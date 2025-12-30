@@ -32,6 +32,13 @@ interface User {
   role: string;
 }
 
+interface PaginationInfo {
+  total: number;
+  limit: number;
+  offset: number;
+  hasMore: boolean;
+}
+
 type SortType = 'latest' | 'oldest' | 'popular';
 
 export default function BlogPage() {
@@ -46,12 +53,24 @@ export default function BlogPage() {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [authors, setAuthors] = useState<Record<string, User>>({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState<PaginationInfo>({
+    total: 0,
+    limit: 20,
+    offset: 0,
+    hasMore: false,
+  });
+
+  const POSTS_PER_PAGE = 20;
 
   useEffect(() => {
     fetchCurrentUser();
-    fetchPosts();
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    fetchPosts(currentPage);
+  }, [currentPage]);
 
   const fetchCurrentUser = async () => {
     const supabase = createClient();
@@ -70,12 +89,24 @@ export default function BlogPage() {
     }
   };
 
-  const fetchPosts = async () => {
+  const fetchPosts = async (page: number) => {
     try {
-      const res = await fetch('/api/posts?type=blog');
+      setLoading(true);
+      const offset = (page - 1) * POSTS_PER_PAGE;
+      const res = await fetch(
+        `/api/admin/posts?type=blog&limit=${POSTS_PER_PAGE}&offset=${offset}`
+      );
       const data = await res.json();
+
+      if (!res.ok) {
+        console.error('Failed to fetch posts:', data.error);
+        setPosts([]);
+        return;
+      }
+
       const postsData = data.data || [];
       setPosts(postsData);
+      setPagination(data.pagination || {});
 
       // 작성자 정보 가져오기
       const authorIds = [...new Set(postsData.map((p: Post) => p.author_id))];
@@ -96,6 +127,7 @@ export default function BlogPage() {
       }
     } catch (error) {
       console.error('Failed to fetch posts:', error);
+      setPosts([]);
     } finally {
       setLoading(false);
     }
@@ -121,7 +153,7 @@ export default function BlogPage() {
 
       if (res.ok) {
         alert('삭제되었습니다');
-        fetchPosts();
+        fetchPosts(currentPage);
       } else {
         alert('삭제 실패');
       }
@@ -142,7 +174,7 @@ export default function BlogPage() {
       });
 
       if (res.ok) {
-        fetchPosts();
+        fetchPosts(currentPage);
       } else {
         alert('발행 상태 변경 실패');
       }
@@ -236,6 +268,11 @@ export default function BlogPage() {
     return canEditPost(post);
   };
 
+  const canPublishPost = (post: Post): boolean => {
+    // 발행/취소 권한은 수정 권한과 동일
+    return canEditPost(post);
+  };
+
   const filteredPosts = posts
     .filter((post) => {
       // 발행 상태 필터
@@ -267,7 +304,14 @@ export default function BlogPage() {
       }
     });
 
-  if (loading) {
+  const totalPages = Math.ceil(pagination.total / POSTS_PER_PAGE);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  if (loading && posts.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-gray-500">로딩 중...</div>
@@ -282,7 +326,7 @@ export default function BlogPage() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">블로그 글 관리</h1>
-            <p className="text-gray-600 mt-2">총 {filteredPosts.length}개의 글</p>
+            <p className="text-gray-600 mt-2">총 {pagination.total}개의 글</p>
           </div>
           <div className="flex items-center gap-3">
             {/* 정렬 드롭다운 */}
@@ -443,121 +487,172 @@ export default function BlogPage() {
             </Link>
           </div>
         ) : (
-          <div className="grid gap-4">
-            {filteredPosts.map((post) => (
-              <div
-                key={post.id}
-                className="bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden"
-              >
-                <div className="flex">
-                  {/* 썸네일 */}
-                  <div className="w-48 h-32 bg-gray-100 flex-shrink-0">
-                    {post.title_image_url ? (
-                      <img
-                        src={post.title_image_url}
-                        alt={post.title}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        <i className="ri-image-line text-4xl"></i>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* 콘텐츠 */}
-                  <div className="flex-1 p-6 flex flex-col justify-between">
-                    <div>
-                      {/* 카테고리 뱃지 */}
-                      <div className="mb-2">
-                        <span className="inline-block px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded">
-                          {getCategoryName(post.category_id)}
-                        </span>
-                      </div>
-
-                      <div className="flex items-start justify-between mb-2">
-                        <h3 className="text-xl font-semibold text-gray-900 flex-1">
-                          {post.title}
-                        </h3>
-
-                        {/* 발행 토글 */}
-                        <button
-                          onClick={() => handleTogglePublish(post)}
-                          className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ml-4 ${
-                            post.is_published ? 'bg-green-600' : 'bg-gray-300'
-                          }`}
-                          role="switch"
-                          aria-checked={post.is_published}
-                        >
-                          <span
-                            className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                              post.is_published ? 'translate-x-5' : 'translate-x-0'
-                            }`}
-                          />
-                        </button>
-                      </div>
-
-                      {post.subtitle && (
-                        <p className="text-gray-600 text-sm mb-2">{post.subtitle}</p>
-                      )}
-                      {post.summary && (
-                        <p className="text-gray-500 text-sm mb-3 line-clamp-2">{post.summary}</p>
+          <>
+            <div className="grid gap-4">
+              {filteredPosts.map((post) => (
+                <div
+                  key={post.id}
+                  className="bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden"
+                >
+                  <div className="flex">
+                    {/* 썸네일 */}
+                    <div className="w-48 h-32 bg-gray-100 flex-shrink-0">
+                      {post.title_image_url ? (
+                        <img
+                          src={post.title_image_url}
+                          alt={post.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400">
+                          <i className="ri-image-line text-4xl"></i>
+                        </div>
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 text-xs text-gray-500">
-                        <span>
-                          작성: {new Date(post.created_at).toLocaleDateString('ko-KR')}
-                        </span>
-                        {post.published_at && (
-                          <span className="flex items-center gap-1">
-                            <i className="ri-checkbox-circle-fill text-green-600"></i>
-                            발행: {new Date(post.published_at).toLocaleDateString('ko-KR')}
+                    {/* 콘텐츠 */}
+                    <div className="flex-1 p-6 flex flex-col justify-between">
+                      <div>
+                        {/* 카테고리 뱃지 */}
+                        <div className="mb-2">
+                          <span className="inline-block px-2 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded">
+                            {getCategoryName(post.category_id)}
                           </span>
+                        </div>
+
+                        <div className="flex items-start justify-between mb-2">
+                          <h3 className="text-xl font-semibold text-gray-900 flex-1">
+                            {post.title}
+                          </h3>
+
+                          {/* 발행 토글 */}
+                          {canPublishPost(post) ? (
+                            <button
+                              onClick={() => handleTogglePublish(post)}
+                              className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ml-4 ${
+                                post.is_published ? 'bg-green-600' : 'bg-gray-300'
+                              }`}
+                              role="switch"
+                              aria-checked={post.is_published}
+                            >
+                              <span
+                                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                                  post.is_published ? 'translate-x-5' : 'translate-x-0'
+                                }`}
+                              />
+                            </button>
+                          ) : (
+                            <div
+                              className="relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent bg-gray-200 ml-4 opacity-50 cursor-not-allowed"
+                              role="switch"
+                              aria-checked={post.is_published}
+                            >
+                              <span
+                                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                                  post.is_published ? 'translate-x-5' : 'translate-x-0'
+                                }`}
+                              />
+                            </div>
+                          )}
+                        </div>
+
+                        {post.subtitle && (
+                          <p className="text-gray-600 text-sm mb-2">{post.subtitle}</p>
                         )}
-                        <span className="flex items-center gap-1">
-                          <i className="ri-eye-line"></i>
-                          조회수: {post.view_count || 0}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <i className="ri-bookmark-line"></i>
-                          스크랩: {post.scrap_count || 0}
-                        </span>
+                        {post.summary && (
+                          <p className="text-gray-500 text-sm mb-3 line-clamp-2">{post.summary}</p>
+                        )}
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        {canEditPost(post) ? (
-                          <Link
-                            href={`/dashboard/contents/blog/${post.id}/edit`}
-                            className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition"
-                          >
-                            수정
-                          </Link>
-                        ) : (
-                          <span className="px-3 py-1.5 text-sm bg-gray-50 text-gray-400 rounded cursor-not-allowed">
-                            수정
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4 text-xs text-gray-500">
+                          <span>
+                            작성: {new Date(post.created_at).toLocaleDateString('ko-KR')}
                           </span>
-                        )}
-                        {canDeletePost(post) ? (
-                          <button
-                            onClick={() => handleDelete(post.id)}
-                            className="px-3 py-1.5 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
-                          >
-                            삭제
-                          </button>
-                        ) : (
-                          <span className="px-3 py-1.5 text-sm bg-gray-50 text-gray-400 rounded cursor-not-allowed">
-                            삭제
+                          {post.published_at && (
+                            <span className="flex items-center gap-1">
+                              <i className="ri-checkbox-circle-fill text-green-600"></i>
+                              발행: {new Date(post.published_at).toLocaleDateString('ko-KR')}
+                            </span>
+                          )}
+                          <span className="flex items-center gap-1">
+                            <i className="ri-eye-line"></i>
+                            조회수: {post.view_count || 0}
                           </span>
-                        )}
+                          <span className="flex items-center gap-1">
+                            <i className="ri-bookmark-line"></i>
+                            스크랩: {post.scrap_count || 0}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          {canEditPost(post) ? (
+                            <Link
+                              href={`/dashboard/contents/blog/${post.id}/edit`}
+                              className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition"
+                            >
+                              수정
+                            </Link>
+                          ) : (
+                            <span className="px-3 py-1.5 text-sm bg-gray-50 text-gray-400 rounded cursor-not-allowed">
+                              수정
+                            </span>
+                          )}
+                          {canDeletePost(post) ? (
+                            <button
+                              onClick={() => handleDelete(post.id)}
+                              className="px-3 py-1.5 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                            >
+                              삭제
+                            </button>
+                          ) : (
+                            <span className="px-3 py-1.5 text-sm bg-gray-50 text-gray-400 rounded cursor-not-allowed">
+                              삭제
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-12">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                >
+                  이전
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`px-4 py-2 rounded-lg transition ${
+                      page === currentPage
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                >
+                  다음
+                </button>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
       </div>
     </div>

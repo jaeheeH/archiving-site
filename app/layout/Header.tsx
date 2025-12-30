@@ -2,14 +2,49 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Header() {
   const pathname = usePathname();
+  const [isDark, setIsDark] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   // 헤더 제외 페이지
   const NO_HEADER_ROUTES = ["/login", "/signup", "/dashboard"];
   
   const showHeader = !NO_HEADER_ROUTES.some(route => pathname.startsWith(route));
+
+  // 다크모드 초기화 및 감지
+  useEffect(() => {
+    setMounted(true);
+    
+    // localStorage에서 다크모드 설정 가져오기
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDarkMode = savedTheme === "dark" || (savedTheme === null && prefersDark);
+    
+    setIsDark(isDarkMode);
+    applyTheme(isDarkMode);
+  }, []);
+
+  // 다크모드 적용
+  const applyTheme = (dark: boolean) => {
+    const html = document.documentElement;
+    if (dark) {
+      html.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      html.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  };
+
+  // 다크모드 토글
+  const toggleDarkMode = () => {
+    const newDarkMode = !isDark;
+    setIsDark(newDarkMode);
+    applyTheme(newDarkMode);
+  };
 
   if (!showHeader) return null;
 
@@ -25,12 +60,14 @@ export default function Header() {
     return pathname === href || pathname.startsWith(href + "/");
   };
 
+  if (!mounted) return null;
+
   return (
     <header className="client-header sticky top-0 z-10">
       <div className="contents">
         <div className="client-header-left">
-          <Link href="/" className="client-header-logo">
-            Archiving
+          <Link href="/" className="client-header-logo flex gap-4">
+          <div className="w-8 h-8 bg-black text-white flex items-center justify-center font-mono font-bold text-lg rounded-sm">A</div>ARCH-B
           </Link>
 
           <div className="client-header-search"></div>
@@ -48,6 +85,20 @@ export default function Header() {
               {item.label}
             </Link>
           ))}
+
+          {/* 다크모드 토글 버튼 */}
+          <button
+            onClick={toggleDarkMode}
+            className="client-header-dark-toggle"
+            title={isDark ? "라이트 모드" : "다크 모드"}
+            aria-label="다크모드 토글"
+          >
+            {isDark ? (
+              <i className="ri-sun-line"></i>
+            ) : (
+              <i className="ri-moon-line"></i>
+            )}
+          </button>
         </nav>
       </div>
     </header>
