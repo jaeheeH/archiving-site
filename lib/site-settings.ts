@@ -69,6 +69,12 @@ export function getDefaultMetadata(settings: SiteSettings | null) {
     "다양한 디자인과 아이디어를 한곳에 모았습니다.";
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://from-archiving.vercel.app";
 
+  // verification.other 객체 생성 (undefined 제거)
+  const verificationOther: { [key: string]: string } = {};
+  if (settings?.naver_verification) {
+    verificationOther["naver-site-verification"] = settings.naver_verification;
+  }
+
   return {
     title: {
       default: siteName,
@@ -100,7 +106,7 @@ export function getDefaultMetadata(settings: SiteSettings | null) {
         : [],
     },
     twitter: {
-      card: settings?.twitter_card_type || "summary_large_image",
+      card: (settings?.twitter_card_type as "summary" | "summary_large_image") || "summary_large_image",
       title: settings?.twitter_title || siteName,
       description: settings?.twitter_description || siteDescription,
       images: settings?.twitter_image ? [settings.twitter_image] : [],
@@ -116,9 +122,7 @@ export function getDefaultMetadata(settings: SiteSettings | null) {
         },
     verification: {
       google: settings?.google_verification || undefined,
-      other: {
-        "naver-site-verification": settings?.naver_verification || undefined,
-      },
+      other: Object.keys(verificationOther).length > 0 ? verificationOther : undefined,
     },
     icons: {
       icon: settings?.favicon_url || "/favicon.ico",
