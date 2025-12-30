@@ -1,6 +1,9 @@
 import { MetadataRoute } from "next";
 import { getSiteSettings } from "@/lib/site-settings";
 
+// 동적 렌더링 강제
+export const dynamic = 'force-dynamic';
+
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const settings = await getSiteSettings();
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://from-archiving.vercel.app";
