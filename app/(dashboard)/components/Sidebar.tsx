@@ -46,9 +46,8 @@ export default function Sidebar() {
       icon: "ri-settings-2-line",
       href: "/dashboard/setting",
       children: [
-        { label: "일반", href: "/dashboard/setting/default" },
+        { label: "SEO(검색엔진최적화)", href: "/dashboard/settings/seo" },
         { label: "아카이빙 카테고리 관리", href: "/dashboard/settings/archiving-categories" },
-        { label: "SEO(검색엔진최적화)", href: "/dashboard/setting/seo" },
         { label: "약관", href: "/dashboard/setting/etc" },
       ],
     }
