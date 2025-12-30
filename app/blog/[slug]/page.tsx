@@ -213,7 +213,11 @@ export default function BlogDetailPage() {
 
       if (res.ok) {
         const data = await res.json();
+        console.log('View count response:', data);
         setViewCount(data.viewCount);
+      } else {
+        const error = await res.json();
+        console.error('View count error:', error);
       }
     } catch (error) {
       console.error('Failed to record view:', error);

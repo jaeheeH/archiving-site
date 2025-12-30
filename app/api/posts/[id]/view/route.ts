@@ -118,13 +118,35 @@ export async function POST(
     // 3. 최근 1시간 내 동일 방문자의 조회 기록 확인
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
 
-    const { data: recentView } = await supabase
+    const { data: recentView, error: viewCheckError } = await supabase
       .from('post_views')
       .select('id')
       .eq('post_id', postId)
       .eq('visitor_hash', visitorHash)
       .gte('created_at', oneHourAgo)
-      .single();
+      .maybeSingle();
+
+    // 테이블이 없거나 에러 발생 시 로그 출력 후 조회수만 반환
+    if (viewCheckError) {
+      console.error('post_views 테이블 조회 실패:', viewCheckError.message);
+      console.error('post_views 테이블을 먼저 생성해주세요.');
+
+      const { data: post } = await supabase
+        .from('posts')
+        .select('view_count')
+        .eq('id', postId)
+        .single();
+
+      return NextResponse.json(
+        {
+          message: 'post_views 테이블이 없습니다. 조회수 추적을 위해 테이블을 생성해주세요.',
+          viewCount: post?.view_count || 0,
+          incremented: false,
+          error: viewCheckError.message
+        },
+        { status: 500 }
+      );
+    }
 
     // 4. 최근 1시간 내 조회 기록이 있으면 카운트하지 않음
     if (recentView) {
@@ -145,12 +167,32 @@ export async function POST(
     }
 
     // 5. 조회 기록 추가
-    await supabase
+    const { error: insertError } = await supabase
       .from('post_views')
       .insert({
         post_id: postId,
         visitor_hash: visitorHash,
       });
+
+    if (insertError) {
+      console.error('조회 기록 추가 실패:', insertError.message);
+
+      const { data: post } = await supabase
+        .from('posts')
+        .select('view_count')
+        .eq('id', postId)
+        .single();
+
+      return NextResponse.json(
+        {
+          message: '조회 기록 저장 실패',
+          viewCount: post?.view_count || 0,
+          incremented: false,
+          error: insertError.message
+        },
+        { status: 500 }
+      );
+    }
 
     // 6. 조회수 증가 (현재 값을 가져와서 +1)
     const { data: currentPost } = await supabase
