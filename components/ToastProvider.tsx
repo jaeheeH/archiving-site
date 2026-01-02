@@ -1,11 +1,11 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useCallback, useRef } from "react";
 
-type ToastType = "success" | "error" | "warning";
+type ToastType = "success" | "error" | "warning" | "info";
 
 interface ToastItem {
-  id: number;
+  id: string;
   message: string;
   type: ToastType;
 }
@@ -18,10 +18,13 @@ export function useToast() {
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
+  const toastCountRef = useRef(0); // 🆕 고유 ID 생성용 카운터
 
   // 토스트 생성
   const addToast = useCallback((message: string, type: ToastType = "success") => {
-    const id = Date.now();
+    // 🆕 고유 ID 생성: timestamp + counter
+    // 예: "1767351288447-1", "1767351288447-2", "1767351288448-1"
+    const id = `${Date.now()}-${++toastCountRef.current}`;
     const newToast = { id, message, type };
 
     setToasts((prev) => [...prev, newToast]);
@@ -31,7 +34,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // 즉시 삭제
-  const removeToast = (id: number) => {
+  const removeToast = (id: string) => {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
   };
 
@@ -39,6 +42,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     success: "ri-checkbox-circle-line",
     error: "ri-close-circle-line",
     warning: "ri-alert-line",
+    info: "ri-information-line",
   };
 
   return (
@@ -53,7 +57,8 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             className={`
               toast-ui relative flex items-center justify-between gap-3 
               px-4 py-4 rounded shadow-lg text-white animate-slide-in min-w-[260px]
-            ${toast.type}`}
+              toast-${toast.type}
+            `}
           >
             <div className="toast-contents">
               <div className="toast-title flex gap-2">

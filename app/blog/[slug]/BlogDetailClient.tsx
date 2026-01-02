@@ -217,10 +217,10 @@ export default function BlogDetailClient() {
         console.log('✅ View count response:', data);
         setViewCount(data.viewCount);
       } else {
-        console.error('❌ View count error:', {
-          status: res.status,
-          data: data
-        });
+        // console.error('❌ View count error:', {
+        //   status: res.status,
+        //   data: data
+        // });
         // 에러여도 현재 조회수는 표시
         if (data.viewCount !== undefined) {
           setViewCount(data.viewCount);

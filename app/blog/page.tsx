@@ -177,16 +177,16 @@ export default function BlogListPage() {
                   {/* Thumbnail - 16:9 비율 */}
                   <div className="relative w-full aspect-video bg-gray-100 rounded-lg overflow-hidden mb-4">
                     {post.title_image_url ? (
-                      <Image
-                        src={post.title_image_url}
-                        alt={post.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        quality={75}
-                        placeholder="blur"
-                        blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f3f4f6' width='16' height='9'/%3E%3C/svg%3E"
-                      />
+    <Image
+    src={post.title_image_url}
+    alt={post.title}
+    width={600}
+    height={337}  // 16:9
+    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+    quality={75}
+    placeholder="blur"
+    blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f3f4f6' width='16' height='9'/%3E%3C/svg%3E"
+  />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
                         <i className="ri-image-2-line text-4xl text-gray-400"></i>

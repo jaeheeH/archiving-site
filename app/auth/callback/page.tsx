@@ -45,7 +45,8 @@ export default function AuthCallback() {
           .update(updateData)
           .eq("id", user.id);
 
-        router.push("/dashboard");
+        // 🆕 홈(/)으로 리다이렉트
+        router.push("/");
       } else if (error) {
         console.error("Auth error:", error);
         router.push("/login?error=auth");

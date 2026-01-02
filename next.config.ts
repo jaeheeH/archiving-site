@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
         hostname: '*.supabase.co',
       },
     ],
+    // 🆕 deviceSizes 추가
+    deviceSizes: [640, 828, 1200],
   },
 };
 

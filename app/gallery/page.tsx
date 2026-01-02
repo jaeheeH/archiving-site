@@ -411,7 +411,8 @@ function GalleryItemImage({
             src={item.image_url}
             alt={item.title}
             fill
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+            sizes="(max-width: 768px) 90vw, 600px"  // 이대로 OK
+            quality={75}
             className="object-cover group-hover:scale-105 transition-transform duration-300"
             placeholder="blur"
             blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f3f4f6' width='16' height='9'/%3E%3C/svg%3E"

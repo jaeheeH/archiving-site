@@ -1,3 +1,5 @@
+// app/(dashboard)/components/Editor/BrunchWriteEditor.tsx (수정본)
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -24,12 +26,16 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
   // 상태 관리
   const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
-  const [summary, setSummary] = useState(''); // 요약 상태
+  const [summary, setSummary] = useState('');
   const [titleImageUrl, setTitleImageUrl] = useState('');
   const [content, setContent] = useState<JSONContent | null>(null);
   const [loading, setLoading] = useState(false);
   const [categoryId, setCategoryId] = useState('');
   const [tags, setTags] = useState<string[]>([]);
+  const [slug, setSlug] = useState(''); // 🆕 slug 상태 추가
+
+  // 🆕 이전 slug 기록 (수정 시 변경 감지용)
+  const [previousSlug, setPreviousSlug] = useState('');
 
   // AI 태그 생성 로딩 상태
   const [generatingTags, setGeneratingTags] = useState(false);
@@ -51,13 +57,27 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         setContent(data.content);
         setCategoryId(data.category_id || '');
         setTags(data.tags || []);
+        setSlug(data.slug); // 🆕 기존 slug 로드
+        setPreviousSlug(data.slug); // 🆕 이전 slug 저장
       } catch (error) {
         console.error('포스트 로드 실패:', error);
-        addToast('포스트를 불러오는데 실패했습니다.', 'error');
+        addToast('포스트를 불러올 수 없습니다.', 'error');
       }
     };
     loadPost();
   }, [postId, addToast]);
+
+  // 🆕 제목 변경 시 slug 자동 생성
+  useEffect(() => {
+    if (!title.trim()) {
+      setSlug('');
+      return;
+    }
+
+    // 새 slug 생성 (타임스탬프 제외, 생성 시에만 타임스탬프 추가)
+    const newSlug = generateSlug(title, false);
+    setSlug(newSlug);
+  }, [title]);
 
   // 제목 이미지 업로드 핸들러
   const handleTitleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,9 +91,8 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
     }
   };
 
-  // [수정된 핸들러] AI 태그 생성
+  // AI 태그 생성
   const handleGenerateTags = async () => {
-    // 1. 유효성 검사 강화
     if (!title && (!content || !content.content)) {
       addToast('제목이나 본문을 먼저 작성해주세요.', 'error');
       return;
@@ -93,10 +112,8 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
 
       const data = await response.json();
 
-      // 2. [핵심 수정] 서버 에러 메시지 확인 및 사용자 친화적 변환
       if (!response.ok) {
         const errorMsg = data.error || '태그 생성 실패';
-        // 404 모델 에러 등 구체적인 상황 체크
         if (errorMsg.includes('404') || errorMsg.includes('not found')) {
           throw new Error('AI 모델을 찾을 수 없습니다. (서버 설정을 확인해주세요)');
         }
@@ -112,8 +129,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
       }
 
     } catch (error: any) {
-      console.error('Tag Generation Frontend Error:', error);
-      // 3. 에러 메시지를 토스트로 출력
+      console.error('Tag Generation Error:', error);
       addToast(error.message || 'AI 태그 생성 중 오류가 발생했습니다.', 'error');
     } finally {
       setGeneratingTags(false);
@@ -132,11 +148,15 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
       addToast('본문을 작성해주세요.', 'error');
       return;
     }
+    if (!slug) {
+      addToast('slug를 생성해주세요. (제목이 올바른지 확인하세요)', 'error');
+      return;
+    }
 
     setLoading(true);
 
     try {
-      // 1. 요약이 없으면 AI 자동 생성 시도
+      // 요약이 없으면 AI 자동 생성 시도
       let finalSummary = summary;
       if (!finalSummary && (title || content)) {
         try {
@@ -150,7 +170,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
             const summaryData = await summaryResponse.json();
             if (summaryData.summary) {
               finalSummary = summaryData.summary;
-              setSummary(finalSummary); // UI 업데이트
+              setSummary(finalSummary);
               console.log('Summary generated:', finalSummary);
             }
           }
@@ -159,23 +179,20 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         }
       }
 
-      // 2. Slug 생성
-      const slug = generateSlug(title, true);
-
-      // 3. 데이터 구성
+      // 요청 데이터 구성
       const requestData = {
         type,
         title,
         subtitle: subtitle || null,
-        summary: finalSummary || null, // 생성된 요약 포함
-        slug,
+        summary: finalSummary || null,
+        slug, // 🆕 자동 생성된 slug 사용
         content,
         title_style: titleImageUrl ? 'image' : 'text',
         title_image_url: titleImageUrl || null,
         category_id: categoryId || null,
         tags: tags,
         is_published: isPublish,
-        author_id: null,
+        published_at: isPublish ? new Date().toISOString() : null,
       };
 
       const method = postId ? 'PUT' : 'POST';
@@ -190,6 +207,15 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
       const result = await response.json();
 
       if (response.ok) {
+        // 🆕 slug 변경 감지 메시지
+        if (postId && result.slugChanged) {
+          addToast(
+            `slug가 변경되었습니다: ${previousSlug} → ${slug}`,
+            'info'
+          );
+          setPreviousSlug(slug);
+        }
+
         addToast(
           isPublish ? '발행되었습니다!' : '저장되었습니다.',
           'success'
@@ -300,6 +326,16 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
             rows={3}
             className="w-full text-base text-gray-600 placeholder-gray-300 outline-none bg-transparent border-t border-gray-100 pt-4 resize-none"
           />
+
+          {/* 🆕 slug 표시 영역 */}
+          <div className="pt-4 border-t border-gray-100">
+            <label className="text-xs text-gray-500 font-medium">URL Slug</label>
+            <div className="mt-1 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200">
+              <p className="text-sm text-gray-700 font-mono">
+                {slug ? `/blog/${slug}` : '(제목에서 자동 생성됩니다)'}
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* 메타데이터 (태그/카테고리) 영역 */}
