@@ -105,7 +105,7 @@ export default function HomeBlogSection() {
   }
 
   return (
-    <section className="py-16 px-4 col-span-3">
+    <section className="px-4 col-span-3">
       <div className="contents mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>

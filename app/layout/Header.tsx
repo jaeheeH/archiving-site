@@ -67,7 +67,7 @@ export default function Header() {
       <div className="contents">
         <div className="client-header-left">
           <Link href="/" className="client-header-logo flex gap-4">
-          <div className="w-8 h-8 bg-black text-white flex items-center justify-center font-mono font-bold text-lg rounded-sm">A</div>ARCH-B
+            <img src="/logo.png" alt="" className="h-4" />
           </Link>
 
           <div className="client-header-search"></div>

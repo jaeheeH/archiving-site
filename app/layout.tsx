@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ToastProvider } from "@/components/ToastProvider";
 import Header from "@/app/layout/Header";
+import Footer from "@/app/layout/Footer";
 import { getSiteSettings, getDefaultMetadata } from "@/lib/site-settings";
 import "./globals.css";
 import "./css/style.scss";
@@ -123,7 +124,7 @@ export default async function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "Organization",
                 name: settings.organization_name,
-                url: process.env.NEXT_PUBLIC_SITE_URL || "https://from-archiving.vercel.app",
+                url: process.env.NEXT_PUBLIC_SITE_URL || "https://https://www.archbehind.com",
                 logo: settings.logo_url || undefined,
               }),
             }}
@@ -148,6 +149,7 @@ export default async function RootLayout({
         <ToastProvider>
           <Header />
           {children}
+          <Footer/>
         </ToastProvider>
         
         {/* Vercel Analytics */}

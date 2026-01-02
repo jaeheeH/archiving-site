@@ -286,7 +286,7 @@ export default function BlogDetailClient() {
     <div className="min-h-screen ">
       {/* Header Image - Next.js Image 최적화 */}
       {post.title_image_url && (
-        <div className="relative w-full h-56 md:h-80 lg:h-96 bg-gray-200 overflow-hidden">
+        <div className="relative max-w-4xl mx-auto  h-56 md:h-80 lg:h-96 bg-gray-200 overflow-hidden">
           <Image
             src={post.title_image_url}
             alt={post.title}
@@ -302,7 +302,7 @@ export default function BlogDetailClient() {
       )}
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 py-12 article-editor">
+      <div className="max-w-4xl mx-auto  py-12 article-editor">
         {/* Category */}
         {category && (
           <div className="mb-4">

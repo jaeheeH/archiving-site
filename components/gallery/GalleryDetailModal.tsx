@@ -69,21 +69,30 @@ export default function GalleryDetailModal({
     };
   }, []);
 
+
   const fetchGalleryDetail = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/gallery/${id}`);
-  
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "갤러리 조회 실패");
+      
+      // ✅ Supabase 직접 조회
+      const { data, error } = await supabase
+        .from('gallery')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
       }
-  
-      const { data: galleryData } = await res.json();
-      console.log("📥 갤러리 데이터:", galleryData);  // 디버깅용
-      setGallery(galleryData);
+
+      if (!data) {
+        throw new Error('갤러리 정보를 찾을 수 없습니다');
+      }
+
+      setGallery(data);
     } catch (error) {
-      console.error("갤러리 상세 조회 에러:", error);
+      console.error('❌ 갤러리 상세 조회 에러:', error);
     } finally {
       setLoading(false);
     }

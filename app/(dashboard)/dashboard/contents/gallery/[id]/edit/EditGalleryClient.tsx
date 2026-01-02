@@ -146,28 +146,27 @@ export default function EditGalleryClient({
   const save = async () => {
     try {
       setSaving(true);
-
+  
       let finalImage = imageUrl;
       let finalEmbedding = embedding;
       let finalGeminiDescription = geminiDescription;
       let finalGeminiTags = geminiTags;
-
+  
       // 새 이미지가 업로드된 경우
       if (imageFile) {
         finalImage = await uploadImage(imageFile);
-
+  
         // 새 이미지 분석
         const analysisResult = await analyzeImage(finalImage);
         finalEmbedding = analysisResult.embedding;
         finalGeminiDescription = analysisResult.summary;
         finalGeminiTags = Array.isArray(analysisResult.tags) ? analysisResult.tags : [];
       }
-
-      // API를 통해 갤러리 수정
-      const res = await fetch(`/api/gallery/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+  
+      // ✅ Supabase 직접 업데이트
+      const { error } = await supabase
+        .from("gallery")
+        .update({
           title,
           description,
           image_url: finalImage,
@@ -177,14 +176,13 @@ export default function EditGalleryClient({
           embedding: finalEmbedding,
           gemini_description: finalGeminiDescription,
           gemini_tags: finalGeminiTags,
-        }),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "수정 실패");
+        })
+        .eq("id", id);
+  
+      if (error) {
+        throw new Error(error.message || "수정 실패");
       }
-
+  
       addToast("수정 완료!", "success");
       onSaveSuccess?.();
       onClose?.();
@@ -195,7 +193,6 @@ export default function EditGalleryClient({
       setSaving(false);
     }
   };
-
   if (loading) return <div className="p-6">불러오는 중...</div>;
 
   return (

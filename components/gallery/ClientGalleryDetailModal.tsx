@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { createClient } from "@/lib/supabase/client";
 import SimilarGalleryModal from "./SimilarGalleryModal";
 
 interface ClientGalleryDetailModalProps {
@@ -33,6 +34,7 @@ export default function ClientGalleryDetailModal({
   const [gallery, setGallery] = useState<GalleryDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [showSimilarModal, setShowSimilarModal] = useState(false);
+  const supabase = createClient();
 
   useEffect(() => {
     fetchGalleryDetail();
@@ -49,16 +51,26 @@ export default function ClientGalleryDetailModal({
   const fetchGalleryDetail = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/gallery/${id}`);
 
-      if (!res.ok) {
-        throw new Error("갤러리 조회 실패");
+      // ✅ Supabase 직접 조회
+      const { data, error } = await supabase
+        .from('gallery')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
       }
 
-      const data = await res.json();
-      setGallery(data.data);
+      if (!data) {
+        throw new Error('갤러리 정보를 찾을 수 없습니다');
+      }
+
+      setGallery(data);
     } catch (error) {
-      console.error("갤러리 상세 조회 에러:", error);
+      console.error('❌ 갤러리 상세 조회 에러:', error);
     } finally {
       setLoading(false);
     }

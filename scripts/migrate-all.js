@@ -45,7 +45,10 @@ async function processBatch(limit = 5) {
 
   const res = await fetch(`${baseUrl}/api/gallery/migrate`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json',
+      'x-migration-token': process.env.MIGRATION_TOKEN || 'migrate_secret_2024'
+    },
     body: JSON.stringify({ limit })
   });
 

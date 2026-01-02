@@ -1,6 +1,9 @@
 "use client";
 import HomeGallerySection from "@/app/components/HomeGallerySection";
 import HomeBlogSection from "@/app/components/HomeBlogSection";
+import HeroBanner from '@/app/components/HeroBanner';
+import GalleryRandomSlide from '@/app/components/GalleryRandomSlide';
+import PopularBlogs from '@/app/components/PopularBlogs';
 import Link from "next/link";
 
 export default function Home() {
@@ -40,22 +43,17 @@ export default function Home() {
           </div>
 
           {/* Right: Featured Slider */}
-          <div className="w-full lg:w-1/2 relative group">
-            <div className=" lg:aspect-[5/4]  rounded-sm overflow-hidden relative bg-gray-50 cursor-pointer">
-              <div className="absolute bottom-0 left-0 w-full  to-transparent p-8 pt-20 flex justify-between items-end">
-                  <div className="text-white">
-
-                  </div>
-              </div>
-
-            </div>
-          </div>
+          <HeroBanner />
         </div>
       </section>
       <div className="contents mx-auto lg:grid-cols-2">
         {/* 블로그 섹션 */}
-        <div className=" grid grid-cols-4 mx-auto ">
+        <div className=" grid grid-cols-4 mx-auto py-16 ">
           <HomeBlogSection />
+          <div className="pl-12 ">
+            <PopularBlogs />
+            <GalleryRandomSlide />
+          </div>
         </div>
       </div>
 
