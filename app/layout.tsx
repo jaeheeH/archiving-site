@@ -74,6 +74,7 @@ export default async function RootLayout({
 
         {/* Theme Color */}
         <meta name="theme-color" content={settings?.theme_color || "#1570EF"} />
+        <meta name="p:domain_verify" content="bf63e4dfeb108fe297cdffdabe10cd78"/>
 
         {/* Google Analytics 4 */}
         {settings?.ga4_id && (

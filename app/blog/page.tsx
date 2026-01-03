@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
+// --- Types ---
 interface Post {
   id: string;
   title: string;
@@ -31,10 +33,55 @@ interface PaginationInfo {
   hasMore: boolean;
 }
 
-export default function BlogListPage() {
+// --- Skeleton Component ---
+function BlogSkeleton({ viewMode }: { viewMode: 'grid' | 'list' }) {
+  const items = Array.from({ length: 6 });
+
+  if (viewMode === 'list') {
+    return (
+      <div className="space-y-6">
+        {items.map((_, i) => (
+          <div key={i} className="flex flex-col md:flex-row gap-6 border-b border-gray-100 pb-6 last:border-0 animate-pulse">
+            <div className="w-full md:w-72 h-48 bg-gray-200 rounded-lg shrink-0"></div>
+            <div className="flex-1 space-y-3 py-2">
+              <div className="h-4 bg-gray-200 rounded w-20"></div>
+              <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+              <div className="h-4 bg-gray-200 rounded w-full"></div>
+              <div className="h-3 bg-gray-200 rounded w-32 mt-auto"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Grid Skeleton
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {items.map((_, i) => (
+        <div key={i} className="flex flex-col h-full animate-pulse">
+          <div className="w-full aspect-video bg-gray-200 rounded-lg mb-4"></div>
+          <div className="flex-1 space-y-3">
+            <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+            <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-full"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// --- Main Content Component ---
+function BlogContent() {
+  // State
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetching, setFetching] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid'); // Default View
+  
+  // Filter & Pagination State
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState<PaginationInfo>({
@@ -46,17 +93,29 @@ export default function BlogListPage() {
 
   const POSTS_PER_PAGE = 12;
 
+  // Initial Load & Category Fetch
   useEffect(() => {
     fetchCategories();
+    // LocalStorage에서 뷰 모드 불러오기
+    const savedView = localStorage.getItem('blog_view_mode');
+    if (savedView === 'grid' || savedView === 'list') {
+      setViewMode(savedView);
+    }
   }, []);
 
+  // Save View Mode
+  useEffect(() => {
+    localStorage.setItem('blog_view_mode', viewMode);
+  }, [viewMode]);
+
+  // Fetch Posts on Change
   useEffect(() => {
     fetchPosts(currentPage);
   }, [currentPage, selectedCategory]);
 
   const fetchPosts = async (page: number) => {
     try {
-      setLoading(true);
+      setFetching(true);
       const offset = (page - 1) * POSTS_PER_PAGE;
       const res = await fetch(
         `/api/posts?type=blog&limit=${POSTS_PER_PAGE}&offset=${offset}`
@@ -69,6 +128,7 @@ export default function BlogListPage() {
       setPosts([]);
     } finally {
       setLoading(false);
+      setFetching(false);
     }
   };
 
@@ -83,9 +143,9 @@ export default function BlogListPage() {
   };
 
   const getCategoryName = (categoryId: string | null): string => {
-    if (!categoryId) return '미분류';
+    if (!categoryId) return 'Uncategorized';
     const category = categories.find((cat) => cat.id === categoryId);
-    return category?.name || '미분류';
+    return category?.name || 'Uncategorized';
   };
 
   const filteredPosts = posts.filter((post) => {
@@ -105,178 +165,217 @@ export default function BlogListPage() {
     setCurrentPage(1);
   };
 
-  if (loading && posts.length === 0) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-500">로딩 중...</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen  py-12">
-      {/* Header */}
-
-      <div className="max-w-7xl mx-auto mb-8">
-        <h1 className="text-4xl md:text-4xl font-bold tracking-tight text-gray-900 mb-4">
-          EXHIBITION EVENT <br></br>
-          SCHEDULE
-          </h1>
-          <p className="text-gray-500 text-lg max-w-2xl leading-relaxed ">
-            서울을 중심으로 열리는 주요 전시, <br></br>
-            디자인 컨퍼런스, 팝업 스토어 일정을 큐레이션합니다.
-          </p>
-      </div>
-      {/* 총 개수 표시 */}
-      <div className="max-w-7xl mx-auto mb-4">
-        <p className="text-sm text-gray-600">총 {pagination.total}개의 글</p>
+    <div className="min-h-screen py-12">
+      {/* Header Section */}
+      <div className="max-w-7xl mx-auto mb-10 px-4 md:px-0">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4 font-sans uppercase">
+          Insights & Logs<br />
+          <span className="text-gray-400 font-light">Dev, Design, and Story</span>
+        </h1>
+        <p className="text-gray-500 text-lg max-w-2xl leading-relaxed">
+          개발 과정의 고민과 디자인적 발견을 기록합니다.<br />
+          프로젝트 비하인드 스토리와 기술적인 인사이트를 공유합니다.
+        </p>
       </div>
 
-      <div className="max-w-7xl mx-auto  pb-16">
-        {/* Category Filter */}
-        <div className="mb-12 flex gap-2 flex-wrap">
-          <button
-            onClick={() => handleCategoryChange('all')}
-            className={`px-4 py-2 rounded-lg transition text-sm font-medium ${
-              selectedCategory === 'all'
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            전체
-          </button>
-          {categories.map((category) => (
+      <div className="max-w-7xl mx-auto pb-16 px-4 md:px-0">
+        {/* Controls Toolbar */}
+        <div className="sticky top-4 z-20 bg-white/80 backdrop-blur-md p-4 rounded-xl border border-gray-100 shadow-sm mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          
+          {/* Category Filter */}
+          <div className="flex gap-2 flex-wrap">
             <button
-              key={category.id}
-              onClick={() => handleCategoryChange(category.id)}
-              className={`px-4 py-2 rounded-lg transition text-sm font-medium ${
-                selectedCategory === category.id
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              onClick={() => handleCategoryChange('all')}
+              className={`px-3 py-1.5 rounded-md text-sm transition-all border ${
+                selectedCategory === 'all'
+                  ? 'bg-black text-white border-black'
+                  : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
               }`}
             >
-              {category.name}
+              All
             </button>
-          ))}
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => handleCategoryChange(category.id)}
+                className={`px-3 py-1.5 rounded-md text-sm transition-all border ${
+                  selectedCategory === category.id
+                    ? 'bg-black text-white border-black'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+                }`}
+              >
+                {category.name}
+              </button>
+            ))}
+          </div>
+
+          {/* Right Side: View Toggle & Count */}
+          <div className="flex items-center gap-4 ml-auto md:ml-0 w-full md:w-auto justify-end">
+            <span className="text-xs text-gray-400 font-mono hidden md:inline-block">
+              {pagination.total} Posts
+            </span>
+            
+            <div className="flex bg-gray-100 p-1 rounded-lg">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-1.5 rounded-md text-sm transition-all ${
+                  viewMode === 'grid'
+                    ? 'bg-white text-black shadow-sm'
+                    : 'text-gray-400 hover:text-gray-600'
+                }`}
+                aria-label="Grid view"
+              >
+                <i className="ri-layout-grid-line text-lg"></i>
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-1.5 rounded-md text-sm transition-all ${
+                  viewMode === 'list'
+                    ? 'bg-white text-black shadow-sm'
+                    : 'text-gray-400 hover:text-gray-600'
+                }`}
+                aria-label="List view"
+              >
+                <i className="ri-list-check text-lg"></i>
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Posts Grid */}
-        {filteredPosts.length === 0 ? (
-          <div className="bg-gray-50 rounded-lg p-12 text-center">
-            <p className="text-gray-500 text-lg">작성된 글이 없습니다</p>
+        {/* Content Area */}
+        {loading || (fetching && posts.length === 0) ? (
+          <BlogSkeleton viewMode={viewMode} />
+        ) : filteredPosts.length === 0 ? (
+          <div className="bg-gray-50 rounded-xl p-20 text-center border border-dashed border-gray-200">
+            <p className="text-gray-500">작성된 글이 없습니다.</p>
           </div>
         ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPosts.map((post) => (
-                <Link
-                  key={post.id}
-                  href={`/blog/${post.slug}`}
-                  className="group flex flex-col h-full hover:opacity-80 transition"
-                >
-                  {/* Thumbnail - 16:9 비율 */}
-                  <div className="relative w-full aspect-video bg-gray-100 rounded-lg overflow-hidden mb-4">
-                    {post.title_image_url ? (
-    <Image
-    src={post.title_image_url}
-    alt={post.title}
-    width={600}
-    height={337}  // 16:9
-    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-    quality={75}
-    placeholder="blur"
-    blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f3f4f6' width='16' height='9'/%3E%3C/svg%3E"
-  />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-                        <i className="ri-image-2-line text-4xl text-gray-400"></i>
-                      </div>
-                    )}
+          <div className={
+            viewMode === 'grid' 
+              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" 
+              : "space-y-6"
+          }>
+            {filteredPosts.map((post) => (
+              <Link
+                key={post.id}
+                href={`/blog/${post.slug}`}
+                className={`group block bg-white rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100 ${
+                  viewMode === 'list' ? 'flex flex-col md:flex-row gap-6 p-4 border-gray-50 hover:bg-gray-50/50' : 'flex flex-col h-full'
+                }`}
+              >
+                {/* Thumbnail */}
+                <div className={`relative bg-gray-100 overflow-hidden shrink-0 ${
+                  viewMode === 'list' 
+                    ? 'w-full md:w-72 aspect-video md:aspect-[4/3] rounded-lg' 
+                    : 'w-full aspect-video'
+                }`}>
+                  {post.title_image_url ? (
+                    <>
+                      <Image
+                        src={post.title_image_url}
+                        alt={post.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                        sizes={viewMode === 'list' ? "300px" : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
+                        quality={75}
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
+                    </>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                      <i className="ri-image-2-line text-3xl text-gray-300"></i>
+                    </div>
+                  )}
+                </div>
+
+                {/* Content Info */}
+                <div className={`flex flex-col ${viewMode === 'list' ? 'flex-1 py-2' : 'flex-1 p-5'}`}>
+                  
+                  {/* Category */}
+                  <div className="mb-2">
+                    <span className="inline-block text-xs font-bold tracking-wider uppercase text-blue-600">
+                      {getCategoryName(post.category_id)}
+                    </span>
                   </div>
 
-                  {/* Content */}
-                  <div className="flex-1 flex flex-col">
-                    {/* Category Badge */}
-                    <div className="mb-3">
-                      <span className="inline-block px-3 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
-                        {getCategoryName(post.category_id)}
+                  {/* Title */}
+                  <h2 className={`font-bold text-gray-900 mb-2 leading-snug group-hover:text-blue-600 transition-colors ${
+                    viewMode === 'list' ? 'text-2xl' : 'text-xl line-clamp-2'
+                  }`}>
+                    {post.title}
+                  </h2>
+
+                  {/* Summary */}
+                  <p className={`text-gray-500 text-sm mb-4 leading-relaxed ${
+                    viewMode === 'list' ? 'line-clamp-3' : 'line-clamp-2'
+                  }`}>
+                    {post.summary || post.subtitle || '내용이 없습니다.'}
+                  </p>
+
+                  {/* Footer Meta */}
+                  <div className={`mt-auto flex items-center justify-between text-xs text-gray-400 font-mono ${
+                    viewMode === 'list' ? '' : 'pt-4 border-t border-gray-100'
+                  }`}>
+                    <span>{new Date(post.published_at || post.created_at).toLocaleDateString('ko-KR')}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="flex items-center gap-1">
+                        <i className="ri-eye-line"></i> {post.view_count || 0}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <i className="ri-bookmark-line"></i> {post.scrap_count || 0}
                       </span>
                     </div>
-
-                    {/* Subtitle */}
-                    {post.subtitle && (
-                      <p className="text-gray-600 text-sm mb-1 line-clamp-1">{post.subtitle}</p>
-                    )}
-
-                    {/* Title */}
-                    <h2 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition">
-                      {post.title}
-                    </h2>
-
-
-                    {/* Summary */}
-                    {post.summary && (
-                      <p className="text-gray-500 text-sm mb-4 line-clamp-2">
-                        {post.summary}
-                      </p>
-                    )}
-
-                    {/* Meta Info */}
-                    <div className="flex items-center justify-between text-xs text-gray-500 pt-4 border-t border-gray-100">
-                      <span>{new Date(post.published_at || post.created_at).toLocaleDateString('ko-KR')}</span>
-                      <div className="flex items-center gap-3">
-                        <span className="flex items-center gap-1">
-                          <i className="ri-eye-line"></i>
-                          {post.view_count || 0}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <i className="ri-bookmark-line"></i>
-                          {post.scrap_count || 0}
-                        </span>
-                      </div>
-                    </div>
                   </div>
-                </Link>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2 mt-16">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition text-sm"
+            >
+              Previous
+            </button>
+            <div className="flex gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => handlePageChange(page)}
+                  className={`w-8 h-8 flex items-center justify-center rounded-lg transition text-sm ${
+                    page === currentPage
+                      ? 'bg-black text-white font-medium'
+                      : 'text-gray-500 hover:bg-gray-100'
+                  }`}
+                >
+                  {page}
+                </button>
               ))}
             </div>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-12">
-                <button
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                  className="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition"
-                >
-                  이전
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => handlePageChange(page)}
-                    className={`px-4 py-2 rounded-lg transition ${
-                      page === currentPage
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ))}
-
-                <button
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                  className="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition"
-                >
-                  다음
-                </button>
-              </div>
-            )}
-          </>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition text-sm"
+            >
+              Next
+            </button>
+          </div>
         )}
       </div>
     </div>
+  );
+}
+
+export default function BlogListPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" />}>
+      <BlogContent />
+    </Suspense>
   );
 }

@@ -126,7 +126,7 @@ export default function GalleryDetailModal({
       >
         <div className="bg-white rounded-lg max-w-5xl w-full max-h-[90vh] overflow-y-auto">
           {/* 헤더 */}
-          <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
+          <div className="sticky z-5 top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold">{gallery.title}</h2>
             <button
               onClick={onClose}

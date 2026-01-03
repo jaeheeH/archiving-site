@@ -85,7 +85,7 @@ export default function ClientGalleryDetailModal({
   if (loading) {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg p-6">
+        <div className="bg-white rounded-sm p-6">
           <p>불러오는 중...</p>
         </div>
       </div>
@@ -101,9 +101,9 @@ export default function ClientGalleryDetailModal({
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
       onClick={handleBackdropClick}
     >
-      <div className="bg-white rounded-lg max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-sm max-w-5xl w-full max-h-[90vh] overflow-y-auto">
         {/* 헤더 */}
-        <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
+        <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-5">
           <h2 className="text-xl font-semibold">{gallery.title}</h2>
           <button
             onClick={onClose}
@@ -124,7 +124,7 @@ export default function ClientGalleryDetailModal({
                   alt={gallery.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-contain rounded-lg"
+                  className="object-contain rounded-sm"
                   placeholder="blur"
                   blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f3f4f6' width='16' height='9'/%3E%3C/svg%3E"
                   priority
@@ -172,7 +172,7 @@ export default function ClientGalleryDetailModal({
                   <h3 className="text-sm font-semibold text-gray-500 mb-2">
                     카테고리
                   </h3>
-                  <span className="inline-block px-3 py-1 bg-gray-100 rounded-full text-sm">
+                  <span className="inline-block px-3 py-1 bg-gray-100 rounded-sm text-sm">
                     {gallery.category}
                   </span>
                 </div>
@@ -188,7 +188,7 @@ export default function ClientGalleryDetailModal({
                     {(gallery.gemini_tags || gallery.tags).map((tag, idx) => (
                       <span
                         key={idx}
-                        className="inline-block px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm"
+                        className="inline-block px-3 py-1 bg-gray-100 text-gray-600 rounded-sm text-sm"
                       >
                         {tag}
                       </span>
@@ -217,7 +217,7 @@ export default function ClientGalleryDetailModal({
               <div className="pt-4 border-t">
                 <button
                   onClick={() => setShowSimilarModal(true)}
-                  className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                  className="w-full px-4 py-3 bg-gray-700 text-white rounded-sm hover:bg-gray-900 transition-colors"
                 >
                   <i className="ri-image-line mr-2"></i>
                   유사 이미지 보기

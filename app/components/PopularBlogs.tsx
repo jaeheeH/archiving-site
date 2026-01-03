@@ -117,22 +117,18 @@ export default function PopularBlogs() {
               <div className="flex gap-4 pb-4 border-b border-gray-200 hover:border-gray-400 transition">
                 {/* 번호 */}
                 <div className="flex-shrink-0 w-8 text-center">
-                  <span className="text-lg font-bold text-gray-400 group-hover:text-gray-600">
+                  <i className="text-lg font-bold text-gray-400 group-hover:text-gray-600">
                     {index + 1}
-                  </span>
+                  </i>
                 </div>
 
                 {/* 콘텐츠 */}
                 <div className="flex-1 min-w-0">
                   {/* 카테고리 */}
-                  {categoryName && (
-                    <p className="text-xs font-semibold text-blue-600 mb-1 uppercase">
-                      [{categoryName}]
-                    </p>
-                  )}
+
 
                   {/* 제목 */}
-                  <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition line-clamp-2 ">
+                  <h3 className=" text-gray-900 group-hover:text-blue-600 transition line-clamp-2 ">
                     {post.title}
                   </h3>
 
