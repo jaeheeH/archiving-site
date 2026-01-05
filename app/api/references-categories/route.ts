@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient as createServerClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { checkArchivingEditPermission } from "@/lib/supabase/archiving-utils";
+import { checkReferenceEditPermission } from "@/lib/supabase/reference-utils";
 
 /**
- * GET /api/archiving-categories
- * 아카이빙 범주 목록 조회
+ * GET /api/references-categories
+ * 레퍼런스 범주 목록 조회
  * 권한: 모두 가능
  */
 export async function GET(req: NextRequest) {
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     const supabase = await createServerClient();
 
     const { data, error } = await supabase
-      .from("archiving_categories")
+      .from("reference_categories")
       .select("id, name, description, created_at")
       .order("created_at", { ascending: true });
 
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
       data,
     });
   } catch (error: any) {
-    console.error("❌ 아카이빙 범주 조회 에러:", error);
+    console.error("❌ 레퍼런스 범주 조회 에러:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }
@@ -35,8 +35,8 @@ export async function GET(req: NextRequest) {
 }
 
 /**
- * POST /api/archiving-categories
- * 아카이빙 범주 생성
+ * POST /api/references-categories
+ * 레퍼런스 범주 생성
  * 권한: admin, sub_admin만
  * 
  * 요청 바디:
@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     // 1. 권한 검증
-    const permCheck = await checkArchivingEditPermission();
+    const permCheck = await checkReferenceEditPermission();
     if (!permCheck.authorized) {
       return permCheck.error!;
     }
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
     const adminClient = createAdminClient();
 
     const { data, error } = await adminClient
-      .from("archiving_categories")
+      .from("reference_categories")
       .insert({
         name: name.trim(),
         description: description?.trim() || null,
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
       data,
     });
   } catch (error: any) {
-    console.error("❌ 아카이빙 범주 생성 에러:", error);
+    console.error("❌ 레퍼런스 범주 생성 에러:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }

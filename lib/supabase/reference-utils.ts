@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 /**
- * 아카이빙 수정/삭제 권한 검증
+ * 레퍼런스 수정/삭제 권한 검증
  * 관리자(admin), 부관리자(sub_admin)만 가능
  */
-export async function checkArchivingEditPermission() {
+export async function checkReferenceEditPermission() {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -71,10 +71,10 @@ export async function checkArchivingEditPermission() {
 }
 
 /**
- * 아카이빙 소유권 또는 관리자 권한 검증
+ * 레퍼런스 소유권 또는 관리자 권한 검증
  * 작성자 또는 관리자(admin), 부관리자(sub_admin)만 가능
  */
-export async function checkArchivingOwnershipOrAdmin(archivingId: number) {
+export async function checkReferenceOwnershipOrAdmin(referenceId: number) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -90,18 +90,18 @@ export async function checkArchivingOwnershipOrAdmin(archivingId: number) {
       };
     }
 
-    // 아카이빙 정보 조회
-    const { data: archivingData, error: archivingError } = await supabase
-      .from("archiving")
+    // 레퍼런스 정보 조회
+    const { data: referenceData, error: referenceError } = await supabase
+      .from("references")
       .select("author")
-      .eq("id", archivingId)
+      .eq("id", referenceId)
       .single();
 
-    if (archivingError || !archivingData) {
+    if (referenceError || !referenceData) {
       return {
         authorized: false,
         error: NextResponse.json(
-          { error: "Archiving not found" },
+          { error: "Reference not found" },
           { status: 404 }
         ),
         userId: null,
@@ -126,14 +126,14 @@ export async function checkArchivingOwnershipOrAdmin(archivingId: number) {
       };
     }
 
-    const isOwner = archivingData.author === user.id;
+    const isOwner = referenceData.author === user.id;
     const isAdmin = userData.role === "admin" || userData.role === "sub_admin";
 
     if (!isOwner && !isAdmin) {
       return {
         authorized: false,
         error: NextResponse.json(
-          { error: "You do not have permission to modify this archiving" },
+          { error: "You do not have permission to modify this reference" },
           { status: 403 }
         ),
         userId: null,

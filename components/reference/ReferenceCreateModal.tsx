@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ToastProvider";
 import CategorySelectModal from "@/components/CategorySelectModal";
 
-interface ArchivingCreateModalProps {
+interface ReferenceCreateModalProps {
   open: boolean;
   onClose: () => void;
   onSuccess?: () => void;
@@ -17,11 +17,11 @@ type Category = {
   slug: string;
 };
 
-export default function ArchivingCreateModal({
+export default function ReferenceCreateModal({
   open,
   onClose,
   onSuccess,
-}: ArchivingCreateModalProps) {
+}: ReferenceCreateModalProps) {
   const supabase = createClient();
   const { addToast } = useToast();
 
@@ -31,6 +31,8 @@ export default function ArchivingCreateModal({
   const [url, setUrl] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
   // 범주
   const [rangeOpen, setRangeOpen] = useState(false);
@@ -52,7 +54,7 @@ export default function ArchivingCreateModal({
   const loadCategories = async () => {
     try {
       setLoadingCategories(true);
-      const res = await fetch("/api/archiving-categories");
+      const res = await fetch("/api/references-categories");
 
       if (!res.ok) {
         throw new Error("범주 로드 실패");
@@ -126,16 +128,35 @@ export default function ArchivingCreateModal({
   const uploadImage = async (file: File, folder: string = "original") => {
     const ext = file.name.split(".").pop();
     const fileName = `${Date.now()}.${ext}`;
-    const filePath = `archiving/${folder}/${fileName}`;
+    const filePath = `references/${folder}/${fileName}`;
 
     const { error } = await supabase.storage
-      .from("archiving")
+      .from("references")
       .upload(filePath, file);
 
     if (error) throw error;
 
     const { data } = supabase.storage
-      .from("archiving")
+      .from("references")
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
+  };
+
+  // 로고 업로드 함수
+  const uploadLogo = async (file: File) => {
+    const ext = file.name.split(".").pop();
+    const fileName = `${Date.now()}.${ext}`;
+    const filePath = `references/logos/${fileName}`;
+
+    const { error } = await supabase.storage
+      .from("references")
+      .upload(filePath, file);
+
+    if (error) throw error;
+
+    const { data } = supabase.storage
+      .from("references")
       .getPublicUrl(filePath);
 
     return data.publicUrl;
@@ -147,20 +168,20 @@ export default function ArchivingCreateModal({
       // 1. 원본 이미지 업로드
       const originalUrl = await uploadImage(file, "original");
 
-      // 2. 썸네일 생성 및 업로드
-      const resizedFile = await resizeImage(file, 48, 32);
+      // 2. 썸네일 생성 및 업로드 (폭 640px로 리사이징)
+      const resizedFile = await resizeImage(file, 640, 1080);
       const ext = resizedFile.name.split(".").pop();
       const fileName = `${Date.now()}.${ext}`;
-      const filePath = `archiving/thumbnails/${fileName}`;
+      const filePath = `references/thumbnails/${fileName}`;
 
       const { error } = await supabase.storage
-        .from("archiving")
+        .from("references")
         .upload(filePath, resizedFile);
 
       if (error) throw error;
 
       const { data } = supabase.storage
-        .from("archiving")
+        .from("references")
         .getPublicUrl(filePath);
 
       const thumbnailUrl = data.publicUrl;
@@ -189,7 +210,12 @@ export default function ArchivingCreateModal({
     }
 
     if (!imageFile) {
-      addToast("이미지를 업로드하세요.", "error");
+      addToast("썸네일 이미지를 업로드하세요.", "error");
+      return false;
+    }
+
+    if (!logoFile) {
+      addToast("로고 이미지를 업로드하세요.", "error");
       return false;
     }
 
@@ -214,8 +240,11 @@ export default function ArchivingCreateModal({
       // 1. 이미지 업로드 (원본 + 썸네일)
       const { original, thumbnail } = await uploadWithThumbnail(imageFile!);
 
-      // 2. API를 통해 아카이빙 생성
-      const res = await fetch("/api/archiving", {
+      // 2. 로고 업로드
+      const logoUrl = await uploadLogo(logoFile!);
+
+      // 3. API를 통해 레퍼런스 생성
+      const res = await fetch("/api/references", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -224,6 +253,7 @@ export default function ArchivingCreateModal({
           url: url.trim(),
           image_url: thumbnail, // 대시보드: 썸네일 사용
           image_original: original, // 클라이언트: 원본 사용
+          logo_url: logoUrl, // 로고 URL
           range: range.length > 0 ? range : [],
         }),
       });
@@ -233,14 +263,14 @@ export default function ArchivingCreateModal({
         throw new Error(errorData.error || "저장 실패");
       }
 
-      addToast("아카이빙이 저장되었습니다!", "success");
+      addToast("레퍼런스가 저장되었습니다!", "success");
       
       // 폼 초기화
       resetForm();
       onClose();
       onSuccess?.();
     } catch (error: any) {
-      console.error("❌ 아카이빙 생성 에러:", error);
+      console.error("❌ 레퍼런스 생성 에러:", error);
       addToast(`에러: ${error.message}`, "error");
     } finally {
       setLoading(false);
@@ -254,6 +284,8 @@ export default function ArchivingCreateModal({
     setUrl("");
     setImageFile(null);
     setImagePreview(null);
+    setLogoFile(null);
+    setLogoPreview(null);
     setRange([]);
   };
 
@@ -267,6 +299,12 @@ export default function ArchivingCreateModal({
   const handleImageChange = (file: File) => {
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
+  };
+
+  // 로고 파일 선택 핸들러
+  const handleLogoChange = (file: File) => {
+    setLogoFile(file);
+    setLogoPreview(URL.createObjectURL(file));
   };
 
   // Drag & Drop 핸들러
@@ -292,7 +330,7 @@ export default function ArchivingCreateModal({
       >
         {/* 헤더 */}
         <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">아카이빙 추가</h2>
+          <h2 className="text-lg font-semibold">레퍼런스 추가</h2>
           <button
             onClick={handleClose}
             className="text-gray-500 hover:text-gray-700 text-2xl"
@@ -306,13 +344,13 @@ export default function ArchivingCreateModal({
         <div className="p-6 flex flex-col gap-4">
           {/* 📌 제목 (필수) */}
           <div className="form-label">
-            <label htmlFor="archiving-title">
+            <label htmlFor="reference-title">
               제목 <span className="text-red-500">*</span>
             </label>
             <input
-              id="archiving-title"
+              id="reference-title"
               className="border p-2 rounded w-full input-text-36"
-              placeholder="아카이빙 제목"
+              placeholder="레퍼런스 제목"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               disabled={loading}
@@ -321,11 +359,11 @@ export default function ArchivingCreateModal({
 
           {/* 📌 설명 (선택) */}
           <div className="form-label">
-            <label htmlFor="archiving-description">설명</label>
+            <label htmlFor="reference-description">설명</label>
             <textarea
-              id="archiving-description"
+              id="reference-description"
               className="border p-2 rounded w-full textArea"
-              placeholder="아카이빙에 대한 설명"
+              placeholder="레퍼런스에 대한 설명"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               disabled={loading}
@@ -334,11 +372,11 @@ export default function ArchivingCreateModal({
 
           {/* 📌 URL (필수) */}
           <div className="form-label">
-            <label htmlFor="archiving-url">
+            <label htmlFor="reference-url">
               URL <span className="text-red-500">*</span>
             </label>
             <input
-              id="archiving-url"
+              id="reference-url"
               className="border p-2 rounded w-full input-text-36"
               placeholder="https://example.com"
               value={url}
@@ -388,10 +426,10 @@ export default function ArchivingCreateModal({
               }}
               onDragLeave={() => setIsDragging(false)}
               onDrop={handleDrop}
-              onClick={() => document.getElementById("archivingImageInput")?.click()}
+              onClick={() => document.getElementById("referenceImageInput")?.click()}
             >
               <input
-                id="archivingImageInput"
+                id="referenceImageInput"
                 type="file"
                 hidden
                 accept="image/*"
@@ -421,6 +459,51 @@ export default function ArchivingCreateModal({
                   </p>
                   <p>이미지를 드래그하거나 클릭하여 업로드</p>
                   <p className="text-xs">지원 형식: JPG, PNG, WebP 등</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* 📌 로고 이미지 (필수) */}
+          <div className="form-label">
+            <label>
+              사이트 로고 <span className="text-red-500">*</span>
+            </label>
+            <div
+              className="border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition border-gray-300 hover:bg-gray-50"
+              onClick={() => document.getElementById("referenceLogoInput")?.click()}
+            >
+              <input
+                id="referenceLogoInput"
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files?.[0]) {
+                    handleLogoChange(e.target.files[0]);
+                  }
+                }}
+                disabled={loading}
+              />
+
+              {logoPreview ? (
+                <div className="space-y-2">
+                  <img
+                    src={logoPreview}
+                    alt="로고 미리보기"
+                    className="mx-auto max-h-32 rounded"
+                  />
+                  <p className="text-xs text-gray-500">
+                    다른 로고를 선택하려면 클릭하세요.
+                  </p>
+                </div>
+              ) : (
+                <div className="text-gray-500 space-y-2">
+                  <p>
+                    <i className="ri-image-add-line text-2xl"></i>
+                  </p>
+                  <p>로고 이미지를 클릭하여 업로드</p>
+                  <p className="text-xs">지원 형식: JPG, PNG, WebP 등 (정사각형 권장)</p>
                 </div>
               )}
             </div>

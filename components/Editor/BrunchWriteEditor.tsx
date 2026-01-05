@@ -1,5 +1,3 @@
-// app/(dashboard)/components/Editor/BrunchWriteEditor.tsx (수정본)
-
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -32,9 +30,13 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
   const [loading, setLoading] = useState(false);
   const [categoryId, setCategoryId] = useState('');
   const [tags, setTags] = useState<string[]>([]);
-  const [slug, setSlug] = useState(''); // 🆕 slug 상태 추가
+  const [slug, setSlug] = useState('');
 
-  // 🆕 이전 slug 기록 (수정 시 변경 감지용)
+  // ✅ 기존 is_published, published_at 저장 (수정 시 유지용)
+  const [originalIsPublished, setOriginalIsPublished] = useState(false);
+  const [originalPublishedAt, setOriginalPublishedAt] = useState<string | null>(null);
+
+  // 이전 slug 기록 (수정 시 변경 감지용)
   const [previousSlug, setPreviousSlug] = useState('');
 
   // AI 태그 생성 로딩 상태
@@ -57,8 +59,12 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         setContent(data.content);
         setCategoryId(data.category_id || '');
         setTags(data.tags || []);
-        setSlug(data.slug); // 🆕 기존 slug 로드
-        setPreviousSlug(data.slug); // 🆕 이전 slug 저장
+        setSlug(data.slug);
+        setPreviousSlug(data.slug);
+        
+        // ✅ 기존 발행 상태 저장
+        setOriginalIsPublished(data.is_published || false);
+        setOriginalPublishedAt(data.published_at || null);
       } catch (error) {
         console.error('포스트 로드 실패:', error);
         addToast('포스트를 불러올 수 없습니다.', 'error');
@@ -67,14 +73,13 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
     loadPost();
   }, [postId, addToast]);
 
-  // 🆕 제목 변경 시 slug 자동 생성
+  // 제목 변경 시 slug 자동 생성
   useEffect(() => {
     if (!title.trim()) {
       setSlug('');
       return;
     }
 
-    // 새 slug 생성 (타임스탬프 제외, 생성 시에만 타임스탬프 추가)
     const newSlug = generateSlug(title, false);
     setSlug(newSlug);
   }, [title]);
@@ -179,20 +184,47 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         }
       }
 
+      // ✅ 수정: 수정 시 기존 is_published, published_at 유지
+      let finalIsPublished = isPublish;
+      let finalPublishedAt: string | null = null;
+
+      if (postId) {
+        // 수정 중
+        if (isPublish) {
+          // 발행 버튼 클릭 시
+          finalIsPublished = true;
+          // published_at은 기존 값이 있으면 유지, 없으면 새로 설정
+          finalPublishedAt = originalPublishedAt || new Date().toISOString();
+        } else {
+          // 저장 버튼 클릭 시
+          finalIsPublished = originalIsPublished; // 기존 상태 유지
+          finalPublishedAt = originalPublishedAt; // 기존 시간 유지
+        }
+      } else {
+        // 신규 작성
+        if (isPublish) {
+          finalIsPublished = true;
+          finalPublishedAt = new Date().toISOString();
+        } else {
+          finalIsPublished = false;
+          finalPublishedAt = null;
+        }
+      }
+
       // 요청 데이터 구성
       const requestData = {
         type,
         title,
         subtitle: subtitle || null,
         summary: finalSummary || null,
-        slug, // 🆕 자동 생성된 slug 사용
+        slug,
         content,
         title_style: titleImageUrl ? 'image' : 'text',
         title_image_url: titleImageUrl || null,
         category_id: categoryId || null,
         tags: tags,
-        is_published: isPublish,
-        published_at: isPublish ? new Date().toISOString() : null,
+        is_published: finalIsPublished,
+        published_at: finalPublishedAt,
       };
 
       const method = postId ? 'PUT' : 'POST';
@@ -207,7 +239,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
       const result = await response.json();
 
       if (response.ok) {
-        // 🆕 slug 변경 감지 메시지
+        // slug 변경 감지 메시지
         if (postId && result.slugChanged) {
           addToast(
             `slug가 변경되었습니다: ${previousSlug} → ${slug}`,
@@ -327,7 +359,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
             className="w-full text-base text-gray-600 placeholder-gray-300 outline-none bg-transparent border-t border-gray-100 pt-4 resize-none"
           />
 
-          {/* 🆕 slug 표시 영역 */}
+          {/* slug 표시 영역 */}
           <div className="pt-4 border-t border-gray-100">
             <label className="text-xs text-gray-500 font-medium">URL Slug</label>
             <div className="mt-1 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200">

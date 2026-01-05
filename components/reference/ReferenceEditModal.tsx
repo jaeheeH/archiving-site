@@ -6,29 +6,30 @@ import { useToast } from "@/components/ToastProvider";
 import CategorySelectModal from "@/components/CategorySelectModal";
 import CategorySelect from "@/components/CategorySelect";
 
-interface ArchivingEditModalProps {
+interface ReferenceEditModalProps {
   id: number;
   onClose: () => void;
   onSuccess?: () => void;
 }
 
-interface ArchivingData {
+interface ReferenceData {
   id: number;
   title: string;
   description: string | null;
   url: string;
   image_url: string;
+  logo_url: string | null;
   category: string | null;
   range: string[] | null;
   clicks: number;
   created_at: string;
 }
 
-export default function ArchivingEditModal({
+export default function ReferenceEditModal({
   id,
   onClose,
   onSuccess,
-}: ArchivingEditModalProps) {
+}: ReferenceEditModalProps) {
   const supabase = createClient();
   const { addToast } = useToast();
 
@@ -39,6 +40,9 @@ export default function ArchivingEditModal({
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
   // 범주
   const [rangeOpen, setRangeOpen] = useState(false);
@@ -53,7 +57,7 @@ export default function ArchivingEditModal({
   // 범주 로드 함수
   const loadCategories = async () => {
     try {
-      const res = await fetch("/api/archiving-categories");
+      const res = await fetch("/api/references-categories");
 
       if (!res.ok) {
         throw new Error("범주 로드 실패");
@@ -77,20 +81,22 @@ export default function ArchivingEditModal({
         // 범주 로드
         await loadCategories();
         
-        // 아카이빙 데이터 로드
-        const res = await fetch(`/api/archiving/${id}`);
+        // 레퍼런스 데이터 로드
+        const res = await fetch(`/api/references/${id}`);
 
         if (!res.ok) {
           throw new Error("데이터를 불러올 수 없습니다.");
         }
 
-        const { data } = await res.json() as { data: ArchivingData };
+        const { data } = await res.json() as { data: ReferenceData };
 
         setTitle(data.title);
         setDescription(data.description || "");
         setUrl(data.url);
         setImageUrl(data.image_url);
         setImagePreview(data.image_url);
+        setLogoUrl(data.logo_url || null);
+        setLogoPreview(data.logo_url || null);
         setRange(data.range || []);
       } catch (error: any) {
         console.error("❌ 데이터 로드 에러:", error);
@@ -161,16 +167,35 @@ export default function ArchivingEditModal({
   const uploadImage = async (file: File, folder: string = "original") => {
     const ext = file.name.split(".").pop();
     const fileName = `${Date.now()}.${ext}`;
-    const filePath = `archiving/${folder}/${fileName}`;
+    const filePath = `references/${folder}/${fileName}`;
 
     const { error } = await supabase.storage
-      .from("archiving")
+      .from("references")
       .upload(filePath, file);
 
     if (error) throw error;
 
     const { data } = supabase.storage
-      .from("archiving")
+      .from("references")
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
+  };
+
+  // 로고 업로드 함수
+  const uploadLogo = async (file: File) => {
+    const ext = file.name.split(".").pop();
+    const fileName = `${Date.now()}.${ext}`;
+    const filePath = `references/logos/${fileName}`;
+
+    const { error } = await supabase.storage
+      .from("references")
+      .upload(filePath, file);
+
+    if (error) throw error;
+
+    const { data } = supabase.storage
+      .from("references")
       .getPublicUrl(filePath);
 
     return data.publicUrl;
@@ -182,20 +207,20 @@ export default function ArchivingEditModal({
       // 1. 원본 이미지 업로드
       const originalUrl = await uploadImage(file, "original");
 
-      // 2. 썸네일 생성 및 업로드
-      const resizedFile = await resizeImage(file, 48, 32);
+      // 2. 썸네일 생성 및 업로드 (폭 640px로 리사이징)
+      const resizedFile = await resizeImage(file, 640, 1080);
       const ext = resizedFile.name.split(".").pop();
       const fileName = `${Date.now()}.${ext}`;
-      const filePath = `archiving/thumbnails/${fileName}`;
+      const filePath = `references/thumbnails/${fileName}`;
 
       const { error } = await supabase.storage
-        .from("archiving")
+        .from("references")
         .upload(filePath, resizedFile);
 
       if (error) throw error;
 
       const { data } = supabase.storage
-        .from("archiving")
+        .from("references")
         .getPublicUrl(filePath);
 
       const thumbnailUrl = data.publicUrl;
@@ -243,6 +268,7 @@ export default function ArchivingEditModal({
 
       let finalImageUrl = imageUrl;
       let finalImageOriginal = imageUrl; // 기존 원본 이미지
+      let finalLogoUrl = logoUrl; // 기존 로고 URL
 
       // 새 이미지가 업로드된 경우
       if (imageFile) {
@@ -251,8 +277,13 @@ export default function ArchivingEditModal({
         finalImageOriginal = original;
       }
 
-      // API를 통해 아카이빙 수정
-      const res = await fetch(`/api/archiving/${id}`, {
+      // 새 로고가 업로드된 경우
+      if (logoFile) {
+        finalLogoUrl = await uploadLogo(logoFile);
+      }
+
+      // API를 통해 레퍼런스 수정
+      const res = await fetch(`/api/references/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -261,6 +292,7 @@ export default function ArchivingEditModal({
           url: url.trim(),
           image_url: finalImageUrl, // 대시보드: 썸네일 사용
           image_original: finalImageOriginal, // 클라이언트: 원본 사용
+          logo_url: finalLogoUrl, // 로고 URL
           range: range.length > 0 ? range : [],
         }),
       });
@@ -270,11 +302,11 @@ export default function ArchivingEditModal({
         throw new Error(errorData.error || "수정 실패");
       }
 
-      addToast("아카이빙이 수정되었습니다!", "success");
+      addToast("레퍼런스가 수정되었습니다!", "success");
       onClose();
       onSuccess?.();
     } catch (error: any) {
-      console.error("❌ 아카이빙 수정 에러:", error);
+      console.error("❌ 레퍼런스 수정 에러:", error);
       addToast(`에러: ${error.message}`, "error");
     } finally {
       setSaving(false);
@@ -285,6 +317,12 @@ export default function ArchivingEditModal({
   const handleImageChange = (file: File) => {
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
+  };
+
+  // 로고 파일 선택 핸들러
+  const handleLogoChange = (file: File) => {
+    setLogoFile(file);
+    setLogoPreview(URL.createObjectURL(file));
   };
 
   // Drag & Drop 핸들러
@@ -324,7 +362,7 @@ export default function ArchivingEditModal({
       >
         {/* 헤더 */}
         <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">아카이빙 수정</h2>
+          <h2 className="text-lg font-semibold">레퍼런스 수정</h2>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 text-2xl"
@@ -338,13 +376,13 @@ export default function ArchivingEditModal({
         <div className="p-6 flex flex-col gap-4">
           {/* 📌 제목 (필수) */}
           <div className="form-label">
-            <label htmlFor="archiving-title-edit">
+            <label htmlFor="reference-title-edit">
               제목 <span className="text-red-500">*</span>
             </label>
             <input
-              id="archiving-title-edit"
+              id="reference-title-edit"
               className="border p-2 rounded w-full input-text-36"
-              placeholder="아카이빙 제목"
+              placeholder="레퍼런스 제목"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               disabled={saving}
@@ -353,11 +391,11 @@ export default function ArchivingEditModal({
 
           {/* 📌 설명 (선택) */}
           <div className="form-label">
-            <label htmlFor="archiving-description-edit">설명</label>
+            <label htmlFor="reference-description-edit">설명</label>
             <textarea
-              id="archiving-description-edit"
+              id="reference-description-edit"
               className="border p-2 rounded w-full textArea"
-              placeholder="아카이빙에 대한 설명"
+              placeholder="레퍼런스에 대한 설명"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               disabled={saving}
@@ -366,11 +404,11 @@ export default function ArchivingEditModal({
 
           {/* 📌 URL (필수) */}
           <div className="form-label">
-            <label htmlFor="archiving-url-edit">
+            <label htmlFor="reference-url-edit">
               URL <span className="text-red-500">*</span>
             </label>
             <input
-              id="archiving-url-edit"
+              id="reference-url-edit"
               className="border p-2 rounded w-full input-text-36"
               placeholder="https://example.com"
               value={url}
@@ -416,10 +454,10 @@ export default function ArchivingEditModal({
               }}
               onDragLeave={() => setIsDragging(false)}
               onDrop={handleDrop}
-              onClick={() => document.getElementById("archivingImageInputEdit")?.click()}
+              onClick={() => document.getElementById("referenceImageInputEdit")?.click()}
             >
               <input
-                id="archivingImageInputEdit"
+                id="referenceImageInputEdit"
                 type="file"
                 hidden
                 accept="image/*"
@@ -449,6 +487,49 @@ export default function ArchivingEditModal({
                   </p>
                   <p>이미지를 드래그하거나 클릭하여 업로드</p>
                   <p className="text-xs">지원 형식: JPG, PNG, WebP 등</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* 📌 로고 이미지 */}
+          <div className="form-label">
+            <label>사이트 로고</label>
+            <div
+              className="border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition border-gray-300 hover:bg-gray-50"
+              onClick={() => document.getElementById("referenceLogoInputEdit")?.click()}
+            >
+              <input
+                id="referenceLogoInputEdit"
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={(e) => {
+                  if (e.target.files?.[0]) {
+                    handleLogoChange(e.target.files[0]);
+                  }
+                }}
+                disabled={saving}
+              />
+
+              {logoPreview ? (
+                <div className="space-y-2">
+                  <img
+                    src={logoPreview}
+                    alt="로고 미리보기"
+                    className="mx-auto max-h-32 rounded"
+                  />
+                  <p className="text-xs text-gray-500">
+                    다른 로고를 선택하려면 클릭하세요.
+                  </p>
+                </div>
+              ) : (
+                <div className="text-gray-500 space-y-2">
+                  <p>
+                    <i className="ri-image-add-line text-2xl"></i>
+                  </p>
+                  <p>로고 이미지를 클릭하여 업로드</p>
+                  <p className="text-xs">지원 형식: JPG, PNG, WebP 등 (정사각형 권장)</p>
                 </div>
               )}
             </div>

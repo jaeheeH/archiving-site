@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/client";
 import { createClient as createServerClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { checkArchivingEditPermission } from "@/lib/supabase/archiving-utils";
+import { checkReferenceEditPermission } from "@/lib/supabase/reference-utils";
 
 /**
- * GET /api/archiving
- * 아카이빙 목록 조회 (페이지네이션 + 필터링 + 정렬)
+ * GET /api/references
+ * 레퍼런스 목록 조회 (페이지네이션 + 필터링 + 정렬)
  * 권한: 모두 가능
  * 
  * 쿼리 파라미터:
@@ -33,7 +32,7 @@ export async function GET(req: NextRequest) {
 
     // 쿼리 빌더
     let query = supabase
-      .from("archiving")
+      .from("references")
       .select(
         `
         id,
@@ -41,6 +40,7 @@ export async function GET(req: NextRequest) {
         description,
         url,
         image_url,
+        logo_url,
         category,
         range,
         clicks,
@@ -89,7 +89,7 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error: any) {
-    console.error("❌ Archiving 목록 조회 에러:", error);
+    console.error("❌ Reference 목록 조회 에러:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }
@@ -98,8 +98,8 @@ export async function GET(req: NextRequest) {
 }
 
 /**
- * POST /api/archiving
- * 아카이빙 아이템 생성
+ * POST /api/references
+ * 레퍼런스 아이템 생성
  * 권한: admin, sub_admin만
  * 
  * 요청 바디:
@@ -108,6 +108,7 @@ export async function GET(req: NextRequest) {
  *   "description": "설명 (선택)",
  *   "url": "https://... (필수)",
  *   "image_url": "이미지 URL (필수)",
+ *   "logo_url": "로고 URL (필수)",
  *   "category": "카테고리 (선택)",
  *   "range": ["범주1", "범주2"] (선택)
  * }
@@ -115,7 +116,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     // 1. 권한 검증
-    const permCheck = await checkArchivingEditPermission();
+    const permCheck = await checkReferenceEditPermission();
     if (!permCheck.authorized) {
       return permCheck.error!;
     }
@@ -127,13 +128,14 @@ export async function POST(req: NextRequest) {
       description,
       url,
       image_url,
+      logo_url,
       range,
     } = body;
 
     // 3. 필수 필드 확인
-    if (!title || !url || !image_url) {
+    if (!title || !url || !image_url || !logo_url) {
       return NextResponse.json(
-        { error: "title, url, and image_url are required" },
+        { error: "title, url, image_url, and logo_url are required" },
         { status: 400 }
       );
     }
@@ -152,12 +154,13 @@ export async function POST(req: NextRequest) {
     const adminClient = createAdminClient();
 
     const { data, error } = await adminClient
-      .from("archiving")
+      .from("references")
       .insert({
         title,
         description: description || null,
         url,
         image_url,
+        logo_url,
         range: range || [],
         clicks: 0,
         author: permCheck.userId,
@@ -176,7 +179,7 @@ export async function POST(req: NextRequest) {
       data,
     });
   } catch (error: any) {
-    console.error("❌ Archiving 생성 에러:", error);
+    console.error("❌ Reference 생성 에러:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }

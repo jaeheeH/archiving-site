@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { checkArchivingEditPermission } from "@/lib/supabase/archiving-utils";
+import { checkReferenceEditPermission } from "@/lib/supabase/reference-utils";
 
 /**
- * DELETE /api/archiving/bulk
- * 아카이빙 일괄 삭제
+ * DELETE /api/references/bulk
+ * 레퍼런스 일괄 삭제
  * 권한: admin, sub_admin만
  * 
  * 요청 바디:
  * {
- *   "ids": [1, 2, 3, ...]  (아카이빙 ID 배열)
+ *   "ids": [1, 2, 3, ...]  (레퍼런스 ID 배열)
  * }
  * 
  * 응답:
@@ -22,7 +22,7 @@ import { checkArchivingEditPermission } from "@/lib/supabase/archiving-utils";
 export async function DELETE(req: NextRequest) {
   try {
     // 1. 권한 검증
-    const permCheck = await checkArchivingEditPermission();
+    const permCheck = await checkReferenceEditPermission();
     if (!permCheck.authorized) {
       return permCheck.error!;
     }
@@ -51,7 +51,7 @@ export async function DELETE(req: NextRequest) {
     const adminClient = createAdminClient();
 
     const { error } = await adminClient
-      .from("archiving")
+      .from("references")
       .delete()
       .in("id", ids);
 
@@ -65,7 +65,7 @@ export async function DELETE(req: NextRequest) {
       message: `Successfully deleted ${ids.length} items`,
     });
   } catch (error: any) {
-    console.error("❌ Archiving 일괄 삭제 에러:", error);
+    console.error("❌ Reference 일괄 삭제 에러:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }

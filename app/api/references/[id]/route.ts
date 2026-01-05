@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient as createServerClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { checkArchivingOwnershipOrAdmin } from "@/lib/supabase/archiving-utils";
+import { checkReferenceOwnershipOrAdmin } from "@/lib/supabase/reference-utils";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
 /**
- * GET /api/archiving/[id]
- * 아카이빙 단일 조회
+ * GET /api/references/[id]
+ * 레퍼런스 단일 조회
  * 권한: 모두 가능
  */
 export async function GET(req: NextRequest, { params }: Props) {
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, { params }: Props) {
     const supabase = await createServerClient();
 
     const { data, error } = await supabase
-      .from("archiving")
+      .from("references")
       .select(
         `
         id,
@@ -26,6 +26,7 @@ export async function GET(req: NextRequest, { params }: Props) {
         description,
         url,
         image_url,
+        logo_url,
         category,
         range,
         clicks,
@@ -39,7 +40,7 @@ export async function GET(req: NextRequest, { params }: Props) {
 
     if (error || !data) {
       return NextResponse.json(
-        { error: "Archiving not found" },
+        { error: "Reference not found" },
         { status: 404 }
       );
     }
@@ -49,7 +50,7 @@ export async function GET(req: NextRequest, { params }: Props) {
       data,
     });
   } catch (error: any) {
-    console.error("❌ Archiving 조회 에러:", error);
+    console.error("❌ Reference 조회 에러:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }
@@ -58,8 +59,8 @@ export async function GET(req: NextRequest, { params }: Props) {
 }
 
 /**
- * PUT /api/archiving/[id]
- * 아카이빙 수정
+ * PUT /api/references/[id]
+ * 레퍼런스 수정
  * 권한: 작성자, admin, sub_admin만
  * 
  * 요청 바디:
@@ -75,10 +76,10 @@ export async function GET(req: NextRequest, { params }: Props) {
 export async function PUT(req: NextRequest, { params }: Props) {
   try {
     const { id } = await params;
-    const archivingId = parseInt(id);
+    const referenceId = parseInt(id);
 
     // 1. 권한 검증 (작성자 또는 관리자)
-    const permCheck = await checkArchivingOwnershipOrAdmin(archivingId);
+    const permCheck = await checkReferenceOwnershipOrAdmin(referenceId);
     if (!permCheck.authorized) {
       return permCheck.error!;
     }
@@ -90,6 +91,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
       description,
       url,
       image_url,
+      logo_url,
       range,
     } = body;
 
@@ -110,6 +112,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
       }
     }
     if (image_url !== undefined) updateData.image_url = image_url;
+    if (logo_url !== undefined) updateData.logo_url = logo_url;
     if (range !== undefined) updateData.range = range;
     updateData.updated_at = new Date().toISOString();
 
@@ -117,9 +120,9 @@ export async function PUT(req: NextRequest, { params }: Props) {
     const adminClient = createAdminClient();
 
     const { data, error } = await adminClient
-      .from("archiving")
+      .from("references")
       .update(updateData)
-      .eq("id", archivingId)
+      .eq("id", referenceId)
       .select()
       .single();
 
@@ -132,7 +135,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
       data,
     });
   } catch (error: any) {
-    console.error("❌ Archiving 수정 에러:", error);
+    console.error("❌ Reference 수정 에러:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }
@@ -141,17 +144,17 @@ export async function PUT(req: NextRequest, { params }: Props) {
 }
 
 /**
- * DELETE /api/archiving/[id]
- * 아카이빙 삭제
+ * DELETE /api/references/[id]
+ * 레퍼런스 삭제
  * 권한: 작성자, admin, sub_admin만
  */
 export async function DELETE(req: NextRequest, { params }: Props) {
   try {
     const { id } = await params;
-    const archivingId = parseInt(id);
+    const referenceId = parseInt(id);
 
     // 1. 권한 검증
-    const permCheck = await checkArchivingOwnershipOrAdmin(archivingId);
+    const permCheck = await checkReferenceOwnershipOrAdmin(referenceId);
     if (!permCheck.authorized) {
       return permCheck.error!;
     }
@@ -160,9 +163,9 @@ export async function DELETE(req: NextRequest, { params }: Props) {
     const adminClient = createAdminClient();
 
     const { error } = await adminClient
-      .from("archiving")
+      .from("references")
       .delete()
-      .eq("id", archivingId);
+      .eq("id", referenceId);
 
     if (error) {
       throw error;
@@ -170,10 +173,10 @@ export async function DELETE(req: NextRequest, { params }: Props) {
 
     return NextResponse.json({
       success: true,
-      message: "Archiving deleted successfully",
+      message: "Reference deleted successfully",
     });
   } catch (error: any) {
-    console.error("❌ Archiving 삭제 에러:", error);
+    console.error("❌ Reference 삭제 에러:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }

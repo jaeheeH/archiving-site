@@ -5,11 +5,11 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ToastProvider";
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
-import ArchivingTableRow from "@/components/archiving/ArchivingTableRow";
-import ArchivingCreateModal from "@/components/archiving/ArchivingCreateModal";
-import ArchivingEditModal from "@/components/archiving/ArchivingEditModal";
+import ReferenceTableRow from "@/components/reference/ReferenceTableRow";
+import ReferenceCreateModal from "@/components/reference/ReferenceCreateModal";
+import ReferenceEditModal from "@/components/reference/ReferenceEditModal";
 
-type ArchivingItem = {
+type ReferenceItem = {
   id: number;
   title: string;
   description: string | null;
@@ -21,7 +21,7 @@ type ArchivingItem = {
   created_at: string;
 };
 
-function ArchivingContent() {
+function ReferenceContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -31,7 +31,7 @@ function ArchivingContent() {
   const pageFromUrl = Number(searchParams.get("page") || 1);
 
   // 데이터 상태
-  const [archiving, setArchiving] = useState<ArchivingItem[]>([]);
+  const [references, setReferences] = useState<ReferenceItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   // 페이지네이션
@@ -64,7 +64,7 @@ function ArchivingContent() {
   const loadCategories = async () => {
     try {
       setLoadingCategories(true);
-      const res = await fetch("/api/archiving-categories");
+      const res = await fetch("/api/references-categories");
 
       if (!res.ok) {
         throw new Error("범주 로드 실패");
@@ -90,10 +90,10 @@ function ArchivingContent() {
   };
 
   // 데이터 조회
-  const fetchArchiving = async (pageNum = 1) => {
+  const fetchReferences = async (pageNum = 1) => {
     try {
       setLoading(true);
-
+  
       const params = new URLSearchParams();
       params.set("page", String(pageNum));
       params.set("limit", String(limit));
@@ -102,29 +102,37 @@ function ArchivingContent() {
       if (selectedRange) {
         params.set("category", selectedRange);
       }
-
-      const res = await fetch(`/api/archiving?${params.toString()}`);
-
+  
+      const url = `/api/references?${params.toString()}`;
+      console.log("API 요청 URL:", url);
+  
+      const res = await fetch(url);
+      console.log("API 응답 상태:", res.status);
+  
       if (!res.ok) {
-        throw new Error("아카이빙 조회 실패");
+        const errorData = await res.json();
+        console.error("API 에러 응답:", errorData);
+        throw new Error(errorData.error || "레퍼런스 조회 실패");
       }
-
+  
       const data = await res.json();
-
-      setArchiving(data.data || []);
+      console.log("API 응답 데이터:", data);
+  
+      setReferences(data.data || []);
       setTotalPages(data.pagination.totalPages);
       setTotalCount(data.pagination.total);
-      setSelectedIds([]); // 페이지 변경 시 선택 초기화
+      setSelectedIds([]);
     } catch (error: any) {
       console.error("❌ Fetch 에러:", error);
-      addToast("아카이빙 조회 실패", "error");
+      addToast("레퍼런스 조회 실패", "error");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchArchiving(page);
+    console.log("fetchReferences 호출됨, page:", page);
+    fetchReferences(page);
   }, [page, selectedRange, sortBy, sortOrder]);
 
   // 개별 아이템 선택
@@ -139,7 +147,7 @@ function ArchivingContent() {
   // 모두 선택/해제
   const handleSelectAll = (selected: boolean) => {
     if (selected) {
-      setSelectedIds(archiving.map((item) => item.id));
+      setSelectedIds(references.map((item) => item.id));
     } else {
       setSelectedIds([]);
     }
@@ -148,7 +156,7 @@ function ArchivingContent() {
   // 개별 삭제
   const handleDelete = async (id: number) => {
     try {
-      const res = await fetch(`/api/archiving/${id}`, {
+      const res = await fetch(`/api/references/${id}`, {
         method: "DELETE",
       });
 
@@ -158,7 +166,7 @@ function ArchivingContent() {
       }
 
       addToast("삭제되었습니다!", "success");
-      fetchArchiving(page);
+      fetchReferences(page);
     } catch (error: any) {
       console.error("❌ 삭제 에러:", error);
       addToast(`삭제 실패: ${error.message}`, "error");
@@ -172,12 +180,12 @@ function ArchivingContent() {
       return;
     }
 
-    if (!confirm(`${selectedIds.length}개의 아카이빙을 삭제하시겠습니까?`)) {
+    if (!confirm(`${selectedIds.length}개의 레퍼런스를 삭제하시겠습니까?`)) {
       return;
     }
 
     try {
-      const res = await fetch("/api/archiving/bulk", {
+      const res = await fetch("/api/references/bulk", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ids: selectedIds }),
@@ -190,14 +198,14 @@ function ArchivingContent() {
 
       addToast(`${selectedIds.length}개 삭제되었습니다!`, "success");
       setSelectedIds([]);
-      fetchArchiving(page);
+      fetchReferences(page);
     } catch (error: any) {
       console.error("❌ 일괄 삭제 에러:", error);
       addToast(`삭제 실패: ${error.message}`, "error");
     }
   };
 
-  if (loading && archiving.length === 0) {
+  if (loading && references.length === 0) {
     return <div className="p-6">불러오는 중...</div>;
   }
 
@@ -205,7 +213,7 @@ function ArchivingContent() {
     <div>
       {/* 헤더 */}
       <header className="dashboard-Header">
-        <DashboardTitle title="아카이빙 목록" />
+        <DashboardTitle title="레퍼런스 목록" />
         <div className="flex gap-2 items-center">
           {selectedIds.length > 0 && (
             <button
@@ -304,8 +312,8 @@ function ArchivingContent() {
                   <input
                     type="checkbox"
                     checked={
-                      archiving.length > 0 &&
-                      selectedIds.length === archiving.length
+                      references.length > 0 &&
+                      selectedIds.length === references.length
                     }
                     onChange={(e) => handleSelectAll(e.target.checked)}
                     className="rounded cursor-pointer"
@@ -333,30 +341,33 @@ function ArchivingContent() {
               </tr>
             </thead>
             <tbody>
-              {archiving.length > 0 ? (
-                archiving.map((item) => (
-                  <ArchivingTableRow
-                    key={item.id}
-                    id={item.id}
-                    title={item.title}
-                    description={item.description}
-                    url={item.url}
-                    image_url={item.image_url}
-                    clicks={item.clicks}
-                    created_at={item.created_at}
-                    isSelected={selectedIds.includes(item.id)}
-                    onSelect={handleSelectItem}
-                    onEdit={() => setEditingId(item.id)}
-                    onDelete={handleDelete}
-                  />
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={7} className="p-6 text-center text-gray-500">
-                    아카이빙이 없습니다.
-                  </td>
-                </tr>
-              )}
+            {references.length > 0 ? (
+  references.map((item) => {
+    console.log("렌더링하는 item:", item);
+    return (
+      <ReferenceTableRow
+        key={item.id}
+        id={item.id}
+        title={item.title}
+        description={item.description}
+        url={item.url}
+        image_url={item.image_url}
+        clicks={item.clicks}
+        created_at={item.created_at}
+        isSelected={selectedIds.includes(item.id)}
+        onSelect={handleSelectItem}
+        onEdit={() => setEditingId(item.id)}
+        onDelete={handleDelete}
+      />
+    );
+  })
+) : (
+  <tr>
+    <td colSpan={7} className="p-6 text-center text-gray-500">
+      레퍼런스가 없습니다.
+    </td>
+  </tr>
+)}
             </tbody>
           </table>
         </div>
@@ -404,24 +415,24 @@ function ArchivingContent() {
       </div>
 
       {/* 생성 모달 */}
-      <ArchivingCreateModal
+      <ReferenceCreateModal
         open={createModalOpen}
         onClose={() => setCreateModalOpen(false)}
         onSuccess={() => {
           setCreateModalOpen(false);
           setPage(1);
-          fetchArchiving(1);
+          fetchReferences(1);
         }}
       />
 
       {/* 수정 모달 */}
       {editingId !== null && (
-        <ArchivingEditModal
+        <ReferenceEditModal
           id={editingId}
           onClose={() => setEditingId(null)}
           onSuccess={() => {
             setEditingId(null);
-            fetchArchiving(page);
+            fetchReferences(page);
           }}
         />
       )}
@@ -429,10 +440,10 @@ function ArchivingContent() {
   );
 }
 
-export default function ArchivingPage() {
+export default function ReferencePage() {
   return (
     <Suspense fallback={<div className="p-6">불러오는 중...</div>}>
-      <ArchivingContent />
+      <ReferenceContent />
     </Suspense>
   );
 }

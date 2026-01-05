@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient as createServerClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { checkArchivingEditPermission } from "@/lib/supabase/archiving-utils";
+import { checkReferenceEditPermission } from "@/lib/supabase/reference-utils";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
 /**
- * GET /api/archiving-categories/[id]
- * 아카이빙 범주 단일 조회
+ * GET /api/references-categories/[id]
+ * 레퍼런스 범주 단일 조회
  * 권한: 모두 가능
  */
 export async function GET(req: NextRequest, { params }: Props) {
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, { params }: Props) {
     const supabase = await createServerClient();
 
     const { data, error } = await supabase
-      .from("archiving_categories")
+      .from("reference_categories")
       .select("id, name, description, created_at")
       .eq("id", parseInt(id))
       .single();
@@ -35,7 +35,7 @@ export async function GET(req: NextRequest, { params }: Props) {
       data,
     });
   } catch (error: any) {
-    console.error("❌ 아카이빙 범주 조회 에러:", error);
+    console.error("❌ 레퍼런스 범주 조회 에러:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }
@@ -44,8 +44,8 @@ export async function GET(req: NextRequest, { params }: Props) {
 }
 
 /**
- * PUT /api/archiving-categories/[id]
- * 아카이빙 범주 수정
+ * PUT /api/references-categories/[id]
+ * 레퍼런스 범주 수정
  * 권한: admin, sub_admin만
  * 
  * 요청 바디:
@@ -60,7 +60,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
     const categoryId = parseInt(id);
 
     // 1. 권한 검증
-    const permCheck = await checkArchivingEditPermission();
+    const permCheck = await checkReferenceEditPermission();
     if (!permCheck.authorized) {
       return permCheck.error!;
     }
@@ -81,7 +81,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
     const adminClient = createAdminClient();
 
     const { data, error } = await adminClient
-      .from("archiving_categories")
+      .from("reference_categories")
       .update({
         name: name.trim(),
         description: description?.trim() || null,
@@ -114,7 +114,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
       data,
     });
   } catch (error: any) {
-    console.error("❌ 아카이빙 범주 수정 에러:", error);
+    console.error("❌ 레퍼런스 범주 수정 에러:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }
@@ -123,8 +123,8 @@ export async function PUT(req: NextRequest, { params }: Props) {
 }
 
 /**
- * DELETE /api/archiving-categories/[id]
- * 아카이빙 범주 삭제
+ * DELETE /api/references-categories/[id]
+ * 레퍼런스 범주 삭제
  * 권한: admin, sub_admin만
  */
 export async function DELETE(req: NextRequest, { params }: Props) {
@@ -133,7 +133,7 @@ export async function DELETE(req: NextRequest, { params }: Props) {
     const categoryId = parseInt(id);
 
     // 1. 권한 검증
-    const permCheck = await checkArchivingEditPermission();
+    const permCheck = await checkReferenceEditPermission();
     if (!permCheck.authorized) {
       return permCheck.error!;
     }
@@ -142,7 +142,7 @@ export async function DELETE(req: NextRequest, { params }: Props) {
     const adminClient = createAdminClient();
 
     const { error } = await adminClient
-      .from("archiving_categories")
+      .from("reference_categories")
       .delete()
       .eq("id", categoryId);
 
@@ -155,7 +155,7 @@ export async function DELETE(req: NextRequest, { params }: Props) {
       message: "Category deleted successfully",
     });
   } catch (error: any) {
-    console.error("❌ 아카이빙 범주 삭제 에러:", error);
+    console.error("❌ 레퍼런스 범주 삭제 에러:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }

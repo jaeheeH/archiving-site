@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-interface ArchivingTableRowProps {
+interface ReferenceTableRowProps {
   id: number;
   title: string;
   description: string | null;
@@ -16,7 +16,7 @@ interface ArchivingTableRowProps {
   onDelete: (id: number) => void;
 }
 
-export default function ArchivingTableRow({
+export default function ReferenceTableRow({
   id,
   title,
   description,
@@ -28,7 +28,7 @@ export default function ArchivingTableRow({
   onSelect,
   onEdit,
   onDelete,
-}: ArchivingTableRowProps) {
+}: ReferenceTableRowProps) {
   // URL 도메인 추출 (표시용)
   const getDisplayUrl = (urlString: string) => {
     try {
@@ -138,7 +138,7 @@ export default function ArchivingTableRow({
       <td className="p-3">
         <button
           onClick={() => {
-            if (confirm("이 아카이빙을 삭제하시겠습니까?")) {
+            if (confirm("이 레퍼런스를 삭제하시겠습니까?")) {
               onDelete(id);
             }
           }}

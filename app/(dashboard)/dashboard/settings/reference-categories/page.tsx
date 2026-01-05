@@ -3,8 +3,8 @@
 import { useEffect, useState, Suspense } from "react";
 import { useToast } from "@/components/ToastProvider";
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
-import ArchivingCategoryRow from "@/components/archiving/ArchivingCategoryRow";
-import ArchivingCategoryModal from "@/components/archiving/ArchivingCategoryModal";
+import ReferenceCategoryRow from "@/components/reference/ReferenceCategoryRow";
+import ReferenceCategoryModal from "@/components/reference/ReferenceCategoryModal";
 
 type Category = {
   id: number;
@@ -13,7 +13,7 @@ type Category = {
   created_at: string;
 };
 
-function ArchivingCategoryContent() {
+function ReferenceCategoryContent() {
   const { addToast } = useToast();
 
   const [categories, setCategories] = useState<Category[]>([]);
@@ -28,7 +28,7 @@ function ArchivingCategoryContent() {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/archiving-categories");
+      const res = await fetch("/api/references-categories");
 
       if (!res.ok) {
         throw new Error("범주 목록 조회 실패");
@@ -65,7 +65,7 @@ function ArchivingCategoryContent() {
   // 삭제
   const handleDelete = async (id: number) => {
     try {
-      const res = await fetch(`/api/archiving-categories/${id}`, {
+      const res = await fetch(`/api/references-categories/${id}`, {
         method: "DELETE",
       });
 
@@ -139,7 +139,7 @@ function ArchivingCategoryContent() {
             <tbody>
               {categories.length > 0 ? (
                 categories.map((category) => (
-                  <ArchivingCategoryRow
+                  <ReferenceCategoryRow
                     key={category.id}
                     id={category.id}
                     name={category.name}
@@ -167,7 +167,7 @@ function ArchivingCategoryContent() {
       </div>
 
       {/* 모달 */}
-      <ArchivingCategoryModal
+      <ReferenceCategoryModal
         open={modalOpen}
         mode={modalMode}
         id={editingId || undefined}
@@ -178,10 +178,10 @@ function ArchivingCategoryContent() {
   );
 }
 
-export default function ArchivingCategoryPage() {
+export default function ReferenceCategoryPage() {
   return (
     <Suspense fallback={<div className="p-6">불러오는 중...</div>}>
-      <ArchivingCategoryContent />
+      <ReferenceCategoryContent />
     </Suspense>
   );
 }

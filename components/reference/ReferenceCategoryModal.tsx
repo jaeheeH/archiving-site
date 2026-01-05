@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ToastProvider";
 
-interface ArchivingCategoryModalProps {
+interface ReferenceCategoryModalProps {
   open: boolean;
   mode: "create" | "edit";
   id?: number;
@@ -11,13 +11,13 @@ interface ArchivingCategoryModalProps {
   onSuccess?: () => void;
 }
 
-export default function ArchivingCategoryModal({
+export default function ReferenceCategoryModal({
   open,
   mode,
   id,
   onClose,
   onSuccess,
-}: ArchivingCategoryModalProps) {
+}: ReferenceCategoryModalProps) {
   const { addToast } = useToast();
 
   const [name, setName] = useState("");
@@ -35,7 +35,7 @@ export default function ArchivingCategoryModal({
   const loadData = async () => {
     try {
       setInitialLoading(true);
-      const res = await fetch(`/api/archiving-categories/${id}`);
+      const res = await fetch(`/api/references-categories/${id}`);
 
       if (!res.ok) {
         throw new Error("데이터를 불러올 수 없습니다.");
@@ -64,8 +64,8 @@ export default function ArchivingCategoryModal({
 
       const url =
         mode === "create"
-          ? "/api/archiving-categories"
-          : `/api/archiving-categories/${id}`;
+          ? "/api/references-categories"
+          : `/api/references-categories/${id}`;
 
       const method = mode === "create" ? "POST" : "PUT";
 

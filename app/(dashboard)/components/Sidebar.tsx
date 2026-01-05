@@ -21,8 +21,8 @@ export default function Sidebar() {
       href: "/dashboard/contents",
       children: [
         { label: "갤러리", href: "/dashboard/contents/gallery" },
-        { label: "아카이빙", href: "/dashboard/contents/archive" },
         { label: "블로그", href: "/dashboard/contents/blog" },
+        { label: "레퍼런스", href: "/dashboard/contents/references" },
       ],
     },
     {
@@ -31,7 +31,7 @@ export default function Sidebar() {
       href: "/dashboard/analytics",
       children: [
         { label: "갤러리", href: "/dashboard/analytics/default" },
-        { label: "아카이빙", href: "/dashboard/analytics/archive" },
+        { label: "레퍼런스", href: "/dashboard/analytics/references" },
         { label: "아이템3", href: "/dashboard/analytics/item3" },
       ],
     },
@@ -47,7 +47,7 @@ export default function Sidebar() {
       href: "/dashboard/setting",
       children: [
         { label: "SEO(검색엔진최적화)", href: "/dashboard/settings/seo" },
-        { label: "아카이빙 카테고리 관리", href: "/dashboard/settings/archiving-categories" },
+        { label: "레퍼런스 카테고리 관리", href: "/dashboard/settings/reference-categories" },
         { label: "약관", href: "/dashboard/setting/etc" },
       ],
     }

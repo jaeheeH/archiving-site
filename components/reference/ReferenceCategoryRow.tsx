@@ -1,6 +1,6 @@
 "use client";
 
-interface ArchivingCategoryRowProps {
+interface ReferenceCategoryRowProps {
   id: number;
   name: string;
   description: string | null;
@@ -9,14 +9,14 @@ interface ArchivingCategoryRowProps {
   onDelete: (id: number) => void;
 }
 
-export default function ArchivingCategoryRow({
+export default function ReferenceCategoryRow({
   id,
   name,
   description,
   created_at,
   onEdit,
   onDelete,
-}: ArchivingCategoryRowProps) {
+}: ReferenceCategoryRowProps) {
   // 날짜 포맷
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("ko-KR", {
