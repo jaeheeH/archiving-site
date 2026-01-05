@@ -52,7 +52,7 @@ export default function Header() {
   const menuItems = [
     { label: "Gallery", href: "/gallery" },
     { label: "Blog", href: "/blog" },
-    { label: "Reference", href: "/reference" },
+    { label: "Reference", href: "/references" },
   ];
 
   // 현재 경로에서 활성 메뉴 판단
