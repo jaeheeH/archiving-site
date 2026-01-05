@@ -3,18 +3,13 @@ import { createClient as createServerClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkReferenceEditPermission } from "@/lib/supabase/reference-utils";
 
+// 👇 [핵심 수정] 이 줄을 추가해야 매번 최신 DB 데이터를 가져옵니다.
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/references
  * 레퍼런스 목록 조회 (페이지네이션 + 필터링 + 정렬)
  * 권한: 모두 가능
- * 
- * 쿼리 파라미터:
- * - page: 페이지 번호 (기본값: 1)
- * - limit: 페이지당 개수 (기본값: 10)
- * - category: 카테고리로 필터
- * - sort: 정렬 기준 (created_at, clicks, title, 기본값: created_at)
- * - order: 정렬 순서 (asc, desc, 기본값: desc)
- * - search: 제목/설명 검색
  */
 export async function GET(req: NextRequest) {
   try {
@@ -101,17 +96,6 @@ export async function GET(req: NextRequest) {
  * POST /api/references
  * 레퍼런스 아이템 생성
  * 권한: admin, sub_admin만
- * 
- * 요청 바디:
- * {
- *   "title": "제목 (필수)",
- *   "description": "설명 (선택)",
- *   "url": "https://... (필수)",
- *   "image_url": "이미지 URL (필수)",
- *   "logo_url": "로고 URL (필수)",
- *   "category": "카테고리 (선택)",
- *   "range": ["범주1", "범주2"] (선택)
- * }
  */
 export async function POST(req: NextRequest) {
   try {

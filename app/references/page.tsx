@@ -135,29 +135,83 @@ function ReferenceContent() {
     }
   };
 
-  // 클릭 트래킹
-  const handleReferenceClick = async (reference: Reference) => {
-    const today = new Date().toDateString();
-    const storageKey = `reference_clicks_${today}`;
-    const alreadyClicked = clickedToday.has(reference.id);
+// 클릭 트래킹 함수 수정
+const handleReferenceClick = async (reference: Reference) => {
+  const today = new Date().toDateString();
+  const storageKey = `reference_clicks_${today}`;
+  
+  // 디버깅용 로그: 현재 클릭 상태 확인
+  console.log(`🖱️ Clicked ID: ${reference.id}`);
+  
+  // 이미 클릭했는지 확인
+  const alreadyClicked = clickedToday.has(reference.id);
+  
+  if (alreadyClicked) {
+    console.log("⚠️ 오늘 이미 클릭한 레퍼런스입니다. (API 요청 생략)");
+    return; 
+  }
 
-    if (!alreadyClicked) {
-      const newClicked = new Set(clickedToday);
-      newClicked.add(reference.id);
-      setClickedToday(newClicked);
-      localStorage.setItem(storageKey, JSON.stringify(Array.from(newClicked)));
+  if (!alreadyClicked) {
+    // 1. 로컬 스토리지 저장 (기존 코드)
+    const newClicked = new Set(clickedToday);
+    newClicked.add(reference.id);
+    setClickedToday(newClicked);
+    localStorage.setItem(storageKey, JSON.stringify(Array.from(newClicked)));
 
-      try {
-        await fetch(`/api/references/${reference.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ clicks: reference.clicks + 1 }),
-        });
-      } catch (error) {
-        console.error("❌ 클릭 기록 에러:", error);
+    // ✨ [추가] 화면의 숫자 즉시 +1 업데이트 (Optimistic Update)
+    setReferences(prev => prev.map(ref => 
+      ref.id === reference.id 
+        ? { ...ref, clicks: (ref.clicks || 0) + 1 } 
+        : ref
+    ));
+
+    // 2. API 요청 (기존 코드 + 응답 확인 추가)
+    try {
+      const res = await fetch(`/api/references/${reference.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clicks: reference.clicks + 1 }),
+        keepalive: true,
+      });
+
+      // ✨ [추가] 서버가 진짜 성공했는지 확인
+      if (!res.ok) {
+         console.error("❌ 서버 에러 발생:", res.status);
+         // 실패했다면 다시 숫자를 되돌리거나 에러 처리
+      } else {
+         console.log("✅ DB 업데이트 성공 확인");
       }
+    } catch (error) {
+      console.error("❌ 네트워크 에러:", error);
     }
-  };
+  }
+
+  // 1. 로컬 스토리지 및 상태 즉시 업데이트 (UI 반응성)
+  const newClicked = new Set(clickedToday);
+  newClicked.add(reference.id);
+  setClickedToday(newClicked);
+  localStorage.setItem(storageKey, JSON.stringify(Array.from(newClicked)));
+
+  // 2. API 요청 전송
+  try {
+    // keepalive: true 옵션이 핵심입니다.
+    // 페이지가 닫히거나 이동해도 요청을 끝까지 보냅니다.
+    await fetch(`/api/references/${reference.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        // 안전장치: reference.clicks가 혹시 null/undefined면 0으로 처리
+        clicks: (reference.clicks || 0) + 1 
+      }),
+      keepalive: true, 
+    });
+    console.log("✅ 클릭 카운트 업데이트 요청 전송 완료");
+    
+  } catch (error) {
+    console.error("❌ 클릭 기록 에러:", error);
+    // 에러 시 로컬 스토리지 롤백 로직이 필요하다면 여기에 추가
+  }
+};
 
   // 필터링
   const filteredReferences = selectedCategory === 'all'
