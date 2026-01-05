@@ -48,7 +48,7 @@ export default async function RootLayout({
         {settings?.favicon_url && (
           <link rel="icon" href={settings.favicon_url} />
         )}
-        
+                <meta name="p:domain_verify" content="a1385cca1b4c87b9e9f53b214e8fd264"/>
         {/* Apple Touch Icon */}
         {settings?.apple_touch_icon_url && (
           <link rel="apple-touch-icon" href={settings.apple_touch_icon_url} />

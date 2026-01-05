@@ -65,7 +65,7 @@ export default function Header() {
   return (
     <header className="client-header sticky top-0 z-10">
       <div className="contents">
-        <meta name="p:domain_verify" content="a1385cca1b4c87b9e9f53b214e8fd264"/>
+
         <div className="client-header-left">
           <Link href="/" className="client-header-logo flex gap-4">
             <img src="/logo.png" alt="" className="h-4" />
