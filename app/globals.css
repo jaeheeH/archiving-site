@@ -144,20 +144,3 @@ html, body {
   }
 }
 
-
-table {
-  @apply w-full border-collapse;
-}
-
-table th,
-table td {
-  @apply border border-gray-300 p-2;
-}
-
-table th {
-  @apply bg-gray-100 font-semibold text-left;
-}
-
-table tr:hover {
-  @apply bg-gray-50;
-}

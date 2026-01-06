@@ -62,7 +62,7 @@ export default function Footer() {
               <li className="flex items-center gap-2">
                 <i className="ri-mail-line text-lg"></i>
                 <a href="mailto:contact@archbehind.com" className="hover:text-black transition-colors">
-                  contact@archbehind.com
+                archbehind@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-2">
