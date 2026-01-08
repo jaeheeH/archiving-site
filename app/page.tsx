@@ -36,7 +36,7 @@ export default function Home() {
       </section>
       {/* 갤러리 섹션 */}
       <section className="contents mx-auto py-20 mainSection">
-        <div className="mb-6 flex flex-col md:flex-ro md:items-end justify-between gap-4">
+        <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <h2 className="text-xl font-bold">
               Generative Archive
