@@ -233,8 +233,7 @@ function GalleryContent() {
       {/* 헤더 섹션 */}
       <div className="max-w-7xl mx-auto mb-10 px-4 md:px-0">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4 font-sans uppercase">
-          Generative Archive<br />
-          <span className="text-gray-400 font-light">Prompt to Pixel</span>
+          Generative Archive
         </h1>
         <p className="text-gray-500 text-lg max-w-2xl leading-relaxed">
           텍스트로 그려낸 상상의 단면들을 기록합니다.<br />

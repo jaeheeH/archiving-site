@@ -248,6 +248,23 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
           setPreviousSlug(slug);
         }
 
+        // ✨ ISR 재검증 호출 (새로 추가)
+        try {
+          const revalidateRes = await fetch('/api/posts/revalidate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ slug }),
+          });
+
+          if (!revalidateRes.ok) {
+            console.warn('⚠️ ISR 재검증 실패:', await revalidateRes.text());
+          } else {
+            console.log('✅ ISR 재검증 완료:', slug);
+          }
+        } catch (error) {
+          console.warn('⚠️ ISR 재검증 중 오류:', error);
+        }
+
         addToast(
           isPublish ? '발행되었습니다!' : '저장되었습니다.',
           'success'

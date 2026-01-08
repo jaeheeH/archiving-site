@@ -57,6 +57,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             className={`
               toast-ui relative flex items-center justify-between gap-3 
               px-4 py-4 rounded shadow-lg text-white animate-slide-in min-w-[260px]
+              bg-gray-900
               toast-${toast.type}
             `}
           >

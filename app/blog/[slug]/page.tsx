@@ -9,6 +9,33 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
+// ⚡ ISR 설정: 24시간마다 재검증
+export const revalidate = 86400; // 24시간 (86400초)
+
+// 정적 생성할 slug 목록 미리 가져오기
+export async function generateStaticParams() {
+  try {
+    const supabase = await createClient();
+    
+    const { data: posts, error } = await supabase
+      .from('posts')
+      .select('slug')
+      .eq('is_published', true);
+
+    if (error) {
+      console.error('Failed to fetch posts for static generation:', error);
+      return [];
+    }
+
+    return (posts || []).map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.error('Error in generateStaticParams:', error);
+    return [];
+  }
+}
+
 // 동적 메타데이터 생성
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
@@ -27,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://from-archiving.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://archbehind.com/";
   const pageUrl = `${baseUrl}/blog/${slug}`;
   
   // thumbnail_url 또는 title_image_url 사용 (우선순위: thumbnail_url > title_image_url)

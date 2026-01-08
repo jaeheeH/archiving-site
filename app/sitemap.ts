@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createClient();
   const settings = await getSiteSettings();
   
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://from-archiving.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.archbehind.com/";
 
   // 정적 페이지들
   const staticPages: MetadataRoute.Sitemap = [

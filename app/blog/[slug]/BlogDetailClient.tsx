@@ -38,6 +38,68 @@ interface Category {
   name: string;
 }
 
+// 로컬스토리지에서 조회 기록 관리하는 유틸리티
+const ViewedPostsManager = {
+  KEY: 'viewed_posts_24h',
+
+  // 조회한 글 목록 가져오기
+  getViewedPosts(): Record<string, string> {
+    if (typeof window === 'undefined') return {};
+    try {
+      const stored = localStorage.getItem(this.KEY);
+      return stored ? JSON.parse(stored) : {};
+    } catch (error) {
+      console.error('Failed to get viewed posts:', error);
+      return {};
+    }
+  },
+
+  // 해당 글이 24시간 내에 조회됐는지 확인
+  isViewedWithin24Hours(slug: string): boolean {
+    const viewedPosts = this.getViewedPosts();
+    const lastViewTime = viewedPosts[slug];
+
+    if (!lastViewTime) return false;
+
+    const now = new Date().getTime();
+    const lastView = new Date(lastViewTime).getTime();
+    const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
+
+    return now - lastView < twentyFourHoursInMs;
+  },
+
+  // 조회 기록 저장
+  recordView(slug: string): void {
+    const viewedPosts = this.getViewedPosts();
+    viewedPosts[slug] = new Date().toISOString();
+    try {
+      localStorage.setItem(this.KEY, JSON.stringify(viewedPosts));
+    } catch (error) {
+      console.error('Failed to save viewed posts:', error);
+    }
+  },
+
+  // 만료된 기록 정리
+  cleanupExpiredRecords(): void {
+    const viewedPosts = this.getViewedPosts();
+    const now = new Date().getTime();
+    const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
+
+    Object.entries(viewedPosts).forEach(([slug, timestamp]) => {
+      const lastView = new Date(timestamp).getTime();
+      if (now - lastView >= twentyFourHoursInMs) {
+        delete viewedPosts[slug];
+      }
+    });
+
+    try {
+      localStorage.setItem(this.KEY, JSON.stringify(viewedPosts));
+    } catch (error) {
+      console.error('Failed to cleanup expired records:', error);
+    }
+  },
+};
+
 export default function BlogDetailClient() {
   const params = useParams();
   const router = useRouter();
@@ -118,7 +180,7 @@ export default function BlogDetailClient() {
       try {
         const images = document.querySelectorAll('.tiptap-content img');
         console.log('Found images:', images.length);
-        
+
         images.forEach((img: Element) => {
           const src = img.getAttribute('src');
           if (src && src.includes('supabase.co')) {
@@ -128,21 +190,21 @@ export default function BlogDetailClient() {
               format: 'webp',
               quality: 75,
             });
-            
+
             // 반응형 srcset 생성
             const srcset = [
               `${optimizeImageUrl(src, { width: 400, format: 'webp', quality: 75 })} 400w`,
               `${optimizeImageUrl(src, { width: 800, format: 'webp', quality: 75 })} 800w`,
               `${optimizeImageUrl(src, { width: 1200, format: 'webp', quality: 75 })} 1200w`,
             ].join(', ');
-            
+
             // 속성 적용
             img.setAttribute('src', optimizedSrc);
             img.setAttribute('srcset', srcset);
             img.setAttribute('sizes', '(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1200px');
             img.setAttribute('loading', 'lazy');
             img.setAttribute('decoding', 'async');
-            
+
             console.log('Optimized image:', {
               original: src,
               optimized: optimizedSrc,
@@ -206,28 +268,54 @@ export default function BlogDetailClient() {
   const recordView = async () => {
     if (!post) return;
 
-    try {
-      const res = await fetch(`/api/posts/${post.id}/view`, {
-        method: 'POST',
-      });
+    // 🔄 로컬스토리지 정리
+    ViewedPostsManager.cleanupExpiredRecords();
 
-      const data = await res.json();
+    // 로그인 여부 확인
+    if (user) {
+      // 🔵 로그인 사용자: DB에 저장
+      try {
+        const res = await fetch(`/api/posts/${post.id}/view`, {
+          method: 'POST',
+        });
 
-      if (res.ok) {
-        console.log('✅ View count response:', data);
-        setViewCount(data.viewCount);
-      } else {
-        // console.error('❌ View count error:', {
-        //   status: res.status,
-        //   data: data
-        // });
-        // 에러여도 현재 조회수는 표시
-        if (data.viewCount !== undefined) {
+        const data = await res.json();
+
+        if (res.ok && data.incremented) {
+          console.log('✅ 조회수 증가 (로그인 사용자):', data.viewCount);
+          setViewCount(data.viewCount);
+        } else if (!data.incremented) {
+          console.log('⏭️ 24시간 내 이미 조회함 (로그인 사용자)');
           setViewCount(data.viewCount);
         }
+      } catch (error) {
+        console.error('❌ 로그인 사용자 조회수 기록 실패:', error);
       }
-    } catch (error) {
-      console.error('❌ Failed to record view:', error);
+    } else {
+      // 🟡 비로그인 사용자: 로컬스토리지에서 체크
+      if (ViewedPostsManager.isViewedWithin24Hours(slug)) {
+        console.log('⏭️ 24시간 내 이미 조회함 (비로그인)');
+        return;
+      }
+
+      // 조회 기록 저장
+      ViewedPostsManager.recordView(slug);
+
+      // 조회수 증가 (API 호출)
+      try {
+        const res = await fetch(`/api/posts/${post.id}/view`, {
+          method: 'POST',
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          console.log('✅ 조회수 증가 (비로그인):', data.viewCount);
+          setViewCount(data.viewCount);
+        }
+      } catch (error) {
+        console.error('❌ 비로그인 사용자 조회수 기록 실패:', error);
+      }
     }
   };
 
@@ -316,7 +404,7 @@ export default function BlogDetailClient() {
         {post.subtitle && (
           <p className=" text-gray-600 mb-2">{post.subtitle}</p>
         )}
-        
+
         {/* Title */}
         <h1 className="text-2xl md:text-2xl font-bold text-gray-900 mb-4">
           {post.title}

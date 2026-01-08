@@ -65,33 +65,35 @@ async function moveImagesToPostFolder(
 }
 
 // GET: 포스트 목록 조회
+// GET: 포스트 목록 조회
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type') || 'blog';
     const limit = parseInt(searchParams.get('limit') || '12', 10);
     const offset = parseInt(searchParams.get('offset') || '0', 10);
+    const categoryId = searchParams.get('category_id'); // 1. 카테고리 ID 추출
 
     const supabase = createSupabaseClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
 
-    // 1. 발행된 글의 총 개수 조회
-    const { count } = await supabase
+    // 2. 쿼리 빌더 초기화 및 기본 필터 적용
+    let query = supabase
       .from('posts')
-      .select('*', { count: 'exact', head: true })
+      .select('id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id', { count: 'exact' })
       .eq('type', type)
       .eq('is_published', true)
       .not('published_at', 'is', null);
 
-    // 2. 페이지네이션된 데이터 조회
-    const { data, error } = await supabase
-      .from('posts')
-      .select('id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id')
-      .eq('type', type)
-      .eq('is_published', true)
-      .not('published_at', 'is', null)
+    // 3. 카테고리 필터가 있고 'all'이 아닐 경우 조건 추가
+    if (categoryId && categoryId !== 'all') {
+      query = query.eq('category_id', categoryId);
+    }
+
+    // 4. 정렬 및 범위를 지정하여 데이터와 전체 개수 조회
+    const { data, error, count } = await query
       .order('published_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
