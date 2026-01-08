@@ -67,7 +67,7 @@ export function getDefaultMetadata(settings: SiteSettings | null) {
   const siteDescription =
     settings?.site_description ||
     "다양한 디자인과 아이디어를 한곳에 모았습니다.";
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://from-archiving.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.archbehind.com";
 
   // verification.other 객체 생성 (undefined 제거)
   const verificationOther: { [key: string]: string } = {};
