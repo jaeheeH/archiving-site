@@ -27,8 +27,8 @@ function HomeGallerySkeleton() {
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
       {Array.from({ length: 10 }).map((_, i) => (
         <div key={i} className="aspect-square bg-gray-200 rounded-lg animate-pulse relative overflow-hidden">
-           {/* 내부 은은한 빛 효과 */}
-           <div className="absolute inset-0 bg-gradient-to-tr from-gray-200 via-gray-100 to-gray-200 opacity-50"></div>
+          {/* 내부 은은한 빛 효과 */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-gray-200 via-gray-100 to-gray-200 opacity-50"></div>
         </div>
       ))}
     </div>
@@ -68,23 +68,9 @@ export default function HomeGallerySection() {
   };
 
   return (
-    <section className="py-20 px-4 md:px-0 bg-white">
-      <div className="max-w-7xl mx-auto">
+    <div className="">
         {/* 헤더 섹션 (다른 페이지와 통일감 부여) */}
-        <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-2 font-sans uppercase">
-              Discover Archive
-            </h2>
-            <p className="text-gray-500 text-lg">
-              영감을 주는 무작위 큐레이션
-            </p>
-          </div>
-          {/* 더보기 버튼 (선택 사항) */}
-          <a href="/gallery" className="text-sm font-medium text-gray-900 border-b border-gray-900 pb-0.5 hover:text-gray-600 hover:border-gray-600 transition-colors self-start md:self-end">
-            View All Gallery &rarr;
-          </a>
-        </div>
+
 
         {/* 컨텐츠 영역 */}
         {loading ? (
@@ -133,6 +119,7 @@ export default function HomeGallerySection() {
             ))}
           </div>
         )}
+      <div className="max-w-7xl mx-auto">
       </div>
 
       {/* 상세 모달 */}
@@ -143,6 +130,6 @@ export default function HomeGallerySection() {
           onChangeId={setSelectedGalleryId}
         />
       )}
-    </section>
+    </div>
   );
 }

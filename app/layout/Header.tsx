@@ -88,7 +88,7 @@ export default function Header() {
           ))}
 
           {/* 다크모드 토글 버튼 */}
-          <button
+          {/* <button
             onClick={toggleDarkMode}
             className="client-header-dark-toggle"
             title={isDark ? "라이트 모드" : "다크 모드"}
@@ -99,7 +99,7 @@ export default function Header() {
             ) : (
               <i className="ri-moon-line"></i>
             )}
-          </button>
+          </button> */}
         </nav>
       </div>
     </header>

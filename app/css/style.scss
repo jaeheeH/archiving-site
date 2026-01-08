@@ -1,18 +1,27 @@
 
 
 $container : 1280px;
+$primary-color : #ff4800;
+$containerPadding: calc(1280px + 48px); 
 
 .contents{
   width: 100%;
   max-width: $container;
+  display: block;
+}
+
+.contents-padding{
+  max-width: $containerPadding;
   width: 100%;
   display: block;
 }
 
+.text-primary{ color: $primary-color; }
+
 header{
 
   background: var(--background);
-
+  border-bottom: 1px solid #ddd;
   .contents{
     max-width: $container;
     margin: 0 auto;
@@ -20,6 +29,7 @@ header{
     display: flex;
 
     height: 64px; align-items: center;
+
 
     .client-header-left{
       .client-header-logo{
@@ -34,7 +44,8 @@ header{
       text-transform: uppercase;
 
       .active{
-        
+        color: $primary-color;
+        font-weight: 600;
       }
     }
   }
@@ -42,5 +53,11 @@ header{
 
 .dark .header{
 
+}
+
+@media all and (max-width:768px){
+  .contents{
+    padding: 0 16px;
+  }
 }
 

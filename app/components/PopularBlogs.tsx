@@ -75,7 +75,7 @@ export default function PopularBlogs() {
 
   if (loading) {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 ">
         <div className="h-6 bg-gray-200 rounded animate-pulse" />
         <div className="space-y-3">
           {[...Array(5)].map((_, i) => (
@@ -87,15 +87,14 @@ export default function PopularBlogs() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="pt-6 mainPopularBlog">
       {/* 제목 */}
-      <div className='mb-8'>
-        <h2 className="text-2xl font-bold mb-2">인기 콘텐츠</h2>
-        <p className="text-sm text-gray-500">조회수가 많은 글을 모았습니다</p>
+      <div className='mb-6'>
+        <h2 className="text-xl font-bold">인기 콘텐츠</h2>
       </div>
 
       {/* 블로그 목록 */}
-      <div className="space-y-4 mb-8">
+      <div className="space-y-4 mainPopularBlogItems">
         {posts.map((post, index) => {
           const categoryName = post.category_id
             ? categories.get(post.category_id)
@@ -117,21 +116,19 @@ export default function PopularBlogs() {
               <div className="flex gap-4 pb-4 border-b border-gray-200 hover:border-gray-400 transition">
                 {/* 번호 */}
                 <div className="flex-shrink-0 w-8 text-center">
-                  <i className="text-lg font-bold text-gray-400 group-hover:text-gray-600">
-                    {index + 1}
-                  </i>
+                  <p className="text-lg font-bold text-gray-400 text-primary">
+                    0{index + 1}
+                  </p>
                 </div>
 
                 {/* 콘텐츠 */}
                 <div className="flex-1 min-w-0">
-                  {/* 카테고리 */}
-
 
                   {/* 제목 */}
                   <h3 className=" text-gray-900 group-hover:text-blue-600 transition line-clamp-2 ">
                     {post.title}
                   </h3>
-
+                  <p className="text-xs text-gray-400 mt-2 line-clamp-1">{categoryName} {publishDate}</p>
 
                 </div>
               </div>
@@ -139,8 +136,14 @@ export default function PopularBlogs() {
           );
         })}
       </div>
-
-
+      <div className='popularLinkBtn'>
+        <Link
+        href={`/blog`}
+        className='text-right'
+        >
+          <p className='text-gray-900 hover:text-[#ff4800] '>View All Blog &rarr;</p>
+        </Link>
+      </div>
     </div>
   );
 }

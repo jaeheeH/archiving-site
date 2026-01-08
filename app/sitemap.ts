@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@supabase/supabase-js";
 // getSiteSettings는 revalidate 설정에 사용할 수 없으므로 sitemap 내부에서 baseUrl 용도로만 사용하거나 제거
 
 // 1. generateStaticParams 제거 (sitemap.ts에서 설정 오버라이드 용도로 작동하지 않음)
@@ -16,7 +16,10 @@ export const dynamic = "force-static";
 export const revalidate = 3600; 
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const supabase = await createClient();
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
   // const settings = await getSiteSettings(); // 필요한 경우 사용
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.archbehind.com";
