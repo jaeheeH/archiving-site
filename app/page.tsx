@@ -20,34 +20,38 @@ export default function Home() {
           {/* <GalleryRandomSlide /> */}
         </div>
       </div>
-      <section className="contents mx-auto pt-20 mainSection">
-        <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-bold">
-            References
-            </h2>
+      <section className="mainSection mainReferences">
+        <div className="contents mx-auto">
+          <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold">
+              References
+              </h2>
+            </div>
+            {/* 더보기 버튼 (선택 사항) */}
+            <a href="/references" className="text-sm font-medium text-gray-900  pb-0.5 hover:text-gray-600 hover:border-gray-600 transition-colors self-start md:self-end">
+              View All references &rarr;
+            </a>
           </div>
-          {/* 더보기 버튼 (선택 사항) */}
-          <a href="/references" className="text-sm font-medium text-gray-900  pb-0.5 hover:text-gray-600 hover:border-gray-600 transition-colors self-start md:self-end">
-            View All references &rarr;
-          </a>
+          <HomeReferenceSectionSlide />
         </div>
-        <HomeReferenceSectionSlide />
       </section>
       {/* 갤러리 섹션 */}
-      <section className="contents mx-auto py-20 mainSection">
-        <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-bold">
-              Generative Archive
-            </h2>
+      <section className="mainSection">
+        <div className="contents mx-auto">
+          <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold">
+                Generative Archive
+              </h2>
+            </div>
+            {/* 더보기 버튼 (선택 사항) */}
+            <a href="/gallery" className="text-sm font-medium text-gray-900pb-0.5 hover:text-gray-600 hover:border-gray-600 transition-colors self-start md:self-end">
+              View All Gallery &rarr;
+            </a>
           </div>
-          {/* 더보기 버튼 (선택 사항) */}
-          <a href="/gallery" className="text-sm font-medium text-gray-900pb-0.5 hover:text-gray-600 hover:border-gray-600 transition-colors self-start md:self-end">
-            View All Gallery &rarr;
-          </a>
+          <HomeGallerySection />
         </div>
-        <HomeGallerySection />
       </section>
     </main>
   );

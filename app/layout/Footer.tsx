@@ -15,17 +15,17 @@ export default function Footer() {
   if (!showFooter) return null;
 
   return (
-    <footer className="border-t border-gray-100 bg-white pt-16 pb-8 mt-auto">
+    <footer className="border-t border-gray-100 bg-gray-900 pt-16 pb-8 mt-auto">
       <div className="max-w-7xl mx-auto px-4 md:px-0">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
           
           {/* 1. 브랜드 정보 (좌측 - 5칸 차지) */}
           <div className="md:col-span-5 space-y-6">
             <Link href="/" className="inline-block">
-              <img src="/logo.png" alt="ARCH-B Logo" className="h-5 w-auto" />
+              <img src="/logo_white.png" alt="ARCH-B Logo" className="h-5 w-auto" />
             </Link>
             <div className="space-y-4">
-              <p className="text-gray-500 text-sm leading-relaxed max-w-sm">
+              <p className="text-white text-sm leading-relaxed max-w-sm">
                 <strong>ARCHIVING THE BEHIND.</strong><br />
                 결과물의 이면을 기록합니다.<br />
                 디자인 영감부터 코드 조각까지, 크리에이터를 위한 구조화된 데이터베이스입니다.
@@ -35,8 +35,8 @@ export default function Footer() {
 
           {/* 2. 사이트맵 (중간 - 3칸 차지) */}
           <div className="md:col-span-3">
-            <h4 className="font-bold text-gray-900 mb-6 text-sm uppercase tracking-wider">Explore</h4>
-            <ul className="space-y-4 text-sm text-gray-500">
+            <h4 className="font-bold text-white mb-6 text-sm uppercase tracking-wider">Explore</h4>
+            <ul className="space-y-4 text-sm text-white">
               <li>
                 <Link href="/gallery" className="hover:text-black transition-colors">
                   Gallery
@@ -57,7 +57,7 @@ export default function Footer() {
 
           {/* 3. 연락처 및 소셜 (우측 - 4칸 차지) */}
           <div className="md:col-span-4">
-            <h4 className="font-bold text-gray-900 mb-6 text-sm uppercase tracking-wider">Connect</h4>
+            <h4 className="font-bold text-white mb-6 text-sm uppercase tracking-wider">Connect</h4>
             <ul className="space-y-4 text-sm text-gray-500">
               <li className="flex items-center gap-2">
                 <i className="ri-mail-line text-lg"></i>
@@ -65,12 +65,7 @@ export default function Footer() {
                 archbehind@gmail.com
                 </a>
               </li>
-              <li className="flex items-center gap-2">
-                <i className="ri-github-fill text-lg"></i>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-black transition-colors">
-                  GitHub Repository
-                </a>
-              </li>
+
             </ul>
           </div>
         </div>

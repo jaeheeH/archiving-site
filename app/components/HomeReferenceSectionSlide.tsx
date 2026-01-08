@@ -153,17 +153,16 @@ export default function HomeReferenceSection() {
                     ) : (
                       <div className="w-6 h-6 bg-gray-200 rounded-full shrink-0 flex items-center justify-center">
                         <i className="ri-global-line text-xs text-gray-400"></i>
-                        
                       </div>
                     )}
-                    <h3 className="font-semibold text-gray-900 text-sm line-clamp-1 group-hover:text-primary transition-colors">
+                    <h3 className="font-semibold  text-sm line-clamp-1  transition-colors">
                       {item.title}
                     </h3>
                   </div>
 
                   {/* 설명 */}
                   {item.description && (
-                    <p className="text-gray-600 text-xs line-clamp-2 leading-relaxed">
+                    <p className=" text-xs line-clamp-2 leading-relaxed">
                       {item.description}
                     </p>
                   )}
@@ -184,10 +183,10 @@ export default function HomeReferenceSection() {
           bottom: 0;
           top: auto;
           height: 2px;
-          background: #e5e7eb;
+          background: #666;
         }
         .referenceSwiper .swiper-pagination-progressbar-fill {
-          background: var(--color-primary, #1570EF);
+          background: #fff;
         }
       `}</style>
     </div>
