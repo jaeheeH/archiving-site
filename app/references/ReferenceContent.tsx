@@ -121,7 +121,7 @@ export default function ReferenceContent({
         const res = await fetch('/api/references/scraps');
         if (res.ok) {
           const data = await res.json();
-          const scrapedReferenceIds = new Set(
+          const scrapedReferenceIds = new Set<number>(
             data.data.map((ref: Reference) => ref.id)
           );
           setScrapedIds(scrapedReferenceIds);
