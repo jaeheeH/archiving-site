@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, Suspense } from 'react';
 import Image from 'next/image';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-// 경로가 다르다면 실제 경로로 수정해주세요 (이전 코드 기반)
 import ClientGalleryDetailModal from '@/components/gallery/ClientGalleryDetailModal';
 
 // --- Types ---
@@ -33,7 +32,6 @@ function GallerySkeleton({ viewMode }: { viewMode: 'masonry' | 'grid' | 'list' }
     list: 'gap-2 grid grid-cols-2',
   }[viewMode];
 
-  // 서버/클라이언트 불일치 방지를 위한 고정 높이 패턴
   const masonryHeights = [240, 320, 210, 380, 290, 230, 350, 270, 310, 250, 340, 280];
 
   return (
@@ -62,83 +60,126 @@ function GallerySkeleton({ viewMode }: { viewMode: 'masonry' | 'grid' | 'list' }
   );
 }
 
-// --- Props 정의 ---
+// --- Props ---
 interface GalleryClientProps {
   initialGallery: GalleryItem[];
   initialTotalPages: number;
 }
 
-// --- Main Client Component ---
+// --- Main Component ---
 export default function GalleryClient({ initialGallery, initialTotalPages }: GalleryClientProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  // URL 파라미터 확인
-  const pageFromUrl = Number(searchParams.get('page') || 1);
-  const searchFromUrl = searchParams.get('search') || '';
-  const tagsFromUrl = searchParams.get('tags') || '';
+  // ✅ [수정 1] 초기 상태는 무조건 서버(ISR)와 동일하게 설정 (URL 파라미터 무시)
+  // 이렇게 해야 서버 HTML과 클라이언트 초기 렌더링이 일치하여 418 에러가 사라집니다.
+  const [gallery, setGallery] = useState<GalleryItem[]>(initialGallery);
+  const [totalPages, setTotalPages] = useState(initialTotalPages);
+  
+  // 로딩 상태도 'false'로 시작 (서버는 이미 데이터를 가지고 있으므로)
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(false);
 
-  // 기본 뷰(1페이지, 검색어 없음)인지 확인 -> 맞으면 서버 데이터 즉시 사용
-  const isDefaultView = pageFromUrl === 1 && !searchFromUrl && !tagsFromUrl;
-
-  // 상태 관리
+  const [page, setPage] = useState(1);
+  const [searchInput, setSearchInput] = useState('');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  
+  // 기타 상태
   const [viewMode, setViewMode] = useState<'masonry' | 'grid' | 'list'>('masonry');
-  
-  // 초기값을 isDefaultView일 때만 initialGallery로 설정, 아니면 빈 배열(클라이언트 페칭 대기)
-  const [gallery, setGallery] = useState<GalleryItem[]>(isDefaultView ? initialGallery : []);
-  const [totalPages, setTotalPages] = useState(isDefaultView ? initialTotalPages : 1);
-  
-  // 로딩 상태: 기본 뷰라면 로딩 끝(false), 아니라면 로딩 시작(true)
-  const [loading, setLoading] = useState(!isDefaultView);
-  const [fetching, setFetching] = useState(false); // 페이지 이동/필터링 중 로딩 상태
-
-  const [page, setPage] = useState(pageFromUrl);
-  const [searchInput, setSearchInput] = useState(searchFromUrl);
-  const [selectedTags, setSelectedTags] = useState<string[]>(
-    tagsFromUrl ? tagsFromUrl.split(',') : []
-  );
-  
   const [topTags, setTopTags] = useState<TopTag[]>([]);
   const [loadingTags, setLoadingTags] = useState(true);
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  // 검색 디바운싱
-  const [debouncedSearch, setDebouncedSearch] = useState(searchFromUrl);
+  // 검색 디바운싱용
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  
+  // 첫 렌더링 체크 (무한 루프 방지)
   const isFirstRender = useRef(true);
+  const isHydrated = useRef(false);
 
-  // 검색어 디바운스 처리
+  // ✅ [수정 2] Hydration 직후 URL 파라미터와 상태 동기화
+  useEffect(() => {
+    isHydrated.current = true;
+    
+    const p = Number(searchParams.get('page') || 1);
+    const s = searchParams.get('search') || '';
+    const t = searchParams.get('tags') || '';
+    const tArr = t ? t.split(',') : [];
+
+    // URL이 기본 상태와 다르다면 상태 업데이트 -> 데이터 페칭 트리거
+    if (p !== 1 || s !== '' || t !== '') {
+       setPage(p);
+       setSearchInput(s);
+       setDebouncedSearch(s);
+       setSelectedTags(tArr);
+       // 상태가 바뀌면 아래 fetchEffect가 실행되어 데이터를 가져옵니다.
+    }
+  }, []); // 마운트 시 1회만 실행 (초기 URL 동기화)
+
+  // ✅ [수정 3] URL 파라미터 변경 감지 (뒤로가기/앞으로가기 지원)
+  useEffect(() => {
+    if (!isHydrated.current) return;
+
+    const p = Number(searchParams.get('page') || 1);
+    const s = searchParams.get('search') || '';
+    const t = searchParams.get('tags') || '';
+    const tArr = t ? t.split(',') : [];
+
+    // 현재 상태와 URL이 다르면 상태 업데이트 (브라우저 네비게이션 대응)
+    if (p !== page || s !== debouncedSearch || t !== selectedTags.join(',')) {
+       setPage(p);
+       setSearchInput(s);
+       setDebouncedSearch(s);
+       setSelectedTags(tArr);
+    }
+  }, [searchParams]);
+
+  // 검색어 디바운스
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchInput), 300);
     return () => clearTimeout(timer);
   }, [searchInput]);
 
-  // 검색어 변경 시 페이지 1로 리셋
+  // 검색어 변경 시 페이지 리셋
   useEffect(() => {
-    if (debouncedSearch !== searchFromUrl) setPage(1);
-  }, [debouncedSearch, searchFromUrl]);
+    // 초기 로딩이 아니고 검색어가 바뀌면 페이지 1로
+    if (isHydrated.current && debouncedSearch !== (searchParams.get('search') || '')) {
+      setPage(1);
+    }
+  }, [debouncedSearch]);
 
-  // URL 업데이트
+  // 데이터 페칭 Effect
   useEffect(() => {
+    // 첫 렌더링 시, 기본 뷰라면 서버 데이터를 쓰므로 페칭 스킵
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      const isDefault = page === 1 && !debouncedSearch && selectedTags.length === 0;
+      if (isDefault) return;
+    }
+
+    fetchGallery(page, debouncedSearch, selectedTags);
+    
+    // URL 업데이트
     const params = new URLSearchParams();
     params.set('page', String(page));
     if (debouncedSearch.trim()) params.set('search', debouncedSearch.trim());
     if (selectedTags.length > 0) params.set('tags', selectedTags.join(','));
-
+    
     const newUrl = `${pathname}?${params.toString()}`;
-    // 현재 URL과 다를 때만 replace
     if (window.location.search !== `?${params.toString()}`) {
-      router.replace(newUrl);
+      // replace 대신 push를 쓰면 히스토리가 남음, 여기선 replace 유지
+      router.replace(newUrl, { scroll: false });
     }
-  }, [page, debouncedSearch, selectedTags, pathname, router]);
 
-  // 갤러리 데이터 조회 함수 (클라이언트 사이드 페칭)
+  }, [page, debouncedSearch, selectedTags]);
+
   const fetchGallery = async (pageNum: number, search: string, tags: string[]) => {
     try {
       setFetching(true);
       const params = new URLSearchParams();
       params.set('page', String(pageNum));
-      params.set('limit', '36'); // limit 통일
+      params.set('limit', '36');
       if (search.trim()) params.set('search', search.trim());
       if (tags.length > 0) params.set('tags', tags.join(','));
 
@@ -156,7 +197,17 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     }
   };
 
-  // 태그 조회
+  // 태그 및 뷰모드 초기화
+  useEffect(() => {
+    fetchTopTags();
+    const saved = localStorage.getItem('gallery_view_mode');
+    if (saved === 'masonry' || saved === 'grid' || saved === 'list') setViewMode(saved);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('gallery_view_mode', viewMode);
+  }, [viewMode]);
+
   const fetchTopTags = async () => {
     try {
       setLoadingTags(true);
@@ -165,7 +216,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
       const data = await res.json();
       setTopTags(data.tags || []);
     } catch (error) {
-      console.error('❌ 태그 조회 에러:', error);
+      console.error(error);
     } finally {
       setLoadingTags(false);
     }
@@ -180,66 +231,34 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
   
   const updatePage = (pageNum: number) => setPage(pageNum);
 
-  // 데이터 페칭 Effect
-  useEffect(() => {
-    // 첫 렌더링이면서 기본 뷰(페이지1, 검색X)라면 서버 데이터를 사용하므로 페칭 스킵
-    if (isFirstRender.current && isDefaultView) {
-      isFirstRender.current = false;
-      return;
-    }
-    isFirstRender.current = false;
-    
-    // 조건이 바뀌었으므로 데이터 새로 가져오기
-    fetchGallery(page, debouncedSearch, selectedTags);
-  }, [page, debouncedSearch, selectedTags]);
-
-  // 초기 설정 Effect (태그 로드, 뷰모드 복원)
-  useEffect(() => {
-    fetchTopTags();
-    const saved = localStorage.getItem('gallery_view_mode');
-    if (saved === 'masonry' || saved === 'grid' || saved === 'list') setViewMode(saved);
-  }, []);
-
-  // 뷰모드 변경 시 저장
-  useEffect(() => {
-    localStorage.setItem('gallery_view_mode', viewMode);
-  }, [viewMode]);
-
   const layoutClass = {
     masonry: 'columns-2 sm:columns-2 md:columns-4 lg:columns-5 xl:columns-5 gap-2 space-y-2',
     grid: 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2',
     list: 'gap-2 grid grid-cols-2',
   }[viewMode];
 
-  // --- 렌더링 로직 ---
+  // 렌더링 로직
   const renderGalleryContent = () => {
-    // 1. 로딩 중 (초기 로딩 혹은 필터링 중 데이터가 없을 때)
+    // 초기 로딩 혹은 페칭 중 데이터가 없을 때
     if (loading || (fetching && gallery.length === 0)) {
       return <GallerySkeleton viewMode={viewMode} />;
     }
 
-    // 2. 검색 결과 없음
     if (gallery.length === 0) {
       return (
         <div className="w-full text-center py-20 bg-gray-50 rounded-xl border border-dashed border-gray-300 flex flex-col items-center justify-center">
           <i className="ri-search-2-line text-4xl text-gray-300 mb-3"></i>
           <p className="text-lg text-gray-900 font-medium">No results found.</p>
-          <p className="text-sm text-gray-500 mt-2 max-w-md mb-6">
-            Try adjusting your search or filters to find what you're looking for.
-          </p>
-          {(searchInput || selectedTags.length > 0) && (
-            <button 
-              onClick={() => { setSearchInput(''); setPage(1); setSelectedTags([]); }}
-              className="px-5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 shadow-sm transition-colors"
-            >
-              Clear Search & Filters
-            </button>
-          )}
+          <button 
+            onClick={() => { setSearchInput(''); setPage(1); setSelectedTags([]); }}
+            className="mt-6 px-5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 shadow-sm"
+          >
+            Clear Search & Filters
+          </button>
         </div>
       );
     }
 
-    // 3. 데이터 있음 (목록 렌더링)
     return (
       <div className={layoutClass}>
         {gallery.map((item) => (
@@ -256,7 +275,6 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
 
   return (
     <div className="min-h-screen contents mx-auto py-12">
-      {/* 헤더 섹션 */}
       <div className="max-w-7xl mx-auto mb-10 px-4 md:px-0">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4 font-sans uppercase">
           Generative Archive
@@ -267,13 +285,13 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
         </p>
       </div>
 
-      <div className="md:px-0">
+      <div className="px-4 md:px-0">
         {/* 컨트롤 패널 */}
-        <div className="mb-6 space-y-4 z-30 bg-white/80 backdrop-blur-md p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200">
+        <div className="mb-6 space-y-4 sticky top-4 z-30 bg-white/80 backdrop-blur-md p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200">
           <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center">
             {/* 검색창 */}
             <div className="flex-1 relative group">
-              <i className="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors"></i>
+              <i className="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
               <input
                 type="text"
                 placeholder="Search inspiration..."
@@ -302,7 +320,6 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
                       ? 'bg-white text-black shadow-sm font-medium'
                       : 'text-gray-500 hover:text-gray-700'
                   }`}
-                  aria-label={`${mode} view`}
                 >
                   <i className={`text-lg ${
                     mode === 'masonry' ? 'ri-layout-masonry-line' :
@@ -341,7 +358,6 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
           )}
         </div>
 
-        {/* 갤러리 콘텐츠 렌더링 */}
         {renderGalleryContent()}
 
         {/* 페이지네이션 */}
@@ -368,7 +384,6 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
         )}
       </div>
 
-      {/* 상세 모달 */}
       {selectedId !== null && (
         <ClientGalleryDetailModal
           id={selectedId}
@@ -380,7 +395,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
   );
 }
 
-// --- Image Item Component ---
+// --- Image Item Component (기존 코드 유지) ---
 function GalleryItemImage({ item, viewMode, onClick }: { item: GalleryItem; viewMode: 'masonry' | 'grid' | 'list'; onClick: () => void; }) {
   const HoverOverlay = (
     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">

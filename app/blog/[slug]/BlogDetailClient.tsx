@@ -17,7 +17,7 @@ import { ReadOnlyColumnsNode } from '@/components/Editor/ReadOnlyColumnsNode';
 import { optimizeImageUrl } from '@/lib/image-optimizer';
 import '../../css/blog/view.scss';
 
-// 인터페이스 정의
+// --- Types ---
 export interface Post {
   id: string;
   title: string;
@@ -31,7 +31,7 @@ export interface Post {
   category_id: string | null;
   view_count: number;
   scrap_count: number;
-  userScraped: boolean; // 서버에서 올 때는 기본적으로 false일 수 있음 (ISR 특성상)
+  userScraped: boolean; 
 }
 
 interface Category {
@@ -43,9 +43,7 @@ interface BlogDetailClientProps {
   initialPost: Post;
 }
 
-// ---------------------------------------------------------
-// 유틸리티: 조회 기록 관리 (LocalStorage)
-// ---------------------------------------------------------
+// --- Utility: LocalStorage Manager for Guests ---
 const ViewedPostsManager = {
   KEY: 'viewed_posts_24h',
 
@@ -87,41 +85,45 @@ const ViewedPostsManager = {
     const now = new Date().getTime();
     const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
 
+    let changed = false;
     Object.entries(viewedPosts).forEach(([slug, timestamp]) => {
       const lastView = new Date(timestamp).getTime();
       if (now - lastView >= twentyFourHoursInMs) {
         delete viewedPosts[slug];
+        changed = true;
       }
     });
 
-    try {
-      localStorage.setItem(this.KEY, JSON.stringify(viewedPosts));
-    } catch (error) {
-      console.error('Failed to cleanup expired records:', error);
+    if (changed) {
+      try {
+        localStorage.setItem(this.KEY, JSON.stringify(viewedPosts));
+      } catch (error) {
+        console.error('Failed to cleanup expired records:', error);
+      }
     }
   },
 };
 
-// ---------------------------------------------------------
-// 메인 컴포넌트
-// ---------------------------------------------------------
+// --- Main Component ---
 export default function BlogDetailClient({ initialPost }: BlogDetailClientProps) {
   const router = useRouter();
   
-  // ✅ Props로 받은 데이터로 초기 상태 설정 (로딩 불필요)
+  // ✅ Props로 받은 초기 데이터 사용
   const [post, setPost] = useState<Post>(initialPost);
   const [category, setCategory] = useState<Category | null>(null);
   
-  // ISR 페이지이므로 userScraped의 초기값은 정확하지 않을 수 있음 (일단 false나 props값으로 시작)
+  // 상태 관리
   const [isScraped, setIsScraped] = useState(initialPost.userScraped || false);
   const [scrapCount, setScrapCount] = useState(initialPost.scrap_count || 0);
   const [viewCount, setViewCount] = useState(initialPost.view_count || 0);
   
+  // 인증 및 조회수 관련 상태
   const [user, setUser] = useState<{ id: string } | null>(null);
-  const [hasRecordedView, setHasRecordedView] = useState(false);
+  const [isAuthChecked, setIsAuthChecked] = useState(false); // 인증 체크 완료 여부
+  const [hasRecordedView, setHasRecordedView] = useState(false); // 조회수 증가 실행 여부
   const [isScrapping, setIsScrapping] = useState(false);
 
-  // Tiptap 에디터 설정
+  // TipTap Editor 설정
   const editor = useEditor({
     extensions: [
       StarterKit as any,
@@ -148,57 +150,69 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
     ],
     editable: false,
     immediatelyRender: false,
-    content: initialPost.content, // ✅ 초기 콘텐츠 바로 주입
+    content: initialPost.content,
   });
 
-  // 1. 사용자 정보 가져오기
+  // 1️⃣ [Auth Check] 사용자 정보 확인 (가장 먼저 실행)
   useEffect(() => {
-    fetchCurrentUser();
+    const initAuth = async () => {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        setUser(user);
+      } catch (error) {
+        console.error('Failed to fetch user:', error);
+      } finally {
+        setIsAuthChecked(true); // 유저 유무와 관계없이 체크 완료
+      }
+    };
+    initAuth();
   }, []);
 
-  // 2. 카테고리 정보 가져오기 (필요하다면 이 부분도 서버에서 가져와 props로 넘길 수 있음)
+  // 2️⃣ [Category] 카테고리 정보 가져오기
   useEffect(() => {
-    if (post?.category_id) {
-      fetchCategory(post.category_id);
-    }
+    const fetchCategory = async () => {
+      if (!post?.category_id) return;
+      try {
+        const res = await fetch('/api/posts/categories?type=blog');
+        const data = await res.json();
+        const foundCategory = (data.categories || []).find((c: Category) => c.id === post.category_id);
+        setCategory(foundCategory || null);
+      } catch (error) {
+        console.error('Failed to fetch category:', error);
+      }
+    };
+    fetchCategory();
   }, [post?.category_id]);
 
-  // 3. [중요] 로그인 유저일 경우, 최신 스크랩 상태 동기화 (ISR 보완)
+  // 3️⃣ [Sync User Data] 로그인 유저의 최신 상태(스크랩 등) 동기화
   useEffect(() => {
     if (user && post.slug) {
-      // 이미 화면은 보이고 있으므로, 백그라운드에서 조용히 내 상태만 업데이트
+      // ISR 데이터에는 '내 스크랩 여부'가 없을 수 있으므로 클라이언트에서 확인
       fetch(`/api/posts/by-slug/${post.slug}`)
-        .then((res) => {
-           if(res.ok) return res.json();
-           throw new Error('Fetch failed');
-        })
+        .then((res) => res.ok ? res.json() : null)
         .then((data) => {
-          // 내 스크랩 상태와 최신 스크랩/조회수 카운트 동기화
-          setIsScraped(data.userScraped);
-          setScrapCount(data.scrap_count);
-          // setViewCount(data.view_count); // 조회수는 아래 recordView에서 처리하므로 생략 가능
+          if (data) {
+            setIsScraped(data.userScraped);
+            setScrapCount(data.scrap_count);
+            // viewCount는 아래 recordView에서 처리하므로 여기서 굳이 덮어씌우지 않아도 됨
+          }
         })
-        .catch((err) => console.error('Background update failed:', err));
+        .catch((err) => console.error('Background sync failed:', err));
     }
   }, [user, post.slug]);
 
-  // 4. 조회수 기록
+  // 4️⃣ [Record View] 조회수 기록 (인증 체크 완료 후 실행)
   useEffect(() => {
-    if (post && !hasRecordedView) {
+    // 인증 체크가 끝났고 && 포스트가 있고 && 아직 기록 안 했다면
+    if (isAuthChecked && post && !hasRecordedView) {
       recordView();
       setHasRecordedView(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [post.id, hasRecordedView]); // post 객체가 변경되는 것을 방지하기 위해 ID 의존
+  }, [isAuthChecked, post?.id, hasRecordedView]);
 
-  // 5. 에디터 콘텐츠 동기화 (혹시 모를 타이밍 문제 방지)
-  useEffect(() => {
-    if (post?.content && editor && editor.isEmpty) {
-      editor.commands.setContent(post.content);
-    }
-  }, [post.content, editor]);
-
-  // 6. 이미지 최적화 (기존 로직 유지)
+  // 5️⃣ [Image Opt] 에디터 이미지 최적화
   useEffect(() => {
     const optimizeEditorImages = () => {
       try {
@@ -208,12 +222,7 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
         images.forEach((img: Element) => {
           const src = img.getAttribute('src');
           if (src && src.includes('supabase.co')) {
-            const optimizedSrc = optimizeImageUrl(src, {
-              width: 1000,
-              format: 'webp',
-              quality: 75,
-            });
-
+            const optimizedSrc = optimizeImageUrl(src, { width: 1000, format: 'webp', quality: 75 });
             const srcset = [
               `${optimizeImageUrl(src, { width: 400, format: 'webp', quality: 75 })} 400w`,
               `${optimizeImageUrl(src, { width: 800, format: 'webp', quality: 75 })} 800w`,
@@ -234,64 +243,50 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
 
     const timer = setTimeout(optimizeEditorImages, 300);
     return () => clearTimeout(timer);
-  }, [post?.content, editor]); // editor 의존성 추가
+  }, [post?.content, editor]);
 
-  // --- Functions ---
-
-  const fetchCurrentUser = async () => {
-    try {
-      const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-    } catch (error) {
-      console.error('Failed to fetch user:', error);
-      setUser(null);
-    }
-  };
-
-  const fetchCategory = async (categoryId: string) => {
-    try {
-      // 카테고리는 자주 안 바뀌므로 그대로 유지
-      const res = await fetch('/api/posts/categories?type=blog');
-      const data = await res.json();
-      const foundCategory = (data.categories || []).find((c: Category) => c.id === categoryId);
-      setCategory(foundCategory || null);
-    } catch (error) {
-      console.error('Failed to fetch category:', error);
-    }
-  };
+  // --- Helper Functions ---
 
   const recordView = async () => {
     if (!post) return;
+    
+    // 만료된 기록 청소
     ViewedPostsManager.cleanupExpiredRecords();
 
-    // 로그인 여부와 관계없이 API 호출은 하지만,
-    // 클라이언트 상태(localStorage/State)로 중복 체크
+    // A. 로그인 회원: LocalStorage 체크 없이 서버로 요청 (서버 정책 따름)
     if (user) {
       try {
         const res = await fetch(`/api/posts/${post.id}/view`, { method: 'POST' });
         const data = await res.json();
-        if (res.ok) {
-           // 서버가 증가시켰는지 여부와 상관없이 최신 카운트 반영
-           if(data.viewCount) setViewCount(data.viewCount);
+        if (res.ok && data.viewCount) {
+          console.log('✅ 회원 조회수 증가:', data.viewCount);
+          setViewCount(data.viewCount);
         }
       } catch (error) {
-        console.error('로그인 사용자 조회수 기록 실패:', error);
+        console.error('회원 조회수 기록 실패:', error);
       }
-    } else {
-      // 비로그인
+    } 
+    // B. 비회원(게스트): LocalStorage로 24시간 중복 체크
+    else {
+      // 이미 24시간 내에 본 적이 있다면 스킵
       if (ViewedPostsManager.isViewedWithin24Hours(post.slug)) {
+        console.log('🚫 게스트 중복 조회 (Skip)');
         return;
       }
+
+      // 처음 봄 -> LocalStorage에 기록
       ViewedPostsManager.recordView(post.slug);
+
+      // 서버로 조회수 증가 요청
       try {
         const res = await fetch(`/api/posts/${post.id}/view`, { method: 'POST' });
         const data = await res.json();
         if (res.ok && data.viewCount) {
+          console.log('✅ 게스트 조회수 증가:', data.viewCount);
           setViewCount(data.viewCount);
         }
       } catch (error) {
-        console.error('비로그인 사용자 조회수 기록 실패:', error);
+        console.error('게스트 조회수 기록 실패:', error);
       }
     }
   };
@@ -331,8 +326,6 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
     }
   };
 
-  // ✅ post가 없을 때(null) 처리는 상위 컴포넌트(page.tsx)에서 처리하거나
-  // ISR 데이터가 확실히 넘어오므로 여기서는 바로 렌더링합니다.
   if (!post) return null;
 
   return (
@@ -354,8 +347,9 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
         </div>
       )}
 
-      {/* Content */}
+      {/* Content Container */}
       <div className="max-w-4xl mx-auto py-12 article-editor">
+        
         {/* Category */}
         {category && (
           <div className="mb-4">
@@ -380,7 +374,7 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
           <p className="text-gray-600 mb-6">{post.summary}</p>
         )}
 
-        {/* Meta Info */}
+        {/* Meta Info Bar */}
         <div className="flex items-center justify-between text-sm text-gray-500 mb-8 pb-8 border-b flex-wrap gap-4">
           <div className="flex items-center gap-6 flex-wrap">
             <span>
@@ -396,7 +390,7 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
             </span>
           </div>
 
-          {/* 스크랩 버튼 */}
+          {/* Scrap Button */}
           <button
             onClick={handleScrapToggle}
             disabled={isScrapping}
@@ -411,14 +405,14 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
           </button>
         </div>
 
-        {/* Article Content */}
+        {/* Article Body */}
         <article className="prose prose-lg max-w-none">
           <div className="tiptap-content">
             <EditorContent editor={editor} />
           </div>
         </article>
 
-        {/* Back Button */}
+        {/* Navigation */}
         <div className="mt-12 pt-8 border-t">
           <button
             onClick={() => router.push('/blog')}
