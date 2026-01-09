@@ -113,7 +113,7 @@ export default function BlogClient({ initialPosts, categories, initialPagination
 
       <div className="max-w-7xl mx-auto pb-16 px-4 md:px-0">
         {/* Toolbar */}
-        <div className="sticky top-4 z-20 bg-white/80 backdrop-blur-md p-4 rounded-xl border border-gray-100 shadow-sm mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="z-20 bg-white/80 backdrop-blur-md p-4 rounded-xl border border-gray-100 shadow-sm mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex gap-2 flex-wrap">
             <button
               onClick={() => handleCategoryChange('all')}
