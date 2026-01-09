@@ -4,7 +4,6 @@ import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-import crypto from 'crypto';
 
 export async function GET(
   request: NextRequest,
@@ -92,7 +91,7 @@ export async function GET(
   }
 }
 
-// POST: 조회수 증가 (하이브리드: 로그인 사용자는 DB, 비로그인은 클라이언트가 처리)
+// POST: 조회수 증가 (하이브리드: 로그인 사용자는 DB, 비로그인은 클라이언트가 LocalStorage로 중복 체크)
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -127,7 +126,7 @@ export async function POST(
 
     const { data: { user } } = await supabaseAuth.auth.getUser();
 
-    // 2️⃣ 로그인 사용자: DB에 저장
+    // 2️⃣ 로그인 사용자: DB에 저장하고 중복 체크
     if (user) {
       // 최근 24시간 내 조회 기록 확인
       const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
@@ -215,13 +214,28 @@ export async function POST(
       );
     }
 
-    // 3️⃣ 비로그인 사용자: 클라이언트에서 로컬스토리지로 관리
-    // API는 조회수만 증가 (클라이언트가 중복 체크)
+    // 3️⃣ 비로그인 사용자: 클라이언트가 LocalStorage로 중복 체크 완료한 상태
+    // API는 조회수만 증가 (post_views에 기록 안 함)
+    const { data: currentPost } = await supabase
+      .from('posts')
+      .select('view_count')
+      .eq('id', postId)
+      .single();
+
+    const newViewCount = (currentPost?.view_count || 0) + 1;
+
+    const { data: updatedPost } = await supabase
+      .from('posts')
+      .update({ view_count: newViewCount })
+      .eq('id', postId)
+      .select('view_count')
+      .single();
+
     return NextResponse.json(
       {
-        message: '비로그인 사용자입니다. 클라이언트에서 처리하세요.',
-        viewCount: 0,
-        incremented: false,
+        message: '조회수가 증가했습니다',
+        viewCount: updatedPost?.view_count || 0,
+        incremented: true,
         isLoggedIn: false
       },
       { status: 200 }
