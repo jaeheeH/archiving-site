@@ -376,6 +376,7 @@ export default function ReferenceContent({
                           className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                           sizes={viewMode === 'list' ? "300px" : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
                           quality={75}
+                          
                         />
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
                       </>
@@ -404,7 +405,7 @@ export default function ReferenceContent({
                         {reference.title}
                       </h2>                  
                       {/* 🆕 Scrap Button */}
-                      <button
+                      {/* <button
                         onClick={(e) => handleScrapToggle(e, reference.id)}
                         disabled={isScrapping}
                         className={`shrink-0 flex items-center justify-center w-6 h-6 rounded transition ${
@@ -415,7 +416,7 @@ export default function ReferenceContent({
                         title={isScraped ? '스크랩 취소' : '스크랩'}
                       >
                         <i className={`ri-bookmark-${isScraped ? 'fill' : 'line'} text-lg`}></i>
-                      </button>
+                      </button> */}
                     </div>
 
                     {/* Description */}
@@ -433,7 +434,7 @@ export default function ReferenceContent({
                     }`}>
                       {reference.logo_url ? (
                         <div className="relative w-6 h-6 rounded overflow-hidden">
-                          <Image src={reference.logo_url} alt="" fill className="object-cover" />
+                          <Image src={reference.logo_url} alt={reference.title || "Logo"} fill sizes="64px" className="object-cover" />
                         </div>
                       ) : (
                         <i className="ri-links-line"></i>

@@ -274,7 +274,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
   };
 
   return (
-    <div className="min-h-screen contents mx-auto py-12">
+    <div className="min-h-screen py-12">
       <div className="max-w-7xl mx-auto mb-10 px-4 md:px-0">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4 font-sans uppercase">
           Generative Archive
@@ -285,9 +285,9 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
         </p>
       </div>
 
-      <div className="px-4 md:px-0">
+      <div className="max-w-7xl mx-auto pb-16 px-4 md:px-0">
         {/* 컨트롤 패널 */}
-        <div className="mb-6 space-y-4 sticky top-4 z-30 bg-white/80 backdrop-blur-md p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200">
+        <div className="mb-6 space-y-4  bg-white/80 backdrop-blur-md p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200">
           <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center">
             {/* 검색창 */}
             <div className="flex-1 relative group">

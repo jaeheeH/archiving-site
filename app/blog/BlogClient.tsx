@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -39,15 +40,24 @@ interface BlogClientProps {
 }
 
 export default function BlogClient({ initialPosts, categories, initialPagination }: BlogClientProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // URL에서 초기값 읽기
+  const initialPage = Number(searchParams.get('page')) || 1;
+  const initialCategory = searchParams.get('category') || 'all';
+
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [fetching, setFetching] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
+  const [currentPage, setCurrentPage] = useState(initialPage);
   const [pagination, setPagination] = useState<PaginationInfo>(initialPagination);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const POSTS_PER_PAGE = 12;
 
+  // 1️⃣ localStorage에서 viewMode 복원
   useEffect(() => {
     const savedView = localStorage.getItem('blog_view_mode');
     if (savedView === 'grid' || savedView === 'list') {
@@ -55,9 +65,46 @@ export default function BlogClient({ initialPosts, categories, initialPagination
     }
   }, []);
 
+  // 2️⃣ viewMode 변경 시 localStorage 저장
   useEffect(() => {
     localStorage.setItem('blog_view_mode', viewMode);
   }, [viewMode]);
+
+  // 3️⃣ URL 파라미터가 초기값(1페이지, all)이 아니면 데이터 fetch
+  useEffect(() => {
+    if (initialPage !== 1 || initialCategory !== 'all') {
+      fetchPosts(initialPage, initialCategory);
+    }
+    setIsInitialized(true);
+  }, []); // 마운트 시 1회만 실행
+
+  // 4️⃣ 브라우저 뒤로가기/앞으로가기 감지 (popstate)
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const page = Number(params.get('page')) || 1;
+      const category = params.get('category') || 'all';
+      
+      setCurrentPage(page);
+      setSelectedCategory(category);
+      fetchPosts(page, category);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // URL 업데이트 함수
+  const updateURL = (page: number, category: string) => {
+    const params = new URLSearchParams();
+    if (page !== 1) params.set('page', String(page));
+    if (category !== 'all') params.set('category', category);
+    
+    const queryString = params.toString();
+    const newURL = queryString ? `/blog?${queryString}` : '/blog';
+    
+    router.push(newURL, { scroll: false });
+  };
 
   // 카테고리나 페이지 변경 시 API를 통해 데이터를 새로 가져옴
   const fetchPosts = async (page: number, categoryId: string) => {
@@ -80,6 +127,7 @@ export default function BlogClient({ initialPosts, categories, initialPagination
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+    updateURL(page, selectedCategory);
     fetchPosts(page, selectedCategory);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -87,6 +135,7 @@ export default function BlogClient({ initialPosts, categories, initialPagination
   const handleCategoryChange = (categoryId: string) => {
     setSelectedCategory(categoryId);
     setCurrentPage(1);
+    updateURL(1, categoryId);
     fetchPosts(1, categoryId);
   };
 

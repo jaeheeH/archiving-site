@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { notFound, redirect } from "next/navigation";
 import BlogDetailClient from "./BlogDetailClient";
 
@@ -52,7 +53,11 @@ async function getPostData(slug: string) {
  */
 export async function generateStaticParams() {
   try {
-    const supabase = await createClient();
+    // 빌드 시점에는 쿠키가 없으므로 service role 키로 직접 클라이언트 생성
+    const supabase = createSupabaseClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
     
     const { data: posts, error } = await supabase
       .from('posts')
