@@ -48,7 +48,8 @@ export default async function RootLayout({
         {settings?.favicon_url && (
           <link rel="icon" href={settings.favicon_url} />
         )}
-                <meta name="p:domain_verify" content="a1385cca1b4c87b9e9f53b214e8fd264"/>
+        <meta name="p:domain_verify" content="a1385cca1b4c87b9e9f53b214e8fd264"/>
+        
         {/* Apple Touch Icon */}
         {settings?.apple_touch_icon_url && (
           <link rel="apple-touch-icon" href={settings.apple_touch_icon_url} />
@@ -111,10 +112,9 @@ export default async function RootLayout({
           />
         )}
 
-        {/* Custom Scripts */}
-        {settings?.custom_scripts && (
-          <div dangerouslySetInnerHTML={{ __html: settings.custom_scripts }} />
-        )}
+        {/* ❌ 삭제됨: Custom Scripts (div가 head 안에 있으면 에러 발생) 
+           아래 body 태그 안으로 이동했습니다.
+        */}
 
         {/* Structured Data (Schema.org) */}
         {settings?.schema_type === "Organization" && settings.organization_name && (
@@ -145,6 +145,11 @@ export default async function RootLayout({
               style={{ display: "none", visibility: "hidden" }}
             />
           </noscript>
+        )}
+
+        {/* ✅ 이동됨: Custom Scripts (Body 안에서는 div 사용 가능) */}
+        {settings?.custom_scripts && (
+          <div dangerouslySetInnerHTML={{ __html: settings.custom_scripts }} />
         )}
 
         <ToastProvider>

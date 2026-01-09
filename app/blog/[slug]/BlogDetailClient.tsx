@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -17,7 +17,8 @@ import { ReadOnlyColumnsNode } from '@/components/Editor/ReadOnlyColumnsNode';
 import { optimizeImageUrl } from '@/lib/image-optimizer';
 import '../../css/blog/view.scss';
 
-interface Post {
+// 인터페이스 정의
+export interface Post {
   id: string;
   title: string;
   subtitle: string | null;
@@ -30,7 +31,7 @@ interface Post {
   category_id: string | null;
   view_count: number;
   scrap_count: number;
-  userScraped: boolean;
+  userScraped: boolean; // 서버에서 올 때는 기본적으로 false일 수 있음 (ISR 특성상)
 }
 
 interface Category {
@@ -38,11 +39,16 @@ interface Category {
   name: string;
 }
 
-// 로컬스토리지에서 조회 기록 관리하는 유틸리티
+interface BlogDetailClientProps {
+  initialPost: Post;
+}
+
+// ---------------------------------------------------------
+// 유틸리티: 조회 기록 관리 (LocalStorage)
+// ---------------------------------------------------------
 const ViewedPostsManager = {
   KEY: 'viewed_posts_24h',
 
-  // 조회한 글 목록 가져오기
   getViewedPosts(): Record<string, string> {
     if (typeof window === 'undefined') return {};
     try {
@@ -54,11 +60,9 @@ const ViewedPostsManager = {
     }
   },
 
-  // 해당 글이 24시간 내에 조회됐는지 확인
   isViewedWithin24Hours(slug: string): boolean {
     const viewedPosts = this.getViewedPosts();
     const lastViewTime = viewedPosts[slug];
-
     if (!lastViewTime) return false;
 
     const now = new Date().getTime();
@@ -68,7 +72,6 @@ const ViewedPostsManager = {
     return now - lastView < twentyFourHoursInMs;
   },
 
-  // 조회 기록 저장
   recordView(slug: string): void {
     const viewedPosts = this.getViewedPosts();
     viewedPosts[slug] = new Date().toISOString();
@@ -79,7 +82,6 @@ const ViewedPostsManager = {
     }
   },
 
-  // 만료된 기록 정리
   cleanupExpiredRecords(): void {
     const viewedPosts = this.getViewedPosts();
     const now = new Date().getTime();
@@ -100,21 +102,26 @@ const ViewedPostsManager = {
   },
 };
 
-export default function BlogDetailClient() {
-  const params = useParams();
+// ---------------------------------------------------------
+// 메인 컴포넌트
+// ---------------------------------------------------------
+export default function BlogDetailClient({ initialPost }: BlogDetailClientProps) {
   const router = useRouter();
-  const slug = params.slug as string;
-
-  const [post, setPost] = useState<Post | null>(null);
+  
+  // ✅ Props로 받은 데이터로 초기 상태 설정 (로딩 불필요)
+  const [post, setPost] = useState<Post>(initialPost);
   const [category, setCategory] = useState<Category | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [isScraped, setIsScraped] = useState(false);
-  const [scrapCount, setScrapCount] = useState(0);
-  const [viewCount, setViewCount] = useState(0);
+  
+  // ISR 페이지이므로 userScraped의 초기값은 정확하지 않을 수 있음 (일단 false나 props값으로 시작)
+  const [isScraped, setIsScraped] = useState(initialPost.userScraped || false);
+  const [scrapCount, setScrapCount] = useState(initialPost.scrap_count || 0);
+  const [viewCount, setViewCount] = useState(initialPost.view_count || 0);
+  
   const [user, setUser] = useState<{ id: string } | null>(null);
   const [hasRecordedView, setHasRecordedView] = useState(false);
   const [isScrapping, setIsScrapping] = useState(false);
 
+  // Tiptap 에디터 설정
   const editor = useEditor({
     extensions: [
       StarterKit as any,
@@ -141,74 +148,83 @@ export default function BlogDetailClient() {
     ],
     editable: false,
     immediatelyRender: false,
-    content: '',
+    content: initialPost.content, // ✅ 초기 콘텐츠 바로 주입
   });
 
+  // 1. 사용자 정보 가져오기
   useEffect(() => {
     fetchCurrentUser();
   }, []);
 
-  useEffect(() => {
-    fetchPost();
-  }, [slug]);
-
-  useEffect(() => {
-    if (post && !hasRecordedView) {
-      recordView();
-      setHasRecordedView(true);
-    }
-  }, [post, hasRecordedView]);
-
-  useEffect(() => {
-    if (post?.content && editor && editor.isEmpty) {
-      console.log('Setting editor content:', post.content);
-      setTimeout(() => {
-        editor.commands.setContent(post.content);
-      }, 0);
-    }
-  }, [post, editor]);
-
+  // 2. 카테고리 정보 가져오기 (필요하다면 이 부분도 서버에서 가져와 props로 넘길 수 있음)
   useEffect(() => {
     if (post?.category_id) {
       fetchCategory(post.category_id);
     }
   }, [post?.category_id]);
 
-  // 에디터 렌더링 후 이미지 최적화
+  // 3. [중요] 로그인 유저일 경우, 최신 스크랩 상태 동기화 (ISR 보완)
+  useEffect(() => {
+    if (user && post.slug) {
+      // 이미 화면은 보이고 있으므로, 백그라운드에서 조용히 내 상태만 업데이트
+      fetch(`/api/posts/by-slug/${post.slug}`)
+        .then((res) => {
+           if(res.ok) return res.json();
+           throw new Error('Fetch failed');
+        })
+        .then((data) => {
+          // 내 스크랩 상태와 최신 스크랩/조회수 카운트 동기화
+          setIsScraped(data.userScraped);
+          setScrapCount(data.scrap_count);
+          // setViewCount(data.view_count); // 조회수는 아래 recordView에서 처리하므로 생략 가능
+        })
+        .catch((err) => console.error('Background update failed:', err));
+    }
+  }, [user, post.slug]);
+
+  // 4. 조회수 기록
+  useEffect(() => {
+    if (post && !hasRecordedView) {
+      recordView();
+      setHasRecordedView(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [post.id, hasRecordedView]); // post 객체가 변경되는 것을 방지하기 위해 ID 의존
+
+  // 5. 에디터 콘텐츠 동기화 (혹시 모를 타이밍 문제 방지)
+  useEffect(() => {
+    if (post?.content && editor && editor.isEmpty) {
+      editor.commands.setContent(post.content);
+    }
+  }, [post.content, editor]);
+
+  // 6. 이미지 최적화 (기존 로직 유지)
   useEffect(() => {
     const optimizeEditorImages = () => {
       try {
         const images = document.querySelectorAll('.tiptap-content img');
-        console.log('Found images:', images.length);
+        if (images.length === 0) return;
 
         images.forEach((img: Element) => {
           const src = img.getAttribute('src');
           if (src && src.includes('supabase.co')) {
-            // WebP로 최적화된 URL 생성
             const optimizedSrc = optimizeImageUrl(src, {
               width: 1000,
               format: 'webp',
               quality: 75,
             });
 
-            // 반응형 srcset 생성
             const srcset = [
               `${optimizeImageUrl(src, { width: 400, format: 'webp', quality: 75 })} 400w`,
               `${optimizeImageUrl(src, { width: 800, format: 'webp', quality: 75 })} 800w`,
               `${optimizeImageUrl(src, { width: 1200, format: 'webp', quality: 75 })} 1200w`,
             ].join(', ');
 
-            // 속성 적용
             img.setAttribute('src', optimizedSrc);
             img.setAttribute('srcset', srcset);
             img.setAttribute('sizes', '(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1200px');
             img.setAttribute('loading', 'lazy');
             img.setAttribute('decoding', 'async');
-
-            console.log('Optimized image:', {
-              original: src,
-              optimized: optimizedSrc,
-            });
           }
         });
       } catch (error) {
@@ -216,10 +232,11 @@ export default function BlogDetailClient() {
       }
     };
 
-    // 에디터 렌더링 완료 후 최적화
     const timer = setTimeout(optimizeEditorImages, 300);
     return () => clearTimeout(timer);
-  }, [post?.content]);
+  }, [post?.content, editor]); // editor 의존성 추가
+
+  // --- Functions ---
 
   const fetchCurrentUser = async () => {
     try {
@@ -232,30 +249,9 @@ export default function BlogDetailClient() {
     }
   };
 
-  const fetchPost = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(`/api/posts/by-slug/${slug}`);
-
-      if (!res.ok) {
-        throw new Error('포스트를 찾을 수 없습니다');
-      }
-
-      const data = await res.json();
-      setPost(data);
-      setIsScraped(data.userScraped);
-      setScrapCount(data.scrap_count);
-      setViewCount(data.view_count);
-    } catch (error) {
-      console.error('Failed to fetch post:', error);
-      router.push('/blog');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const fetchCategory = async (categoryId: string) => {
     try {
+      // 카테고리는 자주 안 바뀌므로 그대로 유지
       const res = await fetch('/api/posts/categories?type=blog');
       const data = await res.json();
       const foundCategory = (data.categories || []).find((c: Category) => c.id === categoryId);
@@ -267,73 +263,50 @@ export default function BlogDetailClient() {
 
   const recordView = async () => {
     if (!post) return;
-
-    // 🔄 로컬스토리지 정리
     ViewedPostsManager.cleanupExpiredRecords();
 
-    // 로그인 여부 확인
+    // 로그인 여부와 관계없이 API 호출은 하지만,
+    // 클라이언트 상태(localStorage/State)로 중복 체크
     if (user) {
-      // 🔵 로그인 사용자: DB에 저장
       try {
-        const res = await fetch(`/api/posts/${post.id}/view`, {
-          method: 'POST',
-        });
-
+        const res = await fetch(`/api/posts/${post.id}/view`, { method: 'POST' });
         const data = await res.json();
-
-        if (res.ok && data.incremented) {
-          console.log('✅ 조회수 증가 (로그인 사용자):', data.viewCount);
-          setViewCount(data.viewCount);
-        } else if (!data.incremented) {
-          console.log('⏭️ 24시간 내 이미 조회함 (로그인 사용자)');
-          setViewCount(data.viewCount);
+        if (res.ok) {
+           // 서버가 증가시켰는지 여부와 상관없이 최신 카운트 반영
+           if(data.viewCount) setViewCount(data.viewCount);
         }
       } catch (error) {
-        console.error('❌ 로그인 사용자 조회수 기록 실패:', error);
+        console.error('로그인 사용자 조회수 기록 실패:', error);
       }
     } else {
-      // 🟡 비로그인 사용자: 로컬스토리지에서 체크
-      if (ViewedPostsManager.isViewedWithin24Hours(slug)) {
-        console.log('⏭️ 24시간 내 이미 조회함 (비로그인)');
+      // 비로그인
+      if (ViewedPostsManager.isViewedWithin24Hours(post.slug)) {
         return;
       }
-
-      // 조회 기록 저장
-      ViewedPostsManager.recordView(slug);
-
-      // 조회수 증가 (API 호출)
+      ViewedPostsManager.recordView(post.slug);
       try {
-        const res = await fetch(`/api/posts/${post.id}/view`, {
-          method: 'POST',
-        });
-
+        const res = await fetch(`/api/posts/${post.id}/view`, { method: 'POST' });
         const data = await res.json();
-
-        if (res.ok) {
-          console.log('✅ 조회수 증가 (비로그인):', data.viewCount);
+        if (res.ok && data.viewCount) {
           setViewCount(data.viewCount);
         }
       } catch (error) {
-        console.error('❌ 비로그인 사용자 조회수 기록 실패:', error);
+        console.error('비로그인 사용자 조회수 기록 실패:', error);
       }
     }
   };
 
   const handleScrapToggle = async () => {
-    // 로그인 확인
     if (!user) {
       alert('로그인이 필요합니다');
       router.push(`/auth/login?redirect=${window.location.pathname}`);
       return;
     }
-
     if (!post || isScrapping) return;
 
     try {
       setIsScrapping(true);
-      const res = await fetch(`/api/posts/${post.id}/scrap`, {
-        method: 'POST',
-      });
+      const res = await fetch(`/api/posts/${post.id}/scrap`, { method: 'POST' });
 
       if (res.status === 401) {
         alert('로그인이 필요합니다');
@@ -358,23 +331,15 @@ export default function BlogDetailClient() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-500">로딩 중...</div>
-      </div>
-    );
-  }
-
-  if (!post) {
-    return null;
-  }
+  // ✅ post가 없을 때(null) 처리는 상위 컴포넌트(page.tsx)에서 처리하거나
+  // ISR 데이터가 확실히 넘어오므로 여기서는 바로 렌더링합니다.
+  if (!post) return null;
 
   return (
-    <div className="min-h-screen ">
-      {/* Header Image - Next.js Image 최적화 */}
+    <div className="min-h-screen">
+      {/* Header Image */}
       {post.title_image_url && (
-        <div className="relative max-w-4xl mx-auto  h-56 md:h-80 lg:h-96 bg-gray-200 overflow-hidden">
+        <div className="relative max-w-4xl mx-auto h-56 md:h-80 lg:h-96 bg-gray-200 overflow-hidden">
           <Image
             src={post.title_image_url}
             alt={post.title}
@@ -390,7 +355,7 @@ export default function BlogDetailClient() {
       )}
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto  py-12 article-editor">
+      <div className="max-w-4xl mx-auto py-12 article-editor">
         {/* Category */}
         {category && (
           <div className="mb-4">
@@ -402,7 +367,7 @@ export default function BlogDetailClient() {
 
         {/* Subtitle */}
         {post.subtitle && (
-          <p className=" text-gray-600 mb-2">{post.subtitle}</p>
+          <p className="text-gray-600 mb-2">{post.subtitle}</p>
         )}
 
         {/* Title */}
@@ -412,7 +377,7 @@ export default function BlogDetailClient() {
 
         {/* Summary */}
         {post.summary && (
-          <p className=" text-gray-600 mb-6">{post.summary}</p>
+          <p className="text-gray-600 mb-6">{post.summary}</p>
         )}
 
         {/* Meta Info */}

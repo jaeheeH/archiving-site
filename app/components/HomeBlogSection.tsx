@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
 
 type BlogPost = {
   id: string;
@@ -19,89 +17,14 @@ type BlogPost = {
   scrap_count: number;
 };
 
-type Category = {
-  id: string;
-  name: string;
-};
-
-// --- Skeleton Component ---
-function BlogSkeleton() {
-  // 보여줄 스켈레톤 아이템 개수 (3~4개 정도가 적당)
-  const items = Array.from({ length: 5 });
-
-  return (
-    <div className="flex flex-col gap-8">
-      {items.map((_, i) => (
-        <div key={i} className="flex gap-6 animate-pulse h-full">
-          {/* 이미지 영역 (w-64 aspect-video) */}
-          <div className="w-64 aspect-video bg-gray-200 rounded-md shrink-0"></div>
-
-          {/* 콘텐츠 영역 */}
-          <div className="flex-1 flex flex-col py-1">
-            {/* 카테고리 */}
-            <div className="h-3 bg-gray-200 rounded w-16 mb-3"></div>
-            
-            {/* 제목 */}
-            <div className="h-6 bg-gray-200 rounded w-3/4 mb-3"></div>
-            
-            {/* 요약 */}
-            <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-
-            {/* 메타 정보 (날짜, 아이콘) */}
-            <div className="mt-auto flex justify-between items-end pt-4">
-              <div className="h-3 bg-gray-200 rounded w-24"></div>
-              <div className="h-3 bg-gray-200 rounded w-20"></div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+interface HomeBlogSectionProps {
+  initialPosts: BlogPost[];
+  categories: Record<string, string>;
 }
 
-export default function HomeBlogSection() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [categories, setCategories] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
-    try {
-      setLoading(true);
-      
-      // 병렬 요청으로 로딩 속도 최적화
-      const [postsRes, catsRes] = await Promise.all([
-        fetch("/api/posts?type=blog&limit=4&offset=0"),
-        fetch("/api/posts/categories?type=blog")
-      ]);
-
-      if (postsRes.ok) {
-        const postData = await postsRes.json();
-        setPosts(postData.data || []);
-      }
-
-      if (catsRes.ok) {
-        const catData = await catsRes.json();
-        const categoryMap = (catData.categories || []).reduce(
-          (acc: Record<string, string>, cat: Category) => {
-            acc[cat.id] = cat.name;
-            return acc;
-          },
-          {}
-        );
-        setCategories(categoryMap);
-      }
-    } catch (error) {
-      console.error("❌ 데이터 로드 에러:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default function HomeBlogSection({ initialPosts, categories }: HomeBlogSectionProps) {
+  // 이미 데이터가 있는 상태이므로 로딩 상태 관리 불필요
+  
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("ko-KR", {
       year: "numeric",
@@ -111,29 +34,21 @@ export default function HomeBlogSection() {
   };
 
   return (
-
     <div className="lg:col-span-3">
-
-
-      {/* 로딩 상태에 따라 스켈레톤 또는 리스트 렌더링 */}
-      {loading ? (
-        <BlogSkeleton />
-      ) : posts.length === 0 ? (
+      {initialPosts.length === 0 ? (
         <div className="text-center text-gray-500 py-16 bg-gray-50 rounded-lg">
           블로그 글이 없습니다.
         </div>
       ) : (
-        
         <div className="mainHomeBlog">
           <div className="items">
-            {posts.map((post) => (
+            {initialPosts.map((post) => (
               <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
                 className="group flex h-full gap-6 items-start"
               >
-                <article className="hover:bg-gray-50">
-
+                <article className="hover:bg-gray-50 ">
                   {/* 이미지 */}
                   <div className="thumbnail relative overflow-hidden shrink-0 bg-gray-100">
                     {post.title_image_url ? (
@@ -153,7 +68,7 @@ export default function HomeBlogSection() {
                   </div>
 
                   {/* 콘텐츠 */}
-                  <div className="info"> {/* min-h로 높이 확보 */}
+                  <div className="info flex-1 flex flex-col min-h-[135px]">
                     {/* 카테고리 */}
                     {post.category_id && categories[post.category_id] && (
                       <p className="text-xs text-primary font-bold mb-2 line-clamp-1">
@@ -174,7 +89,7 @@ export default function HomeBlogSection() {
                     )}
 
                     {/* 메타 정보 */}
-                    <div className="mt-auto flex items-center justify-between text-xs text-gray-400 pt-2  border-gray-100">
+                    <div className="mt-auto flex items-center justify-between text-xs text-gray-400 pt-2 border-gray-100">
                       <span>
                         {formatDate(post.published_at || post.created_at)}
                       </span>
@@ -197,6 +112,5 @@ export default function HomeBlogSection() {
         </div>
       )}
     </div>
-
   );
 }
