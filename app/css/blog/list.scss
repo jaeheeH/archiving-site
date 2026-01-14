@@ -1,0 +1,33 @@
+@use "../style.scss" as *;
+
+.blog-gridItems{
+
+  @media (width >= 48rem ) {
+    > a > article{
+      padding: 0 16px;
+    }
+  }
+
+  @media (width >= 64rem) {
+
+    row-gap: 48px;
+
+    > a{
+      border-right:1px solid #ddd;
+      
+      
+      &:nth-child(4n + 4){
+        border-right: none;
+      }
+
+
+    }
+    > a > article{
+      padding: 24px;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+
+
+}

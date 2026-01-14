@@ -3,8 +3,17 @@ import '@/app/css/blog/list.scss';
 import BlogClient from './BlogClient';
 
 
-// ISR 설정: 1시간마다 재생성
-export const revalidate = 3600;
+// ISR 설정: 2시간마다 재생성
+export const revalidate = 7200;
+
+
+// 동적 메타데이터 생성
+export async function generateMetadata() {
+  return {
+    title: 'Insights & Logs',
+    description: '개발 과정의 고민과 디자인적 발견을 기록합니다. 프로젝트 비하인드 스토리와 기술적인 인사이트를 공유합니다.',
+  };
+}
 
 export default async function BlogListPage() {
   // ISR은 사용자 세션과 무관하므로 서비스 롤 키를 사용하여 직접 클라이언트를 생성합니다.
@@ -13,6 +22,7 @@ export default async function BlogListPage() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
+  
   // 1. 초기 포스트 데이터 가져오기
   const { data: posts, count: total, error: postsError } = await supabase
     .from('posts')

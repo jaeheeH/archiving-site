@@ -97,6 +97,9 @@
   padding-bottom: 64px;
 }
 
+@media all and (max-width:1200px){
+
+}
 
 @media all and (max-width:768px) {
   .mainPopularBlog{
@@ -124,6 +127,10 @@
 
         .info .desc{
           display: none;
+        }
+
+        .info h3{
+          font-size: 18px;
         }
       }
     }
