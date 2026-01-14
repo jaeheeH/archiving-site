@@ -6,7 +6,7 @@ import { cookies } from 'next/headers';
 import ReferenceContent from './ReferenceContent';
 
 // ⚡ ISR 설정: 24시간마다 재검증
-export const revalidate = 7200; // 24시간
+export const revalidate = 0; // 24시간
 
 // 동적 메타데이터 생성
 export async function generateMetadata() {
