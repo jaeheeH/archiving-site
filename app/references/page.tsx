@@ -35,10 +35,10 @@ async function fetchReferencesData() {
     
     const [catRes, refRes] = await Promise.all([
       fetch(`${baseUrl}/api/references-categories`, { 
-        next: { revalidate: 86400 } // ISR 캐시 설정
+        cache: 'no-store'
       }),
       fetch(`${baseUrl}/api/references?limit=100`, {
-        next: { revalidate: 86400 } // ISR 캐시 설정
+        cache: 'no-store'
       }),
     ]);
 
