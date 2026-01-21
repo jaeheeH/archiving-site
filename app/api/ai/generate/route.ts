@@ -26,14 +26,15 @@ export async function POST(request: Request) {
 
     const { data: brand } = await supabase.from('brands').select('*').eq('id', brandId).single();
 
-    // 2. 상태 업데이트 체크
+    // 2. 상태 업데이트 및 정보 가져오기
     let versionId = model.version_id;
     let replicateTrainingId = model.replicate_training_id;
 
-    // TypeScript 에러 방지를 위해 any 캐스팅
     console.log('Fetching training info...');
+    // any로 캐스팅하여 타입 에러 방지
     const training = await replicate.trainings.get(replicateTrainingId) as any;
 
+    // 상태 동기화
     if (model.status !== 'succeeded') {
       await supabase
         .from('trained_models')
@@ -52,28 +53,29 @@ export async function POST(request: Request) {
           message: `아직 AI가 학습 중입니다. (상태: ${training.status})` 
         });
       }
-      
-      if (!training.output?.version) {
-         return NextResponse.json({ error: '학습 완료 후 버전 정보를 찾을 수 없습니다.' }, { status: 500 });
-      }
-      versionId = training.output.version;
     }
 
     // 3. 이미지 생성 (Inference)
-    console.log('Generating image with version:', versionId);
-    
+    // [핵심 수정] destination이 없으면 model 필드를 확인합니다.
     if (!training.output?.version) {
         return NextResponse.json({ error: '모델 버전 정보를 찾을 수 없습니다.' }, { status: 500 });
     }
 
     let fullModelId = '';
-    if (training.destination) {
-        fullModelId = `${training.destination}:${training.output.version}`;
+    
+    // destination 또는 model 필드 중 하나라도 있으면 사용
+    const modelName = training.destination || training.model;
+
+    if (modelName) {
+        fullModelId = `${modelName}:${training.output.version}`;
     } else {
-         throw new Error("Replicate API 응답에 destination 정보가 없습니다.");
+         console.error("Training Response Dump:", JSON.stringify(training, null, 2));
+         // 만약 둘 다 없으면 로그를 남기고 에러 처리
+         throw new Error("Replicate API 응답에서 모델명(destination/model)을 찾을 수 없습니다.");
     }
 
-    // [수정된 부분] 여기서 fullModelId 뒤에 'as any'를 붙여서 타입 검사를 통과시킵니다.
+    console.log('Generating image with:', fullModelId);
+
     const output = await replicate.run(fullModelId as any, {
       input: {
         prompt: `${prompt}, ${brand.trigger_word}`,
