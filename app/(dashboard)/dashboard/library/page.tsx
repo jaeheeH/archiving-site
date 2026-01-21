@@ -12,12 +12,27 @@ export default function LibraryPage() {
   useEffect(() => {
     const fetchImages = async () => {
       const supabase = createClient();
+
+      // 1. 현재 로그인한 유저 정보 가져오기
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+
+      // 2. 내 브랜드에 속한 이미지만 가져오기 (필터링)
       const { data } = await supabase
         .from('generated_images')
         .select(`
           *,
-          brands (name)
+          brands!inner (
+            name,
+            user_id
+          )
         `)
+        // [핵심] brands 테이블의 user_id가 현재 접속자와 같은 것만 필터링
+        .eq('brands.user_id', user.id) 
         .order('created_at', { ascending: false });
       
       if (data) setImages(data);
@@ -27,13 +42,11 @@ export default function LibraryPage() {
     fetchImages();
   }, []);
 
-  // [추가된 기능] 삭제 핸들러
+  // 삭제 핸들러
   const handleDelete = async (id: string, imageUrl: string) => {
-    // 1. 사용자 확인
     if (!confirm('정말 이 이미지를 삭제하시겠습니까? (복구 불가)')) return;
 
     try {
-      // 2. 서버에 삭제 요청
       const res = await fetch('/api/images/delete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -42,7 +55,6 @@ export default function LibraryPage() {
 
       if (!res.ok) throw new Error('삭제 실패');
 
-      // 3. 성공 시 화면에서 즉시 제거 (새로고침 없이)
       setImages((prev) => prev.filter((img) => img.id !== id));
       alert('삭제되었습니다.');
 
@@ -78,10 +90,8 @@ export default function LibraryPage() {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 
-                {/* [추가됨] 버튼 그룹 (호버 시 등장) */}
+                {/* 버튼 그룹 (호버 시 등장) */}
                 <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  
-                  {/* 다운로드 버튼 */}
                   <a 
                     href={img.image_url} 
                     download 
@@ -91,8 +101,6 @@ export default function LibraryPage() {
                   >
                     💾
                   </a>
-
-                  {/* [NEW] 삭제 버튼 */}
                   <button
                     onClick={() => handleDelete(img.id, img.image_url)}
                     className="bg-white/90 p-2 rounded-full shadow-sm hover:bg-red-50 text-red-600"
