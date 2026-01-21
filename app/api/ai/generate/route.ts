@@ -12,11 +12,10 @@ export async function POST(request: Request) {
     const { brandId, prompt } = await request.json();
     const supabase = await createClient();
 
-    // 1. 모델 정보 조회 (상태 상관없이 일단 가져옴)
+    // 1. 모델 정보 조회
     const { data: model } = await supabase.from('trained_models')
       .select('*')
       .eq('brand_id', brandId)
-      // .eq('status', 'succeeded') <--- 이 줄을 삭제했습니다.
       .order('created_at', { ascending: false })
       .limit(1)
       .single();
@@ -27,16 +26,15 @@ export async function POST(request: Request) {
 
     const { data: brand } = await supabase.from('brands').select('*').eq('id', brandId).single();
 
-    // 2. [복구된 로직] 상태 업데이트 체크
-    // DB가 아직 'succeeded'가 아니라면 Replicate에 확인해본다.
+    // 2. 상태 업데이트 체크
     let versionId = model.version_id;
     let replicateTrainingId = model.replicate_training_id;
 
+    // TypeScript 에러 방지를 위해 any 캐스팅
+    console.log('Fetching training info...');
+    const training = await replicate.trainings.get(replicateTrainingId) as any;
+
     if (model.status !== 'succeeded') {
-      console.log('Checking Replicate status...');
-      const training = await replicate.trainings.get(replicateTrainingId);
-      
-      // DB 상태 업데이트
       await supabase
         .from('trained_models')
         .update({ 
@@ -45,10 +43,9 @@ export async function POST(request: Request) {
         })
         .eq('id', model.id);
 
-      // 아직도 안 끝났으면 리턴
       if (training.status !== 'succeeded') {
         if (training.status === 'failed') {
-            return NextResponse.json({ error: '학습에 실패했습니다. Replicate 로그를 확인하세요.' }, { status: 400 });
+            return NextResponse.json({ error: '학습에 실패했습니다.' }, { status: 400 });
         }
         return NextResponse.json({ 
           status: training.status, 
@@ -56,18 +53,28 @@ export async function POST(request: Request) {
         });
       }
       
-      // 방금 끝났으면 버전 ID 획득
+      if (!training.output?.version) {
+         return NextResponse.json({ error: '학습 완료 후 버전 정보를 찾을 수 없습니다.' }, { status: 500 });
+      }
       versionId = training.output.version;
     }
 
     // 3. 이미지 생성 (Inference)
     console.log('Generating image with version:', versionId);
     
-    // 모델 전체 ID 구성 (destination + version hash)
-    const trainingInfo = await replicate.trainings.get(replicateTrainingId);
-    const fullModelId = `${trainingInfo.destination}:${trainingInfo.output.version}`;
+    if (!training.output?.version) {
+        return NextResponse.json({ error: '모델 버전 정보를 찾을 수 없습니다.' }, { status: 500 });
+    }
 
-    const output = await replicate.run(fullModelId, {
+    let fullModelId = '';
+    if (training.destination) {
+        fullModelId = `${training.destination}:${training.output.version}`;
+    } else {
+         throw new Error("Replicate API 응답에 destination 정보가 없습니다.");
+    }
+
+    // [수정된 부분] 여기서 fullModelId 뒤에 'as any'를 붙여서 타입 검사를 통과시킵니다.
+    const output = await replicate.run(fullModelId as any, {
       input: {
         prompt: `${prompt}, ${brand.trigger_word}`,
         lora_scale: 0.9,
@@ -80,7 +87,7 @@ export async function POST(request: Request) {
 
     const replicateImageUrl = output[0];
 
-    // 4. 이미지 영구 저장 (Supabase Storage)
+    // 4. 이미지 영구 저장
     const imageRes = await fetch(replicateImageUrl);
     const imageBlob = await imageRes.blob();
     const fileName = `${brandId}/${Date.now()}.jpg`;
@@ -95,7 +102,7 @@ export async function POST(request: Request) {
       .from('generated-images')
       .getPublicUrl(fileName);
 
-    // 5. DB에 생성 기록 저장
+    // 5. DB 기록
     await supabase.from('generated_images').insert({
       brand_id: brandId,
       image_url: publicUrl,
