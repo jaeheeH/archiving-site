@@ -105,7 +105,7 @@ export async function POST(request: Request) {
       "flux-dev-lora-trainer",
       latestVersion, // [수정됨] 동적으로 가져온 최신 ID 사용
       {
-        destination: destination,
+        destination: destination as `${string}/${string}`,
         input: {
           input_images: zipUrl,
           trigger_word: instance_prompt || brand.trigger_word,
