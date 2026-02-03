@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState, useRef, Suspense } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import ClientGalleryDetailModal from '@/components/gallery/ClientGalleryDetailModal';
+import ActiveFilter from "@/components/gallery/ActiveFilter";
 
 // --- Types ---
 export type GalleryItem = {
@@ -25,13 +25,11 @@ type TopTag = {
 // --- Skeleton Component ---
 function GallerySkeleton({ viewMode }: { viewMode: 'masonry' | 'grid' | 'list' }) {
   const items = Array.from({ length: 12 });
-
   const layoutClass = {
     masonry: 'columns-2 sm:columns-2 md:columns-4 lg:columns-5 xl:columns-6 gap-2 space-y-2',
     grid: 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2',
     list: 'gap-2 grid grid-cols-2',
   }[viewMode];
-
   const masonryHeights = [240, 320, 210, 380, 290, 230, 350, 270, 310, 250, 340, 280];
 
   return (
@@ -40,24 +38,40 @@ function GallerySkeleton({ viewMode }: { viewMode: 'masonry' | 'grid' | 'list' }
         const deterministicHeight = viewMode === 'masonry' 
           ? masonryHeights[i % masonryHeights.length] 
           : null;
-
         return (
           <div 
             key={i} 
-            className={`relative bg-gray-200 animate-pulse rounded-lg overflow-hidden border border-gray-100 break-inside-avoid ${
-              viewMode === 'list' ? 'h-48' : ''
-            }`}
+            className={`relative bg-gray-200 animate-pulse rounded-lg border border-gray-100 break-inside-avoid ${viewMode === 'list' ? 'h-48' : ''}`} 
             style={viewMode === 'masonry' ? { height: `${deterministicHeight}px` } : { aspectRatio: '1/1' }}
-          >
-            <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
-              <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-              <div className="h-3 bg-gray-300 rounded w-1/2"></div>
-            </div>
-          </div>
+          ></div>
         );
       })}
     </div>
   );
+}
+
+// --- Helper: 페이지네이션 범위 계산 ---
+function getPaginationRange(currentPage: number, totalPages: number) {
+  const delta = 2;
+  const range = [];
+  const rangeWithDots = [];
+
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= currentPage - delta && i <= currentPage + delta)) {
+      range.push(i);
+    }
+  }
+
+  let l;
+  for (let i of range) {
+    if (l) {
+      if (i - l === 2) rangeWithDots.push(l + 1);
+      else if (i - l !== 1) rangeWithDots.push('...');
+    }
+    rangeWithDots.push(i);
+    l = i;
+  }
+  return rangeWithDots;
 }
 
 // --- Props ---
@@ -72,105 +86,95 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
   const router = useRouter();
   const pathname = usePathname();
 
-  // ✅ [수정 1] 초기 상태는 무조건 서버(ISR)와 동일하게 설정 (URL 파라미터 무시)
-  // 이렇게 해야 서버 HTML과 클라이언트 초기 렌더링이 일치하여 418 에러가 사라집니다.
+  // State
   const [gallery, setGallery] = useState<GalleryItem[]>(initialGallery);
   const [totalPages, setTotalPages] = useState(initialTotalPages);
   
-  // 로딩 상태도 'false'로 시작 (서버는 이미 데이터를 가지고 있으므로)
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
 
-  const [page, setPage] = useState(1);
-  const [searchInput, setSearchInput] = useState('');
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  // ✅ [수정 핵심] 초기값을 URL 파라미터에서 바로 읽어옵니다. (1로 고정하지 않음)
+  const [page, setPage] = useState(() => Number(searchParams.get('page')) || 1);
+  const [searchInput, setSearchInput] = useState(() => searchParams.get('search') || '');
+  const [selectedTags, setSelectedTags] = useState<string[]>(() => {
+    const tags = searchParams.get('tags');
+    return tags ? tags.split(',').filter(Boolean) : [];
+  });
   
-  // 기타 상태
   const [viewMode, setViewMode] = useState<'masonry' | 'grid' | 'list'>('masonry');
   const [topTags, setTopTags] = useState<TopTag[]>([]);
   const [loadingTags, setLoadingTags] = useState(true);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  // 검색 디바운싱용
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  // 디바운스 검색어 초기값도 URL 기준
+  const [debouncedSearch, setDebouncedSearch] = useState(() => searchParams.get('search') || '');
   
-  // 첫 렌더링 체크 (무한 루프 방지)
   const isFirstRender = useRef(true);
   const isHydrated = useRef(false);
 
-  // ✅ [수정 2] Hydration 직후 URL 파라미터와 상태 동기화
+  // 1. URL 파라미터 변경 감지 (뒤로 가기 시 상태 동기화)
   useEffect(() => {
-    isHydrated.current = true;
+    // 마운트 직후에는 실행하지 않음 (이미 useState 초기값으로 잡았으므로)
+    if (!isHydrated.current) {
+      isHydrated.current = true;
+      return;
+    }
+
+    const p = Number(searchParams.get('page') || 1);
+    const s = searchParams.get('search') || '';
+    const t = searchParams.get('tags') || '';
+    const tArr = t ? t.split(',').filter(Boolean) : [];
+
+    // 현재 상태와 URL이 다를 때만 업데이트 (중복 렌더링 방지)
+    if (p !== page) setPage(p);
+    if (s !== searchInput) {
+      setSearchInput(s);
+      setDebouncedSearch(s);
+    }
+    if (t !== selectedTags.join(',')) setSelectedTags(tArr);
     
-    const p = Number(searchParams.get('page') || 1);
-    const s = searchParams.get('search') || '';
-    const t = searchParams.get('tags') || '';
-    const tArr = t ? t.split(',') : [];
+  }, [searchParams]); // searchParams가 변할 때만 실행 (뒤로가기 등)
 
-    // URL이 기본 상태와 다르다면 상태 업데이트 -> 데이터 페칭 트리거
-    if (p !== 1 || s !== '' || t !== '') {
-       setPage(p);
-       setSearchInput(s);
-       setDebouncedSearch(s);
-       setSelectedTags(tArr);
-       // 상태가 바뀌면 아래 fetchEffect가 실행되어 데이터를 가져옵니다.
-    }
-  }, []); // 마운트 시 1회만 실행 (초기 URL 동기화)
-
-  // ✅ [수정 3] URL 파라미터 변경 감지 (뒤로가기/앞으로가기 지원)
+  // 2. 검색어 디바운스
   useEffect(() => {
-    if (!isHydrated.current) return;
+    // 초기 로딩시에는 실행 안 함 (이미 동기화됨)
+    if (searchInput === (searchParams.get('search') || '')) return;
 
-    const p = Number(searchParams.get('page') || 1);
-    const s = searchParams.get('search') || '';
-    const t = searchParams.get('tags') || '';
-    const tArr = t ? t.split(',') : [];
-
-    // 현재 상태와 URL이 다르면 상태 업데이트 (브라우저 네비게이션 대응)
-    if (p !== page || s !== debouncedSearch || t !== selectedTags.join(',')) {
-       setPage(p);
-       setSearchInput(s);
-       setDebouncedSearch(s);
-       setSelectedTags(tArr);
-    }
-  }, [searchParams]);
-
-  // 검색어 디바운스
-  useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchInput), 300);
     return () => clearTimeout(timer);
   }, [searchInput]);
 
-  // 검색어 변경 시 페이지 리셋
+  // 3. 검색어 변경 시 페이지 리셋
   useEffect(() => {
-    // 초기 로딩이 아니고 검색어가 바뀌면 페이지 1로
-    if (isHydrated.current && debouncedSearch !== (searchParams.get('search') || '')) {
+    // 실제 검색어가 바뀌었을 때만 페이지 1로 리셋
+    const urlSearch = searchParams.get('search') || '';
+    if (debouncedSearch !== urlSearch) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       setPage(1);
     }
   }, [debouncedSearch]);
 
-  // 데이터 페칭 Effect
+  // 4. 데이터 페칭
   useEffect(() => {
-    // 첫 렌더링 시, 기본 뷰라면 서버 데이터를 쓰므로 페칭 스킵
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      const isDefault = page === 1 && !debouncedSearch && selectedTags.length === 0;
-      if (isDefault) return;
-    }
-
-    fetchGallery(page, debouncedSearch, selectedTags);
+    // 첫 렌더링이고, URL 파라미터가 초기값과 같다면(즉, 이미 서버/기본 데이터와 같다면) 스킵
+    // 하지만 페이지 이동으로 돌아왔을 때는 데이터를 다시 불러와야 할 수도 있음.
+    // 여기서는 안전하게 로직을 수행하되, 중복 호출을 최소화.
     
-    // URL 업데이트
+    // URL 업데이트 로직
     const params = new URLSearchParams();
-    params.set('page', String(page));
+    if (page > 1) params.set('page', String(page)); // 1페이지면 생략 깔끔
     if (debouncedSearch.trim()) params.set('search', debouncedSearch.trim());
     if (selectedTags.length > 0) params.set('tags', selectedTags.join(','));
     
-    const newUrl = `${pathname}?${params.toString()}`;
-    if (window.location.search !== `?${params.toString()}`) {
-      // replace 대신 push를 쓰면 히스토리가 남음, 여기선 replace 유지
+    const queryString = params.toString();
+    const newUrl = `${pathname}${queryString ? `?${queryString}` : ''}`;
+
+    // URL을 교체해야 하는 경우 (사용자 액션으로 인한 상태 변경)
+    if (window.location.search !== (queryString ? `?${queryString}` : '')) {
       router.replace(newUrl, { scroll: false });
     }
+
+    // 데이터 요청
+    fetchGallery(page, debouncedSearch, selectedTags);
 
   }, [page, debouncedSearch, selectedTags]);
 
@@ -197,7 +201,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     }
   };
 
-  // 태그 및 뷰모드 초기화
+  // ... (태그 초기화, 뷰모드 등 기존 로직 동일)
   useEffect(() => {
     fetchTopTags();
     const saved = localStorage.getItem('gallery_view_mode');
@@ -225,11 +229,25 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
   const handleSearchChange = (value: string) => setSearchInput(value);
   
   const handleTagToggle = (tag: string) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setPage(1);
     setSelectedTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
   };
   
-  const updatePage = (pageNum: number) => setPage(pageNum);
+  const updatePage = (pageNum: number) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setPage(pageNum);
+  };
+
+  // ✅ [중요] 상세 페이지 이동 시 현재 쿼리 파라미터 전달
+  const handleItemClick = (id: number) => {
+    // 현재 URL의 쿼리 스트링 (page=3&tags=abc 등)을 그대로 가져감
+    const currentParams = searchParams.toString();
+    const queryString = currentParams ? `?${currentParams}` : '';
+    
+    // 상세 페이지로 이동
+    router.push(`/gallery/${id}${queryString}`);
+  };
 
   const layoutClass = {
     masonry: 'columns-2 sm:columns-2 md:columns-4 lg:columns-5 xl:columns-5 gap-2 space-y-2',
@@ -237,9 +255,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     list: 'gap-2 grid grid-cols-2',
   }[viewMode];
 
-  // 렌더링 로직
   const renderGalleryContent = () => {
-    // 초기 로딩 혹은 페칭 중 데이터가 없을 때
     if (loading || (fetching && gallery.length === 0)) {
       return <GallerySkeleton viewMode={viewMode} />;
     }
@@ -266,7 +282,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
             key={item.id}
             item={item}
             viewMode={viewMode}
-            onClick={() => setSelectedId(item.id)}
+            onClick={() => handleItemClick(item.id)}
           />
         ))}
       </div>
@@ -274,9 +290,9 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
   };
 
   return (
-    <div className="min-h-screen py-12">
-      <div className="max-w-7xl mx-auto mb-10 px-4 md:px-0">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4 font-sans uppercase">
+    <div className="min-h-screen py-16">
+      <div className="max-w-7xl mx-auto mb-8 px-4 md:px-0 title-header">
+        <h1 className="">
           Generative Archive
         </h1>
         <p className="text-gray-500 text-lg max-w-2xl leading-relaxed">
@@ -287,7 +303,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
 
       <div className="max-w-7xl mx-auto pb-16 px-4 md:px-0">
         {/* 컨트롤 패널 */}
-        <div className="mb-6 space-y-4  bg-white/80 backdrop-blur-md p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200">
+        <div className="mb-6 space-y-4 bg-white/80 backdrop-blur-md p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200">
           <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center">
             {/* 검색창 */}
             <div className="flex-1 relative group">
@@ -330,7 +346,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
             </div>
           </div>
 
-          {/* 태그 필터 */}
+          {/* 상단 태그 필터 */}
           {!loadingTags && topTags.length > 0 && (
             <div className="flex flex-wrap gap-2 items-center pt-2 border-t border-gray-100">
               {topTags.map((item) => (
@@ -346,56 +362,84 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
                   #{item.tag}
                 </button>
               ))}
-              {selectedTags.length > 0 && (
-                <button
-                  onClick={() => { setPage(1); setSelectedTags([]); }}
-                  className="px-2 py-1 text-xs text-red-500 hover:text-red-700 font-medium ml-auto"
-                >
-                  Reset Filter
-                </button>
-              )}
             </div>
           )}
+        </div>
+
+        {/* 활성 필터 UI */}
+        <div className="mb-2">
+          <ActiveFilter />
         </div>
 
         {renderGalleryContent()}
 
         {/* 페이지네이션 */}
         {!loading && gallery.length > 0 && totalPages > 1 && (
-          <div className={`flex justify-center mt-12 gap-2 transition-opacity duration-200 ${fetching ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+          <div className={`flex flex-wrap justify-center items-center mt-12 gap-2 transition-opacity duration-200 ${fetching ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+            <button
+              onClick={() => updatePage(1)}
+              disabled={page === 1}
+              className="w-10 h-10 flex items-center justify-center border rounded-lg bg-white hover:bg-gray-50 disabled:opacity-30 disabled:hover:bg-white transition-colors"
+              title="First Page"
+            >
+              <i className="ri-skip-back-line"></i>
+            </button>
             <button
               onClick={() => updatePage(Math.max(1, page - 1))}
               disabled={page === 1}
-              className="px-4 py-2 border rounded-lg disabled:opacity-30 bg-white hover:bg-gray-50 transition-colors"
+              className="w-10 h-10 flex items-center justify-center border rounded-lg bg-white hover:bg-gray-50 disabled:opacity-30 disabled:hover:bg-white transition-colors"
+              title="Previous Page"
             >
-              Previous
+              <i className="ri-arrow-left-s-line text-lg"></i>
             </button>
-            <span className="px-4 py-2 text-gray-500 font-mono text-sm flex items-center">
-              Page {page} of {totalPages}
-            </span>
+            <div className="flex items-center gap-1 mx-2">
+              <div className="hidden md:flex gap-1">
+                {getPaginationRange(page, totalPages).map((p, idx) => (
+                   p === '...' ? (
+                     <span key={`dots-${idx}`} className="w-8 text-center text-gray-400 font-mono">...</span>
+                   ) : (
+                     <button
+                       key={p}
+                       onClick={() => updatePage(Number(p))}
+                       className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-mono transition-all ${
+                         page === p
+                           ? 'bg-black text-white font-bold'
+                           : 'bg-white border hover:bg-gray-50 text-gray-600'
+                       }`}
+                     >
+                       {p}
+                     </button>
+                   )
+                ))}
+              </div>
+              <span className="md:hidden px-2 text-gray-500 font-mono text-sm whitespace-nowrap">
+                 {page} / {totalPages}
+              </span>
+            </div>
             <button
               onClick={() => updatePage(Math.min(totalPages, page + 1))}
               disabled={page === totalPages}
-              className="px-4 py-2 border rounded-lg disabled:opacity-30 bg-white hover:bg-gray-50 transition-colors"
+              className="w-10 h-10 flex items-center justify-center border rounded-lg bg-white hover:bg-gray-50 disabled:opacity-30 disabled:hover:bg-white transition-colors"
+              title="Next Page"
             >
-              Next
+              <i className="ri-arrow-right-s-line text-lg"></i>
+            </button>
+            <button
+              onClick={() => updatePage(totalPages)}
+              disabled={page === totalPages}
+              className="w-10 h-10 flex items-center justify-center border rounded-lg bg-white hover:bg-gray-50 disabled:opacity-30 disabled:hover:bg-white transition-colors"
+              title="Last Page"
+            >
+              <i className="ri-skip-forward-line"></i>
             </button>
           </div>
         )}
       </div>
-
-      {selectedId !== null && (
-        <ClientGalleryDetailModal
-          id={selectedId}
-          onClose={() => setSelectedId(null)}
-          onChangeId={setSelectedId}
-        />
-      )}
     </div>
   );
 }
 
-// --- Image Item Component (기존 코드 유지) ---
+// --- Image Item Component (기존 동일) ---
 function GalleryItemImage({ item, viewMode, onClick }: { item: GalleryItem; viewMode: 'masonry' | 'grid' | 'list'; onClick: () => void; }) {
   const HoverOverlay = (
     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
@@ -410,9 +454,11 @@ function GalleryItemImage({ item, viewMode, onClick }: { item: GalleryItem; view
     </div>
   );
 
+  const containerClass = "group relative  overflow-hidden  cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300";
+
   if (viewMode === 'masonry') {
     return (
-      <div className="group relative border border-gray-100 rounded-lg overflow-hidden bg-gray-100 cursor-pointer break-inside-avoid shadow-sm hover:shadow-xl transition-all duration-300" onClick={onClick}>
+      <div className={`${containerClass} break-inside-avoid`} onClick={onClick}>
         <div className="relative w-full" style={{ aspectRatio: `${item.image_width} / ${item.image_height}` }}>
           <Image
             src={item.image_url}
@@ -432,10 +478,7 @@ function GalleryItemImage({ item, viewMode, onClick }: { item: GalleryItem; view
   
   if (viewMode === 'grid') {
       return (
-        <div
-          className="group relative border border-gray-100 rounded-lg overflow-hidden bg-gray-100 cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
-          onClick={onClick}
-        >
+        <div className={containerClass} onClick={onClick}>
           <div className="relative w-full aspect-square">
             <Image
               src={item.image_url}
@@ -454,10 +497,7 @@ function GalleryItemImage({ item, viewMode, onClick }: { item: GalleryItem; view
   
     // List View
     return (
-      <div
-        className="group relative border border-gray-100 rounded-lg overflow-hidden bg-gray-100 cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
-        onClick={onClick}
-      >
+      <div className={containerClass} onClick={onClick}>
         <div className="relative w-full h-48">
           <Image
             src={item.image_url}

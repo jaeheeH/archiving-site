@@ -40,7 +40,7 @@ export default function GalleryCard({
   return (
     <>
       <div
-        className={`galleryCard group relative border rounded-lg overflow-hidden bg-white hover:shadow ${imgItemClass}`}
+        className={`galleryCard group relative rounded-lg overflow-hidden  hover:shadow ${imgItemClass}`}
       >
         {/* 이미지 - Next.js Image 최적화 */}
         <div
@@ -93,6 +93,7 @@ export default function GalleryCard({
         </div>
 
         {/* 정보 */}
+        {viewMode === "list" ? (          
         <div className="p-4">
           <h2 className="font-medium galleryTitle">{title}</h2>
           {description && (
@@ -109,6 +110,7 @@ export default function GalleryCard({
             </div>
           )}
         </div>
+        ) : "" }
       </div>
 
       {/* 상세 보기 모달 */}

@@ -259,8 +259,8 @@ export default function ReferenceContent({
   return (
     <div className="min-h-screen py-12">
       {/* Header Section */}
-      <div className="max-w-7xl mx-auto mb-10 px-4 md:px-0">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4 font-sans uppercase">
+      <div className="max-w-7xl mx-auto mb-10 px-4 md:px-0 title-header">
+        <h1 className="uppercase">
           References
         </h1>
         <p className="text-gray-500 text-lg max-w-2xl leading-relaxed">
@@ -405,7 +405,7 @@ export default function ReferenceContent({
                         {reference.title}
                       </h2>                  
                       {/* 🆕 Scrap Button */}
-                      {/* <button
+                      <button
                         onClick={(e) => handleScrapToggle(e, reference.id)}
                         disabled={isScrapping}
                         className={`shrink-0 flex items-center justify-center w-6 h-6 rounded transition ${
@@ -416,7 +416,7 @@ export default function ReferenceContent({
                         title={isScraped ? '스크랩 취소' : '스크랩'}
                       >
                         <i className={`ri-bookmark-${isScraped ? 'fill' : 'line'} text-lg`}></i>
-                      </button> */}
+                      </button>
                     </div>
 
                     {/* Description */}

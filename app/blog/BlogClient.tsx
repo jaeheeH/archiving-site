@@ -150,8 +150,8 @@ export default function BlogClient({ initialPosts, categories, initialPagination
   return (
     <div className="min-h-screen py-12">
       {/* Header Section */}
-      <div className="max-w-7xl mx-auto mb-10 px-4 md:px-0">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-4 font-sans uppercase">
+      <div className="max-w-7xl mx-auto mb-10 px-4 md:px-0 title-header">
+        <h1 className="uppercase">
           Insights & Logs
         </h1>
         <p className="text-gray-500 text-lg max-w-2xl leading-relaxed">

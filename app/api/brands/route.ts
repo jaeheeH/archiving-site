@@ -2,66 +2,105 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
+// 1. 브랜드 목록 가져오기 (기존과 동일)
+export async function GET() {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { data, error } = await supabase
+      .from('brands')
+      .select(`
+        *,
+        trained_models (status, created_at)
+      `)
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return NextResponse.json(data);
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+// 2. [변경] 브랜드 생성 (POST) - 트리거 자동 생성
 export async function POST(request: Request) {
   try {
-    // [중요] 브랜드 등록은 JSON이 아니라 FormData를 받습니다.
-    const formData = await request.formData();
-    
-    const name = formData.get('name') as string;
-    const triggerWord = formData.get('triggerWord') as string;
-    const files = formData.getAll('files') as File[];
-
+    // 이제 trigger_word는 받지 않습니다.
+    const { name } = await request.json(); 
     const supabase = await createClient();
-    
-    // 유저 세션 확인 (보안)
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
 
-    // 1. 브랜드 생성 (DB Insert)
-    const { data: brand, error: brandError } = await supabase
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    // [핵심] 시스템이 트리거 단어 자동 생성
+    // 규칙: "OHJI_" + "랜덤6자리" (예: OHJI_X9Z1A2)
+    // 이렇게 하면 전 세계에서 절대 겹칠 일이 없고, AI에게도 매우 유니크한 단어로 인식됩니다.
+    const randomSuffix = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const autoTriggerWord = `OHJI_${randomSuffix}`;
+
+    const { data, error } = await supabase
       .from('brands')
       .insert({
-        user_id: user.id,
         name,
-        trigger_word: triggerWord,
+        trigger_word: autoTriggerWord, // 자동 생성된 값 주입
+        user_id: user.id
       })
       .select()
       .single();
 
-    if (brandError) {
-      console.error('DB Insert Error:', brandError);
-      throw brandError;
-    }
+    if (error) throw error;
 
-    // 2. 이미지 업로드 (Storage & DB)
-    const uploadPromises = files.map(async (file) => {
-      const fileExt = file.name.split('.').pop();
-      // 파일명 충돌 방지를 위해 타임스탬프 추가
-      const fileName = `${brand.id}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-      
-      // Storage 업로드
-      const { error: uploadError } = await supabase.storage
-        .from('brand-assets')
-        .upload(fileName, file);
-
-      if (uploadError) throw uploadError;
-
-      // 자산 DB 등록
-      return supabase.from('brand_assets').insert({
-        brand_id: brand.id,
-        storage_path: fileName,
-        file_name: file.name
-      });
-    });
-
-    await Promise.all(uploadPromises);
-
-    return NextResponse.json({ success: true, brandId: brand.id });
-
+    return NextResponse.json(data);
   } catch (error: any) {
-    console.error('Brand Creation Error:', error);
-    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+// 3. [변경] 브랜드 수정 (PUT) - 트리거 수정 불가
+export async function PUT(request: Request) {
+  try {
+    // 트리거 단어는 아예 받지도, 수정하지도 않습니다. 오직 이름만!
+    const { id, name } = await request.json();
+    const supabase = await createClient();
+    
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { error } = await supabase
+      .from('brands')
+      .update({ name }) // 이름만 수정 가능
+      .eq('id', id)
+      .eq('user_id', user.id);
+
+    if (error) throw error;
+
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+// 4. 삭제 (DELETE) - 기존과 동일
+export async function DELETE(request: Request) {
+  try {
+    const { id } = await request.json();
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { error } = await supabase
+      .from('brands')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', user.id);
+
+    if (error) throw error;
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

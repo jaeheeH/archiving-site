@@ -39,15 +39,29 @@ header{
     }
     .client-header-menu{
       display: flex;
-      gap: 20px; font-weight: 500;
-      font-size: 16px;
-      text-transform: uppercase;
+      gap: 20px; 
+
+
+      > a{
+        font-size: 16px;
+        text-transform: uppercase;
+        font-weight: 500;
+      }
 
       .active{
         color: $primary-color;
         font-weight: 600;
       }
     }
+  }
+}
+
+
+.title-header{
+  > h1{
+    font-size: 32px;
+    margin-bottom: 8px;
+
   }
 }
 
@@ -62,5 +76,8 @@ header{
   .contents{
     padding: 0 16px;
   }
+  .client-header-menu{display: none!important;}
 }
+
+
 

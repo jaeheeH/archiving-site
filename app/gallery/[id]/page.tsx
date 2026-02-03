@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import { checkGalleryOwnershipOrAdmin } from '@/lib/supabase/gallery-utils';
 import GalleryDetailClient from './GalleryDetailClient';
 
 interface Props {
@@ -47,12 +46,9 @@ export default async function GalleryDetailPage({ params }: Props) {
     notFound();
   }
 
-  // 2. 권한 체크 (수정/삭제 버튼 노출 여부)
-  const { authorized: canEdit } = await checkGalleryOwnershipOrAdmin(currentId);
-
-  // 3. 이전/다음 글 ID 조회 (단순 ID 기준, 최신순 정렬 가정)
-  // Next (Newer): ID가 현재보다 큰 것 중 가장 작은 것 (오름차순 limit 1)
-  const { data: nextData } = await supabase
+  // 2. 이전/다음 글 ID 조회 (UI 기준: 왼쪽=최신, 오른쪽=과거)
+  // Prev (왼쪽 화살표): ID가 현재보다 큰 것 중 가장 작은 것 (최신 방향)
+  const { data: prevData } = await supabase
     .from('gallery')
     .select('id')
     .gt('id', currentId)
@@ -60,8 +56,8 @@ export default async function GalleryDetailPage({ params }: Props) {
     .limit(1)
     .single();
 
-  // Prev (Older): ID가 현재보다 작은 것 중 가장 큰 것 (내림차순 limit 1)
-  const { data: prevData } = await supabase
+  // Next (오른쪽 화살표): ID가 현재보다 작은 것 중 가장 큰 것 (과거 방향)
+  const { data: nextData } = await supabase
     .from('gallery')
     .select('id')
     .lt('id', currentId)
@@ -72,9 +68,8 @@ export default async function GalleryDetailPage({ params }: Props) {
   return (
     <GalleryDetailClient 
       gallery={gallery} 
-      canEdit={canEdit}
-      nextId={nextData?.id ?? null}
       prevId={prevData?.id ?? null}
+      nextId={nextData?.id ?? null}
     />
   );
 }
