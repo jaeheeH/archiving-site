@@ -9,7 +9,10 @@ import TextAlign from '@tiptap/extension-text-align';
 import Placeholder from '@tiptap/extension-placeholder';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import BubbleMenuExtension from '@tiptap/extension-bubble-menu';
-import { Table, TableRow, TableHeader, TableCell } from '@tiptap/extension-table';
+import { Table } from '@tiptap/extension-table';
+import { TableCell } from '@tiptap/extension-table-cell';
+import { TableHeader } from '@tiptap/extension-table-header';
+import { TableRow } from '@tiptap/extension-table-row';
 
 import { useEffect, useRef, useState } from 'react';
 import type { JSONContent } from '@tiptap/react';
