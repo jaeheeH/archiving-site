@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import UserRow from "./UserRow";
 import UserEditModal from "./UserEditModal";
 
@@ -31,7 +30,6 @@ export default function UserList({ users, currentUserRole, currentUserId }: Prop
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const router = useRouter();
-  const supabase = createClient();
 
   // 검색 필터
   const filteredUsers = users.filter((user) => {
@@ -108,14 +106,18 @@ export default function UserList({ users, currentUserRole, currentUserId }: Prop
 
   // 사용자 정보 업데이트
   const handleUpdateUser = async (userId: string, updates: Partial<User>) => {
-    const { error } = await supabase
-      .from("users")
-      .update(updates)
-      .eq("id", userId);
+    const response = await fetch("/api/admin/users", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId, updates }),
+    });
 
-    if (error) {
-      alert("업데이트에 실패했습니다.");
-      console.error(error);
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+      alert(data.error || "업데이트에 실패했습니다.");
       return false;
     }
 
@@ -155,12 +157,19 @@ export default function UserList({ users, currentUserRole, currentUserId }: Prop
   const handleBulkStatusChange = async (status: string) => {
     if (selectedUsers.length === 0) return;
 
-    const { error } = await supabase
-      .from("users")
-      .update({ status })
-      .in("id", selectedUsers);
+    const results = await Promise.all(
+      selectedUsers.map((userId) =>
+        fetch("/api/admin/users", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId, updates: { status } }),
+        })
+      )
+    );
 
-    if (error) {
+    if (results.some((response) => !response.ok)) {
       alert("상태 변경에 실패했습니다.");
     } else {
       setSelectedUsers([]);

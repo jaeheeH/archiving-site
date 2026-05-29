@@ -1,4 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
+import { unstable_cache } from "next/cache";
+import { CACHE_SECONDS, CACHE_TAGS } from "@/lib/public-data";
+import { createPublicClient } from "@/lib/supabase/public";
 
 export type SiteSettings = {
   id: string;
@@ -35,12 +37,9 @@ export type SiteSettings = {
   updated_by: string | null;
 };
 
-/**
- * 사이트 설정 가져오기 (서버 컴포넌트용)
- */
-export async function getSiteSettings(): Promise<SiteSettings | null> {
-  try {
-    const supabase = await createClient();
+const getCachedSiteSettings = unstable_cache(
+  async (): Promise<SiteSettings | null> => {
+    const supabase = createPublicClient();
 
     const { data, error } = await supabase
       .from("site_settings")
@@ -48,13 +47,29 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
       .single();
 
     if (error) {
-      console.error("❌ Site settings 조회 에러:", error);
+      if (error.code !== "PGRST116") {
+        console.error("Site settings 조회 에러:", error);
+      }
       return null;
     }
 
     return data as SiteSettings;
+  },
+  ["site-settings"],
+  {
+    revalidate: CACHE_SECONDS.medium,
+    tags: [CACHE_TAGS.siteSettings],
+  }
+);
+
+/**
+ * 사이트 설정 가져오기 (공개 레이아웃/메타데이터용)
+ */
+export async function getSiteSettings(): Promise<SiteSettings | null> {
+  try {
+    return await getCachedSiteSettings();
   } catch (error) {
-    console.error("❌ Site settings 조회 실패:", error);
+    console.error("Site settings 조회 실패:", error);
     return null;
   }
 }

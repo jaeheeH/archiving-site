@@ -112,20 +112,21 @@ export default function ReferenceContent({
   const fetchCurrentUser = async () => {
     try {
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      const { data: { session } } = await supabase.auth.getSession();
+      const currentUser = session?.user || null;
+      setUser(currentUser);
 
       // 🆕 수정: 초기값이 있으면 API 호출 안 함
       // (로그아웃 후 로그인한 경우만 새로 가져옴)
-      if (user && initialScrapedIds.length === 0) {
-        const res = await fetch('/api/references/scraps');
-        if (res.ok) {
-          const data = await res.json();
-          const scrapedReferenceIds = new Set<number>(
-            data.data.map((ref: Reference) => ref.id)
-          );
-          setScrapedIds(scrapedReferenceIds);
-        }
+      if (currentUser && initialScrapedIds.length === 0) {
+        const { data } = await supabase
+          .from('reference_scraps')
+          .select('reference_id')
+          .eq('user_id', currentUser.id);
+
+        setScrapedIds(
+          new Set((data || []).map((scrap: { reference_id: number }) => scrap.reference_id))
+        );
       }
     } catch (error) {
       console.error('❌ 사용자 정보 조회 실패:', error);

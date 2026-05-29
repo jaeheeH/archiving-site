@@ -241,8 +241,8 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
   const fetchCurrentUser = async () => {
     try {
       const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
     } catch (error) {
       console.error('Failed to fetch user:', error);
       setUser(null);

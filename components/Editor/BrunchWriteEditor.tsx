@@ -14,6 +14,34 @@ interface WriteEditorProps {
   postId?: string;
 }
 
+type SaveStatus = 'idle' | 'dirty' | 'saving' | 'saved' | 'error';
+
+function extractTextFromContent(node: JSONContent | null): string {
+  if (!node) return '';
+
+  const ownText = typeof node.text === 'string' ? node.text : '';
+  const childText = node.content?.map(extractTextFromContent).join(' ') || '';
+
+  return `${ownText} ${childText}`.trim();
+}
+
+function hasRenderableContent(node: JSONContent | null): boolean {
+  if (!node) return false;
+  if (typeof node.text === 'string' && node.text.trim()) return true;
+  if (node.type === 'image' || node.type === 'imageGallery') return true;
+
+  return node.content?.some(hasRenderableContent) || false;
+}
+
+function formatSavedTime(date: Date | null) {
+  if (!date) return '';
+
+  return date.toLocaleTimeString('ko-KR', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
 export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditorProps) {
   const router = useRouter();
   const { addToast } = useToast();
@@ -31,6 +59,8 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
   const [categoryId, setCategoryId] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [slug, setSlug] = useState('');
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
+  const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
 
   // ✅ 기존 is_published, published_at 저장 (수정 시 유지용)
   const [originalIsPublished, setOriginalIsPublished] = useState(false);
@@ -41,6 +71,32 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
 
   // AI 태그 생성 로딩 상태
   const [generatingTags, setGeneratingTags] = useState(false);
+
+  const bodyText = extractTextFromContent(content);
+  const bodyCharCount = bodyText.replace(/\s/g, '').length;
+  const hasBodyContent = hasRenderableContent(content);
+  const isBusy = loading || isUploading || generatingTags;
+  const publishChecks = [
+    { label: '제목', done: !!title.trim() },
+    { label: '본문', done: hasBodyContent },
+    { label: '요약', done: !!summary.trim() },
+    { label: '카테고리', done: !!categoryId },
+    { label: '태그', done: tags.length > 0 },
+    { label: '커버', done: !!titleImageUrl },
+  ];
+  const readyCount = publishChecks.filter((item) => item.done).length;
+  const saveStatusLabel =
+    loading ? '저장 중...' :
+    isUploading ? '이미지 업로드 중...' :
+    generatingTags ? 'AI 분석 중...' :
+    saveStatus === 'dirty' ? '저장되지 않은 변경사항' :
+    saveStatus === 'saved' ? `저장됨 ${formatSavedTime(lastSavedAt)}` :
+    saveStatus === 'error' ? '저장 실패' :
+    '작성 중';
+
+  const markDirty = () => {
+    setSaveStatus((current) => (current === 'saving' ? current : 'dirty'));
+  };
 
   // 포스트 데이터 로드
   useEffect(() => {
@@ -61,6 +117,8 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         setTags(data.tags || []);
         setSlug(data.slug);
         setPreviousSlug(data.slug);
+        setSaveStatus('saved');
+        setLastSavedAt(data.updated_at ? new Date(data.updated_at) : null);
         
         // ✅ 기존 발행 상태 저장
         setOriginalIsPublished(data.is_published || false);
@@ -92,6 +150,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
     const url = await uploadImage(file, 'posts/titles');
     if (url) {
       setTitleImageUrl(url);
+      markDirty();
       addToast('제목 배경이 설정되었습니다.', 'success');
     }
   };
@@ -128,6 +187,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
       if (data.tags && data.tags.length > 0) {
         const newTags = Array.from(new Set([...tags, ...data.tags]));
         setTags(newTags);
+        markDirty();
         addToast(`✨ AI가 ${data.tags.length}개의 태그를 추천했습니다!`, 'success');
       } else {
         addToast('추천할 만한 태그를 찾지 못했습니다.', 'info');
@@ -143,13 +203,13 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
 
   // 저장/발행 핸들러
   const handleSave = async (isPublish: boolean = false) => {
-    if (loading || isUploading || generatingTags) return;
+    if (isBusy) return;
 
     if (!title.trim()) {
       addToast('제목을 입력해주세요.', 'error');
       return;
     }
-    if (!content) {
+    if (!hasBodyContent) {
       addToast('본문을 작성해주세요.', 'error');
       return;
     }
@@ -159,6 +219,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
     }
 
     setLoading(true);
+    setSaveStatus('saving');
 
     try {
       // 요약이 없으면 AI 자동 생성 시도
@@ -239,6 +300,10 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
       const result = await response.json();
 
       if (response.ok) {
+        const savedAt = new Date();
+        setSaveStatus('saved');
+        setLastSavedAt(savedAt);
+
         // slug 변경 감지 메시지
         if (postId && result.slugChanged) {
           addToast(
@@ -269,7 +334,15 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
           isPublish ? '발행되었습니다!' : '저장되었습니다.',
           'success'
         );
-        router.push('/dashboard/contents/blog');
+
+        if (!postId && result.data?.id && !isPublish) {
+          router.replace(`/dashboard/contents/blog/${result.data.id}/edit`);
+          return;
+        }
+
+        if (isPublish) {
+          router.push('/dashboard/contents/blog');
+        }
       } else {
         if (response.status === 401) {
           addToast('로그인이 만료되었습니다.', 'error');
@@ -279,6 +352,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         }
       }
     } catch (error: any) {
+      setSaveStatus('error');
       addToast(`오류 발생: ${error.message}`, 'error');
     } finally {
       setLoading(false);
@@ -297,16 +371,30 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
           </button>
 
           <div className="flex items-center gap-2">
+            <div className="hidden sm:flex items-center gap-2 pr-2 text-xs text-gray-400">
+              <span
+                className={`h-2 w-2 rounded-full ${
+                  saveStatus === 'error'
+                    ? 'bg-red-500'
+                    : saveStatus === 'dirty'
+                      ? 'bg-amber-400'
+                      : saveStatus === 'saved'
+                        ? 'bg-emerald-500'
+                        : 'bg-gray-300'
+                }`}
+              />
+              <span>{saveStatusLabel}</span>
+            </div>
             <button
               onClick={() => handleSave(false)}
-              disabled={loading || isUploading}
+              disabled={isBusy}
               className="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 transition disabled:opacity-50"
             >
-              저장
+              {loading ? '저장 중' : '임시저장'}
             </button>
             <button
               onClick={() => handleSave(true)}
-              disabled={loading || isUploading}
+              disabled={isBusy}
               className="px-4 py-1.5 text-sm bg-[#00c4c4] text-white rounded-full hover:bg-[#00b3b3] transition shadow-sm disabled:opacity-50 flex items-center gap-2"
             >
               {loading ? <i className="ri-loader-4-line animate-spin"></i> : null}
@@ -324,7 +412,10 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
             <div className="relative rounded-xl overflow-hidden shadow-sm aspect-[21/9]">
               <img src={titleImageUrl} alt="Cover" className="w-full h-full object-cover" />
               <button 
-                onClick={() => setTitleImageUrl('')}
+                onClick={() => {
+                  setTitleImageUrl('');
+                  markDirty();
+                }}
                 className="absolute top-3 right-3 p-2 bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm hover:bg-black/70"
               >
                 <i className="ri-close-line"></i>
@@ -356,7 +447,10 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
           <input
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              markDirty();
+            }}
             placeholder="제목을 입력하세요"
             className="w-full text-4xl font-bold placeholder-gray-200 outline-none bg-transparent"
             autoFocus
@@ -364,13 +458,19 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
           <input
             type="text"
             value={subtitle}
-            onChange={(e) => setSubtitle(e.target.value)}
+            onChange={(e) => {
+              setSubtitle(e.target.value);
+              markDirty();
+            }}
             placeholder="소제목을 입력하세요 (선택)"
             className="w-full text-xl text-gray-500 font-light placeholder-gray-200 outline-none bg-transparent"
           />
           <textarea
             value={summary}
-            onChange={(e) => setSummary(e.target.value)}
+            onChange={(e) => {
+              setSummary(e.target.value);
+              markDirty();
+            }}
             placeholder="요약글 (저장 시 AI가 자동 생성합니다)"
             rows={3}
             className="w-full text-base text-gray-600 placeholder-gray-300 outline-none bg-transparent border-t border-gray-100 pt-4 resize-none"
@@ -388,10 +488,35 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         </div>
 
         {/* 메타데이터 (태그/카테고리) 영역 */}
-        <div className="mb-12 p-6 bg-gray-50 rounded-xl border border-gray-100 relative">
-          
-          {/* AI 태그 생성 버튼 */}
-          <div className="absolute top-4 right-4">
+        <div className="mb-12 p-6 bg-gray-50 rounded-xl border border-gray-100">
+          <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div>
+              <div className="flex items-center gap-3">
+                <h2 className="text-sm font-semibold text-gray-900">발행 준비</h2>
+                <span className="text-xs text-gray-400">
+                  {readyCount}/{publishChecks.length}
+                </span>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {publishChecks.map((item) => (
+                  <span
+                    key={item.label}
+                    className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${
+                      item.done
+                        ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+                        : 'border-gray-200 bg-white text-gray-400'
+                    }`}
+                  >
+                    <i className={item.done ? 'ri-check-line' : 'ri-circle-line'} />
+                    {item.label}
+                  </span>
+                ))}
+              </div>
+              <p className="mt-3 text-xs text-gray-400">
+                본문 {bodyCharCount.toLocaleString('ko-KR')}자
+              </p>
+            </div>
+
             <button
               onClick={handleGenerateTags}
               disabled={generatingTags}
@@ -418,14 +543,26 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
 
           <MetaData
             categoryId={categoryId}
-            onCategoryChange={setCategoryId}
+            onCategoryChange={(id) => {
+              setCategoryId(id);
+              markDirty();
+            }}
             tags={tags}
-            onTagsChange={setTags}
+            onTagsChange={(nextTags) => {
+              setTags(nextTags);
+              markDirty();
+            }}
           />
         </div>
 
         {/* 에디터 */}
-        <BrunchTipTapEditor value={content} onChange={setContent} />
+        <BrunchTipTapEditor
+          value={content}
+          onChange={(nextContent) => {
+            setContent(nextContent);
+            markDirty();
+          }}
+        />
       </main>
     </div>
   );

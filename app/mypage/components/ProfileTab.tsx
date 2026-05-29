@@ -1,54 +1,83 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/client";
-import imageCompression from "browser-image-compression";
 import { useRouter } from "next/navigation";
+import imageCompression from "browser-image-compression";
+import { Camera, Loader2, Save, UserRound } from "lucide-react";
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const TARGET_IMAGE_SIZE = 320; // 320x320px
+import { useToast } from "@/components/ToastProvider";
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const TARGET_IMAGE_SIZE = 320;
 const COMPRESSION_QUALITY = 0.9;
 
-// 상위 페이지에서 유저 정보를 넘겨받을 수도 있지만,
-// 독립적인 동작을 위해 여기서도 데이터를 관리할 수 있도록 구성합니다.
 type UserProfile = {
   id: string;
-  email?: string;
+  email: string;
   nickname: string;
+  name: string;
+  phone: string;
+  tel: string;
   avatar_url: string | null;
 };
 
+type ProfileForm = {
+  nickname: string;
+  name: string;
+  phone: string;
+  tel: string;
+};
+
+const inputClass =
+  "w-full rounded-md border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none transition focus:border-gray-900 focus:ring-2 focus:ring-gray-100 disabled:bg-gray-50 disabled:text-gray-500";
+
 export default function ProfileTab({ user }: { user: UserProfile }) {
   const router = useRouter();
-  const supabase = createClient();
-  
-  const [nickname, setNickname] = useState(user.nickname || "");
+  const toastContext = useToast();
+  const addToast = toastContext?.addToast || (() => {});
+
+  const [form, setForm] = useState<ProfileForm>({
+    nickname: user.nickname || "",
+    name: user.name || "",
+    phone: user.phone || "",
+    tel: user.tel || "",
+  });
   const [avatarPreview, setAvatarPreview] = useState<string | null>(user.avatar_url);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [saving, setSaving] = useState(false);
 
-  // 이미지 리사이징 & 크롭 로직
+  useEffect(() => {
+    return () => {
+      if (avatarPreview?.startsWith("blob:")) {
+        URL.revokeObjectURL(avatarPreview);
+      }
+    };
+  }, [avatarPreview]);
+
+  const updateField = (field: keyof ProfileForm, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
   const resizeAndCropImage = async (file: File): Promise<File> => {
-    const options = {
+    const compressedFile = await imageCompression(file, {
       maxSizeMB: 1,
       maxWidthOrHeight: 1024,
       useWebWorker: true,
-    };
-
-    const compressedFile = await imageCompression(file, options);
+    });
 
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(compressedFile);
-      reader.onload = (e) => {
+      reader.onload = (event) => {
         const img = new window.Image();
-        img.src = e.target?.result as string;
+        img.src = event.target?.result as string;
         img.onload = () => {
           const canvas = document.createElement("canvas");
           const ctx = canvas.getContext("2d");
+
           if (!ctx) {
-            reject(new Error("Canvas context 생성 실패"));
+            reject(new Error("이미지 처리에 실패했습니다."));
             return;
           }
 
@@ -60,147 +89,231 @@ export default function ProfileTab({ user }: { user: UserProfile }) {
           const y = (img.height - size) / 2;
 
           ctx.drawImage(img, x, y, size, size, 0, 0, TARGET_IMAGE_SIZE, TARGET_IMAGE_SIZE);
-
           canvas.toBlob(
             (blob) => {
-              if (blob) {
-                resolve(new File([blob], file.name, { type: "image/webp", lastModified: Date.now() }));
-              } else {
-                reject(new Error("이미지 변환 실패"));
+              if (!blob) {
+                reject(new Error("이미지 변환에 실패했습니다."));
+                return;
               }
+
+              resolve(
+                new File([blob], "avatar.webp", {
+                  type: "image/webp",
+                  lastModified: Date.now(),
+                })
+              );
             },
             "image/webp",
             COMPRESSION_QUALITY
           );
         };
-        img.onerror = () => reject(new Error("이미지 로드 실패"));
+        img.onerror = () => reject(new Error("이미지를 불러오지 못했습니다."));
       };
-      reader.onerror = () => reject(new Error("파일 읽기 실패"));
+      reader.onerror = () => reject(new Error("파일을 읽지 못했습니다."));
     });
   };
 
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith('image/')) {
-      alert("이미지 파일만 업로드 가능합니다.");
+    if (!file.type.startsWith("image/")) {
+      addToast("이미지 파일만 업로드할 수 있습니다.", "error");
       return;
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      alert("5MB 이하 이미지만 가능합니다.");
+      addToast("5MB 이하 이미지만 선택해주세요.", "error");
       return;
     }
 
     try {
       const processedFile = await resizeAndCropImage(file);
+      const previewUrl = URL.createObjectURL(processedFile);
+
       setAvatarFile(processedFile);
-
-      // 이전 프리뷰 URL 메모리 해제
-      if (avatarPreview && avatarPreview.startsWith('blob:')) {
-        URL.revokeObjectURL(avatarPreview);
-      }
-
-      setAvatarPreview(URL.createObjectURL(processedFile));
+      setAvatarPreview(previewUrl);
     } catch (error) {
-      console.error(error);
-      alert("이미지 처리에 실패했습니다. 다른 이미지를 선택해주세요.");
+      console.error("Profile image processing failed:", error);
+      addToast(error instanceof Error ? error.message : "이미지 처리에 실패했습니다.", "error");
+    } finally {
+      event.target.value = "";
     }
   };
 
-  const handleSave = async () => {
-    if (!nickname.trim()) {
-      alert("닉네임을 입력해주세요.");
+  const handleSave = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const updates = {
+      nickname: form.nickname.trim(),
+      name: form.name.trim(),
+      phone: form.phone.trim(),
+      tel: form.tel.trim(),
+    };
+
+    if (!updates.nickname) {
+      addToast("닉네임을 입력해주세요.", "error");
       return;
     }
 
     setSaving(true);
+
     try {
-      let publicUrl = user.avatar_url;
+      let avatarUrl = user.avatar_url;
 
       if (avatarFile) {
-        const filePath = `${user.id}/${Date.now()}.webp`;
-        const { error: uploadError } = await supabase.storage.from("avatars").upload(filePath, avatarFile, { upsert: true });
-        if (uploadError) {
-          console.error("Upload error:", uploadError);
-          throw new Error("이미지 업로드에 실패했습니다.");
+        const formData = new FormData();
+        formData.append("userId", user.id);
+        formData.append("file", avatarFile);
+
+        const uploadRes = await fetch("/api/admin/users/avatar", {
+          method: "POST",
+          body: formData,
+        });
+        const uploadData = await uploadRes.json().catch(() => ({}));
+
+        if (!uploadRes.ok) {
+          throw new Error(uploadData.error || "이미지 업로드에 실패했습니다.");
         }
 
-        const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
-        publicUrl = data.publicUrl;
+        avatarUrl = uploadData.url || avatarUrl;
       }
 
-      const { error: updateError } = await supabase
-        .from("users")
-        .update({ nickname: nickname.trim(), avatar_url: publicUrl })
-        .eq("id", user.id);
+      const updateRes = await fetch("/api/admin/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          updates: {
+            ...updates,
+            avatar_url: avatarUrl,
+          },
+        }),
+      });
+      const updateData = await updateRes.json().catch(() => ({}));
 
-      if (updateError) {
-        console.error("Update error:", updateError);
-        throw new Error("프로필 업데이트에 실패했습니다.");
+      if (!updateRes.ok) {
+        throw new Error(updateData.error || "프로필 저장에 실패했습니다.");
       }
 
-      alert("프로필이 저장되었습니다.");
+      setAvatarFile(null);
+      setAvatarPreview(avatarUrl);
+      addToast("프로필이 저장되었습니다.", "success");
       router.refresh();
     } catch (error) {
-      console.error(error);
-      const message = error instanceof Error ? error.message : "저장 중 오류가 발생했습니다.";
-      alert(message);
+      console.error("Profile save failed:", error);
+      addToast(error instanceof Error ? error.message : "저장 중 오류가 발생했습니다.", "error");
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <div className="max-w-2xl">
-      <h2 className="text-xl font-bold mb-6">프로필 정보</h2>
-      <div className="bg-white rounded-lg border p-6 md:p-8">
-        <div className="flex flex-col md:flex-row gap-8 items-start">
-          {/* 이미지 영역 */}
+    <section className="max-w-2xl">
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold text-gray-950">프로필 정보</h2>
+        <p className="mt-1 text-sm text-gray-500">계정에 표시되는 기본 정보를 관리합니다.</p>
+      </div>
+
+      <form onSubmit={handleSave} className="rounded-lg border border-gray-200 bg-white p-6 md:p-8">
+        <div className="flex flex-col gap-8 md:flex-row md:items-start">
           <div className="flex flex-col items-center gap-3">
-            <div className="relative w-28 h-28 rounded-full overflow-hidden bg-gray-100 border group">
+            <div className="relative h-28 w-28 overflow-hidden rounded-full border border-gray-200 bg-gray-100">
               {avatarPreview ? (
-                <Image src={avatarPreview} alt="Profile" fill sizes="112px" priority className="object-cover" />
+                <Image
+                  src={avatarPreview}
+                  alt="프로필 이미지"
+                  fill
+                  sizes="112px"
+                  priority
+                  className="object-cover"
+                />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-3xl text-gray-400 font-bold">
-                  {nickname.charAt(0)}
+                <div className="flex h-full w-full items-center justify-center text-3xl font-semibold text-gray-400">
+                  {form.nickname.charAt(0) || user.email.charAt(0) || "U"}
                 </div>
               )}
-              <label className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                변경
-                <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+            </div>
+            <label className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-md border border-gray-200 bg-white px-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
+              <Camera className="h-4 w-4" />
+              이미지 변경
+              <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleImageChange} />
+            </label>
+          </div>
+
+          <div className="grid flex-1 gap-4">
+            <label className="grid gap-1.5">
+              <span className="text-sm font-medium text-gray-700">이메일</span>
+              <input type="email" value={user.email} disabled className={inputClass} />
+            </label>
+
+            <label className="grid gap-1.5">
+              <span className="text-sm font-medium text-gray-700">닉네임</span>
+              <input
+                type="text"
+                value={form.nickname}
+                onChange={(event) => updateField("nickname", event.target.value)}
+                className={inputClass}
+                placeholder="닉네임"
+                maxLength={40}
+              />
+            </label>
+
+            <label className="grid gap-1.5">
+              <span className="text-sm font-medium text-gray-700">이름</span>
+              <input
+                type="text"
+                value={form.name}
+                onChange={(event) => updateField("name", event.target.value)}
+                className={inputClass}
+                placeholder="이름"
+                maxLength={40}
+              />
+            </label>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="grid gap-1.5">
+                <span className="text-sm font-medium text-gray-700">휴대전화</span>
+                <input
+                  type="tel"
+                  value={form.phone}
+                  onChange={(event) => updateField("phone", event.target.value)}
+                  className={inputClass}
+                  placeholder="010-0000-0000"
+                  maxLength={30}
+                />
+              </label>
+
+              <label className="grid gap-1.5">
+                <span className="text-sm font-medium text-gray-700">일반전화</span>
+                <input
+                  type="tel"
+                  value={form.tel}
+                  onChange={(event) => updateField("tel", event.target.value)}
+                  className={inputClass}
+                  placeholder="02-000-0000"
+                  maxLength={30}
+                />
               </label>
             </div>
           </div>
-
-          {/* 폼 영역 */}
-          <div className="flex-1 w-full space-y-5">
-            <div>
-              <label className="text-sm font-semibold text-gray-700 block mb-1">이메일</label>
-              <input type="text" value={user.email} disabled className="w-full bg-gray-50 border rounded px-3 py-2 text-gray-500 text-sm" />
-            </div>
-            <div>
-              <label className="text-sm font-semibold text-gray-700 block mb-1">닉네임</label>
-              <input 
-                type="text" 
-                value={nickname} 
-                onChange={(e) => setNickname(e.target.value)} 
-                className="w-full border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" 
-              />
-            </div>
-            <div className="flex justify-end pt-4">
-              <button 
-                onClick={handleSave} 
-                disabled={saving} 
-                className="bg-black text-white px-5 py-2 rounded text-sm hover:bg-gray-800 disabled:opacity-50"
-              >
-                {saving ? "저장 중..." : "변경사항 저장"}
-              </button>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
+
+        <div className="mt-8 flex items-center justify-between gap-4 border-t border-gray-100 pt-5">
+          <div className="hidden items-center gap-2 text-xs text-gray-500 sm:flex">
+            <UserRound className="h-4 w-4" />
+            {user.email}
+          </div>
+          <button
+            type="submit"
+            disabled={saving}
+            className="ml-auto inline-flex h-10 items-center gap-2 rounded-md bg-gray-900 px-4 text-sm font-medium text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {saving ? "저장 중" : "변경사항 저장"}
+          </button>
+        </div>
+      </form>
+    </section>
   );
 }

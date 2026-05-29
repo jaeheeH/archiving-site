@@ -2,7 +2,6 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ToastProvider";
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
 import ReferenceTableRow from "@/components/reference/ReferenceTableRow";
@@ -25,7 +24,6 @@ function ReferenceContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const supabase = createClient();
   const { addToast } = useToast();
 
   const pageFromUrl = Number(searchParams.get("page") || 1);
@@ -104,10 +102,8 @@ function ReferenceContent() {
       }
   
       const url = `/api/references?${params.toString()}`;
-      console.log("API 요청 URL:", url);
   
       const res = await fetch(url);
-      console.log("API 응답 상태:", res.status);
   
       if (!res.ok) {
         const errorData = await res.json();
@@ -116,7 +112,6 @@ function ReferenceContent() {
       }
   
       const data = await res.json();
-      console.log("API 응답 데이터:", data);
   
       setReferences(data.data || []);
       setTotalPages(data.pagination.totalPages);
@@ -131,7 +126,6 @@ function ReferenceContent() {
   };
 
   useEffect(() => {
-    console.log("fetchReferences 호출됨, page:", page);
     fetchReferences(page);
   }, [page, selectedRange, sortBy, sortOrder]);
 
@@ -342,9 +336,7 @@ function ReferenceContent() {
             </thead>
             <tbody>
             {references.length > 0 ? (
-  references.map((item) => {
-    console.log("렌더링하는 item:", item);
-    return (
+  references.map((item) => (
       <ReferenceTableRow
         key={item.id}
         id={item.id}
@@ -359,8 +351,7 @@ function ReferenceContent() {
         onEdit={() => setEditingId(item.id)}
         onDelete={handleDelete}
       />
-    );
-  })
+  ))
 ) : (
   <tr>
     <td colSpan={7} className="p-6 text-center text-gray-500">

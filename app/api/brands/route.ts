@@ -13,14 +13,21 @@ export async function GET() {
     const { data, error } = await supabase
       .from('brands')
       .select(`
-        *,
+        id,
+        name,
+        trigger_word,
+        created_at,
         trained_models (status, created_at)
       `)
       .eq('user_id', user.id)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        'Cache-Control': 'private, no-store',
+      },
+    });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

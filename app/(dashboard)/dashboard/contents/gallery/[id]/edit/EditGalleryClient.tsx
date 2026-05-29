@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ToastProvider";
+import imageCompression from "browser-image-compression";
 
 import TagInput from "@/components/TagInput";
 import CategorySelectModal from "@/components/CategorySelectModal";
@@ -21,13 +21,13 @@ export default function EditGalleryClient({
 }: EditGalleryClientProps) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const supabase = createClient();
   const { addToast } = useToast();
   
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [geminiTags, setGeminiTags] = useState<string[]>([]);
   const [range, setRange] = useState<string[]>([]);
@@ -36,12 +36,24 @@ export default function EditGalleryClient({
   const [isDragging, setIsDragging] = useState(false);
   const [embedding, setEmbedding] = useState<number[]>([]);
   const [geminiDescription, setGeminiDescription] = useState("");
+  const [statusText, setStatusText] = useState("");
+
+  const setSelectedImage = (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      addToast("이미지 파일만 업로드할 수 있습니다.", "error");
+      return;
+    }
+
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setImageFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files?.[0];
-    if (file) setImageFile(file);
+    if (file) setSelectedImage(file);
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -69,20 +81,16 @@ export default function EditGalleryClient({
   useEffect(() => {
     const load = async () => {
       try {
-        // ✅ API 대신 직접 Supabase에서 조회
-        const { data, error } = await supabase
-          .from("gallery")
-          .select("*")
-          .eq("id", id)
-          .single();
+        const res = await fetch(`/api/gallery/${id}?dashboard=true`, {
+          cache: "no-store",
+        });
+        const result = await res.json();
 
-        if (error) {
-          console.error("조회 에러:", error);
-          addToast("데이터를 불러올 수 없습니다", "error");
-          setLoading(false);
-          return;
+        if (!res.ok) {
+          throw new Error(result.error || "데이터를 불러올 수 없습니다");
         }
 
+        const data = result.data;
         if (data) {
           setTitle(data.title);
           setDescription(data.description || "");
@@ -98,30 +106,49 @@ export default function EditGalleryClient({
         setLoading(false);
       } catch (error: any) {
         console.error("로드 에러:", error);
-        addToast("데이터 로드 중 오류가 발생했습니다", "error");
+        addToast(error.message || "데이터 로드 중 오류가 발생했습니다", "error");
         setLoading(false);
       }
     };
 
     load();
-  }, [id, supabase, addToast]);
+  }, [id, addToast]);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
 
   const uploadImage = async (file: File) => {
-    const ext = file.name.split(".").pop();
-    const fileName = `${Date.now()}.${ext}`;
-    const filePath = `gallery/${fileName}`;
+    const formData = new FormData();
+    formData.append("file", file);
 
-    const { error } = await supabase.storage
-      .from("gallery")
-      .upload(filePath, file);
+    const res = await fetch("/api/gallery/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
 
-    if (error) throw error;
+    if (!res.ok) {
+      throw new Error(data.error || "이미지 업로드 실패");
+    }
 
-    const { data } = supabase.storage
-      .from("gallery")
-      .getPublicUrl(filePath);
+    return data.url as string;
+  };
 
-    return data.publicUrl;
+  const getImageDimensions = (file: File): Promise<{ width: number; height: number }> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => resolve({ width: img.width, height: img.height });
+        img.onerror = reject;
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
 
   const analyzeImage = async (imageUrl: string) => {
@@ -151,36 +178,56 @@ export default function EditGalleryClient({
       let finalEmbedding = embedding;
       let finalGeminiDescription = geminiDescription;
       let finalGeminiTags = geminiTags;
+      let finalWidth: number | undefined;
+      let finalHeight: number | undefined;
   
       // 새 이미지가 업로드된 경우
       if (imageFile) {
-        finalImage = await uploadImage(imageFile);
+        setStatusText("이미지 최적화 중...");
+        const optimizedFile = await imageCompression(imageFile, {
+          maxSizeMB: 1.8,
+          maxWidthOrHeight: 2200,
+          useWebWorker: true,
+          fileType: "image/jpeg",
+          initialQuality: 0.86,
+        });
+        const dimensions = await getImageDimensions(optimizedFile);
+        finalWidth = dimensions.width;
+        finalHeight = dimensions.height;
+
+        setStatusText("이미지 업로드 중...");
+        finalImage = await uploadImage(optimizedFile);
   
         // 새 이미지 분석
+        setStatusText("이미지 분석 중...");
         const analysisResult = await analyzeImage(finalImage);
         finalEmbedding = analysisResult.embedding;
         finalGeminiDescription = analysisResult.summary;
         finalGeminiTags = Array.isArray(analysisResult.tags) ? analysisResult.tags : [];
       }
   
-      // ✅ Supabase 직접 업데이트
-      const { error } = await supabase
-        .from("gallery")
-        .update({
+      setStatusText("저장 중...");
+      const res = await fetch(`/api/gallery/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           title,
           description,
           image_url: finalImage,
+          image_width: finalWidth,
+          image_height: finalHeight,
           tags,
           category,
           range,
           embedding: finalEmbedding,
           gemini_description: finalGeminiDescription,
           gemini_tags: finalGeminiTags,
-        })
-        .eq("id", id);
+        }),
+      });
+      const result = await res.json();
   
-      if (error) {
-        throw new Error(error.message || "수정 실패");
+      if (!res.ok) {
+        throw new Error(result.error || "수정 실패");
       }
   
       addToast("수정 완료!", "success");
@@ -191,6 +238,7 @@ export default function EditGalleryClient({
       addToast(`저장 중 오류: ${error.message}`, "error");
     } finally {
       setSaving(false);
+      setStatusText("");
     }
   };
   if (loading) return <div className="p-6">불러오는 중...</div>;
@@ -272,13 +320,14 @@ export default function EditGalleryClient({
             hidden
             onChange={(e) => {
               const file = e.target.files?.[0];
-              if (file) setImageFile(file);
+              if (file) setSelectedImage(file);
+              e.target.value = "";
             }}
           />
 
-          {imageFile ? (
+          {previewUrl ? (
             <img
-              src={URL.createObjectURL(imageFile)}
+              src={previewUrl}
               className="mx-auto max-h-72 rounded"
               alt="미리보기"
             />
@@ -298,7 +347,7 @@ export default function EditGalleryClient({
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           disabled={saving}
         >
-          {saving ? "저장 중..." : "저장하기"}
+          {saving ? statusText || "저장 중..." : "저장하기"}
         </button>
         <button
           onClick={onClose}

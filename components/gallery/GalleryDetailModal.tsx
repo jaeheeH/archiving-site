@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import SimilarGalleryModal from "./SimilarGalleryModal";
@@ -29,6 +29,9 @@ type GalleryDetail = {
   author?: string;
 };
 
+const GALLERY_DETAIL_COLUMNS =
+  "id, title, description, image_url, image_width, image_height, tags, gemini_tags, gemini_description, category, created_at, author";
+
 export default function GalleryDetailModal({
   id,
   onClose,
@@ -40,7 +43,7 @@ export default function GalleryDetailModal({
   const [gallery, setGallery] = useState<GalleryDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [showSimilarModal, setShowSimilarModal] = useState(false);
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   const handleEdit = () => {
     onEdit?.(id);
@@ -77,7 +80,7 @@ export default function GalleryDetailModal({
       // ✅ Supabase 직접 조회
       const { data, error } = await supabase
         .from('gallery')
-        .select('*')
+        .select(GALLERY_DETAIL_COLUMNS)
         .eq('id', id)
         .single();
 

@@ -1,13 +1,24 @@
 // app/(dashboard)/dashboard/studio/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { createClient } from '@/lib/supabase/client';
+import { Download, ImageIcon, Sparkles } from 'lucide-react';
+
+type Brand = {
+  id: string;
+  name: string;
+  trained_models?: {
+    status: string;
+    created_at?: string;
+  }[];
+};
 
 export default function StudioPage() {
-  const [brands, setBrands] = useState<any[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
   const [selectedBrand, setSelectedBrand] = useState<string>('');
+  const [loadingBrands, setLoadingBrands] = useState(true);
   
   // 프롬프트 옵션들
   const [mainPrompt, setMainPrompt] = useState('');
@@ -27,28 +38,54 @@ export default function StudioPage() {
   // 브랜드 목록 불러오기
   useEffect(() => {
     const fetchBrands = async () => {
-      const supabase = createClient();
-      const { data } = await supabase.from('brands').select('id, name');
-      if (data) {
-        setBrands(data);
-        if (data.length > 0) setSelectedBrand(data[0].id);
+      try {
+        const res = await fetch('/api/brands', { cache: 'no-store' });
+        const data = await res.json();
+
+        if (Array.isArray(data)) {
+          const requestedBrand =
+            typeof window !== 'undefined'
+              ? new URLSearchParams(window.location.search).get('brand')
+              : null;
+          const requestedExists = requestedBrand && data.some((brand: Brand) => brand.id === requestedBrand);
+
+          setBrands(data);
+          setSelectedBrand(requestedExists ? requestedBrand : data[0]?.id || '');
+        }
+      } finally {
+        setLoadingBrands(false);
       }
     };
     fetchBrands();
   }, []);
 
   // 프롬프트 조립
-  const constructFinalPrompt = () => {
-    return `${mainPrompt}, Lighting: ${lighting}, Camera: ${camera}, Mood: ${vibe}, Background: ${background}, high quality, 8k`;
-  };
+  const finalPrompt = useMemo(
+    () =>
+      [
+        mainPrompt.trim(),
+        `Lighting: ${lighting}`,
+        `Camera: ${camera}`,
+        `Mood: ${vibe}`,
+        background.trim() ? `Background: ${background.trim()}` : '',
+        'high quality',
+      ]
+        .filter(Boolean)
+        .join(', '),
+    [background, camera, lighting, mainPrompt, vibe]
+  );
+
+  const activeBrand = brands.find((brand) => brand.id === selectedBrand);
+  const activeModelStatus = activeBrand?.trained_models?.[0]?.status || 'pending';
+  const canGenerate = Boolean(selectedBrand && mainPrompt.trim() && !isGenerating);
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!canGenerate) return;
+
     setIsGenerating(true);
     setStatusMessage('AI 생성 요청 중...');
     setResultImage(null);
-
-    const finalPrompt = constructFinalPrompt();
 
     try {
       const res = await fetch('/api/ai/generate', {
@@ -69,7 +106,7 @@ export default function StudioPage() {
         setResultImage(data.imageUrl);
         setStatusMessage('생성 완료!');
       } else if (data.status === 'processing' || data.status === 'starting') {
-        setStatusMessage(`⚠️ 학습이 진행 중입니다. (상태: ${data.status})`);
+        setStatusMessage(`학습이 진행 중입니다. (상태: ${data.status})`);
       } else {
         setStatusMessage('오류 발생: ' + (data.error || data.message));
       }
@@ -82,24 +119,43 @@ export default function StudioPage() {
   };
 
   return (
-    <div className="p-8 max-w-6xl mx-auto flex gap-10">
+    <div className="p-8 max-w-6xl mx-auto flex flex-col gap-8 xl:flex-row xl:gap-10">
       {/* 왼쪽: 컨트롤 패널 */}
-      <div className="w-1/3 space-y-8">
-        <h1 className="text-2xl font-bold">Studio</h1>
+      <form onSubmit={handleGenerate} className="w-full space-y-8 xl:w-1/3">
+        <div>
+          <h1 className="text-2xl font-bold">Studio</h1>
+          <p className="mt-2 text-sm text-gray-500">
+            학습된 브랜드 모델로 새 이미지를 생성합니다.
+          </p>
+        </div>
         
         <div className="space-y-5">
           {/* 브랜드 선택 */}
           <div>
             <label className="block text-sm font-bold mb-2">브랜드 선택</label>
-            <select 
-              className="w-full p-3 border rounded-lg bg-white"
-              value={selectedBrand}
-              onChange={(e) => setSelectedBrand(e.target.value)}
-            >
-              {brands.map(b => (
-                <option key={b.id} value={b.id}>{b.name}</option>
-              ))}
-            </select>
+            {loadingBrands ? (
+              <div className="rounded-lg border bg-white p-3 text-sm text-gray-500">브랜드를 불러오는 중...</div>
+            ) : brands.length > 0 ? (
+              <>
+                <select 
+                  className="w-full p-3 border rounded-lg bg-white"
+                  value={selectedBrand}
+                  onChange={(e) => setSelectedBrand(e.target.value)}
+                >
+                  {brands.map(b => (
+                    <option key={b.id} value={b.id}>{b.name}</option>
+                  ))}
+                </select>
+                <p className="mt-2 text-xs text-gray-500">모델 상태: {activeModelStatus}</p>
+              </>
+            ) : (
+              <div className="rounded-lg border border-dashed bg-white p-4 text-sm text-gray-600">
+                등록된 브랜드가 없습니다.
+                <Link href="/dashboard/brand-kit" className="ml-2 font-medium text-blue-600 hover:underline">
+                  브랜드 만들기
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* 메인 프롬프트 */}
@@ -198,15 +254,15 @@ export default function StudioPage() {
 
           <div className="bg-gray-50 p-3 rounded text-xs text-gray-500 break-words">
             <strong>Prompt Preview:</strong><br/>
-            {constructFinalPrompt()}
+            {finalPrompt || '주제를 입력하면 최종 프롬프트가 표시됩니다.'}
           </div>
 
           <Button 
-            onClick={handleGenerate} 
-            disabled={isGenerating || !selectedBrand || !mainPrompt}
+            type="submit"
+            disabled={!canGenerate}
             className="w-full py-6 text-lg bg-indigo-600 hover:bg-indigo-700 font-bold shadow-md"
           >
-            {isGenerating ? statusMessage : '✨ 이미지 생성하기'}
+            {isGenerating ? statusMessage : '이미지 생성하기'}
           </Button>
 
           {statusMessage && (
@@ -215,10 +271,10 @@ export default function StudioPage() {
             </div>
           )}
         </div>
-      </div>
+      </form>
 
       {/* 오른쪽: 결과 뷰어 */}
-      <div className="w-2/3 bg-gray-100 rounded-xl flex items-center justify-center min-h-[600px] border-2 border-dashed border-gray-300 relative">
+      <div className="relative flex min-h-[560px] w-full items-center justify-center rounded-lg border border-dashed border-gray-300 bg-gray-100 xl:w-2/3">
         {resultImage ? (
           <div className="relative w-full h-full flex items-center justify-center p-4">
              {/* 이미지 비율에 따라 뷰어 스타일이 유동적이어야 함 */}
@@ -227,14 +283,18 @@ export default function StudioPage() {
                 href={resultImage} 
                 download 
                 target="_blank"
-                className="absolute bottom-6 right-6 bg-white px-4 py-2 rounded-full shadow hover:bg-gray-50 font-medium text-sm"
+                rel="noreferrer"
+                className="absolute bottom-6 right-6 inline-flex items-center gap-2 rounded-md bg-white px-4 py-2 text-sm font-medium shadow hover:bg-gray-50"
               >
-                💾 원본 다운로드
+                <Download className="h-4 w-4" />
+                원본 다운로드
               </a>
           </div>
         ) : (
           <div className="text-gray-400 text-center">
-            <div className="text-6xl mb-4">🎨</div>
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-md bg-white text-gray-500 shadow-sm">
+              {isGenerating ? <Sparkles className="h-7 w-7" /> : <ImageIcon className="h-7 w-7" />}
+            </div>
             <p className="text-xl font-medium">왼쪽에서 설정을 마치고 생성해주세요</p>
             <p className="text-sm mt-2">비율과 시드값을 조절하여 원하는 결과를 얻으세요</p>
           </div>

@@ -28,6 +28,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const storageUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!.replace("/v1", "");
+    const allowedPrefix = `${storageUrl}/storage/v1/object/public/gallery/`;
+
+    if (typeof imageUrl !== "string" || !imageUrl.startsWith(allowedPrefix)) {
+      return NextResponse.json(
+        { error: "Gallery storage image URL is required" },
+        { status: 400 }
+      );
+    }
+
     // 3. 이미지 fetch → base64 변환
     const imageResp = await fetch(imageUrl);
     if (!imageResp.ok) throw new Error(`Failed to fetch image: ${imageResp.statusText}`);

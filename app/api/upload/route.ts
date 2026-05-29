@@ -1,11 +1,24 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
+function normalizeFolder(folder: FormDataEntryValue | null) {
+  if (typeof folder !== 'string') return '';
+
+  return folder
+    .replace(/\\/g, '/')
+    .replace(/^\/+|\/+$/g, '')
+    .replace(/^posts\/?/, '')
+    .split('/')
+    .filter((part) => /^[a-zA-Z0-9_-]+$/.test(part))
+    .join('/');
+}
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File;
     const fileName = formData.get('fileName') as string;
+    const folder = normalizeFolder(formData.get('folder'));
     const isTemp = formData.get('isTemp') === 'true'; // temp 폴더 사용 여부
 
     if (!file || !fileName) {
@@ -24,9 +37,10 @@ export async function POST(request: NextRequest) {
 
     // temp 폴더면 user_id별로 (없으면 'anonymous'), 아니면 일반 폴더에 저장
     const userId = user?.id || 'anonymous';
-    const filePath = isTemp
-      ? `temp/${userId}/${fileName}`
-      : fileName;
+    const pathSegments = isTemp
+      ? ['temp', userId, folder, fileName]
+      : [folder, fileName];
+    const filePath = pathSegments.filter(Boolean).join('/');
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);

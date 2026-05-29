@@ -207,14 +207,6 @@ export default function UserRow({
                 >
                   수정하기
                 </button>
-                <button
-                  onClick={() => {
-                    setShowMenu(false);
-                  }}
-                  className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50"
-                >
-                  알림
-                </button>
                 {canDelete && (
                   <button
                     onClick={() => {

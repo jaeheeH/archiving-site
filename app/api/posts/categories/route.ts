@@ -1,13 +1,16 @@
 // app/api/posts/categories/route.ts
 
 import { createClient } from '@supabase/supabase-js';
+import { revalidateTag } from 'next/cache';
+import {
+  CACHE_TAGS,
+  PUBLIC_API_CACHE_CONTROL,
+} from '@/lib/public-data';
+import { createPublicClient } from '@/lib/supabase/public';
 import { generateSlug } from '@/lib/slugify';
 
 export async function GET(request: Request) {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = createPublicClient();
 
   const { searchParams } = new URL(request.url);
   const type = searchParams.get('type') || 'blog';
@@ -22,7 +25,14 @@ export async function GET(request: Request) {
     return Response.json({ error: error.message }, { status: 400 });
   }
 
-  return Response.json({ categories: data });
+  return Response.json(
+    { categories: data },
+    {
+      headers: {
+        'Cache-Control': PUBLIC_API_CACHE_CONTROL,
+      },
+    }
+  );
 }
 
 export async function POST(request: Request) {
@@ -68,6 +78,9 @@ export async function POST(request: Request) {
       return Response.json({ error: error.message }, { status: 400 });
     }
 
+    revalidateTag(CACHE_TAGS.posts, "max");
+    revalidateTag(CACHE_TAGS.home, "max");
+
     return Response.json({ category: data }, { status: 201 });
   } catch (err) {
     console.error('카테고리 생성 실패:', err);
@@ -112,6 +125,9 @@ export async function DELETE(request: Request) {
     if (error) {
       return Response.json({ error: error.message }, { status: 400 });
     }
+
+    revalidateTag(CACHE_TAGS.posts, "max");
+    revalidateTag(CACHE_TAGS.home, "max");
 
     return Response.json({ message: '카테고리가 삭제되었습니다' }, { status: 200 });
   } catch (err) {

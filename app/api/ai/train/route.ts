@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import Replicate from 'replicate';
 import JSZip from 'jszip';
 
@@ -15,38 +16,69 @@ async function downloadImage(url: string): Promise<ArrayBuffer> {
 
 export async function POST(request: Request) {
   try {
-    const { brandId, imageUrls, instance_prompt } = await request.json();
-    const supabase = await createClient();
+    const { brandId, imageUrls } = await request.json();
+    const supabaseAuth = await createClient();
+    const supabase = createAdminClient();
+    const {
+      data: { user },
+    } = await supabaseAuth.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 });
+    }
 
     // 1. 필수 값 검증
-    if (!brandId || !imageUrls || imageUrls.length === 0) {
+    if (!brandId || !Array.isArray(imageUrls) || imageUrls.length === 0) {
       return NextResponse.json({ error: '필수 정보가 누락되었습니다.' }, { status: 400 });
+    }
+
+    if (imageUrls.length < 5 || imageUrls.length > 25) {
+      return NextResponse.json({ error: '학습 이미지는 5장 이상 25장 이하로 등록해주세요.' }, { status: 400 });
     }
 
     // 2. 브랜드 정보 가져오기
     const { data: brand } = await supabase
       .from('brands')
-      .select('name, trigger_word')
+      .select('id, name, trigger_word, user_id')
       .eq('id', brandId)
-      .single();
+      .eq('user_id', user.id)
+      .maybeSingle();
 
-    if (!brand) return NextResponse.json({ error: '브랜드를 찾을 수 없습니다.' }, { status: 404 });
+    if (!brand) {
+      return NextResponse.json({ error: '브랜드를 찾을 수 없거나 권한이 없습니다.' }, { status: 404 });
+    }
+
+    const storageUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!.replace('/v1', '');
+    const allowedPrefix = `${storageUrl}/storage/v1/object/public/brand-assets/${brandId}/`;
+    const validImageUrls = imageUrls.filter(
+      (url: unknown): url is string => typeof url === 'string' && url.startsWith(allowedPrefix)
+    );
+
+    if (validImageUrls.length !== imageUrls.length) {
+      return NextResponse.json({ error: '브랜드 자산 폴더의 이미지 URL만 학습에 사용할 수 있습니다.' }, { status: 400 });
+    }
 
     // 3. Zip 압축
-    console.log(`Starting to zip ${imageUrls.length} images...`);
+    console.log(`Starting to zip ${validImageUrls.length} images...`);
     const zip = new JSZip();
+    let successfulDownloads = 0;
 
     await Promise.all(
-      imageUrls.map(async (url: string, index: number) => {
+      validImageUrls.map(async (url: string, index: number) => {
         try {
           const arrayBuffer = await downloadImage(url);
           const ext = url.split('.').pop()?.split('?')[0] || 'jpg';
           zip.file(`${index}.${ext}`, arrayBuffer);
+          successfulDownloads += 1;
         } catch (e) {
           console.error(`Error downloading image ${url}:`, e);
         }
       })
     );
+
+    if (successfulDownloads < 5) {
+      return NextResponse.json({ error: '다운로드 가능한 학습 이미지가 5장 미만입니다.' }, { status: 400 });
+    }
 
     const zipContent = await zip.generateAsync({ type: 'blob' });
     const zipArrayBuffer = await zipContent.arrayBuffer();
@@ -108,7 +140,7 @@ export async function POST(request: Request) {
         destination: destination as `${string}/${string}`,
         input: {
           input_images: zipUrl,
-          trigger_word: instance_prompt || brand.trigger_word,
+          trigger_word: brand.trigger_word,
           steps: 1000,
           lora_rank: 16,
           optimizer: "adamw8bit",

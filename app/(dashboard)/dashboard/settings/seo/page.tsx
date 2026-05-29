@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ToastProvider";
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
 import ImageUpload from "@/components/ImageUpload";
@@ -38,7 +37,6 @@ type SiteSettings = {
 };
 
 export default function SEOSettingsPage() {
-  const supabase = createClient();
   const { addToast } = useToast();
 
   const [loading, setLoading] = useState(true);

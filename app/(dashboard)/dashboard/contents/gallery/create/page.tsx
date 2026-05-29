@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ToastProvider";
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
+import imageCompression from "browser-image-compression";
 
 // UI Components
 import TagInput from "@/components/TagInput";
@@ -33,25 +33,10 @@ export default function CreateGalleryPage() {
   const router = useRouter();
   const { addToast } = useToast();
 
-  const supabase = createClient();
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      const { data: sessionData } = await supabase.auth.getSession();
-
-      if (!sessionData.session) {
-        alert("로그인이 필요합니다.");
-        router.push("/login");
-        return;
-      }
-    };
-
-    checkAuth();
-  }, [router]);
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   // 📌 태그
   const [tags, setTags] = useState<string[]>([]);
@@ -79,30 +64,47 @@ export default function CreateGalleryPage() {
   // 이미지 drag & drop
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [statusText, setStatusText] = useState("");
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
+
+  const setSelectedImage = (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      addToast("이미지 파일만 업로드할 수 있습니다.", "error");
+      return;
+    }
+
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setImageFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
-    if (file) setImageFile(file);
+    if (file) setSelectedImage(file);
   };
 
   const uploadImage = async (file: File) => {
-    const ext = file.name.split(".").pop();
-    const fileName = `${Date.now()}.${ext}`;
-    const filePath = `gallery/${fileName}`;
+    const formData = new FormData();
+    formData.append("file", file);
 
-    const { error } = await supabase.storage
-      .from("gallery")
-      .upload(filePath, file);
+    const res = await fetch("/api/gallery/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
 
-    if (error) throw error;
+    if (!res.ok) {
+      throw new Error(data.error || "이미지 업로드 실패");
+    }
 
-    const { data: urlData } = supabase.storage
-      .from("gallery")
-      .getPublicUrl(filePath);
-
-    return urlData.publicUrl;
+    return data.url as string;
   };
 
   const analyzeImage = async (imageUrl: string) => {
@@ -127,24 +129,29 @@ export default function CreateGalleryPage() {
 
     try {
       setLoading(true);
+      setStatusText("이미지 최적화 중...");
 
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (!user) {
-        addToast("사용자 정보를 찾을 수 없습니다.", "error");
-        return;
-      }
+      const optimizedFile = await imageCompression(imageFile, {
+        maxSizeMB: 1.8,
+        maxWidthOrHeight: 2200,
+        useWebWorker: true,
+        fileType: "image/jpeg",
+        initialQuality: 0.86,
+      });
 
       // 1. 이미지 크기 감지
-      const { width, height } = await getImageDimensions(imageFile);
+      const { width, height } = await getImageDimensions(optimizedFile);
 
       // 2. Storage에 이미지 업로드
-      const imageUrl = await uploadImage(imageFile);
+      setStatusText("이미지 업로드 중...");
+      const imageUrl = await uploadImage(optimizedFile);
 
       // 3. Gemini로 이미지 분석
+      setStatusText("이미지 분석 중...");
       const analysisResult = await analyzeImage(imageUrl);
 
       // 4. API를 통해 gallery 생성 (이미지 크기 포함)
+      setStatusText("갤러리 저장 중...");
       const aiTags = Array.isArray(analysisResult.tags) ? analysisResult.tags : [];
 
       const res = await fetch("/api/gallery", {
@@ -177,6 +184,7 @@ export default function CreateGalleryPage() {
       addToast(`에러: ${e.message}`, "error");
     } finally {
       setLoading(false);
+      setStatusText("");
     }
   };
 
@@ -190,7 +198,7 @@ export default function CreateGalleryPage() {
             onClick={handleSubmit}
             disabled={loading}
           >
-            {loading ? "업로드 중..." : "저장하기"}
+            {loading ? statusText || "업로드 중..." : "저장하기"}
           </button>
         </div>
       </header>
@@ -273,18 +281,20 @@ export default function CreateGalleryPage() {
             hidden
             accept="image/*"
             onChange={(e) => {
-              if (e.target.files?.[0]) setImageFile(e.target.files[0]);
+              if (e.target.files?.[0]) setSelectedImage(e.target.files[0]);
+              e.target.value = "";
             }}
           />
 
-          {!imageFile ? (
+          {!previewUrl ? (
             <div className="text-gray-500">
               이미지를 드래그하거나 클릭하여 업로드
             </div>
           ) : (
             <img
-              src={URL.createObjectURL(imageFile)}
+              src={previewUrl}
               className="mx-auto max-h-72 rounded"
+              alt="미리보기"
             />
           )}
         </div>

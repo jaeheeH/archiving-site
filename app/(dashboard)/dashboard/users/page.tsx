@@ -2,25 +2,43 @@
 
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import UserList from "./components/UserList";
 import "../../css/users.scss";
+import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
 
 export default async function Users() {
   const supabase = await createClient();
-
   const { data: { user } } = await supabase.auth.getUser();
 
-  const { data: currentUser } = await supabase
+  if (!user) {
+    redirect("/login");
+  }
+
+  const admin = createAdminClient();
+
+  const { data: currentUser } = await admin
     .from("users")
     .select("role")
-    .eq("id", user?.id)
+    .eq("id", user.id)
     .single();
 
-  const { data: users, error } = await supabase
+  if (currentUser?.role !== "admin" && currentUser?.role !== "sub-admin") {
+    redirect("/no-access");
+  }
+
+  let usersQuery = admin
     .from("users")
-    .select("*")
+    .select("id, email, role, nickname, name, avatar_url, phone, tel, created_at, last_login_at, status")
     .order("created_at", { ascending: false });
+
+  if (currentUser.role === "sub-admin") {
+    usersQuery = usersQuery.neq("role", "admin");
+  }
+
+  const { data: users } = await usersQuery;
 
   return (
     <div>
@@ -31,7 +49,7 @@ export default async function Users() {
         <UserList
           users={users || []}
           currentUserRole={currentUser?.role || "user"}
-          currentUserId={user?.id || ""}
+          currentUserId={user.id}
         />
       </div>
     </div>

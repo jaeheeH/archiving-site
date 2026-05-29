@@ -2,7 +2,6 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ToastProvider";
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
 import Link from "next/link";
@@ -41,7 +40,6 @@ function BlogContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const supabase = createClient();
   const { addToast } = useToast();
 
   const pageFromUrl = Number(searchParams.get("page") || 1);
@@ -89,27 +87,6 @@ function BlogContent() {
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  // 현재 사용자 로드
-  const fetchCurrentUser = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (user) {
-        const { data: profile } = await supabase
-          .from("users")
-          .select("id, role")
-          .eq("id", user.id)
-          .single();
-
-        if (profile) {
-          setCurrentUser(profile);
-        }
-      }
-    } catch (error) {
-      console.error("사용자 로드 실패:", error);
-    }
-  };
-
   // 카테고리 로드
   const fetchCategories = async () => {
     try {
@@ -127,9 +104,16 @@ function BlogContent() {
       setLoading(true);
 
       const offset = (pageNum - 1) * limit;
-      const res = await fetch(
-        `/api/admin/posts?type=blog&limit=${limit}&offset=${offset}`
-      );
+      const params = new URLSearchParams({
+        type: "blog",
+        limit: String(limit),
+        offset: String(offset),
+        category_id: categoryFilter,
+        draft_only: String(showDraftOnly),
+        sort_by: sortBy,
+        sort_order: sortOrder,
+      });
+      const res = await fetch(`/api/admin/posts?${params.toString()}`);
       const data = await res.json();
 
       if (!res.ok) {
@@ -138,70 +122,21 @@ function BlogContent() {
         return;
       }
 
-      let postsData = data.data || [];
-
-      // 필터 적용
-      postsData = postsData.filter((post: Post) => {
-        // 초안보기 필터
-        if (showDraftOnly && post.is_published) return false;
-
-        // 카테고리 필터
-        if (categoryFilter !== "all") {
-          if (categoryFilter === "uncategorized") {
-            if (post.category_id !== null) return false;
-          } else {
-            if (post.category_id !== categoryFilter) return false;
-          }
-        }
-
-        return true;
-      });
-
-      // 정렬 적용
-      postsData = postsData.sort((a: Post, b: Post) => {
-        let aValue: any = a[sortBy];
-        let bValue: any = b[sortBy];
-
-        // null 처리
-        if (aValue === null || aValue === undefined) aValue = 0;
-        if (bValue === null || bValue === undefined) bValue = 0;
-
-        // 날짜 문자열 비교
-        if (typeof aValue === "string" && sortBy.includes("_at")) {
-          aValue = new Date(aValue).getTime();
-          bValue = new Date(bValue).getTime();
-        }
-
-        // 숫자 비교
-        if (typeof aValue === "number" && typeof bValue === "number") {
-          return sortOrder === "desc" ? bValue - aValue : aValue - bValue;
-        }
-
-        return 0;
-      });
+      const postsData = data.data || [];
 
       setPosts(postsData);
-      
-      // 전체 카운트 계산 (필터 적용 후)
-      setTotalCount(postsData.length);
-      setTotalPages(Math.ceil(postsData.length / limit));
+      setCurrentUser(data.currentUser || null);
+
+      const total = data.pagination?.total || 0;
+      setTotalCount(total);
+      setTotalPages(Math.max(1, Math.ceil(total / limit)));
 
       // 작성자 정보 가져오기
-      const authorIds = [...new Set(postsData.map((p: Post) => p.author_id))];
-      if (authorIds.length > 0) {
-        const { data: authorsData } = await supabase
-          .from("users")
-          .select("id, role")
-          .in("id", authorIds);
-
-        if (authorsData) {
-          const authorsMap: Record<string, User> = {};
-          authorsData.forEach((author) => {
-            authorsMap[author.id] = author;
-          });
-          setAuthors(authorsMap);
-        }
-      }
+      const authorsMap: Record<string, User> = {};
+      (data.authors || []).forEach((author: User) => {
+        authorsMap[author.id] = author;
+      });
+      setAuthors(authorsMap);
 
       setSelectedIds([]);
     } catch (error) {
@@ -213,7 +148,6 @@ function BlogContent() {
   };
 
   useEffect(() => {
-    fetchCurrentUser();
     fetchCategories();
   }, []);
 
@@ -438,7 +372,9 @@ function BlogContent() {
   };
 
   // 페이지네이션 계산
-  const paginatedPosts = posts.slice((page - 1) * limit, page * limit);
+  const paginatedPosts = posts;
+  const visibleStart = totalCount === 0 ? 0 : (page - 1) * limit + 1;
+  const visibleEnd = Math.min(page * limit, totalCount);
 
   if (loading && posts.length === 0) {
     return <div className="p-6">불러오는 중...</div>;
@@ -790,8 +726,7 @@ function BlogContent() {
 
         {/* 정보 */}
         <div className="mt-4 text-sm text-gray-600">
-          총 {totalCount}개 중 {(page - 1) * limit + 1}-
-          {Math.min(page * limit, totalCount)}개 표시
+          총 {totalCount}개 중 {visibleStart}-{visibleEnd}개 표시
         </div>
 
         {/* 페이지네이션 */}

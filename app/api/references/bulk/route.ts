@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkReferenceEditPermission } from "@/lib/supabase/reference-utils";
+import { CACHE_TAGS } from "@/lib/public-data";
 
 /**
  * DELETE /api/references/bulk
@@ -58,6 +60,9 @@ export async function DELETE(req: NextRequest) {
     if (error) {
       throw error;
     }
+
+    revalidateTag(CACHE_TAGS.references, "max");
+    revalidateTag(CACHE_TAGS.home, "max");
 
     return NextResponse.json({
       success: true,

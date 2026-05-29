@@ -2,6 +2,8 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest } from 'next/server';
+import { revalidateTag } from 'next/cache';
+import { CACHE_TAGS } from '@/lib/public-data';
 
 // PATCH: 발행 상태만 토글
 export async function PATCH(
@@ -55,6 +57,9 @@ export async function PATCH(
     if (error) {
       return Response.json({ error: error.message }, { status: 400 });
     }
+
+    revalidateTag(CACHE_TAGS.posts, "max");
+    revalidateTag(CACHE_TAGS.home, "max");
 
     return Response.json(
       {

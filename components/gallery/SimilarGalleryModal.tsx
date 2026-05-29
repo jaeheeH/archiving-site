@@ -40,11 +40,7 @@ export default function SimilarGalleryModal({
       try {
         setLoading(true);
 
-        const res = await fetch(`/api/gallery/${galleryId}/similar`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ limit: 8 }),
-        });
+        const res = await fetch(`/api/gallery/${galleryId}/similar?limit=8`);
 
         if (!res.ok) {
           const errorData = await res.json();

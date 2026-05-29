@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 // 유저 정보 타입 정의
@@ -19,7 +19,7 @@ export default function Header() {
   const [mounted, setMounted] = useState(false);
   const [userInfo, setUserInfo] = useState<UserProfile | null>(null);
   
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   // 헤더 제외 페이지
   const NO_HEADER_ROUTES = ["/login", "/signup", "/dashboard"];
@@ -40,7 +40,8 @@ export default function Header() {
 
     // 2. 유저 정보 조회 (Auth + DB 최신 데이터)
     const fetchUser = async () => {
-      const { data: { user: authUser } } = await supabase.auth.getUser();
+      const { data: { session } } = await supabase.auth.getSession();
+      const authUser = session?.user;
 
       if (authUser) {
         const { data: dbUser, error } = await supabase
@@ -70,7 +71,7 @@ export default function Header() {
     };
 
     fetchUser();
-  }, []);
+  }, [supabase]);
 
   // 다크모드 적용
   const applyTheme = (dark: boolean) => {

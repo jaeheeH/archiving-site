@@ -14,6 +14,7 @@ export async function DELETE(request: Request) {
     }
 
     const supabase = await createClient();
+    const adminClient = createAdminClient();
 
     // 현재 사용자 확인
     const { data: { user } } = await supabase.auth.getUser();
@@ -26,7 +27,14 @@ export async function DELETE(request: Request) {
     }
 
     // 현재 사용자의 role 확인
-    const { data: currentUser } = await supabase
+    if (user.id === userId) {
+      return NextResponse.json(
+        { error: "Cannot delete yourself" },
+        { status: 403 }
+      );
+    }
+
+    const { data: currentUser } = await adminClient
       .from("users")
       .select("role")
       .eq("id", user.id)
@@ -42,7 +50,7 @@ export async function DELETE(request: Request) {
 
     // sub-admin은 admin 삭제 불가
     if (currentUser?.role === "sub-admin") {
-      const { data: targetUser } = await supabase
+      const { data: targetUser } = await adminClient
         .from("users")
         .select("role")
         .eq("id", userId)
@@ -56,9 +64,6 @@ export async function DELETE(request: Request) {
       }
     }
 
-    // Admin 클라이언트로 삭제
-    const adminClient = createAdminClient();
-
     // auth.users에서 삭제
     const { error: authError } = await adminClient.auth.admin.deleteUser(userId);
 
@@ -71,7 +76,7 @@ export async function DELETE(request: Request) {
     }
 
     // public.users는 CASCADE로 자동 삭제되거나 수동 삭제
-    await supabase.from("users").delete().eq("id", userId);
+    await adminClient.from("users").delete().eq("id", userId);
 
     return NextResponse.json({ success: true });
   } catch (error) {

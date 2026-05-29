@@ -22,6 +22,7 @@ export function useImageUpload(): UseImageUploadResult {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('fileName', fileName);
+      formData.append('folder', folder);
       formData.append('isTemp', isTemp ? 'true' : 'false');
 
       const response = await fetch('/api/upload', {

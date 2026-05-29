@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient as createServerClient } from "@/lib/supabase/server";
+import { revalidateTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkReferenceOwnershipOrAdmin } from "@/lib/supabase/reference-utils";
-
-// 캐싱 방지 (항상 최신 데이터 로드)
-export const dynamic = 'force-dynamic';
+import {
+  CACHE_TAGS,
+  PUBLIC_API_CACHE_CONTROL,
+} from "@/lib/public-data";
+import { createPublicClient } from "@/lib/supabase/public";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -18,7 +20,7 @@ interface Props {
 export async function GET(req: NextRequest, { params }: Props) {
   try {
     const { id } = await params;
-    const supabase = await createServerClient();
+    const supabase = createPublicClient();
 
     const { data, error } = await supabase
       .from("references")
@@ -48,10 +50,17 @@ export async function GET(req: NextRequest, { params }: Props) {
       );
     }
 
-    return NextResponse.json({
-      success: true,
-      data,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        data,
+      },
+      {
+        headers: {
+          "Cache-Control": PUBLIC_API_CACHE_CONTROL,
+        },
+      }
+    );
   } catch (error: any) {
     console.error("❌ Reference 조회 에러:", error);
     return NextResponse.json(
@@ -149,6 +158,9 @@ export async function PUT(req: NextRequest, { params }: Props) {
       throw error;
     }
 
+    revalidateTag(CACHE_TAGS.references, "max");
+    revalidateTag(CACHE_TAGS.home, "max");
+
     return NextResponse.json({
       success: true,
       data,
@@ -189,6 +201,9 @@ export async function DELETE(req: NextRequest, { params }: Props) {
     if (error) {
       throw error;
     }
+
+    revalidateTag(CACHE_TAGS.references, "max");
+    revalidateTag(CACHE_TAGS.home, "max");
 
     return NextResponse.json({
       success: true,

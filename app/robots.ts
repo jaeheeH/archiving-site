@@ -1,8 +1,7 @@
 import { MetadataRoute } from "next";
 import { getSiteSettings } from "@/lib/site-settings";
 
-// 동적 렌더링 강제
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const settings = await getSiteSettings();

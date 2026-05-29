@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/client";
-import imageCompression from 'browser-image-compression';
 import type { User } from "./UserList";
 
 type Props = {
@@ -23,7 +21,6 @@ export default function UserEditModal({ user, onClose, onSave, currentUserRole }
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(user.avatar_url);
   const [loading, setLoading] = useState(false);
-  const supabase = createClient();
 
   // 이미지 리사이징 & 크롭 함수
   const resizeAndCropImage = async (file: File): Promise<File> => {
@@ -112,28 +109,23 @@ export default function UserEditModal({ user, onClose, onSave, currentUserRole }
 
     // 이미지 업로드
     if (avatarFile) {
-      const fileExt = 'webp';  // 항상 webp로 저장
-      const fileName = `${user.id}/${user.id}.${fileExt}`;
+      const formData = new FormData();
+      formData.append("userId", user.id);
+      formData.append("file", avatarFile);
 
-      const { data, error: uploadError } = await supabase.storage
-        .from("avatars")
-        .upload(fileName, avatarFile, {
-          upsert: true,
-          contentType: 'image/webp'
-        });
+      const uploadRes = await fetch("/api/admin/users/avatar", {
+        method: "POST",
+        body: formData,
+      });
+      const uploadData = await uploadRes.json();
 
-      if (uploadError) {
-        alert("이미지 업로드에 실패했습니다.");
-        console.error(uploadError);
+      if (!uploadRes.ok) {
+        alert(uploadData.error || "이미지 업로드에 실패했습니다.");
         setLoading(false);
         return;
       }
 
-      const { data: urlData } = supabase.storage
-        .from("avatars")
-        .getPublicUrl(fileName);
-
-      avatarUrl = `${urlData.publicUrl}?t=${Date.now()}`;
+      avatarUrl = uploadData.url;
     }
 
     // 사용자 정보 업데이트

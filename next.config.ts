@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
+    formats: ['image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -13,8 +14,10 @@ const nextConfig: NextConfig = {
         hostname: '*.supabase.co',
       },
     ],
-    // 🆕 deviceSizes 추가
     deviceSizes: [640, 828, 1200],
+    imageSizes: [16, 32, 64, 128, 256, 384],
+    qualities: [75],
+    minimumCacheTTL: 86400,
   },
 };
 

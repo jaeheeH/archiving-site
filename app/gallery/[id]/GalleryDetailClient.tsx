@@ -29,6 +29,9 @@ type GalleryListItem = {
   image_url: string;
 };
 
+const GALLERY_DETAIL_COLUMNS =
+  'id, title, description, image_url, image_width, image_height, tags, gemini_tags, gemini_description, category, created_at, author';
+
 interface GalleryDetailClientProps {
   gallery: GalleryDetail;
   prevId: number | null;
@@ -42,7 +45,7 @@ export default function GalleryDetailClient({
 }: GalleryDetailClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const { addToast } = useToast();
 
   const [gallery, setGallery] = useState<GalleryDetail>(initialGallery);
@@ -269,7 +272,11 @@ export default function GalleryDetailClient({
     if (newId === gallery.id) return;
     try {
       setContentLoading(true);
-      const { data, error } = await supabase.from('gallery').select('*').eq('id', newId).single();
+      const { data, error } = await supabase
+        .from('gallery')
+        .select(GALLERY_DETAIL_COLUMNS)
+        .eq('id', newId)
+        .single();
       if (error || !data) throw new Error("Fetch error");
       
       setGallery(data);
@@ -305,7 +312,8 @@ export default function GalleryDetailClient({
   };
 
   const checkScrapStatus = async (id: number) => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { session } } = await supabase.auth.getSession();
+    const user = session?.user;
     if (!user) { setIsScraped(false); return; }
     const { data } = await supabase.from("gallery_scraps").select("id").eq("gallery_id", id).eq("user_id", user.id).maybeSingle();
     setIsScraped(!!data);
@@ -313,7 +321,8 @@ export default function GalleryDetailClient({
 
   const handleScrapToggle = async () => {
     if (scrapLoading) return;
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { session } } = await supabase.auth.getSession();
+    const user = session?.user;
     if (!user) { addToast("로그인 필요", "error"); return; }
     setScrapLoading(true); setIsScraped(!isScraped);
     try {

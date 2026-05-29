@@ -3,7 +3,9 @@
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
+import { CACHE_TAGS } from '@/lib/public-data';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -192,6 +194,9 @@ export async function PUT(
       }
     }
 
+    revalidateTag(CACHE_TAGS.posts, "max");
+    revalidateTag(CACHE_TAGS.home, "max");
+
     // 6. 성공 응답
     return NextResponse.json(
       {
@@ -238,6 +243,9 @@ export async function DELETE(
         { status: 400 }
       );
     }
+
+    revalidateTag(CACHE_TAGS.posts, "max");
+    revalidateTag(CACHE_TAGS.home, "max");
 
     return NextResponse.json(
       { message: '포스트가 삭제되었습니다' },

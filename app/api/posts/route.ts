@@ -3,6 +3,12 @@
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { revalidateTag } from 'next/cache';
+import {
+  CACHE_TAGS,
+  PUBLIC_API_CACHE_CONTROL,
+  getPostsPageData,
+} from '@/lib/public-data';
 
 // temp 이미지를 정식 폴더로 이동하는 헬퍼 함수
 async function moveImagesToPostFolder(
@@ -64,6 +70,49 @@ async function moveImagesToPostFolder(
   return JSON.parse(contentStr);
 }
 
+async function moveTempPostAssetToPostFolder(
+  supabase: any,
+  assetUrl: string | null | undefined,
+  userId: string,
+  postType: string,
+  postId: string
+): Promise<string | null> {
+  if (!assetUrl) return null;
+
+  const storageUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!.replace('/v1', '');
+  const tempPrefix = `${storageUrl}/storage/v1/object/public/posts/temp/${userId}/`;
+  const newPrefix = `${storageUrl}/storage/v1/object/public/posts/${postType}/${postId}/`;
+
+  if (!assetUrl.startsWith(tempPrefix)) {
+    return assetUrl;
+  }
+
+  const relativePath = assetUrl.slice(tempPrefix.length).split('?')[0];
+  if (!relativePath) return assetUrl;
+
+  const oldPath = `temp/${userId}/${relativePath}`;
+  const newPath = `${postType}/${postId}/${relativePath}`;
+
+  try {
+    const { data: fileData } = await supabase.storage
+      .from('posts')
+      .download(oldPath);
+
+    if (!fileData) return assetUrl;
+
+    await supabase.storage
+      .from('posts')
+      .upload(newPath, fileData, { upsert: true });
+
+    await supabase.storage.from('posts').remove([oldPath]);
+
+    return `${newPrefix}${relativePath}`;
+  } catch (err) {
+    console.error(`대표 이미지 이동 실패 (${relativePath}):`, err);
+    return assetUrl;
+  }
+}
+
 // GET: 포스트 목록 조회
 // GET: 포스트 목록 조회
 export async function GET(request: Request) {
@@ -74,44 +123,19 @@ export async function GET(request: Request) {
     const offset = parseInt(searchParams.get('offset') || '0', 10);
     const categoryId = searchParams.get('category_id'); // 1. 카테고리 ID 추출
 
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
-
-    // 2. 쿼리 빌더 초기화 및 기본 필터 적용
-    let query = supabase
-      .from('posts')
-      .select('id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id', { count: 'exact' })
-      .eq('type', type)
-      .eq('is_published', true)
-      .not('published_at', 'is', null);
-
-    // 3. 카테고리 필터가 있고 'all'이 아닐 경우 조건 추가
-    if (categoryId && categoryId !== 'all') {
-      query = query.eq('category_id', categoryId);
-    }
-
-    // 4. 정렬 및 범위를 지정하여 데이터와 전체 개수 조회
-    const { data, error, count } = await query
-      .order('published_at', { ascending: false })
-      .range(offset, offset + limit - 1);
-
-    if (error) {
-      return Response.json({ error: error.message }, { status: 400 });
-    }
+    const result = await getPostsPageData(type, limit, offset, categoryId || 'all');
 
     return Response.json(
       { 
-        data,
-        pagination: {
-          total: count || 0,
-          limit,
-          offset,
-          hasMore: (offset + limit) < (count || 0)
-        }
+        data: result.data,
+        pagination: result.pagination,
       },
-      { status: 200 }
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': PUBLIC_API_CACHE_CONTROL,
+        },
+      }
     );
   } catch (err) {
     console.error('API 에러:', err);
@@ -163,6 +187,8 @@ export async function POST(request: Request) {
       title_style = 'text',
       title_image_url,
       author_id,
+      is_published = false,
+      published_at,
     } = body;
 
     // 2. 필수 데이터 확인
@@ -204,6 +230,11 @@ export async function POST(request: Request) {
       }
     }
 
+    const shouldPublish = Boolean(is_published);
+    const finalPublishedAt = shouldPublish
+      ? published_at || new Date().toISOString()
+      : null;
+
     // 4. DB에 저장 (먼저 포스트 생성해서 ID 얻기)
     const { data, error } = await supabase
       .from('posts')
@@ -219,7 +250,8 @@ export async function POST(request: Request) {
         title_style,
         title_image_url: title_image_url || null,
         author_id: finalAuthorId,
-        is_published: false,  // 초안으로 저장
+        is_published: shouldPublish,
+        published_at: finalPublishedAt,
       })
       .select()
       .single();
@@ -246,15 +278,37 @@ export async function POST(request: Request) {
       postId
     );
 
-    // content가 변경되었으면 업데이트
+    const updatedTitleImageUrl = await moveTempPostAssetToPostFolder(
+      supabase,
+      title_image_url || null,
+      finalAuthorId,
+      type,
+      postId
+    );
+
+    const postUpdates: Record<string, unknown> = {};
     if (updatedContent !== content) {
+      postUpdates.content = updatedContent;
+    }
+    if (updatedTitleImageUrl !== (title_image_url || null)) {
+      postUpdates.title_image_url = updatedTitleImageUrl;
+    }
+
+    // temp 리소스가 정식 폴더로 이동되었으면 저장된 URL도 갱신
+    if (Object.keys(postUpdates).length > 0) {
       await supabase
         .from('posts')
-        .update({ content: updatedContent })
+        .update(postUpdates)
         .eq('id', postId);
 
-      data.content = updatedContent;
+      if (postUpdates.content) data.content = updatedContent;
+      if ('title_image_url' in postUpdates) {
+        data.title_image_url = updatedTitleImageUrl;
+      }
     }
+
+    revalidateTag(CACHE_TAGS.posts, "max");
+    revalidateTag(CACHE_TAGS.home, "max");
 
     // 6. 성공 응답
     return Response.json(

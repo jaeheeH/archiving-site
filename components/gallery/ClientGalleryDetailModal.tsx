@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -28,6 +28,9 @@ type GalleryDetail = {
   author?: string;
 };
 
+const GALLERY_DETAIL_COLUMNS =
+  "id, title, description, image_url, image_width, image_height, tags, gemini_tags, gemini_description, category, created_at, author";
+
 export default function ClientGalleryDetailModal({
   id,
   onClose,
@@ -42,7 +45,7 @@ export default function ClientGalleryDetailModal({
   const [scrapLoading, setScrapLoading] = useState(false);
   const [isCopied, setIsCopied] = useState(false); // 프롬프트 복사 상태
 
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
   const { addToast } = useToast();
 
   useEffect(() => {
@@ -66,7 +69,7 @@ export default function ClientGalleryDetailModal({
       setLoading(true);
       const { data, error } = await supabase
         .from('gallery')
-        .select('*')
+        .select(GALLERY_DETAIL_COLUMNS)
         .eq('id', id)
         .single();
 
@@ -81,7 +84,8 @@ export default function ClientGalleryDetailModal({
 
   // 2. 스크랩 상태 확인
   const checkScrapStatus = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { session } } = await supabase.auth.getSession();
+    const user = session?.user;
     if (!user) return;
 
     const { data } = await supabase
@@ -97,7 +101,8 @@ export default function ClientGalleryDetailModal({
   // 3. 스크랩 토글
   const handleScrapToggle = async () => {
     if (scrapLoading) return;
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { session } } = await supabase.auth.getSession();
+    const user = session?.user;
     if (!user) {
       addToast("로그인이 필요한 서비스입니다.", "error");
       return;

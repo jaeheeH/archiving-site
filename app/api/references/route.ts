@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient as createServerClient } from "@/lib/supabase/server";
+import { revalidateTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkReferenceEditPermission } from "@/lib/supabase/reference-utils";
-
-// 👇 [핵심 수정] 이 줄을 추가해야 매번 최신 DB 데이터를 가져옵니다.
-export const dynamic = 'force-dynamic';
+import {
+  CACHE_TAGS,
+  PUBLIC_API_CACHE_CONTROL,
+  getReferencesListData,
+} from "@/lib/public-data";
 
 /**
  * GET /api/references
@@ -13,76 +15,35 @@ export const dynamic = 'force-dynamic';
  */
 export async function GET(req: NextRequest) {
   try {
-    const supabase = await createServerClient();
-
     // 쿼리 파라미터 파싱
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
-    const offset = (page - 1) * limit;
     const category = searchParams.get("category");
     const sort = searchParams.get("sort") || "created_at";
     const order = searchParams.get("order") === "asc" ? "asc" : "desc";
     const search = searchParams.get("search");
 
-    // 쿼리 빌더
-    let query = supabase
-      .from("references")
-      .select(
-        `
-        id,
-        title,
-        description,
-        url,
-        image_url,
-        logo_url,
-        category,
-        range,
-        clicks,
-        author,
-        created_at,
-        updated_at
-      `,
-        { count: "exact" }
-      );
+    const result = await getReferencesListData(
+      page,
+      limit,
+      category || "",
+      sort,
+      order,
+      search || ""
+    );
 
-    // 범주 필터 (range 배열에서 해당 값 포함하는 항목 검색)
-    if (category) {
-      query = query.filter("range", "cs", `{"${category}"}`);
-    }
-
-    // 검색 필터 (제목 또는 설명)
-    if (search) {
-      query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
-    }
-
-    // 정렬
-    const validSortFields = ["created_at", "clicks", "title"];
-    const sortField = validSortFields.includes(sort) ? sort : "created_at";
-    query = query.order(sortField, { ascending: order === "asc" });
-
-    // 페이지네이션
-    query = query.range(offset, offset + limit - 1);
-
-    // 데이터 조회
-    const { data, count, error } = await query;
-
-    if (error) {
-      throw error;
-    }
-
-    const totalPages = Math.ceil((count || 0) / limit);
-
-    return NextResponse.json({
-      success: true,
-      data,
-      pagination: {
-        page,
-        limit,
-        total: count || 0,
-        totalPages,
+    return NextResponse.json(
+      {
+        success: true,
+        ...result,
       },
-    });
+      {
+        headers: {
+          "Cache-Control": PUBLIC_API_CACHE_CONTROL,
+        },
+      }
+    );
   } catch (error: any) {
     console.error("❌ Reference 목록 조회 에러:", error);
     return NextResponse.json(
@@ -157,6 +118,9 @@ export async function POST(req: NextRequest) {
     if (error) {
       throw error;
     }
+
+    revalidateTag(CACHE_TAGS.references, "max");
+    revalidateTag(CACHE_TAGS.home, "max");
 
     return NextResponse.json({
       success: true,

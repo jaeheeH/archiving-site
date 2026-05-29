@@ -19,8 +19,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// 동적 렌더링 강제
-export const dynamic = 'force-dynamic';
+const enableVercelInsights = process.env.NEXT_PUBLIC_ENABLE_VERCEL_INSIGHTS === "true";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -158,9 +157,12 @@ export default async function RootLayout({
           <Footer/>
         </ToastProvider>
         
-        {/* Vercel Analytics */}
-        <SpeedInsights />
-        <Analytics />
+        {enableVercelInsights && (
+          <>
+            <SpeedInsights />
+            <Analytics />
+          </>
+        )}
       </body>
     </html>
   );

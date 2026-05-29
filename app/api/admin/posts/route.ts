@@ -19,13 +19,69 @@ async function getUserRole(userId: string, supabase: any) {
   return data.role;
 }
 
+function normalizePositiveInt(value: string | null, fallback: number, max: number) {
+  const parsed = Number.parseInt(value || "", 10);
+  if (!Number.isFinite(parsed) || parsed < 1) return fallback;
+  return Math.min(parsed, max);
+}
+
+function normalizeOffset(value: string | null) {
+  const parsed = Number.parseInt(value || "", 10);
+  if (!Number.isFinite(parsed) || parsed < 0) return 0;
+  return parsed;
+}
+
+function normalizeSortField(value: string | null) {
+  const allowedFields = ["created_at", "published_at", "view_count", "scrap_count"];
+  return value && allowedFields.includes(value) ? value : "created_at";
+}
+
+function normalizeSortOrder(value: string | null) {
+  return value === "asc" ? "asc" : "desc";
+}
+
+function applyPostFilters(query: any, params: {
+  type: string;
+  userRole: string;
+  userId: string;
+  adminIds: string[];
+  categoryId: string | null;
+  draftOnly: boolean;
+}) {
+  let nextQuery = query.eq('type', params.type);
+
+  if (params.userRole === 'sub-admin' && params.adminIds.length > 0) {
+    nextQuery = nextQuery.not('author_id', 'in', `(${params.adminIds.join(',')})`);
+  } else if (params.userRole === 'editor') {
+    nextQuery = nextQuery.eq('author_id', params.userId);
+  }
+
+  if (params.categoryId && params.categoryId !== 'all') {
+    if (params.categoryId === 'uncategorized') {
+      nextQuery = nextQuery.is('category_id', null);
+    } else {
+      nextQuery = nextQuery.eq('category_id', params.categoryId);
+    }
+  }
+
+  if (params.draftOnly) {
+    nextQuery = nextQuery.eq('is_published', false);
+  }
+
+  return nextQuery;
+}
+
 // GET: 관리자용 포스트 목록 조회 (권한별 필터링)
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const type = searchParams.get('type') || 'blog';
-    const limit = parseInt(searchParams.get('limit') || '20', 10);
-    const offset = parseInt(searchParams.get('offset') || '0', 10);
+    const limit = normalizePositiveInt(searchParams.get('limit'), 20, 100);
+    const offset = normalizeOffset(searchParams.get('offset'));
+    const categoryId = searchParams.get('category_id');
+    const draftOnly = searchParams.get('draft_only') === 'true';
+    const sortBy = normalizeSortField(searchParams.get('sort_by'));
+    const sortOrder = normalizeSortOrder(searchParams.get('sort_order'));
 
     // 1. 현재 사용자 확인
     const cookieStore = await cookies();
@@ -75,36 +131,50 @@ export async function GET(request: Request) {
       );
     }
 
-    // 3. 권한별 필터링 쿼리 구성
-    let query = supabase
-      .from('posts')
-      .select('id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id', { count: 'exact' })
-      .eq('type', type);
+    let adminIds: string[] = [];
 
-    // admin은 모든 글, sub-admin은 admin 제외, editor는 자신의 글만
     if (userRole === 'sub-admin') {
-      // admin이 작성한 글 제외
       const { data: adminUsers } = await supabase
         .from('users')
         .select('id')
         .eq('role', 'admin');
 
       if (adminUsers && adminUsers.length > 0) {
-        const adminIds = adminUsers.map((u) => u.id);
-        query = query.not('author_id', 'in', `(${adminIds.join(',')})`);
+        adminIds = adminUsers.map((u) => u.id);
       }
-    } else if (userRole === 'editor') {
-      // 자신의 글만
-      query = query.eq('author_id', user.id);
     }
-    // admin은 필터링 없음
 
-    // 4. 전체 개수 조회
-    const { count } = await query;
+    const filterParams = {
+      type,
+      userRole,
+      userId: user.id,
+      adminIds,
+      categoryId,
+      draftOnly,
+    };
 
-    // 5. 페이지네이션된 데이터 조회
-    const { data, error } = await query
-      .order('created_at', { ascending: false })
+    const countQuery = applyPostFilters(
+      supabase.from('posts').select('id', { count: 'exact', head: true }),
+      filterParams
+    );
+
+    const dataQuery = applyPostFilters(
+      supabase
+        .from('posts')
+        .select('id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id'),
+      filterParams
+    );
+
+    const { count, error: countError } = await countQuery;
+    if (countError) {
+      return Response.json(
+        { error: countError.message },
+        { status: 400 }
+      );
+    }
+
+    const { data, error } = await dataQuery
+      .order(sortBy, { ascending: sortOrder === 'asc', nullsFirst: false })
       .range(offset, offset + limit - 1);
 
     if (error) {
@@ -114,9 +184,19 @@ export async function GET(request: Request) {
       );
     }
 
+    const authorIds = [...new Set((data || []).map((post: any) => post.author_id).filter(Boolean))];
+    const { data: authorRows } = authorIds.length > 0
+      ? await supabase.from('users').select('id, role').in('id', authorIds)
+      : { data: [] };
+
     return Response.json(
       {
         data,
+        currentUser: {
+          id: user.id,
+          role: userRole,
+        },
+        authors: authorRows || [],
         pagination: {
           total: count || 0,
           limit,

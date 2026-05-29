@@ -1,6 +1,7 @@
 // app/api/ai/generate/route.ts
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import Replicate from 'replicate';
 
 const replicate = new Replicate({
@@ -10,14 +11,30 @@ const replicate = new Replicate({
 export async function POST(request: Request) {
   try {
     const { brandId, prompt, aspectRatio, seed } = await request.json();
-    const supabase = await createClient();
+    const supabaseAuth = await createClient();
+    const supabase = createAdminClient();
 
     // [NEW] 0. 현재 로그인한 사용자 확인
     // 서버에서 안전하게 유저 정보를 가져옵니다.
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user } } = await supabaseAuth.auth.getUser();
 
     if (!user) {
       return NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 });
+    }
+
+    if (!brandId || !prompt) {
+      return NextResponse.json({ error: '브랜드와 프롬프트가 필요합니다.' }, { status: 400 });
+    }
+
+    const { data: brand } = await supabase
+      .from('brands')
+      .select('id, trigger_word, user_id')
+      .eq('id', brandId)
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (!brand) {
+      return NextResponse.json({ error: '브랜드를 찾을 수 없거나 권한이 없습니다.' }, { status: 404 });
     }
 
     // 1. 모델 정보 조회
@@ -31,8 +48,6 @@ export async function POST(request: Request) {
     if (!model) {
       return NextResponse.json({ error: '학습된 모델이 없습니다.' }, { status: 400 });
     }
-
-    const { data: brand } = await supabase.from('brands').select('*').eq('id', brandId).single();
 
     // 2. 학습 정보 확인 (Lazy Check)
     let replicateTrainingId = model.replicate_training_id;

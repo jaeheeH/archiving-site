@@ -3,7 +3,6 @@
 
 import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
-import { createClient } from '@/lib/supabase/client';
 import { useToast } from '@/components/ToastProvider';
 import { useImageUpload } from '@/hooks/useImageUpload';
 
@@ -27,7 +26,6 @@ export default function BannersPage() {
   const [editing, setEditing] = useState<Banner | null>(null);
   const [formData, setFormData] = useState<Partial<Banner>>({});
   const { addToast } = useToast();
-  const supabase = createClient();
   const { uploadImage, uploading: isUploading } = useImageUpload();
   const imageInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -39,13 +37,11 @@ export default function BannersPage() {
 
   const fetchBanners = async () => {
     try {
-      const { data, error } = await supabase
-        .from('banners')
-        .select('*')
-        .order('order_index', { ascending: true });
+      const res = await fetch('/api/settings/banners', { cache: 'no-store' });
+      const result = await res.json();
 
-      if (error) throw error;
-      setBanners(data || []);
+      if (!res.ok) throw new Error(result.error || 'Failed to fetch banners');
+      setBanners(result.data || []);
     } catch (error) {
       console.error('Failed to fetch banners:', error);
       addToast('배너 목록을 불러올 수 없습니다', 'error');
@@ -93,20 +89,23 @@ export default function BannersPage() {
     try {
       if (editing) {
         // 수정
-        const { error } = await supabase
-          .from('banners')
-          .update(formData)
-          .eq('id', editing.id);
-
-        if (error) throw error;
+        const res = await fetch('/api/settings/banners', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...formData, id: editing.id }),
+        });
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.error || '저장 실패');
         addToast('배너가 수정되었습니다', 'success');
       } else {
         // 생성
-        const { error } = await supabase
-          .from('banners')
-          .insert([formData]);
-
-        if (error) throw error;
+        const res = await fetch('/api/settings/banners', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.error || '저장 실패');
         addToast('배너가 추가되었습니다', 'success');
       }
 
@@ -124,12 +123,14 @@ export default function BannersPage() {
     if (!confirm('이 배너를 삭제하시겠습니까?')) return;
 
     try {
-      const { error } = await supabase
-        .from('banners')
-        .delete()
-        .eq('id', id);
+      const res = await fetch('/api/settings/banners', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+      const result = await res.json();
 
-      if (error) throw error;
+      if (!res.ok) throw new Error(result.error || '삭제 실패');
       addToast('배너가 삭제되었습니다', 'success');
       fetchBanners();
     } catch (error) {
@@ -374,51 +375,67 @@ export default function BannersPage() {
 
       {/* 배너 목록 */}
       <div className="space-y-4">
-        {banners.map((banner) => (
-          <div key={banner.id} className="border p-4 rounded-lg bg-white">
-            <div className="flex items-start justify-between gap-4">
-              {/* 배너 미리보기 */}
-              <div className="w-32 h-24 relative flex-shrink-0 bg-gray-100 rounded overflow-hidden">
-                <Image
-                  src={banner.image_url}
-                  alt={banner.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
+        {banners.length === 0 ? (
+          <div className="rounded-lg border border-dashed border-gray-300 bg-white py-16 text-center">
+            <p className="text-sm text-gray-500">등록된 배너가 없습니다.</p>
+            <button
+              onClick={() => {
+                setEditing(null);
+                setFormData({ is_continuous: true, is_active: true, order_index: 1 });
+                setPreviewUrl(null);
+              }}
+              className="mt-4 rounded bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+            >
+              첫 배너 만들기
+            </button>
+          </div>
+        ) : (
+          banners.map((banner) => (
+            <div key={banner.id} className="border p-4 rounded-lg bg-white">
+              <div className="flex items-start justify-between gap-4">
+                {/* 배너 미리보기 */}
+                <div className="w-32 h-24 relative flex-shrink-0 bg-gray-100 rounded overflow-hidden">
+                  <Image
+                    src={banner.image_url}
+                    alt={banner.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
 
-              {/* 배너 정보 */}
-              <div className="flex-1">
-                <h3 className="font-bold text-lg">{banner.title}</h3>
-                {banner.subtitle && <p className="text-sm text-gray-600">{banner.subtitle}</p>}
-                <p className="text-xs text-gray-500 mt-2">
-                  {banner.is_continuous
-                    ? '계속 운영'
-                    : `${banner.start_date?.split('T')[0]} ~ ${banner.end_date?.split('T')[0]}`}
-                </p>
-                <p className="text-xs text-gray-500">
-                  상태: {banner.is_active ? '활성' : '비활성'} | 순서: {banner.order_index}
-                </p>
-              </div>
+                {/* 배너 정보 */}
+                <div className="flex-1">
+                  <h3 className="font-bold text-lg">{banner.title}</h3>
+                  {banner.subtitle && <p className="text-sm text-gray-600">{banner.subtitle}</p>}
+                  <p className="text-xs text-gray-500 mt-2">
+                    {banner.is_continuous
+                      ? '계속 운영'
+                      : `${banner.start_date?.split('T')[0]} ~ ${banner.end_date?.split('T')[0]}`}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    상태: {banner.is_active ? '활성' : '비활성'} | 순서: {banner.order_index}
+                  </p>
+                </div>
 
-              {/* 액션 버튼 */}
-              <div className="flex gap-2 flex-shrink-0">
-                <button
-                  onClick={() => handleEdit(banner)}
-                  className="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
-                >
-                  수정
-                </button>
-                <button
-                  onClick={() => handleDelete(banner.id)}
-                  className="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
-                >
-                  삭제
-                </button>
+                {/* 액션 버튼 */}
+                <div className="flex gap-2 flex-shrink-0">
+                  <button
+                    onClick={() => handleEdit(banner)}
+                    className="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
+                  >
+                    수정
+                  </button>
+                  <button
+                    onClick={() => handleDelete(banner.id)}
+                    className="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
+                  >
+                    삭제
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

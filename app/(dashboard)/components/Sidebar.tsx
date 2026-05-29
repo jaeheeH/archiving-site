@@ -20,9 +20,21 @@ export default function Sidebar() {
       icon: "ri-edit-2-line",
       href: "/dashboard/contents",
       children: [
+        { label: "콘텐츠 개요", href: "/dashboard/contents" },
         { label: "갤러리", href: "/dashboard/contents/gallery" },
         { label: "블로그", href: "/dashboard/contents/blog" },
         { label: "레퍼런스", href: "/dashboard/contents/references" },
+      ],
+    },
+    {
+      label: "AI 작업공간",
+      icon: "ri-sparkling-line",
+      href: "/dashboard/studio",
+      children: [
+        { label: "브랜드 관리", href: "/dashboard/brand" },
+        { label: "브랜드 만들기", href: "/dashboard/brand-kit" },
+        { label: "Studio", href: "/dashboard/studio" },
+        { label: "Library", href: "/dashboard/library" },
       ],
     },
     {
@@ -30,9 +42,9 @@ export default function Sidebar() {
       icon: "ri-line-chart-line",
       href: "/dashboard/analytics",
       children: [
-        { label: "갤러리", href: "/dashboard/analytics/default" },
+        { label: "통계 개요", href: "/dashboard/analytics" },
+        { label: "갤러리", href: "/dashboard/analytics/gallery" },
         { label: "레퍼런스", href: "/dashboard/analytics/references" },
-        { label: "아이템3", href: "/dashboard/analytics/item3" },
       ],
     },
     {
@@ -44,11 +56,12 @@ export default function Sidebar() {
     {
       label: "환경설정",
       icon: "ri-settings-2-line",
-      href: "/dashboard/setting",
+      href: "/dashboard/settings",
       children: [
+        { label: "설정 개요", href: "/dashboard/settings" },
         { label: "SEO(검색엔진최적화)", href: "/dashboard/settings/seo" },
+        { label: "메인 배너", href: "/dashboard/settings/banner" },
         { label: "레퍼런스 카테고리 관리", href: "/dashboard/settings/reference-categories" },
-        { label: "약관", href: "/dashboard/setting/etc" },
       ],
     }
   ];

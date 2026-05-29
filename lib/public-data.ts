@@ -1,0 +1,564 @@
+import "server-only";
+
+import { unstable_cache } from "next/cache";
+import { createPublicClient } from "@/lib/supabase/public";
+
+export const CACHE_TAGS = {
+  siteSettings: "site-settings",
+  home: "public-home",
+  gallery: "public-gallery",
+  posts: "public-posts",
+  references: "public-references",
+} as const;
+
+export const CACHE_SECONDS = {
+  short: 600,
+  medium: 3600,
+  long: 86400,
+} as const;
+
+export const PUBLIC_API_CACHE_CONTROL = `public, s-maxage=${CACHE_SECONDS.short}, stale-while-revalidate=${CACHE_SECONDS.medium}`;
+
+const GALLERY_LIST_COLUMNS = `
+  id,
+  title,
+  description,
+  image_url,
+  image_width,
+  image_height,
+  created_at,
+  tags,
+  category,
+  range,
+  author,
+  gemini_tags,
+  gemini_description
+`;
+
+const GALLERY_DETAIL_COLUMNS = `
+  id,
+  title,
+  description,
+  image_url,
+  image_width,
+  image_height,
+  tags,
+  gemini_tags,
+  gemini_description,
+  category,
+  range,
+  created_at,
+  author
+`;
+
+const POST_LIST_COLUMNS =
+  "id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id";
+
+const POST_DETAIL_COLUMNS =
+  "id, type, title, subtitle, summary, slug, content, tags, is_published, published_at, created_at, updated_at, title_style, title_image_url, thumbnail_url, category_id, view_count, scrap_count, author_id";
+
+const REFERENCE_COLUMNS =
+  "id, title, description, url, image_url, logo_url, category, range, clicks, author, created_at, updated_at";
+
+function normalizePositiveInt(value: number, fallback: number, max: number) {
+  if (!Number.isFinite(value) || value < 1) return fallback;
+  return Math.min(Math.floor(value), max);
+}
+
+function parseTags(tagsCsv = "") {
+  return tagsCsv
+    .split(",")
+    .map((tag) => tag.trim())
+    .filter(Boolean);
+}
+
+function buildTextSearchQuery(search: string) {
+  return search
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => `${word}:*`)
+    .join(" & ");
+}
+
+export const getHomeData = unstable_cache(
+  async () => {
+    const supabase = createPublicClient();
+
+    const [blogRes, popularRes, referencesRes, galleryRes, categoriesRes] =
+      await Promise.all([
+        supabase
+          .from("posts")
+          .select(
+            "id, title, subtitle, summary, slug, published_at, created_at, title_image_url, category_id, view_count, scrap_count"
+          )
+          .eq("type", "blog")
+          .eq("is_published", true)
+          .order("published_at", { ascending: false })
+          .limit(4),
+        supabase
+          .from("posts")
+          .select("id, title, slug, view_count, published_at, category_id")
+          .eq("type", "blog")
+          .eq("is_published", true)
+          .order("view_count", { ascending: false })
+          .limit(5),
+        supabase
+          .from("references")
+          .select("id, title, description, url, image_url, logo_url, clicks, created_at")
+          .order("created_at", { ascending: false })
+          .limit(8),
+        supabase
+          .from("gallery")
+          .select("id, title, description, image_url, tags, gemini_tags")
+          .order("created_at", { ascending: false })
+          .limit(10),
+        supabase.from("categories").select("id, name"),
+      ]);
+
+    const categoryMap: Record<string, string> = {};
+    categoriesRes.data?.forEach((category: { id: string; name: string }) => {
+      categoryMap[category.id] = category.name;
+    });
+
+    return {
+      latestBlogs: blogRes.data || [],
+      popularBlogs: popularRes.data || [],
+      references: referencesRes.data || [],
+      gallery: galleryRes.data || [],
+      categories: categoryMap,
+    };
+  },
+  ["home-data"],
+  {
+    revalidate: CACHE_SECONDS.medium,
+    tags: [CACHE_TAGS.home, CACHE_TAGS.posts, CACHE_TAGS.gallery, CACHE_TAGS.references],
+  }
+);
+
+export const getGalleryPageData = unstable_cache(
+  async (pageValue: number, limitValue: number, search = "", tagsCsv = "") => {
+    const supabase = createPublicClient();
+    const page = normalizePositiveInt(pageValue, 1, 10_000);
+    const limit = normalizePositiveInt(limitValue, 36, 100);
+    const offset = (page - 1) * limit;
+    const filterTags = parseTags(tagsCsv);
+
+    let query = supabase
+      .from("gallery")
+      .select(GALLERY_LIST_COLUMNS, { count: "planned" })
+      .order("created_at", { ascending: false });
+
+    if (search.trim()) {
+      query = query.textSearch("search_vector", buildTextSearchQuery(search));
+    }
+
+    for (const tag of filterTags) {
+      query = query.or(`tags.cs.{${tag}},gemini_tags.cs.{${tag}}`);
+    }
+
+    const { data, error, count } = await query.range(offset, offset + limit - 1);
+
+    if (error) throw error;
+
+    return {
+      data: data || [],
+      pagination: {
+        page,
+        limit,
+        total: count || 0,
+        totalPages: Math.max(1, Math.ceil((count || 0) / limit)),
+      },
+      filters: {
+        search,
+        tags: filterTags,
+      },
+    };
+  },
+  ["gallery-page-data"],
+  {
+    revalidate: CACHE_SECONDS.short,
+    tags: [CACHE_TAGS.gallery],
+  }
+);
+
+export const getGalleryDetailData = unstable_cache(
+  async (idValue: number) => {
+    const supabase = createPublicClient();
+    const id = Number(idValue);
+
+    const { data: gallery, error } = await supabase
+      .from("gallery")
+      .select(GALLERY_DETAIL_COLUMNS)
+      .eq("id", id)
+      .single();
+
+    if (error || !gallery) {
+      return null;
+    }
+
+    const [prevResult, nextResult] = await Promise.all([
+      supabase
+        .from("gallery")
+        .select("id")
+        .gt("id", id)
+        .order("id", { ascending: true })
+        .limit(1)
+        .maybeSingle(),
+      supabase
+        .from("gallery")
+        .select("id")
+        .lt("id", id)
+        .order("id", { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+    ]);
+
+    return {
+      gallery,
+      prevId: prevResult.data?.id ?? null,
+      nextId: nextResult.data?.id ?? null,
+    };
+  },
+  ["gallery-detail-data"],
+  {
+    revalidate: CACHE_SECONDS.medium,
+    tags: [CACHE_TAGS.gallery],
+  }
+);
+
+export const getGalleryTopTags = unstable_cache(
+  async (selectedTagsCsv = "", searchQuery = "") => {
+    const supabase = createPublicClient();
+    const selectedTags = parseTags(selectedTagsCsv);
+    const selectedTagsSet = new Set(selectedTags);
+
+    let query = supabase.from("gallery").select("tags, gemini_tags, gemini_description");
+
+    for (const tag of selectedTags) {
+      query = query.or(`tags.cs.{${tag}},gemini_tags.cs.{${tag}}`);
+    }
+
+    if (searchQuery.trim()) {
+      query = query.or(
+        `gemini_description.ilike.%${searchQuery}%,gemini_tags.cs.{${searchQuery}},tags.cs.{${searchQuery}}`
+      );
+    }
+
+    const { data: galleryItems, error } = await query;
+    if (error) throw error;
+    if (!galleryItems?.length) return [];
+
+    const tagCount: Record<string, number> = {};
+    const currentTotalCount = galleryItems.length;
+
+    galleryItems.forEach(
+      (item: { tags?: string[] | null; gemini_tags?: string[] | null }) => {
+        const uniqueItemTags = new Set<string>();
+
+        item.tags?.forEach((tag) => tag && uniqueItemTags.add(tag));
+        item.gemini_tags?.forEach((tag) => tag && uniqueItemTags.add(tag));
+
+        uniqueItemTags.forEach((tag) => {
+          tagCount[tag] = (tagCount[tag] || 0) + 1;
+        });
+      }
+    );
+
+    return Object.entries(tagCount)
+      .filter(([tag, count]) => selectedTagsSet.has(tag) || count !== currentTotalCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([tag, count]) => ({ tag, count }));
+  },
+  ["gallery-top-tags"],
+  {
+    revalidate: CACHE_SECONDS.short,
+    tags: [CACHE_TAGS.gallery],
+  }
+);
+
+function calculateCosineSimilarity(vector1: number[], vector2: number[]) {
+  if (vector1.length !== vector2.length) return 0;
+
+  let dotProduct = 0;
+  let magnitude1 = 0;
+  let magnitude2 = 0;
+
+  for (let i = 0; i < vector1.length; i++) {
+    dotProduct += vector1[i] * vector2[i];
+    magnitude1 += vector1[i] * vector1[i];
+    magnitude2 += vector2[i] * vector2[i];
+  }
+
+  magnitude1 = Math.sqrt(magnitude1);
+  magnitude2 = Math.sqrt(magnitude2);
+
+  return magnitude1 === 0 || magnitude2 === 0 ? 0 : dotProduct / (magnitude1 * magnitude2);
+}
+
+function parseEmbedding(embedding: unknown) {
+  if (typeof embedding === "string") return JSON.parse(embedding) as number[];
+  if (Array.isArray(embedding)) return embedding as number[];
+  return null;
+}
+
+export const getSimilarGallery = unstable_cache(
+  async (galleryIdValue: number, limitValue: number) => {
+    const supabase = createPublicClient();
+    const galleryId = Number(galleryIdValue);
+    const limit = normalizePositiveInt(limitValue, 8, 24);
+    const similarityThreshold = 0.75;
+
+    const { data: currentGallery, error: currentError } = await supabase
+      .from("gallery")
+      .select("embedding")
+      .eq("id", galleryId)
+      .single();
+
+    if (currentError || !currentGallery?.embedding) {
+      return {
+        data: [],
+        metadata: {
+          totalSimilar: 0,
+          threshold: similarityThreshold,
+        },
+      };
+    }
+
+    const currentEmbedding = parseEmbedding(currentGallery.embedding);
+    if (!currentEmbedding) {
+      return {
+        data: [],
+        metadata: {
+          totalSimilar: 0,
+          threshold: similarityThreshold,
+        },
+      };
+    }
+
+    const { data: allGalleries, error: allError } = await supabase
+      .from("gallery")
+      .select("id, title, image_url, image_width, image_height, description, embedding")
+      .neq("id", galleryId)
+      .not("embedding", "is", null);
+
+    if (allError) throw allError;
+
+    const similarities = (allGalleries || [])
+      .map((gallery) => {
+        try {
+          const embedding = parseEmbedding(gallery.embedding);
+          if (!embedding) return null;
+
+          const similarity = calculateCosineSimilarity(currentEmbedding, embedding);
+          if (similarity < similarityThreshold) return null;
+
+          return {
+            id: gallery.id,
+            title: gallery.title,
+            image_url: gallery.image_url,
+            image_width: gallery.image_width,
+            image_height: gallery.image_height,
+            description: gallery.description,
+            similarity,
+          };
+        } catch {
+          return null;
+        }
+      })
+      .filter((item): item is NonNullable<typeof item> => item !== null)
+      .sort((a, b) => b.similarity - a.similarity)
+      .slice(0, limit);
+
+    return {
+      data: similarities,
+      metadata: {
+        totalSimilar: similarities.length,
+        threshold: similarityThreshold,
+      },
+    };
+  },
+  ["similar-gallery"],
+  {
+    revalidate: CACHE_SECONDS.medium,
+    tags: [CACHE_TAGS.gallery],
+  }
+);
+
+export const getPostsPageData = unstable_cache(
+  async (type = "blog", limitValue: number, offsetValue: number, categoryId = "all") => {
+    const supabase = createPublicClient();
+    const limit = normalizePositiveInt(limitValue, 12, 100);
+    const offset = Math.max(0, Math.floor(offsetValue || 0));
+
+    let query = supabase
+      .from("posts")
+      .select(POST_LIST_COLUMNS, { count: "planned" })
+      .eq("type", type)
+      .eq("is_published", true)
+      .not("published_at", "is", null);
+
+    if (categoryId && categoryId !== "all") {
+      query = query.eq("category_id", categoryId);
+    }
+
+    const { data, error, count } = await query
+      .order("published_at", { ascending: false })
+      .range(offset, offset + limit - 1);
+
+    if (error) throw error;
+
+    return {
+      data: data || [],
+      pagination: {
+        total: count || 0,
+        limit,
+        offset,
+        hasMore: offset + limit < (count || 0),
+      },
+    };
+  },
+  ["posts-page-data"],
+  {
+    revalidate: CACHE_SECONDS.short,
+    tags: [CACHE_TAGS.posts],
+  }
+);
+
+export const getBlogCategories = unstable_cache(
+  async () => {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("categories")
+      .select("id, name")
+      .eq("type", "blog")
+      .order("order_index", { ascending: true });
+
+    if (error) throw error;
+    return data || [];
+  },
+  ["blog-categories"],
+  {
+    revalidate: CACHE_SECONDS.medium,
+    tags: [CACHE_TAGS.posts],
+  }
+);
+
+export const getBlogPostData = unstable_cache(
+  async (slug: string) => {
+    const supabase = createPublicClient();
+
+    const { data: post } = await supabase
+      .from("posts")
+      .select(POST_DETAIL_COLUMNS)
+      .eq("slug", slug)
+      .eq("is_published", true)
+      .single();
+
+    if (post) {
+      return { post, redirectSlug: null };
+    }
+
+    const { data: history } = await supabase
+      .from("post_slug_history")
+      .select("new_slug")
+      .eq("old_slug", slug)
+      .single();
+
+    if (history?.new_slug) {
+      return { post: null, redirectSlug: history.new_slug };
+    }
+
+    return null;
+  },
+  ["blog-post-data"],
+  {
+    revalidate: CACHE_SECONDS.long,
+    tags: [CACHE_TAGS.posts],
+  }
+);
+
+export const getReferencesPageData = unstable_cache(
+  async () => {
+    const supabase = createPublicClient();
+
+    const [categoriesRes, referencesRes] = await Promise.all([
+      supabase
+        .from("reference_categories")
+        .select("id, name")
+        .order("created_at", { ascending: true }),
+      supabase
+        .from("references")
+        .select("id, title, description, url, image_url, logo_url, range, clicks, created_at")
+        .order("created_at", { ascending: false })
+        .limit(100),
+    ]);
+
+    if (categoriesRes.error) throw categoriesRes.error;
+    if (referencesRes.error) throw referencesRes.error;
+
+    return {
+      categories: (categoriesRes.data || []).map((category: { name: string }) => category.name),
+      references: referencesRes.data || [],
+    };
+  },
+  ["references-page-data"],
+  {
+    revalidate: CACHE_SECONDS.long,
+    tags: [CACHE_TAGS.references],
+  }
+);
+
+export const getReferencesListData = unstable_cache(
+  async (
+    pageValue: number,
+    limitValue: number,
+    category = "",
+    sort = "created_at",
+    orderValue: "asc" | "desc" = "desc",
+    search = ""
+  ) => {
+    const supabase = createPublicClient();
+    const page = normalizePositiveInt(pageValue, 1, 10_000);
+    const limit = normalizePositiveInt(limitValue, 10, 100);
+    const offset = (page - 1) * limit;
+
+    let query = supabase
+      .from("references")
+      .select(REFERENCE_COLUMNS, { count: "planned" });
+
+    if (category) {
+      query = query.filter("range", "cs", `{"${category}"}`);
+    }
+
+    if (search) {
+      query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+    }
+
+    const validSortFields = ["created_at", "clicks", "title"];
+    const sortField = validSortFields.includes(sort) ? sort : "created_at";
+    const order = orderValue === "asc" ? "asc" : "desc";
+
+    const { data, count, error } = await query
+      .order(sortField, { ascending: order === "asc" })
+      .range(offset, offset + limit - 1);
+
+    if (error) throw error;
+
+    return {
+      data: data || [],
+      pagination: {
+        page,
+        limit,
+        total: count || 0,
+        totalPages: Math.max(1, Math.ceil((count || 0) / limit)),
+      },
+    };
+  },
+  ["references-list-data"],
+  {
+    revalidate: CACHE_SECONDS.short,
+    tags: [CACHE_TAGS.references],
+  }
+);

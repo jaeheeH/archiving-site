@@ -3,7 +3,6 @@
 import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ToastProvider";
 
 import GalleryCard from "@/components/gallery/GalleryCard";
@@ -30,7 +29,6 @@ function GalleryContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const supabase = createClient();
   const { addToast } = useToast();
 
   // URL에서 파라미터 가져오기

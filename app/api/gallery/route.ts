@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/client";
+import { revalidateTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkGalleryEditPermission } from "@/lib/supabase/gallery-utils";
+import {
+  CACHE_TAGS,
+  PUBLIC_API_CACHE_CONTROL,
+  getGalleryPageData,
+} from "@/lib/public-data";
 
 /**
  * GET /api/gallery
@@ -19,90 +24,26 @@ import { checkGalleryEditPermission } from "@/lib/supabase/gallery-utils";
  */
 export async function GET(req: NextRequest) {
   try {
-    const supabase = await createClient();
-
     // 쿼리 파라미터 파싱
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
     const search = searchParams.get("search") || "";
     const tagsParam = searchParams.get("tags") || "";
-    const offset = (page - 1) * limit;
 
-    // 필터링할 태그 배열로 변환
-    const filterTags = tagsParam
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter((tag) => tag.length > 0);
+    const result = await getGalleryPageData(page, limit, search, tagsParam);
 
-    let query = supabase
-      .from("gallery")
-      .select(
-        `
-        id,
-        title,
-        description,
-        image_url,
-        image_width,
-        image_height,
-        created_at,
-        tags,
-        category,
-        range,
-        author,
-        gemini_tags,
-        gemini_description
-      `,
-        { count: "exact" }
-      );
-
-    // 검색어 적용 (fulltext search)
-    if (search.trim()) {
-      // to_tsquery를 사용한 검색 (다중 단어 AND 조건)
-      const searchQuery = search
-        .trim()
-        .split(/\s+/)
-        .map((word) => `${word}:*`)
-        .join(" & ");
-
-      query = query.textSearch("search_vector", searchQuery);
-    }
-
-    // 태그 필터 적용 (AND 조건: 모든 태그를 포함해야 함)
-    if (filterTags.length > 0) {
-      for (const tag of filterTags) {
-        // tags 또는 gemini_tags 중 하나라도 해당 태그를 포함하면 OK
-        query = query.or(`tags.cs.{${tag}},gemini_tags.cs.{${tag}}`);
-      }
-    }
-
-    // 정렬 및 페이지네이션
-    query = query
-      .order("created_at", { ascending: false })
-      .range(offset, offset + limit - 1);
-
-    const { data, error, count } = await query;
-
-    if (error) {
-      throw error;
-    }
-
-    const totalPages = Math.ceil((count || 0) / limit);
-
-    return NextResponse.json({
-      success: true,
-      data,
-      pagination: {
-        page,
-        limit,
-        total: count || 0,
-        totalPages,
+    return NextResponse.json(
+      {
+        success: true,
+        ...result,
       },
-      filters: {
-        search,
-        tags: filterTags,
+      {
+        headers: {
+          "Cache-Control": PUBLIC_API_CACHE_CONTROL,
+        },
       },
-    });
+    );
   } catch (error: any) {
     console.error("❌ Gallery 목록 조회 에러:", error);
     return NextResponse.json(
@@ -175,6 +116,9 @@ export async function POST(req: NextRequest) {
     if (error) {
       throw error;
     }
+
+    revalidateTag(CACHE_TAGS.gallery, "max");
+    revalidateTag(CACHE_TAGS.home, "max");
 
     return NextResponse.json({
       success: true,

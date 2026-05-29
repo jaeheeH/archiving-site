@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { revalidateTag } from "next/cache";
+import {
+  CACHE_TAGS,
+  PUBLIC_API_CACHE_CONTROL,
+} from "@/lib/public-data";
+import { getSiteSettings } from "@/lib/site-settings";
 
 /**
  * GET /api/settings/site
@@ -9,28 +15,19 @@ import { createAdminClient } from "@/lib/supabase/admin";
  */
 export async function GET() {
   try {
-    const supabase = await createClient();
+    const data = await getSiteSettings();
 
-    const { data, error } = await supabase
-      .from("site_settings")
-      .select("*")
-      .single();
-
-    if (error) {
-      // 설정이 없으면 기본값 반환
-      if (error.code === "PGRST116") {
-        return NextResponse.json({
-          success: true,
-          data: null,
-        });
+    return NextResponse.json(
+      {
+        success: true,
+        data,
+      },
+      {
+        headers: {
+          "Cache-Control": PUBLIC_API_CACHE_CONTROL,
+        },
       }
-      throw error;
-    }
-
-    return NextResponse.json({
-      success: true,
-      data,
-    });
+    );
   } catch (error: any) {
     console.error("❌ Site settings 조회 에러:", error);
     return NextResponse.json(
@@ -58,7 +55,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data: userData } = await supabase
+    const adminClient = createAdminClient();
+
+    const { data: userData } = await adminClient
       .from("users")
       .select("role")
       .eq("id", user.id)
@@ -73,12 +72,10 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     // 3. 기존 설정 확인
-    const { data: existingSettings } = await supabase
+    const { data: existingSettings } = await adminClient
       .from("site_settings")
       .select("id")
       .single();
-
-    const adminClient = createAdminClient();
 
     if (existingSettings) {
       // 업데이트
@@ -94,6 +91,8 @@ export async function POST(req: NextRequest) {
         .single();
 
       if (error) throw error;
+
+      revalidateTag(CACHE_TAGS.siteSettings, "max");
 
       return NextResponse.json({
         success: true,
@@ -111,6 +110,8 @@ export async function POST(req: NextRequest) {
         .single();
 
       if (error) throw error;
+
+      revalidateTag(CACHE_TAGS.siteSettings, "max");
 
       return NextResponse.json({
         success: true,

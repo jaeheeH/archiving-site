@@ -1,8 +1,8 @@
 import { Metadata } from "next";
-import { createClient } from "@/lib/supabase/server";
-import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { notFound, redirect } from "next/navigation";
 import BlogDetailClient from "./BlogDetailClient";
+import { getBlogPostData } from "@/lib/public-data";
+import { createPublicClient } from "@/lib/supabase/public";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -13,51 +13,12 @@ type Props = {
 export const revalidate = 86400; 
 
 /**
- * 🛠️ 공통 데이터 페칭 함수
- * generateMetadata와 Page 컴포넌트에서 중복 호출을 줄이고 로직을 통일합니다.
- */
-async function getPostData(slug: string) {
-  const supabase = await createClient();
-  
-  // 1️⃣ 현재 슬러그로 포스트 조회
-  // '*'로 모든 컬럼을 가져와서 BlogDetailClient에 넘길 준비를 합니다.
-  const { data: post } = await supabase
-    .from("posts")
-    .select("*") 
-    .eq("slug", slug)
-    .eq("is_published", true)
-    .single();
-
-  if (post) {
-    return { post, redirectSlug: null };
-  }
-
-  // 2️⃣ 포스트가 없다면 slug 변경 이력(history) 확인
-  const { data: history } = await supabase
-    .from("post_slug_history")
-    .select("new_slug")
-    .eq("old_slug", slug)
-    .single();
-
-  if (history?.new_slug) {
-    return { post: null, redirectSlug: history.new_slug };
-  }
-
-  // 3️⃣ 둘 다 없으면 null 반환 (404 처리용)
-  return null;
-}
-
-/**
  * 📦 정적 경로(Static Params) 생성
  * 빌드 시점에 미리 만들어둘 페이지의 slug 목록을 정의합니다.
  */
 export async function generateStaticParams() {
   try {
-    // 빌드 시점에는 쿠키가 없으므로 service role 키로 직접 클라이언트 생성
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = createPublicClient();
     
     const { data: posts, error } = await supabase
       .from('posts')
@@ -84,7 +45,7 @@ export async function generateStaticParams() {
  */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const data = await getPostData(slug);
+  const data = await getBlogPostData(slug);
 
   // 데이터가 없거나 리다이렉트가 필요한 경우, 기본값 반환
   if (!data || data.redirectSlug || !data.post) {
@@ -135,7 +96,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
  */
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const data = await getPostData(slug);
+  const data = await getBlogPostData(slug);
 
   // 1️⃣ 데이터가 아예 없으면 404
   if (!data) {
@@ -147,10 +108,14 @@ export default async function BlogPostPage({ params }: Props) {
     redirect(`/blog/${data.redirectSlug}`);
   }
 
+  if (!data.post) {
+    notFound();
+  }
+
   // 3️⃣ 정상 데이터가 있으면 Client Component에 'initialPost'로 전달
   // 주의: ISR 환경이므로 로그인한 유저의 scrap 정보(userScraped)는 
   // 여기서 정확히 알 수 없습니다(모두에게 같은 HTML 제공). 
   // 따라서 post 데이터에는 기본적인 내용만 담기고, 
   // 개인화된 정보는 Client Component 내부에서 useEffect로 후처리해야 합니다.
-  return <BlogDetailClient initialPost={data.post} />;
+  return <BlogDetailClient initialPost={{ ...data.post, userScraped: false }} />;
 }
