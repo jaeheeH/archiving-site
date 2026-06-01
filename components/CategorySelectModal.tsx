@@ -2,6 +2,15 @@
 
 import { useState } from "react";
 
+type CategorySelectModalProps = {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  selected: string[];
+  setSelected: (selected: string[]) => void;
+  max?: number;
+  categories: string[];
+};
+
 export default function CategorySelectModal({
   open,
   setOpen,
@@ -9,7 +18,7 @@ export default function CategorySelectModal({
   setSelected,
   max = 3,
   categories,
-}: any) {
+}: CategorySelectModalProps) {
   const [search, setSearch] = useState("");
 
   const filtered = categories.filter((c: string) =>

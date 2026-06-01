@@ -1,28 +1,51 @@
 // app/(dashboard)/dashboard/brand-kit/page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import imageCompression from 'browser-image-compression';
 import { UploadCloud, X } from 'lucide-react';
 
+const MAX_TRAINING_IMAGE_BYTES = 12 * 1024 * 1024;
+const ALLOWED_TRAINING_IMAGE_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+]);
+
 export default function BrandKitPage() {
   const router = useRouter();
   const [brandName, setBrandName] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
+  const previewsRef = useRef<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState('');
+
+  useEffect(() => {
+    previewsRef.current = previews;
+  }, [previews]);
+
+  useEffect(() => {
+    return () => {
+      previewsRef.current.forEach((preview) => URL.revokeObjectURL(preview));
+    };
+  }, []);
 
   // 이미지 파일 선택 핸들러
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const newFiles = Array.from(e.target.files).filter((file) =>
-        file.type.startsWith('image/')
+      const selectedFiles = Array.from(e.target.files);
+      const newFiles = selectedFiles.filter(
+        (file) => ALLOWED_TRAINING_IMAGE_TYPES.has(file.type) && file.size <= MAX_TRAINING_IMAGE_BYTES
       );
       const room = 25 - files.length;
+
+      if (newFiles.length < selectedFiles.length) {
+        alert('JPG, PNG, WebP 이미지만 12MB 이하로 추가할 수 있습니다.');
+      }
 
       if (room <= 0) {
         alert('학습 이미지는 최대 25장까지 등록할 수 있습니다.');
@@ -126,9 +149,10 @@ export default function BrandKitPage() {
       alert('브랜드 등록 완료! 학습이 시작되었습니다.\n(약 20~30분 소요)');
       router.push('/dashboard/brand'); // 관리 페이지로 이동
 
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.';
       console.error(error);
-      alert(`오류 발생: ${error.message}`);
+      alert(`오류 발생: ${message}`);
     } finally {
       setLoading(false);
       setUploadProgress('');
@@ -167,7 +191,7 @@ export default function BrandKitPage() {
             <input 
               type="file" 
               multiple 
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp"
               onChange={handleFileChange}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               disabled={loading}

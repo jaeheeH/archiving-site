@@ -1,9 +1,11 @@
 // app/api/posts/[id]/scrap/route.ts
 
-import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
+import { CACHE_TAGS } from '@/lib/public-data';
+import { isUuidParam } from '@/lib/route-params';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { createClient } from '@/lib/supabase/server';
 
 export async function POST(
   request: NextRequest,
@@ -12,28 +14,17 @@ export async function POST(
   try {
     const { id: postId } = await params;
 
-    // 1. 현재 사용자 확인
-    const cookieStore = await cookies();
-    const supabaseAuth = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll();
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              );
-            } catch {}
-          },
-        },
-      }
-    );
+    if (!isUuidParam(postId)) {
+      return NextResponse.json(
+        { error: '잘못된 포스트 ID입니다' },
+        { status: 400 }
+      );
+    }
 
-    const { data: { user }, error: userError } = await supabaseAuth.auth.getUser();
+    // 1. 현재 사용자 확인
+    const supabaseAuth = await createClient();
+
+    const { data: { user } } = await supabaseAuth.auth.getUser();
 
     if (!user) {
       return NextResponse.json(
@@ -43,18 +34,36 @@ export async function POST(
     }
 
     // 2. Service Role 클라이언트
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = createAdminClient();
+
+    const { data: post, error: postError } = await supabase
+      .from('posts')
+      .select('id')
+      .eq('id', postId)
+      .eq('is_published', true)
+      .maybeSingle();
+
+    if (postError || !post) {
+      return NextResponse.json(
+        { error: '포스트를 찾을 수 없습니다' },
+        { status: 404 }
+      );
+    }
 
     // 3. 이미 스크랩했는지 확인
-    const { data: existingScrap, error: queryError } = await supabase
+    const { data: existingScrap, error: existingScrapError } = await supabase
       .from('post_scraps')
       .select('id')
       .eq('post_id', postId)
       .eq('user_id', user.id)
-      .single();
+      .maybeSingle();
+
+    if (existingScrapError) {
+      return NextResponse.json(
+        { error: existingScrapError.message },
+        { status: 400 }
+      );
+    }
 
     let scrapAdded = false;
 
@@ -96,27 +105,24 @@ export async function POST(
       scrapAdded = true;
     }
 
-    // 5. scrap_count 업데이트
-    const { data: post, error: getError } = await supabase
-      .from('posts')
-      .select('scrap_count')
-      .eq('id', postId)
-      .single();
+    // 5. 실제 스크랩 테이블 기준으로 scrap_count 동기화
+    const { count, error: countError } = await supabase
+      .from('post_scraps')
+      .select('id', { count: 'exact', head: true })
+      .eq('post_id', postId);
 
-    if (getError) {
-      console.error('Post fetch error:', getError);
+    if (countError) {
       return NextResponse.json(
-        { error: '포스트를 찾을 수 없습니다' },
-        { status: 404 }
+        { error: countError.message },
+        { status: 400 }
       );
     }
 
-    const currentScrapCount = post?.scrap_count || 0;
-    const newScrapCount = scrapAdded ? currentScrapCount + 1 : Math.max(0, currentScrapCount - 1);
+    const scrapCount = count || 0;
 
     const { error: updateError } = await supabase
       .from('posts')
-      .update({ scrap_count: newScrapCount })
+      .update({ scrap_count: scrapCount })
       .eq('id', postId);
 
     if (updateError) {
@@ -127,13 +133,21 @@ export async function POST(
       );
     }
 
+    revalidateTag(CACHE_TAGS.posts, 'max');
+    revalidateTag(CACHE_TAGS.home, 'max');
+
     return NextResponse.json(
       {
         message: scrapAdded ? '스크랩되었습니다' : '스크랩이 취소되었습니다',
         scraped: scrapAdded,
-        scrapCount: newScrapCount,
+        scrapCount,
       },
-      { status: 200 }
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'private, no-store',
+        },
+      }
     );
   } catch (err) {
     console.error('Scrap API error:', err);

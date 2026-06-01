@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { createPublicClient } from "@/lib/supabase/public";
+import { getSiteUrl } from "@/lib/site-url";
 // getSiteSettings는 revalidate 설정에 사용할 수 없으므로 sitemap 내부에서 baseUrl 용도로만 사용하거나 제거
 
 // 1. generateStaticParams 제거 (sitemap.ts에서 설정 오버라이드 용도로 작동하지 않음)
@@ -19,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = createPublicClient();
   // const settings = await getSiteSettings(); // 필요한 경우 사용
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.archbehind.com";
+  const baseUrl = getSiteUrl();
 
   // 정적 페이지들
   const staticPages: MetadataRoute.Sitemap = [
@@ -42,7 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/archive`,
+      url: `${baseUrl}/references`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
@@ -53,7 +54,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { data: galleries } = await supabase
     .from("gallery")
     .select("id, created_at")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(5000);
 
   const galleryPages: MetadataRoute.Sitemap =
     galleries?.map((gallery) => ({
@@ -66,9 +68,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 블로그 포스트들
   const { data: posts } = await supabase
     .from("posts")
-    .select("slug, updated_at, type")
+    .select("slug, updated_at")
+    .eq("type", "blog")
     .eq("is_published", true)
-    .order("updated_at", { ascending: false });
+    .not("published_at", "is", null)
+    .order("updated_at", { ascending: false })
+    .limit(5000);
 
   const blogPages: MetadataRoute.Sitemap =
     posts?.map((post) => ({
@@ -78,19 +83,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     })) || [];
 
-  // 아카이빙 아이템들
-  const { data: archives } = await supabase
-    .from("archiving")
-    .select("id, updated_at")
-    .order("updated_at", { ascending: false });
-
-  const archivePages: MetadataRoute.Sitemap =
-    archives?.map((archive) => ({
-      url: `${baseUrl}/archive/${archive.id}`,
-      lastModified: new Date(archive.updated_at),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    })) || [];
-
-  return [...staticPages, ...galleryPages, ...blogPages, ...archivePages];
+  return [...staticPages, ...galleryPages, ...blogPages];
 }

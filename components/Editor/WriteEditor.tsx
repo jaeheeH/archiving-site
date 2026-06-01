@@ -95,7 +95,8 @@ export default function WriteEditor({ type = 'blog', postId }: WriteEditorProps)
         if (response.status === 401 || result.requiresAuth) {
           addToast('로그인이 필요합니다', 'error');
           setTimeout(() => {
-            router.push('/login');
+            const redirectTo = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
+            router.push(`/login?redirect=${redirectTo}`);
           }, 1000);
         } else {
           addToast(`에러: ${result.error}`, 'error');

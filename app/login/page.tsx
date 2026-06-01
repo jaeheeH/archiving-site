@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { normalizeSiteUrl } from "@/lib/site-url";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginPage() {
@@ -9,12 +10,19 @@ export default function LoginPage() {
   const supabase = useMemo(() => createClient(), []);
   const [isChecking, setIsChecking] = useState(true);
 
+  const getSafeRedirectPath = useCallback(() => {
+    const redirect = new URLSearchParams(window.location.search).get("redirect");
+    if (!redirect || !redirect.startsWith("/") || redirect.startsWith("//")) return "/";
+    if (redirect === "/login" || redirect.startsWith("/auth/callback")) return "/";
+    return redirect.includes("\n") || redirect.includes("\r") ? "/" : redirect;
+  }, []);
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
-          router.push("/"); // 이미 로그인되어 있으면 홈으로
+          router.push(getSafeRedirectPath()); // 이미 로그인되어 있으면 요청한 내부 경로로
         }
       } catch (error) {
         console.error("Auth check failed:", error);
@@ -23,12 +31,14 @@ export default function LoginPage() {
       }
     };
     checkAuth();
-  }, [router, supabase]);
+  }, [getSafeRedirectPath, router, supabase]);
 
   const loginWithGoogle = async () => {
-    const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL
-      ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
-      : `${location.origin}/auth/callback`;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+      ? normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL)
+      : location.origin;
+    const next = encodeURIComponent(getSafeRedirectPath());
+    const redirectUrl = `${siteUrl}/auth/callback?next=${next}`;
 
     await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -39,9 +49,11 @@ export default function LoginPage() {
   };
 
   const loginWithKakao = async () => {
-    const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL
-      ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
-      : `${location.origin}/auth/callback`;
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+      ? normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL)
+      : location.origin;
+    const next = encodeURIComponent(getSafeRedirectPath());
+    const redirectUrl = `${siteUrl}/auth/callback?next=${next}`;
 
     await supabase.auth.signInWithOAuth({
       provider: "kakao",

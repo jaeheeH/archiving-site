@@ -14,7 +14,7 @@ export default async function Users() {
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/login?redirect=/dashboard/users");
   }
 
   const admin = createAdminClient();

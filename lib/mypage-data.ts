@@ -2,6 +2,7 @@ import "server-only";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
+import { normalizeAvatarUrl } from "@/lib/avatar-url";
 
 export type MypageProfile = {
   id: string;
@@ -11,14 +12,13 @@ export type MypageProfile = {
   phone: string;
   tel: string;
   avatar_url: string | null;
+  role: string;
 };
 
 export type MypageGalleryItem = {
   id: number;
   title: string;
   image_url: string | null;
-  image_width: number | null;
-  image_height: number | null;
   tags: string[] | null;
   description: string | null;
   created_at: string | null;
@@ -35,7 +35,20 @@ export type MypageReferenceItem = {
   created_at: string | null;
 };
 
+export type MypagePostItem = {
+  id: string;
+  title: string;
+  subtitle: string | null;
+  summary: string | null;
+  slug: string;
+  title_image_url: string | null;
+  published_at: string | null;
+  created_at: string | null;
+  scrap_count: number | null;
+};
+
 export type MypageActivity = {
+  posts: MypagePostItem[];
   galleries: MypageGalleryItem[];
   references: MypageReferenceItem[];
 };
@@ -56,7 +69,12 @@ async function getMypageContext() {
   };
 }
 
-async function readRows<T>(query: any): Promise<T[]> {
+type SupabaseRowsQuery<T> = PromiseLike<{
+  data: T[] | null;
+  error: { message?: string } | null;
+}>;
+
+async function readRows<T>(query: SupabaseRowsQuery<T>): Promise<T[]> {
   const { data, error } = await query;
 
   if (error) {
@@ -88,7 +106,7 @@ export async function getMypageProfile(): Promise<MypageProfile | null> {
   const { admin, user } = context;
   const { data: profile, error } = await admin
     .from("users")
-    .select("id, email, nickname, name, phone, tel, avatar_url")
+    .select("id, email, nickname, name, phone, tel, avatar_url, role")
     .eq("id", user.id)
     .maybeSingle();
 
@@ -108,7 +126,8 @@ export async function getMypageProfile(): Promise<MypageProfile | null> {
     name: firstString(profile?.name, metadata.full_name, metadata.name),
     phone: firstString(profile?.phone),
     tel: firstString(profile?.tel),
-    avatar_url: firstString(profile?.avatar_url, metadata.avatar_url, metadata.picture) || null,
+    avatar_url: normalizeAvatarUrl(firstString(profile?.avatar_url, metadata.avatar_url, metadata.picture)),
+    role: firstString(profile?.role) || "user",
   };
 }
 
@@ -117,7 +136,14 @@ export async function getMypageActivity(): Promise<MypageActivity | null> {
   if (!context) return null;
 
   const { admin, user } = context;
-  const [galleryScraps, referenceScraps] = await Promise.all([
+  const [postScraps, galleryScraps, referenceScraps] = await Promise.all([
+    readRows<{ post_id: string }>(
+      admin
+        .from("post_scraps")
+        .select("post_id")
+        .eq("user_id", user.id)
+        .limit(ACTIVITY_LIMIT)
+    ),
     readRows<{ gallery_id: number }>(
       admin
         .from("gallery_scraps")
@@ -134,15 +160,29 @@ export async function getMypageActivity(): Promise<MypageActivity | null> {
     ),
   ]);
 
+  const postIds = uniqueIds(postScraps.map((item) => item.post_id));
   const galleryIds = uniqueIds(galleryScraps.map((item) => item.gallery_id));
   const referenceIds = uniqueIds(referenceScraps.map((item) => item.reference_id));
 
-  const [galleries, references] = await Promise.all([
+  const [posts, galleries, references] = await Promise.all([
+    postIds.length
+      ? readRows<MypagePostItem>(
+          admin
+            .from("posts")
+            .select(
+              "id, title, subtitle, summary, slug, title_image_url, published_at, created_at, scrap_count"
+            )
+            .in("id", postIds)
+            .eq("type", "blog")
+            .eq("is_published", true)
+            .order("published_at", { ascending: false })
+        )
+      : Promise.resolve([]),
     galleryIds.length
       ? readRows<MypageGalleryItem>(
           admin
             .from("gallery")
-            .select("id, title, image_url, image_width, image_height, tags, description, created_at")
+            .select("id, title, image_url, tags, description, created_at")
             .in("id", galleryIds)
             .order("created_at", { ascending: false })
         )
@@ -159,6 +199,7 @@ export async function getMypageActivity(): Promise<MypageActivity | null> {
   ]);
 
   return {
+    posts,
     galleries,
     references,
   };

@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import NextLink from 'next/link';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import ImageExtension from '@tiptap/extension-image';
@@ -14,19 +15,23 @@ import { TableCell } from '@tiptap/extension-table-cell';
 import { TableHeader } from '@tiptap/extension-table-header';
 import { TableRow } from '@tiptap/extension-table-row';
 import { createClient } from '@/lib/supabase/client';
+import type { AnyExtension, JSONContent } from '@tiptap/core';
 
 import { ReadOnlyImageGalleryNode } from '@/components/Editor/ReadOnlyImageGalleryNode';
 import { ReadOnlyColumnsNode } from '@/components/Editor/ReadOnlyColumnsNode';
 import { optimizeImageUrl } from '@/lib/image-optimizer';
+import { normalizeAvatarUrl } from '@/lib/avatar-url';
 import '../../css/blog/view.scss';
 
 // 인터페이스 정의
+type TiptapContent = JSONContent | JSONContent[] | string | null;
+
 export interface Post {
   id: string;
   title: string;
   subtitle: string | null;
   summary: string | null;
-  content: any;
+  content: TiptapContent;
   slug: string;
   published_at: string | null;
   created_at: string;
@@ -34,6 +39,7 @@ export interface Post {
   category_id: string | null;
   view_count: number;
   scrap_count: number;
+  author_id: string | null;
   userScraped: boolean; // 서버에서 올 때는 기본적으로 false일 수 있음 (ISR 특성상)
 }
 
@@ -42,9 +48,89 @@ interface Category {
   name: string;
 }
 
+interface AuthorProfile {
+  id: string;
+  nickname: string | null;
+  name: string | null;
+  avatar_url: string | null;
+}
+
 interface BlogDetailClientProps {
   initialPost: Post;
+  initialCategory?: Category | null;
+  initialAuthorProfile?: AuthorProfile | null;
 }
+
+interface ArticleHeading {
+  id: string;
+  level: number;
+  text: string;
+}
+
+const getNodeText = (node: TiptapContent): string => {
+  if (!node) return '';
+  if (typeof node === 'string') return node;
+  if (Array.isArray(node)) return node.map(getNodeText).join('');
+  if (typeof node.text === 'string') return node.text;
+  if (!Array.isArray(node.content)) return '';
+  return node.content.map(getNodeText).join('');
+};
+
+const createHeadingId = (text: string, index: number) => {
+  const slug = text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .replace(/\s+/g, '-')
+    .slice(0, 80);
+
+  return slug || `section-${index + 1}`;
+};
+
+const extractHeadings = (content: TiptapContent): ArticleHeading[] => {
+  const headings: ArticleHeading[] = [];
+  const seenIds = new Map<string, number>();
+
+  const visit = (node: TiptapContent) => {
+    if (!node) return;
+    if (typeof node === 'string') return;
+    if (Array.isArray(node)) {
+      node.forEach(visit);
+      return;
+    }
+    if (node.type === 'heading' && [2, 3].includes(node.attrs?.level)) {
+      const text = getNodeText(node).trim();
+      if (text) {
+        const baseId = createHeadingId(text, headings.length);
+        const seenCount = seenIds.get(baseId) || 0;
+        seenIds.set(baseId, seenCount + 1);
+
+        headings.push({
+          id: seenCount > 0 ? `${baseId}-${seenCount + 1}` : baseId,
+          level: Number(node.attrs?.level || 2),
+          text,
+        });
+      }
+    }
+
+    if (Array.isArray(node.content)) {
+      node.content.forEach(visit);
+    }
+  };
+
+  visit(content);
+  return headings;
+};
+
+const extractSummaryItems = (text: string | null | undefined): string[] => {
+  if (!text) return [];
+
+  return text
+    .split(/\n+/)
+    .map((line) => line.replace(/^[-*•]\s*/, '').trim())
+    .filter(Boolean)
+    .slice(0, 3);
+};
 
 // ---------------------------------------------------------
 // 유틸리티: 조회 기록 관리 (LocalStorage)
@@ -108,26 +194,41 @@ const ViewedPostsManager = {
 // ---------------------------------------------------------
 // 메인 컴포넌트
 // ---------------------------------------------------------
-export default function BlogDetailClient({ initialPost }: BlogDetailClientProps) {
+export default function BlogDetailClient({
+  initialPost,
+  initialCategory = null,
+  initialAuthorProfile = null,
+}: BlogDetailClientProps) {
   const router = useRouter();
   
   // ✅ Props로 받은 데이터로 초기 상태 설정 (로딩 불필요)
-  const [post, setPost] = useState<Post>(initialPost);
-  const [category, setCategory] = useState<Category | null>(null);
+  const [post] = useState<Post>(initialPost);
+  const [category, setCategory] = useState<Category | null>(initialCategory);
+  const [authorProfile, setAuthorProfile] = useState<AuthorProfile | null>(initialAuthorProfile);
   
   // ISR 페이지이므로 userScraped의 초기값은 정확하지 않을 수 있음 (일단 false나 props값으로 시작)
   const [isScraped, setIsScraped] = useState(initialPost.userScraped || false);
   const [scrapCount, setScrapCount] = useState(initialPost.scrap_count || 0);
   const [viewCount, setViewCount] = useState(initialPost.view_count || 0);
+  const [copied, setCopied] = useState(false);
   
   const [user, setUser] = useState<{ id: string } | null>(null);
   const [hasRecordedView, setHasRecordedView] = useState(false);
   const [isScrapping, setIsScrapping] = useState(false);
+  const headings = useMemo(() => extractHeadings(post.content), [post.content]);
+  const readingMinutes = useMemo(() => {
+    const textLength = getNodeText(post.content).replace(/\s+/g, '').length;
+    return Math.max(1, Math.ceil(textLength / 600));
+  }, [post.content]);
+  const summaryItems = useMemo(
+    () => extractSummaryItems(post.summary || post.subtitle),
+    [post.summary, post.subtitle]
+  );
 
   // Tiptap 에디터 설정
   const editor = useEditor({
     extensions: [
-      StarterKit as any,
+      StarterKit as unknown as AnyExtension,
       ImageExtension,
       ReadOnlyImageGalleryNode,
       ReadOnlyColumnsNode,
@@ -156,15 +257,24 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
 
   // 1. 사용자 정보 가져오기
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability, react-hooks/set-state-in-effect
     fetchCurrentUser();
   }, []);
 
-  // 2. 카테고리 정보 가져오기 (필요하다면 이 부분도 서버에서 가져와 props로 넘길 수 있음)
+  // 2. 카테고리 정보 가져오기 (ISR 초기 데이터가 없을 때만 보완)
   useEffect(() => {
-    if (post?.category_id) {
+    if (post?.category_id && !category) {
+      // eslint-disable-next-line react-hooks/immutability, react-hooks/set-state-in-effect
       fetchCategory(post.category_id);
     }
-  }, [post?.category_id]);
+  }, [post?.category_id, category]);
+
+  useEffect(() => {
+    if (post?.author_id && !authorProfile) {
+      // eslint-disable-next-line react-hooks/immutability, react-hooks/set-state-in-effect
+      fetchAuthorProfile(post.author_id);
+    }
+  }, [post?.author_id, authorProfile]);
 
   // 3. [중요] 로그인 유저일 경우, 최신 스크랩 상태 동기화 (ISR 보완)
   useEffect(() => {
@@ -188,7 +298,9 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
   // 4. 조회수 기록
   useEffect(() => {
     if (post && !hasRecordedView) {
+      // eslint-disable-next-line react-hooks/immutability, react-hooks/set-state-in-effect
       recordView();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setHasRecordedView(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -200,6 +312,18 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
       editor.commands.setContent(post.content);
     }
   }, [post.content, editor]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const elements = Array.from(document.querySelectorAll('.tiptap-content h2, .tiptap-content h3'));
+      elements.forEach((element, index) => {
+        const heading = headings[index];
+        if (heading) element.setAttribute('id', heading.id);
+      });
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [headings, editor]);
 
   // 6. 이미지 최적화 (기존 로직 유지)
   useEffect(() => {
@@ -264,6 +388,23 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
     }
   };
 
+  const fetchAuthorProfile = async (authorId: string) => {
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from('users')
+        .select('id, nickname, name, avatar_url')
+        .eq('id', authorId)
+        .single();
+
+      if (error) throw error;
+      setAuthorProfile(data ? { ...data, avatar_url: normalizeAvatarUrl(data.avatar_url) } : null);
+    } catch (error) {
+      console.error('Failed to fetch author profile:', error);
+      setAuthorProfile(null);
+    }
+  };
+
   const recordView = async () => {
     if (!post) return;
     ViewedPostsManager.cleanupExpiredRecords();
@@ -302,7 +443,8 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
   const handleScrapToggle = async () => {
     if (!user) {
       alert('로그인이 필요합니다');
-      router.push(`/auth/login?redirect=${window.location.pathname}`);
+      const redirectTo = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
+      router.push(`/login?redirect=${redirectTo}`);
       return;
     }
     if (!post || isScrapping) return;
@@ -313,7 +455,8 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
 
       if (res.status === 401) {
         alert('로그인이 필요합니다');
-        router.push(`/auth/login?redirect=${window.location.pathname}`);
+        const redirectTo = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
+        router.push(`/login?redirect=${redirectTo}`);
         return;
       }
 
@@ -334,104 +477,288 @@ export default function BlogDetailClient({ initialPost }: BlogDetailClientProps)
     }
   };
 
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard?.writeText(window.location.href);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    } catch (error) {
+      console.error('Failed to copy link:', error);
+      const textarea = document.createElement('textarea');
+      textarea.value = window.location.href;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    }
+  };
+
   // ✅ post가 없을 때(null) 처리는 상위 컴포넌트(page.tsx)에서 처리하거나
   // ISR 데이터가 확실히 넘어오므로 여기서는 바로 렌더링합니다.
   if (!post) return null;
 
+  const publishedLabel = new Date(post.published_at || post.created_at).toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  const categoryName = category?.name || 'Article';
+  const authorName = authorProfile?.nickname || authorProfile?.name || 'ARCH.B';
+  const authorInitial = authorName.charAt(0).toUpperCase();
+
   return (
-    <div className="min-h-screen">
-      {/* Header Image */}
-      {post.title_image_url && (
-        <div className="relative max-w-4xl lg:mt-8 mx-auto h-56 md:h-80 lg:h-96 bg-gray-200 overflow-hidden">
-          <Image
-            src={post.title_image_url}
-            alt={post.title}
-            fill
-            sizes="100vw"
-            className="object-cover"
-            priority
-            quality={75}
-            placeholder="blur"
-            blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23d1d5db' width='16' height='9'/%3E%3C/svg%3E"
-          />
-        </div>
-      )}
+    <div className="archive-article min-h-screen bg-[var(--archive-canvas)] text-[var(--archive-ink)]">
+      <article>
+        <header className="border-b border-[var(--archive-line)]">
+          <div className="mx-auto max-w-[var(--archive-page)] px-4 py-12 lg:py-16">
+            <div className="mb-5 flex flex-wrap items-center gap-2 text-[12px] text-[var(--archive-muted)]">
+              <NextLink href="/blog" className="font-semibold transition-colors hover:text-[var(--archive-brand)]">
+                Blog
+              </NextLink>
+              {post.category_id && (
+                <>
+                  <span className="text-[var(--archive-faint)]">/</span>
+                  <NextLink
+                    href={`/blog?category=${post.category_id}`}
+                    className="font-semibold transition-colors hover:text-[var(--archive-brand)]"
+                  >
+                    {categoryName}
+                  </NextLink>
+                </>
+              )}
+            </div>
 
-      {/* Content */}
-      <div className="max-w-4xl px-4 mx-auto py-12 article-editor">
-        {/* Category */}
-        {category && (
-          <div className="mb-4">
-            <span className="inline-block px-3 py-1 text-sm font-medium bg-blue-100 text-blue-700 rounded">
-              {category.name}
-            </span>
+            <h1 className="max-w-[880px] text-[31px] font-extrabold leading-[1.22] tracking-tight md:text-[40px] lg:text-[46px]">
+              {post.title}
+            </h1>
+
+            <div className="mt-8 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+              <div className="flex min-w-0 items-center gap-3">
+                <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--archive-line)] text-[15px] font-bold">
+                  {authorProfile?.avatar_url ? (
+                    <Image
+                      src={authorProfile.avatar_url}
+                      alt={authorName}
+                      fill
+                      sizes="44px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    authorInitial
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[14px] font-bold leading-tight text-[var(--archive-ink)]">{authorName}</p>
+                  <p className="archive-index mt-1 text-[12px] text-[var(--archive-muted)]">
+                    {publishedLabel} · {readingMinutes}분 분량
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-4 text-[12px] text-[var(--archive-muted)]">
+                <span className="flex items-center gap-1.5" title="조회수">
+                  <i className="ri-eye-line text-[15px]" />
+                  <span className="archive-index">{viewCount}</span>
+                </span>
+                <button
+                  type="button"
+                  onClick={handleScrapToggle}
+                  disabled={isScrapping}
+                  className="flex items-center gap-1.5 transition-colors hover:text-[var(--archive-brand)] disabled:opacity-50"
+                  aria-label="북마크"
+                  title="북마크"
+                >
+                  <i className={`ri-bookmark-${isScraped ? 'fill' : 'line'} text-[14px]`} />
+                  <span className="archive-index">{scrapCount}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCopyLink}
+                  className="flex items-center gap-1.5 transition-colors hover:text-[var(--archive-brand)]"
+                  aria-label="링크 복사"
+                  title="링크 복사"
+                >
+                  <i className="ri-link text-[15px]" />
+                  <span>{copied ? '복사됨' : '링크 복사'}</span>
+                </button>
+              </div>
+            </div>
           </div>
-        )}
+        </header>
 
-        {/* Subtitle */}
-        {post.subtitle && (
-          <p className="text-gray-600 mb-2">{post.subtitle}</p>
-        )}
+        <div className="mx-auto max-w-[var(--archive-page)] px-4">
+          {post.title_image_url && (
+            <div className="my-10 lg:my-12">
+              <div className="relative aspect-[16/9] overflow-hidden bg-[var(--archive-bg-light)]">
+                <Image
+                  src={post.title_image_url}
+                  alt={post.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 1040px"
+                  className="object-cover"
+                  priority
+                  quality={75}
+                  placeholder="blur"
+                  blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f5f5f5' width='16' height='9'/%3E%3C/svg%3E"
+                />
+              </div>
+            </div>
+          )}
 
-        {/* Title */}
-        <h1 className="text-2xl md:text-2xl font-bold text-gray-900 mb-4">
-          {post.title}
-        </h1>
+          {summaryItems.length > 0 && (
+            <section className="archive-article-summary py-4">
+              <div className="mb-4 flex items-center gap-2">
+                <i className="ri-flashlight-line text-[17px] text-[var(--archive-brand)]" />
+                <p className="archive-eyebrow text-[var(--archive-faint)]">한눈에 보는 핵심요약</p>
+              </div>
+              <ul className="space-y-2.5">
+                {summaryItems.map((item, index) => (
+                  <li key={`${item}-${index}`} className="flex gap-3 text-[15px] leading-7 text-[var(--archive-ink)]">
+                    <span className="mt-[10px] h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--archive-brand)]" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
-        {/* Summary */}
-        {post.summary && (
-          <p className="text-gray-600 mb-6">{post.summary}</p>
-        )}
+          <div className="grid grid-cols-1 gap-10 pb-20 pt-10 lg:grid-cols-[1fr_320px] lg:gap-12 lg:pt-14">
+            <main className="min-w-0">
+              <div className="article-editor archive-article-body">
+                <div className="tiptap-content">
+                  <EditorContent editor={editor} />
+                </div>
+              </div>
 
-        {/* Meta Info */}
-        <div className="flex items-center justify-between text-sm text-gray-500 mb-8 pb-8 border-b flex-wrap gap-4">
-          <div className="flex items-center gap-6 flex-wrap">
-            <span>
-              {new Date(post.published_at || post.created_at).toLocaleDateString('ko-KR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </span>
-            <span className="flex items-center gap-1">
-              <i className="ri-eye-line"></i>
-              조회 {viewCount}
-            </span>
+              <div className="mt-12 flex items-center justify-between">
+                <p className="archive-eyebrow text-[var(--archive-faint)]">Share</p>
+                <button
+                  type="button"
+                  onClick={handleCopyLink}
+                  className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--archive-muted)] transition-colors hover:text-[var(--archive-brand)]"
+                  aria-label="링크 복사"
+                  title={copied ? '복사됨' : '링크 복사'}
+                >
+                  <i className={`${copied ? 'ri-check-line' : 'ri-link'} text-[16px]`} />
+                </button>
+              </div>
+
+              <div className="mt-14 flex gap-4 lg:hidden">
+                <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--archive-line)] text-base font-bold">
+                  {authorProfile?.avatar_url ? (
+                    <Image
+                      src={authorProfile.avatar_url}
+                      alt={authorName}
+                      fill
+                      sizes="48px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    authorInitial
+                  )}
+                </div>
+                <div className="flex-1">
+                  <p className="archive-eyebrow mb-1 text-[var(--archive-faint)]">Written by</p>
+                  <p className="mb-2 text-lg font-bold">{authorName}</p>
+                  <p className="text-[14px] leading-6 text-[var(--archive-muted)]">
+                    디자인과 기술 사이에서 발견한 흐름을 기록합니다.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-12">
+                <button
+                  type="button"
+                  onClick={() => router.push('/blog')}
+                  className="inline-flex items-center gap-2 border border-[var(--archive-line)] px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] transition-colors hover:border-[var(--archive-brand)] hover:bg-[var(--archive-brand)] hover:text-white"
+                >
+                  <i className="ri-arrow-left-line text-[15px]" />
+                  목록으로
+                </button>
+              </div>
+            </main>
+
+            <aside className="hidden lg:block">
+              <div className="sticky top-[100px] space-y-10">
+                <section>
+                  <p className="archive-eyebrow mb-4 text-[var(--archive-faint)]">Article</p>
+                  <dl className="space-y-3 text-[13px] leading-5">
+                    <div className="flex items-center justify-between gap-4">
+                      <dt className="text-[var(--archive-muted)]">Published</dt>
+                      <dd className="archive-index text-right font-medium">{publishedLabel}</dd>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <dt className="text-[var(--archive-muted)]">Category</dt>
+                      <dd className="text-right font-medium">{categoryName}</dd>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <dt className="text-[var(--archive-muted)]">Read</dt>
+                      <dd className="archive-index text-right font-medium">{readingMinutes}분</dd>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <dt className="text-[var(--archive-muted)]">Views</dt>
+                      <dd className="archive-index text-right font-medium">{viewCount}</dd>
+                    </div>
+                  </dl>
+                </section>
+
+                <section>
+                  <p className="archive-eyebrow mb-4 text-[var(--archive-faint)]">Actions</p>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={handleCopyLink}
+                      className="inline-flex items-center gap-2 border border-[var(--archive-line)] px-3 py-2 text-[12px] font-semibold transition-colors hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]"
+                    >
+                      <i className={`${copied ? 'ri-check-line' : 'ri-link'} text-[15px]`} />
+                      {copied ? '복사됨' : '링크 복사'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleScrapToggle}
+                      disabled={isScrapping}
+                      className="inline-flex items-center gap-2 border border-[var(--archive-line)] px-3 py-2 text-[12px] font-semibold transition-colors hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)] disabled:opacity-50"
+                    >
+                      <i className={`ri-bookmark-${isScraped ? 'fill' : 'line'} text-[15px]`} />
+                      북마크
+                    </button>
+                  </div>
+                </section>
+
+                <section>
+                  <p className="archive-eyebrow mb-4 text-[var(--archive-faint)]">Written by</p>
+                  <div className="flex items-start gap-3">
+                    <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--archive-line)] text-[14px] font-bold">
+                      {authorProfile?.avatar_url ? (
+                        <Image
+                          src={authorProfile.avatar_url}
+                          alt={authorName}
+                          fill
+                          sizes="40px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        authorInitial
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-[14px] font-bold">{authorName}</p>
+                      <p className="mt-1 text-[12px] leading-5 text-[var(--archive-muted)]">
+                        디자인과 기술 사이에서 발견한 흐름을 기록합니다.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </aside>
           </div>
-
-          {/* 스크랩 버튼 */}
-          {/* <button
-            onClick={handleScrapToggle}
-            disabled={isScrapping}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ${
-              isScraped
-                ? 'bg-blue-600 text-white hover:bg-blue-700'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            } disabled:opacity-50 disabled:cursor-not-allowed`}
-          >
-            <i className={`ri-bookmark-${isScraped ? 'fill' : 'line'}`}></i>
-            <span>스크랩 {scrapCount}</span>
-          </button> */}
         </div>
-
-        {/* Article Content */}
-        <article className="prose prose-lg max-w-none">
-          <div className="tiptap-content">
-            <EditorContent editor={editor} />
-          </div>
-        </article>
-
-        {/* Back Button */}
-        <div className="mt-12 pt-8 border-t">
-          <button
-            onClick={() => router.push('/blog')}
-            className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition flex items-center gap-2"
-          >
-            <i className="ri-arrow-left-line"></i>
-            목록으로
-          </button>
-        </div>
-      </div>
+      </article>
     </div>
   );
 }

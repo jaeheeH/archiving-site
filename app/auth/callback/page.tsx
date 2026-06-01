@@ -3,15 +3,32 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { normalizeAvatarUrl } from "@/lib/avatar-url";
 
 export default function AuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
     const supabase = createClient();
+    let isActive = true;
+    let hasHandled = false;
 
-    const handleCallback = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession();
+    function getSafeNextPath() {
+      const next = new URLSearchParams(window.location.search).get("next");
+      if (!next || !next.startsWith("/") || next.startsWith("//")) return "/";
+      if (next === "/login" || next.startsWith("/auth/callback")) return "/";
+      return next.includes("\n") || next.includes("\r") ? "/" : next;
+    }
+
+    type AuthSession = Awaited<ReturnType<typeof supabase.auth.getSession>>["data"]["session"];
+
+    const handleCallback = async (providedSession?: AuthSession) => {
+      if (hasHandled) return;
+      hasHandled = true;
+
+      const { data: { session }, error } = providedSession
+        ? { data: { session: providedSession }, error: null }
+        : await supabase.auth.getSession();
 
       if (session?.user) {
         const user = session.user;
@@ -25,13 +42,13 @@ export default function AuthCallback() {
           .single();
 
         // 업데이트할 데이터 준비
-        const updateData: any = {
+        const updateData: Record<string, string | null> = {
           last_login_at: new Date().toISOString(),
         };
 
         // avatar_url이 없을 때만 Google 이미지 사용
         if (!existingUser?.avatar_url) {
-          updateData.avatar_url = metadata.avatar_url || metadata.picture || null;
+          updateData.avatar_url = normalizeAvatarUrl(metadata.avatar_url || metadata.picture);
         }
 
         // nickname이 없을 때만 Google 이름 사용
@@ -45,21 +62,33 @@ export default function AuthCallback() {
           .update(updateData)
           .eq("id", user.id);
 
-        // 🆕 홈(/)으로 리다이렉트
-        router.push("/");
-      } else if (error) {
-        console.error("Auth error:", error);
-        router.push("/login?error=auth");
+        if (isActive) {
+          router.replace(getSafeNextPath());
+        }
+      } else {
+        hasHandled = false;
+        if (!isActive) return;
+        if (error) {
+          console.error("Auth error:", error);
+        }
+        router.replace("/login?error=auth");
       }
     };
 
-    supabase.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" && session) {
-        handleCallback();
+        handleCallback(session);
       }
     });
 
     handleCallback();
+
+    return () => {
+      isActive = false;
+      subscription.unsubscribe();
+    };
   }, [router]);
 
   return (

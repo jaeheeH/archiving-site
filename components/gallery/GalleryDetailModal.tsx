@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { createClient } from "@/lib/supabase/client";
 import SimilarGalleryModal from "./SimilarGalleryModal";
 
 interface GalleryDetailModalProps {
@@ -29,8 +28,9 @@ type GalleryDetail = {
   author?: string;
 };
 
-const GALLERY_DETAIL_COLUMNS =
-  "id, title, description, image_url, image_width, image_height, tags, gemini_tags, gemini_description, category, created_at, author";
+type GalleryDetailResponse = {
+  data: GalleryDetail;
+};
 
 export default function GalleryDetailModal({
   id,
@@ -43,7 +43,6 @@ export default function GalleryDetailModal({
   const [gallery, setGallery] = useState<GalleryDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [showSimilarModal, setShowSimilarModal] = useState(false);
-  const supabase = useMemo(() => createClient(), []);
 
   const handleEdit = () => {
     onEdit?.(id);
@@ -60,7 +59,23 @@ export default function GalleryDetailModal({
     }
   };
 
+  const fetchGalleryDetail = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/gallery/${id}`);
+      if (!response.ok) throw new Error("갤러리 정보를 찾을 수 없습니다");
+
+      const result = (await response.json()) as GalleryDetailResponse;
+      setGallery(result.data);
+    } catch (error) {
+      console.error('❌ 갤러리 상세 조회 에러:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchGalleryDetail();
   }, [id]);
 
@@ -71,35 +86,6 @@ export default function GalleryDetailModal({
       document.body.style.overflow = "unset";
     };
   }, []);
-
-
-  const fetchGalleryDetail = async () => {
-    try {
-      setLoading(true);
-      
-      // ✅ Supabase 직접 조회
-      const { data, error } = await supabase
-        .from('gallery')
-        .select(GALLERY_DETAIL_COLUMNS)
-        .eq('id', id)
-        .single();
-
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
-      }
-
-      if (!data) {
-        throw new Error('갤러리 정보를 찾을 수 없습니다');
-      }
-
-      setGallery(data);
-    } catch (error) {
-      console.error('❌ 갤러리 상세 조회 에러:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -133,7 +119,7 @@ export default function GalleryDetailModal({
             <h2 className="text-xl font-semibold">{gallery.title}</h2>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 text-2xl"
+              className="text-2xl text-gray-500 transition-colors hover:text-[#ff4800]"
             >
               <i className="ri-close-line"></i>
             </button>
@@ -214,7 +200,7 @@ export default function GalleryDetailModal({
                       {(gallery.gemini_tags || gallery.tags).map((tag, idx) => (
                         <span
                           key={idx}
-                          className="inline-block px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm"
+                          className="inline-block rounded-full bg-[#ff4800]/10 px-3 py-1 text-sm text-[#ff4800]"
                         >
                           {tag}
                         </span>
@@ -243,7 +229,7 @@ export default function GalleryDetailModal({
                 <div className="pt-4 border-t space-y-2">
                   <button
                     onClick={() => setShowSimilarModal(true)}
-                    className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                    className="w-full bg-[#ff4800] px-4 py-2 text-white transition-colors hover:bg-[#e33f00]"
                   >
                     <i className="ri-image-line mr-2"></i>
                     유사 이미지 보기

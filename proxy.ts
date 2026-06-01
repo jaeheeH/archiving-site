@@ -2,6 +2,13 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { updateSession } from '@/lib/supabase/middleware';
 
+function buildLoginRedirect(req: NextRequest) {
+  const loginUrl = new URL('/login', req.url);
+  const targetPath = `${req.nextUrl.pathname}${req.nextUrl.search}`;
+  loginUrl.searchParams.set('redirect', targetPath);
+  return loginUrl;
+}
+
 export async function proxy(req: NextRequest) {
   const { supabase, user, supabaseResponse } = await updateSession(req);
   const { pathname } = req.nextUrl;
@@ -9,7 +16,7 @@ export async function proxy(req: NextRequest) {
   // 1) 로그인 안 되어 있으면 /login으로 이동
   if (!user) {
     if (pathname.startsWith('/dashboard')) {
-      return NextResponse.redirect(new URL('/login', req.url));
+      return NextResponse.redirect(buildLoginRedirect(req));
     }
     return supabaseResponse;
   }

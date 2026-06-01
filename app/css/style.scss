@@ -4,6 +4,77 @@ $container : 1280px;
 $primary-color : #ff4800;
 $containerPadding: calc(1280px + 48px); 
 
+.archive-page-shell {
+  --archive-canvas: #ffffff;
+  --archive-ink: #111111;
+  --archive-muted: #6c6a63;
+  --archive-faint: #9a968e;
+  --archive-line: #e6e2d8;
+  --archive-brand: #ff4800;
+  --archive-bg-light: #ffffff;
+  --archive-bg-regular: #f5f5f5;
+  --archive-surface: #ffffff;
+  --archive-page: 1280px;
+  color: var(--archive-ink);
+}
+
+.dark .archive-page-shell {
+  --archive-canvas: #101010;
+  --archive-ink: #f4f1ec;
+  --archive-muted: #b8b1a8;
+  --archive-faint: #837b70;
+  --archive-line: #302d28;
+  --archive-bg-light: #151515;
+  --archive-bg-regular: #1d1d1d;
+  --archive-surface: #171717;
+  color: var(--archive-ink);
+}
+
+.dark .archive-page-shell {
+  .bg-white,
+  .bg-gray-50,
+  .bg-gray-100 {
+    background-color: var(--archive-surface);
+  }
+
+  .text-gray-950,
+  .text-gray-900 {
+    color: var(--archive-ink);
+  }
+
+  .text-gray-700,
+  .text-gray-600,
+  .text-gray-500 {
+    color: var(--archive-muted);
+  }
+
+  .border-gray-50,
+  .border-gray-100,
+  .border-gray-200 {
+    border-color: var(--archive-line);
+  }
+}
+
+.archive-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.archive-index {
+  font-variant-numeric: tabular-nums;
+}
+
+.archive-zoom-image {
+  transition: transform 0.55s ease;
+}
+
+.archive-zoom:hover .archive-zoom-image {
+  transform: scale(1.04);
+}
+
 .contents{
   width: 100%;
   max-width: $container;

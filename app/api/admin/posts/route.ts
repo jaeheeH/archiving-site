@@ -1,11 +1,10 @@
 // app/api/admin/posts/route.ts
 
-import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { createClient } from '@/lib/supabase/server';
 
 // 사용자 권한 정보 조회
-async function getUserRole(userId: string, supabase: any) {
+async function getUserRole(userId: string, supabase: ReturnType<typeof createAdminClient>) {
   const { data, error } = await supabase
     .from('users')
     .select('id, role')
@@ -40,32 +39,39 @@ function normalizeSortOrder(value: string | null) {
   return value === "asc" ? "asc" : "desc";
 }
 
-function applyPostFilters(query: any, params: {
+type PostFilterableQuery = {
+  eq(column: string, value: string | boolean): unknown;
+  is(column: string, value: null): unknown;
+  not(column: string, operator: string, value: string): unknown;
+};
+
+function applyPostFilters<T>(query: T, params: {
   type: string;
   userRole: string;
   userId: string;
   adminIds: string[];
   categoryId: string | null;
   draftOnly: boolean;
-}) {
-  let nextQuery = query.eq('type', params.type);
+}): T {
+  let nextQuery = (query as PostFilterableQuery).eq('type', params.type) as T;
+  const filterable = () => nextQuery as PostFilterableQuery;
 
   if (params.userRole === 'sub-admin' && params.adminIds.length > 0) {
-    nextQuery = nextQuery.not('author_id', 'in', `(${params.adminIds.join(',')})`);
+    nextQuery = filterable().not('author_id', 'in', `(${params.adminIds.join(',')})`) as T;
   } else if (params.userRole === 'editor') {
-    nextQuery = nextQuery.eq('author_id', params.userId);
+    nextQuery = filterable().eq('author_id', params.userId) as T;
   }
 
   if (params.categoryId && params.categoryId !== 'all') {
     if (params.categoryId === 'uncategorized') {
-      nextQuery = nextQuery.is('category_id', null);
+      nextQuery = filterable().is('category_id', null) as T;
     } else {
-      nextQuery = nextQuery.eq('category_id', params.categoryId);
+      nextQuery = filterable().eq('category_id', params.categoryId) as T;
     }
   }
 
   if (params.draftOnly) {
-    nextQuery = nextQuery.eq('is_published', false);
+    nextQuery = filterable().eq('is_published', false) as T;
   }
 
   return nextQuery;
@@ -84,27 +90,8 @@ export async function GET(request: Request) {
     const sortOrder = normalizeSortOrder(searchParams.get('sort_order'));
 
     // 1. 현재 사용자 확인
-    const cookieStore = await cookies();
-    const supabaseAuth = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll();
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              );
-            } catch {}
-          },
-        },
-      }
-    );
-
-    const { data: { user }, error: userError } = await supabaseAuth.auth.getUser();
+    const supabaseAuth = await createClient();
+    const { data: { user } } = await supabaseAuth.auth.getUser();
 
     if (!user) {
       return Response.json(
@@ -114,10 +101,7 @@ export async function GET(request: Request) {
     }
 
     // 2. Service Role 클라이언트로 DB 조회
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = createAdminClient();
 
     // 사용자 역할 확인
     const userRole = await getUserRole(user.id, supabase);
@@ -184,7 +168,7 @@ export async function GET(request: Request) {
       );
     }
 
-    const authorIds = [...new Set((data || []).map((post: any) => post.author_id).filter(Boolean))];
+    const authorIds = [...new Set((data || []).map((post: { author_id?: string | null }) => post.author_id).filter(Boolean))];
     const { data: authorRows } = authorIds.length > 0
       ? await supabase.from('users').select('id, role').in('id', authorIds)
       : { data: [] };
@@ -204,7 +188,12 @@ export async function GET(request: Request) {
           hasMore: (offset + limit) < (count || 0)
         }
       },
-      { status: 200 }
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'private, no-store',
+        },
+      }
     );
   } catch (err) {
     console.error('Admin API 에러:', err);

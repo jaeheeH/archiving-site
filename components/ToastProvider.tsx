@@ -10,15 +10,28 @@ interface ToastItem {
   type: ToastType;
 }
 
-const ToastContext = createContext<any>(null);
+type ToastContextValue = {
+  addToast: (message: string, type?: ToastType) => void;
+};
+
+const ToastContext = createContext<ToastContextValue | null>(null);
 
 export function useToast() {
-  return useContext(ToastContext);
+  const context = useContext(ToastContext);
+  if (!context) {
+    throw new Error("useToast must be used within ToastProvider");
+  }
+  return context;
 }
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const toastCountRef = useRef(0); // 🆕 고유 ID 생성용 카운터
+
+  // 즉시 삭제
+  const removeToast = useCallback((id: string) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+  }, []);
 
   // 토스트 생성
   const addToast = useCallback((message: string, type: ToastType = "success") => {
@@ -31,12 +44,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
     // 자동 삭제 (3초 후)
     setTimeout(() => removeToast(id), 3000);
-  }, []);
-
-  // 즉시 삭제
-  const removeToast = (id: string) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id));
-  };
+  }, [removeToast]);
 
   const icons = {
     success: "ri-checkbox-circle-line",

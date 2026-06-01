@@ -43,7 +43,7 @@ export default async function DashboardMain() {
   const overview = await getDashboardOverview();
 
   if (!overview) {
-    redirect("/login");
+    redirect("/login?redirect=/dashboard");
   }
 
   const statCards = [

@@ -8,13 +8,32 @@ import { generateSlug } from '@/lib/slugify';
 import { useToast } from '@/components/ToastProvider';
 import MetaData from '@/components/Editor/MetaData';
 import { useImageUpload } from '@/hooks/useImageUpload';
+import { getErrorMessage } from '@/lib/error-message';
 
 interface WriteEditorProps {
   type?: 'blog' | 'magazine' | 'news';
   postId?: string;
 }
 
-type SaveStatus = 'idle' | 'dirty' | 'saving' | 'saved' | 'error';
+type SaveStatus = 'idle' | 'dirty' | 'saving' | 'saved' | 'local-saved' | 'error';
+
+type SaveOptions = {
+  silent?: boolean;
+  skipSummaryGeneration?: boolean;
+};
+
+type LocalDraft = {
+  version: 1;
+  updatedAt: string;
+  title: string;
+  subtitle: string;
+  summary: string;
+  titleImageUrl: string;
+  content: JSONContent | null;
+  categoryId: string;
+  tags: string[];
+  slug: string;
+};
 
 function extractTextFromContent(node: JSONContent | null): string {
   if (!node) return '';
@@ -48,6 +67,8 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
   const { uploadImage, uploading: isUploading } = useImageUpload();
 
   const titleImageInputRef = useRef<HTMLInputElement>(null);
+  const restoredDraftRef = useRef(false);
+  const draftKey = `brunch-write-draft:${type}:${postId || 'new'}`;
 
   // 상태 관리
   const [title, setTitle] = useState('');
@@ -91,12 +112,119 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
     generatingTags ? 'AI 분석 중...' :
     saveStatus === 'dirty' ? '저장되지 않은 변경사항' :
     saveStatus === 'saved' ? `저장됨 ${formatSavedTime(lastSavedAt)}` :
+    saveStatus === 'local-saved' ? `로컬 임시저장 ${formatSavedTime(lastSavedAt)}` :
     saveStatus === 'error' ? '저장 실패' :
     '작성 중';
+  const hasUnsavedChanges = saveStatus === 'dirty' || saveStatus === 'error';
 
   const markDirty = () => {
     setSaveStatus((current) => (current === 'saving' ? current : 'dirty'));
   };
+
+  const handleTitleChange = (nextTitle: string) => {
+    setTitle(nextTitle);
+    setSlug(nextTitle.trim() ? generateSlug(nextTitle, false) : '');
+    markDirty();
+  };
+
+  useEffect(() => {
+    if (postId || restoredDraftRef.current) return;
+
+    restoredDraftRef.current = true;
+
+    try {
+      const rawDraft = window.localStorage.getItem(draftKey);
+      if (!rawDraft) return;
+
+      const draft = JSON.parse(rawDraft) as Partial<LocalDraft>;
+      if (draft.version !== 1) return;
+
+      const restoreTimer = window.setTimeout(() => {
+        setTitle(draft.title || '');
+        setSubtitle(draft.subtitle || '');
+        setSummary(draft.summary || '');
+        setTitleImageUrl(draft.titleImageUrl || '');
+        setContent(draft.content || null);
+        setCategoryId(draft.categoryId || '');
+        setTags(Array.isArray(draft.tags) ? draft.tags : []);
+        setSlug(draft.slug || (draft.title ? generateSlug(draft.title, false) : ''));
+        setSaveStatus('local-saved');
+        setLastSavedAt(draft.updatedAt ? new Date(draft.updatedAt) : new Date());
+        addToast('이전 작성 내용을 복구했습니다.', 'info');
+      }, 0);
+
+      return () => window.clearTimeout(restoreTimer);
+    } catch (error) {
+      console.error('로컬 임시저장 복구 실패:', error);
+    }
+  }, [postId, draftKey, addToast]);
+
+  useEffect(() => {
+    if (postId || !restoredDraftRef.current) return;
+
+    const hasLocalDraftContent =
+      !!title.trim() ||
+      !!subtitle.trim() ||
+      !!summary.trim() ||
+      !!titleImageUrl ||
+      hasBodyContent ||
+      !!categoryId ||
+      tags.length > 0;
+
+    if (!hasLocalDraftContent) {
+      window.localStorage.removeItem(draftKey);
+      return;
+    }
+
+    if (saveStatus !== 'dirty' && saveStatus !== 'error') return;
+
+    const timer = window.setTimeout(() => {
+      const updatedAt = new Date();
+      const draft: LocalDraft = {
+        version: 1,
+        updatedAt: updatedAt.toISOString(),
+        title,
+        subtitle,
+        summary,
+        titleImageUrl,
+        content,
+        categoryId,
+        tags,
+        slug,
+      };
+
+      window.localStorage.setItem(draftKey, JSON.stringify(draft));
+      setLastSavedAt(updatedAt);
+      setSaveStatus('local-saved');
+    }, 1200);
+
+    return () => window.clearTimeout(timer);
+  }, [
+    postId,
+    draftKey,
+    title,
+    subtitle,
+    summary,
+    titleImageUrl,
+    content,
+    categoryId,
+    tags,
+    slug,
+    saveStatus,
+    hasBodyContent,
+  ]);
+
+  useEffect(() => {
+    if (!hasUnsavedChanges) return;
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasUnsavedChanges]);
 
   // 포스트 데이터 로드
   useEffect(() => {
@@ -130,17 +258,6 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
     };
     loadPost();
   }, [postId, addToast]);
-
-  // 제목 변경 시 slug 자동 생성
-  useEffect(() => {
-    if (!title.trim()) {
-      setSlug('');
-      return;
-    }
-
-    const newSlug = generateSlug(title, false);
-    setSlug(newSlug);
-  }, [title]);
 
   // 제목 이미지 업로드 핸들러
   const handleTitleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -193,28 +310,28 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         addToast('추천할 만한 태그를 찾지 못했습니다.', 'info');
       }
 
-    } catch (error: any) {
+    } catch (error) {
       console.error('Tag Generation Error:', error);
-      addToast(error.message || 'AI 태그 생성 중 오류가 발생했습니다.', 'error');
+      addToast(getErrorMessage(error, 'AI 태그 생성 중 오류가 발생했습니다.'), 'error');
     } finally {
       setGeneratingTags(false);
     }
   };
 
   // 저장/발행 핸들러
-  const handleSave = async (isPublish: boolean = false) => {
+  const handleSave = async (isPublish: boolean = false, options: SaveOptions = {}) => {
     if (isBusy) return;
 
     if (!title.trim()) {
-      addToast('제목을 입력해주세요.', 'error');
+      if (!options.silent) addToast('제목을 입력해주세요.', 'error');
       return;
     }
     if (!hasBodyContent) {
-      addToast('본문을 작성해주세요.', 'error');
+      if (!options.silent) addToast('본문을 작성해주세요.', 'error');
       return;
     }
     if (!slug) {
-      addToast('slug를 생성해주세요. (제목이 올바른지 확인하세요)', 'error');
+      if (!options.silent) addToast('slug를 생성해주세요. (제목이 올바른지 확인하세요)', 'error');
       return;
     }
 
@@ -224,7 +341,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
     try {
       // 요약이 없으면 AI 자동 생성 시도
       let finalSummary = summary;
-      if (!finalSummary && (title || content)) {
+      if (!options.skipSummaryGeneration && !finalSummary && (title || content)) {
         try {
           const summaryResponse = await fetch('/api/posts/generate-summary', {
             method: 'POST',
@@ -237,7 +354,6 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
             if (summaryData.summary) {
               finalSummary = summaryData.summary;
               setSummary(finalSummary);
-              console.log('Summary generated:', finalSummary);
             }
           }
         } catch (error) {
@@ -303,13 +419,18 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         const savedAt = new Date();
         setSaveStatus('saved');
         setLastSavedAt(savedAt);
+        if (!postId) {
+          window.localStorage.removeItem(draftKey);
+        }
 
         // slug 변경 감지 메시지
         if (postId && result.slugChanged) {
-          addToast(
-            `slug가 변경되었습니다: ${previousSlug} → ${slug}`,
-            'info'
-          );
+          if (!options.silent) {
+            addToast(
+              `slug가 변경되었습니다: ${previousSlug} → ${slug}`,
+              'info'
+            );
+          }
           setPreviousSlug(slug);
         }
 
@@ -323,17 +444,17 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
 
           if (!revalidateRes.ok) {
             console.warn('⚠️ ISR 재검증 실패:', await revalidateRes.text());
-          } else {
-            console.log('✅ ISR 재검증 완료:', slug);
           }
         } catch (error) {
           console.warn('⚠️ ISR 재검증 중 오류:', error);
         }
 
-        addToast(
-          isPublish ? '발행되었습니다!' : '저장되었습니다.',
-          'success'
-        );
+        if (!options.silent) {
+          addToast(
+            isPublish ? '발행되었습니다!' : '저장되었습니다.',
+            'success'
+          );
+        }
 
         if (!postId && result.data?.id && !isPublish) {
           router.replace(`/dashboard/contents/blog/${result.data.id}/edit`);
@@ -345,224 +466,307 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
         }
       } else {
         if (response.status === 401) {
-          addToast('로그인이 만료되었습니다.', 'error');
-          router.push('/login');
+          if (!options.silent) addToast('로그인이 만료되었습니다.', 'error');
+          const redirectTo = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
+          router.push(`/login?redirect=${redirectTo}`);
         } else {
           throw new Error(result.error || '저장 실패');
         }
       }
-    } catch (error: any) {
+    } catch (error) {
       setSaveStatus('error');
-      addToast(`오류 발생: ${error.message}`, 'error');
+      if (!options.silent) addToast(`오류 발생: ${getErrorMessage(error, '저장 실패')}`, 'error');
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    if (!postId || originalIsPublished) return;
+    if (saveStatus !== 'dirty') return;
+    if (isBusy || !title.trim() || !hasBodyContent || !slug) return;
+
+    const timer = window.setTimeout(() => {
+      void handleSave(false, {
+        silent: true,
+        skipSummaryGeneration: true,
+      });
+    }, 30000);
+
+    return () => window.clearTimeout(timer);
+  }, [
+    postId,
+    originalIsPublished,
+    saveStatus,
+    isBusy,
+    title,
+    subtitle,
+    summary,
+    titleImageUrl,
+    content,
+    categoryId,
+    tags,
+    slug,
+    hasBodyContent,
+  ]);
+
+  const handleNavigateBack = () => {
+    if (hasUnsavedChanges && !window.confirm('저장되지 않은 변경사항이 있습니다. 나가시겠습니까?')) {
+      return;
+    }
+
+    router.back();
+  };
+
   return (
-    <div className="min-h-screen bg-white pb-32">
-      <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-gray-100 z-50 transition-all">
-        <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
+    <div className="min-h-screen bg-white pb-16 text-gray-950">
+      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white">
+        <div className="mx-auto flex h-[60px] max-w-[1440px] items-center justify-between px-6 lg:px-8">
           <button
-            onClick={() => router.back()}
-            className="p-2 -ml-2 text-gray-400 hover:text-gray-900 transition-colors rounded-full hover:bg-gray-100"
+            onClick={handleNavigateBack}
+            className="inline-flex items-center gap-3 text-sm font-bold tracking-tight text-gray-950 transition hover:text-gray-500"
           >
-            <i className="ri-arrow-left-line text-xl"></i>
+            <span className="inline-flex h-8 w-8 items-center justify-center border border-gray-200">
+              <i className="ri-arrow-left-line text-lg"></i>
+            </span>
+            Archive<span className="text-emerald-400">+</span>
           </button>
 
-          <div className="flex items-center gap-2">
-            <div className="hidden sm:flex items-center gap-2 pr-2 text-xs text-gray-400">
-              <span
-                className={`h-2 w-2 rounded-full ${
-                  saveStatus === 'error'
-                    ? 'bg-red-500'
-                    : saveStatus === 'dirty'
-                      ? 'bg-amber-400'
-                      : saveStatus === 'saved'
-                        ? 'bg-emerald-500'
-                        : 'bg-gray-300'
-                }`}
-              />
-              <span>{saveStatusLabel}</span>
-            </div>
-            <button
-              onClick={() => handleSave(false)}
-              disabled={isBusy}
-              className="px-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 transition disabled:opacity-50"
-            >
-              {loading ? '저장 중' : '임시저장'}
-            </button>
-            <button
-              onClick={() => handleSave(true)}
-              disabled={isBusy}
-              className="px-4 py-1.5 text-sm bg-[#00c4c4] text-white rounded-full hover:bg-[#00b3b3] transition shadow-sm disabled:opacity-50 flex items-center gap-2"
-            >
-              {loading ? <i className="ri-loader-4-line animate-spin"></i> : null}
-              <span>발행</span>
-            </button>
+          <div className="hidden items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-gray-400 sm:flex">
+            <span
+              className={`h-2 w-2 rounded-full ${
+                saveStatus === 'error'
+                  ? 'bg-red-500'
+                  : saveStatus === 'dirty'
+                    ? 'bg-amber-400'
+                    : saveStatus === 'local-saved'
+                      ? 'bg-sky-500'
+                    : saveStatus === 'saved'
+                      ? 'bg-emerald-500'
+                      : 'bg-gray-300'
+              }`}
+            />
+            <span>{saveStatusLabel}</span>
           </div>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 pt-24">
-        
-        {/* 제목 이미지 영역 */}
-        <div className="group relative mb-10 transition-all">
-          {titleImageUrl ? (
-            <div className="relative rounded-xl overflow-hidden shadow-sm aspect-[21/9]">
-              <img src={titleImageUrl} alt="Cover" className="w-full h-full object-cover" />
-              <button 
-                onClick={() => {
-                  setTitleImageUrl('');
-                  markDirty();
-                }}
-                className="absolute top-3 right-3 p-2 bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm hover:bg-black/70"
+      <main className="mx-auto grid max-w-[1440px] gap-10 px-6 py-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:px-8">
+        <section className="min-w-0 border-r border-gray-100 pr-0 lg:pr-10">
+          <div className="mb-8 max-w-3xl">
+            <textarea
+              value={title}
+              onChange={(e) => {
+                handleTitleChange(e.target.value);
+              }}
+              placeholder="제목을 입력하세요"
+              rows={2}
+              className="w-full resize-none bg-transparent text-[34px] font-extrabold leading-tight tracking-normal text-gray-950 outline-none placeholder:text-gray-200 md:text-[42px]"
+              autoFocus
+            />
+            <input
+              type="text"
+              value={subtitle}
+              onChange={(e) => {
+                setSubtitle(e.target.value);
+                markDirty();
+              }}
+              placeholder="소제목을 입력하세요"
+              className="mt-4 w-full bg-transparent text-[15px] font-medium leading-7 text-gray-500 outline-none placeholder:text-gray-300"
+            />
+          </div>
+
+          <div className="mb-8 max-w-3xl border-y border-gray-100 py-5">
+            <textarea
+              value={summary}
+              onChange={(e) => {
+                setSummary(e.target.value);
+                markDirty();
+              }}
+              placeholder="요약글"
+              rows={3}
+              className="w-full resize-none bg-transparent text-[14px] leading-7 text-gray-600 outline-none placeholder:text-gray-300"
+            />
+          </div>
+
+          <BrunchTipTapEditor
+            value={content}
+            onChange={(nextContent) => {
+              setContent(nextContent);
+              markDirty();
+            }}
+          />
+        </section>
+
+        <aside className="self-start lg:sticky lg:top-[84px]">
+          <div className="border border-gray-200 bg-white">
+            <div className="flex items-center gap-2 border-b border-gray-100 p-4">
+              <button
+                onClick={() => handleSave(false)}
+                disabled={isBusy}
+                className="inline-flex h-10 flex-1 items-center justify-center border border-gray-900 bg-white px-4 text-xs font-bold uppercase tracking-[0.12em] text-gray-950 transition hover:bg-gray-50 disabled:opacity-50"
               >
-                <i className="ri-close-line"></i>
+                {loading ? '저장 중' : '임시저장'}
+              </button>
+              <button
+                onClick={() => handleSave(true)}
+                disabled={isBusy}
+                className="inline-flex h-10 flex-1 items-center justify-center gap-2 bg-gray-950 px-4 text-xs font-bold uppercase tracking-[0.12em] text-white transition hover:bg-gray-700 disabled:opacity-50"
+              >
+                {loading ? <i className="ri-loader-4-line animate-spin"></i> : null}
+                발행하기
               </button>
             </div>
-          ) : (
-            <>
-              <button
-                onClick={() => titleImageInputRef.current?.click()}
-                disabled={isUploading}
-                className="flex items-center gap-2 text-gray-400 hover:text-gray-600 transition-colors py-2"
-              >
-                <i className="ri-image-add-line text-xl"></i>
-                <span className="text-sm">커버 이미지 추가</span>
-              </button>
-            </>
-          )}
-          <input 
-            ref={titleImageInputRef}
-            type="file" 
-            accept="image/*" 
-            onChange={handleTitleImageUpload} 
-            className="hidden" 
-          />
-        </div>
 
-        {/* 제목 & 부제목 */}
-        <div className="space-y-4 mb-12">
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-              markDirty();
-            }}
-            placeholder="제목을 입력하세요"
-            className="w-full text-4xl font-bold placeholder-gray-200 outline-none bg-transparent"
-            autoFocus
-          />
-          <input
-            type="text"
-            value={subtitle}
-            onChange={(e) => {
-              setSubtitle(e.target.value);
-              markDirty();
-            }}
-            placeholder="소제목을 입력하세요 (선택)"
-            className="w-full text-xl text-gray-500 font-light placeholder-gray-200 outline-none bg-transparent"
-          />
-          <textarea
-            value={summary}
-            onChange={(e) => {
-              setSummary(e.target.value);
-              markDirty();
-            }}
-            placeholder="요약글 (저장 시 AI가 자동 생성합니다)"
-            rows={3}
-            className="w-full text-base text-gray-600 placeholder-gray-300 outline-none bg-transparent border-t border-gray-100 pt-4 resize-none"
-          />
+            <div className="divide-y divide-gray-100">
+              <div className="p-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-400">Visibility</h2>
+                  <span
+                    className={`relative inline-flex h-5 w-9 items-center transition ${
+                      originalIsPublished ? 'bg-gray-950' : 'bg-gray-200'
+                    }`}
+                    aria-label={originalIsPublished ? '공개됨' : '비공개'}
+                  >
+                    <span
+                      className={`h-4 w-4 bg-white shadow-sm transition ${
+                        originalIsPublished ? 'translate-x-4' : 'translate-x-0.5'
+                      }`}
+                    />
+                  </span>
+                </div>
+                <p className="text-xs leading-5 text-gray-400">
+                  {originalIsPublished ? '현재 공개된 글입니다.' : '발행 전에는 공개되지 않습니다.'}
+                </p>
+              </div>
 
-          {/* slug 표시 영역 */}
-          <div className="pt-4 border-t border-gray-100">
-            <label className="text-xs text-gray-500 font-medium">URL Slug</label>
-            <div className="mt-1 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200">
-              <p className="text-sm text-gray-700 font-mono">
-                {slug ? `/blog/${slug}` : '(제목에서 자동 생성됩니다)'}
-              </p>
+              <div className="p-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-400">Thumbnail</h2>
+                  {titleImageUrl ? (
+                    <button
+                      onClick={() => {
+                        setTitleImageUrl('');
+                        markDirty();
+                      }}
+                      className="text-xs font-medium text-gray-400 hover:text-red-500"
+                    >
+                      제거
+                    </button>
+                  ) : null}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => titleImageInputRef.current?.click()}
+                  disabled={isUploading}
+                  className="group relative flex aspect-[16/9] w-full items-center justify-center overflow-hidden border border-gray-200 bg-gray-950 text-white transition hover:border-gray-400 disabled:opacity-60"
+                >
+                  {titleImageUrl ? (
+                    <>
+                      <img src={titleImageUrl} alt="Cover" className="h-full w-full object-cover" />
+                      <span className="absolute inset-0 bg-black/20 opacity-0 transition group-hover:opacity-100" />
+                    </>
+                  ) : (
+                    <span className="absolute inset-0 bg-[linear-gradient(135deg,#111827,#1f2937)]" />
+                  )}
+                  <span className="relative inline-flex h-9 items-center justify-center bg-white px-5 text-xs font-bold uppercase tracking-[0.12em] text-gray-950 shadow-sm">
+                    {isUploading ? '업로드 중' : titleImageUrl ? '변경하기' : '업로드하기'}
+                  </span>
+                </button>
+                <input
+                  ref={titleImageInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  onChange={handleTitleImageUpload}
+                  className="hidden"
+                />
+              </div>
+
+              <div className="p-4">
+                <MetaData
+                  categoryId={categoryId}
+                  onCategoryChange={(id) => {
+                    setCategoryId(id);
+                    markDirty();
+                  }}
+                  tags={tags}
+                  onTagsChange={(nextTags) => {
+                    setTags(nextTags);
+                    markDirty();
+                  }}
+                />
+                <button
+                  onClick={handleGenerateTags}
+                  disabled={generatingTags}
+                  className="mt-5 inline-flex h-10 w-full items-center justify-center gap-2 border border-gray-200 bg-white text-xs font-bold uppercase tracking-[0.12em] text-gray-700 transition hover:border-gray-900 disabled:opacity-50"
+                >
+                  {generatingTags ? (
+                    <i className="ri-loader-4-line animate-spin"></i>
+                  ) : (
+                    <i className="ri-sparkling-fill"></i>
+                  )}
+                  {generatingTags ? '분석 중' : 'AI 태그'}
+                </button>
+              </div>
+
+              <div className="p-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-400">Checklist</h2>
+                  <span className="text-[11px] font-semibold text-gray-400">
+                    {readyCount}/{publishChecks.length}
+                  </span>
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {publishChecks.map((item) => (
+                    <span
+                      key={item.label}
+                      className={`inline-flex items-center gap-1 border px-2 py-1 text-xs ${
+                        item.done ? 'border-gray-900 bg-gray-950 text-white' : 'border-gray-200 bg-white text-gray-400'
+                      }`}
+                    >
+                      <i className={item.done ? 'ri-check-line' : 'ri-circle-line'} />
+                      {item.label}
+                    </span>
+                  ))}
+                </div>
+                <p className="mt-3 text-xs text-gray-400">
+                  본문 {bodyCharCount.toLocaleString('ko-KR')}자
+                </p>
+              </div>
+
+              <div className="p-4">
+                <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-400">Permalink</h2>
+                <div className="border border-gray-200 bg-gray-50 px-3 py-2">
+                  <p className="break-all text-xs leading-5 text-gray-500">
+                    {slug ? `/blog/${slug}` : '제목에서 자동 생성됩니다'}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* 메타데이터 (태그/카테고리) 영역 */}
-        <div className="mb-12 p-6 bg-gray-50 rounded-xl border border-gray-100">
-          <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-            <div>
-              <div className="flex items-center gap-3">
-                <h2 className="text-sm font-semibold text-gray-900">발행 준비</h2>
-                <span className="text-xs text-gray-400">
-                  {readyCount}/{publishChecks.length}
-                </span>
-              </div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {publishChecks.map((item) => (
-                  <span
-                    key={item.label}
-                    className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${
-                      item.done
-                        ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
-                        : 'border-gray-200 bg-white text-gray-400'
-                    }`}
-                  >
-                    <i className={item.done ? 'ri-check-line' : 'ri-circle-line'} />
-                    {item.label}
+          <div className="mt-4 border border-gray-200 bg-white p-4">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-400">Preview</h2>
+              <span className="text-xs text-gray-400">{formatSavedTime(lastSavedAt)}</span>
+            </div>
+            <p className="line-clamp-2 text-sm font-semibold leading-6 text-gray-950">
+              {title || '제목을 입력하세요'}
+            </p>
+            <p className="mt-2 line-clamp-2 text-xs leading-5 text-gray-500">
+              {summary || subtitle || '요약 또는 소제목이 여기에 표시됩니다.'}
+            </p>
+            {tags.length > 0 ? (
+              <div className="mt-4 flex flex-wrap gap-1.5">
+                {tags.slice(0, 5).map((tag) => (
+                  <span key={tag} className="bg-gray-100 px-2 py-1 text-[11px] text-gray-600">
+                    {tag}
                   </span>
                 ))}
               </div>
-              <p className="mt-3 text-xs text-gray-400">
-                본문 {bodyCharCount.toLocaleString('ko-KR')}자
-              </p>
-            </div>
-
-            <button
-              onClick={handleGenerateTags}
-              disabled={generatingTags}
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full transition-all border ${
-                generatingTags 
-                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-wait' 
-                  : 'bg-white text-violet-600 border-violet-200 hover:bg-violet-50 hover:border-violet-300 shadow-sm'
-              }`}
-              title="제목과 본문을 분석해 태그를 자동 생성합니다"
-            >
-              {generatingTags ? (
-                <>
-                  <i className="ri-loader-4-line animate-spin"></i>
-                  <span>분석 중...</span>
-                </>
-              ) : (
-                <>
-                  <i className="ri-sparkling-fill"></i>
-                  <span>AI 태그 자동완성</span>
-                </>
-              )}
-            </button>
+            ) : null}
           </div>
-
-          <MetaData
-            categoryId={categoryId}
-            onCategoryChange={(id) => {
-              setCategoryId(id);
-              markDirty();
-            }}
-            tags={tags}
-            onTagsChange={(nextTags) => {
-              setTags(nextTags);
-              markDirty();
-            }}
-          />
-        </div>
-
-        {/* 에디터 */}
-        <BrunchTipTapEditor
-          value={content}
-          onChange={(nextContent) => {
-            setContent(nextContent);
-            markDirty();
-          }}
-        />
+        </aside>
       </main>
     </div>
   );

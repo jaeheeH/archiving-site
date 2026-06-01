@@ -29,8 +29,11 @@ type GalleryListItem = {
   image_url: string;
 };
 
-const GALLERY_DETAIL_COLUMNS =
-  'id, title, description, image_url, image_width, image_height, tags, gemini_tags, gemini_description, category, created_at, author';
+type GalleryDetailResponse = {
+  data: GalleryDetail;
+  prevId: number | null;
+  nextId: number | null;
+};
 
 interface GalleryDetailClientProps {
   gallery: GalleryDetail;
@@ -126,6 +129,7 @@ export default function GalleryDetailClient({
   // 2. 뷰 변경 감지 & 스크롤 센터링 (수정됨)
   // --------------------------------------------------------------------------
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability, react-hooks/set-state-in-effect
     checkScrapStatus(gallery.id);
     
     // ✅ 무한 스크롤 로딩으로 인한 리렌더링 시에는 자동 스크롤(센터링)을 막습니다.
@@ -152,6 +156,7 @@ export default function GalleryDetailClient({
       const pathParts = window.location.pathname.split('/');
       const idFromUrl = Number(pathParts[pathParts.length - 1]);
       if (!isNaN(idFromUrl) && idFromUrl !== gallery.id) {
+        // eslint-disable-next-line react-hooks/immutability
         changeView(idFromUrl, false);
       }
     };
@@ -163,7 +168,6 @@ export default function GalleryDetailClient({
   // 4. 스크롤 위치 보정 (LayoutEffect)
   // --------------------------------------------------------------------------
   useLayoutEffect(() => {
-    // console.log('=== useLayoutEffect 실행 ===');
     
     if (snapshotRef.current.isPrepending && scrollRef.current) {
       const { scrollHeight } = scrollRef.current;
@@ -188,7 +192,6 @@ export default function GalleryDetailClient({
     if (!scrollRef.current) return;
     const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
 
-    // console.log('=== handleScroll ===', scrollTop);
 
     if (hasMoreNext && !loadingMoreNext && (scrollHeight - scrollTop - clientHeight < 100)) {
       loadMoreNext();
@@ -272,22 +275,13 @@ export default function GalleryDetailClient({
     if (newId === gallery.id) return;
     try {
       setContentLoading(true);
-      const { data, error } = await supabase
-        .from('gallery')
-        .select(GALLERY_DETAIL_COLUMNS)
-        .eq('id', newId)
-        .single();
-      if (error || !data) throw new Error("Fetch error");
-      
-      setGallery(data);
-      
-      const [prevResult, nextResult] = await Promise.all([
-        supabase.from('gallery').select('id').gt('id', newId).order('id', { ascending: true }).limit(1).single(),
-        supabase.from('gallery').select('id').lt('id', newId).order('id', { ascending: false }).limit(1).single(),
-      ]);
-      
-      setServerPrevId(prevResult.data?.id ?? null);
-      setServerNextId(nextResult.data?.id ?? null);
+      const response = await fetch(`/api/gallery/${newId}`);
+      if (!response.ok) throw new Error("Fetch error");
+
+      const result = (await response.json()) as GalleryDetailResponse;
+      setGallery(result.data);
+      setServerPrevId(result.prevId ?? null);
+      setServerNextId(result.nextId ?? null);
       
       if (updateUrl) {
         const currentParams = searchParams.toString();
@@ -386,22 +380,22 @@ export default function GalleryDetailClient({
   // Render
   // --------------------------------------------------------------------------
   return (
-    <div className="fixed inset-0 z-50 bg-white flex flex-col h-screen w-screen overflow-hidden">
+    <div className="fixed inset-0 z-50 flex h-screen w-screen flex-col overflow-hidden bg-white text-gray-950 dark:bg-[#101010] dark:text-gray-100">
       
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-3 border-b border-gray-100 bg-white h-16 shrink-0 z-20">
+      <div className="z-20 flex h-16 shrink-0 items-center justify-between border-b border-gray-100 bg-white px-6 py-3 dark:border-[#302d28] dark:bg-[#151515]">
         <div className="flex items-center gap-1">
-          <button onClick={handleScrapToggle} className={`p-2 rounded-full transition-colors ${isScraped ? "text-blue-600 bg-blue-50" : "text-gray-500 hover:bg-gray-100"}`}>
+          <button onClick={handleScrapToggle} className={`p-2 rounded-full transition-colors ${isScraped ? "bg-[#ff4800]/10 text-[#ff4800]" : "text-gray-500 hover:bg-[#ff4800]/10 hover:text-[#ff4800] dark:text-gray-400"}`}>
             <i className={`text-xl ${isScraped ? "ri-bookmark-fill" : "ri-bookmark-line"}`}></i>
           </button>
-          <button onClick={handleShare} className="p-2 text-gray-500 hover:bg-gray-100 rounded-full">
+          <button onClick={handleShare} className="rounded-full p-2 text-gray-500 transition-colors hover:bg-[#ff4800]/10 hover:text-[#ff4800] dark:text-gray-400">
             <i className="ri-share-line text-xl"></i>
           </button>
-          <button onClick={handleDownload} className="p-2 text-gray-500 hover:bg-gray-100 rounded-full">
+          <button onClick={handleDownload} className="rounded-full p-2 text-gray-500 transition-colors hover:bg-[#ff4800]/10 hover:text-[#ff4800] dark:text-gray-400">
             <i className="ri-download-line text-xl"></i>
           </button>
-          <div className="w-[1px] h-6 bg-gray-200 mx-2"></div>
-          <button onClick={handleClose} className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-full">
+          <div className="mx-2 h-6 w-[1px] bg-gray-200 dark:bg-[#302d28]"></div>
+          <button onClick={handleClose} className="rounded-full p-2 text-gray-500 hover:bg-red-50 hover:text-red-600 dark:text-gray-400 dark:hover:bg-red-500/10">
             <i className="ri-close-line text-2xl"></i>
           </button>
         </div>
@@ -411,18 +405,18 @@ export default function GalleryDetailClient({
       <div className="flex flex-col md:flex-row h-[calc(100%-64px)]">
         
         {/* Left: Image & Navigation */}
-        <div className="w-full md:w-[75%] bg-gray-50 flex items-center justify-center relative border-r border-gray-100 h-full group">
+        <div className="group relative flex h-full w-full items-center justify-center border-r border-gray-100 bg-gray-50 dark:border-[#302d28] dark:bg-[#101010] md:w-[75%]">
            
           {contentLoading && (
-            <div className="absolute inset-0 z-20 bg-white/50 backdrop-blur-sm flex items-center justify-center">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-black"></div>
+            <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/50 backdrop-blur-sm dark:bg-black/50">
+              <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-black dark:border-white"></div>
             </div>
           )}
 
           {prevId && (
             <button 
               onClick={() => changeView(prevId)} 
-              className="absolute left-6 z-10 w-12 h-12 flex items-center justify-center bg-white/90 hover:bg-white rounded-full shadow-lg text-gray-700 hover:text-black transition-all opacity-0 group-hover:opacity-100 backdrop-blur-sm -translate-x-4 group-hover:translate-x-0 duration-300"
+              className="absolute left-6 z-10 flex h-12 w-12 -translate-x-4 items-center justify-center rounded-full bg-white/90 text-gray-700 opacity-0 shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-[#ff4800] group-hover:translate-x-0 group-hover:opacity-100 dark:bg-[#1d1d1d]/90 dark:text-gray-200 dark:hover:bg-[#252525]"
             >
               <i className="ri-arrow-left-line text-2xl"></i>
             </button>
@@ -444,7 +438,7 @@ export default function GalleryDetailClient({
           {nextId && (
             <button 
               onClick={() => changeView(nextId)} 
-              className="absolute right-6 z-10 w-12 h-12 flex items-center justify-center bg-white/90 hover:bg-white rounded-full shadow-lg text-gray-700 hover:text-black transition-all opacity-0 group-hover:opacity-100 backdrop-blur-sm translate-x-4 group-hover:translate-x-0 duration-300"
+              className="absolute right-6 z-10 flex h-12 w-12 translate-x-4 items-center justify-center rounded-full bg-white/90 text-gray-700 opacity-0 shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-[#ff4800] group-hover:translate-x-0 group-hover:opacity-100 dark:bg-[#1d1d1d]/90 dark:text-gray-200 dark:hover:bg-[#252525]"
             >
               <i className="ri-arrow-right-line text-2xl"></i>
             </button>
@@ -452,30 +446,30 @@ export default function GalleryDetailClient({
         </div>
 
         {/* Right: Info & Vertical Filmstrip */}
-        <div className="w-full md:w-[25%] bg-white flex h-full overflow-hidden">
+        <div className="flex h-full w-full overflow-hidden bg-white dark:bg-[#151515] md:w-[25%]">
           
           {/* Info Area */}
-          <div className="h-full md:w-[75%] overflow-y-auto p-6 space-y-6 custom-scrollbar border-b border-gray-100 shrink-0">
-            <div className="flex items-center gap-3 text-sm text-gray-500">
-              <h2 className="text-lg font-bold text-gray-900 truncate pr-4">{gallery.title}</h2>
+          <div className="custom-scrollbar h-full shrink-0 space-y-6 overflow-y-auto border-b border-gray-100 p-6 dark:border-[#302d28] md:w-[75%]">
+            <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+              <h2 className="truncate pr-4 text-lg font-bold text-gray-900 dark:text-gray-100">{gallery.title}</h2>
             </div>
 
             {gallery.description && (
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-900">Prompt</h3>
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-900 dark:text-gray-100">Prompt</h3>
                   <button 
                     onClick={handleCopyPrompt} 
-                    className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${isCopied ? 'text-green-600 bg-green-50' : 'text-gray-500 hover:bg-gray-100'}`}
+                    className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors ${isCopied ? 'bg-[#ff4800]/10 text-[#ff4800]' : 'text-gray-500 hover:bg-[#ff4800]/10 hover:text-[#ff4800] dark:text-gray-400'}`}
                   >
                     {isCopied ? "Copied!" : "Copy"}
                   </button>
                 </div>
-                <div className="text-sm text-gray-500 overflow-y-auto">{gallery.description}</div>
+                <div className="overflow-y-auto text-sm text-gray-500 dark:text-gray-400">{gallery.description}</div>
               </div>
             )}
               
-            <ul>
+            <ul className="space-y-3 text-sm text-gray-500 dark:text-gray-400">
               <li className="flex justify-between">
                 <p>Date</p>
                 <p>{new Date(gallery.created_at).toLocaleDateString("ko-KR")}</p>
@@ -488,7 +482,7 @@ export default function GalleryDetailClient({
           </div>
 
           {/* Vertical Filmstrip */}
-          <div className="h-full md:w-[25%] flex flex-col bg-gray-50">
+          <div className="flex h-full flex-col bg-gray-50 dark:bg-[#101010] md:w-[25%]">
             <div 
               ref={scrollRef} 
               onScroll={handleScroll}
@@ -498,7 +492,7 @@ export default function GalleryDetailClient({
               {/* 위쪽 로딩 스피너 */}
               {loadingMorePrev && (
                 <div className="w-full h-10 shrink-0 flex items-center justify-center">
-                  <div className="animate-spin h-4 w-4 border-2 border-gray-300 border-t-black rounded-full"></div>
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-black dark:border-gray-600 dark:border-t-white"></div>
                 </div>
               )}
 
@@ -509,7 +503,7 @@ export default function GalleryDetailClient({
                   onClick={() => changeView(item.id)} 
                   className={`relative w-full aspect-square shrink-0 rounded-md overflow-hidden cursor-pointer transition-all border-2 ${
                     item.id === gallery.id 
-                      ? "border-black ring-2 ring-black/10 z-10" 
+                      ? "border-[#ff4800] ring-2 ring-[#ff4800]/10 z-10" 
                       : "border-transparent opacity-60 hover:opacity-100"
                   }`}
                 >
@@ -520,7 +514,7 @@ export default function GalleryDetailClient({
               {/* 아래쪽 로딩 스피너 */}
               {loadingMoreNext && (
                 <div className="w-full h-10 shrink-0 flex items-center justify-center">
-                  <div className="animate-spin h-4 w-4 border-2 border-gray-300 border-t-black rounded-full"></div>
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-black dark:border-gray-600 dark:border-t-white"></div>
                 </div>
               )}
             </div>

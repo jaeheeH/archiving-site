@@ -2,6 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
+import { isUuidParam } from "@/lib/route-params";
+
+const ALLOWED_AVATAR_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+
+function safeExtension(file: File) {
+  const fromType = file.type.split("/")[1];
+  if (fromType === "jpeg") return "jpg";
+  if (["jpg", "png", "webp"].includes(fromType)) return fromType;
+  return "webp";
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,7 +28,7 @@ export async function POST(request: NextRequest) {
     const userId = formData.get("userId");
     const file = formData.get("file");
 
-    if (typeof userId !== "string" || !userId) {
+    if (typeof userId !== "string" || !isUuidParam(userId)) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 });
     }
 
@@ -26,8 +36,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Avatar file is required" }, { status: 400 });
     }
 
-    if (!file.type.startsWith("image/")) {
-      return NextResponse.json({ error: "이미지만 업로드할 수 있습니다." }, { status: 400 });
+    if (!ALLOWED_AVATAR_TYPES.has(file.type)) {
+      return NextResponse.json({ error: "JPG, PNG, WebP 이미지만 업로드할 수 있습니다." }, { status: 400 });
     }
 
     if (file.size > 2 * 1024 * 1024) {
@@ -53,11 +63,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const fileName = `${userId}/${userId}.webp`;
+    const ext = safeExtension(file);
+    const fileName = `${userId}/${userId}.${ext}`;
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const { error } = await admin.storage.from("avatars").upload(fileName, buffer, {
       upsert: true,
+      cacheControl: "31536000",
       contentType: file.type || "image/webp",
     });
 

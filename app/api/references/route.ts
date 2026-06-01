@@ -1,12 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { checkReferenceEditPermission } from "@/lib/supabase/reference-utils";
+import {
+  checkReferenceEditPermission,
+  getPrimaryReferenceCategory,
+  normalizeReferenceRange,
+  normalizeReferenceText,
+  normalizeReferenceTitle,
+  normalizeReferenceUrl,
+} from "@/lib/supabase/reference-utils";
 import {
   CACHE_TAGS,
   PUBLIC_API_CACHE_CONTROL,
   getReferencesListData,
 } from "@/lib/public-data";
+import { getErrorMessage } from "@/lib/error-message";
+
+const REFERENCE_WRITE_COLUMNS =
+  "id, title, description, url, image_url, logo_url, category, range, clicks, created_at, updated_at";
+
+async function parseJsonObject(req: NextRequest) {
+  try {
+    const body = await req.json();
+    return body && typeof body === "object" && !Array.isArray(body)
+      ? (body as Record<string, unknown>)
+      : null;
+  } catch {
+    return null;
+  }
+}
 
 /**
  * GET /api/references
@@ -44,10 +66,11 @@ export async function GET(req: NextRequest) {
         },
       }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = getErrorMessage(error);
     console.error("❌ Reference 목록 조회 에러:", error);
     return NextResponse.json(
-      { error: error.message || "Internal server error" },
+      { error: message },
       { status: 500 }
     );
   }
@@ -67,30 +90,38 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. 요청 데이터 파싱
-    const body = await req.json();
+    const body = await parseJsonObject(req);
+    if (!body) {
+      return NextResponse.json({ error: "잘못된 JSON 요청입니다." }, { status: 400 });
+    }
+
     const {
       title,
       description,
       url,
       image_url,
       logo_url,
+      category,
       range,
     } = body;
 
-    // 3. 필수 필드 확인
-    if (!title || !url || !image_url || !logo_url) {
-      return NextResponse.json(
-        { error: "title, url, image_url, and logo_url are required" },
-        { status: 400 }
-      );
-    }
+    const normalizedTitle = normalizeReferenceTitle(title);
+    const normalizedDescription = normalizeReferenceText(description);
+    const normalizedUrl = normalizeReferenceUrl(url);
+    const normalizedImageUrl = normalizeReferenceUrl(image_url);
+    const normalizedLogoUrl = normalizeReferenceUrl(logo_url);
+    const normalizedRange = normalizeReferenceRange(range);
 
-    // 4. URL 형식 검증
-    try {
-      new URL(url);
-    } catch {
+    // 3. 필수 필드 확인
+    if (
+      !normalizedTitle ||
+      !normalizedUrl ||
+      !normalizedImageUrl ||
+      !normalizedLogoUrl ||
+      normalizedRange.length === 0
+    ) {
       return NextResponse.json(
-        { error: "Invalid URL format" },
+        { error: "title, url, image_url, logo_url, and range are required" },
         { status: 400 }
       );
     }
@@ -101,18 +132,19 @@ export async function POST(req: NextRequest) {
     const { data, error } = await adminClient
       .from("references")
       .insert({
-        title,
-        description: description || null,
-        url,
-        image_url,
-        logo_url,
-        range: range || [],
+        title: normalizedTitle,
+        description: normalizedDescription,
+        url: normalizedUrl,
+        image_url: normalizedImageUrl,
+        logo_url: normalizedLogoUrl,
+        category: getPrimaryReferenceCategory(normalizedRange, category),
+        range: normalizedRange,
         clicks: 0,
         author: permCheck.userId,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
-      .select()
+      .select(REFERENCE_WRITE_COLUMNS)
       .single();
 
     if (error) {
@@ -126,10 +158,11 @@ export async function POST(req: NextRequest) {
       success: true,
       data,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = getErrorMessage(error);
     console.error("❌ Reference 생성 에러:", error);
     return NextResponse.json(
-      { error: error.message || "Internal server error" },
+      { error: message },
       { status: 500 }
     );
   }

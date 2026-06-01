@@ -56,7 +56,7 @@ export default async function GalleryAnalyticsPage() {
   const analytics = await getGalleryAnalytics();
 
   if (!analytics) {
-    redirect("/login");
+    redirect("/login?redirect=/dashboard/analytics/gallery");
   }
 
   return (

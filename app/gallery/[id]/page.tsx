@@ -9,6 +9,8 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+const STATIC_GALLERY_PARAMS_LIMIT = 100;
+
 export const revalidate = 86400;
 
 export async function generateStaticParams() {
@@ -18,7 +20,7 @@ export async function generateStaticParams() {
       .from('gallery')
       .select('id')
       .order('created_at', { ascending: false })
-      .limit(500);
+      .limit(STATIC_GALLERY_PARAMS_LIMIT);
 
     if (error) {
       console.error('Failed to fetch gallery ids for static generation:', error);

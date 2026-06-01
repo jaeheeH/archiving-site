@@ -1,25 +1,103 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { revalidateTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkGalleryEditPermission } from "@/lib/supabase/gallery-utils";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { getErrorMessage } from "@/lib/error-message";
+import { CACHE_TAGS } from "@/lib/public-data";
+import { generateGeminiTextEmbedding } from "@/lib/gemini-embedding";
+
+type ImageAnalysisData = {
+  category?: unknown;
+  summary?: string;
+  visual_detail?: string;
+  tags?: unknown;
+};
 
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey || "");
+const DEBUG_API_LOGS = process.env.DEBUG_API_LOGS === "true";
+const MAX_ANALYSIS_IMAGE_BYTES = 8 * 1024 * 1024;
+
+function debugLog(...args: unknown[]) {
+  if (DEBUG_API_LOGS) console.info(...args);
+}
+
+async function requireMigrationAccess(req: NextRequest) {
+  const migrationToken = req.headers.get("x-migration-token");
+  const validToken = process.env.MIGRATION_TOKEN;
+
+  if (migrationToken && validToken && migrationToken === validToken) {
+    debugLog("Migration token authentication succeeded");
+    return null;
+  }
+
+  const permCheck = await checkGalleryEditPermission();
+  return permCheck.authorized ? null : permCheck.error!;
+}
+
+function normalizeMigrationLimit(value: unknown) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric) || numeric < 1) return 5;
+  return Math.min(Math.floor(numeric), 10);
+}
+
+function isAllowedGalleryImageUrl(imageUrl: string) {
+  const storageUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace("/v1", "");
+  if (!storageUrl) return false;
+  return imageUrl.startsWith(`${storageUrl}/storage/v1/object/public/gallery/`);
+}
+
+function normalizeAiText(value: unknown, fallback = "", max = 1500) {
+  return typeof value === "string" ? value.trim().slice(0, max) : fallback;
+}
+
+function buildEmbeddingText(category: string, data: ImageAnalysisData) {
+  const detail = normalizeAiText(data.visual_detail || data.summary, "이미지 분석 결과");
+  return `[${category}] ${detail}`;
+}
+
+async function parseJsonObject(req: NextRequest) {
+  try {
+    const parsed = await req.json();
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+      ? (parsed as Record<string, unknown>)
+      : {};
+  } catch {
+    return {};
+  }
+}
 
 /**
  * URL에서 이미지를 fetch하여 base64로 변환
  */
 async function fetchImageAsBase64(imageUrl: string): Promise<{ data: string; mimeType: string }> {
   try {
-    const response = await fetch(imageUrl);
+    if (!isAllowedGalleryImageUrl(imageUrl)) {
+      throw new Error("Only gallery storage URLs are allowed");
+    }
+
+    const response = await fetch(imageUrl, { signal: AbortSignal.timeout(30_000) });
     if (!response.ok) {
       throw new Error(`Failed to fetch image: ${response.statusText}`);
     }
 
-    const buffer = await response.arrayBuffer();
-    const base64 = Buffer.from(buffer).toString("base64");
     const contentType = response.headers.get("content-type") || "image/jpeg";
+    if (!contentType.startsWith("image/")) {
+      throw new Error("Gallery migration target must be an image");
+    }
+
+    const contentLength = Number(response.headers.get("content-length") || 0);
+    if (contentLength > MAX_ANALYSIS_IMAGE_BYTES) {
+      throw new Error("Image is too large to analyze");
+    }
+
+    const buffer = await response.arrayBuffer();
+    if (buffer.byteLength > MAX_ANALYSIS_IMAGE_BYTES) {
+      throw new Error("Image is too large to analyze");
+    }
+
+    const base64 = Buffer.from(buffer).toString("base64");
 
     return { data: base64, mimeType: contentType };
   } catch (error) {
@@ -37,71 +115,40 @@ async function analyzeImage(imageUrl: string, title: string): Promise<{
   embedding: number[];
 }> {
   try {
+    if (!apiKey) {
+      throw new Error("API Key not found");
+    }
+
     const { data, mimeType } = await fetchImageAsBase64(imageUrl);
 
     // Vision 분석
-    const visionModel = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
-      generationConfig: {
-        responseMimeType: "application/json",
-        temperature: 0.2,
+      const visionModel = genAI.getGenerativeModel({
+        model: "gemini-2.5-flash",
+        generationConfig: {
+          responseMimeType: "application/json",
+          temperature: 0.2,
+          maxOutputTokens: 1200,
       },
     });
 
-    // 1단계: 카테고리 분류
-    const categoryPrompt = `Classify this image into ONE category. Return ONLY valid JSON.
+    const analysisPrompt = `Analyze this image and return ONLY valid JSON.
+Title context: "${title || ""}"
 
 {
-  "category": "portrait|product|landscape|food|architecture|art|fashion|interior|animal|other"
+  "category": "portrait|product|landscape|food|architecture|art|fashion|interior|animal|other",
+  "summary": "Natural Korean description (2-3 sentences)",
+  "visual_detail": "Objective factual detail: Main subject, colors, materials, lighting, composition, background",
+  "tags": ["6-10 Korean keywords without #"]
 }
 
-Choose the most appropriate category. Return ONLY the JSON object.`;
-
-    const categoryResult = await visionModel.generateContent([
-      categoryPrompt,
-      {
-        inlineData: {
-          data: data,
-          mimeType: mimeType as "image/jpeg" | "image/png" | "image/webp" | "image/gif",
-        },
-      },
-    ]);
-
-    let imageCategory = "other";
-    try {
-      const categoryData = JSON.parse(categoryResult.response?.text() ?? "{}");
-      imageCategory = categoryData.category || "other";
-    } catch (e) {
-      console.error("카테고리 분류 실패, 기본값 사용");
-    }
-
-    // 2단계: 카테고리별 맞춤 분석
-    const categoryPrompts: Record<string, string> = {
-      portrait: `Analyze this portrait/person image. Return ONLY valid JSON.
-{"summary": "Natural Korean description (2-3 sentences)", "visual_detail": "Subject: Gender/Age | Clothing: Specific color, Style | Hair: Color, Style | Background: Color, Objects | Pose: Description | Expression: Description", "tags": ["인물사진", "표정", etc.]}
-Rules: visual_detail = objective facts WITHOUT emotions, focusing on colors/shapes/objects`,
-
-      product: `Analyze this product image. Return ONLY valid JSON.
-{"summary": "Natural Korean description (2-3 sentences)", "visual_detail": "Product: Type | Color: Main color (specific), Accents | Material: Texture | Shape: Form | Background: Color, Setting", "tags": ["제품사진", "제품타입", etc.]}
-Rules: visual_detail = objective facts WITHOUT emotions, focusing on colors/materials/shapes`,
-
-      landscape: `Analyze this landscape/nature image. Return ONLY valid JSON.
-{"summary": "Natural Korean description (2-3 sentences)", "visual_detail": "Location: Type | Colors: Dominant colors (specific) | Time: Indicators | Weather: Sky | Composition: Elements", "tags": ["풍경사진", "장소타입", etc.]}
-Rules: visual_detail = objective facts WITHOUT emotions, focusing on location/colors/weather`,
-
-      food: `Analyze this food image. Return ONLY valid JSON.
-{"summary": "Natural Korean description (2-3 sentences)", "visual_detail": "Food: Type, Cuisine | Colors: Main colors | Plating: Dish, Arrangement | Background: Surface, Props | Lighting: Direction", "tags": ["음식사진", "요리타입", etc.]}
-Rules: visual_detail = objective facts WITHOUT emotions, focusing on food/colors/plating`,
-
-      other: `Analyze this image. Return ONLY valid JSON.
-{"summary": "Natural Korean description (2-3 sentences)", "visual_detail": "Main Object: Type | Colors: Dominant colors (specific) | Lighting: Direction | Composition: Positions | Background: Description", "tags": ["keyword1", "keyword2", etc.]}
-Rules: visual_detail = objective facts WITHOUT emotions, focusing on objects/colors/composition`
-    };
-
-    const detailedPrompt = categoryPrompts[imageCategory] || categoryPrompts.other;
+Rules:
+- category: Choose exactly one value from the allowed list.
+- summary: Natural Korean description for UI display.
+- visual_detail: Objective factual description WITHOUT emotions. Include specific colors, shapes, objects, materials, and layout.
+- tags: Korean keywords only when possible, 6-10 items, no # symbols.`;
 
     const visionResult = await visionModel.generateContent([
-      detailedPrompt,
+      analysisPrompt,
       {
         inlineData: {
           data: data,
@@ -111,7 +158,7 @@ Rules: visual_detail = objective facts WITHOUT emotions, focusing on objects/col
     ]);
 
     const jsonText = visionResult.response.text();
-    let parsedData: any = { summary: "", visual_detail: "", tags: [] };
+    let parsedData: ImageAnalysisData = { summary: "", visual_detail: "", tags: [] };
 
     try {
       parsedData = JSON.parse(jsonText);
@@ -120,62 +167,36 @@ Rules: visual_detail = objective facts WITHOUT emotions, focusing on objects/col
       parsedData = { summary: "이미지 분석 실패", visual_detail: "", tags: [] };
     }
 
+    const allowedCategories = new Set([
+      "portrait",
+      "product",
+      "landscape",
+      "food",
+      "architecture",
+      "art",
+      "fashion",
+      "interior",
+      "animal",
+      "other",
+    ]);
+    const rawCategory = typeof parsedData.category === "string" ? parsedData.category : "other";
+    const imageCategory = allowedCategories.has(rawCategory) ? rawCategory : "other";
+
     // 태그 배열 정리
     const tagsArray = Array.isArray(parsedData.tags)
-      ? parsedData.tags.slice(0, 15)
+      ? parsedData.tags
+          .map((tag) => normalizeAiText(tag, "", 40))
+          .filter(Boolean)
+          .slice(0, 15)
       : [];
 
-    // 하이브리드 임베딩 생성
-    // 이미지 크기에 따라 멀티모달 또는 텍스트 임베딩 사용
-    let embedding: number[];
-
-    // base64 이미지 크기 체크 (36KB = 약 48000 chars in base64)
-    const imageSizeKB = (data.length * 3) / 4 / 1024;
-
-    if (imageSizeKB < 30) {
-      // 작은 이미지: 멀티모달 임베딩 (더 정확)
-      try {
-        const multimodalModel = genAI.getGenerativeModel({
-          model: "embedding-001",
-        });
-
-        const embeddingRes = await multimodalModel.embedContent({
-          content: {
-            role: "user",
-            parts: [
-              {
-                inlineData: {
-                  data: data,
-                  mimeType: mimeType,
-                },
-              },
-            ],
-          },
-        });
-
-        embedding = embeddingRes.embedding.values;
-      } catch (error: any) {
-        console.error("멀티모달 임베딩 실패, 텍스트 임베딩으로 폴백:", error.message);
-        // 폴백: 텍스트 임베딩 (visual_detail 우선 사용)
-        const textModel = genAI.getGenerativeModel({
-          model: "text-embedding-004",
-        });
-        const embeddingText = `[${imageCategory}] ${parsedData.visual_detail || parsedData.summary}`;
-        const textEmbeddingRes = await textModel.embedContent(embeddingText);
-        embedding = textEmbeddingRes.embedding.values;
-      }
-    } else {
-      // 큰 이미지: 카테고리+visual_detail로 텍스트 임베딩
-      const textModel = genAI.getGenerativeModel({
-        model: "text-embedding-004",
-      });
-      const embeddingText = `[${imageCategory}] ${parsedData.visual_detail || parsedData.summary}`;
-      const textEmbeddingRes = await textModel.embedContent(embeddingText);
-      embedding = textEmbeddingRes.embedding.values;
-    }
+    const embedding = await generateGeminiTextEmbedding(
+      apiKey,
+      buildEmbeddingText(imageCategory, parsedData)
+    );
 
     return {
-      description: parsedData.summary,
+      description: normalizeAiText(parsedData.summary, "이미지 분석 실패"),
       tags: tagsArray,
       embedding,
     };
@@ -206,19 +227,8 @@ Rules: visual_detail = objective facts WITHOUT emotions, focusing on objects/col
 export async function POST(req: NextRequest) {
   try {
     // 1. 권한 검증 (스크립트 토큰 또는 일반 사용자 권한)
-    const migrationToken = req.headers.get('x-migration-token');
-    const validToken = process.env.MIGRATION_TOKEN;
-
-    if (migrationToken && validToken && migrationToken === validToken) {
-      // 마이그레이션 토큰으로 인증 통과
-      console.log('✅ 마이그레이션 토큰 인증 성공');
-    } else {
-      // 일반 사용자 권한 검증
-      const permCheck = await checkGalleryEditPermission();
-      if (!permCheck.authorized) {
-        return permCheck.error!;
-      }
-    }
+    const authError = await requireMigrationAccess(req);
+    if (authError) return authError;
 
     // 2. API 키 확인
     if (!apiKey) {
@@ -229,13 +239,13 @@ export async function POST(req: NextRequest) {
     }
 
     // 3. 요청 데이터
-    const body = await req.json();
-    const limit = body.limit || 5;
+    const body = await parseJsonObject(req);
+    const limit = normalizeMigrationLimit(body.limit);
 
-    const supabase = await createClient();
+    const adminClient = createAdminClient();
 
     // 4. embedding이 NULL인 이미지들 조회
-    const { data: galleryItems, error: queryError } = await supabase
+    const { data: galleryItems, error: queryError } = await adminClient
       .from("gallery")
       .select("id, title, image_url, description")
       .is("embedding", null)
@@ -254,7 +264,6 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const adminClient = createAdminClient();
     const processedItems = [];
     const failedItems = [];
 
@@ -282,22 +291,32 @@ export async function POST(req: NextRequest) {
           title: item.title,
           status: "success",
         });
-      } catch (error: any) {
-        console.error(`❌ 실패: [${item.id}] ${error.message}`);
+      } catch (error: unknown) {
+        const message = getErrorMessage(error);
+        console.error(`❌ 실패: [${item.id}] ${message}`);
         failedItems.push({
           id: item.id,
           title: item.title,
           status: "failed",
-          error: error.message,
+          error: message,
         });
       }
     }
 
     // 6. 남은 이미지 개수 조회
-    const { count: remainingCount } = await supabase
+    const { count: remainingCount, error: remainingError } = await adminClient
       .from("gallery")
-      .select("*", { count: "exact", head: true })
+      .select("id", { count: "planned", head: true })
       .is("embedding", null);
+
+    if (remainingError) {
+      throw remainingError;
+    }
+
+    if (processedItems.length > 0) {
+      revalidateTag(CACHE_TAGS.gallery, "max");
+      revalidateTag(CACHE_TAGS.home, "max");
+    }
 
     return NextResponse.json({
       success: true,
@@ -307,10 +326,11 @@ export async function POST(req: NextRequest) {
       processedItems,
       failedItems,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = getErrorMessage(error);
     console.error("❌ 마이그레이션 에러:", error);
     return NextResponse.json(
-      { error: error.message || "Internal server error" },
+      { error: message },
       { status: 500 }
     );
   }
@@ -322,18 +342,29 @@ export async function POST(req: NextRequest) {
  */
 export async function GET(req: NextRequest) {
   try {
-    const supabase = await createClient();
+    const authError = await requireMigrationAccess(req);
+    if (authError) return authError;
+
+    const supabase = createAdminClient();
 
     // embedding이 NULL인 이미지 개수
-    const { count: nullCount } = await supabase
+    const { count: nullCount, error: nullCountError } = await supabase
       .from("gallery")
-      .select("*", { count: "exact", head: true })
+      .select("id", { count: "planned", head: true })
       .is("embedding", null);
 
+    if (nullCountError) {
+      throw nullCountError;
+    }
+
     // 전체 이미지 개수
-    const { count: totalCount } = await supabase
+    const { count: totalCount, error: totalCountError } = await supabase
       .from("gallery")
-      .select("*", { count: "exact", head: true });
+      .select("id", { count: "planned", head: true });
+
+    if (totalCountError) {
+      throw totalCountError;
+    }
 
     const processedCount = (totalCount || 0) - (nullCount || 0);
 
@@ -346,10 +377,11 @@ export async function GET(req: NextRequest) {
         percentage: totalCount ? Math.round((processedCount / totalCount) * 100) : 0,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = getErrorMessage(error);
     console.error("❌ 상태 조회 에러:", error);
     return NextResponse.json(
-      { error: error.message || "Internal server error" },
+      { error: message },
       { status: 500 }
     );
   }

@@ -40,16 +40,16 @@ export default function MetaData({
     fetchCategories();
   }, []);
 
-  if (loading) return <div>로딩 중...</div>;
+  if (loading) return <div className="text-sm text-gray-400">로딩 중...</div>;
 
   return (
-    <div className="grid grid-cols-2 gap-4 mb-5">
+    <div className="grid gap-5">
       <div>
-        <label className="block mb-2 font-semibold text-gray-700">카테고리:</label>
+        <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-400">Category</label>
         <select
           value={categoryId}
           onChange={(e) => onCategoryChange(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="h-10 w-full border border-gray-200 bg-white px-3 text-sm text-gray-800 outline-none transition focus:border-gray-900"
         >
           <option value="">카테고리 선택</option>
           {categories.map((cat) => (
@@ -61,7 +61,7 @@ export default function MetaData({
       </div>
 
       <div>
-        <label className="block mb-2 font-semibold text-gray-700">태그:</label>
+        <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-400">Tags</label>
         <TagInput tags={tags} setTags={onTagsChange} />
       </div>
     </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ToastProvider";
 import CategorySelectModal from "@/components/CategorySelectModal";
 import CategorySelect from "@/components/CategorySelect";
@@ -25,12 +24,40 @@ interface ReferenceData {
   created_at: string;
 }
 
+type ReferenceCategory = {
+  name: string;
+};
+
+const MAX_REFERENCE_IMAGE_BYTES = 8 * 1024 * 1024;
+const MAX_REFERENCE_LOGO_BYTES = 4 * 1024 * 1024;
+const ALLOWED_REFERENCE_IMAGE_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+]);
+
+function validateImageFile(file: File, maxBytes: number) {
+  if (!ALLOWED_REFERENCE_IMAGE_TYPES.has(file.type)) {
+    return "JPG, PNG, WebP, GIF 이미지만 업로드할 수 있습니다.";
+  }
+
+  if (file.size > maxBytes) {
+    return `이미지는 최대 ${Math.floor(maxBytes / 1024 / 1024)}MB까지 업로드할 수 있습니다.`;
+  }
+
+  return null;
+}
+
+function toWebpFileName(fileName: string) {
+  return fileName.replace(/\.[^.]+$/, "") + ".webp";
+}
+
 export default function ReferenceEditModal({
   id,
   onClose,
   onSuccess,
 }: ReferenceEditModalProps) {
-  const supabase = createClient();
   const { addToast } = useToast();
 
   // 폼 상태
@@ -64,9 +91,9 @@ export default function ReferenceEditModal({
       }
 
       const { data } = await res.json();
-      const categoryNames = data.map((cat: any) => cat.name);
+      const categoryNames = (data as ReferenceCategory[]).map((cat) => cat.name);
       setRangeCategories(categoryNames);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("❌ 범주 로드 에러:", error);
       addToast("범주 로드 실패", "error");
     }
@@ -98,9 +125,10 @@ export default function ReferenceEditModal({
         setLogoUrl(data.logo_url || null);
         setLogoPreview(data.logo_url || null);
         setRange(data.range || []);
-      } catch (error: any) {
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : "데이터를 불러올 수 없습니다.";
         console.error("❌ 데이터 로드 에러:", error);
-        addToast(`에러: ${error.message}`, "error");
+        addToast(`에러: ${message}`, "error");
         onClose();
       } finally {
         setLoading(false);
@@ -109,6 +137,18 @@ export default function ReferenceEditModal({
 
     loadData();
   }, [id]);
+
+  useEffect(() => {
+    return () => {
+      if (imagePreview?.startsWith("blob:")) URL.revokeObjectURL(imagePreview);
+    };
+  }, [imagePreview]);
+
+  useEffect(() => {
+    return () => {
+      if (logoPreview?.startsWith("blob:")) URL.revokeObjectURL(logoPreview);
+    };
+  }, [logoPreview]);
 
   // 이미지 리사이징 함수
   const resizeImage = async (file: File, maxWidth: number, maxHeight: number): Promise<File> => {
@@ -151,7 +191,7 @@ export default function ReferenceEditModal({
               reject(new Error("Failed to create blob"));
               return;
             }
-            const resizedFile = new File([blob], file.name, { type: "image/webp" });
+            const resizedFile = new File([blob], toWebpFileName(file.name), { type: "image/webp" });
             resolve(resizedFile);
           }, "image/webp", 0.8);
         };
@@ -164,72 +204,35 @@ export default function ReferenceEditModal({
   };
 
   // 이미지 업로드 함수
-  const uploadImage = async (file: File, folder: string = "original") => {
-    const ext = file.name.split(".").pop();
-    const fileName = `${Date.now()}.${ext}`;
-    const filePath = `references/${folder}/${fileName}`;
+  const uploadReferenceAsset = async (file: File, kind: "thumbnail" | "logo") => {
+    const formData = new FormData();
+    formData.append("kind", kind);
+    formData.append("file", file);
 
-    const { error } = await supabase.storage
-      .from("references")
-      .upload(filePath, file);
+    const res = await fetch("/api/references/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json().catch(() => ({}));
 
-    if (error) throw error;
+    if (!res.ok) {
+      throw new Error(data.error || "이미지 업로드 실패");
+    }
 
-    const { data } = supabase.storage
-      .from("references")
-      .getPublicUrl(filePath);
-
-    return data.publicUrl;
+    return data.url as string;
   };
 
   // 로고 업로드 함수
   const uploadLogo = async (file: File) => {
-    const ext = file.name.split(".").pop();
-    const fileName = `${Date.now()}.${ext}`;
-    const filePath = `references/logos/${fileName}`;
-
-    const { error } = await supabase.storage
-      .from("references")
-      .upload(filePath, file);
-
-    if (error) throw error;
-
-    const { data } = supabase.storage
-      .from("references")
-      .getPublicUrl(filePath);
-
-    return data.publicUrl;
+    return uploadReferenceAsset(file, "logo");
   };
 
   // 썸네일 생성 및 업로드 함수
   const uploadWithThumbnail = async (file: File) => {
     try {
-      // 1. 원본 이미지 업로드
-      const originalUrl = await uploadImage(file, "original");
-
-      // 2. 썸네일 생성 및 업로드 (폭 640px로 리사이징)
+      // 레퍼런스 목록에서는 썸네일만 사용하므로 원본 업로드는 생략한다.
       const resizedFile = await resizeImage(file, 640, 1080);
-      const ext = resizedFile.name.split(".").pop();
-      const fileName = `${Date.now()}.${ext}`;
-      const filePath = `references/thumbnails/${fileName}`;
-
-      const { error } = await supabase.storage
-        .from("references")
-        .upload(filePath, resizedFile);
-
-      if (error) throw error;
-
-      const { data } = supabase.storage
-        .from("references")
-        .getPublicUrl(filePath);
-
-      const thumbnailUrl = data.publicUrl;
-
-      // 원본 URL 반환 (썸네일은 별도로 저장 시 사용)
-      return {
-        original: originalUrl,
-        thumbnail: thumbnailUrl,
-      };
+      return uploadReferenceAsset(resizedFile, "thumbnail");
     } catch (error) {
       console.error("이미지 업로드 실패:", error);
       throw error;
@@ -267,14 +270,12 @@ export default function ReferenceEditModal({
       setSaving(true);
 
       let finalImageUrl = imageUrl;
-      let finalImageOriginal = imageUrl; // 기존 원본 이미지
       let finalLogoUrl = logoUrl; // 기존 로고 URL
 
       // 새 이미지가 업로드된 경우
       if (imageFile) {
-        const { original, thumbnail } = await uploadWithThumbnail(imageFile);
+        const thumbnail = await uploadWithThumbnail(imageFile);
         finalImageUrl = thumbnail;
-        finalImageOriginal = original;
       }
 
       // 새 로고가 업로드된 경우
@@ -291,7 +292,6 @@ export default function ReferenceEditModal({
           description: description.trim() || null,
           url: url.trim(),
           image_url: finalImageUrl, // 대시보드: 썸네일 사용
-          image_original: finalImageOriginal, // 클라이언트: 원본 사용
           logo_url: finalLogoUrl, // 로고 URL
           range: range.length > 0 ? range : [],
         }),
@@ -305,9 +305,10 @@ export default function ReferenceEditModal({
       addToast("레퍼런스가 수정되었습니다!", "success");
       onClose();
       onSuccess?.();
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "레퍼런스 수정 중 오류가 발생했습니다.";
       console.error("❌ 레퍼런스 수정 에러:", error);
-      addToast(`에러: ${error.message}`, "error");
+      addToast(`에러: ${message}`, "error");
     } finally {
       setSaving(false);
     }
@@ -315,12 +316,24 @@ export default function ReferenceEditModal({
 
   // 이미지 파일 선택 핸들러
   const handleImageChange = (file: File) => {
+    const error = validateImageFile(file, MAX_REFERENCE_IMAGE_BYTES);
+    if (error) {
+      addToast(error, "error");
+      return;
+    }
+    if (imagePreview?.startsWith("blob:")) URL.revokeObjectURL(imagePreview);
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
   };
 
   // 로고 파일 선택 핸들러
   const handleLogoChange = (file: File) => {
+    const error = validateImageFile(file, MAX_REFERENCE_LOGO_BYTES);
+    if (error) {
+      addToast(error, "error");
+      return;
+    }
+    if (logoPreview?.startsWith("blob:")) URL.revokeObjectURL(logoPreview);
     setLogoFile(file);
     setLogoPreview(URL.createObjectURL(file));
   };
@@ -330,7 +343,7 @@ export default function ReferenceEditModal({
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith("image/")) {
+    if (file) {
       handleImageChange(file);
     }
   };
@@ -460,7 +473,7 @@ export default function ReferenceEditModal({
                 id="referenceImageInputEdit"
                 type="file"
                 hidden
-                accept="image/*"
+                accept="image/jpeg,image/png,image/webp,image/gif"
                 onChange={(e) => {
                   if (e.target.files?.[0]) {
                     handleImageChange(e.target.files[0]);
@@ -503,7 +516,7 @@ export default function ReferenceEditModal({
                 id="referenceLogoInputEdit"
                 type="file"
                 hidden
-                accept="image/*"
+                accept="image/jpeg,image/png,image/webp,image/gif"
                 onChange={(e) => {
                   if (e.target.files?.[0]) {
                     handleLogoChange(e.target.files[0]);

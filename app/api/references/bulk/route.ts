@@ -3,6 +3,30 @@ import { revalidateTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkReferenceEditPermission } from "@/lib/supabase/reference-utils";
 import { CACHE_TAGS } from "@/lib/public-data";
+import { getErrorMessage } from "@/lib/error-message";
+
+async function parseJsonObject(req: NextRequest) {
+  try {
+    const body = await req.json();
+    return body && typeof body === "object" && !Array.isArray(body)
+      ? (body as Record<string, unknown>)
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function normalizeReferenceIds(value: unknown) {
+  if (!Array.isArray(value)) return [];
+
+  return Array.from(
+    new Set(
+      value
+        .map((id) => (typeof id === "number" || typeof id === "string" ? Number(id) : NaN))
+        .filter((id) => Number.isSafeInteger(id) && id > 0)
+    )
+  ).slice(0, 100);
+}
 
 /**
  * DELETE /api/references/bulk
@@ -30,21 +54,17 @@ export async function DELETE(req: NextRequest) {
     }
 
     // 2. 요청 데이터 파싱
-    const body = await req.json();
-    const { ids } = body;
-
-    // 3. 요청 데이터 검증
-    if (!Array.isArray(ids) || ids.length === 0) {
-      return NextResponse.json(
-        { error: "ids must be a non-empty array" },
-        { status: 400 }
-      );
+    const body = await parseJsonObject(req);
+    if (!body) {
+      return NextResponse.json({ error: "잘못된 JSON 요청입니다." }, { status: 400 });
     }
 
-    // 4. ID 배열 검증 (숫자만)
-    if (!ids.every((id: any) => typeof id === "number" || typeof id === "string")) {
+    const ids = normalizeReferenceIds(body.ids);
+
+    // 3. 요청 데이터 검증
+    if (ids.length === 0) {
       return NextResponse.json(
-        { error: "All ids must be numbers" },
+        { error: "ids must be a non-empty array" },
         { status: 400 }
       );
     }
@@ -69,10 +89,11 @@ export async function DELETE(req: NextRequest) {
       deleted: ids.length,
       message: `Successfully deleted ${ids.length} items`,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = getErrorMessage(error);
     console.error("❌ Reference 일괄 삭제 에러:", error);
     return NextResponse.json(
-      { error: error.message || "Internal server error" },
+      { error: message },
       { status: 500 }
     );
   }

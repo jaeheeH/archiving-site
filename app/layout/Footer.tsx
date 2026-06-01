@@ -38,17 +38,17 @@ export default function Footer() {
             <h4 className="font-bold text-white mb-6 text-sm uppercase tracking-wider">Explore</h4>
             <ul className="space-y-4 text-sm text-white">
               <li>
-                <Link href="/gallery" className="hover:text-black transition-colors">
+                <Link href="/gallery" className="transition-colors hover:text-[#ff4800]">
                   Gallery
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="hover:text-black transition-colors">
+                <Link href="/blog" className="transition-colors hover:text-[#ff4800]">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-black transition-colors">
+                <Link href="/about" className="transition-colors hover:text-[#ff4800]">
                   Archive
                 </Link>
               </li>
@@ -61,8 +61,8 @@ export default function Footer() {
             <ul className="space-y-4 text-sm text-gray-500">
               <li className="flex items-center gap-2">
                 <i className="ri-mail-line text-lg"></i>
-                <a href="mailto:contact@archbehind.com" className="hover:text-black transition-colors">
-                archbehind@gmail.com
+                <a href="mailto:archbehind@gmail.com" className="transition-colors hover:text-[#ff4800]">
+                  archbehind@gmail.com
                 </a>
               </li>
 
@@ -74,8 +74,8 @@ export default function Footer() {
         <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-400 font-mono">
           <p>&copy; {new Date().getFullYear()} ARCH-B. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-gray-600 transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-gray-600 transition-colors">Terms of Service</Link>
+            <Link href="/privacy" className="transition-colors hover:text-[#ff4800]">Privacy Policy</Link>
+            <Link href="/terms" className="transition-colors hover:text-[#ff4800]">Terms of Service</Link>
           </div>
         </div>
       </div>

@@ -11,6 +11,14 @@ import TagInput from "@/components/TagInput";
 import CategorySelectModal from "@/components/CategorySelectModal";
 import CategorySelect from "@/components/CategorySelect";
 
+const MAX_GALLERY_SOURCE_IMAGE_BYTES = 8 * 1024 * 1024;
+const ALLOWED_GALLERY_SOURCE_IMAGE_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+]);
+
 /**
  * 이미지 파일에서 크기(width, height) 감지
  */
@@ -73,12 +81,17 @@ export default function CreateGalleryPage() {
   }, [previewUrl]);
 
   const setSelectedImage = (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      addToast("이미지 파일만 업로드할 수 있습니다.", "error");
+    if (!ALLOWED_GALLERY_SOURCE_IMAGE_TYPES.has(file.type)) {
+      addToast("JPG, PNG, WebP, GIF 이미지만 업로드할 수 있습니다.", "error");
       return;
     }
 
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    if (file.size > MAX_GALLERY_SOURCE_IMAGE_BYTES) {
+      addToast("이미지는 8MB 이하로 업로드해주세요.", "error");
+      return;
+    }
+
+    if (previewUrl?.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
     setImageFile(file);
     setPreviewUrl(URL.createObjectURL(file));
   };
@@ -179,9 +192,10 @@ export default function CreateGalleryPage() {
 
       addToast("저장 완료!", "success");
       router.push("/dashboard/contents/gallery/");
-    } catch (e: any) {
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : "저장 중 오류가 발생했습니다.";
       console.error("❌ 에러:", e);
-      addToast(`에러: ${e.message}`, "error");
+      addToast(`에러: ${message}`, "error");
     } finally {
       setLoading(false);
       setStatusText("");
@@ -279,7 +293,7 @@ export default function CreateGalleryPage() {
             type="file"
             id="fileInput"
             hidden
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp,image/gif"
             onChange={(e) => {
               if (e.target.files?.[0]) setSelectedImage(e.target.files[0]);
               e.target.value = "";

@@ -1,9 +1,39 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { checkGalleryEditPermission } from "@/lib/supabase/gallery-utils";
+import { getErrorMessage } from "@/lib/error-message";
+import { generateGeminiTextEmbedding } from "@/lib/gemini-embedding";
+
+type ImageAnalysisData = {
+  category?: unknown;
+  summary?: string;
+  visual_detail?: string;
+  tags?: unknown;
+};
 
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey || "");
+const MAX_ANALYSIS_IMAGE_BYTES = 8 * 1024 * 1024;
+
+async function parseJsonObject(req: NextRequest) {
+  try {
+    const body = await req.json();
+    return body && typeof body === "object" && !Array.isArray(body)
+      ? (body as Record<string, unknown>)
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function normalizeAiText(value: unknown, fallback = "", max = 1500) {
+  return typeof value === "string" ? value.trim().slice(0, max) : fallback;
+}
+
+function buildEmbeddingText(category: string, data: ImageAnalysisData) {
+  const detail = normalizeAiText(data.visual_detail || data.summary, "이미지 분석 결과");
+  return `[${category}] ${detail}`;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,7 +49,12 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. 요청 데이터 가져오기
-    const { imageUrl } = await req.json();
+    const body = await parseJsonObject(req);
+    if (!body) {
+      return NextResponse.json({ error: "잘못된 JSON 요청입니다." }, { status: 400 });
+    }
+
+    const imageUrl = body.imageUrl;
 
     if (!imageUrl) {
       return NextResponse.json(
@@ -39,123 +74,71 @@ export async function POST(req: NextRequest) {
     }
 
     // 3. 이미지 fetch → base64 변환
-    const imageResp = await fetch(imageUrl);
+    const imageResp = await fetch(imageUrl, { signal: AbortSignal.timeout(30_000) });
     if (!imageResp.ok) throw new Error(`Failed to fetch image: ${imageResp.statusText}`);
+    const contentType = imageResp.headers.get("content-type") || "image/jpeg";
+
+    if (!contentType.startsWith("image/")) {
+      return NextResponse.json(
+        { error: "Gallery analysis target must be an image" },
+        { status: 400 }
+      );
+    }
+
+    const contentLength = Number(imageResp.headers.get("content-length") || 0);
+    if (contentLength > MAX_ANALYSIS_IMAGE_BYTES) {
+      return NextResponse.json(
+        { error: "Image is too large to analyze" },
+        { status: 400 }
+      );
+    }
 
     const arrayBuffer = await imageResp.arrayBuffer();
+    if (arrayBuffer.byteLength > MAX_ANALYSIS_IMAGE_BYTES) {
+      return NextResponse.json(
+        { error: "Image is too large to analyze" },
+        { status: 400 }
+      );
+    }
+
     const buffer = Buffer.from(arrayBuffer);
     const base64Image = buffer.toString("base64");
-    const mimeType = imageResp.headers.get("content-type") || "image/jpeg";
+    const mimeType = contentType;
 
     // 4. Vision 분석 모델 준비
     const visionModel = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.5-flash",
       generationConfig: {
         responseMimeType: "application/json",
         temperature: 0.2,
+        maxOutputTokens: 1200,
       },
     });
 
-    // 5. 1단계: 이미지 카테고리 분류
-    const categoryPrompt = `Classify this image into ONE category. Return ONLY valid JSON.
+    // 5. 이미지 카테고리와 상세 분석을 한 번의 호출로 처리해 API 비용을 줄인다.
+    const analysisPrompt = `Analyze this image and return ONLY valid JSON.
 
 {
-  "category": "portrait|product|landscape|food|architecture|art|fashion|interior|animal|other"
+  "category": "portrait|product|landscape|food|architecture|art|fashion|interior|animal|other",
+  "summary": "Natural description in Korean (2-3 sentences)",
+  "visual_detail": "Objective factual detail: Main subject, colors, materials, lighting, composition, background",
+  "tags": ["6-10 Korean keywords without #"]
 }
 
-Choose the most appropriate category. Return ONLY the JSON object.`;
+Rules:
+- category: Choose exactly one value from the allowed list.
+- summary: Natural Korean description for UI display.
+- visual_detail: Objective factual description WITHOUT emotions. Include specific colors, shapes, objects, materials, and layout.
+- tags: Korean keywords only when possible, 6-10 items, no # symbols.`;
 
-    const categoryResult = await visionModel.generateContent([
-      categoryPrompt,
+    const analysisResult = await visionModel.generateContent([
+      analysisPrompt,
       { inlineData: { data: base64Image, mimeType } },
     ]);
 
-    let imageCategory = "other";
-    try {
-      const categoryData = JSON.parse(categoryResult.response?.text() ?? "{}");
-      imageCategory = categoryData.category || "other";
-    } catch (e) {
-      console.error("카테고리 분류 실패, 기본값 사용");
-    }
+    const jsonText = analysisResult.response?.text() ?? "{}";
 
-    // 6. 2단계: 카테고리별 맞춤 분석
-    const categoryPrompts: Record<string, string> = {
-      portrait: `Analyze this portrait/person image. Return ONLY valid JSON.
-
-{
-  "summary": "Natural description in Korean (2-3 sentences)",
-  "visual_detail": "Subject: Gender/Age | Clothing: Specific color (e.g., 'Black V-neck dress', 'White ribbed t-shirt'), Style | Hair: Color, Style | Background: Color, Objects | Pose: Description | Expression: Description",
-  "tags": ["인물사진", "표정", "의상스타일", "조명", "분위기", etc.]
-}
-
-Rules:
-- summary: Natural Korean description for UI display
-- visual_detail: Objective factual description WITHOUT emotions, focusing on colors, shapes, objects
-- tags: 6-10 Korean keywords (WITHOUT #)`,
-
-      product: `Analyze this product image. Return ONLY valid JSON.
-
-{
-  "summary": "Natural description in Korean (2-3 sentences)",
-  "visual_detail": "Product: Type | Color: Main color (specific name), Accent colors | Material: Texture description | Shape: Geometric form | Background: Color, Setting",
-  "tags": ["제품사진", "제품타입", "색상", "디자인스타일", "배경", etc.]
-}
-
-Rules:
-- summary: Natural Korean description for UI display
-- visual_detail: Objective factual description WITHOUT emotions, focusing on colors, materials, shapes
-- tags: 6-10 Korean keywords (WITHOUT #)`,
-
-      landscape: `Analyze this landscape/nature image. Return ONLY valid JSON.
-
-{
-  "summary": "Natural description in Korean (2-3 sentences)",
-  "visual_detail": "Location: Type (mountain/sea/city/forest) | Colors: Dominant colors (specific names) | Time: Time of day indicators | Weather: Sky condition | Composition: Main elements positions",
-  "tags": ["풍경사진", "장소타입", "시간대", "날씨", "색감", etc.]
-}
-
-Rules:
-- summary: Natural Korean description for UI display
-- visual_detail: Objective factual description WITHOUT emotions, focusing on location, colors, weather
-- tags: 6-10 Korean keywords (WITHOUT #)`,
-
-      food: `Analyze this food image. Return ONLY valid JSON.
-
-{
-  "summary": "Natural description in Korean (2-3 sentences)",
-  "visual_detail": "Food: Type, Cuisine | Colors: Main colors of food | Plating: Dish type, Arrangement | Background: Surface color, Props | Lighting: Direction, Quality",
-  "tags": ["음식사진", "요리타입", "플레이팅", "색감", "조명", etc.]
-}
-
-Rules:
-- summary: Natural Korean description for UI display
-- visual_detail: Objective factual description WITHOUT emotions, focusing on food type, colors, plating
-- tags: 6-10 Korean keywords (WITHOUT #)`,
-
-      other: `Analyze this image. Return ONLY valid JSON.
-
-{
-  "summary": "Natural description in Korean (2-3 sentences)",
-  "visual_detail": "Main Object: Type | Colors: Dominant colors (specific names) | Lighting: Direction, Quality | Composition: Element positions | Background: Description",
-  "tags": ["keyword1", "keyword2", "keyword3", etc.]
-}
-
-Rules:
-- summary: Natural Korean description for UI display
-- visual_detail: Objective factual description WITHOUT emotions, focusing on objects, colors, composition
-- tags: 6-10 Korean keywords (WITHOUT #)`
-    };
-
-    const detailedPrompt = categoryPrompts[imageCategory] || categoryPrompts.other;
-
-    const detailedResult = await visionModel.generateContent([
-      detailedPrompt,
-      { inlineData: { data: base64Image, mimeType } },
-    ]);
-
-    const jsonText = detailedResult.response?.text() ?? "{}";
-
-    let parsedData: any = {};
+    let parsedData: ImageAnalysisData = {};
     try {
       parsedData = JSON.parse(jsonText);
     } catch (e) {
@@ -166,72 +149,49 @@ Rules:
       );
     }
 
-    // 7. 하이브리드 임베딩 생성
-    // 이미지 크기에 따라 멀티모달 또는 텍스트 임베딩 사용
-    let embedding: number[];
+    const allowedCategories = new Set([
+      "portrait",
+      "product",
+      "landscape",
+      "food",
+      "architecture",
+      "art",
+      "fashion",
+      "interior",
+      "animal",
+      "other",
+    ]);
+    const rawCategory = typeof parsedData.category === "string" ? parsedData.category : "other";
+    const imageCategory = allowedCategories.has(rawCategory) ? rawCategory : "other";
 
-    // base64 이미지 크기 체크 (36KB = 약 48000 chars in base64)
-    const imageSizeKB = (base64Image.length * 3) / 4 / 1024;
-
-    if (imageSizeKB < 30) {
-      // 작은 이미지: 멀티모달 임베딩 (더 정확)
-      try {
-        const multimodalModel = genAI.getGenerativeModel({
-          model: "embedding-001",
-        });
-
-        const embeddingRes = await multimodalModel.embedContent({
-          content: {
-            role: "user",
-            parts: [
-              {
-                inlineData: {
-                  data: base64Image,
-                  mimeType: mimeType,
-                },
-              },
-            ],
-          },
-        });
-
-        embedding = embeddingRes.embedding.values;
-      } catch (error: any) {
-        console.error("멀티모달 임베딩 실패, 텍스트 임베딩으로 폴백:", error.message);
-        // 폴백: 텍스트 임베딩 (visual_detail 우선 사용)
-        const textModel = genAI.getGenerativeModel({
-          model: "text-embedding-004",
-        });
-        const embeddingText = `[${imageCategory}] ${parsedData.visual_detail || parsedData.summary}`;
-        const textEmbeddingRes = await textModel.embedContent(embeddingText);
-        embedding = textEmbeddingRes.embedding.values;
-      }
-    } else {
-      // 큰 이미지: 카테고리+visual_detail로 텍스트 임베딩
-      const textModel = genAI.getGenerativeModel({
-        model: "text-embedding-004",
-      });
-      const embeddingText = `[${imageCategory}] ${parsedData.visual_detail || parsedData.summary}`;
-      const textEmbeddingRes = await textModel.embedContent(embeddingText);
-      embedding = textEmbeddingRes.embedding.values;
-    }
+    // 6. Gemini Embedding API는 텍스트 Content를 기준으로 동작하므로,
+    // 이미지 분석 결과의 객관적 묘사를 임베딩 입력으로 사용한다.
+    const embedding = await generateGeminiTextEmbedding(
+      apiKey,
+      buildEmbeddingText(imageCategory, parsedData)
+    );
 
     // 8. 태그 배열 정리
     const tagsArray = Array.isArray(parsedData.tags)
-      ? parsedData.tags.slice(0, 15)
+      ? parsedData.tags
+          .map((tag) => normalizeAiText(tag, "", 40))
+          .filter(Boolean)
+          .slice(0, 15)
       : [];
 
     // 9. 최종 응답
     return NextResponse.json({
       success: true,
       category: imageCategory,
-      summary: parsedData.summary || "이미지 분석 완료",
+      summary: normalizeAiText(parsedData.summary, "이미지 분석 완료"),
       tags: tagsArray,
       embedding,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = getErrorMessage(error, "Server Error");
     console.error("❌ AI Processing Error:", error);
     return NextResponse.json(
-      { error: error.message || "Server Error" },
+      { error: message },
       { status: 500 }
     );
   }

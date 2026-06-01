@@ -25,14 +25,7 @@ export default function ReferenceCategoryModal({
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(false);
 
-  // 수정 모드일 때 데이터 로드
-  useEffect(() => {
-    if (mode === "edit" && id && open) {
-      loadData();
-    }
-  }, [mode, id, open]);
-
-  const loadData = async () => {
+  async function loadData() {
     try {
       setInitialLoading(true);
       const res = await fetch(`/api/references-categories/${id}`);
@@ -44,14 +37,23 @@ export default function ReferenceCategoryModal({
       const { data } = await res.json();
       setName(data.name);
       setDescription(data.description || "");
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "데이터를 불러올 수 없습니다.";
       console.error("❌ 데이터 로드 에러:", error);
-      addToast(`에러: ${error.message}`, "error");
+      addToast(`에러: ${message}`, "error");
       onClose();
     } finally {
       setInitialLoading(false);
     }
-  };
+  }
+
+  // 수정 모드일 때 데이터 로드
+  useEffect(() => {
+    if (mode === "edit" && id && open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadData();
+    }
+  }, [mode, id, open]);
 
   const handleSubmit = async () => {
     if (!name.trim()) {
@@ -93,9 +95,10 @@ export default function ReferenceCategoryModal({
       resetForm();
       onClose();
       onSuccess?.();
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "저장 중 오류가 발생했습니다.";
       console.error("❌ 저장 에러:", error);
-      addToast(`에러: ${error.message}`, "error");
+      addToast(`에러: ${message}`, "error");
     } finally {
       setLoading(false);
     }

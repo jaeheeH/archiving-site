@@ -34,20 +34,32 @@ function normalizeRole(role?: string | null): DashboardRole {
   return "user";
 }
 
-function applyAuthorScope(query: any, context: DashboardContext, column: "author" | "author_id") {
+type QueryError = { message?: string } | null;
+
+type FilterableQuery = {
+  eq(column: string, value: string | number | boolean): unknown;
+  not(column: string, operator: string, value: string): unknown;
+};
+
+function applyAuthorScope<T>(query: T, context: DashboardContext, column: "author" | "author_id"): T {
+  const scopedQuery = query as FilterableQuery;
+
   if (context.role === "editor") {
-    return query.eq(column, context.user.id);
+    return scopedQuery.eq(column, context.user.id) as T;
   }
 
   if (context.role === "sub-admin" && context.adminUserIds.length > 0) {
-    return query.not(column, "in", `(${context.adminUserIds.join(",")})`);
+    return scopedQuery.not(column, "in", `(${context.adminUserIds.join(",")})`) as T;
   }
 
   return query;
 }
 
-async function readCount(query: any): Promise<CountValue> {
-  const { count, error } = await query;
+async function readCount(query: unknown): Promise<CountValue> {
+  const { count, error } = await (query as PromiseLike<{
+    count: number | null;
+    error: QueryError;
+  }>);
 
   if (error) {
     return { value: 0, error: error.message };
@@ -56,8 +68,11 @@ async function readCount(query: any): Promise<CountValue> {
   return { value: count || 0 };
 }
 
-async function readRows<T>(query: any): Promise<T[]> {
-  const { data, error } = await query;
+async function readRows<T>(query: unknown): Promise<T[]> {
+  const { data, error } = await (query as PromiseLike<{
+    data: T[] | null;
+    error: QueryError;
+  }>);
 
   if (error) {
     console.error("Dashboard data query failed:", error.message);
@@ -323,7 +338,6 @@ export async function getGalleryAnalytics() {
   if (!context) return null;
 
   const rows = await readRows<{
-    id: number;
     category: string | null;
     range: string[] | null;
     tags: string[] | null;
@@ -333,7 +347,7 @@ export async function getGalleryAnalytics() {
     applyAuthorScope(
       context.admin
         .from("gallery")
-        .select("id, category, range, tags, gemini_tags, created_at, author")
+        .select("category, range, tags, gemini_tags, created_at, author")
         .order("created_at", { ascending: false })
         .limit(1000),
       context,
@@ -372,10 +386,8 @@ export async function getReferencesAnalytics() {
   const context = await getDashboardContext();
   if (!context) return null;
 
-  const rows = await readRows<{
-    id: number;
-    title: string;
-    url: string | null;
+  const [rows, topClicked] = await Promise.all([
+    readRows<{
     range: string[] | null;
     clicks: number | null;
     created_at: string | null;
@@ -383,13 +395,30 @@ export async function getReferencesAnalytics() {
     applyAuthorScope(
       context.admin
         .from("references")
-        .select("id, title, url, range, clicks, created_at, author")
+          .select("range, clicks, created_at, author")
         .order("created_at", { ascending: false })
         .limit(1000),
       context,
       "author"
     )
-  );
+    ),
+    readRows<{
+      id: number;
+      title: string;
+      url: string | null;
+      clicks: number | null;
+    }>(
+      applyAuthorScope(
+        context.admin
+          .from("references")
+          .select("id, title, url, clicks, author")
+          .order("clicks", { ascending: false })
+          .limit(10),
+        context,
+        "author"
+      )
+    ),
+  ]);
 
   const ranges: Record<string, number> = {};
   const months: Record<string, number> = {};
@@ -412,9 +441,7 @@ export async function getReferencesAnalytics() {
     totalClicks: rows.reduce((sum, item) => sum + (item.clicks || 0), 0),
     ranges: sortEntries(ranges),
     months: sortEntries(months, 8),
-    topClicked: [...rows]
-      .sort((a, b) => (b.clicks || 0) - (a.clicks || 0))
-      .slice(0, 10),
+    topClicked,
   };
 }
 

@@ -17,6 +17,7 @@ export async function DELETE() {
     const admin = createAdminClient();
 
     await Promise.allSettled([
+      admin.from("post_scraps").delete().eq("user_id", user.id),
       admin.from("gallery_scraps").delete().eq("user_id", user.id),
       admin.from("reference_scraps").delete().eq("user_id", user.id),
     ]);

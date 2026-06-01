@@ -20,6 +20,10 @@ type ReferenceItem = {
   created_at: string;
 };
 
+type ReferenceCategory = {
+  name: string;
+};
+
 function ReferenceContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -54,12 +58,7 @@ function ReferenceContent() {
   const [ranges, setRanges] = useState<string[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
 
-  // 범주 로드
-  useEffect(() => {
-    loadCategories();
-  }, []);
-
-  const loadCategories = async () => {
+  async function loadCategories() {
     try {
       setLoadingCategories(true);
       const res = await fetch("/api/references-categories");
@@ -69,15 +68,21 @@ function ReferenceContent() {
       }
 
       const { data } = await res.json();
-      const categoryNames = data.map((cat: any) => cat.name);
+      const categoryNames = (data as ReferenceCategory[]).map((cat) => cat.name);
       setRanges(categoryNames);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("❌ 범주 로드 에러:", error);
       addToast("범주 로드 실패", "error");
     } finally {
       setLoadingCategories(false);
     }
-  };
+  }
+
+  // 범주 로드
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadCategories();
+  }, []);
 
   // 페이지 업데이트
   const updatePage = (pageNum: number) => {
@@ -117,7 +122,7 @@ function ReferenceContent() {
       setTotalPages(data.pagination.totalPages);
       setTotalCount(data.pagination.total);
       setSelectedIds([]);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("❌ Fetch 에러:", error);
       addToast("레퍼런스 조회 실패", "error");
     } finally {
@@ -126,6 +131,7 @@ function ReferenceContent() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchReferences(page);
   }, [page, selectedRange, sortBy, sortOrder]);
 
@@ -161,9 +167,10 @@ function ReferenceContent() {
 
       addToast("삭제되었습니다!", "success");
       fetchReferences(page);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "삭제 중 오류가 발생했습니다.";
       console.error("❌ 삭제 에러:", error);
-      addToast(`삭제 실패: ${error.message}`, "error");
+      addToast(`삭제 실패: ${message}`, "error");
     }
   };
 
@@ -193,9 +200,10 @@ function ReferenceContent() {
       addToast(`${selectedIds.length}개 삭제되었습니다!`, "success");
       setSelectedIds([]);
       fetchReferences(page);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "삭제 중 오류가 발생했습니다.";
       console.error("❌ 일괄 삭제 에러:", error);
-      addToast(`삭제 실패: ${error.message}`, "error");
+      addToast(`삭제 실패: ${message}`, "error");
     }
   };
 
@@ -323,6 +331,9 @@ function ReferenceContent() {
                 <th className="text-left p-3 font-medium text-sm text-gray-700">
                   URL
                 </th>
+                <th className="text-left p-3 font-medium text-sm text-gray-700">
+                  카테고리
+                </th>
                 <th className="text-center p-3 font-medium text-sm text-gray-700">
                   클릭수
                 </th>
@@ -344,6 +355,8 @@ function ReferenceContent() {
         description={item.description}
         url={item.url}
         image_url={item.image_url}
+        category={item.category}
+        range={item.range}
         clicks={item.clicks}
         created_at={item.created_at}
         isSelected={selectedIds.includes(item.id)}
@@ -354,7 +367,7 @@ function ReferenceContent() {
   ))
 ) : (
   <tr>
-    <td colSpan={7} className="p-6 text-center text-gray-500">
+    <td colSpan={8} className="p-6 text-center text-gray-500">
       레퍼런스가 없습니다.
     </td>
   </tr>

@@ -8,6 +8,14 @@ import TagInput from "@/components/TagInput";
 import CategorySelectModal from "@/components/CategorySelectModal";
 import CategorySelect from "@/components/CategorySelect";
 
+const MAX_GALLERY_SOURCE_IMAGE_BYTES = 8 * 1024 * 1024;
+const ALLOWED_GALLERY_SOURCE_IMAGE_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+]);
+
 interface EditGalleryClientProps {
   id: string;
   onClose?: () => void;
@@ -34,17 +42,22 @@ export default function EditGalleryClient({
   const [rangeOpen, setRangeOpen] = useState(false);
   const [category, setCategory] = useState("");
   const [isDragging, setIsDragging] = useState(false);
-  const [embedding, setEmbedding] = useState<number[]>([]);
   const [geminiDescription, setGeminiDescription] = useState("");
   const [statusText, setStatusText] = useState("");
+  const [loadError, setLoadError] = useState("");
 
   const setSelectedImage = (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      addToast("이미지 파일만 업로드할 수 있습니다.", "error");
+    if (!ALLOWED_GALLERY_SOURCE_IMAGE_TYPES.has(file.type)) {
+      addToast("JPG, PNG, WebP, GIF 이미지만 업로드할 수 있습니다.", "error");
       return;
     }
 
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    if (file.size > MAX_GALLERY_SOURCE_IMAGE_BYTES) {
+      addToast("이미지는 8MB 이하로 업로드해주세요.", "error");
+      return;
+    }
+
+    if (previewUrl?.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
     setImageFile(file);
     setPreviewUrl(URL.createObjectURL(file));
   };
@@ -87,6 +100,16 @@ export default function EditGalleryClient({
         const result = await res.json();
 
         if (!res.ok) {
+          if (res.status === 404) {
+            const message = "이미지를 찾을 수 없습니다. 목록을 새로고침합니다.";
+            addToast(message, "error");
+            onSaveSuccess?.();
+            onClose?.();
+            setLoadError(message);
+            setLoading(false);
+            return;
+          }
+
           throw new Error(result.error || "데이터를 불러올 수 없습니다");
         }
 
@@ -99,20 +122,20 @@ export default function EditGalleryClient({
           setGeminiTags(data.gemini_tags || []);
           setRange(data.range || []);
           setCategory(data.category || "");
-          setEmbedding(data.embedding || []);
           setGeminiDescription(data.gemini_description || "");
         }
 
         setLoading(false);
-      } catch (error: any) {
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : "데이터 로드 중 오류가 발생했습니다";
         console.error("로드 에러:", error);
-        addToast(error.message || "데이터 로드 중 오류가 발생했습니다", "error");
+        addToast(message, "error");
         setLoading(false);
       }
     };
 
     load();
-  }, [id, addToast]);
+  }, [id, addToast, onClose, onSaveSuccess]);
 
   useEffect(() => {
     return () => {
@@ -175,7 +198,7 @@ export default function EditGalleryClient({
       setSaving(true);
   
       let finalImage = imageUrl;
-      let finalEmbedding = embedding;
+      let finalEmbedding: number[] | undefined;
       let finalGeminiDescription = geminiDescription;
       let finalGeminiTags = geminiTags;
       let finalWidth: number | undefined;
@@ -207,22 +230,27 @@ export default function EditGalleryClient({
       }
   
       setStatusText("저장 중...");
+      const payload: Record<string, unknown> = {
+        title,
+        description,
+        image_url: finalImage,
+        image_width: finalWidth,
+        image_height: finalHeight,
+        tags,
+        category,
+        range,
+        gemini_description: finalGeminiDescription,
+        gemini_tags: finalGeminiTags,
+      };
+
+      if (Array.isArray(finalEmbedding)) {
+        payload.embedding = finalEmbedding;
+      }
+
       const res = await fetch(`/api/gallery/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          description,
-          image_url: finalImage,
-          image_width: finalWidth,
-          image_height: finalHeight,
-          tags,
-          category,
-          range,
-          embedding: finalEmbedding,
-          gemini_description: finalGeminiDescription,
-          gemini_tags: finalGeminiTags,
-        }),
+        body: JSON.stringify(payload),
       });
       const result = await res.json();
   
@@ -233,15 +261,19 @@ export default function EditGalleryClient({
       addToast("수정 완료!", "success");
       onSaveSuccess?.();
       onClose?.();
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "저장 중 오류가 발생했습니다.";
       console.error("save 함수 에러:", error);
-      addToast(`저장 중 오류: ${error.message}`, "error");
+      addToast(`저장 중 오류: ${message}`, "error");
     } finally {
       setSaving(false);
       setStatusText("");
     }
   };
   if (loading) return <div className="p-6">불러오는 중...</div>;
+  if (loadError) {
+    return <div className="p-6 text-sm text-gray-500">{loadError}</div>;
+  }
 
   return (
     <div>
@@ -316,7 +348,7 @@ export default function EditGalleryClient({
           <input
             id="editImageInput"
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp,image/gif"
             hidden
             onChange={(e) => {
               const file = e.target.files?.[0];

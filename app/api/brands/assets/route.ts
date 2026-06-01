@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+import { randomUUID } from "crypto";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
+import { isSafeIdentifierParam } from "@/lib/route-params";
+
+const ALLOWED_BRAND_ASSET_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+]);
 
 function safeExtension(file: File) {
   const fromType = file.type.split("/")[1];
@@ -25,7 +33,7 @@ export async function POST(request: NextRequest) {
     const brandId = formData.get("brandId");
     const file = formData.get("file");
 
-    if (typeof brandId !== "string" || !brandId) {
+    if (typeof brandId !== "string" || !isSafeIdentifierParam(brandId)) {
       return NextResponse.json({ error: "브랜드 ID가 필요합니다." }, { status: 400 });
     }
 
@@ -33,8 +41,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "이미지 파일이 필요합니다." }, { status: 400 });
     }
 
-    if (!file.type.startsWith("image/")) {
-      return NextResponse.json({ error: "이미지만 업로드할 수 있습니다." }, { status: 400 });
+    if (!ALLOWED_BRAND_ASSET_TYPES.has(file.type)) {
+      return NextResponse.json({ error: "JPG, PNG, WebP 이미지만 업로드할 수 있습니다." }, { status: 400 });
     }
 
     if (file.size > 5 * 1024 * 1024) {
@@ -54,11 +62,12 @@ export async function POST(request: NextRequest) {
     }
 
     const ext = safeExtension(file);
-    const random = Math.random().toString(36).slice(2, 10);
+    const random = randomUUID().replace(/-/g, "").slice(0, 12);
     const path = `${brandId}/${Date.now()}_${random}.${ext}`;
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const { error } = await admin.storage.from("brand-assets").upload(path, buffer, {
+      cacheControl: "31536000",
       contentType: file.type || "image/jpeg",
       upsert: false,
     });

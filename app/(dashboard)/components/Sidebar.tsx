@@ -84,6 +84,8 @@ export default function Sidebar() {
       }
     });
 
+    // pathname 변경에 맞춰 열려 있어야 할 섹션을 동기화합니다.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setOpenMenu(opened);
   }, [pathname]);
 
@@ -104,7 +106,7 @@ export default function Sidebar() {
             </div>
           </div>
           <div>
-            <Link  className="flex items-center justify-between text-gray-700 hover:bg-gray-50 rounded-md text-sm" href="/" target="_blank">
+            <Link  className="flex items-center justify-between text-gray-700 hover:bg-gray-50 rounded-md text-sm" href="/" target="_blank" rel="noopener noreferrer">
               <div className="flex items-center gap-1 ">
                 <div className="nav-menu-icon">
                   <i className="ri-external-link-line" />

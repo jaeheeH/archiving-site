@@ -20,6 +20,7 @@ import { useImageUpload } from '@/hooks/useImageUpload';
 import { DraggableImage } from './DraggableImageNode';
 import { ImageGalleryNode } from './ImageGalleryNode';
 import { ColumnsNode } from './ColumnsNode';
+import type { AnyExtension } from '@tiptap/core';
 
 interface BrunchTipTapEditorProps {
   value: JSONContent | null;
@@ -39,7 +40,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
           color: '#00c4c4',
           width: 2,
         },
-      }) as any),
+      }) as unknown as AnyExtension),
       BubbleMenuExtension,
       HorizontalRule.configure({
         HTMLAttributes: {
@@ -177,7 +178,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
           className="bg-white shadow-lg border border-gray-200 rounded-lg flex overflow-hidden p-1 gap-1"
         >
           <button
-            onClick={() => (editor as any).chain().focus().toggleBold().run()}
+            onClick={() => editor.chain().focus().toggleBold().run()}
             className={`p-2 hover:bg-gray-100 rounded ${
               editor.isActive('bold') ? 'text-blue-500 bg-blue-50' : 'text-gray-600'
             }`}
@@ -185,7 +186,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
             <i className="ri-bold"></i>
           </button>
           <button
-            onClick={() => (editor as any).chain().focus().toggleItalic().run()}
+            onClick={() => editor.chain().focus().toggleItalic().run()}
             className={`p-2 hover:bg-gray-100 rounded ${
               editor.isActive('italic') ? 'text-blue-500 bg-blue-50' : 'text-gray-600'
             }`}
@@ -193,7 +194,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
             <i className="ri-italic"></i>
           </button>
           <button
-            onClick={() => (editor as any).chain().focus().toggleUnderline().run()}
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
             className={`p-2 hover:bg-gray-100 rounded ${
               editor.isActive('underline') ? 'text-blue-500 bg-blue-50' : 'text-gray-600'
             }`}
@@ -202,7 +203,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
           </button>
           <div className="w-px h-6 bg-gray-200 my-auto mx-1"></div>
           <button
-            onClick={() => (editor as any).chain().focus().toggleHeading({ level: 2 }).run()}
+            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
             className={`p-2 hover:bg-gray-100 rounded ${
               editor.isActive('heading', { level: 2 }) ? 'text-blue-500 bg-blue-50' : 'text-gray-600'
             }`}
@@ -210,7 +211,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
             <i className="ri-h-2"></i>
           </button>
           <button
-            onClick={() => (editor as any).chain().focus().toggleHeading({ level: 3 }).run()}
+            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
             className={`p-2 hover:bg-gray-100 rounded ${
               editor.isActive('heading', { level: 3 }) ? 'text-blue-500 bg-blue-50' : 'text-gray-600'
             }`}
@@ -221,7 +222,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
           <button
             onClick={() => {
               const url = window.prompt('URL을 입력하세요');
-              if (url) (editor as any).chain().focus().setLink({ href: url }).run();
+              if (url) editor.chain().focus().setLink({ href: url }).run();
             }}
             className={`p-2 hover:bg-gray-100 rounded ${
               editor.isActive('link') ? 'text-blue-500 bg-blue-50' : 'text-gray-600'
@@ -250,7 +251,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
 
         {/* 구분선 추가 버튼 */}
         <button
-          onClick={() => (editor as any).chain().focus().setHorizontalRule().run()}
+          onClick={() => editor.chain().focus().setHorizontalRule().run()}
           className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition"
           title="구분선 추가"
         >
@@ -259,7 +260,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
 
         {/* 2단 레이아웃 버튼 */}
         <button
-          onClick={() => (editor as any).chain().focus().setColumns({ columns: 2 }).run()}
+          onClick={() => editor.chain().focus().setColumns({ columns: 2 }).run()}
           className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded transition"
           title="2단 레이아웃"
         >
@@ -281,7 +282,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
             <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded shadow-lg z-50 w-40">
               <button
                 onClick={() => {
-                  (editor as any)
+                  editor
                     .chain()
                     .focus()
                     .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
@@ -294,7 +295,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
               </button>
               <button
                 onClick={() => {
-                  (editor as any).chain().focus().addRowAfter().run();
+                  editor.chain().focus().addRowAfter().run();
                   setShowTableMenu(false);
                 }}
                 className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm border-t"
@@ -304,7 +305,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
               </button>
               <button
                 onClick={() => {
-                  (editor as any).chain().focus().addColumnAfter().run();
+                  editor.chain().focus().addColumnAfter().run();
                   setShowTableMenu(false);
                 }}
                 className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm border-t"
@@ -314,7 +315,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
               </button>
               <button
                 onClick={() => {
-                  (editor as any).chain().focus().deleteRow().run();
+                  editor.chain().focus().deleteRow().run();
                   setShowTableMenu(false);
                 }}
                 className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm border-t text-red-600"
@@ -324,7 +325,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
               </button>
               <button
                 onClick={() => {
-                  (editor as any).chain().focus().deleteColumn().run();
+                  editor.chain().focus().deleteColumn().run();
                   setShowTableMenu(false);
                 }}
                 className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-red-600"
@@ -334,7 +335,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
               </button>
               <button
                 onClick={() => {
-                  (editor as any).chain().focus().deleteTable().run();
+                  editor.chain().focus().deleteTable().run();
                   setShowTableMenu(false);
                 }}
                 className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm border-t text-red-600"
@@ -350,7 +351,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
 
         {/* 인용구 */}
         <button
-          onClick={() => (editor as any).chain().focus().toggleBlockquote().run()}
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={`p-2 hover:bg-gray-100 rounded transition ${
             editor.isActive('blockquote') ? 'text-blue-500 bg-blue-50' : 'text-gray-500'
           }`}
@@ -361,7 +362,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
 
         {/* 코드블록 */}
         <button
-          onClick={() => (editor as any).chain().focus().toggleCodeBlock().run()}
+          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           className={`p-2 hover:bg-gray-100 rounded transition ${
             editor.isActive('codeBlock') ? 'text-blue-500 bg-blue-50' : 'text-gray-500'
           }`}
@@ -374,7 +375,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
 
         {/* 글머리 기호 */}
         <button
-          onClick={() => (editor as any).chain().focus().toggleBulletList().run()}
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={`p-2 hover:bg-gray-100 rounded transition ${
             editor.isActive('bulletList') ? 'text-blue-500 bg-blue-50' : 'text-gray-500'
           }`}
@@ -385,7 +386,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
 
         {/* 번호 매기기 */}
         <button
-          onClick={() => (editor as any).chain().focus().toggleOrderedList().run()}
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={`p-2 hover:bg-gray-100 rounded transition ${
             editor.isActive('orderedList') ? 'text-blue-500 bg-blue-50' : 'text-gray-500'
           }`}
@@ -398,7 +399,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
 
         {/* 정렬 버튼 그룹 */}
         <button
-          onClick={() => (editor as any).chain().focus().setTextAlign('left').run()}
+          onClick={() => editor.chain().focus().setTextAlign('left').run()}
           className={`p-2 hover:bg-gray-100 rounded ${
             editor.isActive({ textAlign: 'left' }) ? 'text-black' : 'text-gray-400'
           }`}
@@ -406,7 +407,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
           <i className="ri-align-left"></i>
         </button>
         <button
-          onClick={() => (editor as any).chain().focus().setTextAlign('center').run()}
+          onClick={() => editor.chain().focus().setTextAlign('center').run()}
           className={`p-2 hover:bg-gray-100 rounded ${
             editor.isActive({ textAlign: 'center' }) ? 'text-black' : 'text-gray-400'
           }`}
@@ -414,7 +415,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
           <i className="ri-align-center"></i>
         </button>
         <button
-          onClick={() => (editor as any).chain().focus().setTextAlign('right').run()}
+          onClick={() => editor.chain().focus().setTextAlign('right').run()}
           className={`p-2 hover:bg-gray-100 rounded ${
             editor.isActive({ textAlign: 'right' }) ? 'text-black' : 'text-gray-400'
           }`}
@@ -427,7 +428,7 @@ export default function BrunchTipTapEditor({ value, onChange }: BrunchTipTapEdit
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png,image/webp,image/gif"
         multiple
         onChange={handleImageUpload}
         className="hidden"

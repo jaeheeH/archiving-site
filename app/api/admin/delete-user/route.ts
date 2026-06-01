@@ -1,14 +1,23 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { NextResponse } from "next/server";
+import { getErrorMessage } from "@/lib/error-message";
+import { isUuidParam } from "@/lib/route-params";
 
 export async function DELETE(request: Request) {
   try {
-    const { userId } = await request.json();
+    let body: { userId?: unknown };
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON request" }, { status: 400 });
+    }
 
-    if (!userId) {
+    const { userId } = body;
+
+    if (typeof userId !== "string" || !isUuidParam(userId)) {
       return NextResponse.json(
-        { error: "User ID is required" },
+        { error: "Valid user ID is required" },
         { status: 400 }
       );
     }
@@ -34,28 +43,35 @@ export async function DELETE(request: Request) {
       );
     }
 
-    const { data: currentUser } = await adminClient
+    const { data: currentUser, error: currentUserError } = await adminClient
       .from("users")
       .select("role")
       .eq("id", user.id)
-      .single();
+      .maybeSingle();
 
     // admin이나 sub-admin만 삭제 가능
-    if (currentUser?.role !== "admin" && currentUser?.role !== "sub-admin") {
+    if (currentUserError || (currentUser?.role !== "admin" && currentUser?.role !== "sub-admin")) {
       return NextResponse.json(
         { error: "Forbidden" },
         { status: 403 }
       );
     }
 
+    const { data: targetUser, error: targetUserError } = await adminClient
+      .from("users")
+      .select("role")
+      .eq("id", userId)
+      .maybeSingle();
+
+    if (targetUserError || !targetUser) {
+      return NextResponse.json(
+        { error: "Target user not found" },
+        { status: 404 }
+      );
+    }
+
     // sub-admin은 admin 삭제 불가
     if (currentUser?.role === "sub-admin") {
-      const { data: targetUser } = await adminClient
-        .from("users")
-        .select("role")
-        .eq("id", userId)
-        .single();
-
       if (targetUser?.role === "admin") {
         return NextResponse.json(
           { error: "Cannot delete admin user" },
@@ -68,9 +84,8 @@ export async function DELETE(request: Request) {
     const { error: authError } = await adminClient.auth.admin.deleteUser(userId);
 
     if (authError) {
-      console.error("Auth delete error:", authError);
       return NextResponse.json(
-        { error: "Failed to delete user" },
+        { error: getErrorMessage(authError, "Failed to delete user") },
         { status: 500 }
       );
     }
@@ -79,10 +94,9 @@ export async function DELETE(request: Request) {
     await adminClient.from("users").delete().eq("id", userId);
 
     return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("Delete user error:", error);
+  } catch (error: unknown) {
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: getErrorMessage(error) },
       { status: 500 }
     );
   }

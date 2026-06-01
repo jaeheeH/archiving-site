@@ -9,7 +9,7 @@ export default async function ProfilePage() {
   const user = await getMypageProfile();
 
   if (!user) {
-    redirect("/login");
+    redirect("/login?redirect=/mypage/profile");
   }
 
   return <ProfileTab user={user} />;

@@ -4,6 +4,12 @@
  */
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const migrationToken = process.env.MIGRATION_TOKEN;
+
+if (!migrationToken) {
+  console.error('❌ MIGRATION_TOKEN 환경변수가 필요합니다.');
+  process.exit(1);
+}
 
 async function resetAllEmbeddings() {
   console.log('🔄 모든 embedding을 NULL로 초기화 중...');
@@ -16,7 +22,7 @@ async function resetAllEmbeddings() {
   console.log('   UPDATE gallery SET embedding = NULL;');
   console.log('');
 
-  const readline = require('readline').createInterface({
+  const readline = (await import('node:readline')).createInterface({
     input: process.stdin,
     output: process.stdout
   });
@@ -47,7 +53,7 @@ async function processBatch(limit = 5) {
     method: 'POST',
     headers: { 
       'Content-Type': 'application/json',
-      'x-migration-token': process.env.MIGRATION_TOKEN || 'migrate_secret_2024'
+      'x-migration-token': migrationToken
     },
     body: JSON.stringify({ limit })
   });

@@ -1,5 +1,30 @@
 @use "style.scss" as *;
 
+.archive-home {
+  --archive-canvas: #ffffff;
+  --archive-ink: #111111;
+  --archive-muted: #6c6a63;
+  --archive-faint: #9a968e;
+  --archive-line: #e6e2d8;
+  --archive-brand: #ff4800;
+  --archive-bg-light: #ffffff;
+  --archive-bg-regular: #f5f5f5;
+  --archive-surface: #ffffff;
+  background: var(--archive-canvas);
+  color: var(--archive-ink);
+}
+
+.dark .archive-home {
+  --archive-canvas: #101010;
+  --archive-ink: #f4f1ec;
+  --archive-muted: #b8b1a8;
+  --archive-faint: #837b70;
+  --archive-line: #302d28;
+  --archive-bg-light: #151515;
+  --archive-bg-regular: #1d1d1d;
+  --archive-surface: #171717;
+}
+
 .mainHomeBlog > .items{
   display: grid;
   grid-template-columns: repeat(3,1fr);
@@ -41,7 +66,7 @@
 
   > a:nth-child(1n + 2) > article{
 
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--archive-line);
 
     > .thumbnail{
       width: 100%;
@@ -59,13 +84,13 @@
 
   > a:nth-child(3) > article,
   > a:nth-child(2) > article{
-    border-right: 1px solid #ddd;
+    border-right: 1px solid var(--archive-line);
   }
 }
 
 
 .mainPopularBlog{
-  border-left: 1px solid #ddd;
+  border-left: 1px solid var(--archive-line);
   h2{padding: 0 24px;}
   h3{font-size: 14px;}
 

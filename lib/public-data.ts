@@ -2,6 +2,7 @@ import "server-only";
 
 import { unstable_cache } from "next/cache";
 import { createPublicClient } from "@/lib/supabase/public";
+import { normalizeAvatarUrl } from "@/lib/avatar-url";
 
 export const CACHE_TAGS = {
   siteSettings: "site-settings",
@@ -30,7 +31,6 @@ const GALLERY_LIST_COLUMNS = `
   tags,
   category,
   range,
-  author,
   gemini_tags,
   gemini_description
 `;
@@ -47,9 +47,10 @@ const GALLERY_DETAIL_COLUMNS = `
   gemini_description,
   category,
   range,
-  created_at,
-  author
+  created_at
 `;
+
+const DAILY_GALLERY_COLUMNS = "id, title, description, image_url";
 
 const POST_LIST_COLUMNS =
   "id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id";
@@ -58,23 +59,38 @@ const POST_DETAIL_COLUMNS =
   "id, type, title, subtitle, summary, slug, content, tags, is_published, published_at, created_at, updated_at, title_style, title_image_url, thumbnail_url, category_id, view_count, scrap_count, author_id";
 
 const REFERENCE_COLUMNS =
-  "id, title, description, url, image_url, logo_url, category, range, clicks, author, created_at, updated_at";
+  "id, title, description, url, image_url, logo_url, category, range, clicks, created_at, updated_at";
+
+const MAX_SEARCH_LENGTH = 80;
+const MAX_FILTER_TAGS = 10;
+const MAX_FILTER_TAG_LENGTH = 40;
+const MAX_TAG_AGGREGATION_ROWS = 1000;
+const MAX_SIMILAR_CANDIDATE_ROWS = 1000;
 
 function normalizePositiveInt(value: number, fallback: number, max: number) {
   if (!Number.isFinite(value) || value < 1) return fallback;
   return Math.min(Math.floor(value), max);
 }
 
+function normalizeFilterText(value = "", max = MAX_SEARCH_LENGTH) {
+  return value
+    .trim()
+    .slice(0, max)
+    .replace(/[{}()[\]",%:*&|!']/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function parseTags(tagsCsv = "") {
   return tagsCsv
     .split(",")
-    .map((tag) => tag.trim())
-    .filter(Boolean);
+    .map((tag) => normalizeFilterText(tag, MAX_FILTER_TAG_LENGTH))
+    .filter(Boolean)
+    .slice(0, MAX_FILTER_TAGS);
 }
 
 function buildTextSearchQuery(search: string) {
-  return search
-    .trim()
+  return normalizeFilterText(search)
     .split(/\s+/)
     .filter(Boolean)
     .map((word) => `${word}:*`)
@@ -98,14 +114,14 @@ export const getHomeData = unstable_cache(
           .limit(4),
         supabase
           .from("posts")
-          .select("id, title, slug, view_count, published_at, category_id")
+          .select("id, title, slug, published_at, category_id")
           .eq("type", "blog")
           .eq("is_published", true)
           .order("view_count", { ascending: false })
           .limit(5),
         supabase
           .from("references")
-          .select("id, title, description, url, image_url, logo_url, clicks, created_at")
+          .select("id, title, description, url, image_url, logo_url, category, range, clicks")
           .order("created_at", { ascending: false })
           .limit(8),
         supabase
@@ -113,7 +129,7 @@ export const getHomeData = unstable_cache(
           .select("id, title, description, image_url, tags, gemini_tags")
           .order("created_at", { ascending: false })
           .limit(10),
-        supabase.from("categories").select("id, name"),
+        supabase.from("categories").select("id, name").eq("type", "blog"),
       ]);
 
     const categoryMap: Record<string, string> = {};
@@ -142,6 +158,7 @@ export const getGalleryPageData = unstable_cache(
     const page = normalizePositiveInt(pageValue, 1, 10_000);
     const limit = normalizePositiveInt(limitValue, 36, 100);
     const offset = (page - 1) * limit;
+    const safeSearch = normalizeFilterText(search);
     const filterTags = parseTags(tagsCsv);
 
     let query = supabase
@@ -149,8 +166,8 @@ export const getGalleryPageData = unstable_cache(
       .select(GALLERY_LIST_COLUMNS, { count: "planned" })
       .order("created_at", { ascending: false });
 
-    if (search.trim()) {
-      query = query.textSearch("search_vector", buildTextSearchQuery(search));
+    if (safeSearch) {
+      query = query.textSearch("search_vector", buildTextSearchQuery(safeSearch));
     }
 
     for (const tag of filterTags) {
@@ -170,7 +187,7 @@ export const getGalleryPageData = unstable_cache(
         totalPages: Math.max(1, Math.ceil((count || 0) / limit)),
       },
       filters: {
-        search,
+        search: safeSearch,
         tags: filterTags,
       },
     };
@@ -232,20 +249,21 @@ export const getGalleryTopTags = unstable_cache(
     const supabase = createPublicClient();
     const selectedTags = parseTags(selectedTagsCsv);
     const selectedTagsSet = new Set(selectedTags);
+    const safeSearchQuery = normalizeFilterText(searchQuery);
 
-    let query = supabase.from("gallery").select("tags, gemini_tags, gemini_description");
+    let query = supabase.from("gallery").select("tags, gemini_tags");
 
     for (const tag of selectedTags) {
       query = query.or(`tags.cs.{${tag}},gemini_tags.cs.{${tag}}`);
     }
 
-    if (searchQuery.trim()) {
+    if (safeSearchQuery) {
       query = query.or(
-        `gemini_description.ilike.%${searchQuery}%,gemini_tags.cs.{${searchQuery}},tags.cs.{${searchQuery}}`
+        `gemini_description.ilike.%${safeSearchQuery}%,gemini_tags.cs.{${safeSearchQuery}},tags.cs.{${safeSearchQuery}}`
       );
     }
 
-    const { data: galleryItems, error } = await query;
+    const { data: galleryItems, error } = await query.limit(MAX_TAG_AGGREGATION_ROWS);
     if (error) throw error;
     if (!galleryItems?.length) return [];
 
@@ -274,6 +292,27 @@ export const getGalleryTopTags = unstable_cache(
   ["gallery-top-tags"],
   {
     revalidate: CACHE_SECONDS.short,
+    tags: [CACHE_TAGS.gallery],
+  }
+);
+
+export const getDailyGalleryImages = unstable_cache(
+  async (limitValue: number) => {
+    const supabase = createPublicClient();
+    const limit = normalizePositiveInt(limitValue, 36, 100);
+
+    const { data, error } = await supabase
+      .from("gallery")
+      .select(DAILY_GALLERY_COLUMNS)
+      .order("created_at", { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+    return data || [];
+  },
+  ["daily-gallery-images"],
+  {
+    revalidate: CACHE_SECONDS.long,
     tags: [CACHE_TAGS.gallery],
   }
 );
@@ -341,7 +380,9 @@ export const getSimilarGallery = unstable_cache(
       .from("gallery")
       .select("id, title, image_url, image_width, image_height, description, embedding")
       .neq("id", galleryId)
-      .not("embedding", "is", null);
+      .not("embedding", "is", null)
+      .order("created_at", { ascending: false })
+      .limit(MAX_SIMILAR_CANDIDATE_ROWS);
 
     if (allError) throw allError;
 
@@ -457,7 +498,42 @@ export const getBlogPostData = unstable_cache(
       .single();
 
     if (post) {
-      return { post, redirectSlug: null };
+      const [categoryRes, authorRes] = await Promise.all([
+        post.category_id
+          ? supabase
+              .from("categories")
+              .select("id, name")
+              .eq("id", post.category_id)
+              .maybeSingle()
+          : Promise.resolve({ data: null, error: null }),
+        post.author_id
+          ? supabase
+              .from("users")
+              .select("id, nickname, name, avatar_url")
+              .eq("id", post.author_id)
+              .maybeSingle()
+          : Promise.resolve({ data: null, error: null }),
+      ]);
+
+      if (categoryRes.error) {
+        console.error("Failed to load blog category:", categoryRes.error.message);
+      }
+
+      if (authorRes.error) {
+        console.error("Failed to load blog author:", authorRes.error.message);
+      }
+
+      return {
+        post,
+        redirectSlug: null,
+        category: categoryRes.data || null,
+        authorProfile: authorRes.data
+          ? {
+              ...authorRes.data,
+              avatar_url: normalizeAvatarUrl(authorRes.data.avatar_url),
+            }
+          : null,
+      };
     }
 
     const { data: history } = await supabase
@@ -490,7 +566,7 @@ export const getReferencesPageData = unstable_cache(
         .order("created_at", { ascending: true }),
       supabase
         .from("references")
-        .select("id, title, description, url, image_url, logo_url, range, clicks, created_at")
+        .select("id, title, description, url, image_url, logo_url, category, range, clicks, created_at")
         .order("created_at", { ascending: false })
         .limit(100),
     ]);
@@ -498,12 +574,29 @@ export const getReferencesPageData = unstable_cache(
     if (categoriesRes.error) throw categoriesRes.error;
     if (referencesRes.error) throw referencesRes.error;
 
+    const categories = new Set<string>();
+
+    (categoriesRes.data || []).forEach((category: { name: string | null }) => {
+      const name = category.name?.trim();
+      if (name) categories.add(name);
+    });
+
+    (referencesRes.data || []).forEach((reference: { category?: string | null; range?: string[] | null }) => {
+      const category = reference.category?.trim();
+      if (category) categories.add(category);
+
+      reference.range?.forEach((range) => {
+        const name = range.trim();
+        if (name) categories.add(name);
+      });
+    });
+
     return {
-      categories: (categoriesRes.data || []).map((category: { name: string }) => category.name),
+      categories: Array.from(categories),
       references: referencesRes.data || [],
     };
   },
-  ["references-page-data"],
+  ["references-page-data-v3"],
   {
     revalidate: CACHE_SECONDS.long,
     tags: [CACHE_TAGS.references],
@@ -523,17 +616,19 @@ export const getReferencesListData = unstable_cache(
     const page = normalizePositiveInt(pageValue, 1, 10_000);
     const limit = normalizePositiveInt(limitValue, 10, 100);
     const offset = (page - 1) * limit;
+    const safeCategory = normalizeFilterText(category, MAX_FILTER_TAG_LENGTH);
+    const safeSearch = normalizeFilterText(search);
 
     let query = supabase
       .from("references")
       .select(REFERENCE_COLUMNS, { count: "planned" });
 
-    if (category) {
-      query = query.filter("range", "cs", `{"${category}"}`);
+    if (safeCategory) {
+      query = query.or(`category.eq.${safeCategory},range.cs.{"${safeCategory}"}`);
     }
 
-    if (search) {
-      query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+    if (safeSearch) {
+      query = query.or(`title.ilike.%${safeSearch}%,description.ilike.%${safeSearch}%`);
     }
 
     const validSortFields = ["created_at", "clicks", "title"];

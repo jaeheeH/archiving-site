@@ -1,17 +1,41 @@
 // app/api/revalidate/route.ts
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
+import { CACHE_TAGS } from '@/lib/public-data';
+import { getErrorMessage } from '@/lib/error-message';
+import { checkPostEditPermission } from '@/lib/supabase/post-utils';
+
+const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+async function parseJsonObject(request: NextRequest) {
+  try {
+    const body = await request.json();
+    return body && typeof body === 'object' && !Array.isArray(body)
+      ? (body as Record<string, unknown>)
+      : null;
+  } catch {
+    return null;
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
+    const permCheck = await checkPostEditPermission();
+    if (!permCheck.authorized) return permCheck.error;
+
     // 요청 본문에서 slug 추출
-    const { slug } = await request.json();
+    const body = await parseJsonObject(request);
+    if (!body) {
+      return NextResponse.json({ error: '잘못된 JSON 요청입니다.' }, { status: 400 });
+    }
+
+    const { slug } = body;
 
     // slug 검증
-    if (!slug || typeof slug !== 'string') {
+    if (!slug || typeof slug !== 'string' || !SLUG_PATTERN.test(slug)) {
       return NextResponse.json(
-        { error: 'slug이 필요합니다' },
+        { error: '유효한 slug가 필요합니다' },
         { status: 400 }
       );
     }
@@ -21,8 +45,8 @@ export async function POST(request: NextRequest) {
     
     // 선택사항: 블로그 목록 페이지도 재검증
     revalidatePath('/blog');
-
-    console.log(`✅ 재검증 완료: /blog/${slug}`);
+    revalidateTag(CACHE_TAGS.posts, 'max');
+    revalidateTag(CACHE_TAGS.home, 'max');
 
     return NextResponse.json(
       {
@@ -33,13 +57,13 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
+    const message = getErrorMessage(error, '재검증 중 오류가 발생했습니다');
     console.error('❌ 재검증 실패:', error);
     
     return NextResponse.json(
       {
         success: false,
-        error: '재검증 중 오류가 발생했습니다',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        error: message,
       },
       { status: 500 }
     );

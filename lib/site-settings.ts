@@ -1,9 +1,9 @@
 import { unstable_cache } from "next/cache";
 import { CACHE_SECONDS, CACHE_TAGS } from "@/lib/public-data";
+import { getSiteUrl } from "@/lib/site-url";
 import { createPublicClient } from "@/lib/supabase/public";
 
 export type SiteSettings = {
-  id: string;
   site_name: string;
   site_description: string | null;
   site_keywords: string[] | null;
@@ -23,7 +23,6 @@ export type SiteSettings = {
   robots_allow: boolean;
   google_verification: string | null;
   naver_verification: string | null;
-  sitemap_revalidate: number;
   schema_type: string;
   organization_name: string | null;
   logo_url: string | null;
@@ -31,11 +30,36 @@ export type SiteSettings = {
   gtm_id: string | null;
   custom_scripts: string | null;
   theme_color: string;
-  canonical_enabled: boolean;
-  created_at: string;
-  updated_at: string;
-  updated_by: string | null;
 };
+
+const PUBLIC_SITE_SETTINGS_COLUMNS = `
+  site_name,
+  site_description,
+  site_keywords,
+  site_language,
+  og_title,
+  og_description,
+  og_image,
+  og_type,
+  twitter_card_type,
+  twitter_title,
+  twitter_description,
+  twitter_image,
+  favicon_url,
+  apple_touch_icon_url,
+  android_icon_192_url,
+  android_icon_512_url,
+  robots_allow,
+  google_verification,
+  naver_verification,
+  schema_type,
+  organization_name,
+  logo_url,
+  ga4_id,
+  gtm_id,
+  custom_scripts,
+  theme_color
+`;
 
 const getCachedSiteSettings = unstable_cache(
   async (): Promise<SiteSettings | null> => {
@@ -43,7 +67,7 @@ const getCachedSiteSettings = unstable_cache(
 
     const { data, error } = await supabase
       .from("site_settings")
-      .select("*")
+      .select(PUBLIC_SITE_SETTINGS_COLUMNS)
       .single();
 
     if (error) {
@@ -55,7 +79,7 @@ const getCachedSiteSettings = unstable_cache(
 
     return data as SiteSettings;
   },
-  ["site-settings"],
+  ["site-settings-v2"],
   {
     revalidate: CACHE_SECONDS.medium,
     tags: [CACHE_TAGS.siteSettings],
@@ -82,7 +106,7 @@ export function getDefaultMetadata(settings: SiteSettings | null) {
   const siteDescription =
     settings?.site_description ||
     "다양한 디자인과 아이디어를 한곳에 모았습니다.";
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.archbehind.com";
+  const siteUrl = getSiteUrl();
 
   // verification.other 객체 생성 (undefined 제거)
   const verificationOther: { [key: string]: string } = {};

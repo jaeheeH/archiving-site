@@ -1,11 +1,12 @@
 import { MetadataRoute } from "next";
 import { getSiteSettings } from "@/lib/site-settings";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const revalidate = 3600;
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const settings = await getSiteSettings();
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://from-archiving.vercel.app";
+  const baseUrl = getSiteUrl();
 
   // robots_allow가 false면 모든 크롤링 차단
   if (settings && !settings.robots_allow) {

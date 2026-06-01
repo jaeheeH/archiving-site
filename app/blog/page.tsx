@@ -1,6 +1,6 @@
 import '@/app/css/blog/list.scss';
 import BlogClient from './BlogClient';
-import { getBlogCategories, getPostsPageData } from '@/lib/public-data';
+import { getBlogCategories, getDailyGalleryImages, getPostsPageData } from '@/lib/public-data';
 import { Suspense } from 'react';
 
 
@@ -17,10 +17,11 @@ export async function generateMetadata() {
 }
 
 export default async function BlogListPage() {
-  const [{ data: posts, pagination: initialPagination }, categories] =
+  const [{ data: posts, pagination: initialPagination }, categories, galleryImages] =
     await Promise.all([
       getPostsPageData('blog', 12, 0, 'all'),
       getBlogCategories(),
+      getDailyGalleryImages(36),
     ]);
 
   return (
@@ -29,6 +30,7 @@ export default async function BlogListPage() {
         initialPosts={posts} 
         categories={categories} 
         initialPagination={initialPagination}
+        dailyImages={galleryImages}
       />
     </Suspense>
   );

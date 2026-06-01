@@ -25,7 +25,7 @@ export default async function ContentsDashboardPage() {
   const overview = await getDashboardOverview();
 
   if (!overview) {
-    redirect("/login");
+    redirect("/login?redirect=/dashboard/contents");
   }
 
   const sections = [

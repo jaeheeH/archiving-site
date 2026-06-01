@@ -1,24 +1,45 @@
 // app/api/posts/route.ts
 
-import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
 import { revalidateTag } from 'next/cache';
 import {
   CACHE_TAGS,
   PUBLIC_API_CACHE_CONTROL,
   getPostsPageData,
 } from '@/lib/public-data';
+import { checkPostEditPermission } from '@/lib/supabase/post-utils';
+import { createAdminClient } from '@/lib/supabase/admin';
+
+type TipTapDocument = {
+  content?: unknown;
+};
+
+const WRITE_POST_COLUMNS =
+  'id, type, title, subtitle, summary, slug, content, tags, is_published, published_at, created_at, updated_at, title_style, title_image_url, thumbnail_url, category_id, view_count, scrap_count, author_id';
+
+function hasTipTapContent(value: unknown): value is TipTapDocument {
+  return typeof value === "object" && value !== null && "content" in value;
+}
+
+async function parseJsonObject(request: Request) {
+  try {
+    const parsed = await request.json();
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+      ? (parsed as Record<string, unknown>)
+      : null;
+  } catch {
+    return null;
+  }
+}
 
 // temp 이미지를 정식 폴더로 이동하는 헬퍼 함수
 async function moveImagesToPostFolder(
-  supabase: any,
-  content: any,
+  supabase: ReturnType<typeof createAdminClient>,
+  content: unknown,
   userId: string,
   postType: string,
   postId: string
-): Promise<any> {
-  if (!content || !content.content) return content;
+): Promise<unknown> {
+  if (!hasTipTapContent(content) || !content.content) return content;
 
   const storageUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!.replace('/v1', '');
   const tempPrefix = `${storageUrl}/storage/v1/object/public/posts/temp/${userId}/`;
@@ -49,7 +70,7 @@ async function moveImagesToPostFolder(
       if (fileData) {
         await supabase.storage
           .from('posts')
-          .upload(newPath, fileData, { upsert: true });
+          .upload(newPath, fileData, { cacheControl: '31536000', upsert: true });
 
         // URL 교체
         const oldUrl = `${tempPrefix}${fileName}`;
@@ -71,7 +92,7 @@ async function moveImagesToPostFolder(
 }
 
 async function moveTempPostAssetToPostFolder(
-  supabase: any,
+  supabase: ReturnType<typeof createAdminClient>,
   assetUrl: string | null | undefined,
   userId: string,
   postType: string,
@@ -102,7 +123,7 @@ async function moveTempPostAssetToPostFolder(
 
     await supabase.storage
       .from('posts')
-      .upload(newPath, fileData, { upsert: true });
+      .upload(newPath, fileData, { cacheControl: '31536000', upsert: true });
 
     await supabase.storage.from('posts').remove([oldPath]);
 
@@ -145,51 +166,40 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const cookieStore = await cookies();
-
-    // 세션 확인용 클라이언트
-    const supabaseAuth = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll();
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              );
-            } catch {}
-          },
-        },
-      }
-    );
+    const permCheck = await checkPostEditPermission();
+    if (!permCheck.authorized) return permCheck.error;
 
     // DB 작업용 Service Role 클라이언트
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = createAdminClient();
 
     // 1. 요청 데이터 받기
-    const body = await request.json();
-    const {
-      type = 'blog',
-      title,
-      subtitle,
-      summary,
-      slug,
-      content,
-      category_id,
-      tags = [],
-      title_style = 'text',
-      title_image_url,
-      author_id,
-      is_published = false,
-      published_at,
-    } = body;
+    const body = await parseJsonObject(request);
+    if (!body) {
+      return Response.json({ error: '잘못된 JSON 요청입니다' }, { status: 400 });
+    }
+
+    const rawType = typeof body.type === 'string' && body.type.trim() ? body.type.trim() : 'blog';
+    if (!/^[a-z0-9_-]{1,40}$/.test(rawType)) {
+      return Response.json({ error: '유효하지 않은 포스트 타입입니다' }, { status: 400 });
+    }
+
+    const type = rawType;
+    const title = typeof body.title === 'string' ? body.title.trim() : '';
+    const subtitle = typeof body.subtitle === 'string' ? body.subtitle.trim() : null;
+    const summary = typeof body.summary === 'string' ? body.summary.trim() : null;
+    const slug = typeof body.slug === 'string' ? body.slug.trim() : '';
+    const content = body.content;
+    const categoryId = typeof body.category_id === 'string' && body.category_id.trim() ? body.category_id.trim() : null;
+    const tags = Array.isArray(body.tags)
+      ? body.tags.filter((tag): tag is string => typeof tag === 'string').map((tag) => tag.trim()).filter(Boolean)
+      : [];
+    const titleStyle = typeof body.title_style === 'string' && body.title_style.trim() ? body.title_style.trim() : 'text';
+    const titleImageUrl = typeof body.title_image_url === 'string' && body.title_image_url.trim()
+      ? body.title_image_url.trim()
+      : null;
+    const publishedAt = typeof body.published_at === 'string' && body.published_at.trim()
+      ? body.published_at.trim()
+      : null;
 
     // 2. 필수 데이터 확인
     if (!title || !slug || !content) {
@@ -210,29 +220,11 @@ export async function POST(request: Request) {
       );
     }
 
-    // 3.5. author_id가 없으면 로그인한 사용자 조회
-    let finalAuthorId = author_id;
-    if (!finalAuthorId) {
-      // 세션에서 사용자 정보 가져오기
-      const { data: { user }, error: userError } = await supabaseAuth.auth.getUser();
-      console.log('User from session:', user?.id, 'Error:', userError);
+    const finalAuthorId = permCheck.userId;
 
-      if (user) {
-        finalAuthorId = user.id;
-      }
-
-      // 로그인되지 않았으면 401 반환
-      if (!finalAuthorId) {
-        return Response.json(
-          { error: '로그인이 필요합니다', requiresAuth: true },
-          { status: 401 }
-        );
-      }
-    }
-
-    const shouldPublish = Boolean(is_published);
+    const shouldPublish = body.is_published === true;
     const finalPublishedAt = shouldPublish
-      ? published_at || new Date().toISOString()
+      ? publishedAt || new Date().toISOString()
       : null;
 
     // 4. DB에 저장 (먼저 포스트 생성해서 ID 얻기)
@@ -241,19 +233,19 @@ export async function POST(request: Request) {
       .insert({
         type,
         title,
-        subtitle: subtitle || null,
-        summary: summary || null,
+        subtitle,
+        summary,
         slug,
         content,
-        category_id: category_id || null,
+        category_id: categoryId,
         tags,
-        title_style,
-        title_image_url: title_image_url || null,
+        title_style: titleStyle,
+        title_image_url: titleImageUrl,
         author_id: finalAuthorId,
         is_published: shouldPublish,
         published_at: finalPublishedAt,
       })
-      .select()
+      .select(WRITE_POST_COLUMNS)
       .single();
 
     // 5. 에러 처리
@@ -280,7 +272,7 @@ export async function POST(request: Request) {
 
     const updatedTitleImageUrl = await moveTempPostAssetToPostFolder(
       supabase,
-      title_image_url || null,
+      titleImageUrl,
       finalAuthorId,
       type,
       postId
@@ -290,7 +282,7 @@ export async function POST(request: Request) {
     if (updatedContent !== content) {
       postUpdates.content = updatedContent;
     }
-    if (updatedTitleImageUrl !== (title_image_url || null)) {
+    if (updatedTitleImageUrl !== titleImageUrl) {
       postUpdates.title_image_url = updatedTitleImageUrl;
     }
 

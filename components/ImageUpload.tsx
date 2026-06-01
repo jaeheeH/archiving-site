@@ -65,9 +65,10 @@ export default function ImageUpload({
       const result = await res.json();
       onUploadComplete(result.data.url);
       addToast("이미지 업로드 완료", "success");
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "이미지 업로드 실패";
       console.error("❌ 업로드 에러:", error);
-      addToast(error.message || "이미지 업로드 실패", "error");
+      addToast(message, "error");
       setPreview(currentUrl || null);
     } finally {
       setUploading(false);

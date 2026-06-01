@@ -32,10 +32,11 @@ export default function BannersPage() {
 
   // 배너 목록 로드
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchBanners();
   }, []);
 
-  const fetchBanners = async () => {
+  async function fetchBanners() {
     try {
       const res = await fetch('/api/settings/banners', { cache: 'no-store' });
       const result = await res.json();
@@ -48,7 +49,7 @@ export default function BannersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -244,7 +245,7 @@ export default function BannersPage() {
               <input
                 ref={imageInputRef}
                 type="file"
-                accept="image/*"
+                accept="image/jpeg,image/png,image/webp,image/gif"
                 onChange={handleImageChange}
                 className="hidden"
               />

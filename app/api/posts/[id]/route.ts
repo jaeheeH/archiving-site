@@ -1,14 +1,24 @@
 // app/api/posts/[id]/route.ts
 
-import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
-import { revalidateTag } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 import { CACHE_TAGS } from '@/lib/public-data';
+import { getErrorMessage } from '@/lib/error-message';
+import { isSlugParam, normalizePostTypeParam } from '@/lib/route-params';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { checkPostOwnershipOrAdmin } from '@/lib/supabase/post-utils';
 
 interface Props {
   params: Promise<{ id: string }>;
+}
+
+const EDIT_POST_COLUMNS =
+  'id, type, title, subtitle, summary, slug, content, tags, is_published, published_at, created_at, updated_at, title_style, title_image_url, thumbnail_url, category_id, view_count, scrap_count, author_id';
+
+function revalidateBlogPostPaths(post: { type?: string | null; slug?: string | null }) {
+  if (post.type !== 'blog') return;
+  revalidatePath('/blog');
+  if (post.slug) revalidatePath(`/blog/${post.slug}`);
 }
 
 /**
@@ -21,30 +31,37 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
+    const permCheck = await checkPostOwnershipOrAdmin(id);
+    if (!permCheck.authorized) return permCheck.error;
 
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = createAdminClient();
 
     const { data, error } = await supabase
       .from('posts')
-      .select('*')
+      .select(EDIT_POST_COLUMNS)
       .eq('id', id)
       .single();
 
-    if (error) {
+    if (error || !data) {
       return NextResponse.json(
         { error: '포스트를 찾을 수 없습니다' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({ data }, { status: 200 });
-  } catch (err) {
+    return NextResponse.json(
+      { data },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'private, no-store',
+        },
+      }
+    );
+  } catch (err: unknown) {
     console.error('API 에러:', err);
     return NextResponse.json(
-      { error: '서버 오류' },
+      { error: getErrorMessage(err, '서버 오류') },
       { status: 500 }
     );
   }
@@ -60,36 +77,20 @@ export async function PUT(
 ) {
   try {
     const { id } = await params;
-    const cookieStore = await cookies();
-
-    // 세션 확인용 클라이언트
-    const supabaseAuth = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll();
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              );
-            } catch {}
-          },
-        },
-      }
-    );
+    const permCheck = await checkPostOwnershipOrAdmin(id);
+    if (!permCheck.authorized) return permCheck.error;
 
     // DB 작업용 Service Role 클라이언트
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = createAdminClient();
 
     // 1. 요청 데이터 받기
-    const body = await request.json();
+    let body: Record<string, unknown>;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: '잘못된 JSON 요청입니다' }, { status: 400 });
+    }
+
     const {
       type,
       title,
@@ -98,7 +99,7 @@ export async function PUT(
       slug,
       content,
       category_id,
-      tags = [],
+      tags,
       title_style,
       title_image_url,
       is_published,
@@ -108,7 +109,7 @@ export async function PUT(
     // 2. 기존 포스트 조회 (현재 slug 확인)
     const { data: existingPost, error: getError } = await supabase
       .from('posts')
-      .select('id, slug')
+      .select('id, slug, type')
       .eq('id', id)
       .single();
 
@@ -120,25 +121,28 @@ export async function PUT(
     }
 
     const oldSlug = existingPost.slug;
-    const newSlug = slug;
-    const slugChanged = oldSlug !== newSlug;
+    const newSlug = typeof slug === 'string' ? slug.trim() : slug;
+    const slugProvided = slug !== undefined;
+    const slugChanged = typeof newSlug === 'string' && oldSlug !== newSlug;
 
     // 3. slug가 변경된 경우, 유효성 검사
-    if (slugChanged) {
-      if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(newSlug)) {
+    if (slugProvided) {
+      if (typeof newSlug !== 'string' || !isSlugParam(newSlug)) {
         return NextResponse.json(
           { error: 'slug는 소문자, 숫자, 하이픈만 사용 가능' },
           { status: 400 }
         );
       }
+    }
 
+    if (slugChanged) {
       // 다른 포스트에서 이미 사용 중인 slug인지 확인
       const { data: conflictPost } = await supabase
         .from('posts')
         .select('id')
         .eq('slug', newSlug)
         .neq('id', id)
-        .single();
+        .maybeSingle();
 
       if (conflictPost) {
         return NextResponse.json(
@@ -149,18 +153,34 @@ export async function PUT(
     }
 
     // 4. 포스트 업데이트
-    const updateData: any = {};
-    if (type !== undefined) updateData.type = type;
+    const updateData: Record<string, unknown> = {};
+    if (type !== undefined) {
+      const postType = typeof type === 'string' ? normalizePostTypeParam(type, '') : null;
+      if (!postType) {
+        return NextResponse.json({ error: '유효하지 않은 포스트 타입입니다' }, { status: 400 });
+      }
+      updateData.type = postType;
+    }
     if (title !== undefined) updateData.title = title;
     if (subtitle !== undefined) updateData.subtitle = subtitle || null;
     if (summary !== undefined) updateData.summary = summary || null;
-    if (slug !== undefined) updateData.slug = slug;
+    if (slugProvided) updateData.slug = newSlug;
     if (content !== undefined) updateData.content = content;
     if (category_id !== undefined) updateData.category_id = category_id || null;
-    if (tags !== undefined) updateData.tags = tags;
+    if (tags !== undefined) {
+      if (!Array.isArray(tags)) {
+        return NextResponse.json({ error: 'tags 값은 배열이어야 합니다' }, { status: 400 });
+      }
+      updateData.tags = tags;
+    }
     if (title_style !== undefined) updateData.title_style = title_style;
     if (title_image_url !== undefined) updateData.title_image_url = title_image_url || null;
-    if (is_published !== undefined) updateData.is_published = is_published;
+    if (is_published !== undefined) {
+      if (typeof is_published !== 'boolean') {
+        return NextResponse.json({ error: 'is_published 값은 boolean이어야 합니다' }, { status: 400 });
+      }
+      updateData.is_published = is_published;
+    }
     if (published_at !== undefined) updateData.published_at = published_at || null;
     updateData.updated_at = new Date().toISOString();
 
@@ -168,7 +188,7 @@ export async function PUT(
       .from('posts')
       .update(updateData)
       .eq('id', id)
-      .select()
+      .select(EDIT_POST_COLUMNS)
       .single();
 
     if (updateError) {
@@ -196,6 +216,8 @@ export async function PUT(
 
     revalidateTag(CACHE_TAGS.posts, "max");
     revalidateTag(CACHE_TAGS.home, "max");
+    revalidateBlogPostPaths(existingPost);
+    revalidateBlogPostPaths(updatedPost);
 
     // 6. 성공 응답
     return NextResponse.json(
@@ -225,11 +247,16 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
+    const permCheck = await checkPostOwnershipOrAdmin(id);
+    if (!permCheck.authorized) return permCheck.error;
 
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = createAdminClient();
+
+    const { data: existingPost } = await supabase
+      .from('posts')
+      .select('slug, type')
+      .eq('id', id)
+      .single();
 
     // 포스트 삭제 (cascade로 인해 post_slug_history도 함께 삭제됨)
     const { error } = await supabase
@@ -246,6 +273,7 @@ export async function DELETE(
 
     revalidateTag(CACHE_TAGS.posts, "max");
     revalidateTag(CACHE_TAGS.home, "max");
+    if (existingPost) revalidateBlogPostPaths(existingPost);
 
     return NextResponse.json(
       { message: '포스트가 삭제되었습니다' },

@@ -1,6 +1,33 @@
 // app/api/brands/route.ts
+import { randomUUID } from 'crypto';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { getErrorMessage } from '@/lib/error-message';
+import { isSafeIdentifierParam } from '@/lib/route-params';
+
+const MAX_BRAND_NAME_LENGTH = 80;
+
+function normalizeBrandName(value: unknown) {
+  if (typeof value !== 'string') return '';
+  return value.trim().slice(0, MAX_BRAND_NAME_LENGTH);
+}
+
+function requireBrandId(value: unknown) {
+  if (typeof value !== 'string') return '';
+  const trimmed = value.trim();
+  return isSafeIdentifierParam(trimmed) ? trimmed : '';
+}
+
+async function parseJsonObject(request: Request) {
+  try {
+    const body = await request.json();
+    return body && typeof body === 'object' && !Array.isArray(body)
+      ? (body as Record<string, unknown>)
+      : null;
+  } catch {
+    return null;
+  }
+}
 
 // 1. 브랜드 목록 가져오기 (기존과 동일)
 export async function GET() {
@@ -20,7 +47,9 @@ export async function GET() {
         trained_models (status, created_at)
       `)
       .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .order('created_at', { ascending: false, referencedTable: 'trained_models' })
+      .limit(1, { referencedTable: 'trained_models' });
 
     if (error) throw error;
     return NextResponse.json(data, {
@@ -28,8 +57,8 @@ export async function GET() {
         'Cache-Control': 'private, no-store',
       },
     });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
   }
 }
 
@@ -37,33 +66,40 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     // 이제 trigger_word는 받지 않습니다.
-    const { name } = await request.json(); 
+    const body = await parseJsonObject(request);
+    if (!body) return NextResponse.json({ error: '잘못된 JSON 요청입니다.' }, { status: 400 });
+
+    const brandName = normalizeBrandName(body.name);
     const supabase = await createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
+    if (!brandName) {
+      return NextResponse.json({ error: '브랜드 이름이 필요합니다.' }, { status: 400 });
+    }
+
     // [핵심] 시스템이 트리거 단어 자동 생성
     // 규칙: "OHJI_" + "랜덤6자리" (예: OHJI_X9Z1A2)
     // 이렇게 하면 전 세계에서 절대 겹칠 일이 없고, AI에게도 매우 유니크한 단어로 인식됩니다.
-    const randomSuffix = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const randomSuffix = randomUUID().replace(/-/g, '').slice(0, 6).toUpperCase();
     const autoTriggerWord = `OHJI_${randomSuffix}`;
 
     const { data, error } = await supabase
       .from('brands')
       .insert({
-        name,
+        name: brandName,
         trigger_word: autoTriggerWord, // 자동 생성된 값 주입
         user_id: user.id
       })
-      .select()
+      .select('id, name, trigger_word, created_at')
       .single();
 
     if (error) throw error;
 
     return NextResponse.json(data);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
   }
 }
 
@@ -71,43 +107,65 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     // 트리거 단어는 아예 받지도, 수정하지도 않습니다. 오직 이름만!
-    const { id, name } = await request.json();
+    const body = await parseJsonObject(request);
+    if (!body) return NextResponse.json({ error: '잘못된 JSON 요청입니다.' }, { status: 400 });
+
+    const brandId = requireBrandId(body.id);
+    const brandName = normalizeBrandName(body.name);
     const supabase = await createClient();
     
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { error } = await supabase
+    if (!brandId || !brandName) {
+      return NextResponse.json({ error: '브랜드 ID와 이름이 필요합니다.' }, { status: 400 });
+    }
+
+    const { data, error } = await supabase
       .from('brands')
-      .update({ name }) // 이름만 수정 가능
-      .eq('id', id)
-      .eq('user_id', user.id);
+      .update({ name: brandName }) // 이름만 수정 가능
+      .eq('id', brandId)
+      .eq('user_id', user.id)
+      .select('id')
+      .maybeSingle();
 
     if (error) throw error;
+    if (!data) return NextResponse.json({ error: '브랜드를 찾을 수 없습니다.' }, { status: 404 });
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
   }
 }
 
 // 4. 삭제 (DELETE) - 기존과 동일
 export async function DELETE(request: Request) {
   try {
-    const { id } = await request.json();
+    const body = await parseJsonObject(request);
+    if (!body) return NextResponse.json({ error: '잘못된 JSON 요청입니다.' }, { status: 400 });
+
+    const brandId = requireBrandId(body.id);
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { error } = await supabase
+    if (!brandId) {
+      return NextResponse.json({ error: '브랜드 ID가 필요합니다.' }, { status: 400 });
+    }
+
+    const { data, error } = await supabase
       .from('brands')
       .delete()
-      .eq('id', id)
-      .eq('user_id', user.id);
+      .eq('id', brandId)
+      .eq('user_id', user.id)
+      .select('id')
+      .maybeSingle();
 
     if (error) throw error;
+    if (!data) return NextResponse.json({ error: '브랜드를 찾을 수 없습니다.' }, { status: 404 });
+
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
   }
 }

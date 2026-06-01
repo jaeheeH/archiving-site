@@ -28,8 +28,9 @@ type GalleryDetail = {
   author?: string;
 };
 
-const GALLERY_DETAIL_COLUMNS =
-  "id, title, description, image_url, image_width, image_height, tags, gemini_tags, gemini_description, category, created_at, author";
+type GalleryDetailResponse = {
+  data: GalleryDetail;
+};
 
 export default function ClientGalleryDetailModal({
   id,
@@ -48,33 +49,14 @@ export default function ClientGalleryDetailModal({
   const supabase = useMemo(() => createClient(), []);
   const { addToast } = useToast();
 
-  useEffect(() => {
-    if (id) {
-      fetchGalleryDetail();
-      checkScrapStatus();
-    }
-  }, [id]);
-
-  // 모달 열릴 때 백그라운드 스크롤 방지
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, []);
-
   // 1. 갤러리 데이터 조회
   const fetchGalleryDetail = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('gallery')
-        .select(GALLERY_DETAIL_COLUMNS)
-        .eq('id', id)
-        .single();
-
-      if (error) throw error;
-      setGallery(data);
+      const response = await fetch(`/api/gallery/${id}`);
+      if (!response.ok) throw new Error("Gallery detail fetch failed");
+      const result = (await response.json()) as GalleryDetailResponse;
+      setGallery(result.data);
     } catch (error) {
       console.error('❌ 갤러리 상세 조회 에러:', error);
     } finally {
@@ -97,6 +79,23 @@ export default function ClientGalleryDetailModal({
 
     setIsScraped(!!data);
   };
+
+  useEffect(() => {
+    if (id) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      fetchGalleryDetail();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      checkScrapStatus();
+    }
+  }, [id]);
+
+  // 모달 열릴 때 백그라운드 스크롤 방지
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
 
   // 3. 스크랩 토글
   const handleScrapToggle = async () => {
@@ -151,9 +150,7 @@ export default function ClientGalleryDetailModal({
           text: "Check out this inspiration!",
           url: url,
         });
-      } catch (err) {
-        console.log("Share canceled", err);
-      }
+      } catch {}
     } else {
       // PC 등 Web Share API 미지원 시 클립보드 복사
       try {
@@ -261,8 +258,8 @@ export default function ClientGalleryDetailModal({
                 disabled={scrapLoading}
                 className={`p-2 rounded-full transition-all ${
                   isScraped 
-                    ? "text-blue-600 bg-blue-50 hover:bg-blue-100" 
-                    : "text-gray-500 hover:text-black hover:bg-gray-100"
+                    ? "bg-[#ff4800]/10 text-[#ff4800] hover:bg-[#ff4800]/15" 
+                    : "text-gray-500 hover:bg-[#ff4800]/10 hover:text-[#ff4800]"
                 }`}
                 title={isScraped ? "스크랩 취소" : "스크랩"}
               >
@@ -271,7 +268,7 @@ export default function ClientGalleryDetailModal({
               {/* 공유 버튼 */}
               <button
                 onClick={handleShare}
-                className="p-2 text-gray-500 hover:text-black hover:bg-gray-100 rounded-full transition-colors"
+                className="rounded-full p-2 text-gray-500 transition-colors hover:bg-[#ff4800]/10 hover:text-[#ff4800]"
                 title="공유하기"
               >
                 <i className="ri-share-line text-xl"></i>
@@ -280,7 +277,7 @@ export default function ClientGalleryDetailModal({
               {/* 다운로드 버튼 */}
               <button
                 onClick={handleDownload}
-                className="p-2 text-gray-500 hover:text-black hover:bg-gray-100 rounded-full transition-colors"
+                className="rounded-full p-2 text-gray-500 transition-colors hover:bg-[#ff4800]/10 hover:text-[#ff4800]"
                 title="이미지 다운로드"
               >
                 <i className="ri-download-line text-xl"></i>
@@ -325,7 +322,7 @@ export default function ClientGalleryDetailModal({
                       className={`flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-md transition-all ${
                         isCopied 
                           ? 'bg-green-50 text-green-600' 
-                          : 'text-gray-500 hover:text-black hover:bg-gray-100'
+                          : 'text-gray-500 hover:bg-[#ff4800]/10 hover:text-[#ff4800]'
                       }`}
                     >
                       {isCopied ? (
@@ -350,7 +347,7 @@ export default function ClientGalleryDetailModal({
                         key={`${tag}-${idx}`}
                         href={`/gallery?tags=${encodeURIComponent(tag)}`}
                         onClick={onClose}
-                        className="px-3 py-1.5 bg-white border border-gray-300 text-gray-500 rounded-sm text-xs font-medium hover:border-black hover:text-black transition-all"
+                        className="border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-500 transition-all hover:border-[#ff4800] hover:text-[#ff4800]"
                       >
                         #{tag}
                       </Link>
@@ -364,7 +361,7 @@ export default function ClientGalleryDetailModal({
             <div className="p-6 border-t border-gray-100 bg-white z-10 shrink-0">
               <button
                 onClick={() => setShowSimilarModal(true)}
-                className="w-full bg-black text-white rounded-xl py-3.5 font-medium hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-gray-200"
+                className="flex w-full items-center justify-center gap-2 bg-black py-3.5 font-medium text-white shadow-lg shadow-gray-200 transition-colors hover:bg-[#ff4800]"
               >
                 <i className="ri-image-line"></i>
                 <span>View Similar Styles</span>

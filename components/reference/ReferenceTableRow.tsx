@@ -8,6 +8,8 @@ interface ReferenceTableRowProps {
   description: string | null;
   url: string;
   image_url: string;
+  category: string | null;
+  range: string[] | null;
   clicks: number;
   created_at: string;
   isSelected: boolean;
@@ -22,6 +24,8 @@ export default function ReferenceTableRow({
   description,
   url,
   image_url,
+  category,
+  range,
   clicks,
   created_at,
   isSelected,
@@ -29,31 +33,7 @@ export default function ReferenceTableRow({
   onEdit,
   onDelete,
 }: ReferenceTableRowProps) {
-  // URL 도메인 추출 (표시용)
-  const getDisplayUrl = (urlString: string) => {
-    try {
-      const urlObj = new URL(urlString);
-      return urlObj.hostname;
-    } catch {
-      return urlString;
-    }
-  };
-
-  // 텍스트 줄임말 처리 (2줄)
-  const truncateText = (text: string | null, lines: number = 2) => {
-    if (!text) return "";
-    const lineArray = text.split("\n").slice(0, lines);
-    return lineArray.join("\n");
-  };
-
-  // 날짜 포맷
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("ko-KR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
-  };
+  const categoryLabels = range && range.length > 0 ? range : category ? [category] : [];
 
   return (
     <tr className="border-b hover:bg-gray-50 transition">
@@ -115,6 +95,29 @@ export default function ReferenceTableRow({
         >
           {url}
         </a>
+      </td>
+
+      {/* 카테고리 */}
+      <td className="p-3 text-sm">
+        {categoryLabels.length > 0 ? (
+          <div className="flex max-w-[180px] flex-wrap gap-1.5">
+            {categoryLabels.slice(0, 3).map((label) => (
+              <span
+                key={label}
+                className="rounded-full border border-gray-200 px-2 py-1 text-xs font-medium text-gray-700"
+              >
+                {label}
+              </span>
+            ))}
+            {categoryLabels.length > 3 && (
+              <span className="rounded-full border border-gray-200 px-2 py-1 text-xs font-medium text-gray-500">
+                +{categoryLabels.length - 3}
+              </span>
+            )}
+          </div>
+        ) : (
+          <span className="text-gray-400">미분류</span>
+        )}
       </td>
 
       {/* 클릭수 */}

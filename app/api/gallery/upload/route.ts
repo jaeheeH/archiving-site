@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+import { randomUUID } from "crypto";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkGalleryEditPermission } from "@/lib/supabase/gallery-utils";
+
+const ALLOWED_GALLERY_IMAGE_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+]);
 
 function safeExtension(file: File) {
   const fromType = file.type.split("/")[1];
@@ -28,8 +36,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "이미지 파일이 필요합니다." }, { status: 400 });
     }
 
-    if (!file.type.startsWith("image/")) {
-      return NextResponse.json({ error: "이미지만 업로드할 수 있습니다." }, { status: 400 });
+    if (!ALLOWED_GALLERY_IMAGE_TYPES.has(file.type)) {
+      return NextResponse.json({ error: "JPG, PNG, WebP, GIF 이미지만 업로드할 수 있습니다." }, { status: 400 });
     }
 
     if (file.size > 8 * 1024 * 1024) {
@@ -38,11 +46,12 @@ export async function POST(request: NextRequest) {
 
     const admin = createAdminClient();
     const ext = safeExtension(file);
-    const random = Math.random().toString(36).slice(2, 10);
+    const random = randomUUID().replace(/-/g, "").slice(0, 12);
     const filePath = `${permCheck.userId}/${Date.now()}_${random}.${ext}`;
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const { error } = await admin.storage.from("gallery").upload(filePath, buffer, {
+      cacheControl: "31536000",
       contentType: file.type || "image/jpeg",
       upsert: false,
     });

@@ -1,9 +1,11 @@
 // app/api/posts/by-slug/[slug]/route.ts
 
-import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
+import { isSlugParam } from '@/lib/route-params';
+import { createPublicClient } from '@/lib/supabase/public';
+import { createClient } from '@/lib/supabase/server';
+
+const POST_SCRAP_STATUS_COLUMNS = 'id, scrap_count';
 
 export async function GET(
   request: NextRequest,
@@ -12,17 +14,18 @@ export async function GET(
   try {
     const { slug } = await params;
 
-    // 1. Service Role 클라이언트 (포스트 조회)
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    if (!isSlugParam(slug)) {
+      return NextResponse.json({ error: '잘못된 요청입니다' }, { status: 400 });
+    }
+
+    const supabase = createPublicClient();
 
     // 2. 포스트 조회 (발행된 글만)
     const { data: post, error: postError } = await supabase
       .from('posts')
-      .select('*')
+      .select(POST_SCRAP_STATUS_COLUMNS)
       .eq('slug', slug)
+      .eq('type', 'blog')
       .eq('is_published', true)
       .single();
 
@@ -34,56 +37,34 @@ export async function GET(
     }
 
     // 3. 현재 사용자 확인
-    const cookieStore = await cookies();
-    const supabaseAuth = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return cookieStore.getAll();
-          },
-          setAll(cookiesToSet) {
-            try {
-              cookiesToSet.forEach(({ name, value, options }) =>
-                cookieStore.set(name, value, options)
-              );
-            } catch {}
-          },
-        },
-      }
-    );
-
+    const supabaseAuth = await createClient();
     const { data: { user } } = await supabaseAuth.auth.getUser();
 
     // 4. 현재 사용자가 스크랩했는지 확인
     let userScraped = false;
     if (user) {
-      const { data: scrapData } = await supabase
+      const { data: scrapData } = await supabaseAuth
         .from('post_scraps')
         .select('id')
         .eq('post_id', post.id)
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       userScraped = !!scrapData;
     }
 
-    // 5. 작성자 정보 조회
-    const { data: author } = await supabase
-      .from('users')
-      .select('id, email')
-      .eq('id', post.author_id)
-      .single();
-
-    // 6. 응답 데이터 구성
+    // 5. 응답 데이터 구성
     const responseData = {
-      ...post,
-      author: author || null,
+      scrap_count: post.scrap_count || 0,
       userScraped,
     };
 
-    return NextResponse.json(responseData, { status: 200 });
+    return NextResponse.json(responseData, {
+      status: 200,
+      headers: {
+        'Cache-Control': 'private, no-store',
+      },
+    });
   } catch (err) {
     console.error('Post detail API error:', err);
     return NextResponse.json(

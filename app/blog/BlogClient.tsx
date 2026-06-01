@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -26,6 +26,13 @@ interface Category {
   name: string;
 }
 
+interface DailyImage {
+  id: number;
+  title: string;
+  description: string | null;
+  image_url: string;
+}
+
 interface PaginationInfo {
   total: number;
   limit: number;
@@ -37,9 +44,15 @@ interface BlogClientProps {
   initialPosts: Post[];
   categories: Category[];
   initialPagination: PaginationInfo;
+  dailyImages: DailyImage[];
 }
 
-export default function BlogClient({ initialPosts, categories, initialPagination }: BlogClientProps) {
+export default function BlogClient({
+  initialPosts,
+  categories,
+  initialPagination,
+  dailyImages,
+}: BlogClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -49,33 +62,37 @@ export default function BlogClient({ initialPosts, categories, initialPagination
 
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [fetching, setFetching] = useState(false);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [pagination, setPagination] = useState<PaginationInfo>(initialPagination);
-  const [isInitialized, setIsInitialized] = useState(false);
 
   const POSTS_PER_PAGE = 12;
 
-  // 1️⃣ localStorage에서 viewMode 복원
-  useEffect(() => {
-    const savedView = localStorage.getItem('blog_view_mode');
-    if (savedView === 'grid' || savedView === 'list') {
-      setViewMode(savedView);
+  // 카테고리나 페이지 변경 시 API를 통해 데이터를 새로 가져옴
+  const fetchPosts = async (page: number, categoryId: string) => {
+    try {
+      setFetching(true);
+      const offset = (page - 1) * POSTS_PER_PAGE;
+      const categoryParam = categoryId !== 'all' ? `&category_id=${categoryId}` : '';
+      const res = await fetch(
+        `/api/posts?type=blog&limit=${POSTS_PER_PAGE}&offset=${offset}${categoryParam}`
+      );
+      const data = await res.json();
+      setPosts(data.data || []);
+      setPagination(data.pagination || {});
+    } catch (error) {
+      console.error('Failed to fetch posts:', error);
+    } finally {
+      setFetching(false);
     }
-  }, []);
-
-  // 2️⃣ viewMode 변경 시 localStorage 저장
-  useEffect(() => {
-    localStorage.setItem('blog_view_mode', viewMode);
-  }, [viewMode]);
+  };
 
   // 3️⃣ URL 파라미터가 초기값(1페이지, all)이 아니면 데이터 fetch
   useEffect(() => {
     if (initialPage !== 1 || initialCategory !== 'all') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchPosts(initialPage, initialCategory);
     }
-    setIsInitialized(true);
   }, []); // 마운트 시 1회만 실행
 
   // 4️⃣ 브라우저 뒤로가기/앞으로가기 감지 (popstate)
@@ -106,25 +123,6 @@ export default function BlogClient({ initialPosts, categories, initialPagination
     router.push(newURL, { scroll: false });
   };
 
-  // 카테고리나 페이지 변경 시 API를 통해 데이터를 새로 가져옴
-  const fetchPosts = async (page: number, categoryId: string) => {
-    try {
-      setFetching(true);
-      const offset = (page - 1) * POSTS_PER_PAGE;
-      const categoryParam = categoryId !== 'all' ? `&category_id=${categoryId}` : '';
-      const res = await fetch(
-        `/api/posts?type=blog&limit=${POSTS_PER_PAGE}&offset=${offset}${categoryParam}`
-      );
-      const data = await res.json();
-      setPosts(data.data || []);
-      setPagination(data.pagination || {});
-    } catch (error) {
-      console.error('Failed to fetch posts:', error);
-    } finally {
-      setFetching(false);
-    }
-  };
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     updateURL(page, selectedCategory);
@@ -145,31 +143,60 @@ export default function BlogClient({ initialPosts, categories, initialPagination
     return category?.name || 'Uncategorized';
   };
 
+  const formatDate = (date: string | null) =>
+    new Date(date || '').toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+
+  const selectedCategoryName =
+    selectedCategory === 'all' ? 'All' : getCategoryName(selectedCategory);
+
+  const sidebarPosts = useMemo(() => posts.slice(0, 4), [posts]);
+  const todayImages = useMemo(() => {
+    if (dailyImages.length === 0) return [];
+
+    const todayKey = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' });
+    const seed = todayKey
+      .split('-')
+      .reduce((total, part, index) => total + Number(part) * (index + 1), 0);
+    const targetCount = Math.min(3, dailyImages.length);
+    const selected: DailyImage[] = [];
+    const usedIndexes = new Set<number>();
+
+    for (let step = 0; selected.length < targetCount && step < dailyImages.length * 2; step += 1) {
+      const index = (seed + step * 7) % dailyImages.length;
+      if (usedIndexes.has(index)) continue;
+      usedIndexes.add(index);
+      selected.push(dailyImages[index]);
+    }
+
+    return selected;
+  }, [dailyImages]);
   const totalPages = Math.ceil(pagination.total / POSTS_PER_PAGE);
 
   return (
-    <div className="min-h-screen py-12">
-      {/* Header Section */}
-      <div className="max-w-7xl mx-auto mb-10 px-4 md:px-0 title-header">
-        <h1 className="uppercase">
-          Insights & Logs
-        </h1>
-        <p className="text-gray-500 text-lg max-w-2xl leading-relaxed">
-          개발 과정의 고민과 디자인적 발견을 기록합니다.<br />
-          프로젝트 비하인드 스토리와 기술적인 인사이트를 공유합니다.
-        </p>
-      </div>
+    <div className="archive-blog min-h-screen bg-[var(--archive-canvas)] text-[var(--archive-ink)]">
+      <section className="border-b border-[var(--archive-line)]">
+        <div className="mx-auto max-w-[var(--archive-page)] px-4 pb-8 pt-14">
+          <p className="archive-eyebrow mb-3 text-[var(--archive-faint)]">Magazine</p>
+          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Blog</h1>
+          <p className="mt-4 max-w-xl text-[15px] leading-7 text-[var(--archive-muted)]">
+            개발 과정의 고민과 디자인적 발견을 기록합니다. 프로젝트 비하인드 스토리와 기술적인 인사이트를 공유합니다.
+          </p>
+        </div>
+      </section>
 
-      <div className="max-w-7xl mx-auto pb-16 px-4 md:px-0">
-        {/* Toolbar */}
-        <div className="z-20 bg-white/80 backdrop-blur-md p-4 rounded-xl border border-gray-100 shadow-sm mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex gap-2 flex-wrap">
+      <section className="sticky top-16 z-30 border-b border-[var(--archive-line)] bg-[var(--archive-canvas)]/95 backdrop-blur">
+        <div className="mx-auto max-w-[var(--archive-page)] px-4">
+          <nav className="flex gap-6 overflow-x-auto py-4">
             <button
               onClick={() => handleCategoryChange('all')}
-              className={`px-3 py-1.5 rounded-md text-sm transition-all border ${
+              className={`whitespace-nowrap border-b-2 pb-1 text-[13px] font-medium transition-colors ${
                 selectedCategory === 'all'
-                  ? 'bg-black text-white border-black'
-                  : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+                  ? 'border-[var(--archive-ink)] text-[var(--archive-ink)]'
+                  : 'border-transparent text-[var(--archive-muted)] hover:text-[var(--archive-brand)]'
               }`}
             >
               All
@@ -178,89 +205,166 @@ export default function BlogClient({ initialPosts, categories, initialPagination
               <button
                 key={category.id}
                 onClick={() => handleCategoryChange(category.id)}
-                className={`px-3 py-1.5 rounded-md text-sm transition-all border ${
+                className={`whitespace-nowrap border-b-2 pb-1 text-[13px] font-medium transition-colors ${
                   selectedCategory === category.id
-                    ? 'bg-black text-white border-black'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+                    ? 'border-[var(--archive-ink)] text-[var(--archive-ink)]'
+                    : 'border-transparent text-[var(--archive-muted)] hover:text-[var(--archive-brand)]'
                 }`}
               >
                 {category.name}
               </button>
             ))}
-          </div>
-
-          <div className="flex items-center gap-4 ml-auto md:ml-0 w-full md:w-auto justify-end">
-            <span className="text-xs text-gray-400 font-mono hidden md:inline-block">
-              {pagination.total} Posts
-            </span>
-            <div className="flex bg-gray-100 p-1 rounded-lg">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-md text-sm transition-all ${
-                  viewMode === 'grid' ? 'bg-white text-black shadow-sm' : 'text-gray-400'
-                }`}
-              >
-                <i className="ri-layout-grid-line text-lg"></i>
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`p-1.5 rounded-md text-sm transition-all ${
-                  viewMode === 'list' ? 'bg-white text-black shadow-sm' : 'text-gray-400'
-                }`}
-              >
-                <i className="ri-list-check text-lg"></i>
-              </button>
-            </div>
-          </div>
+          </nav>
         </div>
+      </section>
 
-        {/* List Content */}
-        {fetching && posts.length === 0 ? (
-          <div className="animate-pulse">Loading...</div>
-        ) : posts.length === 0 ? (
-          <div className="bg-gray-50 rounded-xl p-20 text-center">작성된 글이 없습니다.</div>
-        ) : (
-          <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" : "space-y-6"}>
-            {posts.map((post) => (
-              <Link
-                key={post.id}
-                href={`/blog/${post.slug}`}
-                className={`group block bg-white rounded-xl overflow-hidden hover:shadow-xl transition-all border ${
-                  viewMode === 'list' ? 'flex flex-col md:flex-row gap-6 p-4' : 'flex flex-col h-full'
-                }`}
-              >
-                <div className={`relative bg-gray-100 overflow-hidden shrink-0 ${
-                  viewMode === 'list' ? 'w-full md:w-72 aspect-video md:aspect-[4/3] rounded-lg' : 'w-full aspect-video'
-                }`}>
-                  {post.title_image_url ? (
-                    <Image src={post.title_image_url} alt={post.title} fill className="object-cover" sizes="300px" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center"><i className="ri-image-2-line text-3xl text-gray-300"></i></div>
-                  )}
-                </div>
+      <section className="mx-auto max-w-[var(--archive-page)] px-4 py-12">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_320px] lg:gap-12">
+          <div className="min-w-0">
+            <div className="mb-4 flex items-center justify-between text-[12px] text-[var(--archive-muted)]">
+              <span className="archive-eyebrow text-[var(--archive-faint)]">{selectedCategoryName}</span>
+              <span className="archive-index">{pagination.total} Posts</span>
+            </div>
 
-                <div className={`flex flex-col ${viewMode === 'list' ? 'flex-1 py-2' : 'flex-1 p-5'}`}>
-                  <span className="mb-2 text-xs font-bold text-blue-600 uppercase">{getCategoryName(post.category_id)}</span>
-                  <h2 className={`font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors ${viewMode === 'list' ? 'text-2xl' : 'text-xl line-clamp-2'}`}>
-                    {post.title}
-                  </h2>
-                  <p className="text-gray-500 text-sm mb-4 line-clamp-2">{post.summary || post.subtitle || '내용이 없습니다.'}</p>
-                  <div className="mt-auto flex items-center justify-between text-xs text-gray-400 font-mono">
-                    <span>{new Date(post.published_at || post.created_at).toLocaleDateString('ko-KR')}</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+            {fetching && posts.length === 0 ? (
+              <div className="border-y border-[var(--archive-line)] py-10 text-[14px] text-[var(--archive-muted)]">
+                Loading...
+              </div>
+            ) : posts.length === 0 ? (
+              <div className="border-y border-[var(--archive-line)] py-20 text-center text-[14px] text-[var(--archive-muted)]">
+                작성된 글이 없습니다.
+              </div>
+            ) : (
+              <div className={`border-t border-[var(--archive-line)] ${fetching ? 'opacity-60' : ''}`}>
+                {posts.map((post) => (
+                  <article key={post.id} className="border-b border-[var(--archive-line)] py-7">
+                    <div className="grid grid-cols-[1fr_120px] gap-5 sm:grid-cols-[1fr_180px] md:grid-cols-[1fr_220px] md:gap-8">
+                      <div className="flex min-w-0 flex-col">
+                        <Link href={`/blog/${post.slug}`} className="group block">
+                          <div className="mb-3 flex items-center gap-2 text-[12px] text-[var(--archive-muted)]">
+                            <span className="text-[var(--archive-ink)] font-medium">ARCH.B</span>
+                            <span className="text-[var(--archive-faint)]">·</span>
+                            <span>{formatDate(post.published_at || post.created_at)}</span>
+                          </div>
+                          <h2 className="mb-2 line-clamp-2 text-xl font-extrabold leading-[1.25] tracking-tight transition-colors group-hover:text-[var(--archive-brand)] md:text-2xl">
+                            {post.title}
+                          </h2>
+                          <p className="line-clamp-2 text-[14px] leading-[1.65] text-[var(--archive-muted)] md:text-[15px]">
+                            {post.summary || post.subtitle || '내용이 없습니다.'}
+                          </p>
+                        </Link>
+                        <div className="mt-5 flex items-center justify-between text-[12px] text-[var(--archive-muted)]">
+                          <div className="flex items-center gap-4">
+                            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--archive-brand)]">
+                              {getCategoryName(post.category_id)}
+                            </span>
+                            <span className="flex items-center gap-1.5" title="조회수">
+                              <i className="ri-eye-line text-[14px]" />
+                              <span className="archive-index">{post.view_count || 0}</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="archive-zoom relative aspect-square self-start overflow-hidden bg-[var(--archive-bg-light)]"
+                      >
+                        {post.title_image_url ? (
+                          <Image
+                            src={post.title_image_url}
+                            alt={post.title}
+                            fill
+                            className="archive-zoom-image object-cover"
+                            sizes="220px"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-[var(--archive-faint)]">
+                            <i className="ri-image-2-line text-2xl" />
+                          </div>
+                        )}
+                      </Link>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
           </div>
-        )}
+
+          <aside className="hidden lg:block lg:sticky lg:top-36 lg:self-start">
+            <div className="flex flex-col gap-5">
+              <section className="border border-[var(--archive-line)] bg-[var(--archive-canvas)]">
+                <div className="flex items-center gap-1.5 border-b border-[var(--archive-line)] px-4 py-2.5">
+                  <i className="ri-newspaper-line text-sm" />
+                  <span className="archive-eyebrow">Latest</span>
+                </div>
+                {sidebarPosts.map((post, index) => (
+                  <Link
+                    key={post.id}
+                    href={`/blog/${post.slug}`}
+                    className={`block px-4 py-3.5 transition-colors hover:bg-[var(--archive-bg-light)] hover:text-[var(--archive-brand)] ${
+                      index !== sidebarPosts.length - 1 ? 'border-b border-[var(--archive-line)]' : ''
+                    }`}
+                  >
+                    <p className="line-clamp-2 text-[14px] font-bold leading-[1.35] transition-colors">
+                      {post.title}
+                    </p>
+                    <p className="mt-1 text-[11px] text-[var(--archive-muted)]">
+                      {formatDate(post.published_at || post.created_at)}
+                    </p>
+                  </Link>
+                ))}
+              </section>
+
+              {todayImages.length > 0 && (
+                <section className="border border-[var(--archive-line)] bg-[var(--archive-canvas)]">
+                  <div className="flex items-center gap-1.5 border-b border-[var(--archive-line)] px-4 py-2.5">
+                    <i className="ri-image-line text-sm" />
+                    <span className="archive-eyebrow">오늘의 이미지</span>
+                  </div>
+                  <div>
+                    {todayImages.map((image, index) => (
+                      <Link
+                        key={image.id}
+                        href={`/gallery/${image.id}`}
+                        className={`group grid grid-cols-[56px_1fr] gap-3 px-4 py-3.5 transition-colors hover:bg-[var(--archive-bg-light)] ${
+                          index !== todayImages.length - 1 ? 'border-b border-[var(--archive-line)]' : ''
+                        }`}
+                        aria-label={image.title}
+                      >
+                        <span className="archive-zoom relative h-14 w-14 overflow-hidden bg-[var(--archive-bg-light)]">
+                          <Image
+                            src={image.image_url}
+                            alt={image.title}
+                            fill
+                            className="archive-zoom-image object-cover"
+                            sizes="56px"
+                          />
+                        </span>
+                        <span className="min-w-0 self-center">
+                          <span className="line-clamp-2 text-[14px] font-bold leading-[1.35] transition-colors group-hover:text-[var(--archive-brand)]">
+                            {image.title}
+                          </span>
+                          <span className="mt-1 block truncate text-[11px] leading-4 text-[var(--archive-muted)]">
+                            {image.description || '프롬프트가 없습니다.'}
+                          </span>
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              )}
+            </div>
+          </aside>
+        </div>
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 mt-16">
+          <div className="mt-16 flex items-center justify-center gap-2">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="px-4 py-2 rounded-lg border disabled:opacity-30"
+              className="border border-[var(--archive-line)] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--archive-ink)] transition hover:border-[var(--archive-brand)] hover:bg-[var(--archive-brand)] hover:text-white disabled:text-[var(--archive-muted)] disabled:opacity-40 disabled:hover:border-[var(--archive-line)] disabled:hover:bg-transparent disabled:hover:text-[var(--archive-muted)]"
             >
               Previous
             </button>
@@ -268,7 +372,11 @@ export default function BlogClient({ initialPosts, categories, initialPagination
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`w-8 h-8 rounded-lg ${page === currentPage ? 'bg-black text-white' : 'text-gray-500 hover:bg-gray-100'}`}
+                className={`h-9 w-9 text-[12px] font-semibold transition ${
+                  page === currentPage
+                    ? 'bg-[var(--archive-ink)] text-[var(--archive-canvas)]'
+                    : 'text-[var(--archive-muted)] hover:bg-[var(--archive-bg-light)] hover:text-[var(--archive-brand)]'
+                }`}
               >
                 {page}
               </button>
@@ -276,13 +384,13 @@ export default function BlogClient({ initialPosts, categories, initialPagination
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="px-4 py-2 rounded-lg border disabled:opacity-30"
+              className="border border-[var(--archive-line)] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--archive-ink)] transition hover:border-[var(--archive-brand)] hover:bg-[var(--archive-brand)] hover:text-white disabled:text-[var(--archive-muted)] disabled:opacity-40 disabled:hover:border-[var(--archive-line)] disabled:hover:bg-transparent disabled:hover:text-[var(--archive-muted)]"
             >
               Next
             </button>
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }

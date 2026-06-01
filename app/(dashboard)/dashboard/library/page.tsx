@@ -11,7 +11,7 @@ export default async function LibraryPage() {
   const data = await getGeneratedImageLibrary();
 
   if (!data) {
-    redirect("/login");
+    redirect("/login?redirect=/dashboard/library");
   }
 
   return (

@@ -94,7 +94,7 @@ export default function LibraryClient({ initialImages }: Props) {
                   href={img.image_url}
                   download
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="flex h-8 w-8 items-center justify-center rounded-md bg-white/95 text-gray-700 shadow-sm hover:bg-white"
                   title="원본 다운로드"
                 >
@@ -103,7 +103,7 @@ export default function LibraryClient({ initialImages }: Props) {
                 <a
                   href={img.image_url}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="flex h-8 w-8 items-center justify-center rounded-md bg-white/95 text-gray-700 shadow-sm hover:bg-white"
                   title="새 탭에서 열기"
                 >

@@ -98,7 +98,7 @@ export default function TitleSection({
           <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
             <input
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp,image/gif"
               onChange={handleImageUpload}
               style={{ display: 'none' }}
               id="title-image-upload"

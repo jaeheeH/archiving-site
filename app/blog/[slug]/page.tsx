@@ -2,7 +2,10 @@ import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import BlogDetailClient from "./BlogDetailClient";
 import { getBlogPostData } from "@/lib/public-data";
+import { getSiteUrl } from "@/lib/site-url";
 import { createPublicClient } from "@/lib/supabase/public";
+
+const STATIC_BLOG_PARAMS_LIMIT = 200;
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -23,7 +26,11 @@ export async function generateStaticParams() {
     const { data: posts, error } = await supabase
       .from('posts')
       .select('slug')
-      .eq('is_published', true);
+      .eq('type', 'blog')
+      .eq('is_published', true)
+      .not('published_at', 'is', null)
+      .order('published_at', { ascending: false })
+      .limit(STATIC_BLOG_PARAMS_LIMIT);
 
     if (error) {
       console.error('Failed to fetch posts for static generation:', error);
@@ -55,7 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const { post } = data;
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://archbehind.com";
+  const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/blog/${slug}`;
   
   // 썸네일 우선순위: thumbnail_url > title_image_url
@@ -117,5 +124,11 @@ export default async function BlogPostPage({ params }: Props) {
   // 여기서 정확히 알 수 없습니다(모두에게 같은 HTML 제공). 
   // 따라서 post 데이터에는 기본적인 내용만 담기고, 
   // 개인화된 정보는 Client Component 내부에서 useEffect로 후처리해야 합니다.
-  return <BlogDetailClient initialPost={{ ...data.post, userScraped: false }} />;
+  return (
+    <BlogDetailClient
+      initialPost={{ ...data.post, userScraped: false }}
+      initialCategory={data.category}
+      initialAuthorProfile={data.authorProfile}
+    />
+  );
 }

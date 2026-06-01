@@ -6,7 +6,6 @@ interface BlogPost {
   id: string;
   title: string;
   slug: string;
-  view_count: number;
   published_at?: string;
   category_id?: string | null;
 }
@@ -44,7 +43,7 @@ export default function PopularBlogs({ initialPosts, categories }: PopularBlogsP
                 href={`/blog/${post.slug}`}
                 className="block group"
               >
-                <div className="flex gap-4 pb-4 border-b border-gray-200 hover:border-gray-400 transition">
+                <div className="flex gap-4 border-b border-[var(--archive-line)] pb-4 transition hover:border-[#ff4800]">
                   {/* 번호 */}
                   <div className="flex-shrink-0 w-8 text-center">
                     <p className="text-lg font-bold text-primary">
@@ -54,10 +53,10 @@ export default function PopularBlogs({ initialPosts, categories }: PopularBlogsP
 
                   {/* 콘텐츠 */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-gray-900 group-hover:text-blue-600 transition line-clamp-2 text-sm font-medium">
+                    <h3 className="line-clamp-2 text-sm font-medium text-gray-900 transition group-hover:text-[#ff4800] dark:text-gray-100">
                       {post.title}
                     </h3>
-                    <p className="text-xs text-gray-400 mt-1 line-clamp-1">
+                    <p className="mt-1 line-clamp-1 text-xs text-gray-400 dark:text-gray-500">
                       {categoryName && <span>{categoryName} · </span>}
                       {publishDate}
                     </p>
@@ -73,7 +72,7 @@ export default function PopularBlogs({ initialPosts, categories }: PopularBlogsP
           href={`/blog`}
           className='block text-right'
         >
-          <p className='text-gray-900 hover:text-[#ff4800] text-sm'>View All Blog &rarr;</p>
+          <p className='text-sm text-gray-900 hover:text-[#ff4800] dark:text-gray-100'>View All Blog &rarr;</p>
         </Link>
       </div>
     </div>

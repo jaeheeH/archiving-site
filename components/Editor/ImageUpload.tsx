@@ -49,7 +49,7 @@ export default function ImageUpload({ onUpload, onLoading }: ImageUploadProps) {
     <div>
       <input
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png,image/webp,image/gif"
         onChange={handleUpload}
         style={{ display: 'none' }}
         id="image-upload"

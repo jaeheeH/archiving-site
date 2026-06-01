@@ -56,7 +56,7 @@ export default async function ReferenceAnalyticsPage() {
   const analytics = await getReferencesAnalytics();
 
   if (!analytics) {
-    redirect("/login");
+    redirect("/login?redirect=/dashboard/analytics/references");
   }
 
   return (
@@ -119,7 +119,7 @@ export default async function ReferenceAnalyticsPage() {
                   key={item.id}
                   href={item.url || "/dashboard/contents/references"}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="flex items-center justify-between gap-4 px-5 py-4 hover:bg-gray-50"
                 >
                   <span className="truncate text-sm font-medium text-gray-950">{item.title}</span>

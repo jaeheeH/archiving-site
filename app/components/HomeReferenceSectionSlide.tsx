@@ -14,8 +14,9 @@ type Reference = {
   url: string;
   image_url: string;
   logo_url?: string;
+  category?: string | null;
+  range?: string[] | null;
   clicks: number;
-  created_at: string;
 };
 
 interface HomeReferenceProps {
@@ -42,7 +43,7 @@ export default function HomeReferenceSectionSlide({ initialReferences }: HomeRef
   return (
     <div className="homeReferenceSection">
       {initialReferences.length === 0 ? (
-        <div className="text-center text-gray-500 py-16 bg-gray-50 rounded-lg">
+        <div className="rounded-lg bg-white/5 py-16 text-center text-gray-400">
           레퍼런스가 없습니다.
         </div>
       ) : (
@@ -63,7 +64,7 @@ export default function HomeReferenceSectionSlide({ initialReferences }: HomeRef
                 className="group block w-full text-left cursor-pointer"
               >
                 <article className="h-full">
-                  <div className="relative aspect-video overflow-hidden bg-gray-100 mb-4">
+                  <div className="relative mb-4 aspect-video overflow-hidden bg-white/10">
                     {item.image_url ? (
                       <Image
                         src={item.image_url}
@@ -74,11 +75,15 @@ export default function HomeReferenceSectionSlide({ initialReferences }: HomeRef
                         quality={75}
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      <div className="flex h-full w-full items-center justify-center text-gray-400">
                         <i className="ri-image-2-line text-3xl"></i>
                       </div>
                     )}
                   </div>
+
+                  <p className="mb-2 text-xs font-bold uppercase tracking-wider text-[#ff4800]">
+                    {item.range?.[0] || item.category || "Reference"}
+                  </p>
 
                   <div className="flex items-center gap-2 mb-2">
                     {item.logo_url ? (
@@ -92,7 +97,7 @@ export default function HomeReferenceSectionSlide({ initialReferences }: HomeRef
                         />
                       </div>
                     ) : (
-                      <div className="w-5 h-5 bg-gray-200 rounded-full shrink-0 flex items-center justify-center">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/10">
                         <i className="ri-global-line text-[10px] text-gray-400"></i>
                       </div>
                     )}

@@ -148,10 +148,12 @@ function BlogContent() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchCategories();
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchPosts(page);
   }, [page, categoryFilter, showDraftOnly, sortBy, sortOrder]);
 
@@ -278,7 +280,7 @@ function BlogContent() {
 
       addToast("삭제되었습니다!", "success");
       fetchPosts(page);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("삭제 에러:", error);
       addToast("삭제 실패", "error");
     }
@@ -310,7 +312,7 @@ function BlogContent() {
       } else {
         addToast("일부 포스트 삭제에 실패했습니다", "error");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("일괄 삭제 에러:", error);
       addToast("삭제 중 오류가 발생했습니다", "error");
     }

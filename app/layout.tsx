@@ -4,6 +4,7 @@ import { ToastProvider } from "@/components/ToastProvider";
 import Header from "@/app/layout/Header";
 import Footer from "@/app/layout/Footer";
 import { getSiteSettings, getDefaultMetadata } from "@/lib/site-settings";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 import "./css/style.scss";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -21,6 +22,18 @@ const geistMono = Geist_Mono({
 
 const enableVercelInsights = process.env.NEXT_PUBLIC_ENABLE_VERCEL_INSIGHTS === "true";
 
+function normalizeGa4Id(value?: string | null) {
+  return value && /^G-[A-Z0-9-]+$/i.test(value) ? value.toUpperCase() : null;
+}
+
+function normalizeGtmId(value?: string | null) {
+  return value && /^GTM-[A-Z0-9-]+$/i.test(value) ? value.toUpperCase() : null;
+}
+
+function normalizeHtmlLang(value?: string | null) {
+  return value?.replace("_", "-").split("-")[0] || "ko";
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
   return getDefaultMetadata(settings);
@@ -32,9 +45,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const settings = await getSiteSettings();
+  const siteUrl = getSiteUrl();
+  const ga4Id = normalizeGa4Id(settings?.ga4_id);
+  const gtmId = normalizeGtmId(settings?.gtm_id);
+  const htmlLang = normalizeHtmlLang(settings?.site_language);
 
   return (
-    <html lang={settings?.site_language || "ko"}>
+    <html lang={htmlLang}>
       <head>
         <link
           rel="stylesheet"
@@ -77,11 +94,11 @@ export default async function RootLayout({
         <meta name="p:domain_verify" content="bf63e4dfeb108fe297cdffdabe10cd78"/>
 
         {/* Google Analytics 4 */}
-        {settings?.ga4_id && (
+        {ga4Id && (
           <>
             <script
               async
-              src={`https://www.googletagmanager.com/gtag/js?id=${settings.ga4_id}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
             />
             <script
               dangerouslySetInnerHTML={{
@@ -89,7 +106,7 @@ export default async function RootLayout({
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
-                  gtag('config', '${settings.ga4_id}');
+                  gtag('config', ${JSON.stringify(ga4Id)});
                 `,
               }}
             />
@@ -97,7 +114,7 @@ export default async function RootLayout({
         )}
 
         {/* Google Tag Manager */}
-        {settings?.gtm_id && (
+        {gtmId && (
           <script
             dangerouslySetInnerHTML={{
               __html: `
@@ -105,7 +122,7 @@ export default async function RootLayout({
                 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','${settings.gtm_id}');
+                })(window,document,'script','dataLayer',${JSON.stringify(gtmId)});
               `,
             }}
           />
@@ -124,7 +141,7 @@ export default async function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "Organization",
                 name: settings.organization_name,
-                url: process.env.NEXT_PUBLIC_SITE_URL || "https://https://www.archbehind.com",
+                url: siteUrl,
                 logo: settings.logo_url || undefined,
               }),
             }}
@@ -135,10 +152,10 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {/* Google Tag Manager (noscript) */}
-        {settings?.gtm_id && (
+        {gtmId && (
           <noscript>
             <iframe
-              src={`https://www.googletagmanager.com/ns.html?id=${settings.gtm_id}`}
+              src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
               height="0"
               width="0"
               style={{ display: "none", visibility: "hidden" }}

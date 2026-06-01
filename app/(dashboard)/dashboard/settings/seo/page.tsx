@@ -76,11 +76,7 @@ export default function SEOSettingsPage() {
 
   const [keywordInput, setKeywordInput] = useState("");
 
-  useEffect(() => {
-    fetchSettings();
-  }, []);
-
-  const fetchSettings = async () => {
+  async function fetchSettings() {
     try {
       setLoading(true);
       const res = await fetch("/api/settings/site");
@@ -118,7 +114,12 @@ export default function SEOSettingsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchSettings();
+  }, []);
 
   const handleSave = async () => {
     try {
@@ -137,15 +138,16 @@ export default function SEOSettingsPage() {
       }
 
       addToast("설정이 저장되었습니다.", "success");
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "설정 저장에 실패했습니다.";
       console.error("❌ 설정 저장 실패:", error);
-      addToast(error.message || "설정 저장에 실패했습니다.", "error");
+      addToast(message, "error");
     } finally {
       setSaving(false);
     }
   };
 
-  const handleInputChange = (field: keyof SiteSettings, value: any) => {
+  const handleInputChange = (field: keyof SiteSettings, value: SiteSettings[keyof SiteSettings]) => {
     setSettings((prev) => ({ ...prev, [field]: value }));
   };
 

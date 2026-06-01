@@ -3,7 +3,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { Node, mergeAttributes } from '@tiptap/core';
+import { Node, mergeAttributes, type Editor } from '@tiptap/core';
 import { ReactNodeViewRenderer, NodeViewWrapper } from '@tiptap/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
@@ -102,12 +102,48 @@ const SortableImage = ({ id, url, index, onRemove, onExtract }: SortableImagePro
 };
 
 // 전역 선택 상태 (DraggableImageNode와 공유)
+type SelectedImageData = {
+  pos: number;
+  src: string;
+  editor: Editor;
+  type: 'image' | 'gallery';
+};
+
 declare global {
-  var selectedImageData: { pos: number; src: string; editor: any; type: 'image' | 'gallery' } | null;
+  var selectedImageData: SelectedImageData | null;
+  interface Window {
+    selectedImageData: SelectedImageData | null;
+  }
 }
 
 if (typeof window !== 'undefined') {
-  (window as any).selectedImageData = (window as any).selectedImageData || null;
+  window.selectedImageData = window.selectedImageData || null;
+}
+
+function getClientPointFromEvent(event: Event) {
+  if (
+    'clientX' in event &&
+    typeof event.clientX === 'number' &&
+    'clientY' in event &&
+    typeof event.clientY === 'number'
+  ) {
+    return {
+      clientX: event.clientX,
+      clientY: event.clientY,
+    };
+  }
+
+  if ('changedTouches' in event) {
+    const touch = (event as TouchEvent).changedTouches[0];
+    if (touch) {
+      return {
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+      };
+    }
+  }
+
+  return null;
 }
 
 const ImageGalleryComponent = ({
@@ -262,11 +298,9 @@ const ImageGalleryComponent = ({
     if (typeof currentPos !== 'number' || !editor) return;
 
     // 전역 선택된 이미지가 있는지 확인
-    const selectedData = (window as any).selectedImageData;
+    const selectedData = window.selectedImageData;
 
     if (selectedData && selectedData.type === 'image' && selectedData.pos !== currentPos) {
-      console.log('Adding selected image to gallery');
-
       // 선택된 이미지를 갤러리에 추가
       const newImages = [...images, selectedData.src];
 
@@ -284,7 +318,7 @@ const ImageGalleryComponent = ({
       editor.view.dispatch(tr);
 
       // 선택 초기화
-      (window as any).selectedImageData = null;
+      window.selectedImageData = null;
       setIsGallerySelected(false);
     }
   };
@@ -293,10 +327,12 @@ const ImageGalleryComponent = ({
     const { active, over, delta, activatorEvent } = event;
 
     // Check if dragged outside gallery bounds
-    if (galleryRef.current && activatorEvent && 'clientY' in activatorEvent) {
+    const pointer = activatorEvent ? getClientPointFromEvent(activatorEvent) : null;
+
+    if (galleryRef.current && pointer) {
       const rect = galleryRef.current.getBoundingClientRect();
-      const dragEndY = (activatorEvent as any).clientY + delta.y;
-      const dragEndX = (activatorEvent as any).clientX + delta.x;
+      const dragEndY = pointer.clientY + delta.y;
+      const dragEndX = pointer.clientX + delta.x;
 
       const isOutside =
         dragEndY < rect.top ||
@@ -366,7 +402,7 @@ const ImageGalleryComponent = ({
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/webp,image/gif"
           multiple
           onChange={handleImageUpload}
           className="hidden"

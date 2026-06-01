@@ -46,7 +46,7 @@ export default function ActiveFilter() {
 
   return (
     <div className="flex flex-wrap items-center gap-2 mb-8 animate-in fade-in slide-in-from-top-1 duration-300">
-      <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide mr-2">
+      <span className="archive-eyebrow mr-2 text-[var(--archive-faint)]">
         Filtered by
       </span>
       
@@ -54,12 +54,12 @@ export default function ActiveFilter() {
       {activeTags.map((tag) => (
         <span 
           key={tag} 
-          className="inline-flex items-center gap-1.5 bg-black text-white pl-3 pr-2 py-1.5 rounded-full text-sm shadow-sm transition-all hover:bg-gray-800"
+          className="inline-flex items-center gap-1.5 bg-[var(--archive-ink)] py-1.5 pl-3 pr-2 text-sm text-white transition-all hover:bg-[var(--archive-brand)]"
         >
           <span className="font-medium">#{tag}</span>
           <button 
             onClick={() => removeTag(tag)}
-            className="flex items-center justify-center w-5 h-5 text-gray-400 hover:text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            className="flex h-5 w-5 items-center justify-center bg-white/10 text-gray-300 transition-colors hover:bg-white/20 hover:text-white"
             title={`Remove ${tag}`}
           >
             <i className="ri-close-line text-sm"></i>
@@ -71,7 +71,7 @@ export default function ActiveFilter() {
       {activeTags.length > 1 && (
         <button 
           onClick={clearAll}
-          className="ml-2 text-xs text-gray-500 hover:text-black underline underline-offset-4 transition-colors"
+          className="ml-2 text-xs text-[var(--archive-muted)] underline underline-offset-4 transition-colors hover:text-[var(--archive-brand)]"
         >
           Clear all
         </button>

@@ -16,7 +16,7 @@ export default async function AnalyticsPage() {
   const overview = await getDashboardOverview();
 
   if (!overview) {
-    redirect("/login");
+    redirect("/login?redirect=/dashboard/analytics");
   }
 
   const panels = [

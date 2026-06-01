@@ -7,6 +7,24 @@ import {
   PUBLIC_API_CACHE_CONTROL,
 } from "@/lib/public-data";
 import { createPublicClient } from "@/lib/supabase/public";
+import { getErrorMessage } from "@/lib/error-message";
+
+const REFERENCE_CATEGORY_COLUMNS = "id, name, description, created_at";
+
+async function parseJsonObject(req: NextRequest) {
+  try {
+    const body = await req.json();
+    return body && typeof body === "object" && !Array.isArray(body)
+      ? (body as Record<string, unknown>)
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function normalizeCategoryText(value: unknown, max = 80) {
+  return typeof value === "string" ? value.trim().slice(0, max) : "";
+}
 
 /**
  * GET /api/references-categories
@@ -19,7 +37,7 @@ export async function GET(req: NextRequest) {
 
     const { data, error } = await supabase
       .from("reference_categories")
-      .select("id, name, description, created_at")
+      .select(REFERENCE_CATEGORY_COLUMNS)
       .order("created_at", { ascending: true });
 
     if (error) {
@@ -37,10 +55,11 @@ export async function GET(req: NextRequest) {
         },
       }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = getErrorMessage(error);
     console.error("❌ 레퍼런스 범주 조회 에러:", error);
     return NextResponse.json(
-      { error: error.message || "Internal server error" },
+      { error: message },
       { status: 500 }
     );
   }
@@ -66,11 +85,16 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. 요청 데이터 파싱
-    const body = await req.json();
-    const { name, description } = body;
+    const body = await parseJsonObject(req);
+    if (!body) {
+      return NextResponse.json({ error: "잘못된 JSON 요청입니다." }, { status: 400 });
+    }
+
+    const name = normalizeCategoryText(body.name);
+    const description = normalizeCategoryText(body.description, 500);
 
     // 3. 필수 필드 확인
-    if (!name || name.trim().length === 0) {
+    if (!name) {
       return NextResponse.json(
         { error: "name is required" },
         { status: 400 }
@@ -83,12 +107,12 @@ export async function POST(req: NextRequest) {
     const { data, error } = await adminClient
       .from("reference_categories")
       .insert({
-        name: name.trim(),
-        description: description?.trim() || null,
+        name,
+        description: description || null,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
-      .select()
+      .select(REFERENCE_CATEGORY_COLUMNS)
       .single();
 
     if (error) {
@@ -108,10 +132,11 @@ export async function POST(req: NextRequest) {
       success: true,
       data,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = getErrorMessage(error);
     console.error("❌ 레퍼런스 범주 생성 에러:", error);
     return NextResponse.json(
-      { error: error.message || "Internal server error" },
+      { error: message },
       { status: 500 }
     );
   }

@@ -3,6 +3,7 @@ import {
   PUBLIC_API_CACHE_CONTROL,
   getGalleryTopTags,
 } from "@/lib/public-data";
+import { getErrorMessage } from "@/lib/error-message";
 
 /**
  * GET /api/gallery/tags/top
@@ -31,8 +32,8 @@ export async function GET(req: NextRequest) {
       }
     );
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ 태그 집계 에러:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
   }
 }

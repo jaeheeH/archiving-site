@@ -14,7 +14,7 @@ export default async function Home() {
     await getHomeData();
 
   return (
-    <main className="min-h-screen">
+    <main className="archive-home min-h-screen">
       {/* Hero Section */}
       <div className="contents-padding mx-auto grid lg:grid-col-5">
         <div className="grid lg:grid-cols-4">
@@ -35,7 +35,7 @@ export default async function Home() {
             <div>
               <h2 className="text-xl font-bold">References</h2>
             </div>
-            <Link href="/references" className="text-sm font-medium hover:text-gray-600 transition-colors self-start md:self-end">
+            <Link href="/references" className="self-start text-sm font-medium transition-colors hover:text-[#ff4800] md:self-end">
               View All references &rarr;
             </Link>
           </div>
@@ -50,7 +50,7 @@ export default async function Home() {
             <div>
               <h2 className="text-xl font-bold">Generative Archive</h2>
             </div>
-            <Link href="/gallery" className="text-sm font-medium hover:text-gray-600 transition-colors self-start md:self-end">
+            <Link href="/gallery" className="self-start text-sm font-medium transition-colors hover:text-[#ff4800] md:self-end">
               View All Gallery &rarr;
             </Link>
           </div>

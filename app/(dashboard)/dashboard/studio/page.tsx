@@ -283,7 +283,7 @@ export default function StudioPage() {
                 href={resultImage} 
                 download 
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="absolute bottom-6 right-6 inline-flex items-center gap-2 rounded-md bg-white px-4 py-2 text-sm font-medium shadow hover:bg-gray-50"
               >
                 <Download className="h-4 w-4" />

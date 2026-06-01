@@ -2,10 +2,33 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { getErrorMessage } from '@/lib/error-message';
+import { isSafeIdentifierParam } from '@/lib/route-params';
+
+function isSafeGeneratedImagePath(value: string) {
+  return (
+    value.length <= 512 &&
+    !value.startsWith('/') &&
+    !value.includes('..') &&
+    /^[a-zA-Z0-9._/-]+$/.test(value)
+  );
+}
 
 export async function POST(request: Request) {
   try {
-    const { id } = await request.json();
+    let body: Record<string, unknown>;
+    try {
+      const parsed = await request.json();
+      body = parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+        ? (parsed as Record<string, unknown>)
+        : {};
+    } catch {
+      return NextResponse.json({ error: '잘못된 JSON 요청입니다.' }, { status: 400 });
+    }
+
+    const id = typeof body.id === 'string' && isSafeIdentifierParam(body.id)
+      ? body.id
+      : '';
     const supabaseAuth = await createClient();
     const {
       data: { user },
@@ -42,7 +65,7 @@ export async function POST(request: Request) {
     // 예: .../generated-images/brand_id/timestamp.jpg -> brand_id/timestamp.jpg
     const storagePath = image.image_url.split('/generated-images/').pop();
 
-    if (storagePath) {
+    if (storagePath && isSafeGeneratedImagePath(storagePath)) {
       const { error: storageError } = await supabase.storage
         .from('generated-images')
         .remove([storagePath]);
@@ -64,7 +87,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true });
 
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });
   }
 }

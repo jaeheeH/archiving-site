@@ -6,6 +6,12 @@
 const args = process.argv.slice(2);
 const baseUrl = args.find(arg => arg.startsWith('--url='))?.split('=')[1] || 'http://localhost:3000';
 const batchSize = parseInt(args.find(arg => arg.startsWith('--batch='))?.split('=')[1] || '3');
+const migrationToken = process.env.MIGRATION_TOKEN;
+
+if (!migrationToken) {
+  console.error('❌ MIGRATION_TOKEN 환경변수가 필요합니다.');
+  process.exit(1);
+}
 
 // Node.js 18+ fetch polyfill check
 if (typeof fetch === 'undefined') {
@@ -30,7 +36,7 @@ async function processBatch(limit) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-migration-token': 'migrate_secret_2024'
+      'x-migration-token': migrationToken
     },
     body: JSON.stringify({ limit })
   });

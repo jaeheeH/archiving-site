@@ -36,7 +36,7 @@ function ReferenceCategoryContent() {
 
       const { data } = await res.json();
       setCategories(data);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("❌ Fetch 에러:", error);
       addToast("범주 목록 조회 실패", "error");
     } finally {
@@ -45,6 +45,7 @@ function ReferenceCategoryContent() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchCategories();
   }, []);
 
@@ -76,9 +77,10 @@ function ReferenceCategoryContent() {
 
       addToast("범주가 삭제되었습니다!", "success");
       fetchCategories();
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "삭제 중 오류가 발생했습니다.";
       console.error("❌ 삭제 에러:", error);
-      addToast(`삭제 실패: ${error.message}`, "error");
+      addToast(`삭제 실패: ${message}`, "error");
     }
   };
 

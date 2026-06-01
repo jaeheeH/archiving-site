@@ -65,6 +65,7 @@ function GalleryContent() {
   // 검색어 변경 시 페이지 1로 리셋
   useEffect(() => {
     if (debouncedSearch !== searchFromUrl) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPage(1);
     }
   }, [debouncedSearch]);
@@ -94,6 +95,7 @@ function GalleryContent() {
       setLoading(true);
 
       const params = new URLSearchParams();
+      params.set("dashboard", "true");
       params.set("page", String(pageNum));
       params.set("limit", String(limit));
 
@@ -187,18 +189,21 @@ const fetchTopTags = async (search: string, tags: string[]) => {
 
   // 검색어/필터 변경 시 갤러리 재조회
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchGallery(page, debouncedSearch, selectedTags);
   }, [page, debouncedSearch, selectedTags]);
 
   // 초기 로드
   useEffect(() => {
     // 갤러리 리스트뿐만 아니라, 태그 목록(숫자)도 같이 갱신!
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTopTags(debouncedSearch, selectedTags);
   }, [debouncedSearch, selectedTags]);
 
   useEffect(() => {
     const saved = localStorage.getItem("gallery_view_mode");
     if (saved === "masonry" || saved === "grid" || saved === "list") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setViewMode(saved);
     }
   }, []);
@@ -235,9 +240,10 @@ const fetchTopTags = async (search: string, tags: string[]) => {
 
       addToast("삭제 완료!", "success");
       fetchGallery(page, debouncedSearch, selectedTags);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "삭제 중 오류가 발생했습니다.";
       console.error("❌ 삭제 에러:", error);
-      addToast(`삭제 실패: ${error.message}`, "error");
+      addToast(`삭제 실패: ${message}`, "error");
     }
   };
 

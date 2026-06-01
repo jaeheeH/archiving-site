@@ -1,32 +1,22 @@
-import { createClient as createSupabaseClient } from '@supabase/supabase-js';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
+import { parsePositiveIntParam } from '@/lib/route-params';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { createClient } from '@/lib/supabase/server';
 
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const galleryId = parseInt(id); // ID 타입에 맞춰 변환 (number or uuid)
+  const galleryId = parsePositiveIntParam(id);
+
+  if (!galleryId) {
+    return NextResponse.json({ error: 'Invalid gallery id' }, { status: 400 });
+  }
 
   try {
     // 1. 현재 로그인 유저 확인
-    const cookieStore = await cookies();
-    const supabaseAuth = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() { return cookieStore.getAll(); },
-          setAll(cookiesToSet) {
-             try {
-               cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
-             } catch {}
-          },
-        },
-      }
-    );
+    const supabaseAuth = await createClient();
 
     const { data: { user } } = await supabaseAuth.auth.getUser();
     if (!user) {
@@ -34,44 +24,74 @@ export async function POST(
     }
 
     // 2. Service Role로 DB 작업 (RLS 우회 가능하지만 여기선 로직 처리를 위해 사용)
-    const supabase = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    );
+    const supabase = createAdminClient();
+
+    const { data: gallery, error: galleryError } = await supabase
+      .from('gallery')
+      .select('id')
+      .eq('id', galleryId)
+      .maybeSingle();
+
+    if (galleryError || !gallery) {
+      return NextResponse.json({ error: 'Gallery not found' }, { status: 404 });
+    }
 
     // 3. 기존 스크랩 확인
-    const { data: existingScrap } = await supabase
+    const { data: existingScrap, error: existingScrapError } = await supabase
       .from('gallery_scraps')
       .select('id')
       .eq('gallery_id', galleryId)
       .eq('user_id', user.id)
       .maybeSingle();
 
+    if (existingScrapError) {
+      return NextResponse.json({ error: existingScrapError.message }, { status: 400 });
+    }
+
     let scraped = false;
 
     if (existingScrap) {
       // 삭제 (스크랩 취소)
-      await supabase.from('gallery_scraps').delete().eq('id', existingScrap.id);
+      const { error: deleteError } = await supabase
+        .from('gallery_scraps')
+        .delete()
+        .eq('id', existingScrap.id);
+
+      if (deleteError) {
+        return NextResponse.json({ error: deleteError.message }, { status: 400 });
+      }
       scraped = false;
     } else {
       // 추가 (스크랩)
-      await supabase.from('gallery_scraps').insert({
+      const { error: insertError } = await supabase.from('gallery_scraps').insert({
         gallery_id: galleryId,
         user_id: user.id,
       });
+
+      if (insertError) {
+        return NextResponse.json({ error: insertError.message }, { status: 400 });
+      }
       scraped = true;
     }
 
     // 4. 현재 총 스크랩 수 조회 (UI 업데이트용)
-    const { count } = await supabase
+    const { count, error: countError } = await supabase
       .from('gallery_scraps')
-      .select('*', { count: 'exact', head: true })
+      .select('id', { count: 'exact', head: true })
       .eq('gallery_id', galleryId);
+
+    if (countError) {
+      return NextResponse.json({ error: countError.message }, { status: 400 });
+    }
 
     return NextResponse.json({
       success: true,
       scraped,
       scrapCount: count || 0,
+    }, {
+      headers: {
+        'Cache-Control': 'private, no-store',
+      },
     });
 
   } catch (error) {

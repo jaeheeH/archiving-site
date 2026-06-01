@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 
-export default function CategorySelect({ value, setValue }: any) {
+type CategorySelectProps = {
+  value: string;
+  setValue: (value: string) => void;
+};
+
+export default function CategorySelect({ value, setValue }: CategorySelectProps) {
   const baseCategories = ["Midjourney", "GPT", "Stable Diffusion", "Photoshop", "Nano Banana"];
 
   const [custom, setCustom] = useState("");

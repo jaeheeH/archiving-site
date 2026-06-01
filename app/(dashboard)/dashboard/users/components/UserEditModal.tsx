@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { User } from "./UserList";
+
+const MAX_AVATAR_BYTES = 2 * 1024 * 1024;
+const ALLOWED_AVATAR_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 type Props = {
   user: User;
@@ -20,7 +23,20 @@ export default function UserEditModal({ user, onClose, onSave, currentUserRole }
   });
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(user.avatar_url);
+  const avatarPreviewRef = useRef<string | null>(user.avatar_url);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    avatarPreviewRef.current = avatarPreview;
+  }, [avatarPreview]);
+
+  useEffect(() => {
+    return () => {
+      if (avatarPreviewRef.current?.startsWith("blob:")) {
+        URL.revokeObjectURL(avatarPreviewRef.current);
+      }
+    };
+  }, []);
 
   // 이미지 리사이징 & 크롭 함수
   const resizeAndCropImage = async (file: File): Promise<File> => {
@@ -59,7 +75,7 @@ export default function UserEditModal({ user, onClose, onSave, currentUserRole }
           canvas.toBlob(
             (blob) => {
               if (blob) {
-                const resizedFile = new File([blob], file.name, {
+                const resizedFile = new File([blob], "avatar.webp", {
                   type: 'image/webp',
                   lastModified: Date.now(),
                 });
@@ -82,9 +98,16 @@ export default function UserEditModal({ user, onClose, onSave, currentUserRole }
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (!ALLOWED_AVATAR_TYPES.has(file.type)) {
+      alert("JPG, PNG, WebP 이미지만 업로드 가능합니다.");
+      e.target.value = "";
+      return;
+    }
+
     // 2MB 체크
-    if (file.size > 2 * 1024 * 1024) {
+    if (file.size > MAX_AVATAR_BYTES) {
       alert("이미지는 2MB 이하만 업로드 가능합니다.");
+      e.target.value = "";
       return;
     }
 
@@ -92,11 +115,16 @@ export default function UserEditModal({ user, onClose, onSave, currentUserRole }
       // 리사이징 & 크롭
       const resizedFile = await resizeAndCropImage(file);
       
+      if (avatarPreview?.startsWith("blob:")) {
+        URL.revokeObjectURL(avatarPreview);
+      }
       setAvatarFile(resizedFile);
       setAvatarPreview(URL.createObjectURL(resizedFile));
     } catch (error) {
       console.error('Image processing error:', error);
       alert('이미지 처리 중 오류가 발생했습니다.');
+    } finally {
+      e.target.value = "";
     }
   };
 
@@ -154,13 +182,17 @@ export default function UserEditModal({ user, onClose, onSave, currentUserRole }
           <div className="flex flex-col items-center gap-2">
             <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-200">
               {avatarPreview ? (
-                <Image
-                  src={avatarPreview}
-                  alt="프로필"
-                  width={80}
-                  height={80}
-                  className="w-full h-full object-cover"
-                />
+                avatarPreview.startsWith("blob:") ? (
+                  <img src={avatarPreview} alt="프로필" className="h-full w-full object-cover" />
+                ) : (
+                  <Image
+                    src={avatarPreview}
+                    alt="프로필"
+                    width={80}
+                    height={80}
+                    className="w-full h-full object-cover"
+                  />
+                )
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-gray-400 text-2xl">
                   {form.nickname?.charAt(0) || user.email?.charAt(0) || "?"}

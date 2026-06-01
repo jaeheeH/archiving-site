@@ -21,7 +21,7 @@ export default function PrivacyPage() {
             개인정보 처리방침
           </h1>
           <p className="text-gray-500">
-            ARCH-B(이하 '서비스')는 사용자의 개인정보를 소중히 다루며, 관련 법령을 준수합니다.
+            ARCH-B(이하 &apos;서비스&apos;)는 사용자의 개인정보를 소중히 다루며, 관련 법령을 준수합니다.
           </p>
         </div>
 

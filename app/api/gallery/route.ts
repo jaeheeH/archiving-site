@@ -1,12 +1,76 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { checkGalleryEditPermission } from "@/lib/supabase/gallery-utils";
+import {
+  checkGalleryEditPermission,
+  normalizeGalleryDimension,
+  normalizeGalleryEmbedding,
+  normalizeGalleryRange,
+  normalizeGalleryTags,
+  normalizeGalleryText,
+  normalizeGalleryTitle,
+  normalizeGalleryUrl,
+} from "@/lib/supabase/gallery-utils";
 import {
   CACHE_TAGS,
   PUBLIC_API_CACHE_CONTROL,
   getGalleryPageData,
 } from "@/lib/public-data";
+import { getErrorMessage } from "@/lib/error-message";
+
+const GALLERY_CREATE_COLUMNS = `
+  id,
+  title,
+  description,
+  image_url,
+  image_width,
+  image_height,
+  tags,
+  category,
+  range,
+  gemini_description,
+  gemini_tags,
+  created_at
+`;
+
+const MAX_GALLERY_LIMIT = 100;
+const MAX_FILTER_LENGTH = 80;
+const MAX_FILTER_TAGS = 10;
+const MAX_FILTER_TAG_LENGTH = 40;
+
+function normalizePositiveInt(value: string | null, fallback: number, max: number) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric) || numeric < 1) return fallback;
+  return Math.min(Math.floor(numeric), max);
+}
+
+function normalizeFilterText(value = "", max = MAX_FILTER_LENGTH) {
+  return value
+    .trim()
+    .slice(0, max)
+    .replace(/[{}()[\]",%:*&|!']/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function parseFilterTags(tagsCsv = "") {
+  return tagsCsv
+    .split(",")
+    .map((tag) => normalizeFilterText(tag, MAX_FILTER_TAG_LENGTH))
+    .filter(Boolean)
+    .slice(0, MAX_FILTER_TAGS);
+}
+
+async function parseJsonObject(req: NextRequest) {
+  try {
+    const body = await req.json();
+    return body && typeof body === "object" && !Array.isArray(body)
+      ? (body as Record<string, unknown>)
+      : null;
+  } catch {
+    return null;
+  }
+}
 
 /**
  * GET /api/gallery
@@ -26,10 +90,61 @@ export async function GET(req: NextRequest) {
   try {
     // 쿼리 파라미터 파싱
     const { searchParams } = new URL(req.url);
-    const page = parseInt(searchParams.get("page") || "1");
-    const limit = parseInt(searchParams.get("limit") || "10");
+    const page = normalizePositiveInt(searchParams.get("page"), 1, 10_000);
+    const limit = normalizePositiveInt(searchParams.get("limit"), 10, MAX_GALLERY_LIMIT);
     const search = searchParams.get("search") || "";
     const tagsParam = searchParams.get("tags") || "";
+
+    if (searchParams.get("dashboard") === "true") {
+      const permCheck = await checkGalleryEditPermission();
+      if (!permCheck.authorized) {
+        return permCheck.error!;
+      }
+
+      const adminClient = createAdminClient();
+      const offset = (page - 1) * limit;
+      const safeSearch = normalizeFilterText(search);
+      const filterTags = parseFilterTags(tagsParam);
+
+      let query = adminClient
+        .from("gallery")
+        .select(GALLERY_CREATE_COLUMNS, { count: "planned" })
+        .order("created_at", { ascending: false });
+
+      if (safeSearch) {
+        query = query.or(
+          `title.ilike.%${safeSearch}%,description.ilike.%${safeSearch}%,gemini_description.ilike.%${safeSearch}%`
+        );
+      }
+
+      for (const tag of filterTags) {
+        query = query.or(`tags.cs.{${tag}},gemini_tags.cs.{${tag}}`);
+      }
+
+      const { data, error, count } = await query.range(offset, offset + limit - 1);
+
+      if (error) {
+        throw error;
+      }
+
+      return NextResponse.json(
+        {
+          success: true,
+          data: data || [],
+          pagination: {
+            page,
+            limit,
+            total: count || 0,
+            totalPages: Math.max(1, Math.ceil((count || 0) / limit)),
+          },
+        },
+        {
+          headers: {
+            "Cache-Control": "private, no-store",
+          },
+        }
+      );
+    }
 
     const result = await getGalleryPageData(page, limit, search, tagsParam);
 
@@ -44,10 +159,11 @@ export async function GET(req: NextRequest) {
         },
       },
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = getErrorMessage(error);
     console.error("❌ Gallery 목록 조회 에러:", error);
     return NextResponse.json(
-      { error: error.message || "Internal server error" },
+      { error: message },
       { status: 500 }
     );
   }
@@ -67,27 +183,25 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. 요청 데이터 파싱
-    const body = await req.json();
-    const {
-      title,
-      description,
-      image_url,
-      image_width,        
-      image_height, 
-      tags,
-      category,
-      range,
-      embedding,
-      gemini_description,
-      gemini_tags,
-    } = body;
+    const body = await parseJsonObject(req);
+    if (!body) {
+      return NextResponse.json({ error: "잘못된 JSON 요청입니다." }, { status: 400 });
+    }
+
+    const title = normalizeGalleryTitle(body.title);
+    const imageUrl = normalizeGalleryUrl(body.image_url);
 
     // 3. 필수 필드 확인
-    if (!title || !image_url) {
+    if (!title || !imageUrl) {
       return NextResponse.json(
-        { error: "Title and image_url are required" },
+        { error: "Title and valid image_url are required" },
         { status: 400 }
       );
+    }
+
+    const normalizedEmbedding = normalizeGalleryEmbedding(body.embedding);
+    if (body.embedding !== undefined && body.embedding !== null && !normalizedEmbedding) {
+      return NextResponse.json({ error: "Invalid embedding format" }, { status: 400 });
     }
 
     // 4. Admin 클라이언트로 저장 (RLS 우회)
@@ -97,20 +211,20 @@ export async function POST(req: NextRequest) {
       .from("gallery")
       .insert({
         title,
-        description: description || null,
-        image_url,
-        image_width: image_width || null,        
-        image_height: image_height || null,     
-        tags: tags || [],
-        category: category || null,
-        range: range || [],
+        description: normalizeGalleryText(body.description),
+        image_url: imageUrl,
+        image_width: normalizeGalleryDimension(body.image_width),
+        image_height: normalizeGalleryDimension(body.image_height),
+        tags: normalizeGalleryTags(body.tags),
+        category: normalizeGalleryText(body.category, 40),
+        range: normalizeGalleryRange(body.range),
         author: permCheck.userId,
-        embedding: embedding || null,
-        gemini_description: gemini_description || null,
-        gemini_tags: gemini_tags || [],
+        embedding: normalizedEmbedding,
+        gemini_description: normalizeGalleryText(body.gemini_description, 1500),
+        gemini_tags: normalizeGalleryTags(body.gemini_tags),
         created_at: new Date().toISOString(),
       })
-      .select()
+      .select(GALLERY_CREATE_COLUMNS)
       .single();
 
     if (error) {
@@ -124,10 +238,11 @@ export async function POST(req: NextRequest) {
       success: true,
       data,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = getErrorMessage(error);
     console.error("❌ Gallery 생성 에러:", error);
     return NextResponse.json(
-      { error: error.message || "Internal server error" },
+      { error: message },
       { status: 500 }
     );
   }

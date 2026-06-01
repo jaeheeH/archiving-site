@@ -1,12 +1,67 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidateTag } from 'next/cache';
 import sharp from 'sharp';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { createClient as createServerSupabaseClient } from '@/lib/supabase/server';
+import { CACHE_TAGS } from '@/lib/public-data';
 
 interface GalleryItem {
   id: number;
   image_url: string;
   image_width: number | null;
   image_height: number | null;
+}
+
+const DEBUG_API_LOGS = process.env.DEBUG_API_LOGS === 'true';
+const MAX_DIMENSION_IMAGE_BYTES = 10 * 1024 * 1024;
+const MAX_DIMENSION_BATCH = 50;
+
+function debugLog(...args: unknown[]) {
+  if (DEBUG_API_LOGS) console.info(...args);
+}
+
+function normalizeBatchLimit(value: string | null) {
+  const parsed = Number.parseInt(value || '', 10);
+  if (!Number.isFinite(parsed) || parsed < 1) return 25;
+  return Math.min(parsed, MAX_DIMENSION_BATCH);
+}
+
+function isAllowedGalleryImageUrl(imageUrl: string) {
+  const storageUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('/v1', '');
+  if (!storageUrl) return false;
+  return imageUrl.startsWith(`${storageUrl}/storage/v1/object/public/gallery/`);
+}
+
+async function requireAdminAccess(request: NextRequest) {
+  const authHeader = request.headers.get('authorization');
+  const apiKey = process.env.ADMIN_API_KEY;
+
+  if (apiKey && authHeader === `Bearer ${apiKey}`) {
+    return null;
+  }
+
+  const supabaseAuth = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabaseAuth.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const admin = createAdminClient();
+  const { data } = await admin
+    .from('users')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+  const userData = data as { role?: string | null } | null;
+
+  if (!['admin', 'sub-admin'].includes(userData?.role || '')) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
+  return null;
 }
 
 /**
@@ -16,18 +71,37 @@ async function getImageDimensions(
   imageUrl: string
 ): Promise<{ width: number; height: number } | null> {
   try {
+    if (!isAllowedGalleryImageUrl(imageUrl)) {
+      throw new Error('Only gallery storage URLs are allowed');
+    }
+
     const response = await fetch(imageUrl, {
       headers: {
         'User-Agent':
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
       },
+      signal: AbortSignal.timeout(30_000),
     });
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
 
+    const contentType = response.headers.get('content-type') || '';
+    if (!contentType.startsWith('image/')) {
+      throw new Error(`Unsupported content type: ${contentType}`);
+    }
+
+    const contentLength = Number(response.headers.get('content-length') || 0);
+    if (contentLength > MAX_DIMENSION_IMAGE_BYTES) {
+      throw new Error('Image is too large');
+    }
+
     const buffer = await response.arrayBuffer();
+    if (buffer.byteLength > MAX_DIMENSION_IMAGE_BYTES) {
+      throw new Error('Image is too large');
+    }
+
     const metadata = await sharp(buffer).metadata();
 
     if (metadata.width && metadata.height) {
@@ -55,25 +129,16 @@ async function getImageDimensions(
  */
 export async function POST(request: NextRequest) {
   try {
-    // 환경 변수 확인 (보안)
-    const authHeader = request.headers.get('authorization');
-    const apiKey = process.env.ADMIN_API_KEY;
-
-    // 선택적: API 키로 보호 (설정했으면)
-    if (apiKey && authHeader !== `Bearer ${apiKey}`) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
+    const authError = await requireAdminAccess(request);
+    if (authError) return authError;
 
     const searchParams = request.nextUrl.searchParams;
     const force = searchParams.get('force') === 'true';
-    const limit = parseInt(searchParams.get('limit') || '100');
+    const limit = normalizeBatchLimit(searchParams.get('limit'));
 
-    console.log('🚀 Starting image dimensions update...');
-    console.log(`📊 Force update: ${force}`);
-    console.log(`📊 Batch limit: ${limit}`);
+    debugLog('Starting image dimensions update...');
+    debugLog(`Force update: ${force}`);
+    debugLog(`Batch limit: ${limit}`);
 
     const supabase = createAdminClient();
 
@@ -102,23 +167,28 @@ export async function POST(request: NextRequest) {
           successful: 0,
           failed: 0,
         },
-        { status: 200 }
+        {
+          status: 200,
+          headers: {
+            'Cache-Control': 'private, no-store',
+          },
+        }
       );
     }
 
-    console.log(`📊 Processing ${galleryItems.length} images...\n`);
+    debugLog(`Processing ${galleryItems.length} images...\n`);
 
     // 2. 각 이미지의 크기 감지 및 업데이트
     let successCount = 0;
     let failCount = 0;
-    const results: any[] = [];
+    const results: Array<Record<string, unknown>> = [];
 
     for (let i = 0; i < galleryItems.length; i++) {
       const item = galleryItems[i];
       const progress = `[${i + 1}/${galleryItems.length}]`;
 
-      console.log(`${progress} ID: ${item.id}`);
-      console.log(`    URL: ${item.image_url}`);
+      debugLog(`${progress} ID: ${item.id}`);
+      debugLog(`    URL: ${item.image_url}`);
 
       const dimensions = await getImageDimensions(item.image_url);
 
@@ -141,7 +211,7 @@ export async function POST(request: NextRequest) {
             error: updateError.message,
           });
         } else {
-          console.log(
+          debugLog(
             `    ✅ Success - ${dimensions.width}x${dimensions.height}`
           );
           successCount++;
@@ -153,7 +223,7 @@ export async function POST(request: NextRequest) {
           });
         }
       } else {
-        console.log('    ❌ Failed to detect dimensions');
+        debugLog('    Failed to detect dimensions');
         failCount++;
         results.push({
           id: item.id,
@@ -167,11 +237,15 @@ export async function POST(request: NextRequest) {
     }
 
     // 4. 완료 보고
-    console.log('\n' + '='.repeat(50));
-    console.log('📈 Processing completed');
-    console.log(`✅ Successful: ${successCount}`);
-    console.log(`❌ Failed: ${failCount}`);
-    console.log('='.repeat(50));
+    debugLog('\n' + '='.repeat(50));
+    debugLog('Processing completed');
+    debugLog(`Successful: ${successCount}`);
+    debugLog(`Failed: ${failCount}`);
+    debugLog('='.repeat(50));
+
+    if (successCount > 0) {
+      revalidateTag(CACHE_TAGS.gallery, 'max');
+    }
 
     return NextResponse.json(
       {
@@ -182,7 +256,12 @@ export async function POST(request: NextRequest) {
         failed: failCount,
         results,
       },
-      { status: 200 }
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'private, no-store',
+        },
+      }
     );
   } catch (error) {
     console.error('❌ Error:', error);
@@ -202,16 +281,25 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
+    const authError = await requireAdminAccess(request);
+    if (authError) return authError;
+
     const supabase = createAdminClient();
 
-    // 갤러리 데이터 통계
-    const { data: allItems } = await supabase
-      .from('gallery')
-      .select('id, image_width, image_height');
+    const [totalResult, completedResult] = await Promise.all([
+      supabase.from('gallery').select('id', { count: 'planned', head: true }),
+      supabase
+        .from('gallery')
+        .select('id', { count: 'planned', head: true })
+        .not('image_width', 'is', null)
+        .not('image_height', 'is', null),
+    ]);
 
-    const totalItems = allItems?.length || 0;
-    const completedItems =
-      allItems?.filter((item) => item.image_width !== null).length || 0;
+    if (totalResult.error) throw totalResult.error;
+    if (completedResult.error) throw completedResult.error;
+
+    const totalItems = totalResult.count || 0;
+    const completedItems = completedResult.count || 0;
     const pendingItems = totalItems - completedItems;
 
     return NextResponse.json(
@@ -226,7 +314,12 @@ export async function GET(request: NextRequest) {
             : 0,
         },
       },
-      { status: 200 }
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'private, no-store',
+        },
+      }
     );
   } catch (error) {
     console.error('❌ Error:', error);

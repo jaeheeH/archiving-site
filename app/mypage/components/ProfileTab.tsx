@@ -11,6 +11,7 @@ import { useToast } from "@/components/ToastProvider";
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const TARGET_IMAGE_SIZE = 320;
 const COMPRESSION_QUALITY = 0.9;
+const ALLOWED_PROFILE_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 type UserProfile = {
   id: string;
@@ -30,7 +31,7 @@ type ProfileForm = {
 };
 
 const inputClass =
-  "w-full rounded-md border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-900 outline-none transition focus:border-gray-900 focus:ring-2 focus:ring-gray-100 disabled:bg-gray-50 disabled:text-gray-500";
+  "w-full rounded-md border border-[var(--archive-line)] bg-white px-3 py-2.5 text-sm text-gray-900 outline-none transition focus:border-[#ff4800] focus:ring-2 focus:ring-[#ff4800]/10 disabled:bg-gray-50 disabled:text-gray-500";
 
 export default function ProfileTab({ user }: { user: UserProfile }) {
   const router = useRouter();
@@ -117,8 +118,8 @@ export default function ProfileTab({ user }: { user: UserProfile }) {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith("image/")) {
-      addToast("이미지 파일만 업로드할 수 있습니다.", "error");
+    if (!ALLOWED_PROFILE_IMAGE_TYPES.has(file.type)) {
+      addToast("JPG, PNG, WebP 이미지만 업로드할 수 있습니다.", "error");
       return;
     }
 
@@ -209,32 +210,37 @@ export default function ProfileTab({ user }: { user: UserProfile }) {
   };
 
   return (
-    <section className="max-w-2xl">
+    <section className="w-full max-w-3xl">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-950">프로필 정보</h2>
-        <p className="mt-1 text-sm text-gray-500">계정에 표시되는 기본 정보를 관리합니다.</p>
+        <p className="archive-eyebrow mb-3 text-[var(--archive-faint)]">Profile</p>
+        <h2 className="text-2xl font-bold tracking-tight text-gray-950">프로필 정보</h2>
+        <p className="mt-2 text-sm leading-6 text-[var(--archive-muted)]">계정에 표시되는 기본 정보를 관리합니다.</p>
       </div>
 
-      <form onSubmit={handleSave} className="rounded-lg border border-gray-200 bg-white p-6 md:p-8">
+      <form onSubmit={handleSave} className="rounded-lg border border-[var(--archive-line)] bg-white p-6 md:p-8">
         <div className="flex flex-col gap-8 md:flex-row md:items-start">
           <div className="flex flex-col items-center gap-3">
-            <div className="relative h-28 w-28 overflow-hidden rounded-full border border-gray-200 bg-gray-100">
+            <div className="relative h-28 w-28 overflow-hidden rounded-full border border-[var(--archive-line)] bg-gray-100">
               {avatarPreview ? (
-                <Image
-                  src={avatarPreview}
-                  alt="프로필 이미지"
-                  fill
-                  sizes="112px"
-                  priority
-                  className="object-cover"
-                />
+                avatarPreview.startsWith("blob:") ? (
+                  <img src={avatarPreview} alt="프로필 이미지" className="h-full w-full object-cover" />
+                ) : (
+                  <Image
+                    src={avatarPreview}
+                    alt="프로필 이미지"
+                    fill
+                    sizes="112px"
+                    priority
+                    className="object-cover"
+                  />
+                )
               ) : (
                 <div className="flex h-full w-full items-center justify-center text-3xl font-semibold text-gray-400">
                   {form.nickname.charAt(0) || user.email.charAt(0) || "U"}
                 </div>
               )}
             </div>
-            <label className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-md border border-gray-200 bg-white px-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
+            <label className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-md border border-[var(--archive-line)] bg-white px-3 text-sm font-medium text-gray-700 transition hover:border-[#ff4800] hover:text-[#ff4800]">
               <Camera className="h-4 w-4" />
               이미지 변경
               <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleImageChange} />
@@ -299,15 +305,15 @@ export default function ProfileTab({ user }: { user: UserProfile }) {
           </div>
         </div>
 
-        <div className="mt-8 flex items-center justify-between gap-4 border-t border-gray-100 pt-5">
-          <div className="hidden items-center gap-2 text-xs text-gray-500 sm:flex">
+        <div className="mt-8 flex items-center justify-between gap-4 border-t border-[var(--archive-line)] pt-5">
+          <div className="hidden min-w-0 items-center gap-2 text-xs text-[var(--archive-muted)] sm:flex">
             <UserRound className="h-4 w-4" />
-            {user.email}
+            <span className="truncate">{user.email}</span>
           </div>
           <button
             type="submit"
             disabled={saving}
-            className="ml-auto inline-flex h-10 items-center gap-2 rounded-md bg-gray-900 px-4 text-sm font-medium text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+            className="ml-auto inline-flex h-10 items-center gap-2 rounded-md bg-gray-950 px-4 text-sm font-medium text-white transition hover:bg-[#ff4800] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             {saving ? "저장 중" : "변경사항 저장"}

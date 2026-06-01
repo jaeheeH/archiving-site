@@ -5,14 +5,16 @@
 import { useState } from 'react';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { ReactNodeViewRenderer, NodeViewWrapper } from '@tiptap/react';
-import type { NodeViewProps } from '@tiptap/react';
+import type { Editor, NodeViewProps } from '@tiptap/react';
+import type { Node as ProseMirrorNode } from '@tiptap/pm/model';
 import Image from '@tiptap/extension-image';
 
-interface DraggableImageComponentProps extends NodeViewProps {}
+type DraggableImageComponentProps = NodeViewProps;
+type SelectedImageData = { pos: number; src: string; editor: Editor; type: 'image' | 'gallery' };
 
 declare global {
   interface Window {
-    selectedImageData: { pos: number; src: string; editor: any; type: 'image' | 'gallery' } | null;
+    selectedImageData: SelectedImageData | null;
   }
 }
 
@@ -24,7 +26,7 @@ const getSelectedImage = () => {
   return null;
 };
 
-const setSelectedImage = (data: any) => {
+const setSelectedImage = (data: SelectedImageData | null) => {
   if (typeof window !== 'undefined') {
     window.selectedImageData = data;
   }
@@ -73,7 +75,8 @@ const DraggableImageComponent = ({ node, updateAttributes, deleteNode, getPos, e
       const secondNode = editor.state.doc.nodeAt(secondPos);
 
       // [방어 코드 2] 노드가 없거나, 이미지/갤러리 타입이 아니면(문서가 수정되어 위치가 밀림) 초기화
-      const isValidNode = (n: any) => n && (n.type.name === 'image' || n.type.name === 'imageGallery');
+      const isValidNode = (n: ProseMirrorNode | null | undefined) =>
+        n && (n.type.name === 'image' || n.type.name === 'imageGallery');
 
       if (!isValidNode(firstNode) || !isValidNode(secondNode)) {
         console.warn('문서 변경으로 인해 이전 선택이 유효하지 않습니다. 새로 선택합니다.');

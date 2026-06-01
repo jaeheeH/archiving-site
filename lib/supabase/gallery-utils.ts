@@ -1,5 +1,66 @@
 import { NextResponse } from "next/server";
 import { createClient } from "./server";
+import { createAdminClient } from "./admin";
+
+const MAX_GALLERY_TEXT_LENGTH = 800;
+const MAX_GALLERY_TITLE_LENGTH = 160;
+const MAX_GALLERY_TAGS = 20;
+const MAX_GALLERY_TAG_LENGTH = 40;
+const MAX_GALLERY_RANGE = 6;
+const MAX_GALLERY_DIMENSION = 65535;
+const MAX_EMBEDDING_VALUES = 4096;
+
+export function normalizeGalleryText(value: unknown, max = MAX_GALLERY_TEXT_LENGTH) {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  return trimmed ? trimmed.slice(0, max) : null;
+}
+
+export function normalizeGalleryTitle(value: unknown) {
+  return normalizeGalleryText(value, MAX_GALLERY_TITLE_LENGTH);
+}
+
+export function normalizeGalleryUrl(value: unknown) {
+  const url = normalizeGalleryText(value, 2048);
+  if (!url) return null;
+
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "http:" || parsed.protocol === "https:" ? parsed.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
+export function normalizeGalleryTags(value: unknown, maxCount = MAX_GALLERY_TAGS) {
+  if (!Array.isArray(value)) return [];
+
+  return Array.from(
+    new Set(
+      value
+        .filter((item): item is string => typeof item === "string")
+        .map((item) => item.trim().slice(0, MAX_GALLERY_TAG_LENGTH))
+        .filter(Boolean)
+    )
+  ).slice(0, maxCount);
+}
+
+export function normalizeGalleryRange(value: unknown) {
+  return normalizeGalleryTags(value, MAX_GALLERY_RANGE);
+}
+
+export function normalizeGalleryDimension(value: unknown) {
+  if (value === undefined || value === null || value === "") return null;
+  const numeric = Number(value);
+  if (!Number.isInteger(numeric) || numeric < 1 || numeric > MAX_GALLERY_DIMENSION) return null;
+  return numeric;
+}
+
+export function normalizeGalleryEmbedding(value: unknown) {
+  if (value === undefined || value === null || value === "") return null;
+  if (!Array.isArray(value) || value.length > MAX_EMBEDDING_VALUES) return null;
+  return value.every((item) => typeof item === "number" && Number.isFinite(item)) ? value : null;
+}
 
 /**
  * 현재 사용자의 role 확인
@@ -92,12 +153,14 @@ export async function checkGalleryOwnershipOrAdmin(galleryId: number) {
       return { authorized: true, error: null };
     }
 
-    // gallery 작성자 확인
-    const { data: gallery } = await supabase
+    // gallery 작성자 확인: 대시보드/수정 권한 판정은 RLS로 행이 숨겨지면
+    // 실제 존재하는 항목도 404처럼 보일 수 있어 service role로 존재 여부만 확인한다.
+    const admin = createAdminClient();
+    const { data: gallery } = await admin
       .from("gallery")
       .select("author")
       .eq("id", galleryId)
-      .single();
+      .maybeSingle();
 
     if (!gallery) {
       return {

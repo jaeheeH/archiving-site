@@ -9,7 +9,7 @@ export default async function AccountPage() {
   const user = await getMypageProfile();
 
   if (!user) {
-    redirect("/login");
+    redirect("/login?redirect=/mypage/account");
   }
 
   return <AccountTab email={user.email} />;

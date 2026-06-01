@@ -36,7 +36,7 @@ export default function HomeBlogSection({ initialPosts, categories }: HomeBlogSe
   return (
     <div className="lg:col-span-3">
       {initialPosts.length === 0 ? (
-        <div className="text-center text-gray-500 py-16 bg-gray-50 rounded-lg">
+        <div className="rounded-lg bg-gray-50 py-16 text-center text-gray-500 dark:bg-[#151515] dark:text-gray-400">
           블로그 글이 없습니다.
         </div>
       ) : (
@@ -48,9 +48,9 @@ export default function HomeBlogSection({ initialPosts, categories }: HomeBlogSe
                 href={`/blog/${post.slug}`}
                 className="group flex h-full gap-6 items-start"
               >
-                <article className="hover:bg-gray-50 ">
+                <article className="hover:bg-gray-50 dark:hover:bg-[#151515]">
                   {/* 이미지 */}
-                  <div className="thumbnail relative overflow-hidden shrink-0 bg-gray-100">
+                  <div className="thumbnail relative shrink-0 overflow-hidden bg-gray-100 dark:bg-[#1d1d1d]">
                     {post.title_image_url ? (
                       <Image
                         src={post.title_image_url}
@@ -61,7 +61,7 @@ export default function HomeBlogSection({ initialPosts, categories }: HomeBlogSe
                         quality={75}
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      <div className="flex h-full w-full items-center justify-center text-gray-400 dark:text-gray-600">
                         <i className="ri-image-2-line text-3xl"></i>
                       </div>
                     )}
@@ -77,19 +77,19 @@ export default function HomeBlogSection({ initialPosts, categories }: HomeBlogSe
                     )}
 
                     {/* 제목 */}
-                    <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 transition-colors">
+                    <h3 className="mb-2 line-clamp-2 font-semibold text-gray-900 transition-colors group-hover:text-[#ff4800] dark:text-gray-100">
                       {post.title}
                     </h3>
 
                     {/* 요약 */}
                     {post.summary && (
-                      <p className="text-gray-600 mb-4 line-clamp-2 text-sm leading-relaxed desc">
+                      <p className="desc mb-4 line-clamp-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
                         {post.summary}
                       </p>
                     )}
 
                     {/* 메타 정보 */}
-                    <div className="mt-auto flex items-center justify-between text-xs text-gray-400 pt-2 border-gray-100">
+                    <div className="mt-auto flex items-center justify-between border-gray-100 pt-2 text-xs text-gray-400 dark:text-gray-500">
                       <span>
                         {formatDate(post.published_at || post.created_at)}
                       </span>

@@ -5,8 +5,20 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
+type TrainedModel = {
+  status?: 'succeeded' | 'failed' | 'processing' | 'starting' | string;
+};
+
+type Brand = {
+  id: string;
+  name: string;
+  trigger_word: string;
+  created_at: string;
+  trained_models?: TrainedModel[];
+};
+
 export default function MyBrandsPage() {
-  const [brands, setBrands] = useState<any[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(true);
   
   // 수정 모드 상태
@@ -29,11 +41,12 @@ export default function MyBrandsPage() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchBrands();
   }, []);
 
   // 수정 시작
-  const startEdit = (brand: any) => {
+  const startEdit = (brand: Brand) => {
     setEditingId(brand.id);
     setEditForm({ name: brand.name });
   };
@@ -86,7 +99,7 @@ export default function MyBrandsPage() {
   };
 
   // 상태 뱃지 컴포넌트
-  const StatusBadge = ({ models }: { models: any[] }) => {
+  const StatusBadge = ({ models }: { models?: TrainedModel[] }) => {
     const latestModel = models && models.length > 0 ? models[0] : null;
     const status = latestModel ? latestModel.status : 'pending';
 

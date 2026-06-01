@@ -2,11 +2,74 @@ import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 import { CACHE_TAGS } from "@/lib/public-data";
+import { isSafeIdentifierParam } from "@/lib/route-params";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
 const BANNER_COLUMNS =
   "id, title, subtitle, label, image_url, link, is_continuous, start_date, end_date, order_index, is_active";
+const MAX_BANNER_TEXT_LENGTH = 160;
+
+function normalizeString(value: unknown, max = MAX_BANNER_TEXT_LENGTH) {
+  if (typeof value !== "string") return "";
+  return value.trim().slice(0, max);
+}
+
+function normalizeNullableString(value: unknown, max = MAX_BANNER_TEXT_LENGTH) {
+  const normalized = normalizeString(value, max);
+  return normalized || null;
+}
+
+function normalizeHttpUrl(value: unknown) {
+  const url = normalizeString(value, 2048);
+  if (!url) return "";
+
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "http:" || parsed.protocol === "https:" ? parsed.toString() : "";
+  } catch {
+    return "";
+  }
+}
+
+function normalizeBannerLink(value: unknown) {
+  const link = normalizeString(value, 2048);
+  if (!link) return null;
+
+  if (link.startsWith("/") && !link.startsWith("//")) {
+    return link;
+  }
+
+  try {
+    const parsed = new URL(link);
+    return parsed.protocol === "http:" || parsed.protocol === "https:" ? parsed.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
+async function parseJsonObject(request: NextRequest) {
+  try {
+    const body = await request.json();
+    return body && typeof body === "object" && !Array.isArray(body)
+      ? (body as Record<string, unknown>)
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function normalizeDate(value: unknown) {
+  if (typeof value !== "string" || !value) return null;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date.toISOString();
+}
+
+function normalizeOrderIndex(value: unknown) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return 0;
+  return Math.max(0, Math.min(9999, Math.floor(numeric)));
+}
 
 async function requireDashboardManager() {
   const supabase = await createClient();
@@ -34,15 +97,15 @@ async function requireDashboardManager() {
 
 function sanitizeBanner(body: Record<string, unknown>) {
   return {
-    title: typeof body.title === "string" ? body.title.trim() : "",
-    subtitle: typeof body.subtitle === "string" && body.subtitle.trim() ? body.subtitle.trim() : null,
-    label: typeof body.label === "string" && body.label.trim() ? body.label.trim() : null,
-    image_url: typeof body.image_url === "string" ? body.image_url.trim() : "",
-    link: typeof body.link === "string" && body.link.trim() ? body.link.trim() : null,
+    title: normalizeString(body.title),
+    subtitle: normalizeNullableString(body.subtitle, 240),
+    label: normalizeNullableString(body.label, 60),
+    image_url: normalizeHttpUrl(body.image_url),
+    link: normalizeBannerLink(body.link),
     is_continuous: Boolean(body.is_continuous),
-    start_date: typeof body.start_date === "string" && body.start_date ? body.start_date : null,
-    end_date: typeof body.end_date === "string" && body.end_date ? body.end_date : null,
-    order_index: Number.isFinite(Number(body.order_index)) ? Number(body.order_index) : 0,
+    start_date: normalizeDate(body.start_date),
+    end_date: normalizeDate(body.end_date),
+    order_index: normalizeOrderIndex(body.order_index),
     is_active: body.is_active !== false,
   };
 }
@@ -71,7 +134,11 @@ export async function POST(request: NextRequest) {
   const auth = await requireDashboardManager();
   if ("error" in auth) return auth.error;
 
-  const body = await request.json();
+  const body = await parseJsonObject(request);
+  if (!body) {
+    return NextResponse.json({ error: "잘못된 JSON 요청입니다." }, { status: 400 });
+  }
+
   const payload = sanitizeBanner(body);
 
   if (!payload.title || !payload.image_url) {
@@ -96,11 +163,15 @@ export async function PATCH(request: NextRequest) {
   const auth = await requireDashboardManager();
   if ("error" in auth) return auth.error;
 
-  const body = await request.json();
+  const body = await parseJsonObject(request);
+  if (!body) {
+    return NextResponse.json({ error: "잘못된 JSON 요청입니다." }, { status: 400 });
+  }
+
   const id = typeof body.id === "string" ? body.id : "";
   const payload = sanitizeBanner(body);
 
-  if (!id) {
+  if (!id || !isSafeIdentifierParam(id)) {
     return NextResponse.json({ error: "배너 ID가 필요합니다." }, { status: 400 });
   }
 
@@ -127,9 +198,14 @@ export async function DELETE(request: NextRequest) {
   const auth = await requireDashboardManager();
   if ("error" in auth) return auth.error;
 
-  const { id } = await request.json();
+  const body = await parseJsonObject(request);
+  if (!body) {
+    return NextResponse.json({ error: "잘못된 JSON 요청입니다." }, { status: 400 });
+  }
 
-  if (!id) {
+  const id = typeof body.id === "string" ? body.id : "";
+
+  if (!id || !isSafeIdentifierParam(id)) {
     return NextResponse.json({ error: "배너 ID가 필요합니다." }, { status: 400 });
   }
 

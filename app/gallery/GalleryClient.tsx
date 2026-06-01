@@ -23,55 +23,24 @@ type TopTag = {
 };
 
 // --- Skeleton Component ---
-function GallerySkeleton({ viewMode }: { viewMode: 'masonry' | 'grid' | 'list' }) {
+function GallerySkeleton() {
   const items = Array.from({ length: 12 });
-  const layoutClass = {
-    masonry: 'columns-2 sm:columns-2 md:columns-4 lg:columns-5 xl:columns-6 gap-2 space-y-2',
-    grid: 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2',
-    list: 'gap-2 grid grid-cols-2',
-  }[viewMode];
   const masonryHeights = [240, 320, 210, 380, 290, 230, 350, 270, 310, 250, 340, 280];
 
   return (
-    <div className={layoutClass}>
+    <div className="columns-2 gap-2 space-y-2 sm:columns-2 md:columns-4 lg:columns-5 xl:columns-6">
       {items.map((_, i) => {
-        const deterministicHeight = viewMode === 'masonry' 
-          ? masonryHeights[i % masonryHeights.length] 
-          : null;
+        const deterministicHeight = masonryHeights[i % masonryHeights.length];
         return (
           <div 
             key={i} 
-            className={`relative bg-gray-200 animate-pulse rounded-lg border border-gray-100 break-inside-avoid ${viewMode === 'list' ? 'h-48' : ''}`} 
-            style={viewMode === 'masonry' ? { height: `${deterministicHeight}px` } : { aspectRatio: '1/1' }}
+            className="relative break-inside-avoid rounded-lg border border-gray-100 bg-gray-200 animate-pulse dark:border-[#302d28] dark:bg-[#1d1d1d]"
+            style={{ height: `${deterministicHeight}px` }}
           ></div>
         );
       })}
     </div>
   );
-}
-
-// --- Helper: 페이지네이션 범위 계산 ---
-function getPaginationRange(currentPage: number, totalPages: number) {
-  const delta = 2;
-  const range = [];
-  const rangeWithDots = [];
-
-  for (let i = 1; i <= totalPages; i++) {
-    if (i === 1 || i === totalPages || (i >= currentPage - delta && i <= currentPage + delta)) {
-      range.push(i);
-    }
-  }
-
-  let l;
-  for (let i of range) {
-    if (l) {
-      if (i - l === 2) rangeWithDots.push(l + 1);
-      else if (i - l !== 1) rangeWithDots.push('...');
-    }
-    rangeWithDots.push(i);
-    l = i;
-  }
-  return rangeWithDots;
 }
 
 // --- Props ---
@@ -100,16 +69,50 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     const tags = searchParams.get('tags');
     return tags ? tags.split(',').filter(Boolean) : [];
   });
-  
-  const [viewMode, setViewMode] = useState<'masonry' | 'grid' | 'list'>('masonry');
   const [topTags, setTopTags] = useState<TopTag[]>([]);
   const [loadingTags, setLoadingTags] = useState(true);
 
   // 디바운스 검색어 초기값도 URL 기준
   const [debouncedSearch, setDebouncedSearch] = useState(() => searchParams.get('search') || '');
   
-  const isFirstRender = useRef(true);
   const isHydrated = useRef(false);
+
+  async function fetchGallery(pageNum: number, search: string, tags: string[]) {
+    try {
+      setFetching(true);
+      const params = new URLSearchParams();
+      params.set('page', String(pageNum));
+      params.set('limit', '36');
+      if (search.trim()) params.set('search', search.trim());
+      if (tags.length > 0) params.set('tags', tags.join(','));
+
+      const res = await fetch(`/api/gallery?${params.toString()}`);
+      if (!res.ok) throw new Error('갤러리 조회 실패');
+
+      const data = await res.json();
+      setGallery(data.data || []);
+      setTotalPages(data.pagination.totalPages);
+    } catch (error) {
+      console.error('❌ Fetch 에러:', error);
+    } finally {
+      setLoading(false);
+      setFetching(false);
+    }
+  }
+
+  async function fetchTopTags() {
+    try {
+      setLoadingTags(true);
+      const res = await fetch('/api/gallery/tags/top');
+      if (!res.ok) throw new Error('태그 조회 실패');
+      const data = await res.json();
+      setTopTags(data.tags || []);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoadingTags(false);
+    }
+  }
 
   // 1. URL 파라미터 변경 감지 (뒤로 가기 시 상태 동기화)
   useEffect(() => {
@@ -125,12 +128,14 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     const tArr = t ? t.split(',').filter(Boolean) : [];
 
     // 현재 상태와 URL이 다를 때만 업데이트 (중복 렌더링 방지)
+    /* eslint-disable react-hooks/set-state-in-effect */
     if (p !== page) setPage(p);
     if (s !== searchInput) {
       setSearchInput(s);
       setDebouncedSearch(s);
     }
     if (t !== selectedTags.join(',')) setSelectedTags(tArr);
+    /* eslint-enable react-hooks/set-state-in-effect */
     
   }, [searchParams]); // searchParams가 변할 때만 실행 (뒤로가기 등)
 
@@ -149,6 +154,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     const urlSearch = searchParams.get('search') || '';
     if (debouncedSearch !== urlSearch) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPage(1);
     }
   }, [debouncedSearch]);
@@ -174,57 +180,16 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     }
 
     // 데이터 요청
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchGallery(page, debouncedSearch, selectedTags);
 
   }, [page, debouncedSearch, selectedTags]);
 
-  const fetchGallery = async (pageNum: number, search: string, tags: string[]) => {
-    try {
-      setFetching(true);
-      const params = new URLSearchParams();
-      params.set('page', String(pageNum));
-      params.set('limit', '36');
-      if (search.trim()) params.set('search', search.trim());
-      if (tags.length > 0) params.set('tags', tags.join(','));
-
-      const res = await fetch(`/api/gallery?${params.toString()}`);
-      if (!res.ok) throw new Error('갤러리 조회 실패');
-
-      const data = await res.json();
-      setGallery(data.data || []);
-      setTotalPages(data.pagination.totalPages);
-    } catch (error) {
-      console.error('❌ Fetch 에러:', error);
-    } finally {
-      setLoading(false);
-      setFetching(false);
-    }
-  };
-
-  // ... (태그 초기화, 뷰모드 등 기존 로직 동일)
+  // 태그 초기화
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTopTags();
-    const saved = localStorage.getItem('gallery_view_mode');
-    if (saved === 'masonry' || saved === 'grid' || saved === 'list') setViewMode(saved);
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem('gallery_view_mode', viewMode);
-  }, [viewMode]);
-
-  const fetchTopTags = async () => {
-    try {
-      setLoadingTags(true);
-      const res = await fetch('/api/gallery/tags/top');
-      if (!res.ok) throw new Error('태그 조회 실패');
-      const data = await res.json();
-      setTopTags(data.tags || []);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoadingTags(false);
-    }
-  };
 
   const handleSearchChange = (value: string) => setSearchInput(value);
   
@@ -249,15 +214,9 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     router.push(`/gallery/${id}${queryString}`);
   };
 
-  const layoutClass = {
-    masonry: 'columns-2 sm:columns-2 md:columns-4 lg:columns-5 xl:columns-5 gap-2 space-y-2',
-    grid: 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2',
-    list: 'gap-2 grid grid-cols-2',
-  }[viewMode];
-
   const renderGalleryContent = () => {
     if (loading || (fetching && gallery.length === 0)) {
-      return <GallerySkeleton viewMode={viewMode} />;
+      return <GallerySkeleton />;
     }
 
     if (gallery.length === 0) {
@@ -267,7 +226,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
           <p className="text-lg text-gray-900 font-medium">No results found.</p>
           <button 
             onClick={() => { setSearchInput(''); setPage(1); setSelectedTags([]); }}
-            className="mt-6 px-5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 shadow-sm"
+            className="mt-6 border border-[var(--archive-line)] bg-white px-5 py-2.5 text-sm font-medium transition-colors hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]"
           >
             Clear Search & Filters
           </button>
@@ -276,12 +235,11 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     }
 
     return (
-      <div className={layoutClass}>
+      <div className="columns-2 gap-2 space-y-2 sm:columns-2 md:columns-4 lg:columns-5 xl:columns-5">
         {gallery.map((item) => (
           <GalleryItemImage
             key={item.id}
             item={item}
-            viewMode={viewMode}
             onClick={() => handleItemClick(item.id)}
           />
         ))}
@@ -290,82 +248,70 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
   };
 
   return (
-    <div className="min-h-screen py-16">
-      <div className="max-w-7xl mx-auto mb-8 px-4 md:px-0 title-header">
-        <h1 className="">
-          Generative Archive
-        </h1>
-        <p className="text-gray-500 text-lg max-w-2xl leading-relaxed">
-          텍스트로 그려낸 상상의 단면들을 기록합니다.<br />
-          인공지능이 생성한 독창적인 비주얼과 실험적인 텍스처를 탐험하세요.
-        </p>
-      </div>
+    <div className="archive-page-shell min-h-screen">
+      <section className="border-b border-[var(--archive-line)]">
+        <div className="mx-auto max-w-[var(--archive-page)] px-4 pb-8 pt-14">
+          <p className="archive-eyebrow mb-3 text-[var(--archive-faint)]">Visual Archive</p>
+          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Gallery</h1>
+          <p className="mt-4 max-w-xl text-[15px] leading-7 text-[var(--archive-muted)]">
+            텍스트로 그려낸 상상의 단면들을 기록합니다. 인공지능이 생성한 독창적인 비주얼과 실험적인 텍스처를 탐험하세요.
+          </p>
+        </div>
+      </section>
 
-      <div className="max-w-7xl mx-auto pb-16 px-4 md:px-0">
-        {/* 컨트롤 패널 */}
-        <div className="mb-6 space-y-4 bg-white/80 backdrop-blur-md p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-200">
-          <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center">
+      <section className="sticky top-16 z-30 border-b border-[var(--archive-line)] bg-[var(--archive-canvas)]/95 backdrop-blur">
+        <div className="mx-auto max-w-[var(--archive-page)] px-4 py-4">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center">
             {/* 검색창 */}
             <div className="flex-1 relative group">
-              <i className="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+              <i className="ri-search-line absolute left-0 top-1/2 -translate-y-1/2 text-[var(--archive-muted)]"></i>
               <input
                 type="text"
                 placeholder="Search inspiration..."
                 value={searchInput}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 bg-gray-50 border-transparent hover:bg-gray-100 focus:bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-black transition-all"
+                className="w-full border-0 border-b border-[var(--archive-line)] bg-transparent py-2.5 pl-7 pr-10 text-[13px] outline-none transition-colors placeholder:text-[var(--archive-faint)] hover:border-[var(--archive-brand)] focus:border-[var(--archive-brand)]"
               />
               {searchInput && (
                 <button
                   onClick={() => { setSearchInput(''); setPage(1); }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 p-1 text-[var(--archive-muted)] transition-colors hover:text-[var(--archive-brand)]"
                 >
                   <i className="ri-close-circle-fill text-lg"></i>
                 </button>
               )}
             </div>
 
-            {/* 뷰 모드 토글 */}
-            <div className="flex bg-gray-100 p-1 rounded-lg shrink-0">
-              {(['masonry', 'grid', 'list'] as const).map((mode) => (
-                <button
-                  key={mode}
-                  onClick={() => setViewMode(mode)}
-                  className={`px-3 py-1.5 rounded-md text-sm transition-all flex items-center justify-center ${
-                    viewMode === mode
-                      ? 'bg-white text-black shadow-sm font-medium'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  <i className={`text-lg ${
-                    mode === 'masonry' ? 'ri-layout-masonry-line' :
-                    mode === 'grid' ? 'ri-layout-grid-line' : 'ri-list-check'
-                  }`}></i>
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* 상단 태그 필터 */}
           {!loadingTags && topTags.length > 0 && (
-            <div className="flex flex-wrap gap-2 items-center pt-2 border-t border-gray-100">
+            <nav className="flex gap-6 overflow-x-auto pt-2">
               {topTags.map((item) => (
                 <button
                   key={item.tag}
                   onClick={() => handleTagToggle(item.tag)}
-                  className={`px-3 py-1 text-xs rounded-full border transition-all ${
+                  className={`whitespace-nowrap border-b-2 pb-1 text-[13px] font-medium transition-colors ${
                     selectedTags.includes(item.tag)
-                      ? 'bg-black text-white border-black'
-                      : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
+                      ? 'border-[var(--archive-ink)] text-[var(--archive-ink)]'
+                      : 'border-transparent text-[var(--archive-muted)] hover:text-[var(--archive-brand)]'
                   }`}
                 >
                   #{item.tag}
                 </button>
               ))}
-            </div>
+            </nav>
           )}
         </div>
+      </section>
 
+      <section className="mx-auto max-w-[var(--archive-page)] px-4 py-10 pb-16">
+        <div className="mb-4 flex items-center justify-between text-[12px] text-[var(--archive-muted)]">
+          <span className="archive-eyebrow text-[var(--archive-faint)]">
+            {selectedTags.length > 0 ? selectedTags.join(', ') : 'All'}
+          </span>
+          <span className="archive-index">{gallery.length} Items</span>
+        </div>
         {/* 활성 필터 UI */}
         <div className="mb-2">
           <ActiveFilter />
@@ -375,72 +321,43 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
 
         {/* 페이지네이션 */}
         {!loading && gallery.length > 0 && totalPages > 1 && (
-          <div className={`flex flex-wrap justify-center items-center mt-12 gap-2 transition-opacity duration-200 ${fetching ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
-            <button
-              onClick={() => updatePage(1)}
-              disabled={page === 1}
-              className="w-10 h-10 flex items-center justify-center border rounded-lg bg-white hover:bg-gray-50 disabled:opacity-30 disabled:hover:bg-white transition-colors"
-              title="First Page"
-            >
-              <i className="ri-skip-back-line"></i>
-            </button>
+          <div className={`mt-16 flex flex-wrap items-center justify-center gap-2 transition-opacity duration-200 ${fetching ? 'pointer-events-none opacity-50' : 'opacity-100'}`}>
             <button
               onClick={() => updatePage(Math.max(1, page - 1))}
               disabled={page === 1}
-              className="w-10 h-10 flex items-center justify-center border rounded-lg bg-white hover:bg-gray-50 disabled:opacity-30 disabled:hover:bg-white transition-colors"
-              title="Previous Page"
+              className="border border-[var(--archive-line)] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--archive-ink)] transition hover:border-[var(--archive-brand)] hover:bg-[var(--archive-brand)] hover:text-white disabled:text-[var(--archive-muted)] disabled:opacity-40 disabled:hover:border-[var(--archive-line)] disabled:hover:bg-transparent disabled:hover:text-[var(--archive-muted)]"
             >
-              <i className="ri-arrow-left-s-line text-lg"></i>
+              Previous
             </button>
-            <div className="flex items-center gap-1 mx-2">
-              <div className="hidden md:flex gap-1">
-                {getPaginationRange(page, totalPages).map((p, idx) => (
-                   p === '...' ? (
-                     <span key={`dots-${idx}`} className="w-8 text-center text-gray-400 font-mono">...</span>
-                   ) : (
-                     <button
-                       key={p}
-                       onClick={() => updatePage(Number(p))}
-                       className={`w-10 h-10 flex items-center justify-center rounded-lg text-sm font-mono transition-all ${
-                         page === p
-                           ? 'bg-black text-white font-bold'
-                           : 'bg-white border hover:bg-gray-50 text-gray-600'
-                       }`}
-                     >
-                       {p}
-                     </button>
-                   )
-                ))}
-              </div>
-              <span className="md:hidden px-2 text-gray-500 font-mono text-sm whitespace-nowrap">
-                 {page} / {totalPages}
-              </span>
-            </div>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
+              <button
+                key={pageNumber}
+                onClick={() => updatePage(pageNumber)}
+                className={`h-9 w-9 text-[12px] font-semibold transition ${
+                  pageNumber === page
+                    ? 'bg-[var(--archive-ink)] text-[var(--archive-canvas)]'
+                    : 'text-[var(--archive-muted)] hover:bg-[var(--archive-bg-light)] hover:text-[var(--archive-brand)]'
+                }`}
+              >
+                {pageNumber}
+              </button>
+            ))}
             <button
               onClick={() => updatePage(Math.min(totalPages, page + 1))}
               disabled={page === totalPages}
-              className="w-10 h-10 flex items-center justify-center border rounded-lg bg-white hover:bg-gray-50 disabled:opacity-30 disabled:hover:bg-white transition-colors"
-              title="Next Page"
+              className="border border-[var(--archive-line)] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--archive-ink)] transition hover:border-[var(--archive-brand)] hover:bg-[var(--archive-brand)] hover:text-white disabled:text-[var(--archive-muted)] disabled:opacity-40 disabled:hover:border-[var(--archive-line)] disabled:hover:bg-transparent disabled:hover:text-[var(--archive-muted)]"
             >
-              <i className="ri-arrow-right-s-line text-lg"></i>
-            </button>
-            <button
-              onClick={() => updatePage(totalPages)}
-              disabled={page === totalPages}
-              className="w-10 h-10 flex items-center justify-center border rounded-lg bg-white hover:bg-gray-50 disabled:opacity-30 disabled:hover:bg-white transition-colors"
-              title="Last Page"
-            >
-              <i className="ri-skip-forward-line"></i>
+              Next
             </button>
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }
 
-// --- Image Item Component (기존 동일) ---
-function GalleryItemImage({ item, viewMode, onClick }: { item: GalleryItem; viewMode: 'masonry' | 'grid' | 'list'; onClick: () => void; }) {
+// --- Image Item Component ---
+function GalleryItemImage({ item, onClick }: { item: GalleryItem; onClick: () => void; }) {
   const HoverOverlay = (
     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
       <h3 className="text-white font-medium text-sm line-clamp-1 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
@@ -456,60 +373,21 @@ function GalleryItemImage({ item, viewMode, onClick }: { item: GalleryItem; view
 
   const containerClass = "group relative  overflow-hidden  cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300";
 
-  if (viewMode === 'masonry') {
-    return (
-      <div className={`${containerClass} break-inside-avoid`} onClick={onClick}>
-        <div className="relative w-full" style={{ aspectRatio: `${item.image_width} / ${item.image_height}` }}>
-          <Image
-            src={item.image_url}
-            alt={item.title}
-            fill
-            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
-            quality={75}
-            className="object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
-            placeholder="blur"
-            blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmM2Y0ZjYiIC8+PC9zdmc+"
-          />
-          {HoverOverlay}
-        </div>
+  return (
+    <div className={`${containerClass} break-inside-avoid`} onClick={onClick}>
+      <div className="relative w-full" style={{ aspectRatio: `${item.image_width} / ${item.image_height}` }}>
+        <Image
+          src={item.image_url}
+          alt={item.title}
+          fill
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
+          quality={75}
+          className="object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmM2Y0ZjYiIC8+PC9zdmc+"
+        />
+        {HoverOverlay}
       </div>
-    );
-  }
-  
-  if (viewMode === 'grid') {
-      return (
-        <div className={containerClass} onClick={onClick}>
-          <div className="relative w-full aspect-square">
-            <Image
-              src={item.image_url}
-              alt={item.title}
-              fill
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
-              className="object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
-              placeholder="blur"
-              blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmM2Y0ZjYiIC8+PC9zdmc+"
-            />
-            {HoverOverlay}
-          </div>
-        </div>
-      );
-    }
-  
-    // List View
-    return (
-      <div className={containerClass} onClick={onClick}>
-        <div className="relative w-full h-48">
-          <Image
-            src={item.image_url}
-            alt={item.title}
-            fill
-            sizes="(max-width: 640px) 100vw, 50vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-            placeholder="blur"
-            blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmM2Y0ZjYiIC8+PC9zdmc+"
-          />
-          {HoverOverlay}
-        </div>
-      </div>
-    );
+    </div>
+  );
 }

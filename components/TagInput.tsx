@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 
-export default function TagInput({ tags, setTags }: any) {
+type TagInputProps = {
+  tags: string[];
+  setTags: (tags: string[]) => void;
+};
+
+export default function TagInput({ tags, setTags }: TagInputProps) {
   const [value, setValue] = useState("");
   const [editingTag, setEditingTag] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
@@ -45,17 +50,16 @@ export default function TagInput({ tags, setTags }: any) {
   };
 
   return (
-    <div className="border rounded p-2 flex flex-wrap gap-2 tag-box">
+    <div className="flex min-h-11 flex-wrap gap-2 border border-gray-200 bg-white px-2.5 py-2">
       {tags.map((tag: string) => (
         <div
           key={tag}
-          className="tag-item"
+          className="inline-flex items-center bg-gray-100 px-2 py-1 text-xs text-gray-700"
         >
           {editingTag === tag ? (
-            // 🔧 수정 모드
             <input
               autoFocus
-              className="outline-none  tag-input"
+              className="w-20 bg-transparent outline-none"
               value={editValue}
               onChange={(e) => setEditValue(e.target.value)}
               onKeyDown={(e) => {
@@ -71,8 +75,9 @@ export default function TagInput({ tags, setTags }: any) {
                 {tag}
               </span>
               <button
-                className="ml-1 text-gray-500"
+                className="ml-1 text-gray-400 hover:text-gray-900"
                 onClick={() => deleteTag(tag)}
+                type="button"
               >
                 <i className="ri-close-line"></i>
               </button>
@@ -81,11 +86,8 @@ export default function TagInput({ tags, setTags }: any) {
         </div>
       ))}
 
-      {/* 새 태그 추가 input */}
       <input
-        className="outline-none tag-input
-        
-        "
+        className="min-w-24 flex-1 bg-transparent text-sm outline-none placeholder:text-gray-300"
         placeholder="Tags"
         value={value}
         onChange={(e) => setValue(e.target.value)}

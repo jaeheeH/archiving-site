@@ -21,8 +21,8 @@ export default function HomeGallerySection({ initialGallery }: HomeGallerySectio
   return (
     <div className="">
       {initialGallery.length === 0 ? (
-        <div className="text-center py-20 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-          <p className="text-gray-500">등록된 갤러리가 없습니다.</p>
+        <div className="rounded-xl border border-dashed border-[var(--archive-line)] bg-gray-50 py-20 text-center dark:bg-[#151515]">
+          <p className="text-gray-500 dark:text-gray-400">등록된 갤러리가 없습니다.</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -30,7 +30,7 @@ export default function HomeGallerySection({ initialGallery }: HomeGallerySectio
             <Link
               key={item.id}
               href={`/gallery/${item.id}`}
-              className="group relative aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-pointer block"
+              className="group relative block aspect-square cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-[#1d1d1d]"
             >
               <Image
                 src={item.image_url}
