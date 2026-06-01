@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase/client';
+import { useToast } from '@/components/ToastProvider';
 
 // --- Types ---
 interface Post {
@@ -55,6 +57,8 @@ export default function BlogClient({
 }: BlogClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const supabase = useMemo(() => createClient(), []);
+  const { addToast } = useToast();
 
   // URL에서 초기값 읽기
   const initialPage = Number(searchParams.get('page')) || 1;
@@ -65,6 +69,9 @@ export default function BlogClient({
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [pagination, setPagination] = useState<PaginationInfo>(initialPagination);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [scrapedPostIds, setScrapedPostIds] = useState<Set<string>>(new Set());
+  const [scrappingPostIds, setScrappingPostIds] = useState<Set<string>>(new Set());
 
   const POSTS_PER_PAGE = 12;
 
@@ -94,6 +101,55 @@ export default function BlogClient({
       fetchPosts(initialPage, initialCategory);
     }
   }, []); // 마운트 시 1회만 실행
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const syncScrapStatus = async () => {
+      const postIds = posts.map((post) => post.id);
+
+      if (postIds.length === 0) {
+        setScrapedPostIds(new Set());
+        return;
+      }
+
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const userId = session?.user?.id ?? null;
+
+      if (cancelled) return;
+      setCurrentUserId(userId);
+
+      if (!userId) {
+        setScrapedPostIds(new Set());
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('post_scraps')
+        .select('post_id')
+        .eq('user_id', userId)
+        .in('post_id', postIds);
+
+      if (cancelled) return;
+
+      if (error) {
+        console.error('Failed to fetch blog scraps:', error);
+        return;
+      }
+
+      setScrapedPostIds(
+        new Set((data || []).map((scrap: { post_id: string }) => scrap.post_id))
+      );
+    };
+
+    syncScrapStatus();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [posts, supabase]);
 
   // 4️⃣ 브라우저 뒤로가기/앞으로가기 감지 (popstate)
   useEffect(() => {
@@ -135,6 +191,75 @@ export default function BlogClient({
     setCurrentPage(1);
     updateURL(1, categoryId);
     fetchPosts(1, categoryId);
+  };
+
+  const handleScrapToggle = async (event: React.MouseEvent<HTMLButtonElement>, post: Post) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (scrappingPostIds.has(post.id)) return;
+
+    let userId = currentUserId;
+    if (!userId) {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      userId = session?.user?.id ?? null;
+      setCurrentUserId(userId);
+    }
+
+    if (!userId) {
+      addToast('로그인이 필요합니다', 'error');
+      const redirectTo = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
+      router.push(`/login?redirect=${redirectTo}`);
+      return;
+    }
+
+    setScrappingPostIds((prev) => {
+      const next = new Set(prev);
+      next.add(post.id);
+      return next;
+    });
+
+    try {
+      const res = await fetch(`/api/posts/${post.id}/scrap`, { method: 'POST' });
+
+      if (res.status === 401) {
+        addToast('로그인이 필요합니다', 'error');
+        const redirectTo = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
+        router.push(`/login?redirect=${redirectTo}`);
+        return;
+      }
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        addToast(data.error || '북마크 처리에 실패했습니다', 'error');
+        return;
+      }
+
+      setScrapedPostIds((prev) => {
+        const next = new Set(prev);
+        if (data.scraped) next.add(post.id);
+        else next.delete(post.id);
+        return next;
+      });
+      setPosts((prev) =>
+        prev.map((item) =>
+          item.id === post.id ? { ...item, scrap_count: data.scrapCount } : item
+        )
+      );
+      addToast(data.scraped ? '북마크에 저장되었습니다' : '북마크가 해제되었습니다', 'success');
+    } catch (error) {
+      console.error('Failed to toggle blog scrap:', error);
+      addToast('북마크 처리 중 오류가 발생했습니다', 'error');
+    } finally {
+      setScrappingPostIds((prev) => {
+        const next = new Set(prev);
+        next.delete(post.id);
+        return next;
+      });
+    }
   };
 
   const getCategoryName = (categoryId: string | null): string => {
@@ -263,6 +388,26 @@ export default function BlogClient({
                               <span className="archive-index">{post.view_count || 0}</span>
                             </span>
                           </div>
+                          <button
+                            type="button"
+                            onClick={(event) => handleScrapToggle(event, post)}
+                            disabled={scrappingPostIds.has(post.id)}
+                            aria-pressed={scrapedPostIds.has(post.id)}
+                            aria-label={scrapedPostIds.has(post.id) ? '북마크 해제' : '북마크'}
+                            title={scrapedPostIds.has(post.id) ? '북마크 해제' : '북마크'}
+                            className={`flex items-center gap-1.5 transition-colors disabled:opacity-50 ${
+                              scrapedPostIds.has(post.id)
+                                ? 'text-[var(--archive-brand)]'
+                                : 'text-[var(--archive-muted)] hover:text-[var(--archive-brand)]'
+                            }`}
+                          >
+                            <i
+                              className={`${
+                                scrapedPostIds.has(post.id) ? 'ri-bookmark-fill' : 'ri-bookmark-line'
+                              } text-[15px]`}
+                            />
+                            <span className="archive-index">{post.scrap_count || 0}</span>
+                          </button>
                         </div>
                       </div>
 
