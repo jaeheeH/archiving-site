@@ -48,8 +48,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="transition-colors hover:text-[#ff4800]">
-                  Archive
+                <Link href="/references" className="transition-colors hover:text-[#ff4800]">
+                  References
                 </Link>
               </li>
             </ul>

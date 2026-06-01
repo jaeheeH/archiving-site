@@ -574,32 +574,6 @@ export default function GalleryDetailClient({
               </section>
             )}
 
-            <section className="flex min-h-48 flex-1 flex-col border-b border-white/10 p-4 md:p-5">
-              <div className="mb-4 flex items-center gap-2">
-                <h3 className="text-sm font-bold text-white">Comments</h3>
-                <span className="text-xs text-gray-500">0</span>
-              </div>
-              <p className="text-xs text-gray-500">No Comments yet</p>
-            </section>
-
-            <section className="p-4 md:p-5">
-              <div className="flex h-9 items-center gap-2 bg-white/5 px-3">
-                <input
-                  type="text"
-                  disabled
-                  placeholder="Enter your comment"
-                  className="min-w-0 flex-1 bg-transparent text-xs text-gray-500 outline-none placeholder:text-gray-500"
-                />
-                <button
-                  type="button"
-                  disabled
-                  className="flex h-6 w-6 items-center justify-center bg-white/5 text-gray-600"
-                  title="댓글 작성"
-                >
-                  <i className="ri-send-plane-fill text-xs"></i>
-                </button>
-              </div>
-            </section>
           </div>
           <div
             ref={scrollRef}

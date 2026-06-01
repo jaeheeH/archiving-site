@@ -60,15 +60,75 @@ function normalizeSeed(value: unknown) {
   return numeric;
 }
 
-function normalizeOutputUrl(value: unknown) {
-  if (typeof value !== 'string') return '';
+function normalizeOutputUrl(value: unknown): string {
+  if (typeof value === 'string') {
+    try {
+      const parsed = new URL(value);
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.toString() : '';
+    } catch {
+      return '';
+    }
+  }
 
-  try {
-    const parsed = new URL(value);
-    return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.toString() : '';
-  } catch {
+  if (value instanceof URL) {
+    return value.protocol === 'http:' || value.protocol === 'https:' ? value.toString() : '';
+  }
+
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      const url = normalizeOutputUrl(item);
+      if (url) return url;
+    }
+
     return '';
   }
+
+  if (!value || typeof value !== 'object') return '';
+
+  const output = value as {
+    url?: unknown;
+    toString?: unknown;
+    output?: unknown;
+    image?: unknown;
+    images?: unknown;
+  };
+
+  if (typeof output.url === 'function') {
+    try {
+      const url = normalizeOutputUrl(output.url.call(value));
+      if (url) return url;
+    } catch {
+      // Some SDK output objects expose url(), but it can throw for non-URL streams.
+    }
+  }
+
+  if (output.output) {
+    const url = normalizeOutputUrl(output.output);
+    if (url) return url;
+  }
+
+  if (output.image) {
+    const url = normalizeOutputUrl(output.image);
+    if (url) return url;
+  }
+
+  if (output.images) {
+    const url = normalizeOutputUrl(output.images);
+    if (url) return url;
+  }
+
+  try {
+    if (typeof output.toString === 'function') {
+      const text = output.toString.call(value);
+      if (typeof text === 'string' && text !== '[object Object]') {
+        return normalizeOutputUrl(text);
+      }
+    }
+  } catch {
+    // Ignore non-URL object stringification.
+  }
+
+  return '';
 }
 
 export async function POST(request: Request) {
@@ -183,9 +243,9 @@ export async function POST(request: Request) {
 
     const output = await replicate.run(fullModelId as Parameters<typeof replicate.run>[0], {
       input: inputParams
-    }) as string[];
+    });
 
-    const replicateImageUrl = normalizeOutputUrl(output?.[0]);
+    const replicateImageUrl = normalizeOutputUrl(output);
     if (!replicateImageUrl) {
       throw new Error('Generated image URL is invalid.');
     }
