@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { useToast } from '@/components/ToastProvider';
@@ -69,7 +68,7 @@ export default function GalleryDetailClient({
 
   // Refs
   const scrollRef = useRef<HTMLDivElement>(null);
-  const activeThumbRef = useRef<HTMLDivElement>(null);
+  const activeThumbRef = useRef<HTMLButtonElement>(null);
   
   // ✅ 스크롤 보정용 스냅샷
   const snapshotRef = useRef<{ 
@@ -365,6 +364,38 @@ export default function GalleryDetailClient({
   
   const prevId = listPrevItem?.id ?? serverPrevId;
   const nextId = listNextItem?.id ?? serverNextId;
+  const imageRatioLabel = useMemo(() => {
+    const width = gallery.image_width || 0;
+    const height = gallery.image_height || 0;
+
+    if (!width || !height) return "-";
+
+    const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
+    const divisor = gcd(width, height);
+
+    return `${Math.round(width / divisor)}:${Math.round(height / divisor)}`;
+  }, [gallery.image_height, gallery.image_width]);
+  const imageSizeLabel =
+    gallery.image_width && gallery.image_height
+      ? `${gallery.image_width}w x ${gallery.image_height}h`
+      : "-";
+  const detailText = gallery.description || gallery.gemini_description || "No prompt available.";
+  const visibleTags = useMemo(() => {
+    const seen = new Set<string>();
+
+    return [...(gallery.tags || []), ...(gallery.gemini_tags || [])]
+      .map((tag) => (typeof tag === "string" ? tag.trim() : ""))
+      .filter((tag) => {
+        if (!tag) return false;
+
+        const key = tag.toLowerCase();
+        if (seen.has(key)) return false;
+
+        seen.add(key);
+        return true;
+      })
+      .slice(0, 12);
+  }, [gallery.gemini_tags, gallery.tags]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -380,55 +411,39 @@ export default function GalleryDetailClient({
   // Render
   // --------------------------------------------------------------------------
   return (
-    <div className="fixed inset-0 z-50 flex h-screen w-screen flex-col overflow-hidden bg-white text-gray-950 dark:bg-[#101010] dark:text-gray-100">
-      
-      {/* Header */}
-      <div className="z-20 flex h-16 shrink-0 items-center justify-between border-b border-gray-100 bg-white px-6 py-3 dark:border-[#302d28] dark:bg-[#151515]">
-        <div className="flex items-center gap-1">
-          <button onClick={handleScrapToggle} className={`p-2 rounded-full transition-colors ${isScraped ? "bg-[#ff4800]/10 text-[#ff4800]" : "text-gray-500 hover:bg-[#ff4800]/10 hover:text-[#ff4800] dark:text-gray-400"}`}>
-            <i className={`text-xl ${isScraped ? "ri-bookmark-fill" : "ri-bookmark-line"}`}></i>
-          </button>
-          <button onClick={handleShare} className="rounded-full p-2 text-gray-500 transition-colors hover:bg-[#ff4800]/10 hover:text-[#ff4800] dark:text-gray-400">
-            <i className="ri-share-line text-xl"></i>
-          </button>
-          <button onClick={handleDownload} className="rounded-full p-2 text-gray-500 transition-colors hover:bg-[#ff4800]/10 hover:text-[#ff4800] dark:text-gray-400">
-            <i className="ri-download-line text-xl"></i>
-          </button>
-          <div className="mx-2 h-6 w-[1px] bg-gray-200 dark:bg-[#302d28]"></div>
-          <button onClick={handleClose} className="rounded-full p-2 text-gray-500 hover:bg-red-50 hover:text-red-600 dark:text-gray-400 dark:hover:bg-red-500/10">
-            <i className="ri-close-line text-2xl"></i>
-          </button>
-        </div>
-      </div>
-
-      {/* Body Content */}
-      <div className="flex flex-col md:flex-row h-[calc(100%-64px)]">
-        
-        {/* Left: Image & Navigation */}
-        <div className="group relative flex h-full w-full items-center justify-center border-r border-gray-100 bg-gray-50 dark:border-[#302d28] dark:bg-[#101010] md:w-[75%]">
-           
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#1b1b1b] text-gray-100 md:overflow-hidden">
+      <button
+        onClick={handleClose}
+        className="fixed right-4 top-4 z-[60] flex h-9 w-9 items-center justify-center border border-white/15 bg-black/55 text-white backdrop-blur transition hover:bg-[#ff4800] md:hidden"
+        title="닫기"
+      >
+        <i className="ri-close-line text-xl"></i>
+      </button>
+      <div className="flex min-h-full w-full flex-col md:h-full md:flex-row">
+        {/* Artwork */}
+        <main className="group relative flex min-h-[62vh] flex-1 items-center justify-center bg-[#1f1f1f] bg-[radial-gradient(#2a2a2a_1px,transparent_1px)] p-4 [background-size:14px_14px] md:min-h-0 md:p-8">
           {contentLoading && (
-            <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/50 backdrop-blur-sm dark:bg-black/50">
-              <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-black dark:border-white"></div>
+            <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/45 backdrop-blur-sm">
+              <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-white"></div>
             </div>
           )}
 
           {prevId && (
             <button 
               onClick={() => changeView(prevId)} 
-              className="absolute left-6 z-10 flex h-12 w-12 -translate-x-4 items-center justify-center rounded-full bg-white/90 text-gray-700 opacity-0 shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-[#ff4800] group-hover:translate-x-0 group-hover:opacity-100 dark:bg-[#1d1d1d]/90 dark:text-gray-200 dark:hover:bg-[#252525]"
+              className="absolute left-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/45 text-white opacity-100 backdrop-blur transition hover:bg-[#ff4800] md:left-8 md:h-12 md:w-12 md:-translate-x-4 md:opacity-0 md:group-hover:translate-x-0 md:group-hover:opacity-100"
             >
               <i className="ri-arrow-left-line text-2xl"></i>
             </button>
           )}
 
-          <div className="relative w-full h-full p-4 md:p-8 overflow-hidden">
-            <div className="relative w-full h-full">
+          <div className="relative h-[58vh] w-full max-w-6xl md:h-[74vh] md:w-[68vw]">
+            <div className="relative h-full w-full">
               <Image 
                 src={gallery.image_url} 
                 alt={gallery.title} 
                 fill 
-                className={`object-contain transition-opacity duration-300 ${contentLoading ? 'opacity-50' : 'opacity-100'}`} 
+                className={`object-contain transition-opacity duration-300 ${contentLoading ? 'opacity-50' : 'opacity-100'}`}
                 sizes="(max-width: 1200px) 100vw, 70vw" 
                 priority 
               />
@@ -438,89 +453,188 @@ export default function GalleryDetailClient({
           {nextId && (
             <button 
               onClick={() => changeView(nextId)} 
-              className="absolute right-6 z-10 flex h-12 w-12 translate-x-4 items-center justify-center rounded-full bg-white/90 text-gray-700 opacity-0 shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-[#ff4800] group-hover:translate-x-0 group-hover:opacity-100 dark:bg-[#1d1d1d]/90 dark:text-gray-200 dark:hover:bg-[#252525]"
+              className="absolute right-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-black/45 text-white opacity-100 backdrop-blur transition hover:bg-[#ff4800] md:right-8 md:h-12 md:w-12 md:translate-x-4 md:opacity-0 md:group-hover:translate-x-0 md:group-hover:opacity-100"
             >
               <i className="ri-arrow-right-line text-2xl"></i>
             </button>
           )}
-        </div>
+        </main>
 
-        {/* Right: Info & Vertical Filmstrip */}
-        <div className="flex h-full w-full overflow-hidden bg-white dark:bg-[#151515] md:w-[25%]">
-          
-          {/* Info Area */}
-          <div className="custom-scrollbar h-full shrink-0 space-y-6 overflow-y-auto border-b border-gray-100 p-6 dark:border-[#302d28] md:w-[75%]">
-            <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-              <h2 className="truncate pr-4 text-lg font-bold text-gray-900 dark:text-gray-100">{gallery.title}</h2>
-            </div>
-
-            {gallery.description && (
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-900 dark:text-gray-100">Prompt</h3>
-                  <button 
-                    onClick={handleCopyPrompt} 
-                    className={`flex items-center gap-1 px-2 py-1 text-xs transition-colors ${isCopied ? 'bg-[#ff4800]/10 text-[#ff4800]' : 'text-gray-500 hover:bg-[#ff4800]/10 hover:text-[#ff4800] dark:text-gray-400'}`}
+        {/* Detail panel */}
+        <aside className="w-full shrink-0 border-t border-white/10 bg-[#111111] md:h-full md:w-[420px] md:border-l md:border-t-0 xl:w-[460px]">
+          <div className="flex h-full min-w-0">
+          <div className="custom-scrollbar flex h-full min-w-0 flex-1 flex-col overflow-visible md:overflow-y-auto">
+            <section className="border-b border-white/10 p-4 md:p-5">
+              <div className="mb-5 flex items-center justify-between gap-4">
+                <div className="flex min-w-0 items-center gap-2">
+                  <button
+                    onClick={handleClose}
+                    className="hidden h-7 w-7 shrink-0 items-center justify-center border border-white/15 text-gray-400 transition hover:border-[#ff4800] hover:bg-[#ff4800] hover:text-white md:flex"
+                    title="닫기"
                   >
-                    {isCopied ? "Copied!" : "Copy"}
+                    <i className="ri-close-line text-base"></i>
+                  </button>
+                  <h1 className="truncate text-sm font-bold text-white">Image Detail</h1>
+                </div>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={handleScrapToggle}
+                    disabled={scrapLoading}
+                    className={`flex h-8 w-8 items-center justify-center rounded-sm transition ${
+                      isScraped
+                        ? "bg-[#ff4800]/15 text-[#ff4800]"
+                        : "text-gray-400 hover:bg-white/10 hover:text-white"
+                    }`}
+                    title="북마크"
+                  >
+                    <i className={`${isScraped ? "ri-bookmark-fill" : "ri-bookmark-line"} text-base`}></i>
+                  </button>
+                  <button
+                    onClick={handleDownload}
+                    className="flex h-8 w-8 items-center justify-center rounded-sm text-gray-400 transition hover:bg-white/10 hover:text-white"
+                    title="다운로드"
+                  >
+                    <i className="ri-download-line text-base"></i>
+                  </button>
+                  <button
+                    onClick={handleShare}
+                    className="flex h-8 w-8 items-center justify-center rounded-sm text-gray-400 transition hover:bg-white/10 hover:text-white"
+                    title="공유 링크 복사"
+                  >
+                    <i className="ri-links-line text-base"></i>
                   </button>
                 </div>
-                <div className="overflow-y-auto text-sm text-gray-500 dark:text-gray-400">{gallery.description}</div>
+              </div>
+
+              <h2 className="mb-3 break-words text-lg font-semibold leading-6 text-white">{gallery.title}</h2>
+              <p className="max-w-full whitespace-pre-wrap break-words text-xs leading-5 text-gray-300 [overflow-wrap:anywhere]">
+                {detailText}
+              </p>
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                <span className="bg-white/5 px-3 py-1.5 text-xs font-medium text-gray-300">
+                  Model&nbsp;&nbsp;{gallery.category || "-"}
+                </span>
+                <span className="bg-white/5 px-3 py-1.5 text-xs font-medium text-gray-300">
+                  Ratio&nbsp;&nbsp;{imageRatioLabel}
+                </span>
+              </div>
+            </section>
+
+            <section className="border-b border-white/10 p-4 md:p-5">
+              <dl className="space-y-4 text-xs">
+                <div className="flex justify-between gap-5">
+                  <dt className="text-gray-500">Tool</dt>
+                  <dd className="min-w-0 text-right text-gray-300">{gallery.category || "-"}</dd>
+                </div>
+                <div className="flex justify-between gap-5">
+                  <dt className="text-gray-500">Size</dt>
+                  <dd className="min-w-0 break-words text-right text-gray-300">{imageSizeLabel}</dd>
+                </div>
+                <div className="flex justify-between gap-5">
+                  <dt className="text-gray-500">Created by</dt>
+                  <dd className="min-w-0 break-words text-right text-gray-300">{gallery.author || "ARCH-B"}</dd>
+                </div>
+                <div className="flex justify-between gap-5">
+                  <dt className="text-gray-500">Created on</dt>
+                  <dd className="min-w-0 text-right text-gray-300">
+                    {new Date(gallery.created_at).toLocaleDateString("ko-KR")}
+                  </dd>
+                </div>
+              </dl>
+
+              <div className="mt-5 grid grid-cols-2 gap-2">
+                <button
+                  onClick={handleCopyPrompt}
+                  className="flex h-9 items-center justify-center gap-2 bg-white/5 text-xs font-medium text-gray-200 transition hover:bg-white/10"
+                >
+                  <i className="ri-file-copy-line"></i>
+                  {isCopied ? "Copied" : "Copy Prompt"}
+                </button>
+                <button
+                  onClick={handleShare}
+                  className="flex h-9 items-center justify-center gap-2 bg-white/5 text-xs font-medium text-gray-200 transition hover:bg-white/10"
+                >
+                  <i className="ri-links-line"></i>
+                  Share
+                </button>
+              </div>
+            </section>
+
+            {visibleTags.length > 0 && (
+              <section className="border-b border-white/10 p-4 md:p-5">
+                <h3 className="mb-3 text-sm font-bold text-white">Tags</h3>
+                <div className="flex flex-wrap gap-2">
+                  {visibleTags.map((tag) => (
+                    <span key={tag.toLowerCase()} className="bg-white/5 px-2.5 py-1 text-xs text-gray-400">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            <section className="flex min-h-48 flex-1 flex-col border-b border-white/10 p-4 md:p-5">
+              <div className="mb-4 flex items-center gap-2">
+                <h3 className="text-sm font-bold text-white">Comments</h3>
+                <span className="text-xs text-gray-500">0</span>
+              </div>
+              <p className="text-xs text-gray-500">No Comments yet</p>
+            </section>
+
+            <section className="p-4 md:p-5">
+              <div className="flex h-9 items-center gap-2 bg-white/5 px-3">
+                <input
+                  type="text"
+                  disabled
+                  placeholder="Enter your comment"
+                  className="min-w-0 flex-1 bg-transparent text-xs text-gray-500 outline-none placeholder:text-gray-500"
+                />
+                <button
+                  type="button"
+                  disabled
+                  className="flex h-6 w-6 items-center justify-center bg-white/5 text-gray-600"
+                  title="댓글 작성"
+                >
+                  <i className="ri-send-plane-fill text-xs"></i>
+                </button>
+              </div>
+            </section>
+          </div>
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="custom-scrollbar hidden w-20 shrink-0 flex-col gap-2 overflow-y-auto border-l border-white/10 bg-[#171717] p-2 md:flex"
+            style={{ overflowAnchor: 'none' }}
+          >
+            {loadingMorePrev && (
+              <div className="flex h-10 w-full shrink-0 items-center justify-center">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-600 border-t-white"></div>
               </div>
             )}
-              
-            <ul className="space-y-3 text-sm text-gray-500 dark:text-gray-400">
-              <li className="flex justify-between">
-                <p>Date</p>
-                <p>{new Date(gallery.created_at).toLocaleDateString("ko-KR")}</p>
-              </li>
-              <li className="flex justify-between">
-                <p>Model</p>
-                <p>{gallery.category}</p>
-              </li>
-            </ul>
+            {galleryList.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                ref={item.id === gallery.id ? activeThumbRef : null}
+                onClick={() => changeView(item.id)}
+                className={`relative aspect-square w-full shrink-0 overflow-hidden border transition ${
+                  item.id === gallery.id
+                    ? "border-[#ff4800] opacity-100"
+                    : "border-transparent opacity-55 hover:opacity-100"
+                }`}
+              >
+                <Image src={item.image_url} alt={item.title} fill className="object-cover" sizes="96px" />
+              </button>
+            ))}
+            {loadingMoreNext && (
+              <div className="flex h-10 w-full shrink-0 items-center justify-center">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-600 border-t-white"></div>
+              </div>
+            )}
           </div>
-
-          {/* Vertical Filmstrip */}
-          <div className="flex h-full flex-col bg-gray-50 dark:bg-[#101010] md:w-[25%]">
-            <div 
-              ref={scrollRef} 
-              onScroll={handleScroll}
-              className="flex-1 overflow-y-auto p-2 custom-scrollbar relative flex flex-col gap-2"
-              style={{ overflowAnchor: 'none' }}
-            >
-              {/* 위쪽 로딩 스피너 */}
-              {loadingMorePrev && (
-                <div className="w-full h-10 shrink-0 flex items-center justify-center">
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-black dark:border-gray-600 dark:border-t-white"></div>
-                </div>
-              )}
-
-              {galleryList.map((item) => (
-                <div 
-                  key={item.id} 
-                  ref={item.id === gallery.id ? activeThumbRef : null} 
-                  onClick={() => changeView(item.id)} 
-                  className={`relative w-full aspect-square shrink-0 rounded-md overflow-hidden cursor-pointer transition-all border-2 ${
-                    item.id === gallery.id 
-                      ? "border-[#ff4800] ring-2 ring-[#ff4800]/10 z-10" 
-                      : "border-transparent opacity-60 hover:opacity-100"
-                  }`}
-                >
-                  <Image src={item.image_url} alt={item.title} fill className="object-cover" sizes="200px" />
-                </div>
-              ))}
-              
-              {/* 아래쪽 로딩 스피너 */}
-              {loadingMoreNext && (
-                <div className="w-full h-10 shrink-0 flex items-center justify-center">
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-black dark:border-gray-600 dark:border-t-white"></div>
-                </div>
-              )}
-            </div>
           </div>
-
-        </div>
+        </aside>
       </div>
     </div>
   );

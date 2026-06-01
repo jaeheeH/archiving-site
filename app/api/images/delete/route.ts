@@ -14,6 +14,33 @@ function isSafeGeneratedImagePath(value: string) {
   );
 }
 
+function extractGeneratedImageStoragePath(imageUrl: string) {
+  try {
+    const url = new URL(imageUrl);
+    const marker = '/storage/v1/object/public/generated-images/';
+    const markerIndex = url.pathname.indexOf(marker);
+
+    if (markerIndex < 0) return null;
+
+    return decodeURIComponent(url.pathname.slice(markerIndex + marker.length));
+  } catch {
+    const fallbackPath = imageUrl
+      .split('/generated-images/')
+      .pop()
+      ?.split('?')[0]
+      ?.split('#')[0];
+
+    return fallbackPath || null;
+  }
+}
+
+function isStorageNotFoundError(error: unknown) {
+  const storageError = error as { status?: number | string; statusCode?: number | string; message?: string };
+  const status = Number(storageError.statusCode ?? storageError.status ?? 0);
+
+  return status === 404 || /not found/i.test(storageError.message || '');
+}
+
 export async function POST(request: Request) {
   try {
     let body: Record<string, unknown>;
@@ -60,23 +87,35 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: '삭제 권한이 없습니다.' }, { status: 403 });
     }
 
-    // 1. Storage에서 파일 삭제하기
-    // 이미지 URL에서 파일 경로만 추출해야 합니다.
-    // 예: .../generated-images/brand_id/timestamp.jpg -> brand_id/timestamp.jpg
-    const storagePath = image.image_url.split('/generated-images/').pop();
+    const storagePath = extractGeneratedImageStoragePath(image.image_url);
+    let storageDeleted = false;
+    let storageSkipped = false;
 
-    if (storagePath && isSafeGeneratedImagePath(storagePath)) {
+    if (storagePath) {
+      if (!isSafeGeneratedImagePath(storagePath)) {
+        return NextResponse.json(
+          { error: '이미지 Storage 경로가 올바르지 않아 삭제를 중단했습니다.' },
+          { status: 400 }
+        );
+      }
+
       const { error: storageError } = await supabase.storage
         .from('generated-images')
         .remove([storagePath]);
-      
-      if (storageError) {
+
+      if (storageError && !isStorageNotFoundError(storageError)) {
         console.error('Storage Delete Error:', storageError);
-        // 스토리지 에러가 나도 일단 DB 삭제 시도는 진행합니다.
+        return NextResponse.json(
+          { error: 'Storage 파일 삭제에 실패했습니다. 잠시 후 다시 시도해주세요.' },
+          { status: 502 }
+        );
       }
+
+      storageDeleted = !storageError;
+    } else {
+      storageSkipped = true;
     }
 
-    // 2. DB에서 데이터 삭제하기
     const { error: dbError } = await supabase
       .from('generated_images')
       .delete()
@@ -85,7 +124,7 @@ export async function POST(request: Request) {
 
     if (dbError) throw dbError;
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, storageDeleted, storageSkipped });
 
   } catch (error: unknown) {
     return NextResponse.json({ error: getErrorMessage(error) }, { status: 500 });

@@ -43,6 +43,7 @@ export default function Sidebar() {
       href: "/dashboard/analytics",
       children: [
         { label: "통계 개요", href: "/dashboard/analytics" },
+        { label: "블로그", href: "/dashboard/analytics/blog" },
         { label: "갤러리", href: "/dashboard/analytics/gallery" },
         { label: "레퍼런스", href: "/dashboard/analytics/references" },
       ],
@@ -61,7 +62,6 @@ export default function Sidebar() {
         { label: "설정 개요", href: "/dashboard/settings" },
         { label: "SEO(검색엔진최적화)", href: "/dashboard/settings/seo" },
         { label: "메인 배너", href: "/dashboard/settings/banner" },
-        { label: "레퍼런스 카테고리 관리", href: "/dashboard/settings/reference-categories" },
       ],
     }
   ];

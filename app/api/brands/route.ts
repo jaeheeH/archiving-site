@@ -2,6 +2,7 @@
 import { randomUUID } from 'crypto';
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getErrorMessage } from '@/lib/error-message';
 import { isSafeIdentifierParam } from '@/lib/route-params';
 
@@ -16,6 +17,96 @@ function requireBrandId(value: unknown) {
   if (typeof value !== 'string') return '';
   const trimmed = value.trim();
   return isSafeIdentifierParam(trimmed) ? trimmed : '';
+}
+
+const SELECTED_THUMBNAIL_FOLDER = '__thumbnail__';
+
+function isBrandAssetImage(name: string) {
+  return /\.(jpe?g|png|webp)$/i.test(name);
+}
+
+function isSelectedThumbnailFile(name: string) {
+  return /^selected(?:-[a-zA-Z0-9_-]+)?\.(jpe?g|png|webp)$/i.test(name);
+}
+
+async function getSelectedBrandThumbnailUrl(
+  admin: ReturnType<typeof createAdminClient>,
+  brandId: string
+) {
+  const { data, error } = await admin.storage
+    .from('brand-assets')
+    .list(`${brandId}/${SELECTED_THUMBNAIL_FOLDER}`, {
+      limit: 10,
+      sortBy: { column: 'created_at', order: 'desc' },
+    });
+
+  if (error || !data?.length) return null;
+
+  const selectedImage = data.find((asset) => isSelectedThumbnailFile(asset.name));
+  if (!selectedImage) return null;
+
+  const {
+    data: { publicUrl },
+  } = admin.storage
+    .from('brand-assets')
+    .getPublicUrl(`${brandId}/${SELECTED_THUMBNAIL_FOLDER}/${selectedImage.name}`);
+
+  return publicUrl;
+}
+
+async function getLatestGeneratedThumbnailUrl(
+  admin: ReturnType<typeof createAdminClient>,
+  brandId: string,
+  userId: string
+) {
+  const { data, error } = await admin
+    .from('generated_images')
+    .select('image_url')
+    .eq('brand_id', brandId)
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error || !data?.image_url) return null;
+  return data.image_url as string;
+}
+
+async function getBrandAssetFallbackThumbnailUrl(
+  admin: ReturnType<typeof createAdminClient>,
+  brandId: string
+) {
+  const { data, error } = await admin.storage
+    .from('brand-assets')
+    .list(brandId, {
+      limit: 30,
+      sortBy: { column: 'created_at', order: 'asc' },
+    });
+
+  if (error || !data?.length) return null;
+
+  const firstImage = data.find((asset) => isBrandAssetImage(asset.name));
+  if (!firstImage) return null;
+
+  const {
+    data: { publicUrl },
+  } = admin.storage.from('brand-assets').getPublicUrl(`${brandId}/${firstImage.name}`);
+
+  return publicUrl;
+}
+
+async function getBrandThumbnailUrl(
+  admin: ReturnType<typeof createAdminClient>,
+  brandId: string,
+  userId: string
+) {
+  const selectedThumbnail = await getSelectedBrandThumbnailUrl(admin, brandId);
+  if (selectedThumbnail) return selectedThumbnail;
+
+  const latestGeneratedThumbnail = await getLatestGeneratedThumbnailUrl(admin, brandId, userId);
+  if (latestGeneratedThumbnail) return latestGeneratedThumbnail;
+
+  return getBrandAssetFallbackThumbnailUrl(admin, brandId);
 }
 
 async function parseJsonObject(request: Request) {
@@ -52,7 +143,16 @@ export async function GET() {
       .limit(1, { referencedTable: 'trained_models' });
 
     if (error) throw error;
-    return NextResponse.json(data, {
+
+    const admin = createAdminClient();
+    const brandsWithThumbnails = await Promise.all(
+      (data || []).map(async (brand) => ({
+        ...brand,
+        thumbnail_url: await getBrandThumbnailUrl(admin, brand.id, user.id),
+      }))
+    );
+
+    return NextResponse.json(brandsWithThumbnails, {
       headers: {
         'Cache-Control': 'private, no-store',
       },

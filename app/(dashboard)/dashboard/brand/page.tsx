@@ -14,12 +14,25 @@ type Brand = {
   name: string;
   trigger_word: string;
   created_at: string;
+  thumbnail_url?: string | null;
   trained_models?: TrainedModel[];
+};
+
+type GeneratedBrandImage = {
+  id: string;
+  image_url: string;
+  prompt: string | null;
+  created_at: string | null;
 };
 
 export default function MyBrandsPage() {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(true);
+  const [thumbnailModalBrand, setThumbnailModalBrand] = useState<Brand | null>(null);
+  const [thumbnailImages, setThumbnailImages] = useState<GeneratedBrandImage[]>([]);
+  const [thumbnailLoading, setThumbnailLoading] = useState(false);
+  const [thumbnailError, setThumbnailError] = useState('');
+  const [selectingThumbnailId, setSelectingThumbnailId] = useState<string | null>(null);
   
   // 수정 모드 상태
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -95,6 +108,67 @@ export default function MyBrandsPage() {
       setBrands(prev => prev.filter(b => b.id !== id));
     } catch (e) {
       alert('오류가 발생했습니다.');
+    }
+  };
+
+  const openThumbnailPicker = async (brand: Brand) => {
+    setThumbnailModalBrand(brand);
+    setThumbnailImages([]);
+    setThumbnailError('');
+    setThumbnailLoading(true);
+
+    try {
+      const res = await fetch(`/api/brands/${brand.id}/thumbnail`, { cache: 'no-store' });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || '이미지 목록을 불러오지 못했습니다.');
+      }
+
+      setThumbnailImages(Array.isArray(data.images) ? data.images : []);
+    } catch (error) {
+      setThumbnailError(error instanceof Error ? error.message : '이미지 목록을 불러오지 못했습니다.');
+    } finally {
+      setThumbnailLoading(false);
+    }
+  };
+
+  const closeThumbnailPicker = () => {
+    setThumbnailModalBrand(null);
+    setThumbnailImages([]);
+    setThumbnailError('');
+    setSelectingThumbnailId(null);
+  };
+
+  const selectThumbnail = async (image: GeneratedBrandImage) => {
+    if (!thumbnailModalBrand) return;
+
+    setSelectingThumbnailId(image.id);
+
+    try {
+      const res = await fetch(`/api/brands/${thumbnailModalBrand.id}/thumbnail`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageId: image.id }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || '대표 이미지를 저장하지 못했습니다.');
+      }
+
+      setBrands((prev) =>
+        prev.map((brand) =>
+          brand.id === thumbnailModalBrand.id
+            ? { ...brand, thumbnail_url: data.thumbnail_url || image.image_url }
+            : brand
+        )
+      );
+      closeThumbnailPicker();
+    } catch (error) {
+      alert(error instanceof Error ? error.message : '대표 이미지를 저장하지 못했습니다.');
+    } finally {
+      setSelectingThumbnailId(null);
     }
   };
 
@@ -179,22 +253,25 @@ export default function MyBrandsPage() {
                 </div>
               ) : (
                 // [일반 보기 UI]
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-xl font-bold text-gray-900">{brand.name}</h3>
-                    <StatusBadge models={brand.trained_models} />
-                  </div>
-                  
-                  <div className="flex items-center gap-4 text-sm text-gray-600">
-                    <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-md border">
-                        <span className="text-xs font-bold text-gray-400">TRIGGER ID</span>
-                        <span className="font-mono text-indigo-600 font-bold tracking-wide">
-                        {brand.trigger_word}
-                        </span>
+                <div className="flex min-w-0 flex-1 items-center gap-4">
+                  <BrandThumbnail brand={brand} />
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-2 flex flex-wrap items-center gap-3">
+                      <h3 className="truncate text-xl font-bold text-gray-900">{brand.name}</h3>
+                      <StatusBadge models={brand.trained_models} />
                     </div>
-                    <span className="text-xs text-gray-400">
-                      | 생성일: {new Date(brand.created_at).toLocaleDateString()}
-                    </span>
+                    
+                    <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+                      <div className="flex min-w-0 items-center gap-2 rounded-md border bg-gray-50 px-3 py-1.5">
+                          <span className="shrink-0 text-xs font-bold text-gray-400">TRIGGER ID</span>
+                          <span className="truncate font-mono font-bold tracking-wide text-indigo-600">
+                          {brand.trigger_word}
+                          </span>
+                      </div>
+                      <span className="text-xs text-gray-400">
+                        생성일: {new Date(brand.created_at).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
                 </div>
               )}
@@ -208,6 +285,13 @@ export default function MyBrandsPage() {
                       🎨 이미지 생성하기
                     </Button>
                   </Link>
+                  <Button
+                    onClick={() => openThumbnailPicker(brand)}
+                    variant="outline"
+                    className="h-10 border-gray-200 px-4 text-gray-700 hover:bg-gray-50 hover:text-gray-950"
+                  >
+                    썸네일 선택
+                  </Button>
                   
                   <div className="h-6 w-px bg-gray-200 mx-1"></div>
 
@@ -223,6 +307,120 @@ export default function MyBrandsPage() {
             </div>
           ))
         )}
+      </div>
+
+      {thumbnailModalBrand && (
+        <ThumbnailPickerModal
+          brand={thumbnailModalBrand}
+          images={thumbnailImages}
+          loading={thumbnailLoading}
+          error={thumbnailError}
+          selectingId={selectingThumbnailId}
+          onClose={closeThumbnailPicker}
+          onSelect={selectThumbnail}
+        />
+      )}
+    </div>
+  );
+}
+
+function BrandThumbnail({ brand }: { brand: Brand }) {
+  const fallback = brand.name.trim().charAt(0).toUpperCase() || 'B';
+
+  return (
+    <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg border bg-gray-100">
+      {brand.thumbnail_url ? (
+        <img
+          src={brand.thumbnail_url}
+          alt={`${brand.name} 썸네일`}
+          className="h-full w-full object-cover"
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center bg-gray-950 text-lg font-bold text-white">
+          {fallback}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ThumbnailPickerModal({
+  brand,
+  images,
+  loading,
+  error,
+  selectingId,
+  onClose,
+  onSelect,
+}: {
+  brand: Brand;
+  images: GeneratedBrandImage[];
+  loading: boolean;
+  error: string;
+  selectingId: string | null;
+  onClose: () => void;
+  onSelect: (image: GeneratedBrandImage) => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 px-4">
+      <div className="w-full max-w-3xl overflow-hidden rounded-lg border bg-white shadow-xl">
+        <div className="flex items-start justify-between border-b px-6 py-5">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-gray-400">Brand Thumbnail</p>
+            <h2 className="mt-1 text-xl font-bold text-gray-950">{brand.name}</h2>
+            <p className="mt-1 text-sm text-gray-500">
+              이 브랜드로 생성한 이미지 중 대표 썸네일을 선택하세요.
+            </p>
+          </div>
+          <Button variant="ghost" size="sm" onClick={onClose} className="text-gray-500 hover:text-gray-950">
+            닫기
+          </Button>
+        </div>
+
+        <div className="max-h-[68vh] overflow-y-auto p-6">
+          {loading ? (
+            <div className="flex min-h-48 items-center justify-center rounded-md border border-dashed text-sm text-gray-500">
+              이미지 목록을 불러오는 중입니다.
+            </div>
+          ) : error ? (
+            <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          ) : images.length === 0 ? (
+            <div className="flex min-h-48 flex-col items-center justify-center rounded-md border border-dashed text-center">
+              <p className="text-sm font-semibold text-gray-900">아직 생성한 이미지가 없습니다.</p>
+              <p className="mt-1 text-sm text-gray-500">Studio에서 이 브랜드로 이미지를 만든 뒤 선택할 수 있어요.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+              {images.map((image) => (
+                <button
+                  key={image.id}
+                  type="button"
+                  onClick={() => onSelect(image)}
+                  disabled={selectingId !== null}
+                  className="group overflow-hidden rounded-lg border bg-white text-left transition hover:border-gray-950 disabled:cursor-wait disabled:opacity-70"
+                >
+                  <div className="aspect-square overflow-hidden bg-gray-100">
+                    <img
+                      src={image.image_url}
+                      alt={image.prompt || `${brand.name} 생성 이미지`}
+                      className="h-full w-full object-cover transition group-hover:scale-[1.03]"
+                    />
+                  </div>
+                  <div className="p-3">
+                    <p className="line-clamp-2 min-h-10 text-sm font-medium text-gray-900">
+                      {image.prompt || '프롬프트 없음'}
+                    </p>
+                    <p className="mt-2 text-xs text-gray-400">
+                      {selectingId === image.id ? '저장 중...' : '대표 이미지로 선택'}
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

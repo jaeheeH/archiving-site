@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Copy, Download, ExternalLink, Trash2 } from "lucide-react";
+import { Copy, Download, ExternalLink, Search, Trash2, X } from "lucide-react";
 
 type GeneratedImage = {
   id: string;
@@ -35,7 +35,46 @@ export default function LibraryClient({ initialImages }: Props) {
   const [images, setImages] = useState(initialImages);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [copiedSeed, setCopiedSeed] = useState<number | null>(null);
+  const [brandFilter, setBrandFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
   const total = useMemo(() => images.length, [images.length]);
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+
+  const brandOptions = useMemo(() => {
+    return Array.from(
+      new Set(
+        images
+          .map((img) => img.brands?.name?.trim())
+          .filter((name): name is string => Boolean(name))
+      )
+    ).sort((a, b) => a.localeCompare(b));
+  }, [images]);
+
+  const filteredImages = useMemo(() => {
+    return images.filter((img) => {
+      const brandName = img.brands?.name?.trim() || "브랜드 없음";
+      const matchesBrand = brandFilter === "all" || brandName === brandFilter;
+
+      if (!matchesBrand) return false;
+      if (!normalizedSearchTerm) return true;
+
+      return [
+        brandName,
+        img.prompt,
+        img.aspect_ratio,
+        img.seed !== null && img.seed !== undefined ? String(img.seed) : null,
+      ]
+        .filter((value): value is string => typeof value === "string")
+        .some((value) => value.toLowerCase().includes(normalizedSearchTerm));
+    });
+  }, [brandFilter, images, normalizedSearchTerm]);
+
+  const hasActiveFilters = brandFilter !== "all" || normalizedSearchTerm.length > 0;
+
+  const resetFilters = () => {
+    setBrandFilter("all");
+    setSearchTerm("");
+  };
 
   const handleDelete = async (id: string) => {
     if (!confirm("정말 이 이미지를 삭제하시겠습니까? 삭제 후 복구할 수 없습니다.")) return;
@@ -71,12 +110,94 @@ export default function LibraryClient({ initialImages }: Props) {
 
   return (
     <section className="space-y-4">
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-600">총 {total}개 이미지</p>
+      <div className="rounded-lg border border-gray-200 bg-white p-4">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="text-sm font-medium text-gray-950">
+              {filteredImages.length === total
+                ? `총 ${total}개 이미지`
+                : `${filteredImages.length}개 표시 / 총 ${total}개`}
+            </p>
+            <p className="mt-1 text-xs text-gray-500">
+              브랜드명, 프롬프트, 비율, 시드로 검색할 수 있습니다.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+            <label className="sr-only" htmlFor="library-brand-filter">
+              브랜드 필터
+            </label>
+            <select
+              id="library-brand-filter"
+              value={brandFilter}
+              onChange={(event) => setBrandFilter(event.target.value)}
+              className="h-10 min-w-44 rounded-md border border-gray-200 bg-white px-3 text-sm text-gray-800 outline-none transition focus:border-gray-400"
+            >
+              <option value="all">전체 브랜드</option>
+              {brandOptions.map((brand) => (
+                <option key={brand} value={brand}>
+                  {brand}
+                </option>
+              ))}
+            </select>
+
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <label className="sr-only" htmlFor="library-search">
+                라이브러리 검색
+              </label>
+              <input
+                id="library-search"
+                type="search"
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder="검색어 입력"
+                className="h-10 w-full rounded-md border border-gray-200 bg-white pl-9 pr-9 text-sm text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-gray-400 sm:w-72"
+              />
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={() => setSearchTerm("")}
+                  className="absolute right-2 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+                  title="검색어 지우기"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+
+            {hasActiveFilters && (
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="h-10 rounded-md border border-gray-200 px-3 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-950"
+              >
+                초기화
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
-      <div className="columns-1 gap-4 space-y-4 sm:columns-2 lg:columns-3 2xl:columns-4">
-        {images.map((img) => (
+      {filteredImages.length === 0 ? (
+        <div className="flex min-h-64 flex-col items-center justify-center rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center">
+          <p className="text-sm font-semibold text-gray-950">조건에 맞는 이미지가 없습니다.</p>
+          <p className="mt-2 text-sm text-gray-500">
+            브랜드 필터나 검색어를 조정해보세요.
+          </p>
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="mt-5 inline-flex h-9 items-center rounded-md bg-gray-900 px-4 text-sm font-medium text-white hover:bg-gray-800"
+            >
+              필터 초기화
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="columns-1 gap-4 space-y-4 sm:columns-2 lg:columns-3 2xl:columns-4">
+        {filteredImages.map((img) => (
           <article
             key={img.id}
             className="group mb-4 break-inside-avoid overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition hover:border-gray-300 hover:shadow-md"
@@ -153,7 +274,8 @@ export default function LibraryClient({ initialImages }: Props) {
             </div>
           </article>
         ))}
-      </div>
+        </div>
+      )}
     </section>
   );
 }

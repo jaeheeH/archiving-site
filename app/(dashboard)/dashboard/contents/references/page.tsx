@@ -21,7 +21,10 @@ type ReferenceItem = {
 };
 
 type ReferenceCategory = {
+  id: number;
   name: string;
+  description: string | null;
+  created_at: string;
 };
 
 function ReferenceContent() {
@@ -53,9 +56,11 @@ function ReferenceContent() {
   // 모달 상태
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [showAddCategory, setShowAddCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
 
   // 범주 옵션
-  const [ranges, setRanges] = useState<string[]>([]);
+  const [categories, setCategories] = useState<ReferenceCategory[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
 
   async function loadCategories() {
@@ -68,8 +73,7 @@ function ReferenceContent() {
       }
 
       const { data } = await res.json();
-      const categoryNames = (data as ReferenceCategory[]).map((cat) => cat.name);
-      setRanges(categoryNames);
+      setCategories(Array.isArray(data) ? data : []);
     } catch (error: unknown) {
       console.error("❌ 범주 로드 에러:", error);
       addToast("범주 로드 실패", "error");
@@ -77,6 +81,70 @@ function ReferenceContent() {
       setLoadingCategories(false);
     }
   }
+
+  const handleAddCategory = async () => {
+    if (!newCategoryName.trim()) {
+      addToast("카테고리 이름을 입력해주세요", "error");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/references-categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newCategoryName.trim() }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(data.error || "카테고리 추가 실패");
+      }
+
+      addToast("카테고리가 추가되었습니다.", "success");
+      setNewCategoryName("");
+      setShowAddCategory(false);
+      loadCategories();
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "카테고리 추가 중 오류가 발생했습니다.";
+      console.error("❌ 카테고리 추가 에러:", error);
+      addToast(`추가 실패: ${message}`, "error");
+    }
+  };
+
+  const handleDeleteCategory = async (id: number) => {
+    const category = categories.find((item) => item.id === id);
+
+    if (!category) return;
+
+    if (!confirm(`"${category.name}" 카테고리를 삭제하시겠습니까?`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/references-categories/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "삭제 실패");
+      }
+
+      if (category?.name && selectedRange === category.name) {
+        setSelectedRange(null);
+        setPage(1);
+      }
+
+      addToast("카테고리가 삭제되었습니다.", "success");
+      loadCategories();
+      fetchReferences(1);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "삭제 중 오류가 발생했습니다.";
+      console.error("❌ 카테고리 삭제 에러:", error);
+      addToast(`삭제 실패: ${message}`, "error");
+    }
+  };
 
   // 범주 로드
   useEffect(() => {
@@ -254,22 +322,78 @@ function ReferenceContent() {
             >
               전체
             </button>
-            {ranges.map((range) => (
-              <button
-                key={range}
+            {loadingCategories && categories.length === 0 && (
+              <span className="px-3 py-2 text-sm text-gray-400 whitespace-nowrap">
+                카테고리 불러오는 중...
+              </span>
+            )}
+            {categories.map((category) => (
+              <div
+                key={category.id}
                 onClick={() => {
-                  setSelectedRange(range);
+                  setSelectedRange(category.name);
                   setPage(1);
                 }}
-                className={`px-3 py-2 text-sm rounded whitespace-nowrap transition ${
-                  selectedRange === range
+                className={`relative flex gap-2 px-3 py-2 text-sm rounded whitespace-nowrap transition group cursor-pointer ${
+                  selectedRange === category.name
                     ? "bg-black text-white"
                     : "border text-gray-600 hover:bg-gray-100"
                 }`}
               >
-                {range}
-              </button>
+                <p>{category.name}</p>
+                <button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleDeleteCategory(category.id);
+                  }}
+                  className={`rounded opacity-0 group-hover:opacity-100 transition-opacity w-4 h-4 ${
+                    selectedRange === category.name
+                      ? "text-white hover:bg-black"
+                      : "text-gray-400 hover:text-red-600 hover:bg-red-50"
+                  }`}
+                  title="카테고리 삭제"
+                >
+                  <i className="ri-close-line text-sm"></i>
+                </button>
+              </div>
             ))}
+
+            {showAddCategory ? (
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={newCategoryName}
+                  onChange={(event) => setNewCategoryName(event.target.value)}
+                  onKeyDown={(event) => event.key === "Enter" && handleAddCategory()}
+                  placeholder="카테고리 이름"
+                  className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  autoFocus
+                />
+                <button
+                  onClick={handleAddCategory}
+                  className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                >
+                  <i className="ri-check-line"></i>
+                </button>
+                <button
+                  onClick={() => {
+                    setShowAddCategory(false);
+                    setNewCategoryName("");
+                  }}
+                  className="px-3 py-1.5 text-sm bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition"
+                >
+                  <i className="ri-close-line"></i>
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowAddCategory(true)}
+                className="px-3 py-2 text-sm border border-blue-600 text-blue-600 rounded hover:bg-blue-50 transition flex items-center gap-1 whitespace-nowrap"
+              >
+                <i className="ri-add-line"></i>
+                카테고리 추가
+              </button>
+            )}
           </div>
 
           {/* 정렬 옵션 */}

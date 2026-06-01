@@ -382,6 +382,87 @@ export async function getGalleryAnalytics() {
   };
 }
 
+export async function getBlogAnalytics() {
+  const context = await getDashboardContext();
+  if (!context) return null;
+
+  const [rows, categories] = await Promise.all([
+    readRows<{
+      id: string;
+      title: string;
+      slug: string | null;
+      is_published: boolean | null;
+      category_id: string | null;
+      tags: string[] | null;
+      created_at: string | null;
+      updated_at: string | null;
+      published_at: string | null;
+      view_count: number | null;
+      scrap_count: number | null;
+    }>(
+      applyAuthorScope(
+        context.admin
+          .from("posts")
+          .select(
+            "id, title, slug, is_published, category_id, tags, created_at, updated_at, published_at, view_count, scrap_count, author_id"
+          )
+          .eq("type", "blog")
+          .order("updated_at", { ascending: false })
+          .limit(1000),
+        context,
+        "author_id"
+      )
+    ),
+    readRows<{
+      id: string;
+      name: string;
+    }>(
+      context.admin
+        .from("categories")
+        .select("id, name")
+        .eq("type", "blog")
+    ),
+  ]);
+
+  const categoryMap = new Map(categories.map((category) => [category.id, category.name]));
+  const categoryCounts: Record<string, number> = {};
+  const tagCounts: Record<string, number> = {};
+  const monthCounts: Record<string, number> = {};
+
+  rows.forEach((item) => {
+    const categoryName = item.category_id
+      ? categoryMap.get(item.category_id) || "미분류"
+      : "미분류";
+
+    categoryCounts[categoryName] = (categoryCounts[categoryName] || 0) + 1;
+    monthCounts[toMonthKey(item.created_at)] = (monthCounts[toMonthKey(item.created_at)] || 0) + 1;
+
+    item.tags?.forEach((tag) => {
+      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    });
+  });
+
+  const sortedByViews = [...rows]
+    .sort((a, b) => (b.view_count || 0) - (a.view_count || 0))
+    .slice(0, 10);
+  const sortedByScraps = [...rows]
+    .sort((a, b) => (b.scrap_count || 0) - (a.scrap_count || 0))
+    .slice(0, 10);
+
+  return {
+    total: rows.length,
+    published: rows.filter((item) => item.is_published).length,
+    draft: rows.filter((item) => !item.is_published).length,
+    totalViews: rows.reduce((sum, item) => sum + (item.view_count || 0), 0),
+    totalScraps: rows.reduce((sum, item) => sum + (item.scrap_count || 0), 0),
+    categories: sortEntries(categoryCounts),
+    tags: sortEntries(tagCounts, 10),
+    months: sortEntries(monthCounts, 8),
+    topViewed: sortedByViews,
+    topScrapped: sortedByScraps,
+  };
+}
+
 export async function getReferencesAnalytics() {
   const context = await getDashboardContext();
   if (!context) return null;

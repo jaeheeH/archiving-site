@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ImageIcon, Search, Tags } from "lucide-react";
+import { ArrowRight, ImageIcon, Search } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -17,12 +17,6 @@ export default function SettingsIndexPage() {
       href: "/dashboard/settings/banner",
       icon: ImageIcon,
     },
-    {
-      title: "레퍼런스 카테고리",
-      description: "레퍼런스 분류 체계를 만들고 표시 순서를 관리합니다.",
-      href: "/dashboard/settings/reference-categories",
-      icon: Tags,
-    },
   ];
 
   return (
@@ -37,7 +31,7 @@ export default function SettingsIndexPage() {
       </header>
 
       <main className="dashboard-container">
-        <section className="grid gap-4 lg:grid-cols-3">
+        <section className="grid gap-4 lg:grid-cols-2">
           {sections.map((section) => {
             const Icon = section.icon;
 

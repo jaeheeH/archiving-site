@@ -235,7 +235,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     }
 
     return (
-      <div className="columns-2 gap-2 space-y-2 sm:columns-2 md:columns-4 lg:columns-5 xl:columns-5">
+      <div className="columns-2 gap-8 space-y-8 sm:columns-2 md:columns-4 lg:columns-4 xl:columns-4">
         {gallery.map((item) => (
           <GalleryItemImage
             key={item.id}

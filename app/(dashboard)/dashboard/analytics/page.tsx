@@ -1,6 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowRight, BarChart3, BookOpenText, Eye, ImageIcon, MousePointerClick } from "lucide-react";
+import {
+  ArrowRight,
+  BarChart3,
+  BookOpenText,
+  Eye,
+  FileText,
+  ImageIcon,
+  MousePointerClick,
+} from "lucide-react";
 
 import { getDashboardOverview } from "@/lib/dashboard-data";
 
@@ -20,6 +28,14 @@ export default async function AnalyticsPage() {
   }
 
   const panels = [
+    {
+      title: "블로그 분석",
+      description: "조회, 북마크, 카테고리와 태그 흐름을 봅니다.",
+      href: "/dashboard/analytics/blog",
+      value: overview.stats.postsTotal,
+      label: "블로그",
+      icon: FileText,
+    },
     {
       title: "갤러리 분석",
       description: "카테고리, 범위, 태그 분포를 확인합니다.",
@@ -80,7 +96,7 @@ export default async function AnalyticsPage() {
           </div>
         </section>
 
-        <section className="grid gap-4 lg:grid-cols-2">
+        <section className="grid gap-4 lg:grid-cols-3">
           {panels.map((panel) => {
             const Icon = panel.icon;
 
