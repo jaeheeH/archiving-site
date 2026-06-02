@@ -553,7 +553,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
 
       <main className="mx-auto grid max-w-[1440px] gap-10 px-6 py-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:px-8">
         <section className="min-w-0 border-r border-gray-100 pr-0 lg:pr-10">
-          <div className="mb-8 max-w-3xl">
+          <div className="mb-8 ">
             <textarea
               value={title}
               onChange={(e) => {
@@ -576,7 +576,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
             />
           </div>
 
-          <div className="mb-8 max-w-3xl border-y border-gray-100 py-5">
+          <div className="mb-8  border-y border-gray-100 py-5">
             <textarea
               value={summary}
               onChange={(e) => {
@@ -669,7 +669,7 @@ export default function BrunchWriteEditor({ type = 'blog', postId }: WriteEditor
                   ) : (
                     <span className="absolute inset-0 bg-[linear-gradient(135deg,#111827,#1f2937)]" />
                   )}
-                  <span className="relative inline-flex h-9 items-center justify-center bg-white px-5 text-xs font-bold uppercase tracking-[0.12em] text-gray-950 shadow-sm">
+                  <span className="absolute inline-flex h-9 items-center justify-center bg-white px-5 text-xs font-bold uppercase tracking-[0.12em] text-gray-950 shadow-sm">
                     {isUploading ? '업로드 중' : titleImageUrl ? '변경하기' : '업로드하기'}
                   </span>
                 </button>

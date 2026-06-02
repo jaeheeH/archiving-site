@@ -19,6 +19,11 @@ const ALLOWED_GALLERY_SOURCE_IMAGE_TYPES = new Set([
   "image/gif",
 ]);
 
+type GalleryUploadResult = {
+  url: string;
+  thumbnail_url: string;
+};
+
 /**
  * 이미지 파일에서 크기(width, height) 감지
  */
@@ -103,7 +108,7 @@ export default function CreateGalleryPage() {
     if (file) setSelectedImage(file);
   };
 
-  const uploadImage = async (file: File) => {
+  const uploadImage = async (file: File): Promise<GalleryUploadResult> => {
     const formData = new FormData();
     formData.append("file", file);
 
@@ -117,7 +122,10 @@ export default function CreateGalleryPage() {
       throw new Error(data.error || "이미지 업로드 실패");
     }
 
-    return data.url as string;
+    return {
+      url: data.url as string,
+      thumbnail_url: (data.thumbnail_url || data.url) as string,
+    };
   };
 
   const analyzeImage = async (imageUrl: string) => {
@@ -157,7 +165,8 @@ export default function CreateGalleryPage() {
 
       // 2. Storage에 이미지 업로드
       setStatusText("이미지 업로드 중...");
-      const imageUrl = await uploadImage(optimizedFile);
+      const uploadedImage = await uploadImage(optimizedFile);
+      const imageUrl = uploadedImage.url;
 
       // 3. Gemini로 이미지 분석
       setStatusText("이미지 분석 중...");
@@ -174,6 +183,7 @@ export default function CreateGalleryPage() {
           title,
           description,
           image_url: imageUrl,
+          thumbnail_url: uploadedImage.thumbnail_url,
           image_width: width,        // ✅ 추가
           image_height: height,      // ✅ 추가
           tags: [...tags, ...aiTags],

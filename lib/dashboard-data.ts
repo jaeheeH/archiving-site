@@ -26,6 +26,20 @@ type CountValue = {
   error?: string;
 };
 
+type DashboardGalleryRow = {
+  id: number;
+  title: string;
+  image_url: string | null;
+  thumbnail_url: string | null;
+  category: string | null;
+  created_at: string | null;
+};
+
+const LATEST_GALLERY_COLUMNS =
+  "id, title, image_url, thumbnail_url, category, created_at, author";
+const LATEST_GALLERY_COLUMNS_WITHOUT_THUMBNAIL =
+  "id, title, image_url, category, created_at, author";
+
 function normalizeRole(role?: string | null): DashboardRole {
   if (role === "admin" || role === "sub-admin" || role === "editor") {
     return role;
@@ -34,7 +48,7 @@ function normalizeRole(role?: string | null): DashboardRole {
   return "user";
 }
 
-type QueryError = { message?: string } | null;
+type QueryError = { code?: string; message?: string } | null;
 
 type FilterableQuery = {
   eq(column: string, value: string | number | boolean): unknown;
@@ -73,6 +87,57 @@ async function readRows<T>(query: unknown): Promise<T[]> {
     data: T[] | null;
     error: QueryError;
   }>);
+
+  if (error) {
+    console.error("Dashboard data query failed:", error.message);
+    return [];
+  }
+
+  return data || [];
+}
+
+function isMissingThumbnailColumn(error: QueryError) {
+  return (
+    error?.code === "42703" &&
+    /thumbnail_url/i.test(error.message || "")
+  );
+}
+
+function withNullThumbnail<T extends object>(items: T[] | null | undefined) {
+  return (items || []).map((item) => ({
+    ...item,
+    thumbnail_url: null,
+  }));
+}
+
+async function readLatestGallery(context: DashboardContext): Promise<DashboardGalleryRow[]> {
+  const query = (columns: string) =>
+    applyAuthorScope(
+      context.admin
+        .from("gallery")
+        .select(columns)
+        .order("created_at", { ascending: false })
+        .limit(5),
+      context,
+      "author"
+    );
+
+  let { data, error } = await (query(LATEST_GALLERY_COLUMNS) as PromiseLike<{
+    data: DashboardGalleryRow[] | null;
+    error: QueryError;
+  }>);
+
+  if (isMissingThumbnailColumn(error)) {
+    const fallback = await (query(
+      LATEST_GALLERY_COLUMNS_WITHOUT_THUMBNAIL
+    ) as PromiseLike<{
+      data: Omit<DashboardGalleryRow, "thumbnail_url">[] | null;
+      error: QueryError;
+    }>);
+
+    data = withNullThumbnail(fallback.data);
+    error = fallback.error;
+  }
 
   if (error) {
     console.error("Dashboard data query failed:", error.message);
@@ -216,23 +281,7 @@ export async function getDashboardOverview() {
         "author_id"
       )
     ),
-    readRows<{
-      id: number;
-      title: string;
-      image_url: string | null;
-      category: string | null;
-      created_at: string | null;
-    }>(
-      applyAuthorScope(
-        admin
-          .from("gallery")
-          .select("id, title, image_url, category, created_at, author")
-          .order("created_at", { ascending: false })
-          .limit(5),
-        context,
-        "author"
-      )
-    ),
+    readLatestGallery(context),
     readRows<{
       id: number;
       title: string;

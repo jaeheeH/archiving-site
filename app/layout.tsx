@@ -64,6 +64,12 @@ export default async function RootLayout({
         {settings?.favicon_url && (
           <link rel="icon" href={settings.favicon_url} />
         )}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={`${settings?.site_name || "Archiving"} Blog RSS`}
+          href={`${siteUrl}/rss.xml`}
+        />
         <meta name="p:domain_verify" content="a1385cca1b4c87b9e9f53b214e8fd264"/>
         
         {/* Apple Touch Icon */}

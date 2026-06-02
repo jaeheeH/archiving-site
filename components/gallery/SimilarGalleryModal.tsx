@@ -8,6 +8,7 @@ interface SimilarItem {
   id: number;
   title: string;
   image_url: string;
+  thumbnail_url?: string | null;
   image_width: number;
   image_height: number;
   similarity: number;
@@ -143,7 +144,7 @@ function SimilarImageCard({
       {/* 이미지 - 정사각형 비율 */}
       <div className="relative w-full aspect-square bg-gray-100 overflow-hidden">
         <Image
-          src={item.image_url}
+          src={item.thumbnail_url || item.image_url}
           alt={item.title}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
-import { createAdminClient } from '@/lib/supabase/admin';
+import { getBrandManagerContext } from '@/lib/brand-manager-auth';
 import { getErrorMessage } from '@/lib/error-message';
 import { isSafeIdentifierParam } from '@/lib/route-params';
 
@@ -34,23 +33,14 @@ async function parseJsonObject(request: NextRequest) {
 }
 
 async function getAuthorizedContext(brandId: string) {
-  const supabaseAuth = await createClient();
-  const {
-    data: { user },
-  } = await supabaseAuth.auth.getUser();
+  const context = await getBrandManagerContext();
+  if (context.response) return context;
 
-  if (!user) {
-    return {
-      response: NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 }),
-    };
-  }
-
-  const admin = createAdminClient();
-  const { data: brand, error } = await admin
+  const { data: brand, error } = await context.admin
     .from('brands')
     .select('id, user_id')
     .eq('id', brandId)
-    .eq('user_id', user.id)
+    .eq('user_id', context.user.id)
     .maybeSingle();
 
   if (error) throw error;
@@ -61,7 +51,7 @@ async function getAuthorizedContext(brandId: string) {
     };
   }
 
-  return { admin, user };
+  return context;
 }
 
 export async function GET(_request: NextRequest, { params }: Props) {

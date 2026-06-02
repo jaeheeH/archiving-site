@@ -24,8 +24,8 @@ function debugLog(...args: unknown[]) {
 }
 
 async function requireMigrationAccess(req: NextRequest) {
-  const migrationToken = req.headers.get("x-migration-token");
-  const validToken = process.env.MIGRATION_TOKEN;
+  const migrationToken = req.headers.get("x-migration-token")?.trim();
+  const validToken = process.env.MIGRATION_TOKEN?.trim();
 
   if (migrationToken && validToken && migrationToken === validToken) {
     debugLog("Migration token authentication succeeded");
@@ -306,7 +306,7 @@ export async function POST(req: NextRequest) {
     // 6. 남은 이미지 개수 조회
     const { count: remainingCount, error: remainingError } = await adminClient
       .from("gallery")
-      .select("id", { count: "planned", head: true })
+      .select("id", { count: "exact", head: true })
       .is("embedding", null);
 
     if (remainingError) {
@@ -350,7 +350,7 @@ export async function GET(req: NextRequest) {
     // embedding이 NULL인 이미지 개수
     const { count: nullCount, error: nullCountError } = await supabase
       .from("gallery")
-      .select("id", { count: "planned", head: true })
+      .select("id", { count: "exact", head: true })
       .is("embedding", null);
 
     if (nullCountError) {
@@ -360,7 +360,7 @@ export async function GET(req: NextRequest) {
     // 전체 이미지 개수
     const { count: totalCount, error: totalCountError } = await supabase
       .from("gallery")
-      .select("id", { count: "planned", head: true });
+      .select("id", { count: "exact", head: true });
 
     if (totalCountError) {
       throw totalCountError;

@@ -3,8 +3,32 @@
  * 모든 이미지의 embedding을 NULL로 설정하고 다시 분석
  */
 
+const { existsSync, readFileSync } = require('node:fs');
+const { resolve } = require('node:path');
+
+function readDotEnvMigrationToken() {
+  try {
+    const envPath = resolve(process.cwd(), '.env.local');
+    if (!existsSync(envPath)) return '';
+
+    const line = readFileSync(envPath, 'utf8')
+      .split(/\r?\n/)
+      .find((item) => /^\s*MIGRATION_TOKEN\s*=/.test(item));
+
+    if (!line) return '';
+
+    return line
+      .replace(/^\s*MIGRATION_TOKEN\s*=\s*/, '')
+      .trim()
+      .replace(/^["']|["']$/g, '')
+      .trim();
+  } catch {
+    return '';
+  }
+}
+
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-const migrationToken = process.env.MIGRATION_TOKEN;
+const migrationToken = process.env.MIGRATION_TOKEN?.trim() || readDotEnvMigrationToken();
 
 if (!migrationToken) {
   console.error('❌ MIGRATION_TOKEN 환경변수가 필요합니다.');
@@ -41,7 +65,11 @@ async function resetAllEmbeddings() {
 }
 
 async function getMigrationStatus() {
-  const res = await fetch(`${baseUrl}/api/gallery/migrate`);
+  const res = await fetch(`${baseUrl}/api/gallery/migrate`, {
+    headers: {
+      'x-migration-token': migrationToken
+    }
+  });
   const data = await res.json();
   return data.status;
 }

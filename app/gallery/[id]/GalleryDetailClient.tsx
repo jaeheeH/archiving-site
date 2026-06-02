@@ -12,6 +12,7 @@ type GalleryDetail = {
   title: string;
   description?: string;
   image_url: string;
+  thumbnail_url?: string | null;
   image_width: number;
   image_height: number;
   tags: string[];
@@ -26,6 +27,16 @@ type GalleryListItem = {
   id: number;
   title: string;
   image_url: string;
+  thumbnail_url?: string | null;
+};
+
+type SimilarGalleryItem = {
+  id: number;
+  title: string;
+  image_url: string;
+  thumbnail_url?: string | null;
+  description?: string | null;
+  similarity?: number;
 };
 
 type GalleryDetailResponse = {
@@ -85,6 +96,7 @@ export default function GalleryDetailClient({
   const [isScraped, setIsScraped] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [scrapLoading, setScrapLoading] = useState(false);
+  const [similarGallery, setSimilarGallery] = useState<SimilarGalleryItem[]>([]);
 
   // --------------------------------------------------------------------------
   // 1. 초기 데이터 로드
@@ -95,14 +107,14 @@ export default function GalleryDetailClient({
     const fetchContextList = async () => {
       const { data: prevData } = await supabase
         .from('gallery')
-        .select('id, title, image_url')
+        .select('id, title, image_url, thumbnail_url')
         .gt('id', gallery.id) 
         .order('id', { ascending: true }) 
         .limit(20);
 
       const { data: nextData } = await supabase
         .from('gallery')
-        .select('id, title, image_url')
+        .select('id, title, image_url, thumbnail_url')
         .lt('id', gallery.id)
         .order('id', { ascending: false })
         .limit(20);
@@ -112,7 +124,8 @@ export default function GalleryDetailClient({
       const currentItem: GalleryListItem = { 
         id: gallery.id, 
         title: gallery.title, 
-        image_url: gallery.image_url 
+        image_url: gallery.image_url,
+        thumbnail_url: gallery.thumbnail_url,
       };
 
       setGalleryList([...prevItems, currentItem, ...nextItems]);
@@ -122,7 +135,32 @@ export default function GalleryDetailClient({
     };
 
     fetchContextList();
-  }, [gallery.id, gallery.title, gallery.image_url, galleryList, supabase]);
+  }, [gallery.id, gallery.title, gallery.image_url, gallery.thumbnail_url, galleryList, supabase]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function fetchSimilarGallery() {
+      try {
+        const response = await fetch(`/api/gallery/${gallery.id}/similar?limit=6`, {
+          signal: controller.signal,
+        });
+        if (!response.ok) throw new Error("Similar gallery fetch failed");
+
+        const result = await response.json();
+        setSimilarGallery(Array.isArray(result.data) ? result.data : []);
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          console.error("Failed to load similar gallery:", error);
+          setSimilarGallery([]);
+        }
+      }
+    }
+
+    fetchSimilarGallery();
+
+    return () => controller.abort();
+  }, [gallery.id]);
 
   // --------------------------------------------------------------------------
   // 2. 뷰 변경 감지 & 스크롤 센터링 (수정됨)
@@ -213,7 +251,7 @@ export default function GalleryDetailClient({
     
     const { data } = await supabase
       .from('gallery')
-      .select('id, title, image_url')
+      .select('id, title, image_url, thumbnail_url')
       .lt('id', lastItem.id)
       .order('id', { ascending: false })
       .limit(20);
@@ -238,7 +276,7 @@ export default function GalleryDetailClient({
     // 1. 데이터를 먼저 가져옵니다.
     const { data } = await supabase
       .from('gallery')
-      .select('id, title, image_url')
+      .select('id, title, image_url, thumbnail_url')
       .gt('id', firstItem.id)
       .order('id', { ascending: true })
       .limit(20);
@@ -414,14 +452,22 @@ export default function GalleryDetailClient({
     <div className="fixed inset-0 z-50 overflow-y-auto bg-[#1b1b1b] text-gray-100 md:overflow-hidden">
       <button
         onClick={handleClose}
-        className="fixed right-4 top-4 z-[60] flex h-9 w-9 items-center justify-center border border-white/15 bg-black/55 text-white backdrop-blur transition hover:bg-[#ff4800] md:hidden"
+        className="fixed right-6 top-6 z-[60] flex h-9 w-9 items-center justify-center    text-white backdrop-blur transition hover:bg-[#ff4800] md:hidden"
         title="닫기"
       >
         <i className="ri-close-line text-xl"></i>
       </button>
       <div className="flex min-h-full w-full flex-col md:h-full md:flex-row">
         {/* Artwork */}
-        <main className="group relative flex min-h-[62vh] flex-1 items-center justify-center bg-[#1f1f1f] bg-[radial-gradient(#2a2a2a_1px,transparent_1px)] p-4 [background-size:14px_14px] md:min-h-0 md:p-8">
+        <main className="group relative flex min-h-[62vh] flex-1 items-center justify-center bg-[#1f1f1f] p-4 md:min-h-0 md:p-8 position-relative">
+          <button
+            onClick={handleClose}
+            className="hidden h-12 w-12 shrink-0 items-center justify-center  text-gray-400 transition hover:border-[#ff4800] hover:bg-[#ff4800] 
+            hover:text-white md:flex top-6 absolute right-6"
+            title="닫기"
+          >
+            <i className="ri-close-line text-2xl"></i>
+          </button>
           {contentLoading && (
             <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/45 backdrop-blur-sm">
               <div className="h-10 w-10 animate-spin rounded-full border-b-2 border-white"></div>
@@ -467,13 +513,7 @@ export default function GalleryDetailClient({
             <section className="border-b border-white/10 p-4 md:p-5">
               <div className="mb-5 flex items-center justify-between gap-4">
                 <div className="flex min-w-0 items-center gap-2">
-                  <button
-                    onClick={handleClose}
-                    className="hidden h-7 w-7 shrink-0 items-center justify-center border border-white/15 text-gray-400 transition hover:border-[#ff4800] hover:bg-[#ff4800] hover:text-white md:flex"
-                    title="닫기"
-                  >
-                    <i className="ri-close-line text-base"></i>
-                  </button>
+
                   <h1 className="truncate text-sm font-bold text-white">Image Detail</h1>
                 </div>
                 <div className="flex items-center gap-1">
@@ -574,6 +614,39 @@ export default function GalleryDetailClient({
               </section>
             )}
 
+            {similarGallery.length > 0 && (
+              <section className="border-b border-white/10 p-4 md:p-5">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <h3 className="text-sm font-bold text-white">Related Images</h3>
+                  <span className="text-[11px] text-gray-500">유사 이미지</span>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {similarGallery.map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => changeView(item.id)}
+                      className="group min-w-0 text-left"
+                      title={item.title}
+                    >
+                      <span className="relative block aspect-square overflow-hidden bg-white/5">
+                        <Image
+                          src={item.thumbnail_url || item.image_url}
+                          alt={item.title}
+                          fill
+                          sizes="140px"
+                          className="object-cover opacity-75 transition duration-300 group-hover:scale-105 group-hover:opacity-100"
+                        />
+                      </span>
+                      <span className="mt-2 block truncate text-[11px] font-medium text-gray-400 transition-colors group-hover:text-white">
+                        {item.title}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
+
           </div>
           <div
             ref={scrollRef}
@@ -598,7 +671,7 @@ export default function GalleryDetailClient({
                     : "border-transparent opacity-55 hover:opacity-100"
                 }`}
               >
-                <Image src={item.image_url} alt={item.title} fill className="object-cover" sizes="96px" />
+                <Image src={item.thumbnail_url || item.image_url} alt={item.title} fill className="object-cover" sizes="96px" />
               </button>
             ))}
             {loadingMoreNext && (

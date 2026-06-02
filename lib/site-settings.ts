@@ -107,6 +107,9 @@ export function getDefaultMetadata(settings: SiteSettings | null) {
     settings?.site_description ||
     "다양한 디자인과 아이디어를 한곳에 모았습니다.";
   const siteUrl = getSiteUrl();
+  const defaultOgImage = `${siteUrl}/api/og?type=default`;
+  const ogImage = settings?.og_image || defaultOgImage;
+  const twitterImage = settings?.twitter_image || ogImage;
 
   // verification.other 객체 생성 (undefined 제거)
   const verificationOther: { [key: string]: string } = {};
@@ -133,22 +136,20 @@ export function getDefaultMetadata(settings: SiteSettings | null) {
       siteName: siteName,
       title: settings?.og_title || siteName,
       description: settings?.og_description || siteDescription,
-      images: settings?.og_image
-        ? [
-            {
-              url: settings.og_image,
-              width: 1200,
-              height: 630,
-              alt: siteName,
-            },
-          ]
-        : [],
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: siteName,
+        },
+      ],
     },
     twitter: {
       card: (settings?.twitter_card_type as "summary" | "summary_large_image") || "summary_large_image",
       title: settings?.twitter_title || siteName,
       description: settings?.twitter_description || siteDescription,
-      images: settings?.twitter_image ? [settings.twitter_image] : [],
+      images: [twitterImage],
     },
     robots: settings?.robots_allow
       ? {

@@ -9,6 +9,13 @@ const MAX_GALLERY_TAG_LENGTH = 40;
 const MAX_GALLERY_RANGE = 6;
 const MAX_GALLERY_DIMENSION = 65535;
 const MAX_EMBEDDING_VALUES = 4096;
+const GALLERY_STORAGE_MARKER = "/storage/v1/object/public/gallery/";
+
+type StorageErrorLike = {
+  status?: number | string;
+  statusCode?: number | string;
+  message?: string;
+};
 
 export function normalizeGalleryText(value: unknown, max = MAX_GALLERY_TEXT_LENGTH) {
   if (typeof value !== "string") return null;
@@ -30,6 +37,83 @@ export function normalizeGalleryUrl(value: unknown) {
   } catch {
     return null;
   }
+}
+
+export function extractGalleryStoragePath(imageUrl: string | null | undefined) {
+  if (!imageUrl) return null;
+
+  try {
+    const url = new URL(imageUrl);
+    const markerIndex = url.pathname.indexOf(GALLERY_STORAGE_MARKER);
+    if (markerIndex < 0) return null;
+
+    return decodeURIComponent(url.pathname.slice(markerIndex + GALLERY_STORAGE_MARKER.length));
+  } catch {
+    const fallbackPath = imageUrl
+      .split("/gallery/")
+      .pop()
+      ?.split("?")[0]
+      ?.split("#")[0];
+
+    return fallbackPath || null;
+  }
+}
+
+export function isSafeGalleryStoragePath(value: string) {
+  return (
+    value.length <= 512 &&
+    !value.startsWith("/") &&
+    !value.includes("..") &&
+    /^[a-zA-Z0-9._/-]+$/.test(value)
+  );
+}
+
+export function isStorageNotFoundError(error: unknown) {
+  const storageError = error as StorageErrorLike;
+  const status = Number(storageError.statusCode ?? storageError.status ?? 0);
+
+  return status === 404 || /not found/i.test(storageError.message || "");
+}
+
+export async function removeGalleryStorageAssets(
+  admin: ReturnType<typeof createAdminClient>,
+  urls: Array<string | null | undefined>
+) {
+  const paths = Array.from(
+    new Set(
+      urls
+        .map(extractGalleryStoragePath)
+        .filter((path): path is string => Boolean(path))
+    )
+  );
+
+  if (paths.length === 0) {
+    return { removed: [], skipped: [] };
+  }
+
+  const safePaths = paths.filter(isSafeGalleryStoragePath);
+  const skipped = paths.filter((path) => !isSafeGalleryStoragePath(path));
+
+  if (safePaths.length === 0) {
+    return { removed: [], skipped };
+  }
+
+  let { error } = await admin.storage.from("gallery").remove(safePaths);
+
+  if (error && !isStorageNotFoundError(error)) {
+    await new Promise((resolve) => setTimeout(resolve, 250));
+    const retry = await admin.storage.from("gallery").remove(safePaths);
+    error = retry.error;
+  }
+
+  if (error && !isStorageNotFoundError(error)) {
+    throw error;
+  }
+
+  return {
+    removed: error ? [] : safePaths,
+    skipped,
+  };
 }
 
 export function normalizeGalleryTags(value: unknown, maxCount = MAX_GALLERY_TAGS) {

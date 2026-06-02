@@ -19,6 +19,7 @@ export type MypageGalleryItem = {
   id: number;
   title: string;
   image_url: string | null;
+  thumbnail_url: string | null;
   tags: string[] | null;
   description: string | null;
   created_at: string | null;
@@ -182,7 +183,7 @@ export async function getMypageActivity(): Promise<MypageActivity | null> {
       ? readRows<MypageGalleryItem>(
           admin
             .from("gallery")
-            .select("id, title, image_url, tags, description, created_at")
+            .select("id, title, image_url, thumbnail_url, tags, description, created_at")
             .in("id", galleryIds)
             .order("created_at", { ascending: false })
         )

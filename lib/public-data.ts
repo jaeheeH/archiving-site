@@ -25,6 +25,22 @@ const GALLERY_LIST_COLUMNS = `
   title,
   description,
   image_url,
+  thumbnail_url,
+  image_width,
+  image_height,
+  created_at,
+  tags,
+  category,
+  range,
+  gemini_tags,
+  gemini_description
+`;
+
+const GALLERY_LIST_COLUMNS_WITHOUT_THUMBNAIL = `
+  id,
+  title,
+  description,
+  image_url,
   image_width,
   image_height,
   created_at,
@@ -40,6 +56,7 @@ const GALLERY_DETAIL_COLUMNS = `
   title,
   description,
   image_url,
+  thumbnail_url,
   image_width,
   image_height,
   tags,
@@ -50,7 +67,29 @@ const GALLERY_DETAIL_COLUMNS = `
   created_at
 `;
 
-const DAILY_GALLERY_COLUMNS = "id, title, description, image_url";
+const GALLERY_DETAIL_COLUMNS_WITHOUT_THUMBNAIL = `
+  id,
+  title,
+  description,
+  image_url,
+  image_width,
+  image_height,
+  tags,
+  gemini_tags,
+  gemini_description,
+  category,
+  range,
+  created_at
+`;
+
+const DAILY_GALLERY_COLUMNS = "id, title, description, image_url, thumbnail_url";
+const DAILY_GALLERY_COLUMNS_WITHOUT_THUMBNAIL = "id, title, description, image_url";
+const HOME_GALLERY_COLUMNS = "id, title, description, image_url, thumbnail_url, tags, gemini_tags";
+const HOME_GALLERY_COLUMNS_WITHOUT_THUMBNAIL = "id, title, description, image_url, tags, gemini_tags";
+const SIMILAR_GALLERY_COLUMNS =
+  "id, title, image_url, thumbnail_url, image_width, image_height, description, embedding";
+const SIMILAR_GALLERY_COLUMNS_WITHOUT_THUMBNAIL =
+  "id, title, image_url, image_width, image_height, description, embedding";
 
 const POST_LIST_COLUMNS =
   "id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id";
@@ -66,6 +105,59 @@ const MAX_FILTER_TAGS = 10;
 const MAX_FILTER_TAG_LENGTH = 40;
 const MAX_TAG_AGGREGATION_ROWS = 1000;
 const MAX_SIMILAR_CANDIDATE_ROWS = 1000;
+
+type QueryError = { code?: string; message?: string } | null;
+type ListQueryResult<T> = {
+  data: T[] | null;
+  error: QueryError;
+  count?: number | null;
+};
+type SingleQueryResult<T> = {
+  data: T | null;
+  error: QueryError;
+};
+
+type HomeGalleryRow = {
+  id: number;
+  title: string;
+  description?: string;
+  image_url: string;
+  thumbnail_url: string | null;
+  tags: string[];
+  gemini_tags: string[];
+};
+
+type GalleryListRow = HomeGalleryRow & {
+  image_width: number;
+  image_height: number;
+  created_at: string;
+  category?: string;
+  range: string[];
+  gemini_description?: string;
+};
+
+type GalleryDetailRow = GalleryListRow & {
+  created_at: string;
+};
+
+type DailyGalleryRow = {
+  id: number;
+  title: string;
+  description: string | null;
+  image_url: string;
+  thumbnail_url: string | null;
+};
+
+type SimilarGalleryRow = {
+  id: number;
+  title: string;
+  image_url: string;
+  thumbnail_url: string | null;
+  image_width: number | null;
+  image_height: number | null;
+  description: string | null;
+  embedding: unknown;
+};
 
 function normalizePositiveInt(value: number, fallback: number, max: number) {
   if (!Number.isFinite(value) || value < 1) return fallback;
@@ -97,6 +189,46 @@ function buildTextSearchQuery(search: string) {
     .join(" & ");
 }
 
+function isMissingThumbnailColumn(error: unknown) {
+  const queryError = error as { code?: string; message?: string } | null;
+
+  return (
+    queryError?.code === "42703" &&
+    /thumbnail_url/i.test(queryError.message || "")
+  );
+}
+
+function withNullThumbnail<T extends object>(items: T[] | null | undefined) {
+  return (items || []).map((item) => ({
+    ...item,
+    thumbnail_url: null,
+  }));
+}
+
+async function readHomeGallery(supabase: ReturnType<typeof createPublicClient>) {
+  const query = (columns: string) =>
+    supabase
+      .from("gallery")
+      .select(columns)
+      .order("created_at", { ascending: false })
+      .limit(10);
+
+  const result = (await query(HOME_GALLERY_COLUMNS)) as unknown as ListQueryResult<HomeGalleryRow>;
+
+  if (!isMissingThumbnailColumn(result.error)) {
+    return result;
+  }
+
+  const fallback = (await query(
+    HOME_GALLERY_COLUMNS_WITHOUT_THUMBNAIL
+  )) as unknown as ListQueryResult<Omit<HomeGalleryRow, "thumbnail_url">>;
+
+  return {
+    ...fallback,
+    data: withNullThumbnail(fallback.data),
+  };
+}
+
 export const getHomeData = unstable_cache(
   async () => {
     const supabase = createPublicClient();
@@ -124,11 +256,7 @@ export const getHomeData = unstable_cache(
           .select("id, title, description, url, image_url, logo_url, category, range, clicks")
           .order("created_at", { ascending: false })
           .limit(8),
-        supabase
-          .from("gallery")
-          .select("id, title, description, image_url, tags, gemini_tags")
-          .order("created_at", { ascending: false })
-          .limit(10),
+        readHomeGallery(supabase),
         supabase.from("categories").select("id, name").eq("type", "blog"),
       ]);
 
@@ -161,20 +289,35 @@ export const getGalleryPageData = unstable_cache(
     const safeSearch = normalizeFilterText(search);
     const filterTags = parseTags(tagsCsv);
 
-    let query = supabase
-      .from("gallery")
-      .select(GALLERY_LIST_COLUMNS, { count: "planned" })
-      .order("created_at", { ascending: false });
+    const buildQuery = (columns: string) => {
+      let query = supabase
+        .from("gallery")
+        .select(columns, { count: "planned" })
+        .order("created_at", { ascending: false });
 
-    if (safeSearch) {
-      query = query.textSearch("search_vector", buildTextSearchQuery(safeSearch));
+      if (safeSearch) {
+        query = query.textSearch("search_vector", buildTextSearchQuery(safeSearch));
+      }
+
+      for (const tag of filterTags) {
+        query = query.or(`tags.cs.{${tag}},gemini_tags.cs.{${tag}}`);
+      }
+
+      return query.range(offset, offset + limit - 1);
+    };
+
+    let { data, error, count } = (await buildQuery(
+      GALLERY_LIST_COLUMNS
+    )) as unknown as ListQueryResult<GalleryListRow>;
+
+    if (isMissingThumbnailColumn(error)) {
+      const fallback = (await buildQuery(
+        GALLERY_LIST_COLUMNS_WITHOUT_THUMBNAIL
+      )) as unknown as ListQueryResult<Omit<GalleryListRow, "thumbnail_url">>;
+      data = withNullThumbnail(fallback.data);
+      error = fallback.error;
+      count = fallback.count;
     }
-
-    for (const tag of filterTags) {
-      query = query.or(`tags.cs.{${tag}},gemini_tags.cs.{${tag}}`);
-    }
-
-    const { data, error, count } = await query.range(offset, offset + limit - 1);
 
     if (error) throw error;
 
@@ -204,11 +347,22 @@ export const getGalleryDetailData = unstable_cache(
     const supabase = createPublicClient();
     const id = Number(idValue);
 
-    const { data: gallery, error } = await supabase
+    let { data: gallery, error } = (await supabase
       .from("gallery")
       .select(GALLERY_DETAIL_COLUMNS)
       .eq("id", id)
-      .single();
+      .single()) as unknown as SingleQueryResult<GalleryDetailRow>;
+
+    if (isMissingThumbnailColumn(error)) {
+      const fallback = (await supabase
+        .from("gallery")
+        .select(GALLERY_DETAIL_COLUMNS_WITHOUT_THUMBNAIL)
+        .eq("id", id)
+        .single()) as unknown as SingleQueryResult<Omit<GalleryDetailRow, "thumbnail_url">>;
+
+      gallery = fallback.data ? { ...fallback.data, thumbnail_url: null } : null;
+      error = fallback.error;
+    }
 
     if (error || !gallery) {
       return null;
@@ -301,11 +455,24 @@ export const getDailyGalleryImages = unstable_cache(
     const supabase = createPublicClient();
     const limit = normalizePositiveInt(limitValue, 36, 100);
 
-    const { data, error } = await supabase
-      .from("gallery")
-      .select(DAILY_GALLERY_COLUMNS)
-      .order("created_at", { ascending: false })
-      .limit(limit);
+    const query = (columns: string) =>
+      supabase
+        .from("gallery")
+        .select(columns)
+        .order("created_at", { ascending: false })
+        .limit(limit);
+
+    let { data, error } = (await query(
+      DAILY_GALLERY_COLUMNS
+    )) as unknown as ListQueryResult<DailyGalleryRow>;
+
+    if (isMissingThumbnailColumn(error)) {
+      const fallback = (await query(
+        DAILY_GALLERY_COLUMNS_WITHOUT_THUMBNAIL
+      )) as unknown as ListQueryResult<Omit<DailyGalleryRow, "thumbnail_url">>;
+      data = withNullThumbnail(fallback.data);
+      error = fallback.error;
+    }
 
     if (error) throw error;
     return data || [];
@@ -376,13 +543,26 @@ export const getSimilarGallery = unstable_cache(
       };
     }
 
-    const { data: allGalleries, error: allError } = await supabase
-      .from("gallery")
-      .select("id, title, image_url, image_width, image_height, description, embedding")
-      .neq("id", galleryId)
-      .not("embedding", "is", null)
-      .order("created_at", { ascending: false })
-      .limit(MAX_SIMILAR_CANDIDATE_ROWS);
+    const similarQuery = (columns: string) =>
+      supabase
+        .from("gallery")
+        .select(columns)
+        .neq("id", galleryId)
+        .not("embedding", "is", null)
+        .order("created_at", { ascending: false })
+        .limit(MAX_SIMILAR_CANDIDATE_ROWS);
+
+    let { data: allGalleries, error: allError } = (await similarQuery(
+      SIMILAR_GALLERY_COLUMNS
+    )) as unknown as ListQueryResult<SimilarGalleryRow>;
+
+    if (isMissingThumbnailColumn(allError)) {
+      const fallback = (await similarQuery(
+        SIMILAR_GALLERY_COLUMNS_WITHOUT_THUMBNAIL
+      )) as unknown as ListQueryResult<Omit<SimilarGalleryRow, "thumbnail_url">>;
+      allGalleries = withNullThumbnail(fallback.data);
+      allError = fallback.error;
+    }
 
     if (allError) throw allError;
 
@@ -399,6 +579,7 @@ export const getSimilarGallery = unstable_cache(
             id: gallery.id,
             title: gallery.title,
             image_url: gallery.image_url,
+            thumbnail_url: gallery.thumbnail_url,
             image_width: gallery.image_width,
             image_height: gallery.image_height,
             description: gallery.description,
@@ -523,6 +704,51 @@ export const getBlogPostData = unstable_cache(
         console.error("Failed to load blog author:", authorRes.error.message);
       }
 
+      const relatedByCategory = post.category_id
+        ? await supabase
+            .from("posts")
+            .select("id, title, subtitle, summary, slug, published_at, created_at, title_image_url, category_id")
+            .eq("type", "blog")
+            .eq("is_published", true)
+            .not("published_at", "is", null)
+            .eq("category_id", post.category_id)
+            .neq("id", post.id)
+            .order("published_at", { ascending: false })
+            .limit(3)
+        : { data: [], error: null };
+
+      if (relatedByCategory.error) {
+        console.error("Failed to load related blog posts:", relatedByCategory.error.message);
+      }
+
+      let relatedPosts = relatedByCategory.data || [];
+
+      if (relatedPosts.length < 3) {
+        const relatedIds = new Set(relatedPosts.map((item) => item.id));
+        const fallbackRes = await supabase
+          .from("posts")
+          .select("id, title, subtitle, summary, slug, published_at, created_at, title_image_url, category_id")
+          .eq("type", "blog")
+          .eq("is_published", true)
+          .not("published_at", "is", null)
+          .neq("id", post.id)
+          .order("published_at", { ascending: false })
+          .limit(6);
+
+        if (fallbackRes.error) {
+          console.error("Failed to load fallback related posts:", fallbackRes.error.message);
+        }
+
+        const fallbackPosts = (fallbackRes.data || []).filter(
+          (item) => !relatedIds.has(item.id)
+        );
+
+        relatedPosts = [
+          ...relatedPosts,
+          ...fallbackPosts.slice(0, 3 - relatedPosts.length),
+        ];
+      }
+
       return {
         post,
         redirectSlug: null,
@@ -533,6 +759,7 @@ export const getBlogPostData = unstable_cache(
               avatar_url: normalizeAvatarUrl(authorRes.data.avatar_url),
             }
           : null,
+        relatedPosts,
       };
     }
 

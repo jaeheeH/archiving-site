@@ -14,6 +14,7 @@ type GalleryItem = {
   title: string;
   description?: string;
   image_url: string;
+  thumbnail_url?: string | null;
   image_width: number;
   image_height: number;
   tags: string[];
@@ -107,13 +108,12 @@ function GalleryContent() {
         params.set("tags", tags.join(","));
       }
 
-      const res = await fetch(`/api/gallery?${params.toString()}`);
+      const res = await fetch(`/api/gallery?${params.toString()}`, { cache: "no-store" });
+      const data = await res.json().catch(() => null);
 
       if (!res.ok) {
-        throw new Error("갤러리 조회 실패");
+        throw new Error(data?.error || "갤러리 조회 실패");
       }
-
-      const data = await res.json();
 
       setGallery(data.data || []);
       setTotalPages(data.pagination.totalPages);
@@ -407,7 +407,7 @@ const fetchTopTags = async (search: string, tags: string[]) => {
     id={item.id}
     title={item.title}
     description={item.description}
-    imageUrl={item.image_url}
+    imageUrl={item.thumbnail_url || item.image_url}
     imageWidth={item.image_width}        // ← 추가
     imageHeight={item.image_height}      // ← 추가
     tags={item.gemini_tags || item.tags}

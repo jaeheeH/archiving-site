@@ -66,7 +66,7 @@ export default async function MyPage() {
         title: dailyGallery.title,
         description: dailyGallery.description || "오늘 새롭게 살펴볼 시각 레퍼런스입니다.",
         href: `/gallery/${dailyGallery.id}`,
-        image: dailyGallery.image_url,
+        image: dailyGallery.thumbnail_url || dailyGallery.image_url,
       }
     : fallbackBlog
       ? {
@@ -104,7 +104,7 @@ export default async function MyPage() {
       description: gallery.description || "저장한 갤러리 이미지입니다.",
       href: `/gallery/${gallery.id}`,
       date: gallery.created_at,
-      image: gallery.image_url,
+      image: gallery.thumbnail_url || gallery.image_url,
       icon: <ImageIcon className="h-5 w-5" />,
     })),
     ...activity.references.map((reference) => ({

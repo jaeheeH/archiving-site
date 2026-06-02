@@ -23,6 +23,7 @@ type Gallery = {
   id: number;
   title: string;
   image_url: string | null;
+  thumbnail_url: string | null;
   tags: string[] | null;
   description: string | null;
   created_at: string | null;
@@ -253,9 +254,9 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
                   className="group overflow-hidden rounded-lg border border-[var(--archive-line)] bg-white transition hover:border-[#ff4800] hover:shadow-sm"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
-                    {item.image_url ? (
+                    {(item.thumbnail_url || item.image_url) ? (
                       <Image
-                        src={item.image_url}
+                        src={item.thumbnail_url || item.image_url || ""}
                         alt={item.title}
                         fill
                         className="object-cover transition duration-500 group-hover:scale-105"

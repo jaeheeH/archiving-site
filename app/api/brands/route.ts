@@ -1,8 +1,8 @@
 // app/api/brands/route.ts
 import { randomUUID } from 'crypto';
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { getBrandManagerContext } from '@/lib/brand-manager-auth';
 import { getErrorMessage } from '@/lib/error-message';
 import { isSafeIdentifierParam } from '@/lib/route-params';
 
@@ -123,12 +123,10 @@ async function parseJsonObject(request: Request) {
 // 1. 브랜드 목록 가져오기 (기존과 동일)
 export async function GET() {
   try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const context = await getBrandManagerContext();
+    if (context.response) return context.response;
 
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-    const { data, error } = await supabase
+    const { data, error } = await context.admin
       .from('brands')
       .select(`
         id,
@@ -137,18 +135,17 @@ export async function GET() {
         created_at,
         trained_models (status, created_at)
       `)
-      .eq('user_id', user.id)
+      .eq('user_id', context.user.id)
       .order('created_at', { ascending: false })
       .order('created_at', { ascending: false, referencedTable: 'trained_models' })
       .limit(1, { referencedTable: 'trained_models' });
 
     if (error) throw error;
 
-    const admin = createAdminClient();
     const brandsWithThumbnails = await Promise.all(
       (data || []).map(async (brand) => ({
         ...brand,
-        thumbnail_url: await getBrandThumbnailUrl(admin, brand.id, user.id),
+        thumbnail_url: await getBrandThumbnailUrl(context.admin, brand.id, context.user.id),
       }))
     );
 
@@ -170,10 +167,8 @@ export async function POST(request: Request) {
     if (!body) return NextResponse.json({ error: '잘못된 JSON 요청입니다.' }, { status: 400 });
 
     const brandName = normalizeBrandName(body.name);
-    const supabase = await createClient();
-
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const context = await getBrandManagerContext();
+    if (context.response) return context.response;
 
     if (!brandName) {
       return NextResponse.json({ error: '브랜드 이름이 필요합니다.' }, { status: 400 });
@@ -185,12 +180,12 @@ export async function POST(request: Request) {
     const randomSuffix = randomUUID().replace(/-/g, '').slice(0, 6).toUpperCase();
     const autoTriggerWord = `OHJI_${randomSuffix}`;
 
-    const { data, error } = await supabase
+    const { data, error } = await context.admin
       .from('brands')
       .insert({
         name: brandName,
         trigger_word: autoTriggerWord, // 자동 생성된 값 주입
-        user_id: user.id
+        user_id: context.user.id
       })
       .select('id, name, trigger_word, created_at')
       .single();
@@ -212,20 +207,18 @@ export async function PUT(request: Request) {
 
     const brandId = requireBrandId(body.id);
     const brandName = normalizeBrandName(body.name);
-    const supabase = await createClient();
-    
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const context = await getBrandManagerContext();
+    if (context.response) return context.response;
 
     if (!brandId || !brandName) {
       return NextResponse.json({ error: '브랜드 ID와 이름이 필요합니다.' }, { status: 400 });
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await context.admin
       .from('brands')
       .update({ name: brandName }) // 이름만 수정 가능
       .eq('id', brandId)
-      .eq('user_id', user.id)
+      .eq('user_id', context.user.id)
       .select('id')
       .maybeSingle();
 
@@ -245,19 +238,18 @@ export async function DELETE(request: Request) {
     if (!body) return NextResponse.json({ error: '잘못된 JSON 요청입니다.' }, { status: 400 });
 
     const brandId = requireBrandId(body.id);
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const context = await getBrandManagerContext();
+    if (context.response) return context.response;
 
     if (!brandId) {
       return NextResponse.json({ error: '브랜드 ID가 필요합니다.' }, { status: 400 });
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await context.admin
       .from('brands')
       .delete()
       .eq('id', brandId)
-      .eq('user_id', user.id)
+      .eq('user_id', context.user.id)
       .select('id')
       .maybeSingle();
 

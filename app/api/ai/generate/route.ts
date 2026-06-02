@@ -1,8 +1,7 @@
 // app/api/ai/generate/route.ts
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
-import { createAdminClient } from '@/lib/supabase/admin';
 import Replicate from 'replicate';
+import { getBrandManagerContext } from '@/lib/brand-manager-auth';
 import { getErrorMessage } from '@/lib/error-message';
 import { isSafeIdentifierParam } from '@/lib/route-params';
 
@@ -148,16 +147,9 @@ export async function POST(request: Request) {
     const safePrompt = normalizePrompt(prompt);
     const safeAspectRatio = normalizeAspectRatio(aspectRatio);
     const finalSeed = normalizeSeed(seed);
-    const supabaseAuth = await createClient();
-    const supabase = createAdminClient();
-
-    // [NEW] 0. 현재 로그인한 사용자 확인
-    // 서버에서 안전하게 유저 정보를 가져옵니다.
-    const { data: { user } } = await supabaseAuth.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 });
-    }
+    const context = await getBrandManagerContext();
+    if (context.response) return context.response;
+    const supabase = context.admin;
 
     if (typeof brandId !== 'string' || !isSafeIdentifierParam(brandId) || !safePrompt) {
       return NextResponse.json({ error: '브랜드와 프롬프트가 필요합니다.' }, { status: 400 });
@@ -171,7 +163,7 @@ export async function POST(request: Request) {
       .from('brands')
       .select('id, trigger_word, user_id')
       .eq('id', brandId)
-      .eq('user_id', user.id)
+      .eq('user_id', context.user.id)
       .maybeSingle();
 
     if (!brand) {
@@ -290,7 +282,7 @@ export async function POST(request: Request) {
       prompt: safePrompt,
       aspect_ratio: safeAspectRatio,
       seed: finalSeed,
-      user_id: user.id // [핵심] 여기에 작성자 ID가 들어갑니다.
+      user_id: context.user.id
     });
 
     return NextResponse.json({ 

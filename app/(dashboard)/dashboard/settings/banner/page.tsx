@@ -141,12 +141,12 @@ export default function BannersPage() {
   };
 
   if (loading) {
-    return <div className="p-8">로딩 중...</div>;
+    return <div className="p-4 sm:p-6 lg:p-8">로딩 중...</div>;
   }
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-8">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold">배너 관리</h1>
         <button
           onClick={() => {
@@ -154,7 +154,7 @@ export default function BannersPage() {
             setFormData({ is_continuous: true, is_active: true, order_index: banners.length + 1 });
             setPreviewUrl(null);
           }}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
         >
           + 새 배너
         </button>
@@ -162,7 +162,7 @@ export default function BannersPage() {
 
       {/* 편집 폼 */}
       {(editing !== null || Object.keys(formData).length > 0) && (
-        <div className="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-200">
+        <div className="mb-8 rounded-lg border border-gray-200 bg-gray-50 p-4 sm:p-6">
           <h2 className="text-lg font-bold mb-4">
             {editing ? '배너 수정' : '새 배너 추가'}
           </h2>
@@ -352,7 +352,7 @@ export default function BannersPage() {
           </div>
 
           {/* 버튼 */}
-          <div className="flex gap-2 mt-6">
+          <div className="mt-6 flex flex-col gap-2 sm:flex-row">
             <button
               onClick={handleSave}
               disabled={isUploading}
@@ -392,10 +392,10 @@ export default function BannersPage() {
           </div>
         ) : (
           banners.map((banner) => (
-            <div key={banner.id} className="border p-4 rounded-lg bg-white">
-              <div className="flex items-start justify-between gap-4">
+            <div key={banner.id} className="rounded-lg border bg-white p-4">
+              <div className="flex flex-col items-start justify-between gap-4 sm:flex-row">
                 {/* 배너 미리보기 */}
-                <div className="w-32 h-24 relative flex-shrink-0 bg-gray-100 rounded overflow-hidden">
+                <div className="relative h-36 w-full flex-shrink-0 overflow-hidden rounded bg-gray-100 sm:h-24 sm:w-32">
                   <Image
                     src={banner.image_url}
                     alt={banner.title}
@@ -405,7 +405,7 @@ export default function BannersPage() {
                 </div>
 
                 {/* 배너 정보 */}
-                <div className="flex-1">
+                <div className="min-w-0 flex-1">
                   <h3 className="font-bold text-lg">{banner.title}</h3>
                   {banner.subtitle && <p className="text-sm text-gray-600">{banner.subtitle}</p>}
                   <p className="text-xs text-gray-500 mt-2">
@@ -419,16 +419,16 @@ export default function BannersPage() {
                 </div>
 
                 {/* 액션 버튼 */}
-                <div className="flex gap-2 flex-shrink-0">
+                <div className="flex w-full flex-shrink-0 gap-2 sm:w-auto">
                   <button
                     onClick={() => handleEdit(banner)}
-                    className="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
+                    className="flex-1 rounded bg-blue-500 px-3 py-1 text-sm text-white hover:bg-blue-600 sm:flex-none"
                   >
                     수정
                   </button>
                   <button
                     onClick={() => handleDelete(banner.id)}
-                    className="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
+                    className="flex-1 rounded bg-red-500 px-3 py-1 text-sm text-white hover:bg-red-600 sm:flex-none"
                   >
                     삭제
                   </button>

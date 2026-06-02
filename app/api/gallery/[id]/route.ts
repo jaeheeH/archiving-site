@@ -3,6 +3,7 @@ import { revalidateTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
   checkGalleryOwnershipOrAdmin,
+  removeGalleryStorageAssets,
   normalizeGalleryDimension,
   normalizeGalleryEmbedding,
   normalizeGalleryRange,
@@ -28,6 +29,22 @@ const GALLERY_DASHBOARD_COLUMNS = `
   title,
   description,
   image_url,
+  thumbnail_url,
+  image_width,
+  image_height,
+  tags,
+  category,
+  range,
+  gemini_description,
+  gemini_tags,
+  created_at
+`;
+
+const GALLERY_DASHBOARD_COLUMNS_WITHOUT_THUMBNAIL = `
+  id,
+  title,
+  description,
+  image_url,
   image_width,
   image_height,
   tags,
@@ -47,6 +64,15 @@ async function parseJsonObject(req: NextRequest) {
   } catch {
     return null;
   }
+}
+
+function isMissingThumbnailColumn(error: unknown) {
+  const queryError = error as { code?: string; message?: string } | null;
+
+  return (
+    queryError?.code === "42703" &&
+    /thumbnail_url/i.test(queryError.message || "")
+  );
 }
 
 /**
@@ -71,11 +97,22 @@ export async function GET(req: NextRequest, { params }: Props) {
       }
 
       const adminClient = createAdminClient();
-      const { data, error } = await adminClient
+      let { data, error } = await adminClient
         .from("gallery")
         .select(GALLERY_DASHBOARD_COLUMNS)
         .eq("id", galleryId)
         .single();
+
+      if (isMissingThumbnailColumn(error)) {
+        const fallback = await adminClient
+          .from("gallery")
+          .select(GALLERY_DASHBOARD_COLUMNS_WITHOUT_THUMBNAIL)
+          .eq("id", galleryId)
+          .single();
+
+        data = fallback.data ? { ...fallback.data, thumbnail_url: null } : null;
+        error = fallback.error;
+      }
 
       if (error) {
         console.error("❌ Gallery dashboard 조회 에러:", error);
@@ -173,6 +210,13 @@ export async function PATCH(req: NextRequest, { params }: Props) {
       }
       updateData.image_url = imageUrl;
     }
+    if (body.thumbnail_url !== undefined) {
+      const thumbnailUrl = normalizeGalleryUrl(body.thumbnail_url);
+      if (!thumbnailUrl) {
+        return NextResponse.json({ error: "Invalid thumbnail URL format" }, { status: 400 });
+      }
+      updateData.thumbnail_url = thumbnailUrl;
+    }
     if (body.image_width !== undefined) {
       const width = normalizeGalleryDimension(body.image_width);
       if (body.image_width !== null && body.image_width !== "" && !width) {
@@ -224,6 +268,16 @@ export async function PATCH(req: NextRequest, { params }: Props) {
     // 4. Admin 클라이언트로 수정
     const adminClient = createAdminClient();
 
+    const shouldReplaceImage =
+      typeof updateData.image_url === "string" || typeof updateData.thumbnail_url === "string";
+    const { data: previousGallery } = shouldReplaceImage
+      ? await adminClient
+          .from("gallery")
+          .select("image_url, thumbnail_url")
+          .eq("id", galleryId)
+          .maybeSingle()
+      : { data: null };
+
     const { data, error } = await adminClient
       .from("gallery")
       .update(updateData)
@@ -237,6 +291,21 @@ export async function PATCH(req: NextRequest, { params }: Props) {
 
     revalidateTag(CACHE_TAGS.gallery, "max");
     revalidateTag(CACHE_TAGS.home, "max");
+
+    if (previousGallery) {
+      const nextImageUrl = typeof updateData.image_url === "string" ? updateData.image_url : previousGallery.image_url;
+      const nextThumbnailUrl =
+        typeof updateData.thumbnail_url === "string"
+          ? updateData.thumbnail_url
+          : previousGallery.thumbnail_url;
+
+      const staleUrls = [
+        previousGallery.image_url !== nextImageUrl ? previousGallery.image_url : null,
+        previousGallery.thumbnail_url !== nextThumbnailUrl ? previousGallery.thumbnail_url : null,
+      ];
+
+      await removeGalleryStorageAssets(adminClient, staleUrls);
+    }
 
     return NextResponse.json({
       success: true,
@@ -274,6 +343,16 @@ export async function DELETE(req: NextRequest, { params }: Props) {
     // 2. Admin 클라이언트로 삭제
     const adminClient = createAdminClient();
 
+    const { data: gallery, error: readError } = await adminClient
+      .from("gallery")
+      .select("image_url, thumbnail_url")
+      .eq("id", galleryId)
+      .maybeSingle();
+
+    if (readError) {
+      throw readError;
+    }
+
     const { error } = await adminClient
       .from("gallery")
       .delete()
@@ -281,6 +360,13 @@ export async function DELETE(req: NextRequest, { params }: Props) {
 
     if (error) {
       throw error;
+    }
+
+    if (gallery) {
+      await removeGalleryStorageAssets(adminClient, [
+        gallery.image_url,
+        gallery.thumbnail_url,
+      ]);
     }
 
     revalidateTag(CACHE_TAGS.gallery, "max");

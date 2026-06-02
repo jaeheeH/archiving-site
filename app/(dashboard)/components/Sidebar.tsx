@@ -67,6 +67,7 @@ export default function Sidebar() {
   ];
 
   const [openMenu, setOpenMenu] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   //
   // 자동 open (최초 1회만)
@@ -89,7 +90,189 @@ export default function Sidebar() {
     setOpenMenu(opened);
   }, [pathname]);
 
+  useEffect(() => {
+    queueMicrotask(() => setMobileMenuOpen(false));
+  }, [pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  const currentMenuLabel =
+    menu.find((item) => pathname === item.href || pathname.startsWith(item.href + "/"))?.label ||
+    "대시보드";
+
+  const renderMenu = (mode: "desktop" | "mobile") => (
+    <nav className="flex flex-col gap-2 px-3">
+      {menu.map((item) => {
+        const isParentActive =
+          pathname === item.href ||
+          pathname.startsWith(item.href + "/");
+        const isOpen = openMenu === item.label;
+
+        return (
+          <div key={`${mode}-${item.label}`}>
+            {item.children.length === 0 ? (
+              <Link
+                href={item.href}
+                className={`
+                  flex items-center justify-between rounded-md text-sm
+                  ${
+                    pathname === item.href
+                      ? "bg-blue-50 text-blue-600 font-medium"
+                      : "text-gray-700 hover:bg-gray-50"
+                  }
+                `}
+              >
+                <div className="flex items-center gap-1">
+                  <div className="nav-menu-icon">
+                    <i className={`${item.icon} ${ pathname === item.href ? "text-blue-600" : "text-gray-600" }`} />
+                  </div>
+                  <span>{item.label}</span>
+                </div>
+              </Link>
+            ) : (
+              <div
+                onClick={() => {
+                  setOpenMenu(isOpen ? "" : item.label);
+                }}
+                className={`
+                  flex items-center justify-between cursor-pointer rounded-md text-sm
+                  ${
+                    isParentActive
+                      ? "bg-blue-50 text-blue-600 font-medium"
+                      : "text-gray-700 hover:bg-gray-50"
+                  }
+                `}
+              >
+                <div className="flex items-center gap-1">
+                  <div className="nav-menu-icon">
+                    <i className={`${item.icon} ${ isParentActive ? "text-blue-600" : "text-gray-600" }`} />
+                  </div>
+                  <span>{item.label}</span>
+                </div>
+
+                <div className={`menu-arrow ${ isOpen ? "rotate-180" : "" }`}>
+                  <i className="ri-arrow-down-s-line" />
+                </div>
+              </div>
+            )}
+
+            {isOpen && item.children.length > 0 && (
+              <div className="mt-1 flex flex-col gap-1">
+                {item.children.map((child) => {
+                  const activeChild = pathname === child.href;
+
+                  return (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      className={`
+                        block rounded-md px-10 py-2 text-sm
+                        ${
+                          activeChild
+                            ? "bg-gray-100 text-gray-700 font-semibold"
+                            : "text-gray-700 hover:bg-gray-200"
+                        }
+                      `}
+                    >
+                      {child.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </nav>
+  );
+
   return (
+    <>
+    <div className="dashboard-mobile-bar border-b bg-white lg:hidden">
+      <button
+        type="button"
+        onClick={() => setMobileMenuOpen(true)}
+        className="dashboard-mobile-menu-button"
+        aria-label="대시보드 메뉴 열기"
+        aria-expanded={mobileMenuOpen}
+      >
+        <i className="ri-menu-line" />
+      </button>
+      <div className="min-w-0">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">Archiving</p>
+        <p className="truncate text-sm font-semibold text-gray-950">{currentMenuLabel}</p>
+      </div>
+      <Link
+        href="/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="dashboard-mobile-site-link"
+        aria-label="사이트 바로가기"
+      >
+        <i className="ri-external-link-line" />
+      </Link>
+    </div>
+
+    {mobileMenuOpen && (
+      <div className="dashboard-mobile-drawer lg:hidden">
+        <button
+          type="button"
+          aria-label="대시보드 메뉴 닫기"
+          className="dashboard-mobile-backdrop"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+        <aside className="dashboard-mobile-panel">
+          <div className="side-logo">
+            <p>Archiving</p>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(false)}
+              className="dashboard-mobile-close"
+              aria-label="대시보드 메뉴 닫기"
+            >
+              <i className="ri-close-line" />
+            </button>
+          </div>
+
+          <div className="nav-section">
+            <nav className="flex flex-col gap-2 px-3">
+              <div className="text-gray-700 hover:bg-gray-50 cursor-pointer">
+                <div className="flex items-center justify-between rounded-md text-sm">
+                  <div className="flex items-center gap-1">
+                    <div className="nav-menu-icon">
+                      <i className="ri-notification-3-line" />
+                    </div>
+                    <span>알림</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <Link className="flex items-center justify-between rounded-md text-sm text-gray-700 hover:bg-gray-50" href="/" target="_blank" rel="noopener noreferrer">
+                  <div className="flex items-center gap-1">
+                    <div className="nav-menu-icon">
+                      <i className="ri-external-link-line" />
+                    </div>
+                    <span>사이트 바로가기</span>
+                  </div>
+                </Link>
+              </div>
+            </nav>
+          </div>
+
+          <div className="nav-section">
+            <div className="nav-title"><span>사이트 관리</span></div>
+            {renderMenu("mobile")}
+          </div>
+        </aside>
+      </div>
+    )}
+
     <aside className="border-r bg-white flex flex-col" id="sideBar">
       <div className="side-logo"><p>Archiving</p></div>
 
@@ -119,99 +302,9 @@ export default function Sidebar() {
       </div>
       <div className="nav-section">
         <div className="nav-title"><span>사이트 관리</span></div>
-        <nav className="flex flex-col gap-2 px-3">
-          {menu.map((item) => {
-            //
-            // 상위 메뉴 active 조건
-            //
-            const isParentActive =
-              pathname === item.href ||
-              pathname.startsWith(item.href + "/");
-
-            //
-            // 열림 여부: 오직 openMenu 로만 결정
-            //
-            const isOpen = openMenu === item.label;
-
-            return (
-              <div key={item.label}>
-                {/* -------------------- 상위 메뉴 -------------------- */}
-                {item.children.length === 0 ? (
-                  // -------------------- children 없는 경우 → 즉시 이동 --------------------
-                  <Link
-                    href={item.href}
-                    className={`
-                      flex items-center justify-between  rounded-md text-sm
-                      ${
-                        pathname === item.href
-                          ? "bg-blue-50 text-blue-600 font-medium"
-                          : "text-gray-700 hover:bg-gray-50"
-                      }
-                    `}
-                  >
-                    <div className="flex items-center gap-1">
-                      <div className="nav-menu-icon">
-                        <i className={`${item.icon} ${ pathname === item.href ? "text-blue-600" : "text-gray-600" }`} />
-                      </div>
-                      <span>{item.label}</span>
-                    </div>
-                  </Link>
-                ) : (
-                  // -------------------- children 있는 경우 → toggle --------------------
-                  <div
-                    onClick={() => {
-                      setOpenMenu(isOpen ? "" : item.label);
-                    }}
-                    className={`
-                      flex items-center justify-between cursor-pointer rounded-md text-sm
-                      ${
-                        isParentActive
-                          ? "bg-blue-50 text-blue-600 font-medium"
-                          : "text-gray-700 hover:bg-gray-50"
-                      }
-                    `}
-                  >
-                    <div className="flex items-center gap-1">
-                      <div className="nav-menu-icon"><i className={`${item.icon}  ${ isParentActive ? "text-blue-600" : "text-gray-600" }`} /></div>
-                      <span>{item.label}</span>
-                    </div>
-
-                    <div className={`menu-arrow ${ isOpen ? "rotate-180" : "" }`}>
-                      <i className={`ri-arrow-down-s-line`} />
-                    </div>
-                  </div>
-                )}
-
-                {/* -------------------- 하위 메뉴 -------------------- */}
-                {isOpen && item.children.length > 0 && (
-                  <div className="flex flex-col gap-1 mt-1">
-                    {item.children.map((child) => {
-                      const activeChild = pathname === child.href;
-
-                      return (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          className={`
-                            block px-10 py-2 text-sm rounded-md 
-                            ${
-                              activeChild
-                                ? "bg-gray-100 text-gray-700 font-semibold"
-                                : "text-gray-700 hover:bg-gray-200"
-                            }
-                          `}
-                        >
-                          {child.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </nav>
+        {renderMenu("desktop")}
       </div>
     </aside>
+    </>
   );
 }

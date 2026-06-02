@@ -23,6 +23,22 @@ const GALLERY_CREATE_COLUMNS = `
   title,
   description,
   image_url,
+  thumbnail_url,
+  image_width,
+  image_height,
+  tags,
+  category,
+  range,
+  gemini_description,
+  gemini_tags,
+  created_at
+`;
+
+const GALLERY_CREATE_COLUMNS_WITHOUT_THUMBNAIL = `
+  id,
+  title,
+  description,
+  image_url,
   image_width,
   image_height,
   tags,
@@ -72,6 +88,22 @@ async function parseJsonObject(req: NextRequest) {
   }
 }
 
+function isMissingThumbnailColumn(error: unknown) {
+  const queryError = error as { code?: string; message?: string } | null;
+
+  return (
+    queryError?.code === "42703" &&
+    /thumbnail_url/i.test(queryError.message || "")
+  );
+}
+
+function withNullThumbnail<T extends object>(items: T[] | null | undefined) {
+  return (items || []).map((item) => ({
+    ...item,
+    thumbnail_url: null,
+  }));
+}
+
 /**
  * GET /api/gallery
  * 갤러리 목록 조회 (페이지네이션 + 검색 + 필터)
@@ -106,22 +138,33 @@ export async function GET(req: NextRequest) {
       const safeSearch = normalizeFilterText(search);
       const filterTags = parseFilterTags(tagsParam);
 
-      let query = adminClient
-        .from("gallery")
-        .select(GALLERY_CREATE_COLUMNS, { count: "planned" })
-        .order("created_at", { ascending: false });
+      const buildDashboardQuery = (columns: string) => {
+        let query = adminClient
+          .from("gallery")
+          .select(columns, { count: "planned" })
+          .order("created_at", { ascending: false });
 
-      if (safeSearch) {
-        query = query.or(
-          `title.ilike.%${safeSearch}%,description.ilike.%${safeSearch}%,gemini_description.ilike.%${safeSearch}%`
-        );
+        if (safeSearch) {
+          query = query.or(
+            `title.ilike.%${safeSearch}%,description.ilike.%${safeSearch}%,gemini_description.ilike.%${safeSearch}%`
+          );
+        }
+
+        for (const tag of filterTags) {
+          query = query.or(`tags.cs.{${tag}},gemini_tags.cs.{${tag}}`);
+        }
+
+        return query.range(offset, offset + limit - 1);
+      };
+
+      let { data, error, count } = await buildDashboardQuery(GALLERY_CREATE_COLUMNS);
+
+      if (isMissingThumbnailColumn(error)) {
+        const fallback = await buildDashboardQuery(GALLERY_CREATE_COLUMNS_WITHOUT_THUMBNAIL);
+        data = withNullThumbnail(fallback.data);
+        error = fallback.error;
+        count = fallback.count;
       }
-
-      for (const tag of filterTags) {
-        query = query.or(`tags.cs.{${tag}},gemini_tags.cs.{${tag}}`);
-      }
-
-      const { data, error, count } = await query.range(offset, offset + limit - 1);
 
       if (error) {
         throw error;
@@ -190,6 +233,7 @@ export async function POST(req: NextRequest) {
 
     const title = normalizeGalleryTitle(body.title);
     const imageUrl = normalizeGalleryUrl(body.image_url);
+    const thumbnailUrl = normalizeGalleryUrl(body.thumbnail_url) || imageUrl;
 
     // 3. 필수 필드 확인
     if (!title || !imageUrl) {
@@ -213,6 +257,7 @@ export async function POST(req: NextRequest) {
         title,
         description: normalizeGalleryText(body.description),
         image_url: imageUrl,
+        thumbnail_url: thumbnailUrl,
         image_width: normalizeGalleryDimension(body.image_width),
         image_height: normalizeGalleryDimension(body.image_height),
         tags: normalizeGalleryTags(body.tags),

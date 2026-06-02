@@ -3,12 +3,12 @@ import "./css/style.scss";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="dashboard-shell flex min-h-screen">
       {/* Sidebar */}
       <Sidebar />
 
       {/* Main Content */}
-      <div className="flex-1 bg-gray-50 dashboard-Contents">
+      <div className="min-w-0 flex-1 bg-gray-50 dashboard-Contents">
         {children}
       </div>
     </div>

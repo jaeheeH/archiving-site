@@ -64,9 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { post } = data;
   const baseUrl = getSiteUrl();
   const pageUrl = `${baseUrl}/blog/${slug}`;
-  
-  // 썸네일 우선순위: thumbnail_url > title_image_url
-  const ogImage = post.thumbnail_url || post.title_image_url;
+  const ogImage = `${baseUrl}/api/og?type=blog&slug=${encodeURIComponent(slug)}`;
 
   return {
     title: post.title,
@@ -77,23 +75,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: pageUrl,
       title: post.title,
       description: post.summary || post.subtitle || "",
-      images: ogImage
-        ? [
-            {
-              url: ogImage,
-              width: 1200,
-              height: 630,
-              alt: post.title,
-            },
-          ]
-        : [],
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
       publishedTime: post.published_at || post.created_at,
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.summary || post.subtitle || "",
-      images: ogImage ? [ogImage] : [],
+      images: [ogImage],
     },
   };
 }
@@ -129,6 +125,7 @@ export default async function BlogPostPage({ params }: Props) {
       initialPost={{ ...data.post, userScraped: false }}
       initialCategory={data.category}
       initialAuthorProfile={data.authorProfile}
+      initialRelatedPosts={data.relatedPosts}
     />
   );
 }

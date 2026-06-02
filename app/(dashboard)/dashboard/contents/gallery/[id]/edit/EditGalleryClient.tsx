@@ -16,6 +16,11 @@ const ALLOWED_GALLERY_SOURCE_IMAGE_TYPES = new Set([
   "image/gif",
 ]);
 
+type GalleryUploadResult = {
+  url: string;
+  thumbnail_url: string;
+};
+
 interface EditGalleryClientProps {
   id: string;
   onClose?: () => void;
@@ -34,6 +39,7 @@ export default function EditGalleryClient({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
@@ -118,6 +124,7 @@ export default function EditGalleryClient({
           setTitle(data.title);
           setDescription(data.description || "");
           setImageUrl(data.image_url);
+          setThumbnailUrl(data.thumbnail_url || data.image_url);
           setTags(data.tags || []);
           setGeminiTags(data.gemini_tags || []);
           setRange(data.range || []);
@@ -143,7 +150,7 @@ export default function EditGalleryClient({
     };
   }, [previewUrl]);
 
-  const uploadImage = async (file: File) => {
+  const uploadImage = async (file: File): Promise<GalleryUploadResult> => {
     const formData = new FormData();
     formData.append("file", file);
 
@@ -157,7 +164,10 @@ export default function EditGalleryClient({
       throw new Error(data.error || "이미지 업로드 실패");
     }
 
-    return data.url as string;
+    return {
+      url: data.url as string,
+      thumbnail_url: (data.thumbnail_url || data.url) as string,
+    };
   };
 
   const getImageDimensions = (file: File): Promise<{ width: number; height: number }> => {
@@ -198,6 +208,7 @@ export default function EditGalleryClient({
       setSaving(true);
   
       let finalImage = imageUrl;
+      let finalThumbnail = thumbnailUrl || imageUrl;
       let finalEmbedding: number[] | undefined;
       let finalGeminiDescription = geminiDescription;
       let finalGeminiTags = geminiTags;
@@ -219,7 +230,9 @@ export default function EditGalleryClient({
         finalHeight = dimensions.height;
 
         setStatusText("이미지 업로드 중...");
-        finalImage = await uploadImage(optimizedFile);
+        const uploadedImage = await uploadImage(optimizedFile);
+        finalImage = uploadedImage.url;
+        finalThumbnail = uploadedImage.thumbnail_url;
   
         // 새 이미지 분석
         setStatusText("이미지 분석 중...");
@@ -234,6 +247,7 @@ export default function EditGalleryClient({
         title,
         description,
         image_url: finalImage,
+        thumbnail_url: finalThumbnail,
         image_width: finalWidth,
         image_height: finalHeight,
         tags,

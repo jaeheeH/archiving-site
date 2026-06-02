@@ -188,17 +188,17 @@ export default function MyBrandsPage() {
     }
   };
 
-  if (loading) return <div className="p-8">로딩 중...</div>;
+  if (loading) return <div className="p-4 sm:p-6 lg:p-8">로딩 중...</div>;
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
+    <div className="mx-auto max-w-5xl p-4 sm:p-6 lg:p-8">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
            <h1 className="text-2xl font-bold">내 브랜드 관리</h1>
            <p className="text-sm text-gray-500 mt-1">등록된 브랜드와 학습 상태를 확인하세요.</p>
         </div>
         <Link href="/dashboard/brand-kit">
-          <Button className="bg-black text-white hover:bg-gray-800">
+          <Button className="w-full bg-black text-white hover:bg-gray-800 sm:w-auto">
             + 새 브랜드 만들기
           </Button>
         </Link>
@@ -214,7 +214,7 @@ export default function MyBrandsPage() {
           </div>
         ) : (
           brands.map((brand) => (
-            <div key={brand.id} className="bg-white border rounded-lg p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-gray-300 transition-colors">
+            <div key={brand.id} className="flex flex-col items-start justify-between gap-4 rounded-lg border bg-white p-4 shadow-sm transition-colors hover:border-gray-300 sm:p-6 md:flex-row md:items-center">
               
               {editingId === brand.id ? (
                 // [수정 모드 UI]
@@ -253,7 +253,7 @@ export default function MyBrandsPage() {
                 </div>
               ) : (
                 // [일반 보기 UI]
-                <div className="flex min-w-0 flex-1 items-center gap-4">
+                <div className="flex min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:items-center">
                   <BrandThumbnail brand={brand} />
                   <div className="min-w-0 flex-1">
                     <div className="mb-2 flex flex-wrap items-center gap-3">
@@ -278,10 +278,10 @@ export default function MyBrandsPage() {
 
               {/* 버튼 그룹 (수정 모드가 아닐 때만 보임) */}
               {editingId !== brand.id && (
-                <div className="flex items-center gap-2 self-end md:self-center">
+                <div className="flex w-full flex-wrap items-center justify-end gap-2 md:w-auto md:self-center">
                    {/* 바로 Studio로 이동하는 버튼 */}
-                   <Link href={`/dashboard/studio?brand=${brand.id}`}>
-                    <Button variant="outline" className="h-10 px-4 border-indigo-200 text-indigo-700 hover:bg-indigo-50 hover:text-indigo-800 font-medium">
+                   <Link href={`/dashboard/studio?brand=${brand.id}`} className="w-full sm:w-auto">
+                    <Button variant="outline" className="h-10 w-full border-indigo-200 px-4 font-medium text-indigo-700 hover:bg-indigo-50 hover:text-indigo-800 sm:w-auto">
                       🎨 이미지 생성하기
                     </Button>
                   </Link>
@@ -364,7 +364,7 @@ function ThumbnailPickerModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 px-4">
       <div className="w-full max-w-3xl overflow-hidden rounded-lg border bg-white shadow-xl">
-        <div className="flex items-start justify-between border-b px-6 py-5">
+        <div className="flex items-start justify-between gap-4 border-b px-4 py-5 sm:px-6">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-gray-400">Brand Thumbnail</p>
             <h2 className="mt-1 text-xl font-bold text-gray-950">{brand.name}</h2>
@@ -377,7 +377,7 @@ function ThumbnailPickerModal({
           </Button>
         </div>
 
-        <div className="max-h-[68vh] overflow-y-auto p-6">
+        <div className="max-h-[68vh] overflow-y-auto p-4 sm:p-6">
           {loading ? (
             <div className="flex min-h-48 items-center justify-center rounded-md border border-dashed text-sm text-gray-500">
               이미지 목록을 불러오는 중입니다.
@@ -392,7 +392,7 @@ function ThumbnailPickerModal({
               <p className="mt-1 text-sm text-gray-500">Studio에서 이 브랜드로 이미지를 만든 뒤 선택할 수 있어요.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
               {images.map((image) => (
                 <button
                   key={image.id}

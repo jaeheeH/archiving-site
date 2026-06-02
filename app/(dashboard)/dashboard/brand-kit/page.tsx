@@ -160,11 +160,11 @@ export default function BrandKitPage() {
   };
 
   return (
-    <div className="p-8 max-w-3xl mx-auto">
+    <div className="mx-auto max-w-3xl p-4 sm:p-6 lg:p-8">
       <h1 className="text-3xl font-bold mb-2">Brand Kit 등록</h1>
       <p className="text-gray-500 mb-8">우리 브랜드만의 AI 모델을 만들기 위한 학습 데이터를 등록합니다.</p>
       
-      <div className="bg-white p-8 rounded-xl shadow-sm border space-y-8">
+      <div className="space-y-8 rounded-xl border bg-white p-5 shadow-sm sm:p-8">
         
         {/* 1. 브랜드 이름 */}
         <div>
@@ -187,7 +187,7 @@ export default function BrandKitPage() {
             학습용 이미지 (최소 5장 ~ 최대 25장)
           </label>
           
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:bg-gray-50 transition-colors relative">
+          <div className="relative rounded-lg border-2 border-dashed border-gray-300 p-5 text-center transition-colors hover:bg-gray-50 sm:p-8">
             <input 
               type="file" 
               multiple 
@@ -205,7 +205,7 @@ export default function BrandKitPage() {
 
           {/* 미리보기 그리드 */}
           {previews.length > 0 && (
-            <div className="mt-4 grid grid-cols-4 md:grid-cols-5 gap-2">
+            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 md:grid-cols-5">
               {previews.map((src, idx) => (
                 <div key={src} className="group relative aspect-square bg-gray-100 rounded overflow-hidden border">
                   <img src={src} alt="preview" className="w-full h-full object-cover" />

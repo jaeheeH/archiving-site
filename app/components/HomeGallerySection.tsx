@@ -8,6 +8,7 @@ type GalleryItem = {
   title: string;
   description?: string;
   image_url: string;
+  thumbnail_url?: string | null;
   tags: string[];
   gemini_tags?: string[];
   // 필요한 필드 추가
@@ -33,7 +34,7 @@ export default function HomeGallerySection({ initialGallery }: HomeGallerySectio
               className="group relative block aspect-square cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-[#1d1d1d]"
             >
               <Image
-                src={item.image_url}
+                src={item.thumbnail_url || item.image_url}
                 alt={item.title}
                 fill
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"

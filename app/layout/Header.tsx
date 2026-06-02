@@ -285,7 +285,7 @@ export default function Header() {
                     </div>
 
                     <div className="space-y-1">
-                      <UserMenuLink href="/mypage/profile" icon="ri-user-line" label="내 프로필" />
+                      <UserMenuLink href="/mypage" icon="ri-user-line" label="내 프로필" />
                       <UserMenuLink href="/mypage/activity" icon="ri-bookmark-line" label="내 활동" />
                       <UserMenuLink href="/mypage/account" icon="ri-settings-3-line" label="설정" />
                       <button

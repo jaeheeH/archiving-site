@@ -180,14 +180,14 @@ export default function UserList({ users, currentUserRole, currentUserId }: Prop
   return (
     <div>
       {/* 상단 검색 & 필터 */}
-      <div className="flex justify-between items-center mb-4">
-        <div className="relative">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative w-full sm:w-auto">
           <input
             type="text"
             placeholder="Search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border rounded-lg px-4 py-2 pl-10 w-64"
+            className="w-full rounded-lg border px-4 py-2 pl-10 sm:w-64"
           />
           <svg
             className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
@@ -204,7 +204,7 @@ export default function UserList({ users, currentUserRole, currentUserId }: Prop
           </svg>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {selectedUsers.length > 0 && (
             <>
               <button
@@ -226,7 +226,7 @@ export default function UserList({ users, currentUserRole, currentUserId }: Prop
       </div>
 
       {/* 테이블 */}
-      <div className="border  ">
+      <div className="overflow-x-auto rounded-lg border bg-white">
         <table className="w-full userTable">
           <thead className="bg-gray-200 border-b overflow-hidden">
             <tr>

@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 
-import { createAdminClient } from "@/lib/supabase/admin";
-import { createClient } from "@/lib/supabase/server";
+import { getBrandManagerContext } from "@/lib/brand-manager-auth";
 import { isSafeIdentifierParam } from "@/lib/route-params";
 
 const ALLOWED_BRAND_ASSET_TYPES = new Set([
@@ -20,14 +19,8 @@ function safeExtension(file: File) {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabaseAuth = await createClient();
-    const {
-      data: { user },
-    } = await supabaseAuth.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const context = await getBrandManagerContext();
+    if (context.response) return context.response;
 
     const formData = await request.formData();
     const brandId = formData.get("brandId");
@@ -49,12 +42,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "이미지는 5MB 이하로 업로드해주세요." }, { status: 400 });
     }
 
-    const admin = createAdminClient();
-    const { data: brand } = await admin
+    const { data: brand } = await context.admin
       .from("brands")
       .select("id, user_id")
       .eq("id", brandId)
-      .eq("user_id", user.id)
+      .eq("user_id", context.user.id)
       .maybeSingle();
 
     if (!brand) {
@@ -66,7 +58,7 @@ export async function POST(request: NextRequest) {
     const path = `${brandId}/${Date.now()}_${random}.${ext}`;
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    const { error } = await admin.storage.from("brand-assets").upload(path, buffer, {
+    const { error } = await context.admin.storage.from("brand-assets").upload(path, buffer, {
       cacheControl: "31536000",
       contentType: file.type || "image/jpeg",
       upsert: false,
@@ -78,7 +70,7 @@ export async function POST(request: NextRequest) {
 
     const {
       data: { publicUrl },
-    } = admin.storage.from("brand-assets").getPublicUrl(path);
+    } = context.admin.storage.from("brand-assets").getPublicUrl(path);
 
     return NextResponse.json({ success: true, url: publicUrl, path });
   } catch (error) {

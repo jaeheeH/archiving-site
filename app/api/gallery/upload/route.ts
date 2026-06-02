@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
+import sharp from "sharp";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkGalleryEditPermission } from "@/lib/supabase/gallery-utils";
@@ -10,6 +11,8 @@ const ALLOWED_GALLERY_IMAGE_TYPES = new Set([
   "image/webp",
   "image/gif",
 ]);
+
+const THUMBNAIL_WIDTH = 640;
 
 function safeExtension(file: File) {
   const fromType = file.type.split("/")[1];
@@ -45,12 +48,20 @@ export async function POST(request: NextRequest) {
     }
 
     const admin = createAdminClient();
-    const ext = safeExtension(file);
     const random = randomUUID().replace(/-/g, "").slice(0, 12);
-    const filePath = `${permCheck.userId}/${Date.now()}_${random}.${ext}`;
+    const createdAt = Date.now();
+    const ext = safeExtension(file);
+    const originalPath = `${permCheck.userId}/originals/${createdAt}_${random}.${ext}`;
+    const thumbnailPath = `${permCheck.userId}/thumbnails/${createdAt}_${random}.jpg`;
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    const { error } = await admin.storage.from("gallery").upload(filePath, buffer, {
+    const thumbnailBuffer = await sharp(buffer, { animated: false })
+      .rotate()
+      .resize({ width: THUMBNAIL_WIDTH, withoutEnlargement: true })
+      .jpeg({ quality: 76, mozjpeg: true })
+      .toBuffer();
+
+    const { error } = await admin.storage.from("gallery").upload(originalPath, buffer, {
       cacheControl: "31536000",
       contentType: file.type || "image/jpeg",
       upsert: false,
@@ -60,11 +71,36 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
+    const { error: thumbnailError } = await admin.storage.from("gallery").upload(
+      thumbnailPath,
+      thumbnailBuffer,
+      {
+        cacheControl: "31536000",
+        contentType: "image/jpeg",
+        upsert: false,
+      }
+    );
+
+    if (thumbnailError) {
+      await admin.storage.from("gallery").remove([originalPath]);
+      return NextResponse.json({ error: thumbnailError.message }, { status: 400 });
+    }
+
     const {
       data: { publicUrl },
-    } = admin.storage.from("gallery").getPublicUrl(filePath);
+    } = admin.storage.from("gallery").getPublicUrl(originalPath);
 
-    return NextResponse.json({ success: true, url: publicUrl, path: filePath });
+    const {
+      data: { publicUrl: thumbnailUrl },
+    } = admin.storage.from("gallery").getPublicUrl(thumbnailPath);
+
+    return NextResponse.json({
+      success: true,
+      url: publicUrl,
+      thumbnail_url: thumbnailUrl,
+      path: originalPath,
+      thumbnail_path: thumbnailPath,
+    });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "서버 오류" },

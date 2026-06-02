@@ -119,7 +119,7 @@ export default function StudioPage() {
   };
 
   return (
-    <div className="p-8 max-w-6xl mx-auto flex flex-col gap-8 xl:flex-row xl:gap-10">
+    <div className="mx-auto flex max-w-6xl flex-col gap-8 p-4 sm:p-6 lg:p-8 xl:flex-row xl:gap-10">
       {/* 왼쪽: 컨트롤 패널 */}
       <form onSubmit={handleGenerate} className="w-full space-y-8 xl:w-1/3">
         <div>
@@ -175,7 +175,7 @@ export default function StudioPage() {
             {/* [NEW] 화면 비율 (Aspect Ratio) */}
             <div>
               <label className="block text-xs font-semibold text-gray-500 mb-1">화면 비율 (Ratio)</label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                 {['1:1', '16:9', '9:16', '3:2', '2:3', '4:5'].map((ratio) => (
                   <button
                     key={ratio}
@@ -193,7 +193,7 @@ export default function StudioPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                {/* 조명 */}
                <div>
                 <label className="block text-xs font-semibold text-gray-500 mb-1">조명</label>
@@ -274,7 +274,7 @@ export default function StudioPage() {
       </form>
 
       {/* 오른쪽: 결과 뷰어 */}
-      <div className="relative flex min-h-[560px] w-full items-center justify-center rounded-lg border border-dashed border-gray-300 bg-gray-100 xl:w-2/3">
+      <div className="relative flex min-h-[360px] w-full items-center justify-center rounded-lg border border-dashed border-gray-300 bg-gray-100 sm:min-h-[460px] xl:min-h-[560px] xl:w-2/3">
         {resultImage ? (
           <div className="relative w-full h-full flex items-center justify-center p-4">
              {/* 이미지 비율에 따라 뷰어 스타일이 유동적이어야 함 */}
@@ -295,7 +295,7 @@ export default function StudioPage() {
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-md bg-white text-gray-500 shadow-sm">
               {isGenerating ? <Sparkles className="h-7 w-7" /> : <ImageIcon className="h-7 w-7" />}
             </div>
-            <p className="text-xl font-medium">왼쪽에서 설정을 마치고 생성해주세요</p>
+            <p className="text-lg font-medium sm:text-xl">왼쪽에서 설정을 마치고 생성해주세요</p>
             <p className="text-sm mt-2">비율과 시드값을 조절하여 원하는 결과를 얻으세요</p>
           </div>
         )}

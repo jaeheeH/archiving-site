@@ -11,6 +11,7 @@ export type GalleryItem = {
   title: string;
   description?: string;
   image_url: string;
+  thumbnail_url?: string | null;
   image_width: number;
   image_height: number;
   tags: string[];
@@ -86,10 +87,13 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
       if (search.trim()) params.set('search', search.trim());
       if (tags.length > 0) params.set('tags', tags.join(','));
 
-      const res = await fetch(`/api/gallery?${params.toString()}`);
-      if (!res.ok) throw new Error('갤러리 조회 실패');
+      const res = await fetch(`/api/gallery?${params.toString()}`, { cache: 'no-store' });
+      const data = await res.json().catch(() => null);
 
-      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data?.error || '갤러리 조회 실패');
+      }
+
       setGallery(data.data || []);
       setTotalPages(data.pagination.totalPages);
     } catch (error) {
@@ -377,7 +381,7 @@ function GalleryItemImage({ item, onClick }: { item: GalleryItem; onClick: () =>
     <div className={`${containerClass} break-inside-avoid`} onClick={onClick}>
       <div className="relative w-full" style={{ aspectRatio: `${item.image_width} / ${item.image_height}` }}>
         <Image
-          src={item.image_url}
+          src={item.thumbnail_url || item.image_url}
           alt={item.title}
           fill
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"

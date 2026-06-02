@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import Replicate from 'replicate';
 import JSZip from 'jszip';
+import { getBrandManagerContext } from '@/lib/brand-manager-auth';
 import { getErrorMessage } from '@/lib/error-message';
 import { isSafeIdentifierParam } from '@/lib/route-params';
 
@@ -69,16 +69,10 @@ export async function POST(request: Request) {
     }
 
     const { brandId, imageUrls } = body;
-    const supabaseAuth = await createClient();
-    const supabase = createAdminClient();
+    const context = await getBrandManagerContext();
+    if (context.response) return context.response;
+    const supabase = context.admin;
     cleanupClient = supabase;
-    const {
-      data: { user },
-    } = await supabaseAuth.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: '로그인이 필요합니다.' }, { status: 401 });
-    }
 
     // 1. 필수 값 검증
     if (typeof brandId !== 'string' || !isSafeIdentifierParam(brandId) || !Array.isArray(imageUrls) || imageUrls.length === 0) {
@@ -94,7 +88,7 @@ export async function POST(request: Request) {
       .from('brands')
       .select('id, name, trigger_word, user_id')
       .eq('id', brandId)
-      .eq('user_id', user.id)
+      .eq('user_id', context.user.id)
       .maybeSingle();
 
     if (brandError) {

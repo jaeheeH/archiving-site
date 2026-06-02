@@ -3,10 +3,34 @@
  * Usage: node scripts/migrate.mjs [--url=http://localhost:3000] [--batch=5]
  */
 
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
+function readDotEnvMigrationToken() {
+  try {
+    const envPath = resolve(process.cwd(), ".env.local");
+    if (!existsSync(envPath)) return "";
+
+    const line = readFileSync(envPath, "utf8")
+      .split(/\r?\n/)
+      .find((item) => /^\s*MIGRATION_TOKEN\s*=/.test(item));
+
+    if (!line) return "";
+
+    return line
+      .replace(/^\s*MIGRATION_TOKEN\s*=\s*/, "")
+      .trim()
+      .replace(/^["']|["']$/g, "")
+      .trim();
+  } catch {
+    return "";
+  }
+}
+
 const args = process.argv.slice(2);
 const baseUrl = args.find(arg => arg.startsWith('--url='))?.split('=')[1] || 'http://localhost:3000';
 const batchSize = parseInt(args.find(arg => arg.startsWith('--batch='))?.split('=')[1] || '3');
-const migrationToken = process.env.MIGRATION_TOKEN;
+const migrationToken = process.env.MIGRATION_TOKEN?.trim() || readDotEnvMigrationToken();
 
 if (!migrationToken) {
   console.error('❌ MIGRATION_TOKEN 환경변수가 필요합니다.');
@@ -24,7 +48,11 @@ console.log(`   Base URL: ${baseUrl}`);
 console.log(`   Batch Size: ${batchSize}\n`);
 
 async function getStatus() {
-  const res = await fetch(`${baseUrl}/api/gallery/migrate`);
+  const res = await fetch(`${baseUrl}/api/gallery/migrate`, {
+    headers: {
+      'x-migration-token': migrationToken
+    }
+  });
   if (!res.ok) {
     throw new Error(`상태 조회 실패: ${res.statusText}`);
   }

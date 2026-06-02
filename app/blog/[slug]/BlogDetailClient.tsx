@@ -55,10 +55,23 @@ interface AuthorProfile {
   avatar_url: string | null;
 }
 
+interface RelatedPost {
+  id: string;
+  title: string;
+  subtitle: string | null;
+  summary: string | null;
+  slug: string;
+  published_at: string | null;
+  created_at: string;
+  title_image_url: string | null;
+  category_id: string | null;
+}
+
 interface BlogDetailClientProps {
   initialPost: Post;
   initialCategory?: Category | null;
   initialAuthorProfile?: AuthorProfile | null;
+  initialRelatedPosts?: RelatedPost[];
 }
 
 interface ArticleHeading {
@@ -132,6 +145,13 @@ const extractSummaryItems = (text: string | null | undefined): string[] => {
     .slice(0, 3);
 };
 
+const formatCompactDate = (dateValue: string | null | undefined) =>
+  new Date(dateValue || new Date()).toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  });
+
 // ---------------------------------------------------------
 // 유틸리티: 조회 기록 관리 (LocalStorage)
 // ---------------------------------------------------------
@@ -198,6 +218,7 @@ export default function BlogDetailClient({
   initialPost,
   initialCategory = null,
   initialAuthorProfile = null,
+  initialRelatedPosts = [],
 }: BlogDetailClientProps) {
   const router = useRouter();
   
@@ -670,6 +691,61 @@ export default function BlogDetailClient({
                   </p>
                 </div>
               </div>
+
+              {initialRelatedPosts.length > 0 && (
+                <section className="mt-16 border-y border-[var(--archive-line)] py-8">
+                  <div className="mb-6 flex items-end justify-between gap-4">
+                    <div>
+                      <p className="archive-eyebrow mb-2 text-[var(--archive-faint)]">Related</p>
+                      <h2 className="text-[22px] font-extrabold tracking-tight">함께 읽기 좋은 글</h2>
+                    </div>
+                    <NextLink
+                      href={post.category_id ? `/blog?category=${post.category_id}` : "/blog"}
+                      className="hidden text-[12px] font-semibold text-[var(--archive-muted)] transition-colors hover:text-[var(--archive-brand)] sm:inline-flex"
+                    >
+                      더 보기
+                    </NextLink>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+                    {initialRelatedPosts.map((related) => (
+                      <NextLink
+                        key={related.id}
+                        href={`/blog/${related.slug}`}
+                        className="group block min-w-0"
+                      >
+                        <div className="relative mb-4 aspect-[4/3] overflow-hidden bg-[var(--archive-bg-light)]">
+                          {related.title_image_url ? (
+                            <Image
+                              src={related.title_image_url}
+                              alt={related.title}
+                              fill
+                              sizes="(max-width: 768px) 100vw, 33vw"
+                              className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--archive-faint)]">
+                              ARCH-B
+                            </div>
+                          )}
+                        </div>
+                        <p className="archive-eyebrow mb-2 text-[var(--archive-brand)]">
+                          {related.category_id === post.category_id ? categoryName : "Blog"}
+                        </p>
+                        <h3 className="line-clamp-2 text-[16px] font-bold leading-6 transition-colors group-hover:text-[var(--archive-brand)]">
+                          {related.title}
+                        </h3>
+                        <p className="mt-2 line-clamp-2 text-[13px] leading-6 text-[var(--archive-muted)]">
+                          {related.summary || related.subtitle || "다음 글에서 이어지는 인사이트를 확인해보세요."}
+                        </p>
+                        <p className="archive-index mt-3 text-[12px] text-[var(--archive-faint)]">
+                          {formatCompactDate(related.published_at || related.created_at)}
+                        </p>
+                      </NextLink>
+                    ))}
+                  </div>
+                </section>
+              )}
 
               <div className="mt-12">
                 <button
