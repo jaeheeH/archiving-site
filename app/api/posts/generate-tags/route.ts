@@ -16,6 +16,30 @@ const MAX_PROMPT_SUBTITLE_LENGTH = 240;
 const MAX_PROMPT_CONTENT_LENGTH = 3000;
 const MAX_TAG_COUNT = 8;
 const MAX_TAG_LENGTH = 30;
+const STOP_WORDS = new Set([
+  '그리고',
+  '그러나',
+  '하지만',
+  '입니다',
+  '합니다',
+  '했습니다',
+  '있는',
+  '없는',
+  '위한',
+  '통해',
+  '대한',
+  '관련',
+  '이번',
+  '오늘',
+  '우리',
+  'the',
+  'and',
+  'for',
+  'with',
+  'from',
+  'this',
+  'that',
+]);
 
 function normalizePromptText(value: unknown, max: number) {
   return typeof value === 'string' ? value.trim().slice(0, max) : '';
@@ -32,6 +56,75 @@ function normalizeTags(value: unknown) {
         .filter(Boolean)
     )
   ).slice(0, MAX_TAG_COUNT);
+}
+
+function normalizeTagText(value: string) {
+  return value
+    .replace(/^#+/, '')
+    .replace(/[^\p{L}\p{N}.+#\-/\s]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, MAX_TAG_LENGTH);
+}
+
+function addTagScore(scores: Map<string, number>, tag: string, score: number) {
+  const normalized = normalizeTagText(tag);
+  if (!normalized || normalized.length < 2) return;
+  if (STOP_WORDS.has(normalized.toLowerCase())) return;
+
+  scores.set(normalized, (scores.get(normalized) || 0) + score);
+}
+
+function addRuleBasedTags(scores: Map<string, number>, text: string) {
+  const lower = text.toLowerCase();
+
+  const rules: Array<[RegExp, string[]]> = [
+    [/(ai|인공지능|생성형|gemini|chatgpt|llm|프롬프트|prompt)/i, ['AI', '생성형 AI']],
+    [/(react|next\.?js|typescript|javascript|supabase|vercel|api|개발|코드|프론트엔드)/i, ['개발', '웹개발']],
+    [/(디자인|ui|ux|브랜딩|브랜드|인터페이스|레이아웃|비주얼)/i, ['디자인', 'UI/UX']],
+    [/(이미지|갤러리|사진|썸네일|비주얼|그래픽)/i, ['이미지', '비주얼']],
+    [/(레퍼런스|아카이브|큐레이션|자료|수집|분류)/i, ['아카이빙', '레퍼런스']],
+    [/(성능|최적화|비용|storage|스토리지|캐시|cache)/i, ['최적화', '성능']],
+    [/(브랜드|브랜딩|자산|로고|아이덴티티)/i, ['브랜딩', '브랜드 자산']],
+  ];
+
+  rules.forEach(([pattern, tags]) => {
+    if (pattern.test(lower)) {
+      tags.forEach((tag) => addTagScore(scores, tag, 4));
+    }
+  });
+}
+
+function generateFallbackTags(title: string, subtitle: string, content: string) {
+  const scores = new Map<string, number>();
+  const weightedInputs: Array<[string, number]> = [
+    [title, 4],
+    [subtitle, 3],
+    [content, 1],
+  ];
+  const combinedText = `${title} ${subtitle} ${content}`;
+
+  addRuleBasedTags(scores, combinedText);
+
+  weightedInputs.forEach(([text, weight]) => {
+    const terms = text.match(/[\p{L}\p{N}][\p{L}\p{N}.+#\-/]{1,}/gu) || [];
+
+    terms.forEach((term) => {
+      const normalized = normalizeTagText(term);
+      const lower = normalized.toLowerCase();
+
+      if (normalized.length < 2) return;
+      if (STOP_WORDS.has(lower)) return;
+      if (/^\d+$/.test(normalized)) return;
+
+      addTagScore(scores, normalized, weight);
+    });
+  });
+
+  return Array.from(scores.entries())
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ko-KR'))
+    .map(([tag]) => tag)
+    .slice(0, MAX_TAG_COUNT);
 }
 
 async function parseJsonObject(req: NextRequest) {
@@ -103,7 +196,7 @@ export async function POST(req: NextRequest) {
 
       Requirements:
       1. Extract 5 to 8 most relevant keywords.
-      2. Tags must be in Korean (Hangul).
+      2. Prefer concise Korean tags. Keep central proper nouns or technical terms in their original spelling (e.g. React, Next.js, Supabase).
       3. Do not include the '#' symbol.
       4. Include specific proper nouns (e.g., "React", "Seoul") if they are key topics.
       5. Include broad categories (e.g., "Development", "Travel") if applicable.
@@ -129,7 +222,8 @@ export async function POST(req: NextRequest) {
           parsedData = { tags: rawTags };
       }
     }
-    const tags = normalizeTags(parsedData.tags);
+    const fallbackTags = generateFallbackTags(safeTitle, safeSubtitle, textContent);
+    const tags = normalizeTags([...parsedData.tags, ...fallbackTags]);
 
     return NextResponse.json({
       success: true,

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatKoreanDate } from "@/lib/date-format";
 
 export const metadata = {
   title: "Terms of Service | ARCH-B",
@@ -70,11 +71,7 @@ const termsSections = [
 ];
 
 export default function TermsPage() {
-  const currentDate = new Date().toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const currentDate = formatKoreanDate(new Date(), "long");
 
   return (
     <main className="min-h-screen w-full bg-white text-gray-900 dark:bg-[#0f0f0f] dark:text-gray-100">

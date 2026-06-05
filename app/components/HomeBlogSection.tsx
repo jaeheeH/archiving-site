@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { formatKoreanDate } from "@/lib/date-format";
 
 type BlogPost = {
   id: string;
@@ -23,16 +24,6 @@ interface HomeBlogSectionProps {
 }
 
 export default function HomeBlogSection({ initialPosts, categories }: HomeBlogSectionProps) {
-  // 이미 데이터가 있는 상태이므로 로딩 상태 관리 불필요
-  
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("ko-KR", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
   return (
     <div className="lg:col-span-3">
       {initialPosts.length === 0 ? (
@@ -91,7 +82,7 @@ export default function HomeBlogSection({ initialPosts, categories }: HomeBlogSe
                     {/* 메타 정보 */}
                     <div className="mt-auto flex items-center justify-between border-gray-100 pt-2 text-xs text-gray-400 dark:text-gray-500">
                       <span>
-                        {formatDate(post.published_at || post.created_at)}
+                        {formatKoreanDate(post.published_at || post.created_at, "short")}
                       </span>
                       <span className="flex items-center gap-3">
                         <span className="flex items-center gap-1">

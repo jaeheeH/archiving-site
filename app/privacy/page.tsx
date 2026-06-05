@@ -1,4 +1,5 @@
 import React from "react";
+import { formatKoreanDate } from "@/lib/date-format";
 
 export const metadata = {
   title: "Privacy Policy | ARCH-B",
@@ -6,11 +7,7 @@ export const metadata = {
 };
 
 export default function PrivacyPage() {
-  const currentDate = new Date().toLocaleDateString("ko-KR", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const currentDate = formatKoreanDate(new Date(), "long");
 
   return (
     <main className="w-full min-h-screen bg-white">

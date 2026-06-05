@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { useToast } from '@/components/ToastProvider';
+import { formatKoreanDate, getSeoulDateKey } from '@/lib/date-format';
 
 // --- Types ---
 interface Post {
@@ -268,12 +269,7 @@ export default function BlogClient({
     return category?.name || 'Uncategorized';
   };
 
-  const formatDate = (date: string | null) =>
-    new Date(date || '').toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+  const formatDate = (date: string | null) => formatKoreanDate(date, 'long');
 
   const selectedCategoryName =
     selectedCategory === 'all' ? 'All' : getCategoryName(selectedCategory);
@@ -282,7 +278,7 @@ export default function BlogClient({
   const todayImages = useMemo(() => {
     if (dailyImages.length === 0) return [];
 
-    const todayKey = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Seoul' });
+    const todayKey = getSeoulDateKey();
     const seed = todayKey
       .split('-')
       .reduce((total, part, index) => total + Number(part) * (index + 1), 0);

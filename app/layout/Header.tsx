@@ -17,18 +17,6 @@ type UserProfile = {
 
 const THEME_CHANGE_EVENT = "arch-theme-change";
 
-function getIsClientMounted() {
-  return true;
-}
-
-function getServerMountedSnapshot() {
-  return false;
-}
-
-function subscribeToMount() {
-  return () => {};
-}
-
 function readPreferredDarkMode() {
   if (typeof window === "undefined") return false;
 
@@ -57,8 +45,8 @@ function subscribeToTheme(onStoreChange: () => void) {
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
-  const mounted = useSyncExternalStore(subscribeToMount, getIsClientMounted, getServerMountedSnapshot);
   const isDark = useSyncExternalStore(subscribeToTheme, readPreferredDarkMode, () => false);
+  const [mounted, setMounted] = useState(false);
   const [userInfo, setUserInfo] = useState<UserProfile | null>(null);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement | null>(null);
@@ -83,6 +71,10 @@ export default function Header() {
   }, []);
 
   // 초기화 및 데이터 로드
+  useEffect(() => {
+    queueMicrotask(() => setMounted(true));
+  }, []);
+
   useEffect(() => {
     applyTheme(isDark, false);
   }, [applyTheme, isDark]);

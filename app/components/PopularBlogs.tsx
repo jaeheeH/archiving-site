@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import { formatKoreanDate } from '@/lib/date-format';
 
 interface BlogPost {
   id: string;
@@ -33,8 +34,8 @@ export default function PopularBlogs({ initialPosts, categories }: PopularBlogsP
             const categoryName = post.category_id
               ? categories[post.category_id]
               : null;
-            const publishDate = post.published_at 
-              ? new Date(post.published_at).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' })
+            const publishDate = post.published_at
+              ? formatKoreanDate(post.published_at, "monthDay", "")
               : '';
 
             return (

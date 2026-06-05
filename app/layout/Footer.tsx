@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+const COPYRIGHT_YEAR = "2026";
+
 export default function Footer() {
   const pathname = usePathname();
 
@@ -72,7 +74,7 @@ export default function Footer() {
 
         {/* 하단 저작권 영역 */}
         <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-400 font-mono">
-          <p>&copy; {new Date().getFullYear()} ARCH-B. All rights reserved.</p>
+          <p>&copy; {COPYRIGHT_YEAR} ARCH-B. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="transition-colors hover:text-[#ff4800]">Privacy Policy</Link>
             <Link href="/terms" className="transition-colors hover:text-[#ff4800]">Terms of Service</Link>
