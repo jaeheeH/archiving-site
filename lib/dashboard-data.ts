@@ -97,10 +97,18 @@ async function readRows<T>(query: unknown): Promise<T[]> {
 }
 
 function isMissingThumbnailColumn(error: QueryError) {
+  return isMissingColumn(error, "thumbnail_url");
+}
+
+function isMissingColumn(error: QueryError, columnName: string) {
   return (
     error?.code === "42703" &&
-    /thumbnail_url/i.test(error.message || "")
+    new RegExp(columnName, "i").test(error.message || "")
   );
+}
+
+function isMissingViewCountColumn(error: QueryError) {
+  return isMissingColumn(error, "view_count");
 }
 
 function withNullThumbnail<T extends object>(items: T[] | null | undefined) {
@@ -386,23 +394,55 @@ export async function getGalleryAnalytics() {
   const context = await getDashboardContext();
   if (!context) return null;
 
-  const rows = await readRows<{
+  type GalleryAnalyticsRow = {
+    id: number;
+    title: string;
     category: string | null;
     range: string[] | null;
     tags: string[] | null;
     gemini_tags: string[] | null;
     created_at: string | null;
-  }>(
+    view_count: number | null;
+  };
+
+  const query = (columns: string) =>
     applyAuthorScope(
       context.admin
         .from("gallery")
-        .select("category, range, tags, gemini_tags, created_at, author")
+        .select(columns)
         .order("created_at", { ascending: false })
         .limit(1000),
       context,
       "author"
-    )
-  );
+    );
+
+  let { data, error } = await (query(
+    "id, title, category, range, tags, gemini_tags, created_at, view_count, author"
+  ) as PromiseLike<{
+    data: GalleryAnalyticsRow[] | null;
+    error: QueryError;
+  }>);
+
+  if (isMissingViewCountColumn(error)) {
+    const fallback = await (query(
+      "id, title, category, range, tags, gemini_tags, created_at, author"
+    ) as PromiseLike<{
+      data: Omit<GalleryAnalyticsRow, "view_count">[] | null;
+      error: QueryError;
+    }>);
+
+    data = (fallback.data || []).map((item) => ({
+      ...item,
+      view_count: 0,
+    }));
+    error = fallback.error;
+  }
+
+  if (error) {
+    console.error("Dashboard data query failed:", error.message);
+  }
+
+  const rows = data || [];
 
   const categories: Record<string, number> = {};
   const ranges: Record<string, number> = {};
@@ -424,10 +464,14 @@ export async function getGalleryAnalytics() {
 
   return {
     total: rows.length,
+    totalViews: rows.reduce((sum, item) => sum + (item.view_count || 0), 0),
     categories: sortEntries(categories),
     ranges: sortEntries(ranges),
     tags: sortEntries(tags, 10),
     months: sortEntries(months, 8),
+    topViewed: [...rows]
+      .sort((a, b) => (b.view_count || 0) - (a.view_count || 0))
+      .slice(0, 10),
   };
 }
 

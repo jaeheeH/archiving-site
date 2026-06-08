@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowLeft, ImageIcon, Plus } from "lucide-react";
+import { ArrowLeft, Eye, ImageIcon, Plus } from "lucide-react";
 
 import { getGalleryAnalytics } from "@/lib/dashboard-data";
 
@@ -10,6 +10,16 @@ const numberFormat = new Intl.NumberFormat("ko-KR");
 
 function formatNumber(value: number) {
   return numberFormat.format(value);
+}
+
+function formatDate(value?: string | null) {
+  if (!value) return "날짜 없음";
+
+  return new Intl.DateTimeFormat("ko-KR", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(new Date(value));
 }
 
 function BarList({
@@ -52,6 +62,53 @@ function BarList({
   );
 }
 
+function RankedGalleryList({
+  title,
+  items,
+}: {
+  title: string;
+  items: {
+    id: number;
+    title: string;
+    created_at: string | null;
+    view_count: number | null;
+  }[];
+}) {
+  return (
+    <div className="rounded-lg border border-gray-200 bg-white">
+      <div className="border-b border-gray-100 px-5 py-4">
+        <h2 className="text-sm font-semibold text-gray-950">{title}</h2>
+      </div>
+      <div className="divide-y divide-gray-100">
+        {items.length > 0 ? (
+          items.map((item, index) => (
+            <Link
+              key={item.id}
+              href={`/gallery/${item.id}`}
+              className="flex items-center justify-between gap-4 px-5 py-4 hover:bg-gray-50"
+            >
+              <span className="flex min-w-0 items-center gap-3">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-gray-100 text-xs font-bold text-gray-600">
+                  {index + 1}
+                </span>
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-medium text-gray-950">{item.title}</span>
+                  <span className="mt-1 block text-xs text-gray-500">{formatDate(item.created_at)}</span>
+                </span>
+              </span>
+              <span className="shrink-0 text-sm text-gray-500">
+                {formatNumber(item.view_count || 0)} 조회
+              </span>
+            </Link>
+          ))
+        ) : (
+          <p className="px-5 py-10 text-center text-sm text-gray-500">표시할 이미지가 없습니다.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default async function GalleryAnalyticsPage() {
   const analytics = await getGalleryAnalytics();
 
@@ -86,12 +143,21 @@ export default async function GalleryAnalyticsPage() {
           통계 개요
         </Link>
 
-        <section className="rounded-lg border border-gray-200 bg-white p-5">
-          <ImageIcon className="h-5 w-5 text-indigo-600" />
-          <p className="mt-4 text-sm text-gray-500">분석 대상 이미지</p>
-          <p className="mt-2 text-3xl font-semibold text-gray-950">
-            {formatNumber(analytics.total)}
-          </p>
+        <section className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-lg border border-gray-200 bg-white p-5">
+            <ImageIcon className="h-5 w-5 text-indigo-600" />
+            <p className="mt-4 text-sm text-gray-500">분석 대상 이미지</p>
+            <p className="mt-2 text-3xl font-semibold text-gray-950">
+              {formatNumber(analytics.total)}
+            </p>
+          </div>
+          <div className="rounded-lg border border-gray-200 bg-white p-5">
+            <Eye className="h-5 w-5 text-orange-600" />
+            <p className="mt-4 text-sm text-gray-500">누적 조회</p>
+            <p className="mt-2 text-3xl font-semibold text-gray-950">
+              {formatNumber(analytics.totalViews)}
+            </p>
+          </div>
         </section>
 
         <section className="grid gap-6 xl:grid-cols-2">
@@ -100,6 +166,8 @@ export default async function GalleryAnalyticsPage() {
           <BarList title="태그" items={analytics.tags} emptyText="태그 데이터가 없습니다." />
           <BarList title="월별 등록" items={analytics.months} emptyText="월별 데이터가 없습니다." />
         </section>
+
+        <RankedGalleryList title="조회 상위 이미지" items={analytics.topViewed} />
       </main>
     </div>
   );

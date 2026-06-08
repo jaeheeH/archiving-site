@@ -24,6 +24,7 @@ extension/arch-b-reference-clipper
 
 - 확장자 아이콘 클릭 후 제목/설명/카테고리를 확인하고 `ARCH-B에 저장`
 - 페이지 우클릭 후 `ARCH-B 레퍼런스로 저장`
+- 저장 시 원격 `og:image`와 favicon은 ARCH-B 서버가 Supabase Storage `references` 버킷으로 복사한 뒤 DB에 저장합니다.
 
 ## 서버 API
 

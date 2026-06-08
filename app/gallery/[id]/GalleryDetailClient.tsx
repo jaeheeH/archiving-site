@@ -21,6 +21,7 @@ type GalleryDetail = {
   category?: string;
   created_at: string;
   author?: string;
+  view_count?: number | null;
 };
 
 type GalleryListItem = {
@@ -136,6 +137,39 @@ export default function GalleryDetailClient({
 
     fetchContextList();
   }, [gallery.id, gallery.title, gallery.image_url, gallery.thumbnail_url, galleryList, supabase]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function recordGalleryView() {
+      try {
+        const response = await fetch(`/api/gallery/${gallery.id}/view`, {
+          method: "POST",
+          cache: "no-store",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) return;
+
+        const result = await response.json();
+        if (typeof result.viewCount === "number") {
+          setGallery((prev) =>
+            prev.id === gallery.id
+              ? { ...prev, view_count: result.viewCount }
+              : prev
+          );
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          console.error("Failed to record gallery view:", error);
+        }
+      }
+    }
+
+    recordGalleryView();
+
+    return () => controller.abort();
+  }, [gallery.id]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -563,6 +597,12 @@ export default function GalleryDetailClient({
 
             <section className="border-b border-white/10 p-4 md:p-5">
               <dl className="space-y-4 text-xs">
+                <div className="flex justify-between gap-5">
+                  <dt className="text-gray-500">Views</dt>
+                  <dd className="min-w-0 text-right text-gray-300">
+                    {(gallery.view_count || 0).toLocaleString("ko-KR")}
+                  </dd>
+                </div>
                 <div className="flex justify-between gap-5">
                   <dt className="text-gray-500">Tool</dt>
                   <dd className="min-w-0 text-right text-gray-300">{gallery.category || "-"}</dd>

@@ -4,7 +4,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from "@/components/ToastProvider";
 import { createClient } from '@/lib/supabase/client';
@@ -302,7 +301,7 @@ export default function ReferenceContent({
               const isScrapping = scrappingIds.has(reference.id);
 
               return (
-                <Link
+                <a
                   key={reference.id}
                   href={reference.url}
                   target="_blank"
@@ -383,7 +382,7 @@ export default function ReferenceContent({
                       </span>
                     </div>
                   </div>
-                </Link>
+                </a>
               );
             })}
           </div>
