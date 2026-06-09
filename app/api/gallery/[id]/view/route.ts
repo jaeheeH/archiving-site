@@ -44,6 +44,10 @@ function isMissingViewLogSchema(error: QueryError) {
   );
 }
 
+function isConflictingViewLogConstraint(error: QueryError) {
+  return error?.code === "23505";
+}
+
 async function readCurrentGallery(
   admin: ReturnType<typeof createAdminClient>,
   galleryId: number
@@ -139,6 +143,7 @@ export async function POST(
         .eq("gallery_id", galleryId)
         .eq("user_id", user.id)
         .gte("created_at", oneDayAgo)
+        .limit(1)
         .maybeSingle();
 
       if (isMissingViewLogSchema(recentViewError)) {
@@ -165,6 +170,8 @@ export async function POST(
 
         if (isMissingViewLogSchema(insertError)) {
           viewLogUnavailable = true;
+        } else if (isConflictingViewLogConstraint(insertError)) {
+          viewLogUnavailable = true;
         } else if (insertError) {
           throw insertError;
         }
@@ -177,6 +184,7 @@ export async function POST(
         .eq("gallery_id", galleryId)
         .eq("visitor_hash", visitorHash)
         .gte("created_at", oneDayAgo)
+        .limit(1)
         .maybeSingle();
 
       if (isMissingViewLogSchema(recentViewError)) {
@@ -202,6 +210,8 @@ export async function POST(
         });
 
         if (isMissingViewLogSchema(insertError)) {
+          viewLogUnavailable = true;
+        } else if (isConflictingViewLogConstraint(insertError)) {
           viewLogUnavailable = true;
         } else if (insertError) {
           throw insertError;
