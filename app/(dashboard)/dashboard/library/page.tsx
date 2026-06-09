@@ -8,7 +8,7 @@ import LibraryClient from "./LibraryClient";
 export const dynamic = "force-dynamic";
 
 export default async function LibraryPage() {
-  const data = await getGeneratedImageLibrary();
+  const data = await getGeneratedImageLibrary({ limit: 40 });
 
   if (!data) {
     redirect("/login?redirect=/dashboard/library");
@@ -54,7 +54,12 @@ export default async function LibraryPage() {
             </div>
           </section>
         ) : (
-          <LibraryClient initialImages={data.images} />
+          <LibraryClient
+            initialImages={data.images}
+            initialTotal={data.pagination.total}
+            initialHasMore={data.pagination.hasMore}
+            brandOptions={data.brandOptions}
+          />
         )}
       </main>
     </div>

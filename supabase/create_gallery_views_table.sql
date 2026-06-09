@@ -42,5 +42,8 @@ DROP POLICY IF EXISTS "Service role can insert gallery_views" ON gallery_views;
 -- No public RLS policy is needed. The application reads/writes this table
 -- through the Supabase service role in API routes.
 
+-- Ask PostgREST/Supabase API to refresh its schema cache after adding columns.
+NOTIFY pgrst, 'reload schema';
+
 -- Optional maintenance:
 -- DELETE FROM gallery_views WHERE created_at < NOW() - INTERVAL '30 days';

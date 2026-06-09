@@ -4,6 +4,20 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import {
+  CalendarDays,
+  CheckCircle2,
+  Clock3,
+  ImageIcon,
+  ImagePlus,
+  Loader2,
+  Pencil,
+  Plus,
+  Sparkles,
+  Trash2,
+  X,
+  XCircle,
+} from 'lucide-react';
 
 type TrainedModel = {
   status?: 'succeeded' | 'failed' | 'processing' | 'starting' | string;
@@ -24,6 +38,75 @@ type GeneratedBrandImage = {
   prompt: string | null;
   created_at: string | null;
 };
+
+type BrandStatus = 'ready' | 'failed' | 'training' | 'pending';
+
+function getBrandStatus(models?: TrainedModel[]): BrandStatus {
+  const latestStatus = models?.[0]?.status || 'pending';
+
+  if (latestStatus === 'succeeded') return 'ready';
+  if (latestStatus === 'failed') return 'failed';
+  if (latestStatus === 'processing' || latestStatus === 'starting') return 'training';
+  return 'pending';
+}
+
+function formatDate(value: string) {
+  return new Intl.DateTimeFormat('ko-KR', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  }).format(new Date(value));
+}
+
+function StatusBadge({ models }: { models?: TrainedModel[] }) {
+  const status = getBrandStatus(models);
+  const style = {
+    ready: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+    failed: 'border-red-200 bg-red-50 text-red-700',
+    training: 'border-blue-200 bg-blue-50 text-blue-700',
+    pending: 'border-gray-200 bg-gray-50 text-gray-600',
+  }[status];
+  const label = {
+    ready: '학습 완료',
+    failed: '학습 실패',
+    training: '학습 중',
+    pending: '대기 중',
+  }[status];
+
+  return (
+    <span className={`inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-xs font-semibold ${style}`}>
+      {status === 'ready' && <CheckCircle2 className="h-3.5 w-3.5" />}
+      {status === 'failed' && <XCircle className="h-3.5 w-3.5" />}
+      {status === 'training' && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
+      {status === 'pending' && <Clock3 className="h-3.5 w-3.5" />}
+      {label}
+    </span>
+  );
+}
+
+function SummaryCard({
+  label,
+  value,
+  tone,
+}: {
+  label: string;
+  value: number;
+  tone: 'dark' | 'green' | 'blue' | 'gray';
+}) {
+  const toneClass = {
+    dark: 'text-gray-950',
+    green: 'text-emerald-700',
+    blue: 'text-blue-700',
+    gray: 'text-gray-600',
+  }[tone];
+
+  return (
+    <div className="rounded-lg border border-gray-200 bg-white p-5">
+      <p className="text-sm text-gray-500">{label}</p>
+      <p className={`mt-3 text-3xl font-semibold ${toneClass}`}>{value}</p>
+    </div>
+  );
+}
 
 export default function MyBrandsPage() {
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -172,142 +255,188 @@ export default function MyBrandsPage() {
     }
   };
 
-  // 상태 뱃지 컴포넌트
-  const StatusBadge = ({ models }: { models?: TrainedModel[] }) => {
-    const latestModel = models && models.length > 0 ? models[0] : null;
-    const status = latestModel ? latestModel.status : 'pending';
+  const summary = brands.reduce(
+    (acc, brand) => {
+      const status = getBrandStatus(brand.trained_models);
+      acc.total += 1;
+      if (status === 'ready') acc.ready += 1;
+      if (status === 'training') acc.training += 1;
+      if (status === 'pending') acc.pending += 1;
+      if (status === 'failed') acc.failed += 1;
+      return acc;
+    },
+    { total: 0, ready: 0, training: 0, pending: 0, failed: 0 }
+  );
 
-    if (status === 'succeeded') {
-      return <span className="px-2 py-1 text-[10px] font-bold text-green-700 bg-green-100 rounded-full border border-green-200">✅ 학습 완료</span>;
-    } else if (status === 'failed') {
-      return <span className="px-2 py-1 text-[10px] font-bold text-red-700 bg-red-100 rounded-full border border-red-200">❌ 학습 실패</span>;
-    } else if (status === 'processing' || status === 'starting') {
-      return <span className="px-2 py-1 text-[10px] font-bold text-blue-700 bg-blue-100 rounded-full animate-pulse border border-blue-200">🔄 학습 중...</span>;
-    } else {
-      return <span className="px-2 py-1 text-[10px] font-bold text-gray-700 bg-gray-100 rounded-full border border-gray-200">⏳ 대기 중</span>;
-    }
-  };
-
-  if (loading) return <div className="p-4 sm:p-6 lg:p-8">로딩 중...</div>;
+  if (loading) {
+    return (
+      <div>
+        <header className="dashboard-Header">
+          <div>
+            <h1>Brand</h1>
+            <p className="mt-1 text-xs text-gray-500">브랜드 목록을 불러오고 있습니다.</p>
+          </div>
+        </header>
+        <main className="dashboard-container">
+          <div className="flex min-h-[360px] items-center justify-center rounded-lg border border-dashed border-gray-300 bg-white">
+            <span className="inline-flex items-center gap-2 text-sm text-gray-500">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              로딩 중
+            </span>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
-    <div className="mx-auto max-w-5xl p-4 sm:p-6 lg:p-8">
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <header className="dashboard-Header">
         <div>
-           <h1 className="text-2xl font-bold">내 브랜드 관리</h1>
-           <p className="text-sm text-gray-500 mt-1">등록된 브랜드와 학습 상태를 확인하세요.</p>
+          <h1>Brand</h1>
+          <p className="mt-1 text-xs text-gray-500">브랜드 상태와 대표 이미지를 관리합니다.</p>
         </div>
-        <Link href="/dashboard/brand-kit">
-          <Button className="w-full bg-black text-white hover:bg-gray-800 sm:w-auto">
-            + 새 브랜드 만들기
-          </Button>
-        </Link>
-      </div>
+        <Button asChild className="bg-gray-900 text-white hover:bg-gray-800">
+          <Link href="/dashboard/brand-kit">
+            <Plus className="h-4 w-4" />
+            새 브랜드
+          </Link>
+        </Button>
+      </header>
 
-      <div className="grid grid-cols-1 gap-4">
+      <main className="dashboard-container space-y-6">
+        <section className="grid gap-4 md:grid-cols-4">
+          <SummaryCard label="전체 브랜드" value={summary.total} tone="dark" />
+          <SummaryCard label="학습 완료" value={summary.ready} tone="green" />
+          <SummaryCard label="학습 중" value={summary.training} tone="blue" />
+          <SummaryCard label="대기/실패" value={summary.pending + summary.failed} tone="gray" />
+        </section>
+
         {brands.length === 0 ? (
-          <div className="text-center py-20 bg-gray-50 border-2 border-dashed rounded-lg">
-            <p className="text-gray-500 mb-4">아직 등록된 브랜드가 없습니다.</p>
-            <Link href="/dashboard/brand-kit" className="text-blue-600 hover:underline">
-              첫 브랜드 만들러 가기 &rarr;
-            </Link>
-          </div>
+          <section className="flex min-h-[420px] items-center justify-center rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center">
+            <div>
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-md bg-gray-100 text-gray-700">
+                <ImageIcon className="h-6 w-6" />
+              </div>
+              <h2 className="mt-5 text-lg font-semibold text-gray-950">등록된 브랜드가 없습니다.</h2>
+              <p className="mt-2 text-sm text-gray-500">첫 브랜드를 만들면 Studio에서 바로 이미지를 생성할 수 있습니다.</p>
+              <Button asChild className="mt-5 bg-gray-900 text-white hover:bg-gray-800">
+                <Link href="/dashboard/brand-kit">
+                  <Plus className="h-4 w-4" />
+                  브랜드 만들기
+                </Link>
+              </Button>
+            </div>
+          </section>
         ) : (
-          brands.map((brand) => (
-            <div key={brand.id} className="flex flex-col items-start justify-between gap-4 rounded-lg border bg-white p-4 shadow-sm transition-colors hover:border-gray-300 sm:p-6 md:flex-row md:items-center">
-              
-              {editingId === brand.id ? (
-                // [수정 모드 UI]
-                <div className="flex-1 w-full space-y-4 bg-gray-50 p-4 rounded-md border border-indigo-100">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-xs text-gray-500 font-bold mb-1 block">브랜드 이름 (수정 가능)</label>
-                      <input 
-                        type="text" 
-                        className="w-full p-2 border rounded bg-white focus:ring-2 focus:ring-indigo-500 outline-none"
-                        value={editForm.name}
-                        onChange={(e) => setEditForm({...editForm, name: e.target.value})}
-                      />
-                    </div>
-                    
-                    {/* 트리거 단어 (읽기 전용) */}
-                    <div>
-                      <label className="text-xs text-gray-400 font-bold mb-1 block">트리거 단어 (수정 불가)</label>
-                      <div className="w-full p-2 border rounded bg-gray-200 text-gray-500 font-mono select-none cursor-not-allowed">
-                        {brand.trigger_word}
+          <section className="grid gap-4 lg:grid-cols-3 xl:grid-cols-5">
+            {brands.map((brand) => (
+              <article
+                key={brand.id}
+                className="overflow-hidden rounded-lg border border-gray-200 bg-white transition hover:border-gray-300 hover:shadow-sm"
+              >
+                {editingId === brand.id ? (
+                  <div className="p-5">
+                    <div className="mb-5 flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">Edit Brand</p>
+                        <h2 className="mt-1 text-lg font-semibold text-gray-950">{brand.name}</h2>
                       </div>
-                      <p className="text-[10px] text-gray-400 mt-1">
-                        * 학습된 모델 연결 보호를 위해 수정할 수 없습니다.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 justify-end">
-                    <Button onClick={cancelEdit} variant="outline" className="h-8 text-xs bg-white">
-                      취소
-                    </Button>
-                    <Button onClick={handleUpdate} className="bg-green-600 hover:bg-green-700 text-white h-8 text-xs">
-                      저장하기
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                // [일반 보기 UI]
-                <div className="flex min-w-0 flex-1 flex-col gap-4 sm:flex-row sm:items-center">
-                  <BrandThumbnail brand={brand} />
-                  <div className="min-w-0 flex-1">
-                    <div className="mb-2 flex flex-wrap items-center gap-3">
-                      <h3 className="truncate text-xl font-bold text-gray-900">{brand.name}</h3>
                       <StatusBadge models={brand.trained_models} />
                     </div>
-                    
-                    <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
-                      <div className="flex min-w-0 items-center gap-2 rounded-md border bg-gray-50 px-3 py-1.5">
-                          <span className="shrink-0 text-xs font-bold text-gray-400">TRIGGER ID</span>
-                          <span className="truncate font-mono font-bold tracking-wide text-indigo-600">
-                          {brand.trigger_word}
-                          </span>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div>
+                        <label className="mb-1.5 block text-xs font-semibold text-gray-500">브랜드 이름</label>
+                        <input
+                          type="text"
+                          className="h-10 w-full rounded-md border border-gray-200 bg-white px-3 text-sm text-gray-900 outline-none transition focus:border-gray-400"
+                          value={editForm.name}
+                          onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                        />
                       </div>
-                      <span className="text-xs text-gray-400">
-                        생성일: {new Date(brand.created_at).toLocaleDateString()}
-                      </span>
+
+                      <div>
+                        <label className="mb-1.5 block text-xs font-semibold text-gray-500">Trigger ID</label>
+                        <div className="flex h-10 items-center rounded-md border border-gray-200 bg-gray-50 px-3 font-mono text-sm font-semibold text-gray-500">
+                          {brand.trigger_word}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-5 flex justify-end gap-2">
+                      <Button onClick={cancelEdit} variant="outline" size="sm">
+                        취소
+                      </Button>
+                      <Button onClick={handleUpdate} size="sm" className="bg-gray-900 text-white hover:bg-gray-800">
+                        저장
+                      </Button>
                     </div>
                   </div>
-                </div>
-              )}
+                ) : (
+                  <>
+                    <BrandThumbnail brand={brand} />
+                    <div className="p-5">
+                      <div className="mb-4 flex items-start justify-between gap-4">
+                        <div className="min-w-0">
+                          <h2 className="truncate text-xl font-semibold text-gray-950">{brand.name}</h2>
+                          <p className="mt-1 flex items-center gap-1.5 text-xs text-gray-500">
+                            <CalendarDays className="h-3.5 w-3.5" />
+                            {formatDate(brand.created_at)}
+                          </p>
+                        </div>
+                        <StatusBadge models={brand.trained_models} />
+                      </div>
 
-              {/* 버튼 그룹 (수정 모드가 아닐 때만 보임) */}
-              {editingId !== brand.id && (
-                <div className="flex w-full flex-wrap items-center justify-end gap-2 md:w-auto md:self-center">
-                   {/* 바로 Studio로 이동하는 버튼 */}
-                   <Link href={`/dashboard/studio?brand=${brand.id}`} className="w-full sm:w-auto">
-                    <Button variant="outline" className="h-10 w-full border-indigo-200 px-4 font-medium text-indigo-700 hover:bg-indigo-50 hover:text-indigo-800 sm:w-auto">
-                      🎨 이미지 생성하기
-                    </Button>
-                  </Link>
-                  <Button
-                    onClick={() => openThumbnailPicker(brand)}
-                    variant="outline"
-                    className="h-10 border-gray-200 px-4 text-gray-700 hover:bg-gray-50 hover:text-gray-950"
-                  >
-                    썸네일 선택
-                  </Button>
-                  
-                  <div className="h-6 w-px bg-gray-200 mx-1"></div>
+                      <div className="rounded-md border border-gray-200 bg-gray-50 px-3 py-2">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-400">Trigger ID</p>
+                        <p className="mt-1 truncate font-mono text-sm font-semibold text-gray-800">{brand.trigger_word}</p>
+                      </div>
 
-                  <Button onClick={() => startEdit(brand)} variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900">
-                    수정
-                  </Button>
-                  
-                  <Button onClick={() => handleDelete(brand.id)} variant="ghost" size="sm" className="text-red-400 hover:text-red-600 hover:bg-red-50">
-                    삭제
-                  </Button>
-                </div>
-              )}
-            </div>
-          ))
+                      <div className="mt-5 flex flex-wrap items-center gap-2">
+                        <Button asChild className="bg-gray-900 text-white hover:bg-gray-800">
+                          <Link href={`/dashboard/studio?brand=${brand.id}`}>
+                            <Sparkles className="h-4 w-4" />
+                            생성하기
+                          </Link>
+                        </Button>
+                        <Button
+                          onClick={() => openThumbnailPicker(brand)}
+                          variant="outline"
+                          className="border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-gray-950"
+                        >
+                          <ImagePlus className="h-4 w-4" />
+                          썸네일
+                        </Button>
+                        <div className="ml-auto flex items-center gap-1">
+                          <Button
+                            onClick={() => startEdit(brand)}
+                            variant="ghost"
+                            size="icon-sm"
+                            className="text-gray-500 hover:text-gray-950"
+                            title="수정"
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            onClick={() => handleDelete(brand.id)}
+                            variant="ghost"
+                            size="icon-sm"
+                            className="text-red-500 hover:bg-red-50 hover:text-red-600"
+                            title="삭제"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </article>
+            ))}
+          </section>
         )}
-      </div>
+      </main>
 
       {thumbnailModalBrand && (
         <ThumbnailPickerModal
@@ -323,12 +452,11 @@ export default function MyBrandsPage() {
     </div>
   );
 }
-
 function BrandThumbnail({ brand }: { brand: Brand }) {
   const fallback = brand.name.trim().charAt(0).toUpperCase() || 'B';
 
   return (
-    <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg border bg-gray-100">
+    <div className="relative aspect-square overflow-hidden bg-gray-100">
       {brand.thumbnail_url ? (
         <img
           src={brand.thumbnail_url}
@@ -336,10 +464,11 @@ function BrandThumbnail({ brand }: { brand: Brand }) {
           className="h-full w-full object-cover"
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center bg-gray-950 text-lg font-bold text-white">
-          {fallback}
+        <div className="flex h-full w-full items-center justify-center bg-gray-950 text-5xl font-semibold text-white">
+          <span>{fallback}</span>
         </div>
       )}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
     </div>
   );
 }
@@ -362,57 +491,64 @@ function ThumbnailPickerModal({
   onSelect: (image: GeneratedBrandImage) => void;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 px-4">
-      <div className="w-full max-w-3xl overflow-hidden rounded-lg border bg-white shadow-xl">
-        <div className="flex items-start justify-between gap-4 border-b px-4 py-5 sm:px-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 py-6">
+      <div className="flex max-h-full w-full max-w-4xl flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl">
+        <div className="flex items-start justify-between gap-4 border-b border-gray-100 px-5 py-5 sm:px-6">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-gray-400">Brand Thumbnail</p>
-            <h2 className="mt-1 text-xl font-bold text-gray-950">{brand.name}</h2>
-            <p className="mt-1 text-sm text-gray-500">
-              이 브랜드로 생성한 이미지 중 대표 썸네일을 선택하세요.
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-400">Brand Thumbnail</p>
+            <h2 className="mt-1 text-xl font-semibold text-gray-950">{brand.name}</h2>
+            <p className="mt-1 text-sm text-gray-500">대표 이미지로 사용할 생성 이미지를 선택합니다.</p>
           </div>
-          <Button variant="ghost" size="sm" onClick={onClose} className="text-gray-500 hover:text-gray-950">
-            닫기
+          <Button variant="ghost" size="icon-sm" onClick={onClose} className="text-gray-500 hover:text-gray-950" title="닫기">
+            <X className="h-4 w-4" />
           </Button>
         </div>
 
-        <div className="max-h-[68vh] overflow-y-auto p-4 sm:p-6">
+        <div className="overflow-y-auto p-5 sm:p-6">
           {loading ? (
-            <div className="flex min-h-48 items-center justify-center rounded-md border border-dashed text-sm text-gray-500">
-              이미지 목록을 불러오는 중입니다.
+            <div className="flex min-h-64 items-center justify-center rounded-lg border border-dashed border-gray-300 text-sm text-gray-500">
+              <span className="inline-flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                이미지 목록을 불러오는 중
+              </span>
             </div>
           ) : error ? (
-            <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
               {error}
             </div>
           ) : images.length === 0 ? (
-            <div className="flex min-h-48 flex-col items-center justify-center rounded-md border border-dashed text-center">
-              <p className="text-sm font-semibold text-gray-900">아직 생성한 이미지가 없습니다.</p>
-              <p className="mt-1 text-sm text-gray-500">Studio에서 이 브랜드로 이미지를 만든 뒤 선택할 수 있어요.</p>
+            <div className="flex min-h-64 flex-col items-center justify-center rounded-lg border border-dashed border-gray-300 text-center">
+              <ImageIcon className="h-6 w-6 text-gray-400" />
+              <p className="mt-3 text-sm font-semibold text-gray-900">생성한 이미지가 없습니다.</p>
+              <p className="mt-1 text-sm text-gray-500">Studio에서 이 브랜드로 이미지를 만든 뒤 선택할 수 있습니다.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
               {images.map((image) => (
                 <button
                   key={image.id}
                   type="button"
                   onClick={() => onSelect(image)}
                   disabled={selectingId !== null}
-                  className="group overflow-hidden rounded-lg border bg-white text-left transition hover:border-gray-950 disabled:cursor-wait disabled:opacity-70"
+                  className="group overflow-hidden rounded-lg border border-gray-200 bg-white text-left transition hover:border-gray-950 disabled:cursor-wait disabled:opacity-70"
                 >
-                  <div className="aspect-square overflow-hidden bg-gray-100">
+                  <div className="relative aspect-square overflow-hidden bg-gray-100">
                     <img
                       src={image.image_url}
                       alt={image.prompt || `${brand.name} 생성 이미지`}
                       className="h-full w-full object-cover transition group-hover:scale-[1.03]"
                     />
+                    {selectingId === image.id && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/45 text-white">
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      </div>
+                    )}
                   </div>
                   <div className="p-3">
                     <p className="line-clamp-2 min-h-10 text-sm font-medium text-gray-900">
                       {image.prompt || '프롬프트 없음'}
                     </p>
-                    <p className="mt-2 text-xs text-gray-400">
+                    <p className="mt-2 text-xs font-medium text-gray-500">
                       {selectingId === image.id ? '저장 중...' : '대표 이미지로 선택'}
                     </p>
                   </div>

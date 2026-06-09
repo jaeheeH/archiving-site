@@ -20,6 +20,7 @@ const replicate = new Replicate({
 
 const DEBUG_API_LOGS = process.env.DEBUG_API_LOGS === 'true';
 const MAX_PROMPT_LENGTH = 1500;
+const MAX_PROMPT_OPTION_LENGTH = 300;
 const MAX_GENERATED_IMAGE_BYTES = 12 * 1024 * 1024;
 const ALLOWED_ASPECT_RATIOS = new Set([
   '1:1',
@@ -40,6 +41,26 @@ function debugLog(...args: unknown[]) {
 function normalizePrompt(value: unknown) {
   if (typeof value !== 'string') return '';
   return value.trim().slice(0, MAX_PROMPT_LENGTH);
+}
+
+function normalizePromptOption(value: unknown) {
+  if (typeof value !== 'string') return '';
+  return value.trim().slice(0, MAX_PROMPT_OPTION_LENGTH);
+}
+
+function normalizePromptMode(value: unknown) {
+  return value === 'imported' ? 'imported' : 'composed';
+}
+
+function isMissingGenerationMetadataColumn(error: unknown) {
+  const queryError = error as { code?: string; message?: string } | null;
+  const message = queryError?.message || '';
+  const hasMetadataColumnName = /(subject_prompt|lighting|camera|vibe|background|prompt_mode)/i.test(message);
+
+  return (
+    hasMetadataColumnName &&
+    (queryError?.code === '42703' || queryError?.code === 'PGRST204')
+  );
 }
 
 function normalizeAspectRatio(value: unknown) {
@@ -143,8 +164,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: '잘못된 JSON 요청입니다.' }, { status: 400 });
     }
 
-    const { brandId, prompt, aspectRatio, seed } = body;
+    const {
+      brandId,
+      prompt,
+      aspectRatio,
+      seed,
+      subjectPrompt,
+      lighting,
+      camera,
+      vibe,
+      background,
+      promptMode,
+    } = body;
     const safePrompt = normalizePrompt(prompt);
+    const safeSubjectPrompt = normalizePrompt(subjectPrompt);
+    const safeLighting = normalizePromptOption(lighting);
+    const safeCamera = normalizePromptOption(camera);
+    const safeVibe = normalizePromptOption(vibe);
+    const safeBackground = normalizePromptOption(background);
+    const safePromptMode = normalizePromptMode(promptMode);
     const safeAspectRatio = normalizeAspectRatio(aspectRatio);
     const finalSeed = normalizeSeed(seed);
     const context = await getBrandManagerContext();
@@ -275,15 +313,40 @@ export async function POST(request: Request) {
       .from('generated-images')
       .getPublicUrl(fileName);
 
-    // 5. DB에 기록 (작성자 ID 포함!)
-    await supabase.from('generated_images').insert({
+    const baseGeneratedImage = {
       brand_id: brandId,
       image_url: publicUrl,
       prompt: safePrompt,
       aspect_ratio: safeAspectRatio,
       seed: finalSeed,
       user_id: context.user.id
-    });
+    };
+    const metadataGeneratedImage = {
+      ...baseGeneratedImage,
+      subject_prompt: safeSubjectPrompt || null,
+      lighting: safeLighting || null,
+      camera: safeCamera || null,
+      vibe: safeVibe || null,
+      background: safeBackground || null,
+      prompt_mode: safePromptMode,
+    };
+
+    // 5. DB에 기록 (작성자 ID 포함!)
+    const { error: insertError } = await supabase
+      .from('generated_images')
+      .insert(metadataGeneratedImage);
+
+    if (insertError) {
+      if (!isMissingGenerationMetadataColumn(insertError)) {
+        throw insertError;
+      }
+
+      const { error: fallbackInsertError } = await supabase
+        .from('generated_images')
+        .insert(baseGeneratedImage);
+
+      if (fallbackInsertError) throw fallbackInsertError;
+    }
 
     return NextResponse.json({ 
       success: true, 

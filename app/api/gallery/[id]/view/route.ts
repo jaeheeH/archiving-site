@@ -25,10 +25,22 @@ function getVisitorHash(request: NextRequest, galleryId: number) {
   return createHash("sha256").update(source).digest("hex");
 }
 
-function isMissingViewSchema(error: QueryError) {
+function isMissingViewCountSchema(error: QueryError) {
+  const message = error?.message || "";
+
+  return (
+    /view_count/i.test(message) &&
+    (error?.code === "42703" || error?.code === "PGRST204")
+  );
+}
+
+function isMissingViewLogSchema(error: QueryError) {
+  const message = error?.message || "";
+
   return (
     error?.code === "42P01" ||
-    (error?.code === "42703" && /(view_count|gallery_views)/i.test(error.message || ""))
+    (/(gallery_views|gallery_id|user_id|visitor_hash)/i.test(message) &&
+      (error?.code === "42703" || error?.code === "PGRST204" || error?.code === "PGRST205"))
   );
 }
 
@@ -42,7 +54,7 @@ async function readCurrentGallery(
     .eq("id", galleryId)
     .maybeSingle();
 
-  if (isMissingViewSchema(result.error)) {
+  if (isMissingViewCountSchema(result.error)) {
     const fallback = await admin
       .from("gallery")
       .select("id")
@@ -61,6 +73,24 @@ async function readCurrentGallery(
     error: result.error,
     migrationRequired: false,
   };
+}
+
+async function incrementGalleryViewCount(
+  admin: ReturnType<typeof createAdminClient>,
+  galleryId: number,
+  currentViewCount: number | null
+) {
+  const nextViewCount = (currentViewCount || 0) + 1;
+  const { data: updatedGallery, error: updateError } = await admin
+    .from("gallery")
+    .update({ view_count: nextViewCount })
+    .eq("id", galleryId)
+    .select("view_count")
+    .single();
+
+  if (updateError) throw updateError;
+
+  return updatedGallery?.view_count || nextViewCount;
 }
 
 export async function POST(
@@ -100,6 +130,8 @@ export async function POST(
     } = await supabaseAuth.auth.getUser();
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
+    let viewLogUnavailable = false;
+
     if (user) {
       const { data: recentView, error: recentViewError } = await admin
         .from("gallery_views")
@@ -109,15 +141,11 @@ export async function POST(
         .gte("created_at", oneDayAgo)
         .maybeSingle();
 
-      if (isMissingViewSchema(recentViewError)) {
-        return jsonNoStore({
-          message: "Gallery view migration is required",
-          viewCount: currentGallery.view_count || 0,
-          incremented: false,
-          migrationRequired: true,
-        });
+      if (isMissingViewLogSchema(recentViewError)) {
+        viewLogUnavailable = true;
+      } else if (recentViewError) {
+        throw recentViewError;
       }
-      if (recentViewError) throw recentViewError;
 
       if (recentView) {
         return jsonNoStore({
@@ -128,13 +156,19 @@ export async function POST(
         });
       }
 
-      const { error: insertError } = await admin.from("gallery_views").insert({
-        gallery_id: galleryId,
-        user_id: user.id,
-        visitor_hash: null,
-      });
+      if (!viewLogUnavailable) {
+        const { error: insertError } = await admin.from("gallery_views").insert({
+          gallery_id: galleryId,
+          user_id: user.id,
+          visitor_hash: null,
+        });
 
-      if (insertError) throw insertError;
+        if (isMissingViewLogSchema(insertError)) {
+          viewLogUnavailable = true;
+        } else if (insertError) {
+          throw insertError;
+        }
+      }
     } else {
       const visitorHash = getVisitorHash(request, galleryId);
       const { data: recentView, error: recentViewError } = await admin
@@ -145,15 +179,11 @@ export async function POST(
         .gte("created_at", oneDayAgo)
         .maybeSingle();
 
-      if (isMissingViewSchema(recentViewError)) {
-        return jsonNoStore({
-          message: "Gallery view migration is required",
-          viewCount: currentGallery.view_count || 0,
-          incremented: false,
-          migrationRequired: true,
-        });
+      if (isMissingViewLogSchema(recentViewError)) {
+        viewLogUnavailable = true;
+      } else if (recentViewError) {
+        throw recentViewError;
       }
-      if (recentViewError) throw recentViewError;
 
       if (recentView) {
         return jsonNoStore({
@@ -164,30 +194,33 @@ export async function POST(
         });
       }
 
-      const { error: insertError } = await admin.from("gallery_views").insert({
-        gallery_id: galleryId,
-        user_id: null,
-        visitor_hash: visitorHash,
-      });
+      if (!viewLogUnavailable) {
+        const { error: insertError } = await admin.from("gallery_views").insert({
+          gallery_id: galleryId,
+          user_id: null,
+          visitor_hash: visitorHash,
+        });
 
-      if (insertError) throw insertError;
+        if (isMissingViewLogSchema(insertError)) {
+          viewLogUnavailable = true;
+        } else if (insertError) {
+          throw insertError;
+        }
+      }
     }
 
-    const nextViewCount = (currentGallery.view_count || 0) + 1;
-    const { data: updatedGallery, error: updateError } = await admin
-      .from("gallery")
-      .update({ view_count: nextViewCount })
-      .eq("id", galleryId)
-      .select("view_count")
-      .single();
-
-    if (updateError) throw updateError;
+    const viewCount = await incrementGalleryViewCount(
+      admin,
+      galleryId,
+      currentGallery.view_count
+    );
 
     return jsonNoStore({
       message: "조회수가 증가했습니다",
-      viewCount: updatedGallery?.view_count || nextViewCount,
+      viewCount,
       incremented: true,
       isLoggedIn: Boolean(user),
+      viewLogUnavailable,
     });
   } catch (error) {
     console.error("Gallery view count API error:", error);

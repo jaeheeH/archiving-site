@@ -111,6 +111,16 @@ function isMissingViewCountColumn(error: QueryError) {
   return isMissingColumn(error, "view_count");
 }
 
+function isMissingGeneratedImageMetadataColumn(error: QueryError) {
+  const message = error?.message || "";
+  const hasMetadataColumnName = /(subject_prompt|lighting|camera|vibe|background|prompt_mode)/i.test(message);
+
+  return (
+    hasMetadataColumnName &&
+    (error?.code === "42703" || error?.code === "PGRST204")
+  );
+}
+
 function withNullThumbnail<T extends object>(items: T[] | null | undefined) {
   return (items || []).map((item) => ({
     ...item,
@@ -619,30 +629,201 @@ export async function getReferencesAnalytics() {
   };
 }
 
-export async function getGeneratedImageLibrary(limit = 80) {
+const GENERATED_IMAGE_LIBRARY_DEFAULT_LIMIT = 40;
+const GENERATED_IMAGE_LIBRARY_MAX_LIMIT = 80;
+const GENERATED_IMAGE_LIBRARY_MAX_SEARCH_LENGTH = 80;
+
+type GeneratedImageLibraryOptions = {
+  limit?: number;
+  offset?: number;
+  brand?: string;
+  search?: string;
+};
+
+function normalizeLibraryFilterText(value?: string) {
+  return (value || "")
+    .trim()
+    .slice(0, GENERATED_IMAGE_LIBRARY_MAX_SEARCH_LENGTH)
+    .replace(/[{}()[\]",%:*&|!']/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeLibraryLimit(value?: number) {
+  if (!Number.isFinite(value) || !value || value < 1) {
+    return GENERATED_IMAGE_LIBRARY_DEFAULT_LIMIT;
+  }
+
+  return Math.min(Math.floor(value), GENERATED_IMAGE_LIBRARY_MAX_LIMIT);
+}
+
+function normalizeLibraryOffset(value?: number) {
+  if (!Number.isFinite(value) || !value || value < 0) return 0;
+  return Math.floor(value);
+}
+
+export async function getGeneratedImageLibrary(options: GeneratedImageLibraryOptions = {}) {
   const context = await getDashboardContext();
   if (!context) return null;
 
-  const safeLimit = Math.min(Math.max(limit, 1), 120);
+  const safeLimit = normalizeLibraryLimit(options.limit);
+  const safeOffset = normalizeLibraryOffset(options.offset);
+  const safeBrand = normalizeLibraryFilterText(options.brand);
+  const safeSearch = normalizeLibraryFilterText(options.search);
 
-  const images = await readRows<{
+  const { data: brands, error: brandsError } = await context.admin
+    .from("brands")
+    .select("id, name")
+    .eq("user_id", context.user.id)
+    .order("name", { ascending: true });
+
+  if (brandsError) {
+    console.error("Dashboard brand query failed:", brandsError.message);
+  }
+
+  const brandRows = (brands || []).filter(
+    (brand): brand is { id: string; name: string } =>
+      typeof brand.id === "string" && typeof brand.name === "string"
+  );
+  const brandOptions = brandRows
+    .map((brand) => brand.name.trim())
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b));
+  const selectedBrandIds = safeBrand
+    ? brandRows
+        .filter((brand) => brand.name.trim() === safeBrand)
+        .map((brand) => brand.id)
+    : [];
+  const searchBrandIds = safeSearch
+    ? brandRows
+        .filter((brand) => brand.name.toLowerCase().includes(safeSearch.toLowerCase()))
+        .map((brand) => brand.id)
+    : [];
+
+  if (safeBrand && selectedBrandIds.length === 0) {
+    return {
+      viewer: {
+        id: context.user.id,
+        email: context.user.email || context.profile?.email || "",
+        nickname: context.profile?.nickname || context.user.email || "관리자",
+        role: context.role,
+      },
+      images: [],
+      brandOptions,
+      pagination: {
+        limit: safeLimit,
+        offset: safeOffset,
+        total: 0,
+        hasMore: false,
+      },
+      filters: {
+        brand: safeBrand,
+        search: safeSearch,
+      },
+    };
+  }
+
+  const buildGeneratedImagesQuery = (columns: string, includeMetadataSearch: boolean) => {
+    let query = context.admin
+      .from("generated_images")
+      .select(columns, {
+        count: "planned",
+      })
+      .eq("user_id", context.user.id);
+
+    if (selectedBrandIds.length > 0) {
+      query = query.in("brand_id", selectedBrandIds);
+    }
+
+    if (safeSearch) {
+      const searchConditions = [
+        `prompt.ilike.%${safeSearch}%`,
+        `aspect_ratio.ilike.%${safeSearch}%`,
+      ];
+      const numericSearch = Number(safeSearch);
+
+      if (includeMetadataSearch) {
+        searchConditions.push(
+          `subject_prompt.ilike.%${safeSearch}%`,
+          `lighting.ilike.%${safeSearch}%`,
+          `camera.ilike.%${safeSearch}%`,
+          `vibe.ilike.%${safeSearch}%`,
+          `background.ilike.%${safeSearch}%`
+        );
+      }
+
+      if (Number.isInteger(numericSearch)) {
+        searchConditions.push(`seed.eq.${numericSearch}`);
+      }
+
+      if (searchBrandIds.length > 0) {
+        searchConditions.push(`brand_id.in.(${searchBrandIds.join(",")})`);
+      }
+
+      query = query.or(searchConditions.join(","));
+    }
+
+    return query
+      .order("created_at", { ascending: false })
+      .range(safeOffset, safeOffset + safeLimit - 1);
+  };
+
+  type GeneratedImageLibraryRow = {
     id: string;
+    brand_id: string | null;
     image_url: string;
     prompt: string | null;
+    subject_prompt?: string | null;
+    lighting?: string | null;
+    camera?: string | null;
+    vibe?: string | null;
+    background?: string | null;
+    prompt_mode?: string | null;
     aspect_ratio: string | null;
     seed: number | null;
     created_at: string | null;
     brands?: {
       name?: string | null;
     } | null;
-  }>(
-    context.admin
-      .from("generated_images")
-      .select("id, image_url, prompt, aspect_ratio, seed, created_at, brands(name)")
-      .eq("user_id", context.user.id)
-      .order("created_at", { ascending: false })
-      .limit(safeLimit)
-  );
+  };
+
+  let { data: images, error, count } = await buildGeneratedImagesQuery(
+    "id, brand_id, image_url, prompt, subject_prompt, lighting, camera, vibe, background, prompt_mode, aspect_ratio, seed, created_at, brands(name)",
+    true
+  ) as unknown as {
+    data: GeneratedImageLibraryRow[] | null;
+    error: QueryError;
+    count: number | null;
+  };
+
+  if (isMissingGeneratedImageMetadataColumn(error)) {
+    const fallback = await buildGeneratedImagesQuery(
+      "id, brand_id, image_url, prompt, aspect_ratio, seed, created_at, brands(name)",
+      false
+    ) as unknown as {
+      data: GeneratedImageLibraryRow[] | null;
+      error: QueryError;
+      count: number | null;
+    };
+
+    images = (fallback.data || []).map((image) => ({
+      ...image,
+      subject_prompt: null,
+      lighting: null,
+      camera: null,
+      vibe: null,
+      background: null,
+      prompt_mode: null,
+    }));
+    error = fallback.error;
+    count = fallback.count;
+  }
+
+  if (error) {
+    console.error("Dashboard generated image query failed:", error.message);
+  }
+
+  const total = count || 0;
 
   return {
     viewer: {
@@ -651,6 +832,17 @@ export async function getGeneratedImageLibrary(limit = 80) {
       nickname: context.profile?.nickname || context.user.email || "관리자",
       role: context.role,
     },
-    images,
+    images: images || [],
+    brandOptions,
+    pagination: {
+      limit: safeLimit,
+      offset: safeOffset,
+      total,
+      hasMore: safeOffset + safeLimit < total,
+    },
+    filters: {
+      brand: safeBrand,
+      search: safeSearch,
+    },
   };
 }

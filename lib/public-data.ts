@@ -64,10 +64,43 @@ const GALLERY_DETAIL_COLUMNS = `
   gemini_description,
   category,
   range,
-  created_at
+  created_at,
+  view_count
 `;
 
 const GALLERY_DETAIL_COLUMNS_WITHOUT_THUMBNAIL = `
+  id,
+  title,
+  description,
+  image_url,
+  image_width,
+  image_height,
+  tags,
+  gemini_tags,
+  gemini_description,
+  category,
+  range,
+  created_at,
+  view_count
+`;
+
+const GALLERY_DETAIL_COLUMNS_WITHOUT_VIEW_COUNT = `
+  id,
+  title,
+  description,
+  image_url,
+  thumbnail_url,
+  image_width,
+  image_height,
+  tags,
+  gemini_tags,
+  gemini_description,
+  category,
+  range,
+  created_at
+`;
+
+const GALLERY_DETAIL_COLUMNS_BASIC = `
   id,
   title,
   description,
@@ -138,6 +171,7 @@ type GalleryListRow = HomeGalleryRow & {
 
 type GalleryDetailRow = GalleryListRow & {
   created_at: string;
+  view_count?: number | null;
 };
 
 type DailyGalleryRow = {
@@ -191,10 +225,21 @@ function buildTextSearchQuery(search: string) {
 
 function isMissingThumbnailColumn(error: unknown) {
   const queryError = error as { code?: string; message?: string } | null;
+  const message = queryError?.message || "";
 
   return (
-    queryError?.code === "42703" &&
-    /thumbnail_url/i.test(queryError.message || "")
+    /thumbnail_url/i.test(message) &&
+    (queryError?.code === "42703" || queryError?.code === "PGRST204")
+  );
+}
+
+function isMissingViewCountColumn(error: unknown) {
+  const queryError = error as { code?: string; message?: string } | null;
+  const message = queryError?.message || "";
+
+  return (
+    /view_count/i.test(message) &&
+    (queryError?.code === "42703" || queryError?.code === "PGRST204")
   );
 }
 
@@ -346,21 +391,41 @@ export const getGalleryDetailData = unstable_cache(
   async (idValue: number) => {
     const supabase = createPublicClient();
     const id = Number(idValue);
+    const queryGallery = (columns: string) =>
+      supabase.from("gallery").select(columns).eq("id", id).single();
 
-    let { data: gallery, error } = (await supabase
-      .from("gallery")
-      .select(GALLERY_DETAIL_COLUMNS)
-      .eq("id", id)
-      .single()) as unknown as SingleQueryResult<GalleryDetailRow>;
+    let { data: gallery, error } = (await queryGallery(
+      GALLERY_DETAIL_COLUMNS
+    )) as unknown as SingleQueryResult<GalleryDetailRow>;
 
     if (isMissingThumbnailColumn(error)) {
-      const fallback = (await supabase
-        .from("gallery")
-        .select(GALLERY_DETAIL_COLUMNS_WITHOUT_THUMBNAIL)
-        .eq("id", id)
-        .single()) as unknown as SingleQueryResult<Omit<GalleryDetailRow, "thumbnail_url">>;
+      const fallback = (await queryGallery(
+        GALLERY_DETAIL_COLUMNS_WITHOUT_THUMBNAIL
+      )) as unknown as SingleQueryResult<Omit<GalleryDetailRow, "thumbnail_url">>;
 
       gallery = fallback.data ? { ...fallback.data, thumbnail_url: null } : null;
+      error = fallback.error;
+    }
+
+    if (isMissingViewCountColumn(error)) {
+      const fallback = (await queryGallery(
+        GALLERY_DETAIL_COLUMNS_WITHOUT_VIEW_COUNT
+      )) as unknown as SingleQueryResult<Omit<GalleryDetailRow, "view_count">>;
+
+      gallery = fallback.data ? { ...fallback.data, view_count: 0 } : null;
+      error = fallback.error;
+    }
+
+    if (isMissingThumbnailColumn(error) || isMissingViewCountColumn(error)) {
+      const fallback = (await queryGallery(
+        GALLERY_DETAIL_COLUMNS_BASIC
+      )) as unknown as SingleQueryResult<
+        Omit<GalleryDetailRow, "thumbnail_url" | "view_count">
+      >;
+
+      gallery = fallback.data
+        ? { ...fallback.data, thumbnail_url: null, view_count: 0 }
+        : null;
       error = fallback.error;
     }
 

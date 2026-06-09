@@ -15,6 +15,86 @@ type Brand = {
   }[];
 };
 
+const ASPECT_RATIOS = ['1:1', '16:9', '9:16', '3:2', '2:3', '4:5'] as const;
+
+type StudioImportPayload = {
+  brandId?: string;
+  prompt?: string;
+  subjectPrompt?: string | null;
+  lighting?: string | null;
+  camera?: string | null;
+  vibe?: string | null;
+  background?: string | null;
+  promptMode?: string | null;
+  aspectRatio?: string;
+  seed?: number | string | null;
+};
+
+function isSupportedAspectRatio(value: string): value is (typeof ASPECT_RATIOS)[number] {
+  return ASPECT_RATIOS.includes(value as (typeof ASPECT_RATIOS)[number]);
+}
+
+type ParsedStudioPrompt = {
+  subject: string;
+  lighting: string;
+  camera: string;
+  vibe: string;
+  background: string;
+  hasControls: boolean;
+};
+
+const STUDIO_PROMPT_LABEL_PATTERN = /\b(Lighting|Camera|Mood|Background):\s*/gi;
+const STUDIO_QUALITY_SUFFIX_PATTERN =
+  /(?:,\s*)?(?:high quality|best quality|ultra detailed|8k|4k)\b.*$/i;
+
+function cleanPromptSegment(value: string) {
+  return value
+    .replace(STUDIO_QUALITY_SUFFIX_PATTERN, '')
+    .replace(/^,\s*/, '')
+    .replace(/,\s*$/, '')
+    .trim();
+}
+
+function parseStudioPrompt(value?: string | null): ParsedStudioPrompt {
+  const prompt = (value || '').trim();
+  const matches = Array.from(prompt.matchAll(STUDIO_PROMPT_LABEL_PATTERN));
+
+  if (!prompt || matches.length === 0) {
+    return {
+      subject: prompt,
+      lighting: '',
+      camera: '',
+      vibe: '',
+      background: '',
+      hasControls: false,
+    };
+  }
+
+  const parsed: ParsedStudioPrompt = {
+    subject: prompt.slice(0, matches[0].index).replace(/,\s*$/, '').trim(),
+    lighting: '',
+    camera: '',
+    vibe: '',
+    background: '',
+    hasControls: true,
+  };
+
+  matches.forEach((match, index) => {
+    const label = match[1]?.toLowerCase();
+    const start = (match.index || 0) + match[0].length;
+    const end = matches[index + 1]?.index ?? prompt.length;
+    const segment = cleanPromptSegment(prompt.slice(start, end));
+
+    if (!segment) return;
+    if (label === 'lighting') parsed.lighting = segment;
+    if (label === 'camera') parsed.camera = segment;
+    if (label === 'mood') parsed.vibe = segment;
+    if (label === 'background') parsed.background = segment;
+  });
+
+  return parsed;
+}
+
 export default function StudioPage() {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [selectedBrand, setSelectedBrand] = useState<string>('');
@@ -30,10 +110,76 @@ export default function StudioPage() {
   // [NEW] 비율 및 시드 설정
   const [aspectRatio, setAspectRatio] = useState('1:1'); // 기본값 1:1 (정사각형)
   const [seed, setSeed] = useState<string>(''); // 빈값이면 랜덤
+  const [usesImportedPrompt, setUsesImportedPrompt] = useState(false);
   
   const [isGenerating, setIsGenerating] = useState(false);
   const [resultImage, setResultImage] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState('');
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      const params = new URLSearchParams(window.location.search);
+      const isLibraryImport = params.get('from') === 'library';
+      let payload: StudioImportPayload | null = null;
+
+      if (isLibraryImport) {
+        try {
+          const stored = window.sessionStorage.getItem('archb_studio_import');
+          payload = stored ? (JSON.parse(stored) as StudioImportPayload) : null;
+        } catch {
+          payload = null;
+        } finally {
+          window.sessionStorage.removeItem('archb_studio_import');
+        }
+      }
+
+      const importedBrandId = payload?.brandId || params.get('brand') || '';
+      const importedPrompt = payload?.prompt || params.get('prompt') || '';
+      const importedSubjectPrompt = payload?.subjectPrompt || '';
+      const importedAspectRatio = payload?.aspectRatio || params.get('aspectRatio') || '';
+      const importedSeed = payload?.seed ?? params.get('seed');
+      const parsedSubjectPrompt = parseStudioPrompt(importedSubjectPrompt);
+      const parsedImportedPrompt = parseStudioPrompt(importedPrompt);
+      const hasStoredControls = Boolean(payload?.lighting || payload?.camera || payload?.vibe || payload?.background);
+      const canUseStoredSubject =
+        Boolean(importedSubjectPrompt) &&
+        payload?.promptMode !== 'imported' &&
+        !parsedSubjectPrompt.hasControls;
+      const recoveredSubject = canUseStoredSubject
+        ? importedSubjectPrompt.trim()
+        : parsedImportedPrompt.subject;
+      const recoveredLighting = payload?.lighting || parsedImportedPrompt.lighting || parsedSubjectPrompt.lighting;
+      const recoveredCamera = payload?.camera || parsedImportedPrompt.camera || parsedSubjectPrompt.camera;
+      const recoveredVibe = payload?.vibe || parsedImportedPrompt.vibe || parsedSubjectPrompt.vibe;
+      const recoveredBackground = payload?.background || parsedImportedPrompt.background || parsedSubjectPrompt.background;
+
+      if (importedBrandId) setSelectedBrand(importedBrandId);
+      if (hasStoredControls || recoveredSubject) {
+        if (recoveredSubject) {
+          setMainPrompt(recoveredSubject);
+          setUsesImportedPrompt(false);
+        } else if (importedPrompt) {
+          setMainPrompt(importedPrompt);
+          setUsesImportedPrompt(true);
+        }
+        if (recoveredLighting) setLighting(recoveredLighting);
+        if (recoveredCamera) setCamera(recoveredCamera);
+        if (recoveredVibe) setVibe(recoveredVibe);
+        if (recoveredBackground) setBackground(recoveredBackground);
+      } else if (importedPrompt) {
+        setMainPrompt(importedPrompt);
+        setUsesImportedPrompt(isLibraryImport || payload?.promptMode === 'imported');
+      }
+      if (importedAspectRatio && isSupportedAspectRatio(importedAspectRatio)) {
+        setAspectRatio(importedAspectRatio);
+      }
+      if (importedSeed !== null && importedSeed !== undefined && importedSeed !== '') {
+        setSeed(String(importedSeed));
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, []);
 
   // 브랜드 목록 불러오기
   useEffect(() => {
@@ -61,9 +207,19 @@ export default function StudioPage() {
 
   // 프롬프트 조립
   const finalPrompt = useMemo(
-    () =>
-      [
-        mainPrompt.trim(),
+    () => {
+      if (usesImportedPrompt) {
+        return mainPrompt.trim();
+      }
+
+      const parsedMainPrompt = parseStudioPrompt(mainPrompt);
+      const subjectPrompt =
+        parsedMainPrompt.hasControls && parsedMainPrompt.subject
+          ? parsedMainPrompt.subject
+          : mainPrompt.trim();
+
+      return [
+        subjectPrompt,
         `Lighting: ${lighting}`,
         `Camera: ${camera}`,
         `Mood: ${vibe}`,
@@ -71,13 +227,26 @@ export default function StudioPage() {
         'high quality',
       ]
         .filter(Boolean)
-        .join(', '),
-    [background, camera, lighting, mainPrompt, vibe]
+        .join(', ');
+    },
+    [background, camera, lighting, mainPrompt, usesImportedPrompt, vibe]
   );
 
   const activeBrand = brands.find((brand) => brand.id === selectedBrand);
   const activeModelStatus = activeBrand?.trained_models?.[0]?.status || 'pending';
   const canGenerate = Boolean(selectedBrand && mainPrompt.trim() && !isGenerating);
+  const handleUseComposedPrompt = () => {
+    const parsedMainPrompt = parseStudioPrompt(mainPrompt);
+
+    if (parsedMainPrompt.lighting) setLighting(parsedMainPrompt.lighting);
+    if (parsedMainPrompt.camera) setCamera(parsedMainPrompt.camera);
+    if (parsedMainPrompt.vibe) setVibe(parsedMainPrompt.vibe);
+    if (parsedMainPrompt.background) setBackground(parsedMainPrompt.background);
+    if (parsedMainPrompt.hasControls) {
+      setMainPrompt(parsedMainPrompt.subject);
+    }
+    setUsesImportedPrompt(false);
+  };
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,6 +262,12 @@ export default function StudioPage() {
         body: JSON.stringify({ 
           brandId: selectedBrand, 
           prompt: finalPrompt,
+          subjectPrompt: usesImportedPrompt ? '' : parseStudioPrompt(mainPrompt).subject || mainPrompt.trim(),
+          lighting: usesImportedPrompt ? '' : lighting,
+          camera: usesImportedPrompt ? '' : camera,
+          vibe: usesImportedPrompt ? '' : vibe,
+          background: usesImportedPrompt ? '' : background.trim(),
+          promptMode: usesImportedPrompt ? 'imported' : 'composed',
           // [NEW] 비율과 시드값 전송
           aspectRatio,
           seed: seed ? Number(seed) : undefined
@@ -167,6 +342,18 @@ export default function StudioPage() {
               value={mainPrompt}
               onChange={(e) => setMainPrompt(e.target.value)}
             />
+            {usesImportedPrompt && (
+              <div className="mt-2 flex items-center justify-between gap-3 rounded-md border border-indigo-100 bg-indigo-50 px-3 py-2 text-xs text-indigo-700">
+                <span>라이브러리 프롬프트 적용 중</span>
+                <button
+                  type="button"
+                  onClick={handleUseComposedPrompt}
+                  className="font-semibold hover:underline"
+                >
+                  옵션 조합 사용
+                </button>
+              </div>
+            )}
           </div>
 
           {/* 옵션 그리드 */}
@@ -176,7 +363,7 @@ export default function StudioPage() {
             <div>
               <label className="block text-xs font-semibold text-gray-500 mb-1">화면 비율 (Ratio)</label>
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {['1:1', '16:9', '9:16', '3:2', '2:3', '4:5'].map((ratio) => (
+                {ASPECT_RATIOS.map((ratio) => (
                   <button
                     key={ratio}
                     type="button"
