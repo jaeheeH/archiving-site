@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { Copy, Download, ExternalLink, Loader2, Search, Sparkles, Trash2, X } from "lucide-react";
 
 type GeneratedImage = {
@@ -29,7 +29,31 @@ type Props = {
   brandOptions: string[];
 };
 
+type LibraryCursor = {
+  createdAt: string;
+  id: string;
+} | null;
+
 const LIBRARY_PAGE_SIZE = 40;
+
+function getMasonryColumnCountForWidth(width: number) {
+  if (width >= 1536) return 5;
+  if (width >= 1024) return 4;
+  if (width >= 640) return 2;
+  return 1;
+}
+
+function getMasonryColumnSnapshot() {
+  if (typeof window === "undefined") return 5;
+  return getMasonryColumnCountForWidth(window.innerWidth);
+}
+
+function subscribeToMasonryColumnChanges(onStoreChange: () => void) {
+  if (typeof window === "undefined") return () => {};
+
+  window.addEventListener("resize", onStoreChange);
+  return () => window.removeEventListener("resize", onStoreChange);
+}
 
 function formatDate(value?: string | null) {
   if (!value) return "날짜 없음";
@@ -69,6 +93,57 @@ function getGenerationOptions(img: GeneratedImage) {
   ].filter((option): option is string => Boolean(option));
 }
 
+function getImageAspectRatio(value?: string | null) {
+  const ratio = value?.trim();
+  const match = ratio?.match(/^(\d+)\s*:\s*(\d+)$/);
+
+  if (!match) return "1 / 1";
+
+  const width = Number(match[1]);
+  const height = Number(match[2]);
+
+  if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+    return "1 / 1";
+  }
+
+  return `${width} / ${height}`;
+}
+
+function getImageHeightRatio(value?: string | null) {
+  const ratio = value?.trim();
+  const match = ratio?.match(/^(\d+)\s*:\s*(\d+)$/);
+
+  if (!match) return 1;
+
+  const width = Number(match[1]);
+  const height = Number(match[2]);
+
+  if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
+    return 1;
+  }
+
+  return height / width;
+}
+
+function distributeMasonryColumns(items: GeneratedImage[], columnCount: number) {
+  const safeColumnCount = Math.max(1, columnCount);
+  const columns: GeneratedImage[][] = Array.from({ length: safeColumnCount }, () => []);
+  const columnHeights = Array.from({ length: safeColumnCount }, () => 0);
+
+  items.forEach((item) => {
+    const targetColumnIndex = columnHeights.reduce(
+      (shortestIndex, height, index) =>
+        height < columnHeights[shortestIndex] ? index : shortestIndex,
+      0
+    );
+
+    columns[targetColumnIndex].push(item);
+    columnHeights[targetColumnIndex] += getImageHeightRatio(item.aspect_ratio) + 0.7;
+  });
+
+  return columns;
+}
+
 export default function LibraryClient({
   initialImages,
   initialTotal,
@@ -78,6 +153,12 @@ export default function LibraryClient({
   const [images, setImages] = useState(initialImages);
   const [totalCount, setTotalCount] = useState(initialTotal);
   const [hasMore, setHasMore] = useState(initialHasMore);
+  const nextCursorRef = useRef<LibraryCursor>((() => {
+    const lastImage = initialImages[initialImages.length - 1];
+    return lastImage?.created_at
+      ? { createdAt: lastImage.created_at, id: lastImage.id }
+      : null;
+  })());
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [loadError, setLoadError] = useState("");
@@ -91,10 +172,19 @@ export default function LibraryClient({
   const loadingRef = useRef(false);
   const imagesLengthRef = useRef(initialImages.length);
   const normalizedSearchTerm = debouncedSearchTerm.trim();
+  const masonryColumnCount = useSyncExternalStore(
+    subscribeToMasonryColumnChanges,
+    getMasonryColumnSnapshot,
+    () => 5
+  );
 
   const sortedBrandOptions = useMemo(
     () => [...brandOptions].sort((a, b) => a.localeCompare(b)),
     [brandOptions]
+  );
+  const masonryColumns = useMemo(
+    () => distributeMasonryColumns(images, masonryColumnCount),
+    [images, masonryColumnCount]
   );
 
   const hasActiveFilters = brandFilter !== "all" || normalizedSearchTerm.length > 0;
@@ -192,8 +282,16 @@ export default function LibraryClient({
       const offset = reset ? 0 : imagesLengthRef.current;
       const params = new URLSearchParams({
         limit: String(LIBRARY_PAGE_SIZE),
-        offset: String(offset),
       });
+
+      if (reset) {
+        params.set("offset", "0");
+      } else if (nextCursorRef.current) {
+        params.set("cursorCreatedAt", nextCursorRef.current.createdAt);
+        params.set("cursorId", nextCursorRef.current.id);
+      } else {
+        params.set("offset", String(offset));
+      }
 
       if (brandFilter !== "all") params.set("brand", brandFilter);
       if (normalizedSearchTerm) params.set("search", normalizedSearchTerm);
@@ -232,6 +330,12 @@ export default function LibraryClient({
             ? nextPagination.total
             : nextImages.length
         );
+        nextCursorRef.current =
+          nextPagination.cursor &&
+            typeof nextPagination.cursor.createdAt === "string" &&
+            typeof nextPagination.cursor.id === "string"
+            ? nextPagination.cursor
+            : null;
         setHasMore(Boolean(nextPagination.hasMore));
       } catch (error) {
         setLoadError(
@@ -376,21 +480,26 @@ export default function LibraryClient({
         </div>
       ) : (
         <>
-        <div className={`columns-1 gap-4 space-y-4 sm:columns-2 lg:columns-5 2xl:columns-6 ${isRefreshing ? "opacity-50" : ""}`}>
-        {images.map((img) => {
+        <div className={`grid grid-cols-1 items-start gap-4 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5 ${isRefreshing ? "opacity-50" : ""}`}>
+          {masonryColumns.map((column, columnIndex) => (
+            <div key={`library-column-${columnIndex}`} className="flex min-w-0 flex-col gap-4">
+        {column.map((img) => {
           const generationOptions = getGenerationOptions(img);
 
           return (
           <article
             key={img.id}
-            className="group mb-4 break-inside-avoid overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition hover:border-gray-300 hover:shadow-md"
+            className="group overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition hover:border-gray-300 hover:shadow-md"
           >
-            <div className="relative bg-gray-100">
+            <div
+              className="relative overflow-hidden bg-gray-100"
+              style={{ aspectRatio: getImageAspectRatio(img.aspect_ratio) }}
+            >
               <img
                 src={img.image_url}
                 alt={img.prompt || "Generated image"}
                 loading="lazy"
-                className="h-auto w-full object-cover"
+                className="h-full w-full object-cover"
               />
 
               <div className="absolute right-2 top-2 flex gap-2 opacity-0 transition group-hover:opacity-100">
@@ -478,6 +587,8 @@ export default function LibraryClient({
           </article>
           );
         })}
+            </div>
+          ))}
         </div>
         <div ref={loadMoreRef} className="flex min-h-16 items-center justify-center py-4 text-sm text-gray-500">
           {isLoadingMore ? (

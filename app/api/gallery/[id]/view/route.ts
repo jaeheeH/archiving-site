@@ -48,6 +48,10 @@ function isConflictingViewLogConstraint(error: QueryError) {
   return error?.code === "23505";
 }
 
+function isInvalidViewLogConstraint(error: QueryError) {
+  return error?.code === "23502";
+}
+
 async function readCurrentGallery(
   admin: ReturnType<typeof createAdminClient>,
   galleryId: number
@@ -133,6 +137,7 @@ export async function POST(
       data: { user },
     } = await supabaseAuth.auth.getUser();
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const visitorHash = getVisitorHash(request, galleryId);
 
     let viewLogUnavailable = false;
 
@@ -165,19 +170,20 @@ export async function POST(
         const { error: insertError } = await admin.from("gallery_views").insert({
           gallery_id: galleryId,
           user_id: user.id,
-          visitor_hash: null,
+          visitor_hash: visitorHash,
         });
 
         if (isMissingViewLogSchema(insertError)) {
           viewLogUnavailable = true;
         } else if (isConflictingViewLogConstraint(insertError)) {
           viewLogUnavailable = true;
+        } else if (isInvalidViewLogConstraint(insertError)) {
+          viewLogUnavailable = true;
         } else if (insertError) {
           throw insertError;
         }
       }
     } else {
-      const visitorHash = getVisitorHash(request, galleryId);
       const { data: recentView, error: recentViewError } = await admin
         .from("gallery_views")
         .select("id")
@@ -212,6 +218,8 @@ export async function POST(
         if (isMissingViewLogSchema(insertError)) {
           viewLogUnavailable = true;
         } else if (isConflictingViewLogConstraint(insertError)) {
+          viewLogUnavailable = true;
+        } else if (isInvalidViewLogConstraint(insertError)) {
           viewLogUnavailable = true;
         } else if (insertError) {
           throw insertError;

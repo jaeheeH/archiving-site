@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo, useLayoutEffect } from 'react';
+import { useState, useEffect, useRef, useMemo, useLayoutEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
@@ -98,6 +98,37 @@ export default function GalleryDetailClient({
   const [isCopied, setIsCopied] = useState(false);
   const [scrapLoading, setScrapLoading] = useState(false);
   const [similarGallery, setSimilarGallery] = useState<SimilarGalleryItem[]>([]);
+  const recordedViewIdsRef = useRef<Set<number>>(new Set());
+
+  const recordGalleryView = useCallback(async (galleryId: number) => {
+    if (recordedViewIdsRef.current.has(galleryId)) return;
+    recordedViewIdsRef.current.add(galleryId);
+
+    try {
+      const response = await fetch(`/api/gallery/${galleryId}/view`, {
+        method: "POST",
+        cache: "no-store",
+        keepalive: true,
+      });
+
+      if (!response.ok) {
+        recordedViewIdsRef.current.delete(galleryId);
+        return;
+      }
+
+      const result = await response.json();
+      if (typeof result.viewCount === "number") {
+        setGallery((prev) =>
+          prev.id === galleryId
+            ? { ...prev, view_count: result.viewCount }
+            : prev
+        );
+      }
+    } catch (error) {
+      recordedViewIdsRef.current.delete(galleryId);
+      console.error("Failed to record gallery view:", error);
+    }
+  }, []);
 
   // --------------------------------------------------------------------------
   // 1. 초기 데이터 로드
@@ -139,37 +170,12 @@ export default function GalleryDetailClient({
   }, [gallery.id, gallery.title, gallery.image_url, gallery.thumbnail_url, galleryList, supabase]);
 
   useEffect(() => {
-    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => {
+      recordGalleryView(gallery.id);
+    }, 0);
 
-    async function recordGalleryView() {
-      try {
-        const response = await fetch(`/api/gallery/${gallery.id}/view`, {
-          method: "POST",
-          cache: "no-store",
-          signal: controller.signal,
-        });
-
-        if (!response.ok) return;
-
-        const result = await response.json();
-        if (typeof result.viewCount === "number") {
-          setGallery((prev) =>
-            prev.id === gallery.id
-              ? { ...prev, view_count: result.viewCount }
-              : prev
-          );
-        }
-      } catch (error) {
-        if (!controller.signal.aborted) {
-          console.error("Failed to record gallery view:", error);
-        }
-      }
-    }
-
-    recordGalleryView();
-
-    return () => controller.abort();
-  }, [gallery.id]);
+    return () => window.clearTimeout(timeoutId);
+  }, [gallery.id, recordGalleryView]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -353,6 +359,7 @@ export default function GalleryDetailClient({
       setGallery(result.data);
       setServerPrevId(result.prevId ?? null);
       setServerNextId(result.nextId ?? null);
+      window.setTimeout(() => recordGalleryView(result.data.id), 0);
       
       if (updateUrl) {
         const currentParams = searchParams.toString();

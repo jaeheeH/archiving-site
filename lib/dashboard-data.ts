@@ -636,6 +636,8 @@ const GENERATED_IMAGE_LIBRARY_MAX_SEARCH_LENGTH = 80;
 type GeneratedImageLibraryOptions = {
   limit?: number;
   offset?: number;
+  cursorCreatedAt?: string;
+  cursorId?: string;
   brand?: string;
   search?: string;
 };
@@ -662,14 +664,21 @@ function normalizeLibraryOffset(value?: number) {
   return Math.floor(value);
 }
 
+function normalizeLibraryCursorText(value?: string) {
+  return typeof value === "string" ? value.trim().slice(0, 80) : "";
+}
+
 export async function getGeneratedImageLibrary(options: GeneratedImageLibraryOptions = {}) {
   const context = await getDashboardContext();
   if (!context) return null;
 
   const safeLimit = normalizeLibraryLimit(options.limit);
   const safeOffset = normalizeLibraryOffset(options.offset);
+  const safeCursorCreatedAt = normalizeLibraryCursorText(options.cursorCreatedAt);
+  const safeCursorId = normalizeLibraryCursorText(options.cursorId);
   const safeBrand = normalizeLibraryFilterText(options.brand);
   const safeSearch = normalizeLibraryFilterText(options.search);
+  const hasCursor = Boolean(safeCursorCreatedAt && safeCursorId);
 
   const { data: brands, error: brandsError } = await context.admin
     .from("brands")
@@ -713,6 +722,7 @@ export async function getGeneratedImageLibrary(options: GeneratedImageLibraryOpt
       pagination: {
         limit: safeLimit,
         offset: safeOffset,
+        cursor: null,
         total: 0,
         hasMore: false,
       },
@@ -763,9 +773,19 @@ export async function getGeneratedImageLibrary(options: GeneratedImageLibraryOpt
       query = query.or(searchConditions.join(","));
     }
 
+    if (hasCursor) {
+      query = query.or(
+        `created_at.lt.${safeCursorCreatedAt},and(created_at.eq.${safeCursorCreatedAt},id.lt.${safeCursorId})`
+      );
+    }
+
+    const start = hasCursor ? 0 : safeOffset;
+    const end = start + safeLimit - 1;
+
     return query
       .order("created_at", { ascending: false })
-      .range(safeOffset, safeOffset + safeLimit - 1);
+      .order("id", { ascending: false })
+      .range(start, end);
   };
 
   type GeneratedImageLibraryRow = {
@@ -824,6 +844,8 @@ export async function getGeneratedImageLibrary(options: GeneratedImageLibraryOpt
   }
 
   const total = count || 0;
+  const visibleImages = images || [];
+  const lastImage = visibleImages[visibleImages.length - 1];
 
   return {
     viewer: {
@@ -832,13 +854,21 @@ export async function getGeneratedImageLibrary(options: GeneratedImageLibraryOpt
       nickname: context.profile?.nickname || context.user.email || "관리자",
       role: context.role,
     },
-    images: images || [],
+    images: visibleImages,
     brandOptions,
     pagination: {
       limit: safeLimit,
       offset: safeOffset,
       total,
-      hasMore: safeOffset + safeLimit < total,
+      cursor: lastImage?.created_at
+        ? {
+            createdAt: lastImage.created_at,
+            id: lastImage.id,
+          }
+        : null,
+      hasMore:
+        visibleImages.length === safeLimit &&
+        (hasCursor ? safeLimit < total : safeOffset + safeLimit < total),
     },
     filters: {
       brand: safeBrand,

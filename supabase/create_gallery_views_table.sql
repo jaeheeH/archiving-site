@@ -27,12 +27,39 @@ ALTER TABLE gallery_views
 ADD COLUMN IF NOT EXISTS visitor_hash VARCHAR(64) NULL;
 
 ALTER TABLE gallery_views
+ALTER COLUMN user_id DROP NOT NULL;
+
+ALTER TABLE gallery_views
+ALTER COLUMN visitor_hash DROP NOT NULL;
+
+ALTER TABLE gallery_views
 ADD COLUMN IF NOT EXISTS created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW();
 
 CREATE INDEX IF NOT EXISTS idx_gallery_views_gallery_id ON gallery_views(gallery_id);
 CREATE INDEX IF NOT EXISTS idx_gallery_views_user_time ON gallery_views(user_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_gallery_views_hash_time ON gallery_views(visitor_hash, created_at);
+CREATE INDEX IF NOT EXISTS idx_gallery_views_gallery_user_time ON gallery_views(gallery_id, user_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_gallery_views_gallery_hash_time ON gallery_views(gallery_id, visitor_hash, created_at);
 CREATE INDEX IF NOT EXISTS idx_gallery_views_created_at ON gallery_views(created_at);
+
+-- Earlier drafts may have created a global unique constraint on user_id or
+-- visitor_hash. That blocks viewing different gallery items on the same day.
+DO $$
+DECLARE
+  constraint_record RECORD;
+BEGIN
+  FOR constraint_record IN
+    SELECT con.conname
+    FROM pg_constraint con
+    WHERE con.conrelid = 'public.gallery_views'::regclass
+      AND con.contype = 'u'
+  LOOP
+    EXECUTE format(
+      'ALTER TABLE public.gallery_views DROP CONSTRAINT IF EXISTS %I',
+      constraint_record.conname
+    );
+  END LOOP;
+END $$;
 
 ALTER TABLE gallery_views ENABLE ROW LEVEL SECURITY;
 

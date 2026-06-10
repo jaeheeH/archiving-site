@@ -21,6 +21,8 @@ export async function GET(request: NextRequest) {
     const data = await getGeneratedImageLibrary({
       limit: parsePositiveInt(searchParams.get("limit"), 40),
       offset: parseOffset(searchParams.get("offset")),
+      cursorCreatedAt: searchParams.get("cursorCreatedAt") || "",
+      cursorId: searchParams.get("cursorId") || "",
       brand: searchParams.get("brand") || "",
       search: searchParams.get("search") || "",
     });
