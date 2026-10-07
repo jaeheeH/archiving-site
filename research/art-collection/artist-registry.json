@@ -1,0 +1,21 @@
+[
+  {"id":"vincent-van-gogh","name":"Vincent van Gogh","name_ko":"빈센트 반 고흐","source_ids":["met:161947","cma:1779"]},
+  {"id":"jacques-louis-david","name":"Jacques-Louis David","name_ko":"자크 루이 다비드","source_ids":["met:161811"]},
+  {"id":"jmw-turner","name":"Joseph Mallord William Turner","name_ko":"윌리엄 터너","source_ids":["met:162573","cma:1280"]},
+  {"id":"johannes-vermeer","name":"Johannes Vermeer","name_ko":"요하네스 베르메르","source_ids":["met:108413"]},
+  {"id":"edouard-manet","name":"Edouard Manet","name_ko":"에두아르 마네","source_ids":["met:162094"]},
+  {"id":"fra-filippo-lippi","name":"Fra Filippo Lippi","name_ko":"프라 필리포 리피","source_ids":["met:107934"]},
+  {"id":"william-merritt-chase","name":"William Merritt Chase","name_ko":"윌리엄 메릿 체이스","source_ids":["cma:3071"]},
+  {"id":"frederic-edwin-church","name":"Frederic Edwin Church","name_ko":"프레더릭 에드윈 처치","source_ids":["cma:2697"]},
+  {"id":"claude-monet","name":"Claude Monet","name_ko":"클로드 모네","source_ids":["cma:1844"]},
+  {"id":"pierre-auguste-renoir","name":"Pierre-Auguste Renoir","name_ko":"피에르 오귀스트 르누아르","source_ids":["cma:1765"]},
+  {"id":"gustave-courbet","name":"Gustave Courbet","name_ko":"귀스타브 쿠르베","source_ids":["cma:1600"]},
+  {"id":"paul-cezanne","name":"Paul Cézanne","name_ko":"폴 세잔","source_ids":["cma:1754"]},
+  {"id":"yi-taek-gyun","name":"Yi Taek-gyun","name_ko":"이택균","source_ids":["cma:295457"]},
+  {"id":"jacob-van-hulsdonck","name":"Jacob van Hulsdonck","name_ko":"야코프 판 훌스동크","source_ids":["cma:315930"]},
+  {"id":"kim-si","name":"Kim Si","name_ko":"김시","source_ids":["cma:6359"]},
+  {"id":"yeoseol","name":"Yeoseol","name_ko":null,"source_ids":["cma:63855"]},
+  {"id":"sakai-hoitsu","name":"Sakai Hōitsu","name_ko":"사카이 호이쓰","source_ids":["cma:35484"]},
+  {"id":"katsushika-hokusai","name":"Katsushika Hokusai","name_ko":"가쓰시카 호쿠사이","source_ids":["cma:23328"]},
+  {"id":"utagawa-hiroshige","name":"Utagawa Hiroshige","name_ko":"우타가와 히로시게","source_ids":["cma:50381"]}
+]

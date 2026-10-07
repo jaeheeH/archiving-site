@@ -92,14 +92,14 @@ $containerPadding: calc(1280px + 48px);
 header{
 
   background: var(--background);
-  border-bottom: 1px solid #ddd;
+  border-bottom: 0;
   .contents{
     max-width: $container;
     margin: 0 auto;
     justify-content: space-between;
     display: flex;
 
-    height: 64px; align-items: center;
+    min-height: 64px; height: auto; align-items: center;
 
 
     .client-header-left{
@@ -114,15 +114,54 @@ header{
 
 
       > a{
-        font-size: 16px;
+        font-size: 12px;
         text-transform: uppercase;
-        font-weight: 500;
+        font-weight: 700;
+        letter-spacing: .08em;
       }
 
       .active{
         color: $primary-color;
         font-weight: 600;
       }
+    }
+  }
+}
+
+@media all and (min-width: 769px) {
+  .client-header .client-header-frame {
+    display: flex !important;
+    height: 78px;
+  }
+
+  .client-header .client-header-left {
+    width: auto;
+    height: 78px;
+    justify-content: flex-start;
+    padding: 0;
+    border-right: 0;
+  }
+
+  .client-header .client-header-menu {
+    width: auto;
+    height: 78px;
+    justify-content: flex-end;
+    gap: 28px;
+    padding: 0;
+    border-top: 0;
+
+    > a {
+      display: inline-flex;
+      height: 78px;
+      align-items: center;
+      padding: 0;
+      border-right: 0;
+    }
+
+    > div,
+    > a:last-child {
+      margin-left: 2px;
+      margin-right: 0;
     }
   }
 }
@@ -148,6 +187,7 @@ header{
     padding: 0 16px;
   }
   .client-header-menu{display: none!important;}
+  .client-header .client-header-frame { height: 62px; }
 }
 
 

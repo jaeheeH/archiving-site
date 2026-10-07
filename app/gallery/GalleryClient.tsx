@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import ActiveFilter from "@/components/gallery/ActiveFilter";
+import { SITE_COPY } from "@/lib/site-copy";
 
 // --- Types ---
 export type GalleryItem = {
@@ -224,16 +225,21 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     }
 
     if (gallery.length === 0) {
+      const hasActiveFilter = Boolean(searchInput.trim()) || selectedTags.length > 0;
       return (
-        <div className="w-full text-center py-20 bg-gray-50 rounded-xl border border-dashed border-gray-300 flex flex-col items-center justify-center">
+        <div className="flex w-full flex-col items-center justify-center border-y border-[var(--archive-line)] py-20 text-center">
           <i className="ri-search-2-line text-4xl text-gray-300 mb-3"></i>
-          <p className="text-lg text-gray-900 font-medium">No results found.</p>
-          <button 
-            onClick={() => { setSearchInput(''); setPage(1); setSelectedTags([]); }}
-            className="mt-6 border border-[var(--archive-line)] bg-white px-5 py-2.5 text-sm font-medium transition-colors hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]"
-          >
-            Clear Search & Filters
-          </button>
+          <p className="text-base font-semibold text-[var(--archive-ink)]">
+            {hasActiveFilter ? SITE_COPY.gallery.filteredEmpty : SITE_COPY.gallery.empty}
+          </p>
+          {hasActiveFilter && (
+            <button
+              onClick={() => { setSearchInput(''); setPage(1); setSelectedTags([]); }}
+              className="mt-6 border border-[var(--archive-line)] bg-white px-5 py-2.5 text-sm font-medium transition-colors hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]"
+            >
+              검색 조건 초기화
+            </button>
+          )}
         </div>
       );
     }
@@ -255,10 +261,10 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     <div className="archive-page-shell min-h-screen">
       <section className="border-b border-[var(--archive-line)]">
         <div className="mx-auto max-w-[var(--archive-page)] px-4 pb-8 pt-14">
-          <p className="archive-eyebrow mb-3 text-[var(--archive-faint)]">Visual Archive</p>
-          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Gallery</h1>
+          <p className="archive-eyebrow mb-3 text-[var(--archive-faint)]">{SITE_COPY.gallery.eyebrow}</p>
+          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">{SITE_COPY.gallery.title}</h1>
           <p className="mt-4 max-w-xl text-[15px] leading-7 text-[var(--archive-muted)]">
-            텍스트로 그려낸 상상의 단면들을 기록합니다. 인공지능이 생성한 독창적인 비주얼과 실험적인 텍스처를 탐험하세요.
+            {SITE_COPY.gallery.description}
           </p>
         </div>
       </section>
@@ -271,7 +277,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
               <i className="ri-search-line absolute left-0 top-1/2 -translate-y-1/2 text-[var(--archive-muted)]"></i>
               <input
                 type="text"
-                placeholder="Search inspiration..."
+                placeholder="제목, 설명, 태그로 검색"
                 value={searchInput}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 className="w-full border-0 border-b border-[var(--archive-line)] bg-transparent py-2.5 pl-7 pr-10 text-[13px] outline-none transition-colors placeholder:text-[var(--archive-faint)] hover:border-[var(--archive-brand)] focus:border-[var(--archive-brand)]"

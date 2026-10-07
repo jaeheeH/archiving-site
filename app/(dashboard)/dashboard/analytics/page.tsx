@@ -8,6 +8,7 @@ import {
   FileText,
   ImageIcon,
   MousePointerClick,
+  Newspaper,
 } from "lucide-react";
 
 import { getDashboardOverview } from "@/lib/dashboard-data";
@@ -28,6 +29,14 @@ export default async function AnalyticsPage() {
   }
 
   const panels = [
+    {
+      title: "뉴스 운영 현황",
+      description: `${formatNumber(overview.stats.newsPublished)} 발행 · ${formatNumber(overview.stats.newsDraft)} 미발행`,
+      href: "/dashboard/contents/news",
+      value: overview.stats.newsTotal,
+      label: "뉴스",
+      icon: Newspaper,
+    },
     {
       title: "블로그 분석",
       description: "조회, 북마크, 카테고리와 태그 흐름을 봅니다.",
@@ -96,7 +105,7 @@ export default async function AnalyticsPage() {
           </div>
         </section>
 
-        <section className="grid gap-4 lg:grid-cols-3">
+        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {panels.map((panel) => {
             const Icon = panel.icon;
 

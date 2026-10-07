@@ -117,15 +117,13 @@ const GALLERY_DETAIL_COLUMNS_BASIC = `
 
 const DAILY_GALLERY_COLUMNS = "id, title, description, image_url, thumbnail_url";
 const DAILY_GALLERY_COLUMNS_WITHOUT_THUMBNAIL = "id, title, description, image_url";
-const HOME_GALLERY_COLUMNS = "id, title, description, image_url, thumbnail_url, tags, gemini_tags";
-const HOME_GALLERY_COLUMNS_WITHOUT_THUMBNAIL = "id, title, description, image_url, tags, gemini_tags";
 const SIMILAR_GALLERY_COLUMNS =
   "id, title, image_url, thumbnail_url, image_width, image_height, description, embedding";
 const SIMILAR_GALLERY_COLUMNS_WITHOUT_THUMBNAIL =
   "id, title, image_url, image_width, image_height, description, embedding";
 
 const POST_LIST_COLUMNS =
-  "id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id";
+  "id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, like_count, author_id";
 
 const POST_DETAIL_COLUMNS =
   "id, type, title, subtitle, summary, slug, content, tags, is_published, published_at, created_at, updated_at, title_style, title_image_url, thumbnail_url, category_id, view_count, scrap_count, author_id";
@@ -250,35 +248,11 @@ function withNullThumbnail<T extends object>(items: T[] | null | undefined) {
   }));
 }
 
-async function readHomeGallery(supabase: ReturnType<typeof createPublicClient>) {
-  const query = (columns: string) =>
-    supabase
-      .from("gallery")
-      .select(columns)
-      .order("created_at", { ascending: false })
-      .limit(10);
-
-  const result = (await query(HOME_GALLERY_COLUMNS)) as unknown as ListQueryResult<HomeGalleryRow>;
-
-  if (!isMissingThumbnailColumn(result.error)) {
-    return result;
-  }
-
-  const fallback = (await query(
-    HOME_GALLERY_COLUMNS_WITHOUT_THUMBNAIL
-  )) as unknown as ListQueryResult<Omit<HomeGalleryRow, "thumbnail_url">>;
-
-  return {
-    ...fallback,
-    data: withNullThumbnail(fallback.data),
-  };
-}
-
 export const getHomeData = unstable_cache(
   async () => {
     const supabase = createPublicClient();
 
-    const [blogRes, popularRes, referencesRes, galleryRes, categoriesRes] =
+    const [blogRes, referencesRes, categoriesRes] =
       await Promise.all([
         supabase
           .from("posts")
@@ -288,20 +262,12 @@ export const getHomeData = unstable_cache(
           .eq("type", "blog")
           .eq("is_published", true)
           .order("published_at", { ascending: false })
-          .limit(4),
-        supabase
-          .from("posts")
-          .select("id, title, slug, published_at, category_id")
-          .eq("type", "blog")
-          .eq("is_published", true)
-          .order("view_count", { ascending: false })
-          .limit(5),
+          .limit(12),
         supabase
           .from("references")
           .select("id, title, description, url, image_url, logo_url, category, range, clicks")
           .order("created_at", { ascending: false })
           .limit(8),
-        readHomeGallery(supabase),
         supabase.from("categories").select("id, name").eq("type", "blog"),
       ]);
 
@@ -312,16 +278,14 @@ export const getHomeData = unstable_cache(
 
     return {
       latestBlogs: blogRes.data || [],
-      popularBlogs: popularRes.data || [],
       references: referencesRes.data || [],
-      gallery: galleryRes.data || [],
       categories: categoryMap,
     };
   },
   ["home-data"],
   {
     revalidate: CACHE_SECONDS.medium,
-    tags: [CACHE_TAGS.home, CACHE_TAGS.posts, CACHE_TAGS.gallery, CACHE_TAGS.references],
+    tags: [CACHE_TAGS.home, CACHE_TAGS.posts, CACHE_TAGS.references],
   }
 );
 
@@ -769,50 +733,20 @@ export const getBlogPostData = unstable_cache(
         console.error("Failed to load blog author:", authorRes.error.message);
       }
 
-      const relatedByCategory = post.category_id
-        ? await supabase
-            .from("posts")
-            .select("id, title, subtitle, summary, slug, published_at, created_at, title_image_url, category_id")
-            .eq("type", "blog")
-            .eq("is_published", true)
-            .not("published_at", "is", null)
-            .eq("category_id", post.category_id)
-            .neq("id", post.id)
-            .order("published_at", { ascending: false })
-            .limit(3)
-        : { data: [], error: null };
-
-      if (relatedByCategory.error) {
-        console.error("Failed to load related blog posts:", relatedByCategory.error.message);
-      }
-
-      let relatedPosts = relatedByCategory.data || [];
-
-      if (relatedPosts.length < 3) {
-        const relatedIds = new Set(relatedPosts.map((item) => item.id));
-        const fallbackRes = await supabase
-          .from("posts")
-          .select("id, title, subtitle, summary, slug, published_at, created_at, title_image_url, category_id")
-          .eq("type", "blog")
-          .eq("is_published", true)
-          .not("published_at", "is", null)
-          .neq("id", post.id)
-          .order("published_at", { ascending: false })
-          .limit(6);
-
-        if (fallbackRes.error) {
-          console.error("Failed to load fallback related posts:", fallbackRes.error.message);
-        }
-
-        const fallbackPosts = (fallbackRes.data || []).filter(
-          (item) => !relatedIds.has(item.id)
-        );
-
-        relatedPosts = [
-          ...relatedPosts,
-          ...fallbackPosts.slice(0, 3 - relatedPosts.length),
-        ];
-      }
+      const relatedColumns = "id,type,title,subtitle,summary,slug,published_at,created_at,title_image_url,category_id,tags,content";
+      const baseRelated = () => supabase.from("posts").select(relatedColumns).in("type", ["blog", "news"]).eq("is_published", true).not("published_at", "is", null).neq("id", post.id).order("published_at", { ascending: false });
+      const contentCategory = post.type === "news" ? post.content?.category : null;
+      const [tagMatches, categoryMatches, recent] = await Promise.all([
+        post.tags?.length ? baseRelated().overlaps("tags", post.tags).limit(30) : Promise.resolve({ data: [], error: null }),
+        contentCategory ? baseRelated().eq("content->>category", contentCategory).limit(20) : post.category_id ? baseRelated().eq("category_id", post.category_id).limit(20) : Promise.resolve({ data: [], error: null }),
+        baseRelated().limit(10),
+      ]);
+      const currentTags = new Set<string>((post.tags || []).map((tag: string) => tag.toLocaleLowerCase('ko')));
+      const score = (item: { tags?: string[]; category_id?: string; content?: { category?: string } }) =>
+        (item.tags || []).filter(tag => currentTags.has(tag.toLocaleLowerCase('ko'))).length * 10 +
+        (contentCategory && item.content?.category === contentCategory || post.category_id && item.category_id === post.category_id ? 3 : 0);
+      const relatedPosts = [...new Map([...(tagMatches.data || []), ...(categoryMatches.data || []), ...(recent.data || [])].map(item => [item.id, item])).values()]
+        .sort((a, b) => score(b) - score(a) || Date.parse(b.published_at) - Date.parse(a.published_at)).slice(0, 3);
 
       return {
         post,

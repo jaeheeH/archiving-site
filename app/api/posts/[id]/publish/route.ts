@@ -5,6 +5,8 @@ import { revalidatePath, revalidateTag } from 'next/cache';
 import { CACHE_TAGS } from '@/lib/public-data';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { checkPostOwnershipOrAdmin } from '@/lib/supabase/post-utils';
+import { editorialSchema } from '@/lib/news-editorial';
+import { NEWS_FORMAT } from '@/lib/news-record';
 
 // PATCH: 발행 상태만 토글
 export async function PATCH(
@@ -36,7 +38,7 @@ export async function PATCH(
     // 기존 포스트 조회
     const { data: existingPost, error: existingPostError } = await supabase
       .from('posts')
-      .select('published_at, is_published, slug, type')
+      .select('published_at, is_published, slug, type, title, summary, tags, content')
       .eq('id', id)
       .maybeSingle();
 
@@ -49,6 +51,13 @@ export async function PATCH(
         { error: '포스트를 찾을 수 없습니다' },
         { status: 404 }
       );
+    }
+
+    if (existingPost.type === 'news' && isPublished) {
+      const content = existingPost.content;
+      if (content?.format !== NEWS_FORMAT || !editorialSchema.safeParse({ url: content.source_url, title: existingPost.title, summary: existingPost.summary, tags: existingPost.tags, paragraphs: content.paragraphs, points: content.points }).success) {
+        return Response.json({ error: '뉴스를 한국어 기사로 가공한 후 발행해주세요.' }, { status: 400 });
+      }
     }
 
     // published_at 로직: 처음 발행하는 경우에만 현재 시간 설정
@@ -75,8 +84,14 @@ export async function PATCH(
       return Response.json({ error: error.message }, { status: 400 });
     }
 
-    revalidateTag(CACHE_TAGS.posts, "max");
-    revalidateTag(CACHE_TAGS.home, "max");
+    revalidateTag("archb-news", { expire: 0 });
+    revalidatePath("/rss.xml"); revalidatePath("/sitemap.xml");
+    revalidateTag(CACHE_TAGS.posts, { expire: 0 });
+    revalidateTag(CACHE_TAGS.home, { expire: 0 });
+    if (data.type === 'news') {
+      revalidatePath('/'); revalidatePath('/news/stories');
+      if (data.slug) revalidatePath(`/news/read/${data.slug}`);
+    }
     if (data.type === 'blog') {
       revalidatePath('/blog');
       if (data.slug) revalidatePath(`/blog/${data.slug}`);

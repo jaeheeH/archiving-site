@@ -1,0 +1,375 @@
+html[data-theme="my-design-system"] {
+  --layout-page-gutter: clamp(16px, 3vw, 40px);
+  --layout-content-max: 1280px;
+  --layout-workspace-max: 1440px;
+  --layout-readable-max: 720px;
+  --background: var(--balsa-role-background);
+  --foreground: var(--balsa-role-foreground);
+  --card: var(--balsa-role-surface);
+  --card-foreground: var(--balsa-role-surface-foreground);
+  --popover: var(--balsa-role-surface-elevated);
+  --popover-foreground: var(--balsa-role-surface-elevated-foreground);
+  --primary: var(--balsa-role-primary);
+  --primary-foreground: var(--balsa-role-primary-foreground);
+  --secondary: var(--balsa-role-secondary);
+  --secondary-foreground: var(--balsa-role-secondary-foreground);
+  --muted: var(--balsa-role-muted);
+  --muted-foreground: var(--balsa-role-muted-foreground);
+  --accent: var(--balsa-role-accent);
+  --accent-foreground: var(--balsa-role-accent-foreground);
+  --border: var(--balsa-role-border);
+  --input: var(--balsa-role-input-border);
+  --ring: var(--balsa-role-primary);
+  --sidebar: var(--balsa-role-surface);
+  --sidebar-foreground: var(--balsa-role-surface-foreground);
+  --sidebar-primary: var(--balsa-role-primary);
+  --sidebar-primary-foreground: var(--balsa-role-primary-foreground);
+  --sidebar-accent: var(--balsa-role-selected);
+  --sidebar-accent-foreground: var(--balsa-role-selected-foreground);
+  --sidebar-border: var(--balsa-role-border);
+  --sidebar-ring: var(--balsa-role-primary);
+  background: var(--balsa-role-background);
+}
+
+html[data-theme="my-design-system"] body {
+  background: var(--balsa-role-background);
+  color: var(--balsa-role-foreground);
+  font-family: var(--balsa-font-body, "Pretendard", sans-serif);
+  letter-spacing: -0.025em;
+}
+
+html[data-theme="my-design-system"] :is(a, button, input, select, textarea) {
+  transition-duration: var(--balsa-motion-fast, 120ms);
+  transition-timing-function: var(--balsa-motion-easing, cubic-bezier(0.2, 0, 0, 1));
+}
+
+html[data-theme="my-design-system"] :focus-visible {
+  outline: 2px solid var(--balsa-role-primary);
+  outline-offset: 2px;
+}
+
+html[data-theme="my-design-system"] .text-primary {
+  color: var(--balsa-role-primary);
+}
+
+html[data-theme="my-design-system"] .client-header {
+  border-color: var(--balsa-role-border);
+  background: color-mix(in oklab, var(--balsa-role-background) 96%, transparent);
+  box-shadow: none;
+}
+
+html[data-theme="my-design-system"] .client-header :is(.client-header-left, .client-header-menu > a) {
+  border-color: var(--balsa-role-border);
+}
+
+html[data-theme="my-design-system"] .client-header .client-header-menu > a {
+  color: var(--balsa-role-foreground);
+}
+
+html[data-theme="my-design-system"] .client-header .client-header-menu > a.active {
+  background: transparent;
+  color: var(--balsa-role-foreground);
+  box-shadow: inset 0 -2px 0 var(--balsa-role-primary);
+}
+
+html[data-theme="my-design-system"] .client-header .client-header-menu > a:not(.active):hover {
+  background: var(--balsa-role-surface);
+}
+
+html[data-theme="my-design-system"] :is(
+  .archive-home,
+  .archive-page-shell,
+  .archive-blog,
+  .archive-article
+) {
+  --archive-canvas: var(--balsa-role-background);
+  --archive-ink: var(--balsa-role-foreground);
+  --archive-muted: var(--balsa-role-secondary);
+  --archive-faint: var(--balsa-role-muted-foreground);
+  --archive-line: var(--balsa-role-border);
+  --archive-brand: var(--balsa-role-primary);
+  --archive-bg-light: var(--balsa-role-background);
+  --archive-bg-regular: var(--balsa-role-surface);
+  --archive-surface: var(--balsa-role-surface);
+  --archive-page: var(--layout-content-max);
+  background: var(--archive-canvas);
+  color: var(--archive-ink);
+}
+
+html[data-theme="my-design-system"] .archive-eyebrow {
+  color: var(--balsa-role-accent);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+}
+
+html[data-theme="my-design-system"] :is(.archive-page-shell, .archive-blog, .archive-article) > section:first-child {
+  background: var(--balsa-role-surface);
+}
+
+html[data-theme="my-design-system"] :is(.archive-page-shell, .archive-blog) > section:first-child > div {
+  padding-top: 40px;
+  padding-bottom: 28px;
+}
+
+html[data-theme="my-design-system"] :is(.archive-page-shell, .archive-blog) > section:first-child h1 {
+  max-width: var(--layout-readable-max);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.04em;
+  word-break: keep-all;
+}
+
+html[data-theme="my-design-system"] :is(.archive-page-shell, .archive-blog) > section:nth-child(2) {
+  background: color-mix(in oklab, var(--balsa-role-background) 96%, transparent);
+}
+
+html[data-theme="my-design-system"] :is(.archive-page-shell, .archive-blog) > section:nth-child(2) button,
+html[data-theme="my-design-system"] .archive-page-shell input {
+  min-height: 44px;
+}
+
+html[data-theme="my-design-system"] .homeBrief {
+  background: var(--balsa-role-surface);
+}
+
+html[data-theme="my-design-system"] .homeBriefInner {
+  max-width: calc(var(--layout-content-max) + 48px);
+  min-height: 124px;
+  gap: 32px;
+  padding: 24px;
+}
+
+html[data-theme="my-design-system"] .homeBriefTitle h1 {
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+html[data-theme="my-design-system"] .homeBriefNav a,
+html[data-theme="my-design-system"] .editorialMoreLink {
+  min-height: 44px;
+  border-radius: var(--balsa-radius-control, 4px);
+}
+
+html[data-theme="my-design-system"] .homeBriefNav a {
+  border-color: var(--archive-line);
+  background: var(--balsa-role-background);
+}
+
+html[data-theme="my-design-system"] .homeBriefNav a:hover {
+  border-color: var(--balsa-role-primary);
+  background: var(--balsa-role-primary);
+  color: var(--balsa-role-primary-foreground);
+}
+
+html[data-theme="my-design-system"] .editorialSectionHead h2 {
+  font-weight: 600;
+}
+
+html[data-theme="my-design-system"] :is(.homeFeatureMedia, .homeMosaicStory, .homeArticleMedia) {
+  border-radius: var(--balsa-radius-surface, 7px);
+}
+
+html[data-theme="my-design-system"] .homeFeatureMosaic,
+html[data-theme="my-design-system"] .homeMosaicSide {
+  gap: 12px;
+}
+
+html[data-theme="my-design-system"] .homeArticleGrid {
+  gap: 28px 16px;
+}
+
+html[data-theme="my-design-system"] .mainSection {
+  padding-block: 48px;
+}
+
+html[data-theme="my-design-system"] .mainSection.mainReferences {
+  --archive-line: var(--balsa-role-border);
+  background: var(--balsa-role-surface);
+}
+
+html[data-theme="my-design-system"] .mainSection.mainGallery {
+  --archive-ink: var(--balsa-role-foreground);
+  --archive-muted: var(--balsa-role-secondary);
+  --archive-faint: var(--balsa-role-muted-foreground);
+  --archive-line: var(--balsa-role-border);
+  --archive-bg-regular: var(--balsa-role-surface);
+  background: var(--balsa-role-background);
+}
+
+html[data-theme="my-design-system"] .archive-page-shell a.group {
+  border-radius: var(--balsa-radius-surface, 7px);
+  background: var(--balsa-role-background);
+}
+
+html[data-theme="my-design-system"] .archive-page-shell a.group:hover {
+  border-color: var(--balsa-role-secondary);
+}
+
+html[data-theme="my-design-system"] .archive-page-shell :is(input, select, textarea),
+html[data-theme="my-design-system"] .dashboard-shell :is(input, select, textarea) {
+  border-color: var(--balsa-role-input-border);
+  border-radius: var(--balsa-radius-control, 4px);
+  background: var(--balsa-role-background);
+  color: var(--balsa-role-foreground);
+}
+
+html[data-theme="my-design-system"] .archive-page-shell :is(input, select, textarea):hover,
+html[data-theme="my-design-system"] .dashboard-shell :is(input, select, textarea):hover {
+  border-color: var(--balsa-role-secondary);
+}
+
+html[data-theme="my-design-system"] .dashboard-shell,
+html[data-theme="my-design-system"] .dashboard-Contents {
+  background: var(--balsa-role-surface);
+  color: var(--balsa-role-foreground);
+}
+
+html[data-theme="my-design-system"] #sideBar,
+html[data-theme="my-design-system"] .dashboard-mobile-bar,
+html[data-theme="my-design-system"] .dashboard-mobile-panel,
+html[data-theme="my-design-system"] .dashboard-Contents > div > .dashboard-Header {
+  border-color: var(--balsa-role-border);
+  background: var(--balsa-role-background);
+  box-shadow: none;
+}
+
+html[data-theme="my-design-system"] .dashboard-Contents > div > .dashboard-Header {
+  height: 56px;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--balsa-role-border);
+}
+
+html[data-theme="my-design-system"] .dashboard-Contents > div > .dashboard-container {
+  width: min(100%, var(--layout-workspace-max));
+  margin-inline: auto;
+  padding: 20px 24px 40px;
+}
+
+html[data-theme="my-design-system"] #sideBar {
+  width: 240px;
+}
+
+html[data-theme="my-design-system"] #sideBar .side-logo {
+  height: 64px;
+  padding-inline: 20px;
+  border-bottom: 1px solid var(--balsa-role-border);
+}
+
+html[data-theme="my-design-system"] #sideBar .side-logo > p {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+html[data-theme="my-design-system"] #sideBar .nav-section {
+  margin-top: 16px;
+}
+
+html[data-theme="my-design-system"] #sideBar .nav-title {
+  color: var(--balsa-role-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+html[data-theme="my-design-system"] #sideBar nav :is(a, div[role="button"]) {
+  min-height: 40px;
+  border-radius: var(--balsa-radius-control, 4px);
+}
+
+html[data-theme="my-design-system"] .dashboard-shell .bg-blue-50 {
+  background: var(--balsa-role-primary);
+  color: var(--balsa-role-primary-foreground);
+}
+
+html[data-theme="my-design-system"] .dashboard-shell .text-blue-600 {
+  color: var(--balsa-role-primary);
+}
+
+html[data-theme="my-design-system"] .dashboard-shell .bg-blue-50.text-blue-600,
+html[data-theme="my-design-system"] .dashboard-shell .bg-blue-50 .text-blue-600 {
+  color: var(--balsa-role-primary-foreground);
+}
+
+html[data-theme="my-design-system"] .dashboard-shell :is(.bg-white, .modalContents) {
+  background: var(--balsa-role-background);
+}
+
+html[data-theme="my-design-system"] .dashboard-shell .bg-gray-50 {
+  background: var(--balsa-role-surface);
+}
+
+html[data-theme="my-design-system"] .dashboard-shell .bg-gray-100 {
+  background: var(--balsa-role-muted);
+}
+
+html[data-theme="my-design-system"] .dashboard-shell :is(.border, .border-b, .border-r, .border-t) {
+  border-color: var(--balsa-role-border);
+}
+
+html[data-theme="my-design-system"] .dashboard-shell :is(.rounded-lg, .rounded-xl) {
+  border-radius: var(--balsa-radius-panel, 9px);
+}
+
+html[data-theme="my-design-system"] .dashboard-shell :is(.shadow, .shadow-sm, .shadow-md, .shadow-lg, .shadow-xl) {
+  box-shadow: none;
+}
+
+html[data-theme="my-design-system"] .dashboard-shell :is(.btn-line-36, .btn-line-40, .btn-line-48, .btn-sumit) {
+  min-height: 44px;
+  border-color: var(--balsa-role-primary);
+  border-radius: var(--balsa-radius-control, 4px);
+  background: var(--balsa-role-primary);
+  color: var(--balsa-role-primary-foreground);
+}
+
+html[data-theme="my-design-system"] .dashboard-shell :is(.input-text-36, .textArea) {
+  min-height: 44px;
+  padding: 10px 12px;
+}
+
+html[data-theme="my-design-system"] .dashboard-shell table {
+  border-color: var(--balsa-role-border);
+  background: var(--balsa-role-background);
+}
+
+html[data-theme="my-design-system"] .dashboard-shell th {
+  height: 44px;
+  background: var(--balsa-role-surface);
+  color: var(--balsa-role-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+html[data-theme="my-design-system"] .dashboard-shell td {
+  min-height: 52px;
+  color: var(--balsa-role-foreground);
+  font-size: 14px;
+}
+
+html[data-theme="my-design-system"] .dashboard-shell :is(time, [class*="date"], [class*="count"], [class*="price"]) {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+@media (max-width: 767px) {
+  html[data-theme="my-design-system"] {
+    --layout-page-gutter: 16px;
+  }
+
+  html[data-theme="my-design-system"] .homeBriefInner {
+    gap: 20px;
+    padding: 24px 16px;
+  }
+
+  html[data-theme="my-design-system"] .mainSection {
+    padding-block: 40px;
+  }
+
+  html[data-theme="my-design-system"] .dashboard-Contents > div > .dashboard-container {
+    padding: 16px 16px 32px;
+  }
+}

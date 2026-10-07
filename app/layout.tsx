@@ -1,24 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { ToastProvider } from "@/components/ToastProvider";
+import BalsaThemeActivation from "@/app/components/BalsaThemeActivation";
 import Header from "@/app/layout/Header";
 import Footer from "@/app/layout/Footer";
 import { getSiteSettings, getDefaultMetadata } from "@/lib/site-settings";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
+import "@/styles/balsa-foundation.css";
+import "@/styles/balsa-theme.css";
+import "@/styles/balsa-palette.css";
+import "@/styles/my-design-system-palette.css";
+import "@/styles/balsa-shadcn-bridge.css";
 import "./css/style.scss";
+import "./css/balsa-system.scss";
+import "./css/news.css";
+import "./css/archive.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 const enableVercelInsights = process.env.NEXT_PUBLIC_ENABLE_VERCEL_INSIGHTS === "true";
 
@@ -51,7 +49,12 @@ export default async function RootLayout({
   const htmlLang = normalizeHtmlLang(settings?.site_language);
 
   return (
-    <html lang={htmlLang}>
+    <html
+      lang={htmlLang}
+      data-palette="my-design-system"
+      data-theme="my-design-system"
+      data-balsa-adapt
+    >
       <head>
         <link
           rel="stylesheet"
@@ -67,7 +70,7 @@ export default async function RootLayout({
         <link
           rel="alternate"
           type="application/rss+xml"
-          title={`${settings?.site_name || "Archiving"} Blog RSS`}
+          title="ARCH.B 뉴스와 에디토리얼 RSS"
           href={`${siteUrl}/rss.xml`}
         />
         <meta name="p:domain_verify" content="a1385cca1b4c87b9e9f53b214e8fd264"/>
@@ -154,9 +157,8 @@ export default async function RootLayout({
           />
         )}
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="antialiased">
+        <BalsaThemeActivation />
         {/* Google Tag Manager (noscript) */}
         {gtmId && (
           <noscript>

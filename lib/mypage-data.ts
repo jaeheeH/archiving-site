@@ -38,6 +38,7 @@ export type MypageReferenceItem = {
 
 export type MypagePostItem = {
   id: string;
+  type: 'blog' | 'news';
   title: string;
   subtitle: string | null;
   summary: string | null;
@@ -171,10 +172,10 @@ export async function getMypageActivity(): Promise<MypageActivity | null> {
           admin
             .from("posts")
             .select(
-              "id, title, subtitle, summary, slug, title_image_url, published_at, created_at, scrap_count"
+              "id, type, title, subtitle, summary, slug, title_image_url, published_at, created_at, scrap_count"
             )
             .in("id", postIds)
-            .eq("type", "blog")
+            .in("type", ["blog", "news"])
             .eq("is_published", true)
             .order("published_at", { ascending: false })
         )

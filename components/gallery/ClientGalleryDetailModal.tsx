@@ -146,7 +146,7 @@ export default function ClientGalleryDetailModal({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: gallery?.title || "Archiving Site",
+          title: gallery?.title || "ARCH-B",
           text: "Check out this inspiration!",
           url: url,
         });

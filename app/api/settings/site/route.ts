@@ -107,7 +107,7 @@ function normalizeGtmId(value: unknown) {
 
 function sanitizeSiteSettings(body: Record<string, unknown>) {
   return {
-    site_name: normalizeRequiredString(body.site_name, "Archiving", 120),
+    site_name: normalizeRequiredString(body.site_name, "ARCH-B", 120),
     site_description: normalizeString(body.site_description, 300),
     site_keywords: normalizeKeywords(body.site_keywords),
     site_language: normalizeEnum(body.site_language, VALID_LANGUAGES, "ko"),

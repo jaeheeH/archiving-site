@@ -21,9 +21,12 @@ export default function Sidebar() {
       href: "/dashboard/contents",
       children: [
         { label: "콘텐츠 개요", href: "/dashboard/contents" },
+        { label: "뉴스", href: "/dashboard/contents/news" },
+        { label: "아트", href: "/dashboard/contents/art" },
+        { label: "작가", href: "/dashboard/contents/artists" },
+        { label: "참고사이트", href: "/dashboard/contents/references" },
+        { label: "에디토리얼", href: "/dashboard/contents/blog" },
         { label: "갤러리", href: "/dashboard/contents/gallery" },
-        { label: "블로그", href: "/dashboard/contents/blog" },
-        { label: "레퍼런스", href: "/dashboard/contents/references" },
       ],
     },
     {
@@ -103,7 +106,9 @@ export default function Sidebar() {
   }, [mobileMenuOpen]);
 
   const currentMenuLabel =
-    menu.find((item) => pathname === item.href || pathname.startsWith(item.href + "/"))?.label ||
+    menu.flatMap(item => [item, ...item.children])
+      .filter(item => pathname === item.href || pathname.startsWith(item.href + "/"))
+      .sort((a, b) => b.href.length - a.href.length)[0]?.label ||
     "대시보드";
 
   const renderMenu = (mode: "desktop" | "mobile") => (
@@ -136,12 +141,14 @@ export default function Sidebar() {
                 </div>
               </Link>
             ) : (
-              <div
+              <button
+                type="button"
+                aria-expanded={isOpen}
                 onClick={() => {
                   setOpenMenu(isOpen ? "" : item.label);
                 }}
                 className={`
-                  flex items-center justify-between cursor-pointer rounded-md text-sm
+                  flex w-full items-center justify-between cursor-pointer rounded-md text-left text-sm
                   ${
                     isParentActive
                       ? "bg-blue-50 text-blue-600 font-medium"
@@ -159,18 +166,19 @@ export default function Sidebar() {
                 <div className={`menu-arrow ${ isOpen ? "rotate-180" : "" }`}>
                   <i className="ri-arrow-down-s-line" />
                 </div>
-              </div>
+              </button>
             )}
 
             {isOpen && item.children.length > 0 && (
               <div className="mt-1 flex flex-col gap-1">
                 {item.children.map((child) => {
-                  const activeChild = pathname === child.href;
+                  const activeChild = pathname === child.href || (child.href !== "/dashboard/contents" && pathname.startsWith(child.href + "/"));
 
                   return (
                     <Link
                       key={child.href}
                       href={child.href}
+                      aria-current={activeChild ? "page" : undefined}
                       className={`
                         block rounded-md px-10 py-2 text-sm
                         ${
@@ -205,7 +213,7 @@ export default function Sidebar() {
         <i className="ri-menu-line" />
       </button>
       <div className="min-w-0">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">Archiving</p>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">ARCH-B</p>
         <p className="truncate text-sm font-semibold text-gray-950">{currentMenuLabel}</p>
       </div>
       <Link
@@ -229,7 +237,7 @@ export default function Sidebar() {
         />
         <aside className="dashboard-mobile-panel">
           <div className="side-logo">
-            <p>Archiving</p>
+            <p>ARCH-B</p>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
@@ -274,7 +282,7 @@ export default function Sidebar() {
     )}
 
     <aside className="border-r bg-white flex flex-col" id="sideBar">
-      <div className="side-logo"><p>Archiving</p></div>
+      <div className="side-logo"><p>ARCH-B</p></div>
 
       <div className="nav-section">
         <nav className="flex flex-col gap-2 px-3">

@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { normalizeAvatarUrl } from "@/lib/avatar-url";
 
@@ -15,37 +15,9 @@ type UserProfile = {
   role: string;
 };
 
-const THEME_CHANGE_EVENT = "arch-theme-change";
-
-function readPreferredDarkMode() {
-  if (typeof window === "undefined") return false;
-
-  const savedTheme = localStorage.getItem("theme");
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  return savedTheme === "dark" || (savedTheme === null && prefersDark);
-}
-
-function subscribeToTheme(onStoreChange: () => void) {
-  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-  const handleStorage = (event: StorageEvent) => {
-    if (event.key === "theme") onStoreChange();
-  };
-
-  window.addEventListener("storage", handleStorage);
-  window.addEventListener(THEME_CHANGE_EVENT, onStoreChange);
-  mediaQuery.addEventListener("change", onStoreChange);
-
-  return () => {
-    window.removeEventListener("storage", handleStorage);
-    window.removeEventListener(THEME_CHANGE_EVENT, onStoreChange);
-    mediaQuery.removeEventListener("change", onStoreChange);
-  };
-}
-
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
-  const isDark = useSyncExternalStore(subscribeToTheme, readPreferredDarkMode, () => false);
   const [mounted, setMounted] = useState(false);
   const [userInfo, setUserInfo] = useState<UserProfile | null>(null);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
@@ -58,26 +30,10 @@ export default function Header() {
   
   const showHeader = !NO_HEADER_ROUTES.some(route => pathname.startsWith(route));
 
-  // 다크모드 적용
-  const applyTheme = useCallback((dark: boolean, persist = true) => {
-    const html = document.documentElement;
-    if (dark) {
-      html.classList.add("dark");
-      if (persist) localStorage.setItem("theme", "dark");
-    } else {
-      html.classList.remove("dark");
-      if (persist) localStorage.setItem("theme", "light");
-    }
-  }, []);
-
   // 초기화 및 데이터 로드
   useEffect(() => {
     queueMicrotask(() => setMounted(true));
   }, []);
-
-  useEffect(() => {
-    applyTheme(isDark, false);
-  }, [applyTheme, isDark]);
 
   useEffect(() => {
     // 유저 정보 조회 (Auth + DB 최신 데이터)
@@ -132,12 +88,6 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handlePointerDown);
   }, []);
 
-  const toggleDarkMode = () => {
-    const newDarkMode = !isDark;
-    applyTheme(newDarkMode);
-    window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
-  };
-
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     setUserInfo(null);
@@ -162,24 +112,27 @@ export default function Header() {
 
   // 데스크탑용 메뉴 설정
   const menuItems = [
-    { label: "Gallery", href: "/gallery" },
-    { label: "Blog", href: "/blog" },
-    { label: "Reference", href: "/references" },
+    { label: "뉴스", href: "/news/stories" },
+  ];
+  const archiveItems = [
+    { label: "아트", href: "/art" },
+    { label: "작가", href: "/artists" },
+    { label: "참고사이트", href: "/references" },
   ];
 
   // 모바일 하단바용 메뉴 설정 (아이콘 포함)
   const mobileMenuItems = [
-    { label: "Home", href: "/", icon: "ri-home-5-line", activeIcon: "ri-home-5-fill" },
-    { label: "Gallery", href: "/gallery", icon: "ri-image-line", activeIcon: "ri-image-fill" },
-    { label: "Blog", href: "/blog", icon: "ri-article-line", activeIcon: "ri-article-fill" },
-    { label: "Reference", href: "/references", icon: "ri-bookmark-line", activeIcon: "ri-bookmark-fill" },
-    { label: "My", href: userInfo ? "/mypage" : "/login?redirect=/mypage", icon: "ri-user-line", activeIcon: "ri-user-fill" },
+    { label: "뉴스", href: "/news/stories", icon: "ri-newspaper-line", activeIcon: "ri-newspaper-fill" },
+    { label: "아트", href: "/art", icon: "ri-image-line", activeIcon: "ri-image-fill" },
+    { label: "작가", href: "/artists", icon: "ri-user-star-line", activeIcon: "ri-user-star-fill" },
+    { label: "사이트", href: "/references", icon: "ri-links-line", activeIcon: "ri-links-fill" },
+    { label: "MY", href: userInfo ? "/mypage" : "/login?redirect=/mypage", icon: "ri-user-line", activeIcon: "ri-user-fill" },
   ];
 
   // 현재 경로에서 활성 메뉴 판단
   const isActive = (href: string) => {
-    if (href === "/" && pathname !== "/") return false;
-    return pathname === href || (href !== "/" && pathname.startsWith(href));
+    if (href === "/news/stories") return pathname === "/news/stories" || pathname.startsWith("/news/read/");
+    return pathname === href || pathname.startsWith(`${href}/`);
   };
 
   if (!mounted) return null;
@@ -193,48 +146,46 @@ export default function Header() {
   return (
     <>
       {/* === Desktop & Common Top Header === */}
-      <header className="client-header sticky top-0 z-40 bg-white/80 dark:bg-[#121212]/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 transition-colors duration-300">
-        <div className="contents max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-
+      <header className="client-header editorial-header sticky top-0 z-40 bg-white/95 backdrop-blur-md">
+        <div className="contents client-header-frame mx-auto flex max-w-[1280px] items-center px-4 md:px-6">
           <div className="client-header-left flex items-center">
-            <Link href="/" className="client-header-logo flex gap-4 mr-6">
-              {/* 로고: 다크모드 대응 필요시 이미지 교체 로직 추가 권장 */}
-              <img src={isDark ? "/logo_white.png" : "/logo.png"} alt="Logo" className="h-5 w-auto" />
+            <Link href="/" className="client-header-logo flex shrink-0 items-center">
+              <span className="editorial-wordmark">ARCH.B</span>
             </Link>
-
-            <div className="client-header-search hidden sm:block">
-              {/* 검색창 플레이스홀더 */}
-            </div>
           </div>
 
+          <Suspense fallback={null}><SiteSearch /></Suspense>
+
           {/* Desktop Navigation (모바일에서 숨김: hidden md:flex) */}
-          <nav className="client-header-menu md:flex items-center gap-6">
+          <nav aria-label="주요 메뉴" className="client-header-menu ml-auto hidden items-center gap-7 md:flex">
             {menuItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-sm  font-medium transition-colors ${
+                aria-current={isActive(item.href) ? "page" : undefined}
+                className={`text-[12px] font-bold tracking-[-0.01em] transition-colors ${
                   isActive(item.href) 
                     ? "active" 
-                    : "dark:hover:text-white"
+                    : "hover:text-foreground"
                 }`}
               >
                 {item.label}
               </Link>
             ))}
-
-
+            <div className="editorial-archive-nav" role="group" aria-label="아카이브">
+              {archiveItems.map(item => <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</Link>)}
+            </div>
             {/* 유저 프로필 영역 */}
             {userInfo ? (
               <div ref={profileMenuRef} className="relative">
                 <button
                   type="button"
                   onClick={() => setProfileMenuOpen((open) => !open)}
-                  className="flex items-center gap-2 rounded-full py-1 pl-1 pr-2 transition hover:bg-gray-50 dark:hover:bg-gray-800"
+                  className="flex items-center gap-2 rounded-md py-1 pl-1 pr-2 transition hover:bg-muted"
                   aria-expanded={profileMenuOpen}
                   aria-haspopup="menu"
                 >
-                  <span className="h-8 w-8 overflow-hidden rounded-full border border-gray-200 bg-gray-100 dark:border-gray-700 dark:bg-gray-800">
+                  <span className="h-8 w-8 overflow-hidden rounded-full border border-border bg-muted">
                     {userInfo.avatar_url ? (
                       <img
                         src={userInfo.avatar_url}
@@ -242,37 +193,37 @@ export default function Header() {
                         className="h-full w-full object-cover"
                       />
                     ) : (
-                      <span className="flex h-full w-full items-center justify-center text-xs font-bold text-gray-500 dark:text-gray-300">
+                      <span className="flex h-full w-full items-center justify-center text-xs font-bold text-secondary">
                         {userInfo.nickname?.charAt(0).toUpperCase() || "U"}
                       </span>
                     )}
                   </span>
-                  <span className="hidden max-w-24 truncate text-sm font-semibold text-gray-900 dark:text-gray-100 lg:block">
+                  <span className="hidden max-w-24 truncate text-sm font-semibold text-foreground lg:block">
                     {userInfo.nickname || "사용자"}
                   </span>
-                  <i className="ri-arrow-down-s-line text-lg text-gray-500" />
+                  <i className="ri-arrow-down-s-line text-lg text-secondary" />
                 </button>
 
                 {profileMenuOpen && (
                   <div
                     role="menu"
-                    className="absolute right-0 top-12 z-50 w-72 overflow-hidden rounded-lg border border-gray-200 bg-white p-3 shadow-xl dark:border-gray-800 dark:bg-[#161616]"
+                    className="absolute right-0 top-12 z-50 w-72 overflow-hidden rounded-lg border border-border bg-background p-3 shadow-none"
                   >
                     <div className="mb-3 flex items-center gap-3 px-2 py-2">
-                      <div className="h-12 w-12 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+                      <div className="h-12 w-12 overflow-hidden rounded-full bg-muted">
                         {userInfo.avatar_url ? (
                           <img src={userInfo.avatar_url} alt={userInfo.nickname} className="h-full w-full object-cover" />
                         ) : (
-                          <div className="flex h-full w-full items-center justify-center text-sm font-bold text-gray-500 dark:text-gray-300">
+                          <div className="flex h-full w-full items-center justify-center text-sm font-bold text-secondary">
                             {userInfo.nickname?.charAt(0).toUpperCase() || "U"}
                           </div>
                         )}
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-bold text-gray-950 dark:text-gray-50">
+                        <p className="truncate text-sm font-bold text-foreground">
                           {userInfo.nickname || "사용자"}
                         </p>
-                        <p className="truncate text-sm text-gray-500">{userInfo.email}</p>
+                        <p className="truncate text-sm text-secondary">{userInfo.email}</p>
                       </div>
                     </div>
 
@@ -280,21 +231,10 @@ export default function Header() {
                       <UserMenuLink href="/mypage" icon="ri-user-line" label="내 프로필" />
                       <UserMenuLink href="/mypage/activity" icon="ri-bookmark-line" label="내 활동" />
                       <UserMenuLink href="/mypage/account" icon="ri-settings-3-line" label="설정" />
-                      <button
-                        type="button"
-                        onClick={toggleDarkMode}
-                        className="flex w-full items-center justify-between gap-3 rounded-md px-3 py-2.5 text-left text-sm font-medium text-gray-700 transition hover:bg-[#ff4800]/10 hover:text-[#ff4800] dark:text-gray-200"
-                      >
-                        <span className="flex items-center gap-3">
-                          <i className={`${isDark ? "ri-sun-line text-yellow-400" : "ri-moon-line"} text-lg`} />
-                          {isDark ? "라이트 모드" : "다크 모드"}
-                        </span>
-                        <span className="text-xs font-semibold text-gray-400">{isDark ? "ON" : "OFF"}</span>
-                      </button>
                     </div>
 
                     {managementLink && (
-                      <div className="mt-3 border-t border-gray-100 pt-3 dark:border-gray-800">
+                      <div className="mt-3 border-t border-border pt-3">
                         <UserMenuLink
                           href={managementLink.href}
                           icon={managementLink.icon}
@@ -303,11 +243,11 @@ export default function Header() {
                       </div>
                     )}
 
-                    <div className="mt-3 border-t border-gray-100 pt-3 dark:border-gray-800">
+                    <div className="mt-3 border-t border-border pt-3">
                       <button
                         type="button"
                         onClick={handleSignOut}
-                        className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm font-medium text-gray-700 transition hover:bg-[#ff4800]/10 hover:text-[#ff4800] dark:text-gray-200"
+                        className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left text-sm font-medium text-secondary transition hover:bg-muted hover:text-foreground"
                       >
                         <i className="ri-logout-box-r-line text-lg" />
                         로그아웃
@@ -319,21 +259,18 @@ export default function Header() {
             ) : (
               <Link 
                 href={loginHref}
-                className="text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white"
+                className="text-[12px] font-bold hover:text-foreground"
               >
-                Login
+                로그인
               </Link>
             )}
 
           </nav>
-
-
-
         </div>
       </header>
 
       {/* === Mobile Bottom Navigation Bar === */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#121212] border-t border-gray-200 dark:border-gray-800 md:hidden pb-[env(safe-area-inset-bottom)] transition-colors duration-300">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background pb-[env(safe-area-inset-bottom)] md:hidden">
         <div className="flex justify-around items-center h-16 px-2">
           {mobileMenuItems.map((item) => {
             const active = isActive(item.href);
@@ -345,12 +282,12 @@ export default function Header() {
               >
                 <i 
                   className={`text-2xl ${active ? item.activeIcon : item.icon} ${
-                    active ? "text-black dark:text-white" : "text-gray-400 dark:text-gray-500"
+                    active ? "text-foreground" : "text-secondary"
                   }`}
                 ></i>
                 <span 
                   className={`text-[10px] ${
-                    active ? "text-black dark:text-white font-medium" : "text-gray-400 dark:text-gray-500"
+                    active ? "text-foreground font-medium" : "text-secondary"
                   }`}
                 >
                   {item.label}
@@ -364,11 +301,29 @@ export default function Header() {
   );
 }
 
+function SiteSearch() {
+  const params = useSearchParams();
+  const pathname = usePathname();
+  const targets: Record<string, { action: string; label: string; filters: string[] }> = {
+    art: { action: '/art', label: '작품 검색', filters: ['artist', 'museum'] },
+    artists: { action: '/artists', label: '작가 검색', filters: [] },
+    references: { action: '/references', label: '참고사이트 검색', filters: ['category'] },
+  };
+  const target = targets[pathname.split('/')[1]] || { action: '/news/stories', label: '기사 검색', filters: ['category', 'source', 'collection'] };
+  const query = pathname === target.action ? (params.get('q') || '').slice(0, 100) : '';
+  return <form className="editorial-search" role="search" aria-label={target.label} action={target.action} method="get">
+    <label className="sr-only" htmlFor="archb-search-query">{target.label}</label>
+    <input key={`${target.action}:${query}`} id="archb-search-query" type="search" name="q" autoComplete="off" defaultValue={query} placeholder={target.label} maxLength={100} />
+    {pathname === target.action && target.filters.map(name => params.get(name) ? <input key={name} type="hidden" name={name} value={params.get(name)!} /> : null)}
+    <button type="submit" aria-label="검색"><i className="ri-search-line" aria-hidden="true" /></button>
+  </form>;
+}
+
 function UserMenuLink({ href, icon, label }: { href: string; icon: string; label: string }) {
   return (
     <Link
       href={href}
-      className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-[#ff4800]/10 hover:text-[#ff4800] dark:text-gray-200"
+      className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-secondary transition hover:bg-muted hover:text-foreground"
     >
       <i className={`${icon} text-lg`} />
       {label}

@@ -43,6 +43,7 @@ type PostFilterableQuery = {
   eq(column: string, value: string | boolean): unknown;
   is(column: string, value: null): unknown;
   not(column: string, operator: string, value: string): unknown;
+  ilike(column: string, value: string): unknown;
 };
 
 function applyPostFilters<T>(query: T, params: {
@@ -52,6 +53,8 @@ function applyPostFilters<T>(query: T, params: {
   adminIds: string[];
   categoryId: string | null;
   draftOnly: boolean;
+  publishedOnly: boolean;
+  query: string;
 }): T {
   let nextQuery = (query as PostFilterableQuery).eq('type', params.type) as T;
   const filterable = () => nextQuery as PostFilterableQuery;
@@ -63,7 +66,9 @@ function applyPostFilters<T>(query: T, params: {
   }
 
   if (params.categoryId && params.categoryId !== 'all') {
-    if (params.categoryId === 'uncategorized') {
+    if (params.type === 'news') {
+      nextQuery = filterable().eq('content->>category', params.categoryId) as T;
+    } else if (params.categoryId === 'uncategorized') {
       nextQuery = filterable().is('category_id', null) as T;
     } else {
       nextQuery = filterable().eq('category_id', params.categoryId) as T;
@@ -72,7 +77,10 @@ function applyPostFilters<T>(query: T, params: {
 
   if (params.draftOnly) {
     nextQuery = filterable().eq('is_published', false) as T;
+  } else if (params.publishedOnly) {
+    nextQuery = filterable().eq('is_published', true) as T;
   }
+  if (params.query) nextQuery = filterable().ilike('title', `%${params.query.replace(/[\\%_]/g, '\\$&')}%`) as T;
 
   return nextQuery;
 }
@@ -86,6 +94,8 @@ export async function GET(request: Request) {
     const offset = normalizeOffset(searchParams.get('offset'));
     const categoryId = searchParams.get('category_id');
     const draftOnly = searchParams.get('draft_only') === 'true';
+    const publishedOnly = searchParams.get('published_only') === 'true';
+    const query = (searchParams.get('q') || '').trim().slice(0, 100);
     const sortBy = normalizeSortField(searchParams.get('sort_by'));
     const sortOrder = normalizeSortOrder(searchParams.get('sort_order'));
 
@@ -135,6 +145,8 @@ export async function GET(request: Request) {
       adminIds,
       categoryId,
       draftOnly,
+      publishedOnly,
+      query,
     };
 
     const countQuery = applyPostFilters(
@@ -142,12 +154,10 @@ export async function GET(request: Request) {
       filterParams
     );
 
-    const dataQuery = applyPostFilters(
-      supabase
-        .from('posts')
-        .select('id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id'),
-      filterParams
-    );
+    const postRows = type === 'news'
+      ? supabase.from('posts').select('id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id, content, tags')
+      : supabase.from('posts').select('id, title, subtitle, summary, slug, is_published, published_at, created_at, updated_at, title_image_url, category_id, view_count, scrap_count, author_id');
+    const dataQuery = applyPostFilters(postRows, filterParams);
 
     const { count, error: countError } = await countQuery;
     if (countError) {

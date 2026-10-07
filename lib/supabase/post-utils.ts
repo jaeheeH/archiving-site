@@ -98,9 +98,10 @@ export async function checkPostEditPermission(): Promise<PostEditPermission> {
 }
 
 export async function checkPostOwnershipOrAdmin(
-  postId: string
+  postId: string,
+  permission?: PostEditPermission
 ): Promise<PostOwnershipPermission> {
-  const permCheck = await checkPostEditPermission();
+  const permCheck = permission || await checkPostEditPermission();
   if (!permCheck.authorized) return { ...permCheck, post: null };
 
   if (!isUuidParam(postId)) {

@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import { formatKoreanDate } from "@/lib/date-format";
@@ -24,84 +22,53 @@ interface HomeBlogSectionProps {
 }
 
 export default function HomeBlogSection({ initialPosts, categories }: HomeBlogSectionProps) {
+  const posts = initialPosts.slice(0, 3);
+  const getCategoryName = (post: BlogPost) =>
+    post.category_id ? categories[post.category_id] || 'Story' : 'Story';
+
   return (
-    <div className="lg:col-span-3">
-      {initialPosts.length === 0 ? (
-        <div className="rounded-lg bg-gray-50 py-16 text-center text-gray-500 dark:bg-[#151515] dark:text-gray-400">
-          블로그 글이 없습니다.
+    <section className="mx-auto max-w-[1280px] px-4 py-20 md:px-6 md:py-28">
+      <div className="mb-8 flex items-end justify-between gap-6">
+        <div>
+          <h2 className="text-2xl font-bold tracking-[-0.03em] md:text-3xl">작품 곁의 이야기</h2>
+          <p className="mt-2 text-sm leading-6 text-[#85857f]">감상과 조사, 수집 과정에서 발견한 맥락을 기록합니다.</p>
+        </div>
+        <Link href="/blog" aria-label="모든 블로그 글 보기" className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#d9d9d5] transition hover:bg-black hover:text-white">
+          <i className="ri-arrow-right-line" aria-hidden="true" />
+        </Link>
+      </div>
+
+      {!posts.length ? (
+        <div className="rounded-[14px] bg-[#f5f5f2] py-20 text-center text-sm text-[#85857f]">
+          첫 번째 작업 기록을 준비하고 있습니다.
         </div>
       ) : (
-        <div className="mainHomeBlog">
-          <div className="items">
-            {initialPosts.map((post) => (
-              <Link
-                key={post.id}
-                href={`/blog/${post.slug}`}
-                className="group flex h-full gap-6 items-start"
-              >
-                <article className="hover:bg-gray-50 dark:hover:bg-[#151515]">
-                  {/* 이미지 */}
-                  <div className="thumbnail relative shrink-0 overflow-hidden bg-gray-100 dark:bg-[#1d1d1d]">
-                    {post.title_image_url ? (
-                      <Image
-                        src={post.title_image_url}
-                        alt={post.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        quality={75}
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center text-gray-400 dark:text-gray-600">
-                        <i className="ri-image-2-line text-3xl"></i>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* 콘텐츠 */}
-                  <div className="info flex-1 flex flex-col min-h-[135px]">
-                    {/* 카테고리 */}
-                    {post.category_id && categories[post.category_id] && (
-                      <p className="text-xs text-primary font-bold mb-2 line-clamp-1">
-                        {categories[post.category_id]}
-                      </p>
-                    )}
-
-                    {/* 제목 */}
-                    <h3 className="mb-2 line-clamp-2 font-semibold text-gray-900 transition-colors group-hover:text-[#ff4800] dark:text-gray-100">
-                      {post.title}
-                    </h3>
-
-                    {/* 요약 */}
-                    {post.summary && (
-                      <p className="desc mb-4 line-clamp-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-                        {post.summary}
-                      </p>
-                    )}
-
-                    {/* 메타 정보 */}
-                    <div className="mt-auto flex items-center justify-between border-gray-100 pt-2 text-xs text-gray-400 dark:text-gray-500">
-                      <span>
-                        {formatKoreanDate(post.published_at || post.created_at, "short")}
-                      </span>
-                      <span className="flex items-center gap-3">
-                        <span className="flex items-center gap-1">
-                          <i className="ri-eye-line"></i>
-                          {post.view_count || 0}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <i className="ri-bookmark-line"></i>
-                          {post.scrap_count || 0}
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </article>
-              </Link>
-            ))}
-          </div>
+        <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+          {posts.map((post) => (
+            <Link key={post.id} href={`/blog/${post.slug}`} className="group block min-w-0">
+              <span className="relative block aspect-[4/3] overflow-hidden rounded-[14px] bg-[#f2f2ef]">
+                {post.title_image_url ? (
+                  <Image
+                    src={post.title_image_url}
+                    alt={post.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.025]"
+                    quality={80}
+                  />
+                ) : (
+                  <span className="grid h-full place-items-center text-xs font-semibold tracking-[0.16em] text-[#aaa9a3]">ARCH-B</span>
+                )}
+              </span>
+              <span className="block pt-4">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#898984]">{getCategoryName(post)}</span>
+                <strong className="mt-2 block line-clamp-2 text-xl font-semibold leading-snug tracking-[-0.025em] group-hover:underline">{post.title}</strong>
+                <span className="mt-2 block text-sm text-[#8b8b85]">{formatKoreanDate(post.published_at || post.created_at, "short")}</span>
+              </span>
+            </Link>
+          ))}
         </div>
       )}
-    </div>
+    </section>
   );
 }

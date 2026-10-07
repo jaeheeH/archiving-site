@@ -22,16 +22,16 @@ export default function HomeGallerySection({ initialGallery }: HomeGallerySectio
   return (
     <div className="">
       {initialGallery.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-[var(--archive-line)] bg-gray-50 py-20 text-center dark:bg-[#151515]">
-          <p className="text-gray-500 dark:text-gray-400">등록된 갤러리가 없습니다.</p>
+        <div className="border-y border-[var(--archive-line)] bg-gray-50 py-20 text-center dark:bg-[#151515]">
+          <p className="text-gray-500 dark:text-gray-400">첫 번째 시각 기록을 준비하고 있습니다.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
           {initialGallery.map((item) => (
             <Link
               key={item.id}
               href={`/gallery/${item.id}`}
-              className="group relative block aspect-square cursor-pointer overflow-hidden rounded-lg bg-gray-100 dark:bg-[#1d1d1d]"
+              className="group relative block aspect-[4/5] cursor-pointer overflow-hidden bg-gray-100 dark:bg-[#1d1d1d]"
             >
               <Image
                 src={item.thumbnail_url || item.image_url}

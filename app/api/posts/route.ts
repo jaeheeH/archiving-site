@@ -1,6 +1,6 @@
 // app/api/posts/route.ts
 
-import { revalidateTag } from 'next/cache';
+import { revalidateTag, revalidatePath } from 'next/cache';
 import {
   CACHE_TAGS,
   PUBLIC_API_CACHE_CONTROL,
@@ -183,6 +183,7 @@ export async function POST(request: Request) {
       return Response.json({ error: '유효하지 않은 포스트 타입입니다' }, { status: 400 });
     }
 
+    if (rawType === 'news') return Response.json({ error: '뉴스 관리의 수집·편집 기능을 이용해주세요.' }, { status: 400 });
     const type = rawType;
     const title = typeof body.title === 'string' ? body.title.trim() : '';
     const subtitle = typeof body.subtitle === 'string' ? body.subtitle.trim() : null;
@@ -299,8 +300,10 @@ export async function POST(request: Request) {
       }
     }
 
-    revalidateTag(CACHE_TAGS.posts, "max");
-    revalidateTag(CACHE_TAGS.home, "max");
+    revalidateTag("archb-news", { expire: 0 });
+    revalidateTag(CACHE_TAGS.posts, { expire: 0 });
+    revalidateTag(CACHE_TAGS.home, { expire: 0 });
+    for (const path of ["/", "/news/stories", "/rss.xml", "/sitemap.xml"]) revalidatePath(path);
 
     // 6. 성공 응답
     return Response.json(

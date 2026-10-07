@@ -7,6 +7,7 @@ import {
   ImageIcon,
   Library,
   LineChart,
+  Newspaper,
   Sparkles,
   Users,
 } from "lucide-react";
@@ -55,7 +56,15 @@ export default async function DashboardMain() {
       tone: "text-blue-600 bg-blue-50",
     },
     {
-      label: "블로그",
+      label: "뉴스",
+      value: overview.stats.newsTotal,
+      detail: `${formatNumber(overview.stats.newsPublished)} 발행 · ${formatNumber(overview.stats.newsDraft)} 미발행`,
+      href: "/dashboard/contents/news",
+      icon: Newspaper,
+      tone: "text-emerald-600 bg-emerald-50",
+    },
+    {
+      label: "에디토리얼",
       value: overview.stats.postsTotal,
       detail: `${formatNumber(overview.stats.postsPublished)} 발행 · ${formatNumber(
         overview.stats.postsDraft
@@ -82,7 +91,13 @@ export default async function DashboardMain() {
 
   const quickActions = [
     {
-      title: "블로그 작성",
+      title: "뉴스 관리",
+      description: "수집한 뉴스의 한국어 본문, 참고자료와 발행 상태를 관리합니다.",
+      href: "/dashboard/contents/news",
+      icon: Newspaper,
+    },
+    {
+      title: "에디토리얼 작성",
       description: "글 초안 작성, 커버 이미지, 태그, 발행 상태를 관리합니다.",
       href: "/dashboard/contents/blog/create",
       icon: FileText,
@@ -126,7 +141,7 @@ export default async function DashboardMain() {
       </header>
 
       <main className="dashboard-container space-y-6">
-        <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
           {statCards.map((item) => {
             const Icon = item.icon;
 
@@ -160,7 +175,7 @@ export default async function DashboardMain() {
             <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
               <div>
                 <h2 className="text-sm font-semibold text-gray-950">최근 업데이트</h2>
-                <p className="mt-1 text-xs text-gray-500">블로그, 갤러리, 레퍼런스의 최신 작업</p>
+                <p className="mt-1 text-xs text-gray-500">뉴스, 에디토리얼, 갤러리, 레퍼런스의 최신 작업</p>
               </div>
               <Link
                 href="/dashboard/contents"
@@ -172,6 +187,16 @@ export default async function DashboardMain() {
             </div>
 
             <div className="divide-y divide-gray-100">
+              {overview.latest.news.map((post) => (
+                <Link key={post.id} href={`/dashboard/contents/news/${post.id}/edit`} className="flex items-center justify-between gap-4 px-5 py-4 hover:bg-gray-50">
+                  <div className="min-w-0">
+                    <span className="rounded bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700">뉴스</span>
+                    {!post.is_published && <span className="ml-2 rounded bg-gray-100 px-2 py-1 text-xs text-gray-600">미발행</span>}
+                    <p className="mt-2 truncate text-sm font-medium text-gray-950">{post.title}</p>
+                  </div>
+                  <span className="shrink-0 text-xs text-gray-500">{formatDate(post.updated_at)}</span>
+                </Link>
+              ))}
               {overview.latest.posts.map((post) => (
                 <Link
                   key={`post-${post.id}`}
@@ -181,7 +206,7 @@ export default async function DashboardMain() {
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="rounded bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700">
-                        블로그
+                        에디토리얼
                       </span>
                       {!post.is_published && (
                         <span className="rounded bg-gray-100 px-2 py-1 text-xs text-gray-600">
@@ -211,7 +236,7 @@ export default async function DashboardMain() {
                 </Link>
               ))}
 
-              {overview.latest.posts.length === 0 && overview.latest.gallery.length === 0 && (
+              {overview.latest.news.length === 0 && overview.latest.posts.length === 0 && overview.latest.gallery.length === 0 && (
                 <div className="px-5 py-12 text-center text-sm text-gray-500">
                   아직 최근 작업이 없습니다.
                 </div>

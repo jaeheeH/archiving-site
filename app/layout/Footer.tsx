@@ -1,86 +1,12 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const COPYRIGHT_YEAR = "2026";
-
+import { SITE_COPY } from "@/lib/site-copy";
 export default function Footer() {
   const pathname = usePathname();
-
-  // 푸터 제외 페이지 (로그인, 회원가입, 대시보드 등)
-  const NO_FOOTER_ROUTES = ["/login", "/signup", "/dashboard", "/admin"];
-  
-  // 현재 경로가 제외 경로로 시작하는지 확인
-  const showFooter = !NO_FOOTER_ROUTES.some((route) => pathname.startsWith(route));
-
-  if (!showFooter) return null;
-
-  return (
-    <footer className="border-t border-gray-100 bg-gray-900 pt-16 pb-8 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 md:px-0">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
-          
-          {/* 1. 브랜드 정보 (좌측 - 5칸 차지) */}
-          <div className="md:col-span-5 space-y-6">
-            <Link href="/" className="inline-block">
-              <img src="/logo_white.png" alt="ARCH-B Logo" className="h-5 w-auto" />
-            </Link>
-            <div className="space-y-4">
-              <p className="text-white text-sm leading-relaxed max-w-sm">
-                <strong>ARCHIVING THE BEHIND.</strong><br />
-                결과물의 이면을 기록합니다.<br />
-                디자인 영감부터 코드 조각까지, 크리에이터를 위한 구조화된 데이터베이스입니다.
-              </p>
-            </div>
-          </div>
-
-          {/* 2. 사이트맵 (중간 - 3칸 차지) */}
-          <div className="md:col-span-3">
-            <h4 className="font-bold text-white mb-6 text-sm uppercase tracking-wider">Explore</h4>
-            <ul className="space-y-4 text-sm text-white">
-              <li>
-                <Link href="/gallery" className="transition-colors hover:text-[#ff4800]">
-                  Gallery
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="transition-colors hover:text-[#ff4800]">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="/references" className="transition-colors hover:text-[#ff4800]">
-                  References
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* 3. 연락처 및 소셜 (우측 - 4칸 차지) */}
-          <div className="md:col-span-4">
-            <h4 className="font-bold text-white mb-6 text-sm uppercase tracking-wider">Connect</h4>
-            <ul className="space-y-4 text-sm text-gray-500">
-              <li className="flex items-center gap-2">
-                <i className="ri-mail-line text-lg"></i>
-                <a href="mailto:archbehind@gmail.com" className="transition-colors hover:text-[#ff4800]">
-                  archbehind@gmail.com
-                </a>
-              </li>
-
-            </ul>
-          </div>
-        </div>
-
-        {/* 하단 저작권 영역 */}
-        <div className="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-400 font-mono">
-          <p>&copy; {COPYRIGHT_YEAR} ARCH-B. All rights reserved.</p>
-          <div className="flex gap-6">
-            <Link href="/privacy" className="transition-colors hover:text-[#ff4800]">Privacy Policy</Link>
-            <Link href="/terms" className="transition-colors hover:text-[#ff4800]">Terms of Service</Link>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
+  if (["/login", "/signup", "/dashboard", "/admin"].some(route => pathname.startsWith(route))) return null;
+  return <footer className="editorial-footer">
+    <div className="editorial-footer-top"><div><Link href="/" className="editorial-wordmark">ARCH.B</Link><p>{SITE_COPY.brand.statement}</p></div><nav aria-label="하단 메뉴"><Link href="/news/stories">뉴스</Link><Link href="/art">아트</Link><Link href="/artists">작가</Link><Link href="/references">참고사이트</Link></nav></div>
+    <div className="editorial-footer-bottom"><span>© 2026 ARCH.B</span><div><a href="mailto:archbehind@gmail.com">문의</a><Link href="/privacy">개인정보 처리방침</Link><Link href="/terms">이용약관</Link></div></div>
+  </footer>;
 }

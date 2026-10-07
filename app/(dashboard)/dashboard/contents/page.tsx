@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowRight, BookOpenText, FileText, ImageIcon, Plus } from "lucide-react";
+import { ArrowRight, BookOpenText, FileText, ImageIcon, Newspaper, Plus } from "lucide-react";
 
 import { getDashboardOverview } from "@/lib/dashboard-data";
 
@@ -30,7 +30,27 @@ export default async function ContentsDashboardPage() {
 
   const sections = [
     {
-      title: "블로그",
+      title: "뉴스",
+      description: "수집한 소식을 한국어 기사로 가공하고 발행합니다.",
+      count: overview.stats.newsTotal,
+      detail: `${formatNumber(overview.stats.newsPublished)} 발행 · ${formatNumber(overview.stats.newsDraft)} 미발행`,
+      href: "/dashboard/contents/news",
+      createHref: null,
+      icon: Newspaper,
+      items: overview.latest.news.map(item => ({ id: item.id, title: item.title, href: `/dashboard/contents/news/${item.id}/edit`, date: item.updated_at, status: item.is_published ? "발행" : "미발행" })),
+    },
+    {
+      title: "아트", description: "작품 정보와 작가 연결, 원출처를 관리합니다.", count: overview.stats.artworksTotal,
+      href: "/dashboard/contents/art", createHref: ["admin", "sub-admin"].includes(overview.viewer.role) ? "/dashboard/contents/art/create" : null, icon: ImageIcon,
+      items: overview.latest.artworks.map(item => ({ id: item.id, title: item.title_ko, href: `/dashboard/contents/art/${item.id}/edit`, date: item.collected_at, status: item.museum })),
+    },
+    {
+      title: "작가", description: "작가 정보와 연결된 작품을 관리합니다.", count: overview.stats.artistsTotal,
+      href: "/dashboard/contents/artists", createHref: ["admin", "sub-admin"].includes(overview.viewer.role) ? "/dashboard/contents/artists/create" : null, icon: FileText,
+      items: overview.latest.artists.map(item => ({ id: item.id, title: item.name_ko || item.name, href: `/dashboard/contents/artists/${item.id}/edit`, date: null, status: `작품 ${item.artwork_ids.length}점` })),
+    },
+    {
+      title: "에디토리얼",
       description: "발행 글과 임시저장 글을 관리합니다.",
       count: overview.stats.postsTotal,
       detail: `${formatNumber(overview.stats.postsPublished)} 발행 · ${formatNumber(
@@ -63,7 +83,7 @@ export default async function ContentsDashboardPage() {
       })),
     },
     {
-      title: "레퍼런스",
+      title: "참고사이트",
       description: "수집한 링크와 범주를 관리합니다.",
       count: overview.stats.referencesTotal,
       href: "/dashboard/contents/references",
@@ -77,7 +97,7 @@ export default async function ContentsDashboardPage() {
         status: `${formatNumber(item.clicks || 0)} 클릭`,
       })),
     },
-  ];
+  ].sort((a, b) => ["뉴스", "아트", "작가", "참고사이트", "에디토리얼", "갤러리"].indexOf(a.title) - ["뉴스", "아트", "작가", "참고사이트", "에디토리얼", "갤러리"].indexOf(b.title));
 
   return (
     <div>
@@ -85,7 +105,7 @@ export default async function ContentsDashboardPage() {
         <div>
           <h1>콘텐츠 관리</h1>
           <p className="mt-1 text-xs text-gray-500">
-            블로그, 갤러리, 레퍼런스를 한 곳에서 점검합니다.
+            뉴스, 아트, 작가, 참고사이트, 에디토리얼, 갤러리를 한 곳에서 점검합니다.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -107,7 +127,7 @@ export default async function ContentsDashboardPage() {
       </header>
 
       <main className="dashboard-container space-y-6">
-        <section className="grid gap-4 xl:grid-cols-3">
+        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {sections.map((section) => {
             const Icon = section.icon;
 
@@ -169,12 +189,12 @@ export default async function ContentsDashboardPage() {
                     관리하기
                     <ArrowRight className="h-4 w-4" />
                   </Link>
-                  <Link
+                  {section.createHref && <Link
                     href={section.createHref}
                     className="rounded-md border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                   >
                     추가
-                  </Link>
+                  </Link>}
                 </div>
               </div>
             );

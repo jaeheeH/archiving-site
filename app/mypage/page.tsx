@@ -14,6 +14,7 @@ import {
 
 import { getMypageActivity, getMypageProfile } from "@/lib/mypage-data";
 import { getHomeData } from "@/lib/public-data";
+import { getArtCatalog } from "@/lib/art-catalog";
 
 export const dynamic = "force-dynamic";
 
@@ -57,23 +58,24 @@ export default async function MyPage() {
   }
 
   const totalSaved = activity.posts.length + activity.galleries.length + activity.references.length;
-  const dailyGallery = homeData.gallery[getDailyIndex(homeData.gallery.length)];
+  const { artworks, artists } = await getArtCatalog();
+  const dailyArtwork = artworks[getDailyIndex(artworks.length)];
   const fallbackBlog = homeData.latestBlogs[0];
   const fallbackReference = homeData.references[0];
-  const todayRecommendation = dailyGallery
+  const todayRecommendation = dailyArtwork
     ? {
-        label: "오늘의 이미지",
-        title: dailyGallery.title,
-        description: dailyGallery.description || "오늘 새롭게 살펴볼 시각 레퍼런스입니다.",
-        href: `/gallery/${dailyGallery.id}`,
-        image: dailyGallery.thumbnail_url || dailyGallery.image_url,
+        label: "오늘의 작품",
+        title: dailyArtwork.title_ko,
+        description: `${artists.find(artist => dailyArtwork.artist_ids.includes(artist.id))?.name_ko || "작가 미상"} · ${dailyArtwork.date}`,
+        href: `/art/${dailyArtwork.id}`,
+        image: dailyArtwork.preview_url,
       }
     : fallbackBlog
       ? {
           label: "오늘의 글",
           title: fallbackBlog.title,
-          description: fallbackBlog.summary || fallbackBlog.subtitle || "오늘 읽어볼 만한 블로그 글입니다.",
-          href: `/blog/${fallbackBlog.slug}`,
+          description: fallbackBlog.summary || fallbackBlog.subtitle || "오늘 읽어볼 만한 기사입니다.",
+          href: `/news/read/${fallbackBlog.slug}`,
           image: fallbackBlog.title_image_url,
         }
       : fallbackReference
@@ -89,12 +91,13 @@ export default async function MyPage() {
   const recentSavedItems = [
     ...activity.posts.map((post) => ({
       key: `blog-${post.id}`,
-      type: "Blog",
+      type: "기사",
       title: post.title,
-      description: post.summary || post.subtitle || "북마크한 블로그입니다.",
-      href: `/blog/${post.slug}`,
+      description: post.summary || post.subtitle || "북마크한 기사입니다.",
+      href: `/news/read/${post.slug}`,
       date: post.published_at || post.created_at,
       image: post.title_image_url,
+      unoptimized: post.type === 'news',
       icon: <FileText className="h-5 w-5" />,
     })),
     ...activity.galleries.map((gallery) => ({
@@ -166,7 +169,7 @@ export default async function MyPage() {
 
       <div className="mb-10 grid border-y border-[var(--archive-line)] bg-white sm:grid-cols-2 xl:grid-cols-4">
         <SummaryCell label="전체 저장" value={totalSaved} href="/mypage/activity" />
-        <SummaryCell label="Blog" value={activity.posts.length} href="/mypage/activity?tab=blog" />
+        <SummaryCell label="기사" value={activity.posts.length} href="/mypage/activity?tab=blog" />
         <SummaryCell label="Gallery" value={activity.galleries.length} href="/mypage/activity?tab=gallery" />
         <SummaryCell label="Reference" value={activity.references.length} href="/mypage/activity?tab=reference" />
       </div>
@@ -196,7 +199,7 @@ function TodayRecommendation({
             {recommendation?.title || "오늘 살펴볼 콘텐츠를 준비 중입니다."}
           </h2>
           <p className="mt-3 line-clamp-2 max-w-2xl text-sm leading-6 text-[var(--archive-muted)]">
-            {recommendation?.description || "새로운 블로그와 갤러리, 레퍼런스를 둘러보세요."}
+            {recommendation?.description || "새로운 기사와 갤러리, 레퍼런스를 둘러보세요."}
           </p>
           <Link
             href={recommendation?.href || "/gallery"}
@@ -212,7 +215,7 @@ function TodayRecommendation({
           className="relative aspect-[16/10] overflow-hidden rounded-md bg-gray-100 text-[var(--archive-muted)]"
         >
           {recommendation?.image ? (
-            <Image src={recommendation.image} alt={recommendation.title} fill sizes="260px" className="object-cover" />
+            <Image unoptimized src={recommendation.image} alt={recommendation.title} fill sizes="260px" className="object-cover" />
           ) : (
             <span className="flex h-full w-full items-center justify-center">
               <ImageIcon className="h-8 w-8" />
@@ -251,6 +254,7 @@ function RecentSavedList({
     date: string | null;
     image: string | null;
     external?: boolean;
+    unoptimized?: boolean;
     icon: ReactNode;
   }>;
 }) {
@@ -292,7 +296,7 @@ function RecentSavedList({
                 <span className="grid min-w-0 grid-cols-[48px_1fr] gap-3 px-3">
                   <span className="relative h-12 w-12 overflow-hidden rounded-md bg-gray-100 text-[var(--archive-muted)]">
                     {item.image ? (
-                      <Image src={item.image} alt={item.title} fill sizes="48px" className="object-cover" />
+                      <Image src={item.image} alt={item.title} fill sizes="48px" className="object-cover" unoptimized={item.unoptimized} />
                     ) : (
                       <span className="flex h-full w-full items-center justify-center">{item.icon}</span>
                     )}
@@ -302,7 +306,7 @@ function RecentSavedList({
                       {item.title}
                     </span>
                     <span className="mt-1 block truncate text-xs text-[var(--archive-muted)]">
-                      {item.description || "내용이 없습니다."}
+                      {item.description || "저장한 콘텐츠의 상세 내용을 확인해 보세요."}
                     </span>
                   </span>
                 </span>

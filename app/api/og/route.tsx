@@ -9,11 +9,11 @@ const OG_SIZE = {
   height: 630,
 };
 
-const BRAND = "#ff4800";
-const INK = "#f5f1eb";
-const MUTED = "#a8a29a";
-const LINE = "rgba(255,255,255,0.16)";
-const CANVAS = "#0b0b0b";
+const BRAND = "#1a8917";
+const INK = "#242424";
+const MUTED = "#6b6b6b";
+const LINE = "#dedede";
+const CANVAS = "#ffffff";
 
 type OgPayload = {
   section: string;
@@ -78,8 +78,8 @@ async function getBlogPayload(slug: string, origin: string): Promise<OgPayload |
   const supabase = createPublicClient();
   const { data, error } = await supabase
     .from("posts")
-    .select("title, subtitle, summary, title_image_url, thumbnail_url, category_id, published_at, created_at")
-    .eq("type", "blog")
+    .select("type,title,subtitle,summary,title_image_url,thumbnail_url,category_id,published_at,created_at,content")
+    .in("type", ["blog", "news"])
     .eq("is_published", true)
     .eq("slug", slug)
     .maybeSingle();
@@ -89,10 +89,10 @@ async function getBlogPayload(slug: string, origin: string): Promise<OgPayload |
   const category = await getCategoryName(data.category_id);
 
   return {
-    section: "BLOG",
-    label: category || "Article",
+    section: data.type === "news" ? "NEWS" : "EDITORIAL",
+    label: data.type === "news" ? "뉴스" : category || "에디토리얼",
     title: data.title,
-    description: data.summary || data.subtitle || "ARCH-B에서 기록한 최신 인사이트입니다.",
+    description: data.summary || data.subtitle || "ARCH.B에서 기록한 최신 인사이트입니다.",
     imageUrl: getOgSafeImageUrl(data.thumbnail_url || data.title_image_url, origin),
     meta: formatDate(data.published_at || data.created_at),
     variant: "blog",
@@ -140,7 +140,7 @@ async function getReferencePayload(id: string, origin: string): Promise<OgPayloa
     section: "REFERENCE",
     label: data.range?.[0] || data.category || "Reference",
     title: data.title,
-    description: data.description || "ARCH-B가 큐레이션한 디자인 레퍼런스입니다.",
+    description: data.description || "ARCH.B가 큐레이션한 디자인 레퍼런스입니다.",
     imageUrl: getOgSafeImageUrl(data.image_url || data.logo_url, origin),
     domain: getDomain(data.url),
     variant: "reference",
@@ -173,15 +173,15 @@ function getDefaultPayload(type: string | null): OgPayload {
       section: "BLOG",
       label: "Magazine",
       title: "Blog",
-      description: "개발 과정의 고민과 디자인적 발견을 기록합니다.",
+      description: "만드는 동안 마주한 질문과 선택, 결과물 뒤의 이야기를 기록합니다.",
       variant: "blog",
     };
   }
 
   return {
-    section: "ARCH-B",
+    section: "ARCH.B",
     label: "Archive Behind",
-    title: "ARCH-B",
+    title: "ARCH.B",
     description: "디자인 영감부터 개발 코드 조각까지, 크리에이터를 위한 구조화된 데이터베이스입니다.",
     variant: "default",
   };
@@ -195,7 +195,7 @@ async function getPayload(request: Request): Promise<OgPayload> {
   const normalizePayload = (payload: OgPayload) =>
     withoutImage ? { ...payload, imageUrl: null } : payload;
 
-  if (type === "blog") {
+  if (type === "blog" || type === "news" || type === "article") {
     const payload = await getBlogPayload(searchParams.get("slug") || "", origin);
     if (payload) return normalizePayload(payload);
   }
@@ -211,22 +211,6 @@ async function getPayload(request: Request): Promise<OgPayload> {
   }
 
   return normalizePayload(getDefaultPayload(type));
-}
-
-function BackgroundGrid() {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        inset: 0,
-        display: "flex",
-        opacity: 0.42,
-        backgroundImage:
-          "linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px)",
-        backgroundSize: "48px 48px",
-      }}
-    />
-  );
 }
 
 function BrandMark() {
@@ -249,7 +233,7 @@ function BrandMark() {
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <span style={{ color: INK, fontSize: 24, fontWeight: 900, letterSpacing: -1 }}>
-          ARCH-B
+          ARCH.B
         </span>
         <span style={{ color: MUTED, fontSize: 13, letterSpacing: 2 }}>
           ARCHIVE BEHIND
@@ -271,14 +255,14 @@ function ImagePanel({ payload }: { payload: OgPayload }) {
           justifyContent: "center",
           borderLeft: `1px solid ${LINE}`,
           background:
-            "linear-gradient(135deg, rgba(255,72,0,0.22), rgba(255,255,255,0.05))",
-          color: "rgba(255,255,255,0.16)",
+            "#f5f5f2",
+          color: "#dedede",
           fontSize: 132,
           fontWeight: 900,
           letterSpacing: -8,
         }}
       >
-        ARCH-B
+        ARCH.B
       </div>
     );
   }
@@ -292,7 +276,7 @@ function ImagePanel({ payload }: { payload: OgPayload }) {
         height: "100%",
         overflow: "hidden",
         borderLeft: `1px solid ${LINE}`,
-        background: "#151515",
+        background: "#f5f5f2",
       }}
     >
       <img
@@ -337,7 +321,7 @@ function OgCard({ payload }: { payload: OgPayload }) {
           'Arial, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif',
       }}
     >
-      <BackgroundGrid />
+
       <div
         style={{
           position: "relative",
@@ -412,7 +396,7 @@ function OgCard({ payload }: { payload: OgPayload }) {
           }}
         >
           <span>{payload.domain || "archbehind.com"}</span>
-          <span>{payload.meta || "ARCH-B"}</span>
+          <span>{payload.meta || "ARCH.B"}</span>
         </div>
       </div>
 
@@ -431,7 +415,7 @@ export async function GET(request: Request) {
 
   response.headers.set(
     "Cache-Control",
-    "public, s-maxage=3600, stale-while-revalidate=86400"
+    "public, max-age=0, s-maxage=60"
   );
 
   return response;

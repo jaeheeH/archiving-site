@@ -1,0 +1,359 @@
+[
+  {
+    "url": "https://design-milk.com/thea-djordjadze-a-well-of-night/",
+    "original_title": "Thea Djordjadze Explores the Space Between Art and Architecture",
+    "category": "design",
+    "source": "Design Milk",
+    "published_at": "2026-10-05T23:29:59.000Z",
+    "image": "https://design-milk.com/images/2026/10/TDJ_Install_2026_A_well_of_night_Sprueth_Magers_New_York_New_York_01-e1791242698544-1500x1000.jpg",
+    "title": "작품이 공간을 바꿀 때: 테아 조르자제의 뉴욕 전시",
+    "summary": "테아 조르자제의 전시 A well of night는 작품과 건축이 서로 영향을 주는 장면을 보여줍니다. 기존 작업과 새 작업을 갤러리의 공간에 맞춰 다시 배치했습니다.",
+    "tags": [
+      "전시",
+      "공간",
+      "예술"
+    ],
+    "paragraphs": [
+      "뉴욕 스프뤼트 마거스에서 열린 이번 전시는 갤러리의 네오 르네상스 건축을 작업의 출발점으로 삼습니다. 조르자제는 기존 조각을 재구성하고 새로운 석고 부조 회화를 더해, 작품이 놓이는 장소에 따라 인상이 어떻게 달라지는지 탐색합니다.",
+      "어두운 목재 바닥 위에는 밝은 비닐을 덧대 공간의 분위기를 바꿨습니다. 강철과 알루미늄, 색을 쌓아 올린 석고 표면이 함께 놓이면서 회화와 조각의 경계도 흐려집니다. 작품 하나보다 작품과 방 사이의 관계에 시선을 두게 하는 전시입니다."
+    ],
+    "points": [
+      "기존 조각과 새 석고 부조를 공간에 맞춰 재구성",
+      "밝은 바닥과 금속·석고의 대비로 공간 경험 변화"
+    ],
+    "description": "테아 조르자제의 전시 A well of night는 작품과 건축이 서로 영향을 주는 장면을 보여줍니다. 기존 작업과 새 작업을 갤러리의 공간에 맞춰 다시 배치했습니다."
+  },
+  {
+    "url": "https://github.blog/changelog/2026-10-05-secret-scanning-adds-detectors-for-lovable-supabase-and-more",
+    "original_title": "Secret scanning adds detectors for Lovable, Supabase, and more",
+    "category": "development",
+    "source": "GitHub Changelog",
+    "published_at": "2026-10-05T22:42:14.000Z",
+    "image": null,
+    "title": "깃허브 비밀정보 탐지, 러버블·수파베이스까지 확대",
+    "summary": "GitHub가 Lovable, Pydantic, Supabase의 새로운 비밀정보 유형을 탐지 대상에 추가했습니다. 저장소에 유출된 키와 토큰을 찾는 범위가 넓어졌습니다.",
+    "tags": [
+      "보안",
+      "개발 도구"
+    ],
+    "paragraphs": [
+      "이번 업데이트에는 Lovable API 키, Pydantic의 Logfire 토큰과 AI Gateway API 키, Supabase의 OAuth 액세스 토큰과 범위 제한 개인 액세스 토큰이 포함됩니다. GitHub는 저장소에서 해당 유형을 자동으로 탐지한다고 안내했습니다.",
+      "공개 저장소에서 발견한 파트너 비밀정보는 발급자에게 전달돼 폐기나 교체를 진행할 수 있습니다. 사용자 비밀정보는 공개·비공개 저장소에서 경고를 생성합니다. 사용하는 서비스가 탐지 범위에 추가됐더라도, 키를 코드에 넣지 않는 관리 원칙은 여전히 필요합니다."
+    ],
+    "points": [
+      "Lovable·Pydantic·Supabase의 새 키와 토큰 유형 지원",
+      "파트너 통보와 사용자 경고의 처리 방식 구분"
+    ],
+    "description": "GitHub가 Lovable, Pydantic, Supabase의 새로운 비밀정보 유형을 탐지 대상에 추가했습니다. 저장소에 유출된 키와 토큰을 찾는 범위가 넓어졌습니다."
+  },
+  {
+    "url": "https://design-milk.com/mls-headquarters-tpg-architecture/",
+    "original_title": "MLS Turns Its New Manhattan Headquarters Into an Office Stadium",
+    "category": "interiors",
+    "source": "Design Milk",
+    "published_at": "2026-10-05T22:21:51.000Z",
+    "image": "https://design-milk.com/images/2026/10/MLS_pho_042_src-e1791235413406.jpg",
+    "title": "축구장의 경험을 사무실로: MLS의 새 맨해튼 본사",
+    "summary": "TPG Architecture는 MLS의 새 본사에 경기장의 동선과 팬 문화를 옮겼습니다. 선수 입장 터널을 닮은 로비부터 구단 유니폼과 우승컵까지, 조직의 이야기를 공간으로 풀었습니다.",
+    "tags": [
+      "오피스",
+      "브랜드",
+      "공간"
+    ],
+    "paragraphs": [
+      "맨해튼 PENN 2에 자리한 MLS 본사는 일반적인 오피스 입구 대신 선수들이 경기장으로 향하는 터널 같은 도착 경험을 제안합니다. 골키퍼의 그물을 연상시키는 메시와 조절 가능한 조명, LED 화면이 방문자를 맞이합니다.",
+      "리셉션에는 구단 유니폼과 MLS 우승컵이 배치됩니다. 설계 과정에서는 리그 관계자와 선수, 코치, 직원들의 의견을 모았고, 서로 다른 관점을 경기장이라는 공통 경험으로 연결했습니다. 브랜드의 상징을 장식으로 더하는 데서 나아가 이동과 만남의 경험에 반영한 사례입니다."
+    ],
+    "points": [
+      "경기장 입장 터널을 닮은 도착 동선",
+      "유니폼과 우승컵으로 리그의 정체성 표현"
+    ],
+    "description": "TPG Architecture는 MLS의 새 본사에 경기장의 동선과 팬 문화를 옮겼습니다. 선수 입장 터널을 닮은 로비부터 구단 유니폼과 우승컵까지, 조직의 이야기를 공간으로 풀었습니다."
+  },
+  {
+    "url": "https://design-milk.com/shinji-japanese-steakhouse-toronto/",
+    "original_title": "A Modern Japanese Steakhouse Drenched in Denim Hues",
+    "category": "interiors",
+    "source": "Design Milk",
+    "published_at": "2026-10-05T21:43:20.000Z",
+    "image": "https://design-milk.com/images/2026/10/Odami_Shinji_Image-3_High-Res-JPG-Lightened-1280x900-copy-2-e1791233465352.jpg",
+    "title": "데님에서 출발한 인테리어, 토론토의 신지",
+    "summary": "Odami가 설계한 토론토의 일본식 스테이크하우스 신지는 일본 데님 산업의 인디고 색과 공예 문화에서 출발합니다. 소재의 문화적 배경이 공간의 분위기로 이어지는 사례입니다.",
+    "tags": [
+      "인테리어",
+      "색채",
+      "공예"
+    ],
+    "paragraphs": [
+      "토론토 금융 지구에 들어선 신지의 인테리어는 일본 데님이 가진 색과 제작 문화에 주목합니다. 설계를 맡은 Odami는 깊은 인디고 색감과 공예, 오래 사용하는 재료를 공간의 출발점으로 삼았습니다.",
+      "짙은 파란색의 표면과 천장을 가로지르는 선형 조명이 공간의 인상을 만듭니다. 풍부한 색과 질감 속에서도 재료의 성격과 일본식 디테일을 살려 절제된 분위기를 유지했습니다. 데님을 그대로 옮기는 대신 그 색과 제작 태도를 공간에 해석한 사례입니다."
+    ],
+    "points": [
+      "일본 데님의 인디고 색감에서 출발",
+      "토론토 금융 지구의 일본식 스테이크하우스"
+    ],
+    "description": "Odami가 설계한 토론토의 일본식 스테이크하우스 신지는 일본 데님 산업의 인디고 색과 공예 문화에서 출발합니다. 소재의 문화적 배경이 공간의 분위기로 이어지는 사례입니다."
+  },
+  {
+    "url": "https://www.dezeen.com/2026/10/05/knekt-floor-lamp-hegren-lighting-furniture-products-dezeen-showroom/",
+    "original_title": "Knekt floor lamp by Hegren among seven new products on Dezeen Showroom",
+    "category": "design",
+    "source": "Dezeen",
+    "published_at": "2026-10-05T18:00:16.000Z",
+    "image": "https://static.dezeen.com/uploads/2026/09/knekt-floor-lamp-hegren-design_dezeen_2364_col_1-1-852x852.jpg",
+    "title": "높이와 빛의 방향을 바꾸는 알루미늄 조명, 크넥트",
+    "summary": "노르웨이 브랜드 Hegren의 크넥트는 높이와 빛의 방향을 조절할 수 있는 스탠드 조명입니다. 얇은 알루미늄 몸체와 쐐기 모양의 헤드로 기능을 드러냅니다.",
+    "tags": [
+      "조명",
+      "제품 디자인"
+    ],
+    "paragraphs": [
+      "크넥트는 조명의 위치와 빛이 향하는 방향을 사용자가 바꿀 수 있도록 설계됐습니다. 알루미늄으로 제작한 가느다란 몸체에 움직일 수 있는 헤드를 결합했고, 검은색 아노다이징과 원재료의 표면을 살린 두 가지 마감으로 소개됐습니다.",
+      "Dezeen Showroom은 이 조명을 비롯해 일곱 가지 신제품을 함께 소개했습니다. 크넥트에서 눈여겨볼 부분은 장식적인 형태보다 높이와 방향 조절이라는 사용 방식이 외형과 직접 연결된다는 점입니다. 제품 선택 시 실제 크기와 설치 조건은 브랜드의 제품 정보를 함께 확인할 수 있습니다."
+    ],
+    "points": [
+      "높이와 빛의 방향을 조절하는 스탠드",
+      "알루미늄 몸체와 움직이는 쐐기형 헤드"
+    ],
+    "description": "노르웨이 브랜드 Hegren의 크넥트는 높이와 빛의 방향을 조절할 수 있는 스탠드 조명입니다. 얇은 알루미늄 몸체와 쐐기 모양의 헤드로 기능을 드러냅니다."
+  },
+  {
+    "url": "https://www.dezeen.com/2026/10/05/mvrdv-barcode-street-furniture-escofet/",
+    "original_title": "MVRDV designs modular concrete street furniture to be occupied in \"unexpected ways\"",
+    "category": "design",
+    "source": "Dezeen",
+    "published_at": "2026-10-05T10:00:46.000Z",
+    "image": "https://static.dezeen.com/uploads/2026/10/mvrdv-barcode-street-furniture-escofet_dezeen_2364_col_3-852x852.jpg",
+    "title": "벤치 하나 대신 작은 지형: MVRDV의 모듈 가구",
+    "summary": "MVRDV와 Escofet의 바코드 컬렉션은 계단·경사면·테이블 모듈을 조합해 거리의 머무는 장소를 만듭니다. 사용자가 정해진 방식에 갇히지 않는 공공 가구를 제안합니다.",
+    "tags": [
+      "공공 디자인",
+      "모듈",
+      "도시"
+    ],
+    "paragraphs": [
+      "바코드는 계단형 Tribune, 누워 쉬기 좋은 경사형 Dune, 테이블과 벤치를 묶은 Desk의 세 모듈에서 출발합니다. 높이와 폭을 맞춰 길게 이어 붙이거나 작은 섬처럼 묶을 수 있고, 화분 같은 요소를 덧붙이는 구성도 가능합니다.",
+      "공공장소의 가구를 하나씩 고르고 배치하는 관습에서 벗어나, 사람들이 앉고 쉬고 모이는 다양한 행동을 받아들이는 것이 설계의 핵심입니다. 색과 조합을 달리해 같은 모듈로 여러 지형을 만들 수 있다는 점이 도시 공간의 활용 가능성을 넓힙니다."
+    ],
+    "points": [
+      "계단·경사면·테이블의 세 기본 모듈",
+      "연속 배치와 작은 섬 형태의 조합 가능"
+    ],
+    "description": "MVRDV와 Escofet의 바코드 컬렉션은 계단·경사면·테이블 모듈을 조합해 거리의 머무는 장소를 만듭니다. 사용자가 정해진 방식에 갇히지 않는 공공 가구를 제안합니다."
+  },
+  {
+    "url": "https://www.dezeen.com/2026/10/05/plat-life-nature-of-design-ngv-melbourne/",
+    "original_title": "Plant Life exhibition imagines a future where \"plants return as the dominant source\"",
+    "category": "design",
+    "source": "Dezeen",
+    "published_at": "2026-10-05T09:00:25.000Z",
+    "image": "https://static.dezeen.com/uploads/2026/10/ngv-plant-life-the-nature-of-design-exhibition-biomaterial-melbourne-australia_dezeen_1704_col_sq-852x852.jpg",
+    "title": "식물로 다시 생각하는 디자인의 재료",
+    "summary": "멜버른 NGV의 Plant Life 전시는 식물과 디자인의 관계를 살펴봅니다. 해조류 블록, 식물성 접착제를 쓴 의자, 빛에 반응하는 바이오 소재를 통해 재료의 선택이 설계 과정에 어떤 질문을 만드는지 읽어봅니다.",
+    "tags": [
+      "재료",
+      "바이오 소재",
+      "전시",
+      "지속가능성"
+    ],
+    "paragraphs": [
+      {
+        "heading": "전시는 무엇을 묻는가",
+        "kind": "reporting",
+        "paragraphs": [
+          "호주 멜버른의 NGV가 선보이는 ‘Plant Life: The Nature of Design’은 식물을 디자인의 재료로 다시 살펴보는 전시입니다. 가구, 건축, 공예, 사진과 영상 등 60점 이상의 작업을 모았습니다. 전시는 The Ian Potter Centre: NGV Australia에서 2026년 8월 28일부터 2027년 2월 7일까지 열리며, 공식 안내에 따르면 무료로 관람할 수 있습니다.",
+          "전시의 범위는 새로 개발된 소재에만 머물지 않습니다. 식물을 활용해 온 공예와 원주민 공동체의 지식, 산업적 생산과 자원 채취의 역사도 함께 다룹니다. NGV는 이를 통해 우리가 어떤 재료로 물건을 만들었고, 앞으로 어떤 관계를 만들 수 있을지를 묻습니다. 같은 ‘식물 기반’이라는 설명 안에도 서로 다른 제작 방식과 문화적 맥락이 있다는 점이 출발점입니다."
+        ],
+        "references": [
+          {
+            "label": "NGV 전시 소개와 관람 안내",
+            "url": "https://www.ngv.vic.gov.au/exhibition/plant-life/"
+          }
+        ]
+      },
+      {
+        "heading": "구체적인 작품에서 보이는 세 가지 실험",
+        "kind": "reporting",
+        "paragraphs": [
+          "케이트 스카디필드의 ‘Urgent Is The Rhythm’은 해조류와 굴 껍데기 폐기물을 결합한 블록을 보여줍니다. 건축 스튜디오 Edition Office는 이 재료로 건물을 구성하는 가상의 도면을 제시했습니다. 재료 실험과 건축적 상상이 연결되는 사례이며, 도면 속 건물이 실제로 시공됐다는 의미는 아닙니다.",
+          "요리스 라르만의 ‘Ply Loop Chair’에서는 합판을 묶는 접착 재료가 바뀝니다. 식물성 수지 Plantics를 사용한 의자로, Dezeen은 연속해서 이어지는 형태에 디지털 설계와 제작이 활용됐다고 설명합니다. 익숙한 재료인 목재도 어떤 접착제와 결합하느냐에 따라 다른 설계 질문을 만들 수 있음을 보여줍니다.",
+          "Crafting Plastics의 ‘Sensbiom 2.1’은 자외선에 노출되면 분홍색으로 변하는 식물 기반 소재를 사용합니다. 그물 같은 구조의 설치물은 눈에 보이지 않는 환경 조건을 색의 변화로 드러냅니다. 재료를 구조나 마감으로 사용하는 것에 더해, 환경을 인식하는 표면으로 다루는 사례입니다."
+        ],
+        "references": [
+          {
+            "label": "Dezeen의 작품 사례 소개",
+            "url": "https://www.dezeen.com/2026/10/05/plat-life-nature-of-design-ngv-melbourne/"
+          }
+        ]
+      },
+      {
+        "heading": "전시를 만드는 재료까지 연결한 선택",
+        "kind": "reporting",
+        "paragraphs": [
+          "전시의 받침대와 표면에는 조스트 바커와 Forest One이 개발한 대마 기반 보드 Plantbord가 사용됩니다. NGV는 이 보드가 Plantics 바이오 수지로 결합된다고 설명합니다. 관람객이 보는 작품뿐 아니라 작품을 지지하는 구조물에도 소재의 선택을 이어간 것입니다. 전시 디자인을 볼 때 배경처럼 지나치기 쉬운 바닥, 받침대와 벽체도 함께 살펴볼 이유가 생깁니다.",
+          "RMIT 연구팀의 ‘Mycelium Wildfire Jacket’은 균사체로 만든 가죽을 보호복에 적용하는 가능성을 탐구한 시제품입니다. NGV는 디자이너와 재료 과학자들이 함께 개발했다고 소개합니다. 전시에 나온 연구 시제품과 실제 현장에서 사용할 수 있는 인증 제품은 구분해서 읽어야 합니다. 여기서 확인할 수 있는 것은 소재 연구가 제품의 용도와 제작 협업으로 확장되는 과정입니다."
+        ],
+        "references": [
+          {
+            "label": "NGV 공식 보도자료: 전시 재료와 연구 시제품",
+            "url": "https://www.ngv.vic.gov.au/media_release/plant-life-the-nature-of-design-explores-the-future-of-plant-based-materials-as-an-alternative-to-plastics-and-non-renewable-materials/"
+          }
+        ]
+      },
+      {
+        "heading": "왜 중요한가: 소재를 설계 조건으로 읽기",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 이 전시를 재료가 형태와 제작 순서에 어떤 영향을 주는지 살펴보는 계기로 읽습니다. 새 소재를 발견했을 때 바로 완성된 물건에 대입하면, 기존 공정과 물성을 맞추는 데서 검토가 끝나기 쉽습니다. 반대로 재료가 가진 두께, 결합 방식, 가공 가능한 크기와 표면의 변화를 먼저 적어보면 초기 스케치부터 다른 선택을 할 수 있습니다. 소재 샘플은 최종 마감을 고르는 도구이면서 설계의 시작점을 바꾸는 도구가 될 수 있습니다.",
+          "가령 하나의 면으로 보이는 가구도 실제로는 여러 층의 재료와 접착, 마감으로 구성됩니다. 따라서 ‘어떤 원료인가’와 함께 ‘어떻게 붙이고 분리하는가’를 검토하는 편이 유용합니다. 프로젝트에서 이 관점을 적용한다면 분해할 부위, 교체 가능한 부품, 보수할 표면을 도면에 먼저 표시해볼 수 있습니다. 이는 전시 작품의 성능을 단정하는 평가가 아니라, 소재 중심 사례를 설계 질문으로 바꿔 읽는 제안입니다."
+        ],
+        "references": []
+      },
+      {
+        "heading": "실무에서 확인할 질문",
+        "kind": "analysis",
+        "paragraphs": [
+          "첫 번째는 사용 장소의 조건입니다. 실내와 실외, 건조한 공간과 물을 자주 사용하는 공간에서는 필요한 성능이 달라집니다. 특정 소재를 검토할 때는 사용할 위치와 예상되는 습기, 마찰, 오염, 청소 방법부터 적어보는 것이 좋습니다. 이후 공급자가 제공하는 자료에서 어떤 조건으로 시험했는지 비교하면, 전시에서 매력적으로 보인 소재와 내 프로젝트에 맞는 소재를 더 구체적으로 판단할 수 있습니다.",
+          "두 번째는 제작과 유지관리입니다. 필요한 수량과 크기로 공급할 수 있는지, 현장의 시공자가 다룰 수 있는지, 손상된 부분만 교체할 수 있는지 확인해야 합니다. 인테리어 프로젝트라면 샘플을 받는 단계에서 가공 방식과 접합 상세, 관리 지침을 함께 요청하는 방법이 있습니다. 재료가 낯설수록 완성 이미지 한 장보다 제작자와 사용자가 이해할 수 있는 설명이 프로젝트의 판단 근거가 됩니다.",
+          "세 번째는 환경 관련 설명의 범위입니다. 식물에서 유래한 재료라는 말만으로 실제 제품의 환경 영향을 판단하기는 어렵습니다. 접착제와 코팅을 포함한 최종 구성, 사용 기간, 수거와 분리 가능성, 폐기할 때 필요한 조건을 함께 질문해볼 수 있습니다. ‘재활용 가능’이나 ‘분해 가능’이라는 설명을 접했다면 무엇을 대상으로 하는지, 어떤 시설이나 조건이 필요한지까지 확인해 사양서에 남기는 편이 좋습니다."
+        ],
+        "references": []
+      },
+      {
+        "heading": "내 작업으로 가져오는 작은 방법",
+        "kind": "analysis",
+        "paragraphs": [
+          "실제로 적용해볼 때는 프로젝트 전체를 한 번에 바꾸기보다 검토할 요소 하나를 정해보는 방법을 제안합니다. 예를 들어 받침대, 작은 가구의 패널, 교체 가능한 전시 부품을 대상으로 기존 재료와 후보 재료를 나란히 비교할 수 있습니다. 형태와 질감, 제작 방식, 유지관리와 비용을 같은 항목으로 기록하면 결과를 설명하기 쉬워집니다. 이 전시에서 가져올 수 있는 실무적 태도는 새 재료의 이름을 수집하는 데 더해, 선택의 이유와 확인한 조건을 설계 과정에 남기는 것입니다."
+        ],
+        "references": []
+      }
+    ],
+    "points": [
+      "60점 이상의 작품으로 식물과 디자인의 관계를 탐구하는 전시",
+      "가구·건축 재료·빛에 반응하는 설치물에서 만나는 소재 실험",
+      "읽는 관점: 원료뿐 아니라 제작·사용·수리·폐기의 조건까지 살펴보기",
+      "실무 적용: 소재의 설명을 프로젝트 사양과 검증 항목으로 옮기기"
+    ],
+    "description": "멜버른 NGV의 Plant Life 전시는 식물과 디자인의 관계를 살펴봅니다. 해조류 블록, 식물성 접착제를 쓴 의자, 빛에 반응하는 바이오 소재를 통해 재료의 선택이 설계 과정에 어떤 질문을 만드는지 읽어봅니다."
+  },
+  {
+    "url": "https://www.dezeen.com/2026/10/05/edition-denmark-seoul-spacon-cafe-showroom/",
+    "original_title": "Spacon fills Edition Denmark in Seoul with vintage Danish furniture and found objects",
+    "category": "interiors",
+    "source": "Dezeen Interiors",
+    "published_at": "2026-10-05T05:00:47.000Z",
+    "image": "https://static.dezeen.com/uploads/2026/09/edition-denmark-spacon-seoul_dezeen_2364_col_sq-852x852.jpg",
+    "title": "서울 서촌에 담은 덴마크의 일상, 에디션 덴마크",
+    "summary": "Spacon이 서울의 에디션 덴마크에 카페와 쇼룸을 설계했습니다. 목재와 빈티지 가구, 작은 오브제를 겹쳐 집처럼 편안한 분위기를 만들었습니다.",
+    "tags": [
+      "카페",
+      "쇼룸",
+      "덴마크 디자인"
+    ],
+    "paragraphs": [
+      "50제곱미터 규모의 쇼룸과 인접한 카페는 한국과 덴마크가 공유하는 모임과 환대의 문화를 연결합니다. 카페에서 사용하는 식기와 제품 일부를 매장에서 구매할 수 있어, 공간에서 경험한 물건이 쇼룸으로 이어집니다.",
+      "체리 원목과 테라코타 타일, 짠 끈으로 만든 스툴, 맞춤형 조명이 재료의 중심을 이룹니다. 카페는 이끼색 목재와 따뜻한 색감을 사용했고, 매장은 거울 천장으로 작은 공간과 진열 오브제의 인상을 넓혔습니다. 새 가구와 빈티지 덴마크 가구를 함께 배치해 시간이 쌓인 집의 분위기를 구현했습니다."
+    ],
+    "points": [
+      "카페에서 경험한 식기와 제품을 쇼룸에서 구매",
+      "목재·빈티지 가구·거울 천장으로 공간의 성격 구분"
+    ],
+    "description": "Spacon이 서울의 에디션 덴마크에 카페와 쇼룸을 설계했습니다. 목재와 빈티지 가구, 작은 오브제를 겹쳐 집처럼 편안한 분위기를 만들었습니다."
+  },
+  {
+    "url": "https://www.dezeen.com/2026/10/03/kimpton-era-hotel-new-york-city-inc/",
+    "original_title": "Luxury ocean liners inform New York's Kimpton Era hotel by INC",
+    "category": "interiors",
+    "source": "Dezeen Interiors",
+    "published_at": "2026-10-03T17:00:08.000Z",
+    "image": "https://static.dezeen.com/uploads/2026/10/rocco-kimpton-era_inc_dezeen_sqex-852x852.jpg",
+    "title": "대서양 여객선의 객실을 닮은 뉴욕 호텔",
+    "summary": "INC가 설계한 뉴욕 킴프턴 에라 호텔은 고급 여객선의 객실에서 영감을 얻었습니다. 뉴욕의 정제된 면과 거친 산업적 질감을 함께 담았습니다.",
+    "tags": [
+      "호텔",
+      "뉴욕",
+      "재료"
+    ],
+    "paragraphs": [
+      "록펠러 플라자 인근의 33층 건물에 들어선 호텔은 529개의 객실을 갖췄습니다. 설계를 맡은 INC는 여객선의 작은 공간에 담긴 완성도와 뉴욕의 여러 얼굴을 실내 구성의 참고점으로 삼았습니다.",
+      "대리석과 황동, 가죽, 유약을 바른 세라믹은 콘크리트와 검게 마감한 강철과 함께 사용됐습니다. 세 층 높이의 아트리움에는 강철과 유리로 만든 계단이 설치됐습니다. 서로 다른 재료를 결합해 호텔의 고급스러움과 도시의 질감을 동시에 표현한 사례입니다."
+    ],
+    "points": [
+      "여객선 객실의 압축된 고급스러움에서 출발",
+      "대리석·황동과 콘크리트·강철의 재료 대비"
+    ],
+    "description": "INC가 설계한 뉴욕 킴프턴 에라 호텔은 고급 여객선의 객실에서 영감을 얻었습니다. 뉴욕의 정제된 면과 거친 산업적 질감을 함께 담았습니다."
+  },
+  {
+    "url": "https://github.blog/changelog/2026-10-02-stateless-github-app-installation-tokens-rolled-out",
+    "original_title": "Stateless GitHub App installation tokens rolled out",
+    "category": "development",
+    "source": "GitHub Changelog",
+    "published_at": "2026-10-02T22:18:23.000Z",
+    "image": null,
+    "title": "깃허브 앱 토큰이 길어졌다: 연동 코드에서 확인할 것",
+    "summary": "GitHub App 설치 토큰의 새 형식 배포가 완료됐습니다. 토큰이 기존 40자에서 약 520자로 길어져, 길이를 고정한 검증과 저장 구조를 점검해야 합니다.",
+    "tags": [
+      "깃허브",
+      "API",
+      "인증"
+    ],
+    "paragraphs": [
+      "새로 발급되는 설치 토큰은 기본적으로 상태를 서버에 저장하지 않는 형식을 사용합니다. 접두어는 ghs_로 유지되지만 길이는 크게 달라집니다. 권한 범위, 저장소 제한, 한 시간의 만료 시간과 발급 API는 바뀌지 않았습니다.",
+      "확인할 부분은 고정 길이 검증, 짧은 저장 필드, 긴 인증 헤더를 잘라내는 프록시, 기존 패턴만 처리하는 로그 가림 규칙입니다. 토큰 내부 형식을 해석하기보다 불투명한 문자열로 취급해야 합니다. 새 형식을 시험하기 위한 임시 헤더는 2026년 11월 30일 폐기 예정으로 안내됐습니다."
+    ],
+    "points": [
+      "약 520자로 늘어난 토큰 길이",
+      "저장·검증·프록시·로그 가림 규칙 점검"
+    ],
+    "description": "GitHub App 설치 토큰의 새 형식 배포가 완료됐습니다. 토큰이 기존 40자에서 약 520자로 길어져, 길이를 고정한 검증과 저장 구조를 점검해야 합니다."
+  },
+  {
+    "url": "https://github.blog/changelog/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level",
+    "original_title": "Copilot code review: API support and new default effort level",
+    "category": "development",
+    "source": "GitHub Changelog",
+    "published_at": "2026-10-02T19:13:50.000Z",
+    "image": null,
+    "title": "API로 요청하는 코파일럿 리뷰, 기본 수준도 변경",
+    "summary": "GitHub Copilot 코드 리뷰를 REST·GraphQL API로 요청할 수 있게 됐습니다. 요청마다 리뷰 수준을 지정할 수 있으며 기본 리뷰 수준은 Balanced로 바뀌었습니다.",
+    "tags": [
+      "코파일럿",
+      "코드 리뷰",
+      "자동화"
+    ],
+    "paragraphs": [
+      "팀의 스크립트나 내부 도구에서 Copilot 리뷰를 시작할 수 있도록 API 지원이 추가됐습니다. 리뷰 요청 시 원하는 수준을 선택할 수 있어, 기존 개발 흐름에 리뷰 시작 단계를 연결할 수 있습니다.",
+      "기본 설정을 사용하던 저장소와 조직에는 Balanced가 적용됩니다. Lite를 명시적으로 선택한 설정은 유지됐습니다. 엔터프라이즈, 조직, 저장소, 개인 설정에서 리뷰 수준을 조정할 수 있고, 더 구체적인 수준의 설정이 상위 설정을 재정의합니다."
+    ],
+    "points": [
+      "REST·GraphQL API를 통한 리뷰 요청",
+      "기본은 Balanced, 명시적으로 선택한 Lite는 유지"
+    ],
+    "description": "GitHub Copilot 코드 리뷰를 REST·GraphQL API로 요청할 수 있게 됐습니다. 요청마다 리뷰 수준을 지정할 수 있으며 기본 리뷰 수준은 Balanced로 바뀌었습니다."
+  },
+  {
+    "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/",
+    "original_title": "Stop Treating CSS Container Queries Like Traditional Media Queries",
+    "category": "development",
+    "source": "Smashing Magazine",
+    "published_at": "2026-09-16T13:00:00.000Z",
+    "image": "https://files.smashing.media/articles/stop-treating-css-container-queries-traditional-media-queries/1-normal-state-vs-wrapped-state.jpg",
+    "title": "컨테이너 쿼리, 화면이 아닌 컴포넌트의 자리를 보세요",
+    "summary": "Smashing Magazine은 CSS 컨테이너 쿼리를 기존 미디어 쿼리처럼 다루는 관행을 짚습니다. 재사용 컴포넌트가 놓이는 공간을 기준으로 반응하는 설계를 제안합니다.",
+    "tags": [
+      "CSS",
+      "반응형",
+      "컴포넌트"
+    ],
+    "paragraphs": [
+      "미디어 쿼리와 컨테이너 쿼리는 문법이 비슷해 보여도 기준이 다릅니다. 화면 크기를 기준으로 삼는 접근과, 특정 컴포넌트를 담은 컨테이너의 크기를 기준으로 삼는 접근을 구분하는 것이 이 글의 출발점입니다.",
+      "같은 컴포넌트라도 넓은 본문과 좁은 사이드바에서는 다른 배치가 필요할 수 있습니다. 소개된 글은 컨테이너 쿼리가 재사용 컴포넌트를 주변 맥락에 맞게 반응시키는 방법을 살펴봅니다. 두 쿼리를 서로의 대체재로만 이해하기보다 각각의 기준을 먼저 확인할 필요가 있습니다."
+    ],
+    "points": [
+      "뷰포트와 컨테이너라는 서로 다른 반응 기준",
+      "재사용 컴포넌트가 놓이는 맥락에 맞춘 설계"
+    ],
+    "description": "Smashing Magazine은 CSS 컨테이너 쿼리를 기존 미디어 쿼리처럼 다루는 관행을 짚습니다. 재사용 컴포넌트가 놓이는 공간을 기준으로 반응하는 설계를 제안합니다."
+  }
+]

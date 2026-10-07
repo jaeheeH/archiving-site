@@ -4,9 +4,11 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from "@/components/ToastProvider";
 import { createClient } from '@/lib/supabase/client';
+import { SITE_COPY } from '@/lib/site-copy';
 
 // --- Types ---
 interface Reference {
@@ -60,6 +62,7 @@ export default function ReferenceContent({
     return Array.from(categorySet);
   }, [initialCategories, initialReferences]);
   const selectedCategory = searchParams.get('category')?.trim() || 'all';
+  const query = (searchParams.get('q') || '').slice(0, 100).trim();
   const [clickedToday, setClickedToday] = useState<Set<number>>(new Set());
   
   // 🆕 스크랩 관련 상태 - 초기값으로 설정
@@ -229,93 +232,73 @@ export default function ReferenceContent({
   };
 
   const filteredReferences = useMemo(() => {
-    if (selectedCategory === 'all') return references;
-
-    return references.filter(
-      (ref) => ref.category === selectedCategory || ref.range?.includes(selectedCategory)
+    return references.filter(ref =>
+      (selectedCategory === 'all' || ref.category === selectedCategory || ref.range?.includes(selectedCategory)) &&
+      `${ref.title} ${ref.description || ''} ${ref.category || ''} ${(ref.range || []).join(' ')} ${ref.url}`.toLocaleLowerCase('ko').includes(query.toLocaleLowerCase('ko'))
     );
-  }, [references, selectedCategory]);
+  }, [references, selectedCategory, query]);
 
-  const selectedCategoryName = selectedCategory === 'all' ? 'All' : selectedCategory;
+  const selectedCategoryName = selectedCategory === 'all' ? '모든 사이트' : selectedCategory;
 
   return (
-    <div className="archive-page-shell min-h-screen">
-      <section className="border-b border-[var(--archive-line)]">
-        <div className="mx-auto max-w-[var(--archive-page)] px-4 pb-8 pt-14">
-          <p className="archive-eyebrow mb-3 text-[var(--archive-faint)]">Directory</p>
-          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">References</h1>
-          <p className="mt-4 max-w-xl text-[15px] leading-7 text-[var(--archive-muted)]">
-            디자인, 개발, 마케팅 등 다양한 분야의 영감을 주는 사이트들을 모았습니다. 엄선된 웹사이트 레퍼런스를 탐색해보세요.
-          </p>
-        </div>
-      </section>
-
-      <section className="sticky top-16 z-30 border-b border-[var(--archive-line)] bg-[var(--archive-canvas)]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-[var(--archive-page)] items-center gap-5 px-4 py-4">
-
-          <nav aria-label="Reference categories" className="flex min-w-0 flex-1 gap-6 overflow-x-auto">
+    <main className="archb-archive archive-references-page">
+      <header className="archive-heading">
+        <span className="archive-kicker">{SITE_COPY.references.eyebrow}</span>
+        <h1>{SITE_COPY.references.title}</h1>
+        <p>{SITE_COPY.references.description}</p>
+      </header>
+          <nav aria-label="참고사이트 분야" className="archive-tabs">
             <button
               onClick={() => handleCategoryChange('all')}
-              className={`whitespace-nowrap border-b-2 pb-1 text-[13px] font-medium transition-colors ${
-                selectedCategory === 'all'
-                  ? 'border-[var(--archive-ink)] text-[var(--archive-ink)]'
-                  : 'border-transparent text-[var(--archive-muted)] hover:text-[var(--archive-brand)]'
-              }`}
+              aria-pressed={selectedCategory === 'all'}
             >
-              All
+              전체
             </button>
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => handleCategoryChange(category)}
-                className={`whitespace-nowrap border-b-2 pb-1 text-[13px] font-medium transition-colors ${
-                  selectedCategory === category
-                    ? 'border-[var(--archive-ink)] text-[var(--archive-ink)]'
-                    : 'border-transparent text-[var(--archive-muted)] hover:text-[var(--archive-brand)]'
-                }`}
+                aria-pressed={selectedCategory === category}
               >
                 {category}
               </button>
             ))}
           </nav>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-[var(--archive-page)] px-4 py-10 pb-16">
-        <div className="mb-4 flex items-center justify-between text-[12px] text-[var(--archive-muted)]">
-          <span className="archive-eyebrow text-[var(--archive-faint)]">
-            {selectedCategoryName}
-          </span>
-          <span className="archive-index">{filteredReferences.length} Items</span>
+        <div className="archive-caption">
+          <p>{query ? `“${query}” 검색 결과` : selectedCategoryName} · <strong>{filteredReferences.length}</strong>곳</p>
+          {(query || selectedCategory !== 'all') && <Link href="/references">조건 초기화</Link>}
         </div>
 
         {/* Content Area */}
         {filteredReferences.length === 0 ? (
-          <div className="border-y border-[var(--archive-line)] py-20 text-center">
-            <p className="text-[14px] text-[var(--archive-muted)]">등록된 레퍼런스가 없습니다.</p>
+          <div className="archive-empty">
+            <p>
+              {query ? '검색 결과가 없습니다. 다른 이름이나 분야로 찾아보세요.' : selectedCategory === 'all' ? SITE_COPY.references.empty : SITE_COPY.references.filteredEmpty}
+            </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <section aria-label="참고사이트 목록" className="archive-grid">
             {filteredReferences.map((reference) => {
               const isScraped = scrapedIds.has(reference.id);
               const isScrapping = scrappingIds.has(reference.id);
 
               return (
+                <article key={reference.id} className="archive-card archive-reference-card group">
                 <a
-                  key={reference.id}
                   href={reference.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => handleReferenceClick(reference)}
-                  className="group relative flex h-full flex-col overflow-hidden border border-[var(--archive-line)] bg-[var(--archive-canvas)] transition-all duration-300 hover:border-[var(--archive-brand)]"
+                  className="archive-media"
+                  tabIndex={-1}
+                  aria-hidden="true"
                 >
                   {/* Thumbnail */}
-                  <div className="relative aspect-video w-full shrink-0 overflow-hidden bg-[var(--archive-bg-light)]">
                     {reference.image_url ? (
                       <>
                         <Image
                           src={reference.image_url}
-                          alt={reference.title}
+                          alt=""
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -329,32 +312,31 @@ export default function ReferenceContent({
                         <i className="ri-image-2-line text-3xl text-gray-300"></i>
                       </div>
                     )}
-                  </div>
+                </a>
 
                   {/* Content Info */}
-                  <div className="flex flex-1 flex-col p-5">
+                  <div className="archive-card-copy">
                     
                     {/* Category */}
-                    <div className="mb-2">
-                      <span className="inline-block text-xs font-bold uppercase tracking-wider text-[var(--archive-brand)]">
-                        {reference.range?.[0] || reference.category || 'Reference'}
+                    <div>
+                      <span className="archive-card-label">
+                        {reference.range?.[0] || reference.category || '참고사이트'}
                       </span>
                     </div>
 
-                    <div className='flex items-start mb-2 justify-between gap-2'>
+                    <div className="archive-card-title-row">
                       {/* Title */}
-                      <h2 className="line-clamp-2 text-xl font-bold leading-snug text-[var(--archive-ink)] transition-colors group-hover:text-[var(--archive-brand)]">
-                        {reference.title}
+                      <h2 className="line-clamp-2">
+                        <a href={reference.url} target="_blank" rel="noopener noreferrer" onClick={() => handleReferenceClick(reference)}>{reference.title}<span className="sr-only"> (새 창)</span></a>
                       </h2>                  
                       {/* 🆕 Scrap Button */}
                       <button
                         onClick={(e) => handleScrapToggle(e, reference.id)}
                         disabled={isScrapping}
-                        className={`shrink-0 flex items-center justify-center w-6 h-6 rounded transition ${
-                          isScraped
-                            ? 'text-[var(--archive-brand)] hover:text-[var(--archive-brand)]'
-                            : 'text-gray-400 hover:text-[var(--archive-brand)]'
-                        } ${isScrapping ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        type="button"
+                        className="archive-bookmark"
+                        aria-label={`${reference.title} ${isScraped ? '스크랩 취소' : '스크랩'}`}
+                        aria-pressed={isScraped}
                         title={isScraped ? '스크랩 취소' : '스크랩'}
                       >
                         <i className={`ri-bookmark-${isScraped ? 'fill' : 'line'} text-lg`}></i>
@@ -363,16 +345,16 @@ export default function ReferenceContent({
 
                     {/* Description */}
                     {reference.description && (
-                      <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-[var(--archive-muted)]">
+                      <p className="archive-card-description line-clamp-2">
                         {reference.description}
                       </p>
                     )}
 
                     {/* Footer Meta (Domain & Logo) */}
-                    <div className="archive-index mt-auto flex items-center gap-2 border-t border-[var(--archive-line)] pt-4 text-xs text-[var(--archive-faint)]">
+                    <a className="archive-domain" href={reference.url} target="_blank" rel="noopener noreferrer" onClick={() => handleReferenceClick(reference)}>
                       {reference.logo_url ? (
                         <div className="relative w-6 h-6 rounded overflow-hidden">
-                          <Image src={reference.logo_url} alt={reference.title || "Logo"} fill sizes="64px" className="object-cover" />
+                          <Image src={reference.logo_url} alt="" fill sizes="24px" className="object-cover" />
                         </div>
                       ) : (
                         <i className="ri-links-line"></i>
@@ -380,14 +362,14 @@ export default function ReferenceContent({
                       <span className="truncate max-w-[200px]">
                         {reference.url.replace(/^https?:\/\/(www\.)?/, "").split('/')[0]}
                       </span>
-                    </div>
+                      <i className="ri-external-link-line" aria-hidden="true" /><span className="sr-only"> (새 창)</span>
+                    </a>
                   </div>
-                </a>
+                </article>
               );
             })}
-          </div>
+          </section>
         )}
-      </section>
-    </div>
+    </main>
   );
 }

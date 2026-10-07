@@ -26,8 +26,6 @@ interface HomeReferenceProps {
 export default function HomeReferenceSectionSlide({ initialReferences }: HomeReferenceProps) {
   
   const handleClick = async (item: Reference) => {
-    window.open(item.url, "_blank", "noopener,noreferrer");
-    
     // 조회수 API 호출은 클라이언트 사이드에서 유지 (Fire and forget)
     try {
       fetch(`/api/references/${item.id}`, {
@@ -43,45 +41,49 @@ export default function HomeReferenceSectionSlide({ initialReferences }: HomeRef
   return (
     <div className="homeReferenceSection">
       {initialReferences.length === 0 ? (
-        <div className="rounded-lg bg-white/5 py-16 text-center text-gray-400">
-          레퍼런스가 없습니다.
+        <div className="border-y border-[var(--archive-line)] py-16 text-center text-[var(--archive-muted)]">
+          선별한 레퍼런스를 준비하고 있습니다.
         </div>
       ) : (
         <Swiper
           modules={[Pagination]}
-          spaceBetween={24}
-          slidesPerView={1.2}
+          spaceBetween={28}
+          slidesPerView={1.12}
           pagination={{ clickable: true, type: "progressbar" }}
           breakpoints={{
-            768: { slidesPerView: 3.2 },
+            768: { slidesPerView: 2.15 },
+            1024: { slidesPerView: 3 },
           }}
           className="referenceSwiper"
         >
           {initialReferences.map((item) => (
             <SwiperSlide key={item.id}>
-              <button
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => handleClick(item)}
                 className="group block w-full text-left cursor-pointer"
               >
                 <article className="h-full">
-                  <div className="relative mb-4 aspect-video overflow-hidden bg-white/10">
+                  <div className="relative mb-4 aspect-[4/3] overflow-hidden rounded-[14px] bg-[#ecece8]">
                     {item.image_url ? (
                       <Image
                         src={item.image_url}
                         alt={item.title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 20vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.025]"
                         quality={75}
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center text-gray-400">
+                      <div className="flex h-full w-full items-center justify-center text-[var(--archive-faint)]">
                         <i className="ri-image-2-line text-3xl"></i>
                       </div>
                     )}
                   </div>
 
-                  <p className="mb-2 text-xs font-bold uppercase tracking-wider text-[#ff4800]">
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#888883]">
                     {item.range?.[0] || item.category || "Reference"}
                   </p>
 
@@ -97,22 +99,22 @@ export default function HomeReferenceSectionSlide({ initialReferences }: HomeRef
                         />
                       </div>
                     ) : (
-                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/10">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--archive-bg-regular)]">
                         <i className="ri-global-line text-[10px] text-gray-400"></i>
                       </div>
                     )}
-                    <h3 className="font-semibold text-sm line-clamp-1 transition-colors">
+                    <h3 className="line-clamp-1 text-[17px] font-semibold tracking-[-0.02em] text-[var(--archive-ink)] group-hover:underline">
                       {item.title}
                     </h3>
                   </div>
 
                   {item.description && (
-                    <p className="text-xs text-gray-400 line-clamp-2 leading-relaxed">
+                    <p className="line-clamp-2 text-sm leading-6 text-[var(--archive-muted)]">
                       {item.description}
                     </p>
                   )}
                 </article>
-              </button>
+              </a>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -120,16 +122,16 @@ export default function HomeReferenceSectionSlide({ initialReferences }: HomeRef
 
       <style jsx global>{`
         .referenceSwiper {
-          padding-bottom: 32px;
+          padding-bottom: 34px;
         }
         .referenceSwiper .swiper-pagination-progressbar {
           bottom: 0;
           top: auto;
           height: 2px;
-          background: #666;
+          background: var(--archive-line);
         }
         .referenceSwiper .swiper-pagination-progressbar-fill {
-          background: #fff;
+          background: var(--archive-ink);
         }
       `}</style>
     </div>

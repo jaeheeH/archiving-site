@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import NextLink from 'next/link';
@@ -21,6 +21,8 @@ import { ReadOnlyImageGalleryNode } from '@/components/Editor/ReadOnlyImageGalle
 import { ReadOnlyColumnsNode } from '@/components/Editor/ReadOnlyColumnsNode';
 import { optimizeImageUrl } from '@/lib/image-optimizer';
 import { normalizeAvatarUrl } from '@/lib/avatar-url';
+import { SITE_COPY } from '@/lib/site-copy';
+import { CATEGORIES } from '@/lib/news-feeds';
 import '../../css/blog/view.scss';
 
 // 인터페이스 정의
@@ -40,6 +42,8 @@ export interface Post {
   view_count: number;
   scrap_count: number;
   author_id: string | null;
+  like_count?: number;
+  userLiked?: boolean;
   userScraped: boolean; // 서버에서 올 때는 기본적으로 false일 수 있음 (ISR 특성상)
 }
 
@@ -56,6 +60,8 @@ interface AuthorProfile {
 }
 
 interface RelatedPost {
+  type?: string;
+  content?: { category?: keyof typeof CATEGORIES };
   id: string;
   title: string;
   subtitle: string | null;
@@ -72,6 +78,15 @@ interface BlogDetailClientProps {
   initialCategory?: Category | null;
   initialAuthorProfile?: AuthorProfile | null;
   initialRelatedPosts?: RelatedPost[];
+  news?: {
+    categoryName: string;
+    categoryUrl: string;
+    source: string;
+    description: string;
+    points: string[];
+    readingMinutes: number;
+  };
+  children?: ReactNode;
 }
 
 interface ArticleHeading {
@@ -219,6 +234,8 @@ export default function BlogDetailClient({
   initialCategory = null,
   initialAuthorProfile = null,
   initialRelatedPosts = [],
+  news,
+  children,
 }: BlogDetailClientProps) {
   const router = useRouter();
   
@@ -232,19 +249,25 @@ export default function BlogDetailClient({
   const [scrapCount, setScrapCount] = useState(initialPost.scrap_count || 0);
   const [viewCount, setViewCount] = useState(initialPost.view_count || 0);
   const [copied, setCopied] = useState(false);
+  const [isLiked, setIsLiked] = useState(initialPost.userLiked || false);
+  const [likeCount, setLikeCount] = useState(initialPost.like_count || 0);
+  const [isLiking, setIsLiking] = useState(false);
+  const [reactionError, setReactionError] = useState('');
+  const [likesAvailable, setLikesAvailable] = useState(false);
   
   const [user, setUser] = useState<{ id: string } | null>(null);
   const [hasRecordedView, setHasRecordedView] = useState(false);
   const [isScrapping, setIsScrapping] = useState(false);
   const headings = useMemo(() => extractHeadings(post.content), [post.content]);
-  const readingMinutes = useMemo(() => {
+  const editorialReadingMinutes = useMemo(() => {
     const textLength = getNodeText(post.content).replace(/\s+/g, '').length;
     return Math.max(1, Math.ceil(textLength / 600));
   }, [post.content]);
   const summaryItems = useMemo(
-    () => extractSummaryItems(post.summary || post.subtitle),
-    [post.summary, post.subtitle]
+    () => news?.points || extractSummaryItems(post.summary || post.subtitle),
+    [news, post.summary, post.subtitle]
   );
+  const readingMinutes = news?.readingMinutes || editorialReadingMinutes;
 
   // Tiptap 에디터 설정
   const editor = useEditor({
@@ -273,13 +296,15 @@ export default function BlogDetailClient({
     ],
     editable: false,
     immediatelyRender: false,
-    content: initialPost.content, // ✅ 초기 콘텐츠 바로 주입
+    content: news ? undefined : initialPost.content,
   });
 
   // 1. 사용자 정보 가져오기
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/immutability, react-hooks/set-state-in-effect
-    fetchCurrentUser();
+    const supabase = createClient();
+    void supabase.auth.getUser().then(({ data }) => setUser(data.user || null));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => setUser(session?.user || null));
+    return () => subscription.unsubscribe();
   }, []);
 
   // 2. 카테고리 정보 가져오기 (ISR 초기 데이터가 없을 때만 보완)
@@ -299,7 +324,8 @@ export default function BlogDetailClient({
 
   // 3. [중요] 로그인 유저일 경우, 최신 스크랩 상태 동기화 (ISR 보완)
   useEffect(() => {
-    if (user && post.slug) {
+    let active = true;
+    if (post.slug) {
       // 이미 화면은 보이고 있으므로, 백그라운드에서 조용히 내 상태만 업데이트
       fetch(`/api/posts/by-slug/${post.slug}`)
         .then((res) => {
@@ -307,13 +333,18 @@ export default function BlogDetailClient({
            throw new Error('Fetch failed');
         })
         .then((data) => {
+          if (!active) return;
+          setLikesAvailable(data.likes_available);
           // 내 스크랩 상태와 최신 스크랩/조회수 카운트 동기화
           setIsScraped(data.userScraped);
           setScrapCount(data.scrap_count);
+          setIsLiked(data.userLiked || false);
+          setLikeCount(data.like_count || 0);
           // setViewCount(data.view_count); // 조회수는 아래 recordView에서 처리하므로 생략 가능
         })
         .catch((err) => console.error('Background update failed:', err));
     }
+    return () => { active = false; };
   }, [user, post.slug]);
 
   // 4. 조회수 기록
@@ -329,10 +360,10 @@ export default function BlogDetailClient({
 
   // 5. 에디터 콘텐츠 동기화 (혹시 모를 타이밍 문제 방지)
   useEffect(() => {
-    if (post?.content && editor && editor.isEmpty) {
+    if (!news && post?.content && editor && editor.isEmpty) {
       editor.commands.setContent(post.content);
     }
-  }, [post.content, editor]);
+  }, [post.content, editor, news]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -385,17 +416,6 @@ export default function BlogDetailClient({
   }, [post?.content, editor]); // editor 의존성 추가
 
   // --- Functions ---
-
-  const fetchCurrentUser = async () => {
-    try {
-      const supabase = createClient();
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user || null);
-    } catch (error) {
-      console.error('Failed to fetch user:', error);
-      setUser(null);
-    }
-  };
 
   const fetchCategory = async (categoryId: string) => {
     try {
@@ -498,9 +518,34 @@ export default function BlogDetailClient({
     }
   };
 
+  const handleLike = async () => {
+    if (!user) {
+      router.push(`/login?redirect=${encodeURIComponent(window.location.pathname)}`);
+      return;
+    }
+    if (isLiking) return;
+    const previous = { liked: isLiked, count: likeCount };
+    setIsLiking(true);
+    setReactionError('');
+    setIsLiked(!previous.liked);
+    setLikeCount(Math.max(0, previous.count + (previous.liked ? -1 : 1)));
+    try {
+      const response = await fetch(`/api/posts/${post.id}/like`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ liked: !previous.liked }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || '좋아요를 저장하지 못했습니다.');
+      setIsLiked(data.liked);
+      setLikeCount(data.like_count);
+    } catch (error) {
+      setIsLiked(previous.liked);
+      setLikeCount(previous.count);
+      setReactionError(error instanceof Error ? error.message : '좋아요를 저장하지 못했습니다.');
+    } finally { setIsLiking(false); }
+  };
+
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard?.writeText(window.location.href);
+      if (!navigator.clipboard) throw new Error('Clipboard unavailable');
+      await navigator.clipboard.writeText(window.location.href);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1800);
     } catch (error) {
@@ -528,24 +573,25 @@ export default function BlogDetailClient({
     month: 'long',
     day: 'numeric',
   });
-  const categoryName = category?.name || 'Article';
+  const categoryName = news?.categoryName || category?.name || '에디토리얼';
   const authorName = authorProfile?.nickname || authorProfile?.name || 'ARCH.B';
+  const authorAvatar = authorProfile?.avatar_url;
   const authorInitial = authorName.charAt(0).toUpperCase();
 
   return (
-    <div className="archive-article min-h-screen bg-[var(--archive-canvas)] text-[var(--archive-ink)]">
+    <div className="archive-article news-detail-page min-h-screen bg-[var(--archive-canvas)] text-[var(--archive-ink)]">
       <article>
         <header className="border-b border-[var(--archive-line)]">
-          <div className="mx-auto max-w-[var(--archive-page)] px-4 py-12 lg:py-16">
+          <div className="mx-auto max-w-[var(--archive-page)] px-6 py-12 lg:py-16">
             <div className="mb-5 flex flex-wrap items-center gap-2 text-[12px] text-[var(--archive-muted)]">
-              <NextLink href="/blog" className="font-semibold transition-colors hover:text-[var(--archive-brand)]">
-                Blog
+              <NextLink href={news?.categoryUrl || '/news/stories?category=editorial'} className="font-semibold transition-colors hover:text-[var(--archive-brand)]">
+                {news?.categoryName || '에디토리얼'}
               </NextLink>
-              {post.category_id && (
+              {!news && post.category_id && (
                 <>
                   <span className="text-[var(--archive-faint)]">/</span>
                   <NextLink
-                    href={`/blog?category=${post.category_id}`}
+                    href={`/news/stories?category=editorial&collection=${post.category_id}`}
                     className="font-semibold transition-colors hover:text-[var(--archive-brand)]"
                   >
                     {categoryName}
@@ -561,9 +607,9 @@ export default function BlogDetailClient({
             <div className="mt-8 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
               <div className="flex min-w-0 items-center gap-3">
                 <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--archive-line)] text-[15px] font-bold">
-                  {authorProfile?.avatar_url ? (
+                  {authorAvatar ? (
                     <Image
-                      src={authorProfile.avatar_url}
+                      src={authorAvatar}
                       alt={authorName}
                       fill
                       sizes="44px"
@@ -576,7 +622,7 @@ export default function BlogDetailClient({
                 <div className="min-w-0">
                   <p className="text-[14px] font-bold leading-tight text-[var(--archive-ink)]">{authorName}</p>
                   <p className="archive-index mt-1 text-[12px] text-[var(--archive-muted)]">
-                    {publishedLabel} · {readingMinutes}분 분량
+                    {news && `${news.source} 기반 · `}{publishedLabel} · {readingMinutes}분 분량
                   </p>
                 </div>
               </div>
@@ -588,17 +634,6 @@ export default function BlogDetailClient({
                 </span>
                 <button
                   type="button"
-                  onClick={handleScrapToggle}
-                  disabled={isScrapping}
-                  className="flex items-center gap-1.5 transition-colors hover:text-[var(--archive-brand)] disabled:opacity-50"
-                  aria-label="북마크"
-                  title="북마크"
-                >
-                  <i className={`ri-bookmark-${isScraped ? 'fill' : 'line'} text-[14px]`} />
-                  <span className="archive-index">{scrapCount}</span>
-                </button>
-                <button
-                  type="button"
                   onClick={handleCopyLink}
                   className="flex items-center gap-1.5 transition-colors hover:text-[var(--archive-brand)]"
                   aria-label="링크 복사"
@@ -607,36 +642,38 @@ export default function BlogDetailClient({
                   <i className="ri-link text-[15px]" />
                   <span>{copied ? '복사됨' : '링크 복사'}</span>
                 </button>
+                <button
+                  type="button"
+                  onClick={handleScrapToggle}
+                  disabled={isScrapping}
+                  className="flex items-center gap-1.5 transition-colors hover:text-[var(--archive-brand)] disabled:opacity-50"
+                  aria-label="북마크"
+                  aria-pressed={isScraped}
+                  title="북마크"
+                >
+                  <i className={`ri-bookmark-${isScraped ? 'fill' : 'line'} text-[14px]`} />
+                  <span className="archive-index">{scrapCount}</span>
+                </button>
+                <button type="button" onClick={handleLike} disabled={isLiking || !likesAvailable} aria-label="좋아요" aria-pressed={isLiked} className="flex items-center gap-1.5 transition-colors hover:text-[var(--archive-brand)] disabled:opacity-50">
+                  <i className={`ri-heart-${isLiked ? 'fill' : 'line'} text-[15px]`} aria-hidden="true" />
+                  <span className="archive-index">{likeCount}</span>
+                </button>
               </div>
             </div>
+            {reactionError && <p role="alert" className="mt-3 text-sm text-red-700">{reactionError}</p>}
           </div>
         </header>
 
-        <div className="mx-auto max-w-[var(--archive-page)] px-4">
-          {post.title_image_url && (
-            <div className="my-10 lg:my-12">
-              <div className="relative aspect-[16/9] overflow-hidden bg-[var(--archive-bg-light)]">
-                <Image
-                  src={post.title_image_url}
-                  alt={post.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 1040px"
-                  className="object-cover"
-                  priority
-                  quality={75}
-                  placeholder="blur"
-                  blurDataURL="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect fill='%23f5f5f5' width='16' height='9'/%3E%3C/svg%3E"
-                />
-              </div>
-            </div>
-          )}
-
-          {summaryItems.length > 0 && (
+        <div className="mx-auto max-w-[var(--archive-page)] px-6">
+          <div className="news-article-layout grid grid-cols-1 gap-10 pb-20 pt-10 lg:grid-cols-[1fr_320px] lg:gap-12 lg:pt-14">
+            <main className="min-w-0">
+          {(news?.description || summaryItems.length > 0) && (
             <section className="archive-article-summary py-4">
               <div className="mb-4 flex items-center gap-2">
                 <i className="ri-flashlight-line text-[17px] text-[var(--archive-brand)]" />
                 <p className="archive-eyebrow text-[var(--archive-faint)]">한눈에 보는 핵심요약</p>
               </div>
+              {news?.description && <p className="news-summary-deck">{news.description}</p>}
               <ul className="space-y-2.5">
                 {summaryItems.map((item, index) => (
                   <li key={`${item}-${index}`} className="flex gap-3 text-[15px] leading-7 text-[var(--archive-ink)]">
@@ -648,11 +685,16 @@ export default function BlogDetailClient({
             </section>
           )}
 
-          <div className="grid grid-cols-1 gap-10 pb-20 pt-10 lg:grid-cols-[1fr_320px] lg:gap-12 lg:pt-14">
-            <main className="min-w-0">
+          {post.title_image_url && (
+            <figure className="news-detail-thumbnail">
+              <img src={post.title_image_url} alt={post.title} referrerPolicy="no-referrer" fetchPriority="high" />
+              {news && <figcaption className="news-detail-image-credit">이미지 제공: {news.source} · 원출처 기사</figcaption>}
+            </figure>
+          )}
+
               <div className="article-editor archive-article-body">
                 <div className="tiptap-content">
-                  <EditorContent editor={editor} />
+                  {news ? children : <EditorContent editor={editor} />}
                 </div>
               </div>
 
@@ -671,9 +713,9 @@ export default function BlogDetailClient({
 
               <div className="mt-14 flex gap-4 lg:hidden">
                 <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--archive-line)] text-base font-bold">
-                  {authorProfile?.avatar_url ? (
+                  {authorAvatar ? (
                     <Image
-                      src={authorProfile.avatar_url}
+                      src={authorAvatar}
                       alt={authorName}
                       fill
                       sizes="48px"
@@ -687,7 +729,7 @@ export default function BlogDetailClient({
                   <p className="archive-eyebrow mb-1 text-[var(--archive-faint)]">Written by</p>
                   <p className="mb-2 text-lg font-bold">{authorName}</p>
                   <p className="text-[14px] leading-6 text-[var(--archive-muted)]">
-                    디자인과 기술 사이에서 발견한 흐름을 기록합니다.
+                    {SITE_COPY.brand.authorBio}
                   </p>
                 </div>
               </div>
@@ -700,7 +742,7 @@ export default function BlogDetailClient({
                       <h2 className="text-[22px] font-extrabold tracking-tight">함께 읽기 좋은 글</h2>
                     </div>
                     <NextLink
-                      href={post.category_id ? `/blog?category=${post.category_id}` : "/blog"}
+                      href={news?.categoryUrl || (post.category_id ? `/news/stories?category=editorial&collection=${post.category_id}` : "/news/stories?category=editorial")}
                       className="hidden text-[12px] font-semibold text-[var(--archive-muted)] transition-colors hover:text-[var(--archive-brand)] sm:inline-flex"
                     >
                       더 보기
@@ -711,13 +753,14 @@ export default function BlogDetailClient({
                     {initialRelatedPosts.map((related) => (
                       <NextLink
                         key={related.id}
-                        href={`/blog/${related.slug}`}
+                        href={`/news/read/${related.slug}`}
                         className="group block min-w-0"
                       >
                         <div className="relative mb-4 aspect-[4/3] overflow-hidden bg-[var(--archive-bg-light)]">
                           {related.title_image_url ? (
                             <Image
                               src={related.title_image_url}
+                              unoptimized={related.type === "news"}
                               alt={related.title}
                               fill
                               sizes="(max-width: 768px) 100vw, 33vw"
@@ -725,18 +768,18 @@ export default function BlogDetailClient({
                             />
                           ) : (
                             <div className="flex h-full w-full items-center justify-center text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--archive-faint)]">
-                              ARCH-B
+                              ARCH.B
                             </div>
                           )}
                         </div>
                         <p className="archive-eyebrow mb-2 text-[var(--archive-brand)]">
-                          {related.category_id === post.category_id ? categoryName : "Blog"}
+                          {related.type === "news" && related.content?.category ? CATEGORIES[related.content.category] : "에디토리얼"}
                         </p>
                         <h3 className="line-clamp-2 text-[16px] font-bold leading-6 transition-colors group-hover:text-[var(--archive-brand)]">
                           {related.title}
                         </h3>
                         <p className="mt-2 line-clamp-2 text-[13px] leading-6 text-[var(--archive-muted)]">
-                          {related.summary || related.subtitle || "다음 글에서 이어지는 인사이트를 확인해보세요."}
+                          {related.summary || related.subtitle || SITE_COPY.blog.relatedFallback}
                         </p>
                         <p className="archive-index mt-3 text-[12px] text-[var(--archive-faint)]">
                           {formatCompactDate(related.published_at || related.created_at)}
@@ -750,7 +793,7 @@ export default function BlogDetailClient({
               <div className="mt-12">
                 <button
                   type="button"
-                  onClick={() => router.push('/blog')}
+                  onClick={() => router.push(news?.categoryUrl || '/news/stories?category=editorial')}
                   className="inline-flex items-center gap-2 border border-[var(--archive-line)] px-4 py-2.5 text-[12px] font-semibold uppercase tracking-[0.14em] transition-colors hover:border-[var(--archive-brand)] hover:bg-[var(--archive-brand)] hover:text-white"
                 >
                   <i className="ri-arrow-left-line text-[15px]" />
@@ -798,6 +841,7 @@ export default function BlogDetailClient({
                       type="button"
                       onClick={handleScrapToggle}
                       disabled={isScrapping}
+                      aria-pressed={isScraped}
                       className="inline-flex items-center gap-2 border border-[var(--archive-line)] px-3 py-2 text-[12px] font-semibold transition-colors hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)] disabled:opacity-50"
                     >
                       <i className={`ri-bookmark-${isScraped ? 'fill' : 'line'} text-[15px]`} />
@@ -810,9 +854,9 @@ export default function BlogDetailClient({
                   <p className="archive-eyebrow mb-4 text-[var(--archive-faint)]">Written by</p>
                   <div className="flex items-start gap-3">
                     <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--archive-line)] text-[14px] font-bold">
-                      {authorProfile?.avatar_url ? (
+                      {authorAvatar ? (
                         <Image
-                          src={authorProfile.avatar_url}
+                          src={authorAvatar}
                           alt={authorName}
                           fill
                           sizes="40px"
@@ -825,7 +869,7 @@ export default function BlogDetailClient({
                     <div>
                       <p className="text-[14px] font-bold">{authorName}</p>
                       <p className="mt-1 text-[12px] leading-5 text-[var(--archive-muted)]">
-                        디자인과 기술 사이에서 발견한 흐름을 기록합니다.
+                        {SITE_COPY.brand.authorBio}
                       </p>
                     </div>
                   </div>

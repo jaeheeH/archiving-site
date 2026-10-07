@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { useToast } from '@/components/ToastProvider';
 import { formatKoreanDate, getSeoulDateKey } from '@/lib/date-format';
+import { SITE_COPY } from '@/lib/site-copy';
 
 // --- Types ---
 interface Post {
@@ -299,25 +300,25 @@ export default function BlogClient({
 
   return (
     <div className="archive-blog min-h-screen bg-[var(--archive-canvas)] text-[var(--archive-ink)]">
-      <section className="border-b border-[var(--archive-line)]">
-        <div className="mx-auto max-w-[var(--archive-page)] px-4 pb-8 pt-14">
-          <p className="archive-eyebrow mb-3 text-[var(--archive-faint)]">Magazine</p>
-          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Blog</h1>
+      <section>
+        <div className="mx-auto max-w-[var(--archive-page)] px-4 pb-9 pt-16">
+          <p className="archive-eyebrow mb-3 text-[var(--archive-faint)]">{SITE_COPY.blog.eyebrow}</p>
+          <h1 className="text-4xl font-bold tracking-[-0.045em] md:text-5xl">{SITE_COPY.blog.title}</h1>
           <p className="mt-4 max-w-xl text-[15px] leading-7 text-[var(--archive-muted)]">
-            개발 과정의 고민과 디자인적 발견을 기록합니다. 프로젝트 비하인드 스토리와 기술적인 인사이트를 공유합니다.
+            {SITE_COPY.blog.description}
           </p>
         </div>
       </section>
 
-      <section className="sticky top-16 z-30 border-b border-[var(--archive-line)] bg-[var(--archive-canvas)]/95 backdrop-blur">
-        <div className="mx-auto max-w-[var(--archive-page)] px-4">
-          <nav className="flex gap-6 overflow-x-auto py-4">
+      <section className="sticky top-[78px] z-30 bg-[var(--archive-canvas)]/95 backdrop-blur">
+        <div className="mx-auto max-w-[var(--archive-page)] px-4 py-3">
+          <nav className="flex gap-1 overflow-x-auto rounded-full bg-[#f4f4f1] p-1.5">
             <button
               onClick={() => handleCategoryChange('all')}
-              className={`whitespace-nowrap border-b-2 pb-1 text-[13px] font-medium transition-colors ${
+              className={`whitespace-nowrap rounded-full px-4 py-2 text-[13px] font-medium transition-colors ${
                 selectedCategory === 'all'
-                  ? 'border-[var(--archive-ink)] text-[var(--archive-ink)]'
-                  : 'border-transparent text-[var(--archive-muted)] hover:text-[var(--archive-brand)]'
+                  ? 'bg-black text-white'
+                  : 'text-[var(--archive-muted)] hover:bg-white hover:text-black'
               }`}
             >
               All
@@ -326,10 +327,10 @@ export default function BlogClient({
               <button
                 key={category.id}
                 onClick={() => handleCategoryChange(category.id)}
-                className={`whitespace-nowrap border-b-2 pb-1 text-[13px] font-medium transition-colors ${
+                className={`whitespace-nowrap rounded-full px-4 py-2 text-[13px] font-medium transition-colors ${
                   selectedCategory === category.id
-                    ? 'border-[var(--archive-ink)] text-[var(--archive-ink)]'
-                    : 'border-transparent text-[var(--archive-muted)] hover:text-[var(--archive-brand)]'
+                    ? 'bg-black text-white'
+                    : 'text-[var(--archive-muted)] hover:bg-white hover:text-black'
                 }`}
               >
                 {category.name}
@@ -339,7 +340,7 @@ export default function BlogClient({
         </div>
       </section>
 
-      <section className="mx-auto max-w-[var(--archive-page)] px-4 py-12">
+      <section className="mx-auto max-w-[var(--archive-page)] px-4 pb-24 pt-8">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_320px] lg:gap-12">
           <div className="min-w-0">
             <div className="mb-4 flex items-center justify-between text-[12px] text-[var(--archive-muted)]">
@@ -349,21 +350,21 @@ export default function BlogClient({
 
             {fetching && posts.length === 0 ? (
               <div className="border-y border-[var(--archive-line)] py-10 text-[14px] text-[var(--archive-muted)]">
-                Loading...
+                기록을 불러오는 중입니다.
               </div>
             ) : posts.length === 0 ? (
               <div className="border-y border-[var(--archive-line)] py-20 text-center text-[14px] text-[var(--archive-muted)]">
-                작성된 글이 없습니다.
+                {selectedCategory === 'all' ? SITE_COPY.blog.empty : SITE_COPY.blog.filteredEmpty}
               </div>
             ) : (
               <div className={`border-t border-[var(--archive-line)] ${fetching ? 'opacity-60' : ''}`}>
                 {posts.map((post) => (
-                  <article key={post.id} className="border-b border-[var(--archive-line)] py-7">
+                  <article key={post.id} className="border-b border-[var(--archive-line)] py-8">
                     <div className="grid grid-cols-[1fr_120px] gap-5 sm:grid-cols-[1fr_180px] md:grid-cols-[1fr_220px] md:gap-8">
                       <div className="flex min-w-0 flex-col">
                         <Link href={`/blog/${post.slug}`} className="group block">
                           <div className="mb-3 flex items-center gap-2 text-[12px] text-[var(--archive-muted)]">
-                            <span className="text-[var(--archive-ink)] font-medium">ARCH.B</span>
+                            <span className="text-[var(--archive-ink)] font-medium">ARCH-B</span>
                             <span className="text-[var(--archive-faint)]">·</span>
                             <span>{formatDate(post.published_at || post.created_at)}</span>
                           </div>
@@ -371,7 +372,7 @@ export default function BlogClient({
                             {post.title}
                           </h2>
                           <p className="line-clamp-2 text-[14px] leading-[1.65] text-[var(--archive-muted)] md:text-[15px]">
-                            {post.summary || post.subtitle || '내용이 없습니다.'}
+                            {post.summary || post.subtitle || SITE_COPY.blog.fallbackDescription}
                           </p>
                         </Link>
                         <div className="mt-5 flex items-center justify-between text-[12px] text-[var(--archive-muted)]">
@@ -409,7 +410,7 @@ export default function BlogClient({
 
                       <Link
                         href={`/blog/${post.slug}`}
-                        className="archive-zoom relative aspect-square self-start overflow-hidden bg-[var(--archive-bg-light)]"
+                            className="archive-zoom relative aspect-square self-start overflow-hidden rounded-[14px] bg-[var(--archive-bg-light)]"
                       >
                         {post.title_image_url ? (
                           <Image
@@ -434,7 +435,7 @@ export default function BlogClient({
 
           <aside className="hidden lg:block lg:sticky lg:top-36 lg:self-start">
             <div className="flex flex-col gap-5">
-              <section className="border border-[var(--archive-line)] bg-[var(--archive-canvas)]">
+              <section className="overflow-hidden rounded-[14px] border border-[var(--archive-line)] bg-[var(--archive-canvas)]">
                 <div className="flex items-center gap-1.5 border-b border-[var(--archive-line)] px-4 py-2.5">
                   <i className="ri-newspaper-line text-sm" />
                   <span className="archive-eyebrow">Latest</span>
@@ -458,7 +459,7 @@ export default function BlogClient({
               </section>
 
               {todayImages.length > 0 && (
-                <section className="border border-[var(--archive-line)] bg-[var(--archive-canvas)]">
+                <section className="overflow-hidden rounded-[14px] border border-[var(--archive-line)] bg-[var(--archive-canvas)]">
                   <div className="flex items-center gap-1.5 border-b border-[var(--archive-line)] px-4 py-2.5">
                     <i className="ri-image-line text-sm" />
                     <span className="archive-eyebrow">오늘의 이미지</span>
@@ -487,7 +488,7 @@ export default function BlogClient({
                             {image.title}
                           </span>
                           <span className="mt-1 block truncate text-[11px] leading-4 text-[var(--archive-muted)]">
-                            {image.description || '프롬프트가 없습니다.'}
+                            {image.description || '이미지의 세부 기록을 확인해 보세요.'}
                           </span>
                         </span>
                       </Link>

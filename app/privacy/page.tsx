@@ -1,24 +1,28 @@
 import React from "react";
 import { formatKoreanDate } from "@/lib/date-format";
+import { SITE_COPY } from "@/lib/site-copy";
 
 export const metadata = {
   title: "Privacy Policy | ARCH-B",
   description: "ARCH-B의 개인정보 처리방침입니다.",
 };
 
+const POLICY_EFFECTIVE_DATE = new Date("2026-07-29T00:00:00+09:00");
+
 export default function PrivacyPage() {
-  const currentDate = formatKoreanDate(new Date(), "long");
+  const effectiveDate = formatKoreanDate(POLICY_EFFECTIVE_DATE, "long");
 
   return (
-    <main className="w-full min-h-screen bg-white">
+    <main className="archive-page-shell min-h-screen w-full bg-white dark:bg-[#0f0f0f]">
       <div className="max-w-4xl mx-auto px-4 py-20 md:py-28">
         {/* 헤더 섹션 */}
         <div className="mb-12 border-b border-gray-100 pb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <p className="archive-eyebrow mb-3 text-[#ff4800]">Policy</p>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 dark:text-white">
             개인정보 처리방침
           </h1>
           <p className="text-gray-500">
-            ARCH-B(이하 &apos;서비스&apos;)는 사용자의 개인정보를 소중히 다루며, 관련 법령을 준수합니다.
+            {SITE_COPY.brand.name}(이하 &apos;서비스&apos;)는 사용자의 개인정보를 소중히 다루며, 서비스 제공에 필요한 범위에서 안전하게 처리합니다.
           </p>
         </div>
 
@@ -42,7 +46,7 @@ export default function PrivacyPage() {
             <p className="mb-2">서비스는 회원가입, 상담, 서비스 신청 등을 위해 아래와 같은 개인정보를 수집하고 있습니다.</p>
             <div className="bg-gray-50 p-5 rounded-lg border border-gray-100">
               <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                <li><strong>필수항목:</strong> 이메일 주소, 이름(또는 닉네임), 비밀번호(암호화 저장)</li>
+                <li><strong>로그인 정보:</strong> 소셜 로그인 제공자가 전달하는 이메일 주소, 이름 또는 닉네임, 프로필 이미지</li>
                 <li><strong>자동 수집 항목:</strong> IP 주소, 쿠키, 서비스 이용 기록, 방문 기록, 기기 정보</li>
               </ul>
             </div>
@@ -79,7 +83,7 @@ export default function PrivacyPage() {
 
           <section className="pt-8 border-t border-gray-100">
             <p className="text-gray-500 text-sm">
-              이 개인정보 처리방침은 {currentDate}부터 적용됩니다.
+              이 개인정보 처리방침은 {effectiveDate}부터 적용됩니다.
             </p>
           </section>
         </div>

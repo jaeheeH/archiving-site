@@ -16,9 +16,14 @@ const EDIT_POST_COLUMNS =
   'id, type, title, subtitle, summary, slug, content, tags, is_published, published_at, created_at, updated_at, title_style, title_image_url, thumbnail_url, category_id, view_count, scrap_count, author_id';
 
 function revalidateBlogPostPaths(post: { type?: string | null; slug?: string | null }) {
-  if (post.type !== 'blog') return;
-  revalidatePath('/blog');
-  if (post.slug) revalidatePath(`/blog/${post.slug}`);
+  if (!['blog', 'news'].includes(post.type || '')) return;
+  revalidateTag('archb-news', { expire: 0 });
+  for (const path of ['/', '/news/stories', '/rss.xml', '/sitemap.xml']) revalidatePath(path);
+  if (post.slug) revalidatePath(`/news/read/${post.slug}`);
+  if (post.type === 'blog') {
+    revalidatePath('/blog');
+    if (post.slug) revalidatePath(`/blog/${post.slug}`);
+  }
 }
 
 /**
@@ -120,6 +125,8 @@ export async function PUT(
       );
     }
 
+    if (existingPost.type === 'news' || type === 'news') return NextResponse.json({ error: '뉴스 관리의 편집 기능을 이용해주세요.' }, { status: 400 });
+
     const oldSlug = existingPost.slug;
     const newSlug = typeof slug === 'string' ? slug.trim() : slug;
     const slugProvided = slug !== undefined;
@@ -214,8 +221,8 @@ export async function PUT(
       }
     }
 
-    revalidateTag(CACHE_TAGS.posts, "max");
-    revalidateTag(CACHE_TAGS.home, "max");
+    revalidateTag(CACHE_TAGS.posts, { expire: 0 });
+    revalidateTag(CACHE_TAGS.home, { expire: 0 });
     revalidateBlogPostPaths(existingPost);
     revalidateBlogPostPaths(updatedPost);
 
@@ -271,8 +278,8 @@ export async function DELETE(
       );
     }
 
-    revalidateTag(CACHE_TAGS.posts, "max");
-    revalidateTag(CACHE_TAGS.home, "max");
+    revalidateTag(CACHE_TAGS.posts, { expire: 0 });
+    revalidateTag(CACHE_TAGS.home, { expire: 0 });
     if (existingPost) revalidateBlogPostPaths(existingPost);
 
     return NextResponse.json(

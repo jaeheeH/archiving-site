@@ -34,6 +34,16 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 't1.kakaocdn.net',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.metmuseum.org',
+        pathname: '/CRDImages/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'openaccess-cdn.clevelandart.org',
+        pathname: '/**',
+      },
       ...(supabaseImageHost
         ? [
             {

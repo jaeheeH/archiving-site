@@ -44,7 +44,7 @@ export default function SEOSettingsPage() {
   const [activeTab, setActiveTab] = useState("basic");
 
   const [settings, setSettings] = useState<SiteSettings>({
-    site_name: "Archiving",
+    site_name: "ARCH-B",
     site_description: "",
     site_keywords: [],
     site_language: "ko",
@@ -229,7 +229,7 @@ export default function SEOSettingsPage() {
                 value={settings.site_name}
                 onChange={(e) => handleInputChange("site_name", e.target.value)}
                 className="w-full px-3 py-2 border rounded"
-                placeholder="예: Archiving"
+                placeholder="예: ARCH-B"
               />
             </div>
 
@@ -599,7 +599,7 @@ export default function SEOSettingsPage() {
                     handleInputChange("organization_name", e.target.value)
                   }
                   className="w-full px-3 py-2 border rounded"
-                  placeholder="예: Archiving"
+                  placeholder="예: ARCH-B"
                 />
               </div>
             )}

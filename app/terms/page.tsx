@@ -6,6 +6,8 @@ export const metadata = {
   description: "ARCH-B의 이용약관입니다.",
 };
 
+const TERMS_EFFECTIVE_DATE = new Date("2026-07-29T00:00:00+09:00");
+
 const termsSections = [
   {
     title: "1. 목적",
@@ -71,7 +73,7 @@ const termsSections = [
 ];
 
 export default function TermsPage() {
-  const currentDate = formatKoreanDate(new Date(), "long");
+  const effectiveDate = formatKoreanDate(TERMS_EFFECTIVE_DATE, "long");
 
   return (
     <main className="min-h-screen w-full bg-white text-gray-900 dark:bg-[#0f0f0f] dark:text-gray-100">
@@ -111,7 +113,7 @@ export default function TermsPage() {
           </section>
 
           <section className="border-t border-gray-100 pt-8 text-sm text-gray-500 dark:border-gray-800 dark:text-gray-400">
-            <p>이 이용약관은 {currentDate}부터 적용됩니다.</p>
+            <p>이 이용약관은 {effectiveDate}부터 적용됩니다.</p>
             <Link href="/privacy" className="mt-4 inline-flex font-medium text-[#ff4800]">
               개인정보 처리방침 보기
             </Link>

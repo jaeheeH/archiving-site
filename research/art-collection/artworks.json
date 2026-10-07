@@ -1,0 +1,1133 @@
+[
+  {
+    "id": "met-436535",
+    "museum": "The Metropolitan Museum of Art",
+    "title": "Wheat Field with Cypresses",
+    "artist": "Vincent van Gogh",
+    "date": "1889",
+    "medium": "Oil on canvas",
+    "dimensions": "28 13/16 × 36 3/4 in. (73.2 × 93.4 cm)",
+    "culture": "",
+    "accession": "1993.132",
+    "source_url": "https://www.metmuseum.org/art/collection/search/436535",
+    "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436535",
+    "image_url": "https://images.metmuseum.org/CRDImages/ep/original/DP-42549-001.jpg",
+    "preview_url": "https://images.metmuseum.org/CRDImages/ep/web-large/DP-42549-001.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "isPublicDomain": true
+    },
+    "policy_url": "https://www.metmuseum.org/hubs/open-access",
+    "title_ko": "사이프러스가 있는 밀밭",
+    "themes": [
+      "빛과 풍경"
+    ],
+    "local_image": "images/met-436535.jpg",
+    "image_bytes": 8291194,
+    "collected_at": "2026-09-07T09:41:11.059Z",
+    "image_width": 4000,
+    "image_height": 3184,
+    "sha256": "b46d02a42fd3bb13b022cefc5beaa997b1d7a28cd7b53e4413d940aa0dc4014d",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "vincent-van-gogh"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "met-436532",
+    "museum": "The Metropolitan Museum of Art",
+    "title": "Self-Portrait with a Straw Hat (obverse: The Potato Peeler)",
+    "artist": "Vincent van Gogh",
+    "date": "1887",
+    "medium": "Oil on canvas",
+    "dimensions": "16 x 12 1/2 in. (40.6 x 31.8 cm)",
+    "culture": "",
+    "accession": "67.187.70a",
+    "source_url": "https://www.metmuseum.org/art/collection/search/436532",
+    "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436532",
+    "image_url": "https://images.metmuseum.org/CRDImages/ep/original/DT1502_cropped2.jpg",
+    "preview_url": "https://images.metmuseum.org/CRDImages/ep/web-large/DT1502_cropped2.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "isPublicDomain": true
+    },
+    "policy_url": "https://www.metmuseum.org/hubs/open-access",
+    "title_ko": "밀짚모자를 쓴 자화상",
+    "themes": [
+      "인물과 일상"
+    ],
+    "local_image": "images/met-436532.jpg",
+    "image_bytes": 3200170,
+    "collected_at": "2026-09-07T09:41:11.422Z",
+    "image_width": 2829,
+    "image_height": 3520,
+    "sha256": "3357aaac7a219e403f7610b8e8779e71c3609bbf6e4ef6ce7240e2256e58cdd7",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "vincent-van-gogh"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "met-436524",
+    "museum": "The Metropolitan Museum of Art",
+    "title": "Sunflowers",
+    "artist": "Vincent van Gogh",
+    "date": "1887",
+    "medium": "Oil on canvas",
+    "dimensions": "17 x 24 in. (43.2 x 61 cm)",
+    "culture": "",
+    "accession": "49.41",
+    "source_url": "https://www.metmuseum.org/art/collection/search/436524",
+    "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436524",
+    "image_url": "https://images.metmuseum.org/CRDImages/ep/original/DP-41223-001.jpg",
+    "preview_url": "https://images.metmuseum.org/CRDImages/ep/web-large/DP-41223-001.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "isPublicDomain": true
+    },
+    "policy_url": "https://www.metmuseum.org/hubs/open-access",
+    "title_ko": "해바라기",
+    "themes": [
+      "꽃과 사물"
+    ],
+    "local_image": "images/met-436524.jpg",
+    "image_bytes": 6066623,
+    "collected_at": "2026-09-07T09:41:12.026Z",
+    "image_width": 4000,
+    "image_height": 2826,
+    "sha256": "ba7160774025633fab2891c33840d8316af28e5c1eba8f79a48115a065391f3c",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "vincent-van-gogh"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "met-436105",
+    "museum": "The Metropolitan Museum of Art",
+    "title": "The Death of Socrates",
+    "artist": "Jacques Louis David",
+    "date": "1787",
+    "medium": "Oil on canvas",
+    "dimensions": "51 x 77 1/4 in. (129.5 x 196.2 cm)",
+    "culture": "",
+    "accession": "31.45",
+    "source_url": "https://www.metmuseum.org/art/collection/search/436105",
+    "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436105",
+    "image_url": "https://images.metmuseum.org/CRDImages/ep/original/DP-13139-001.jpg",
+    "preview_url": "https://images.metmuseum.org/CRDImages/ep/web-large/DP-13139-001.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "isPublicDomain": true
+    },
+    "policy_url": "https://www.metmuseum.org/hubs/open-access",
+    "title_ko": "소크라테스의 죽음",
+    "themes": [
+      "인물과 일상"
+    ],
+    "local_image": "images/met-436105.jpg",
+    "image_bytes": 1793830,
+    "collected_at": "2026-09-07T09:41:12.407Z",
+    "image_width": 4000,
+    "image_height": 2663,
+    "sha256": "eaff5a04103361fed9fba6f10ea7bed80ccdc595d664b6997c6bd32f0eee06a6",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "jacques-louis-david"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "met-437853",
+    "museum": "The Metropolitan Museum of Art",
+    "title": "Venice, from the Porch of Madonna della Salute",
+    "artist": "Joseph Mallord William Turner",
+    "date": "ca. 1835",
+    "medium": "Oil on canvas",
+    "dimensions": "36 x 48 1/8 in. (91.4 x 122.2 cm)",
+    "culture": "",
+    "accession": "99.31",
+    "source_url": "https://www.metmuseum.org/art/collection/search/437853",
+    "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/437853",
+    "image_url": "https://images.metmuseum.org/CRDImages/ep/original/DP169568.jpg",
+    "preview_url": "https://images.metmuseum.org/CRDImages/ep/web-large/DP169568.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "isPublicDomain": true
+    },
+    "policy_url": "https://www.metmuseum.org/hubs/open-access",
+    "title_ko": "마돈나 델라 살루테 현관에서 본 베네치아",
+    "themes": [
+      "빛과 풍경"
+    ],
+    "local_image": "images/met-437853.jpg",
+    "image_bytes": 2354666,
+    "collected_at": "2026-09-07T09:41:12.626Z",
+    "image_width": 1959,
+    "image_height": 1461,
+    "sha256": "05c6f7155da340471d9280e5be5ba9f01ba1589a83802f4fe9e396480a72e871",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "jmw-turner"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "met-437881",
+    "museum": "The Metropolitan Museum of Art",
+    "title": "Young Woman with a Water Pitcher",
+    "artist": "Johannes Vermeer",
+    "date": "ca. 1662",
+    "medium": "Oil on canvas",
+    "dimensions": "18 x 16 in. (45.7 x 40.6 cm)",
+    "culture": "",
+    "accession": "89.15.21",
+    "source_url": "https://www.metmuseum.org/art/collection/search/437881",
+    "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/437881",
+    "image_url": "https://images.metmuseum.org/CRDImages/ep/original/DP353257.jpg",
+    "preview_url": "https://images.metmuseum.org/CRDImages/ep/web-large/DP353257.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "isPublicDomain": true
+    },
+    "policy_url": "https://www.metmuseum.org/hubs/open-access",
+    "title_ko": "물주전자를 든 젊은 여인",
+    "themes": [
+      "인물과 일상",
+      "꽃과 사물"
+    ],
+    "local_image": "images/met-437881.jpg",
+    "image_bytes": 2638182,
+    "collected_at": "2026-09-07T09:41:12.938Z",
+    "image_width": 3437,
+    "image_height": 3866,
+    "sha256": "d14901b9c2124bd767cc1a4ca6286092eeedc3067a627449bd94869489bcefce",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "johannes-vermeer"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "met-436965",
+    "museum": "The Metropolitan Museum of Art",
+    "title": "The Monet Family in Their Garden at Argenteuil",
+    "artist": "Edouard Manet",
+    "date": "1874",
+    "medium": "Oil on canvas",
+    "dimensions": "24 x 39 1/4 in. (61 x 99.7 cm)",
+    "culture": "",
+    "accession": "1976.201.14",
+    "source_url": "https://www.metmuseum.org/art/collection/search/436965",
+    "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436965",
+    "image_url": "https://images.metmuseum.org/CRDImages/ep/original/DP-25465-001.jpg",
+    "preview_url": "https://images.metmuseum.org/CRDImages/ep/web-large/DP-25465-001.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "isPublicDomain": true
+    },
+    "policy_url": "https://www.metmuseum.org/hubs/open-access",
+    "title_ko": "아르장퇴유 정원의 모네 가족",
+    "themes": [
+      "인물과 일상",
+      "꽃과 사물"
+    ],
+    "local_image": "images/met-436965.jpg",
+    "image_bytes": 4261890,
+    "collected_at": "2026-09-07T09:41:13.412Z",
+    "image_width": 4000,
+    "image_height": 2518,
+    "sha256": "2b67c5b58f91eaa5a03c7a442d3502e2fb9e210a188694728d7fb2fbd046520c",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "edouard-manet"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "met-436896",
+    "museum": "The Metropolitan Museum of Art",
+    "title": "Portrait of a Woman with a Man at a Casement",
+    "artist": "Fra Filippo Lippi",
+    "date": "ca. 1440",
+    "medium": "Tempera on wood",
+    "dimensions": "25 1/4 x 16 1/2 in. (64.1 x 41.9 cm)",
+    "culture": "",
+    "accession": "89.15.19",
+    "source_url": "https://www.metmuseum.org/art/collection/search/436896",
+    "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436896",
+    "image_url": "https://images.metmuseum.org/CRDImages/ep/original/DP159891.jpg",
+    "preview_url": "https://images.metmuseum.org/CRDImages/ep/web-large/DP159891.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "isPublicDomain": true
+    },
+    "policy_url": "https://www.metmuseum.org/hubs/open-access",
+    "title_ko": "창가의 남성과 여인의 초상",
+    "themes": [
+      "인물과 일상"
+    ],
+    "local_image": "images/met-436896.jpg",
+    "image_bytes": 2663019,
+    "collected_at": "2026-09-07T09:41:13.657Z",
+    "image_width": 2568,
+    "image_height": 3875,
+    "sha256": "58fe28e831e071053b5435c07c5aa20e0006d1ba93555e47bbb8a99bcf0cf11c",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "fra-filippo-lippi"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-141639",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Twilight in the Wilderness",
+    "artist": "Frederic Edwin Church (American, 1826–1900)",
+    "date": "1860",
+    "medium": "oil on canvas",
+    "dimensions": "Unframed: 101.6 x 162.6 cm (40 x 64 in.); Framed: 124 x 185 x 13 cm (48 13/16 x 72 13/16 x 5 1/8 in.)",
+    "culture": [
+      "America"
+    ],
+    "accession": "1965.233",
+    "source_url": "https://clevelandart.org/art/1965.233",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/141639",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1965.233/1965.233_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1965.233/1965.233_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "황야의 황혼",
+    "themes": [
+      "빛과 풍경"
+    ],
+    "local_image": "images/cma-141639.jpg",
+    "image_bytes": 1594863,
+    "collected_at": "2026-09-07T09:41:14.609Z",
+    "image_width": 3400,
+    "image_height": 2123,
+    "sha256": "6f8de26b3dbe8823fb70dc4d01d680607b11cf5ca628d951448429d0f5a78dbc",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "frederic-edwin-church"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-135382",
+    "museum": "The Cleveland Museum of Art",
+    "title": "The Red Kerchief",
+    "artist": "Claude Monet (French, 1840–1926)",
+    "date": "c. 1868–73",
+    "medium": "oil on fabric",
+    "dimensions": "Framed: 128.3 x 105.7 x 14.6 cm (50 1/2 x 41 5/8 x 5 3/4 in.); Unframed: 99 x 79.8 cm (39 x 31 7/16 in.)",
+    "culture": [
+      "France, 19th century"
+    ],
+    "accession": "1958.39",
+    "source_url": "https://clevelandart.org/art/1958.39",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/135382",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1958.39/1958.39_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1958.39/1958.39_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "붉은 스카프",
+    "themes": [
+      "인물과 일상"
+    ],
+    "local_image": "images/cma-135382.jpg",
+    "image_bytes": 3757896,
+    "collected_at": "2026-09-07T09:41:16.571Z",
+    "image_width": 2732,
+    "image_height": 3400,
+    "sha256": "aa613d8993142ae625367099f56b9173d75c45a6b17eb48fceca9673d3909756",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "claude-monet"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-136510",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Water Lilies (Agapanthus)",
+    "artist": "Claude Monet (French, 1840–1926)",
+    "date": "c. 1915–26",
+    "medium": "oil on canvas",
+    "dimensions": "Framed: 204.9 x 430.3 x 6 cm (80 11/16 x 169 7/16 x 2 3/8 in.); Unframed: 201.3 x 425.6 cm (79 1/4 x 167 9/16 in.)",
+    "culture": [
+      "France, late 19th century-early 20th century"
+    ],
+    "accession": "1960.81",
+    "source_url": "https://clevelandart.org/art/1960.81",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/136510",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1960.81/1960.81_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1960.81/1960.81_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "수련 — 아가판투스",
+    "themes": [
+      "꽃과 사물",
+      "빛과 풍경"
+    ],
+    "local_image": "images/cma-136510.jpg",
+    "image_bytes": 1719394,
+    "collected_at": "2026-09-07T09:41:17.333Z",
+    "image_width": 3400,
+    "image_height": 1581,
+    "sha256": "a43abfac21743591b3ac4f0a6045f54f05964fefa01697c8fe5fb91b55e2e292",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "claude-monet"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-125249",
+    "museum": "The Cleveland Museum of Art",
+    "title": "The Large Plane Trees (Road Menders at Saint-Rémy)",
+    "artist": "Vincent van Gogh (Dutch, 1853–1890)",
+    "date": "1889",
+    "medium": "oil on fabric",
+    "dimensions": "Framed: 104.5 x 124.5 x 7.6 cm (41 1/8 x 49 x 3 in.); Unframed: 73.4 x 91.8 cm (28 7/8 x 36 1/8 in.)",
+    "culture": [
+      "Netherlands"
+    ],
+    "accession": "1947.209",
+    "source_url": "https://clevelandart.org/art/1947.209",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/125249",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1947.209/1947.209_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1947.209/1947.209_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "커다란 플라타너스 — 생레미의 도로 보수공들",
+    "themes": [
+      "빛과 풍경",
+      "인물과 일상"
+    ],
+    "local_image": "images/cma-125249.jpg",
+    "image_bytes": 4457387,
+    "collected_at": "2026-09-07T09:41:19.357Z",
+    "image_width": 3400,
+    "image_height": 2713,
+    "sha256": "349d3b4d6b373d957710b57eedd77b81d45c7a652c91df6d173377568bcc981a",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "vincent-van-gogh"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-135185",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Mount Sainte-Victoire",
+    "artist": "Paul Cezanne (French, 1839–1906)",
+    "date": "c. 1904",
+    "medium": "oil on fabric",
+    "dimensions": "Framed: 87.5 x 106.5 x 7 cm (34 7/16 x 41 15/16 x 2 3/4 in.); Unframed: 72.2 x 92.4 cm (28 7/16 x 36 3/8 in.)",
+    "culture": [
+      "France, late 19th-early 20th Century"
+    ],
+    "accession": "1958.21",
+    "source_url": "https://clevelandart.org/art/1958.21",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/135185",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1958.21/1958.21_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1958.21/1958.21_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "생트빅투아르산",
+    "themes": [
+      "빛과 풍경"
+    ],
+    "local_image": "images/cma-135185.jpg",
+    "image_bytes": 4715445,
+    "collected_at": "2026-09-07T09:41:21.545Z",
+    "image_width": 3400,
+    "image_height": 2697,
+    "sha256": "df309b8465f64cfdbceee35aeaa4d056fa194fa056fd4a9a1f663c0d120d2f16",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "paul-cezanne"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-141168",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Panoramic View of the Alps, Les Dents du Midi",
+    "artist": "Gustave Courbet (French, 1819–1877)",
+    "date": "1877",
+    "medium": "oil on fabric",
+    "dimensions": "Framed: 172 x 230 x 8.5 cm (67 11/16 x 90 9/16 x 3 3/8 in.); Unframed: 151.2 x 210.2 cm (59 1/2 x 82 3/4 in.)",
+    "culture": [
+      "France, 19th century"
+    ],
+    "accession": "1964.420",
+    "source_url": "https://clevelandart.org/art/1964.420",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/141168",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1964.420/1964.420_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1964.420/1964.420_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "알프스의 파노라마 — 당 뒤 미디",
+    "themes": [
+      "빛과 풍경"
+    ],
+    "local_image": "images/cma-141168.jpg",
+    "image_bytes": 5997152,
+    "collected_at": "2026-09-07T09:41:22.328Z",
+    "image_width": 3400,
+    "image_height": 2428,
+    "sha256": "321c7d9955c13a014de3d02a2880938674b6541fd994e6f4f21d46ecaf27759c",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "gustave-courbet"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-102578",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Portrait of Dora Wheeler",
+    "artist": "William Merritt Chase (American, 1849–1916)",
+    "date": "1882–83",
+    "medium": "oil on canvas",
+    "dimensions": "Framed: 180.6 x 188.6 x 11 cm (71 1/8 x 74 1/4 x 4 5/16 in.); Unframed: 159.8 x 166.4 cm (62 15/16 x 65 1/2 in.)",
+    "culture": [
+      "America"
+    ],
+    "accession": "1921.1239",
+    "source_url": "https://clevelandart.org/art/1921.1239",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/102578",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1921.1239/1921.1239_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1921.1239/1921.1239_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "도라 휠러의 초상",
+    "themes": [
+      "인물과 일상"
+    ],
+    "local_image": "images/cma-102578.jpg",
+    "image_bytes": 8166601,
+    "collected_at": "2026-09-07T09:41:23.298Z",
+    "image_width": 3400,
+    "image_height": 3254,
+    "sha256": "3d56c1e2d4703702e839141eb2c6a529b2aefdcd601eecad4011234d7f12caca",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "william-merritt-chase"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-121188",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Romaine Lacaux",
+    "artist": "Pierre-Auguste Renoir (French, 1841–1919)",
+    "date": "1864",
+    "medium": "oil on fabric",
+    "dimensions": "Framed: 106.7 x 89.2 x 8.9 cm (42 x 35 1/8 x 3 1/2 in.); Unframed: 81.3 x 65 cm (32 x 25 9/16 in.)",
+    "culture": [
+      "France, 19th century"
+    ],
+    "accession": "1942.1065",
+    "source_url": "https://clevelandart.org/art/1942.1065",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/121188",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1942.1065/1942.1065_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1942.1065/1942.1065_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "로멘 라코",
+    "themes": [
+      "인물과 일상"
+    ],
+    "local_image": "images/cma-121188.jpg",
+    "image_bytes": 3252098,
+    "collected_at": "2026-09-07T09:41:25.278Z",
+    "image_width": 2706,
+    "image_height": 3400,
+    "sha256": "2cc3eb7962b6485d8d5fd01bfff06a975756bcae25872abb9aa602c4468a3a60",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "pierre-auguste-renoir"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-315934",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Still Life with Meat, Fish, Vegetables, and Fruit",
+    "artist": "Jacob van Hulsdonck (Flemish, 1582–1647)",
+    "date": "c. 1615–20",
+    "medium": "Oil on panel, the reverse prepared with gesso",
+    "dimensions": "71.5 x 104 cm (28 1/8 x 40 15/16 in.)",
+    "culture": [
+      "Flanders"
+    ],
+    "accession": "2018.258",
+    "source_url": "https://clevelandart.org/art/2018.258",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/315934",
+    "image_url": "https://openaccess-cdn.clevelandart.org/2018.258/2018.258_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/2018.258/2018.258_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "고기·생선·채소·과일이 있는 정물",
+    "themes": [
+      "꽃과 사물"
+    ],
+    "local_image": "images/cma-315934.jpg",
+    "image_bytes": 2524893,
+    "collected_at": "2026-09-07T09:41:25.705Z",
+    "image_width": 3400,
+    "image_height": 2344,
+    "sha256": "c664405e8a73564102ebd17ed31e1d3aa59416a36253fbee3029d6b65f122695",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "jacob-van-hulsdonck"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-122351",
+    "museum": "The Cleveland Museum of Art",
+    "title": "The Burning of the Houses of Lords and Commons, 16 October 1834",
+    "artist": "Joseph Mallord William Turner (British, 1775–1851)",
+    "date": "1835",
+    "medium": "oil on canvas",
+    "dimensions": "Framed: 123.5 x 153.5 x 12 cm (48 5/8 x 60 7/16 x 4 3/4 in.); Unframed: 92 x 123.2 cm (36 1/4 x 48 1/2 in.)",
+    "culture": [
+      "England, 19th century"
+    ],
+    "accession": "1942.647",
+    "source_url": "https://clevelandart.org/art/1942.647",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/122351",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1942.647/1942.647_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1942.647/1942.647_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "1834년 10월 16일 영국 의회의 화재",
+    "themes": [
+      "빛과 풍경"
+    ],
+    "local_image": "images/cma-122351.jpg",
+    "image_bytes": 3059828,
+    "collected_at": "2026-09-07T09:41:27.522Z",
+    "image_width": 3400,
+    "image_height": 2525,
+    "sha256": "cf21271696b203a297d7899c296a1f13ccde8571dacda09213e1273871af9c39",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "jmw-turner"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-169545",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Books and Scholars’ Accoutrements",
+    "artist": "Yi Taek-gyun (Korean, 1808–after 1883)",
+    "date": "late 1800s",
+    "medium": "ten-panel folding screen; ink and color on silk",
+    "dimensions": "Overall: 197.5 x 395 cm (77 3/4 x 155 1/2 in.); Painting only: 139.3 x 330.8 cm (54 13/16 x 130 1/4 in.)",
+    "culture": [
+      "Korea, Joseon dynasty (1392–1910)"
+    ],
+    "accession": "2011.37",
+    "source_url": "https://clevelandart.org/art/2011.37",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/169545",
+    "image_url": "https://openaccess-cdn.clevelandart.org/2011.37/2011.37_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/2011.37/2011.37_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "책과 문방 기물",
+    "themes": [
+      "동아시아의 장면",
+      "꽃과 사물"
+    ],
+    "local_image": "images/cma-169545.jpg",
+    "image_bytes": 1047967,
+    "collected_at": "2026-09-07T09:41:28.767Z",
+    "image_width": 3400,
+    "image_height": 1915,
+    "sha256": "d108f0bcae36a5a573e7c4c03367124c22a91a24e6cce129af9b37989a294b8a",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "yi-taek-gyun"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-90249",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Mountain Market, Clear with Rising Mist",
+    "artist": "Unknown",
+    "date": "early 1500s",
+    "medium": "Hanging scroll; ink on silk",
+    "dimensions": "Painting: 115.3 x 60 cm (45 3/8 x 23 5/8 in.); Overall: 179 x 70.7 cm (70 1/2 x 27 13/16 in.); Overall with knobs and cord: 181.8 x 77 cm (71 9/16 x 30 5/16 in.)",
+    "culture": [
+      "Korea, Joseon dynasty (1392–1910)"
+    ],
+    "accession": "2015.517",
+    "source_url": "https://clevelandart.org/art/2015.517",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/90249",
+    "image_url": "https://openaccess-cdn.clevelandart.org/2015.517/2015.517_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/2015.517/2015.517_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "안개가 걷히는 산촌의 시장",
+    "themes": [
+      "동아시아의 장면",
+      "빛과 풍경"
+    ],
+    "local_image": "images/cma-90249.jpg",
+    "image_bytes": 1978078,
+    "collected_at": "2026-09-07T09:41:29.502Z",
+    "image_width": 1795,
+    "image_height": 3400,
+    "sha256": "c7fcf22790dccd1ed085c3ca0cfc60c48c7f19600d9ba1db51a98911ab1e857f",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [],
+    "artist_status": "unidentified"
+  },
+  {
+    "id": "cma-153664",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Snowscape with Figures",
+    "artist": "Kim Si (Korean, 1524–1593)",
+    "date": "1584",
+    "medium": "hanging scroll; ink on silk",
+    "dimensions": "Painting only: 53 x 67.3 cm (20 7/8 x 26 1/2 in.); Overall: 148.6 x 90.2 cm (58 1/2 x 35 1/2 in.)",
+    "culture": [
+      "Korea, Joseon dynasty (1392–1910)"
+    ],
+    "accession": "1987.187",
+    "source_url": "https://clevelandart.org/art/1987.187",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/153664",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1987.187/1987.187_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1987.187/1987.187_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "인물이 있는 설경",
+    "themes": [
+      "동아시아의 장면",
+      "빛과 풍경"
+    ],
+    "local_image": "images/cma-153664.jpg",
+    "image_bytes": 4039659,
+    "collected_at": "2026-09-07T09:41:30.063Z",
+    "image_width": 3400,
+    "image_height": 2707,
+    "sha256": "ded571cf3f91e3ba3873c8a2787783847e6f5273b5fe79e66ced47b0560bca31",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "kim-si"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-155043",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Seven Jeweled Mountain",
+    "artist": "Unknown",
+    "date": "late 1800s",
+    "medium": "ten-panel screen; ink and color on silk",
+    "dimensions": "Overall: 185.2 x 42.9 cm (72 15/16 x 16 7/8 in.); Each screen: 158.2 x 42.9 cm (62 5/16 x 16 7/8 in.)",
+    "culture": [
+      "Korea, Joseon dynasty (1392–1910)"
+    ],
+    "accession": "1989.6",
+    "source_url": "https://clevelandart.org/art/1989.6",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/155043",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1989.6/1989.6_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1989.6/1989.6_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "칠보산",
+    "themes": [
+      "동아시아의 장면",
+      "빛과 풍경"
+    ],
+    "local_image": "images/cma-155043.jpg",
+    "image_bytes": 4034392,
+    "collected_at": "2026-09-07T09:41:32.335Z",
+    "image_width": 3400,
+    "image_height": 1403,
+    "sha256": "039d58a783c62789e2bfb6baeb4eb9b819e4d12d4e2bd604884b0152d7c94454",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [],
+    "artist_status": "unidentified"
+  },
+  {
+    "id": "cma-153339",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Winter Landscape",
+    "artist": "Yeoseol (Korean)",
+    "date": "1500s",
+    "medium": "hanging scroll; ink and slight color on silk",
+    "dimensions": "Image: 92.4 x 52.7 cm (36 3/8 x 20 3/4 in.); Overall: 195.6 x 74.9 cm (77 x 29 1/2 in.)",
+    "culture": [
+      "Korea, Joseon dynasty (1392–1910)"
+    ],
+    "accession": "1986.45",
+    "source_url": "https://clevelandart.org/art/1986.45",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/153339",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1986.45/1986.45_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1986.45/1986.45_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "겨울 풍경",
+    "themes": [
+      "동아시아의 장면",
+      "빛과 풍경"
+    ],
+    "local_image": "images/cma-153339.jpg",
+    "image_bytes": 1243696,
+    "collected_at": "2026-09-07T09:41:34.093Z",
+    "image_width": 1954,
+    "image_height": 3400,
+    "sha256": "49028677be52ed66f820d8296159d2924088fd00e92c9a4f3060c2cf800ce082",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "yeoseol"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-159836",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Tiger Family",
+    "artist": "Unknown",
+    "date": "late 1800s",
+    "medium": "hanging scroll; ink and color on paper",
+    "dimensions": "Image: 170 x 90.4 cm (66 15/16 x 35 9/16 in.); Overall: 262.5 x 115.1 cm (103 3/8 x 45 5/16 in.)",
+    "culture": [
+      "Korea, Joseon dynasty (1392–1910)"
+    ],
+    "accession": "1997.148",
+    "source_url": "https://clevelandart.org/art/1997.148",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/159836",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1997.148/1997.148_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1997.148/1997.148_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "호랑이 가족",
+    "themes": [
+      "동아시아의 장면"
+    ],
+    "local_image": "images/cma-159836.jpg",
+    "image_bytes": 1629071,
+    "collected_at": "2026-09-07T09:41:36.040Z",
+    "image_width": 1820,
+    "image_height": 3400,
+    "sha256": "fc9ef03e51008f6d7bc80cbefa9f988486834a8b355f73e321c729b7f2e90906",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [],
+    "artist_status": "unidentified"
+  },
+  {
+    "id": "cma-160880",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Bamboo",
+    "artist": "Unknown",
+    "date": "1900s",
+    "medium": "hanging scroll; ink on silk",
+    "dimensions": "Painting only: 95.3 x 55.9 cm (37 1/2 x 22 in.); Overall: 189.1 x 70.5 cm (74 7/16 x 27 3/4 in.)",
+    "culture": [
+      "Korea"
+    ],
+    "accession": "1999.169",
+    "source_url": "https://clevelandart.org/art/1999.169",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/160880",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1999.169/1999.169_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1999.169/1999.169_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "대나무",
+    "themes": [
+      "동아시아의 장면",
+      "꽃과 사물"
+    ],
+    "local_image": "images/cma-160880.jpg",
+    "image_bytes": 1591467,
+    "collected_at": "2026-09-07T09:41:37.741Z",
+    "image_width": 2076,
+    "image_height": 3400,
+    "sha256": "e7f959fa69bb4406ac2ab94044854160948030ab5890ebd55d3fdfaabceeb9fa",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [],
+    "artist_status": "unidentified"
+  },
+  {
+    "id": "cma-111654",
+    "museum": "The Cleveland Museum of Art",
+    "title": "South Wind, Clear Sky, from Thirty-Six Views of Mount Fuji",
+    "artist": "Katsushika Hokusai (Japanese, 1760–1849)",
+    "date": "early 1830s",
+    "medium": "color woodblock print",
+    "dimensions": "25.6 x 37.5 cm (10 1/16 x 14 3/4 in.)",
+    "culture": [
+      "Japan, Edo period (1615–1868)"
+    ],
+    "accession": "1930.189",
+    "source_url": "https://clevelandart.org/art/1930.189",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/111654",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1930.189/1930.189_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1930.189/1930.189_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "후지산 36경 — 가이후 쾌청",
+    "themes": [
+      "동아시아의 장면",
+      "빛과 풍경"
+    ],
+    "local_image": "images/cma-111654.jpg",
+    "image_bytes": 3613854,
+    "collected_at": "2026-09-07T09:41:39.118Z",
+    "image_width": 3400,
+    "image_height": 2329,
+    "sha256": "cfcc5c5b94307bf8d97ba0a9dfe0374e0fb541b49f2939b6cd16b33b4e0aaaf2",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "katsushika-hokusai"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-103244",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Sudden Shower over Shin-Ōhashi Bridge and Atake, from One Hundred Famous Views of Edo",
+    "artist": "Utagawa Hiroshige (Japanese, 1797–1858)",
+    "date": "1857",
+    "medium": "color woodblock print",
+    "dimensions": "35.3 x 23.2 cm (13 7/8 x 9 1/8 in.)",
+    "culture": [
+      "Japan, Edo period (1615–1868)"
+    ],
+    "accession": "1921.318",
+    "source_url": "https://clevelandart.org/art/1921.318",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/103244",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1921.318/1921.318_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1921.318/1921.318_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "신오하시 다리와 아타케의 소나기",
+    "themes": [
+      "동아시아의 장면",
+      "빛과 풍경"
+    ],
+    "local_image": "images/cma-103244.jpg",
+    "image_bytes": 3623965,
+    "collected_at": "2026-09-07T09:41:40.725Z",
+    "image_width": 2285,
+    "image_height": 3400,
+    "sha256": "2d43c41461511c2ce6833e93d20f5180beb04f6157e519b1f2ee3f393ec935d4",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "utagawa-hiroshige"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-126086",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Driving Rain at Shōno, from Fifty-Three Stations of the Tokaidō",
+    "artist": "Utagawa Hiroshige (Japanese, 1797–1858)",
+    "date": "1833",
+    "medium": "color woodblock print",
+    "dimensions": "38 x 25.4 cm (14 15/16 x 10 in.)",
+    "culture": [
+      "Japan, Edo period (1615–1868)"
+    ],
+    "accession": "1948.306",
+    "source_url": "https://clevelandart.org/art/1948.306",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/126086",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1948.306/1948.306_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1948.306/1948.306_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "도카이도 53역 — 쇼노의 소나기",
+    "themes": [
+      "동아시아의 장면",
+      "빛과 풍경"
+    ],
+    "local_image": "images/cma-126086.jpg",
+    "image_bytes": 3601604,
+    "collected_at": "2026-09-07T09:41:42.762Z",
+    "image_width": 3400,
+    "image_height": 2270,
+    "sha256": "c00590f0e73a01bdcd4c48973f03b994649193a5b30c2f7cfe0b8cb51623715d",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "utagawa-hiroshige"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-152499",
+    "museum": "The Cleveland Museum of Art",
+    "title": "The Moon-Viewing Promontory, from One Hundred Views of Famous Places in Edo",
+    "artist": "Utagawa Hiroshige (Japanese, 1797–1858)",
+    "date": "1857",
+    "medium": "color woodblock print",
+    "dimensions": "33.9 x 22.8 cm (13 3/8 x 9 in.)",
+    "culture": [
+      "Japan, Edo period (1615–1868)"
+    ],
+    "accession": "1985.320",
+    "source_url": "https://clevelandart.org/art/1985.320",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/152499",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1985.320/1985.320_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1985.320/1985.320_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "에도 명소 백경 — 달맞이 곶",
+    "themes": [
+      "동아시아의 장면",
+      "빛과 풍경"
+    ],
+    "local_image": "images/cma-152499.jpg",
+    "image_bytes": 3610189,
+    "collected_at": "2026-09-07T09:41:44.449Z",
+    "image_width": 2317,
+    "image_height": 3400,
+    "sha256": "dbcc22944a260efe65002409b1767367cae9b0abc6ccb977575a8153b37e9402",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "utagawa-hiroshige"
+    ],
+    "artist_status": "identified"
+  },
+  {
+    "id": "cma-140476",
+    "museum": "The Cleveland Museum of Art",
+    "title": "Paulownias and Chrysanthemums",
+    "artist": "Sakai Hōitsu (Japanese, 1761–1828)",
+    "date": "early 1800s",
+    "medium": "Two-panel folding screen; ink and color on gilded paper",
+    "dimensions": "Image: 152.7 x 154.9 cm (60 1/8 x 61 in.); Overall: 157.5 x 158.5 cm (62 x 62 3/8 in.)",
+    "culture": [
+      "Japan, Edo period (1615–1868)"
+    ],
+    "accession": "1964.386",
+    "source_url": "https://clevelandart.org/art/1964.386",
+    "api_url": "https://openaccess-api.clevelandart.org/api/artworks/140476",
+    "image_url": "https://openaccess-cdn.clevelandart.org/1964.386/1964.386_print.jpg",
+    "preview_url": "https://openaccess-cdn.clevelandart.org/1964.386/1964.386_web.jpg",
+    "license": "CC0",
+    "license_evidence": {
+      "share_license_status": "CC0"
+    },
+    "policy_url": "https://www.clevelandart.org/open-access",
+    "title_ko": "오동나무와 국화",
+    "themes": [
+      "동아시아의 장면",
+      "꽃과 사물"
+    ],
+    "local_image": "images/cma-140476.jpg",
+    "image_bytes": 2946226,
+    "collected_at": "2026-09-07T09:41:46.069Z",
+    "image_width": 3400,
+    "image_height": 3264,
+    "sha256": "01ec0c26cbdb5ad2e163f544c15d39b08dd115ef71deedc3259184476800449d",
+    "title_ko_status": "working_translation",
+    "themes_status": "editorial_classification",
+    "artist_ids": [
+      "sakai-hoitsu"
+    ],
+    "artist_status": "identified"
+  }
+]

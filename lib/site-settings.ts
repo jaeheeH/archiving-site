@@ -1,6 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { CACHE_SECONDS, CACHE_TAGS } from "@/lib/public-data";
 import { getSiteUrl } from "@/lib/site-url";
+import { SITE_COPY } from "@/lib/site-copy";
 import { createPublicClient } from "@/lib/supabase/public";
 
 export type SiteSettings = {
@@ -102,10 +103,10 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
  * 기본 메타데이터 생성
  */
 export function getDefaultMetadata(settings: SiteSettings | null) {
-  const siteName = settings?.site_name || "Archiving";
+  const siteName = settings?.site_name || SITE_COPY.brand.name;
   const siteDescription =
     settings?.site_description ||
-    "다양한 디자인과 아이디어를 한곳에 모았습니다.";
+    `${SITE_COPY.brand.statement} ${SITE_COPY.brand.description}`;
   const siteUrl = getSiteUrl();
   const defaultOgImage = `${siteUrl}/api/og?type=default`;
   const ogImage = settings?.og_image || defaultOgImage;

@@ -1,4 +1,5 @@
 import "server-only";
+import { getArtCatalog } from "./art-catalog";
 
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -221,10 +222,11 @@ export async function getDashboardOverview() {
   if (!context) return null;
 
   const { admin } = context;
+  const catalog = await getArtCatalog();
 
-  const postBase = () =>
+  const postBase = (type = "blog") =>
     applyAuthorScope(
-      admin.from("posts").select("id", { count: "estimated", head: true }).eq("type", "blog"),
+      admin.from("posts").select("id", { count: "exact", head: true }).eq("type", type),
       context,
       "author_id"
     );
@@ -247,6 +249,10 @@ export async function getDashboardOverview() {
     postTotal,
     postPublished,
     postDraft,
+    newsTotal,
+    newsPublished,
+    newsDraft,
+    latestNews,
     galleryTotal,
     referencesTotal,
     userTotal,
@@ -262,6 +268,12 @@ export async function getDashboardOverview() {
     readCount(postBase()),
     readCount(postBase().eq("is_published", true)),
     readCount(postBase().eq("is_published", false)),
+    readCount(postBase("news")),
+    readCount(postBase("news").eq("is_published", true)),
+    readCount(postBase("news").eq("is_published", false)),
+    readRows<{ id: string; title: string; updated_at: string | null; is_published: boolean }>(
+      applyAuthorScope(admin.from("posts").select("id,title,updated_at,is_published,author_id").eq("type", "news").order("updated_at", { ascending: false }).limit(5), context, "author_id")
+    ),
     readCount(galleryBase()),
     readCount(referencesBase()),
     context.role === "admin" || context.role === "sub-admin"
@@ -380,14 +392,22 @@ export async function getDashboardOverview() {
       postsTotal: postTotal.value,
       postsPublished: postPublished.value,
       postsDraft: postDraft.value,
+      artworksTotal: catalog.artworks.length,
+      artistsTotal: catalog.artists.length,
+      newsTotal: newsTotal.value,
+      newsPublished: newsPublished.value,
+      newsDraft: newsDraft.value,
       galleryTotal: galleryTotal.value,
       referencesTotal: referencesTotal.value,
       usersTotal: userTotal.value,
       brandsTotal: brandTotal.value,
       generatedImagesTotal: generatedImageTotal.value,
-      contentTotal: totalCount([postTotal, galleryTotal, referencesTotal]),
+      contentTotal: totalCount([newsTotal, postTotal, galleryTotal, referencesTotal]) + catalog.artworks.length,
     },
     latest: {
+      artworks: catalog.artworks.slice(0, 5),
+      artists: catalog.artists.slice(0, 5),
+      news: latestNews,
       posts: latestPosts,
       gallery: latestGallery,
       references: latestReferences,

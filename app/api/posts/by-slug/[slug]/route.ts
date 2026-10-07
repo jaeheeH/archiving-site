@@ -25,7 +25,7 @@ export async function GET(
       .from('posts')
       .select(POST_SCRAP_STATUS_COLUMNS)
       .eq('slug', slug)
-      .eq('type', 'blog')
+      .in('type', ['blog', 'news'])
       .eq('is_published', true)
       .single();
 
@@ -53,10 +53,21 @@ export async function GET(
       userScraped = !!scrapData;
     }
 
+    const [counter, reaction] = await Promise.all([
+      supabase.from('posts').select('like_count').eq('id', post.id).single(),
+      user ? supabaseAuth.from('post_likes').select('post_id').eq('post_id', post.id).eq('user_id', user.id).maybeSingle() : Promise.resolve({ data: null, error: null }),
+    ]);
+    // Keep bookmarks usable while the additive migration is being installed.
+    const likesAvailable = !counter.error && !reaction.error;
+    if (counter.error && counter.error.code !== '42703') throw counter.error;
+    if (reaction.error && reaction.error.code !== 'PGRST205') throw reaction.error;
     // 5. 응답 데이터 구성
     const responseData = {
       scrap_count: post.scrap_count || 0,
       userScraped,
+      like_count: counter.data?.like_count || 0,
+      userLiked: !!reaction.data,
+      likes_available: likesAvailable,
     };
 
     return NextResponse.json(responseData, {

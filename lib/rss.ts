@@ -1,12 +1,14 @@
 import "server-only";
 
 import { createPublicClient } from "@/lib/supabase/public";
-import { getSiteSettings } from "@/lib/site-settings";
 import { getSiteUrl } from "@/lib/site-url";
+import { CATEGORIES, type Category } from "@/lib/news-feeds";
 
 const RSS_ITEM_LIMIT = 50;
 
 type RssPost = {
+  type: string;
+  content: { category?: Category } | null;
   id: string;
   title: string;
   subtitle: string | null;
@@ -60,19 +62,17 @@ function buildPostDescription(post: RssPost) {
 
 export async function getBlogRssXml() {
   const supabase = createPublicClient();
-  const settings = await getSiteSettings();
   const baseUrl = getSiteUrl();
-  const siteName = settings?.site_name || "Archiving";
-  const siteDescription =
-    settings?.site_description || "ARCH-B의 최신 블로그 글을 전합니다.";
+  const siteName = "ARCH.B";
+  const siteDescription = "디자인·개발·인테리어의 뉴스와 ARCH.B 에디토리얼을 함께 전합니다.";
 
   const [postsRes, categoriesRes] = await Promise.all([
     supabase
       .from("posts")
       .select(
-        "id, title, subtitle, summary, slug, published_at, created_at, updated_at, title_image_url, thumbnail_url, category_id"
+        "id, type, content, title, subtitle, summary, slug, published_at, created_at, updated_at, title_image_url, thumbnail_url, category_id"
       )
-      .eq("type", "blog")
+      .in("type", ["news", "blog"])
       .eq("is_published", true)
       .not("published_at", "is", null)
       .order("published_at", { ascending: false })
@@ -104,11 +104,9 @@ export async function getBlogRssXml() {
 
   const items = posts
     .map((post) => {
-      const link = `${baseUrl}/blog/${post.slug}`;
+      const link = `${baseUrl}/news/read/${post.slug}`;
       const imageUrl = post.thumbnail_url || post.title_image_url;
-      const categoryName = post.category_id
-        ? categoryMap.get(post.category_id)
-        : null;
+      const categoryName = post.type === "news" ? CATEGORIES[post.content?.category || "design"] : (post.category_id ? categoryMap.get(post.category_id) : "에디토리얼");
 
       return [
         "    <item>",
@@ -131,8 +129,8 @@ export async function getBlogRssXml() {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
-    <title>${escapeXml(`${siteName} Blog`)}</title>
-    <link>${escapeXml(`${baseUrl}/blog`)}</link>
+    <title>${escapeXml(`${siteName} 뉴스와 에디토리얼`)}</title>
+    <link>${escapeXml(baseUrl)}</link>
     <description>${escapeXml(siteDescription)}</description>
     <language>ko-KR</language>
     <lastBuildDate>${lastBuildDate}</lastBuildDate>

@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 2,
+  "components": {
+    "@balsa/balsa-foundation": {
+      "registry": "@balsa/balsa-foundation",
+      "namespace": "@balsa",
+      "origin": "https://balsa-ui.com/r/balsa-foundation.json",
+      "installedVersion": "0.1.0",
+      "designSystemVersion": "0.8.1",
+      "originalSourceHash": "sha256-4e20f4ad5ea63bdce72e6785a52d2119053d2cfc7d6a691b8e5739a188309512",
+      "installedSourceHash": "sha256-4e20f4ad5ea63bdce72e6785a52d2119053d2cfc7d6a691b8e5739a188309512",
+      "dependencies": [
+        "tailwindcss"
+      ],
+      "registryDependencies": [],
+      "targetPath": "src/styles/balsa-foundation.css",
+      "files": [
+        "src/styles/balsa-foundation.css"
+      ]
+    },
+    "@balsa/shared/theme-core": {
+      "registry": "@balsa/shared/theme-core",
+      "namespace": "@balsa",
+      "origin": "https://balsa-ui.com/r/theme-core.json",
+      "installedVersion": "0.1.0",
+      "designSystemVersion": "0.8.1",
+      "originalSourceHash": "sha256-c5a73abb4144b466786c0995cab45c7c4e3f292c6c5c332452dcaa8c478d207a",
+      "installedSourceHash": "sha256-c5a73abb4144b466786c0995cab45c7c4e3f292c6c5c332452dcaa8c478d207a",
+      "dependencies": [],
+      "registryDependencies": [],
+      "targetPath": "src/components/ui/theme-core.ts",
+      "files": [
+        "src/components/ui/theme-core.ts",
+        "src/components/ui/theme-component-contracts.ts"
+      ]
+    },
+    "@balsa/balsa-theme": {
+      "registry": "@balsa/balsa-theme",
+      "namespace": "@balsa",
+      "origin": "https://balsa-ui.com/r/balsa-theme.json",
+      "installedVersion": "0.1.0",
+      "designSystemVersion": "0.8.1",
+      "originalSourceHash": "sha256-bae8618964ca7e45e55e74dd03aba06ea73613167c1f4f8eeeda35a54f35033a",
+      "installedSourceHash": "sha256-bae8618964ca7e45e55e74dd03aba06ea73613167c1f4f8eeeda35a54f35033a",
+      "dependencies": [
+        "vue",
+        "tailwindcss",
+        "@lucide/vue"
+      ],
+      "registryDependencies": [
+        "@balsa/balsa-foundation",
+        "@balsa/shared/theme-core"
+      ],
+      "targetPath": "src/styles/balsa-theme.css",
+      "files": [
+        "src/styles/balsa-theme.css",
+        "src/components/ui/theme.ts",
+        "src/components/ui/theme-context.ts",
+        "src/components/ui/BalsaThemeProvider.vue",
+        "src/theme/theme-store.ts"
+      ]
+    },
+    "@balsa/balsa-palette": {
+      "registry": "@balsa/balsa-palette",
+      "namespace": "@balsa",
+      "origin": "https://balsa-ui.com/r/balsa-palette.json",
+      "installedVersion": "0.1.0",
+      "designSystemVersion": "0.8.1",
+      "originalSourceHash": "sha256-069bc4e3c815a4e00729fef152031398458613018cc820f2a55572dfa841aa1d",
+      "installedSourceHash": "sha256-069bc4e3c815a4e00729fef152031398458613018cc820f2a55572dfa841aa1d",
+      "dependencies": [
+        "tailwindcss"
+      ],
+      "registryDependencies": [
+        "@balsa/balsa-foundation"
+      ],
+      "targetPath": "src/styles/balsa-palette.css",
+      "files": [
+        "src/styles/balsa-palette.css"
+      ]
+    },
+    "@balsa/balsa-shadcn-bridge": {
+      "registry": "@balsa/balsa-shadcn-bridge",
+      "namespace": "@balsa",
+      "origin": "https://balsa-ui.com/r/balsa-shadcn-bridge.json",
+      "installedVersion": "0.1.0",
+      "designSystemVersion": "0.8.1",
+      "originalSourceHash": "sha256-6054b7bee1cf51777aa825e5dbf49d8b597fdd622d73690bc91793170a0786bb",
+      "installedSourceHash": "sha256-6054b7bee1cf51777aa825e5dbf49d8b597fdd622d73690bc91793170a0786bb",
+      "dependencies": [
+        "tailwindcss"
+      ],
+      "registryDependencies": [
+        "@balsa/balsa-foundation",
+        "@balsa/balsa-theme"
+      ],
+      "targetPath": "src/styles/balsa-shadcn-bridge.css",
+      "files": [
+        "src/styles/balsa-shadcn-bridge.css"
+      ]
+    },
+    "@balsa/design-system-my-design-system": {
+      "registry": "@balsa/design-system-my-design-system",
+      "namespace": "@balsa",
+      "installedVersion": "1.0.0",
+      "designSystemVersion": "0.8.1",
+      "originalSourceHash": "sha256-831b1ee74c26ea4c40b0fcc748cf0f83131a165d234ab8f4dfb1714bb3b1e195",
+      "installedSourceHash": "sha256-831b1ee74c26ea4c40b0fcc748cf0f83131a165d234ab8f4dfb1714bb3b1e195",
+      "targetPath": "src/themes/my-design-system.ts",
+      "files": [
+        "src/themes/my-design-system.ts",
+        "src/styles/my-design-system-palette.css"
+      ]
+    }
+  }
+}

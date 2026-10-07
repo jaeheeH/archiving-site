@@ -2,6 +2,7 @@ import GalleryClient from "./GalleryClient";
 import { Suspense } from "react";
 import { getGalleryPageData } from "@/lib/public-data";
 import { getSiteUrl } from "@/lib/site-url";
+import { SITE_COPY } from "@/lib/site-copy";
 
 // 1. ISR 설정: 3600초(1시간)마다 페이지 캐시 갱신
 export const revalidate = 7200;
@@ -12,17 +13,17 @@ export async function generateMetadata() {
   const ogImage = `${siteUrl}/api/og?type=gallery-list`;
 
   return {
-    title: 'Generative Archive',
-    description: '텍스트로 그려낸 상상의 단면들을 기록합니다. 인공지능이 생성한 독창적인 비주얼과 실험적인 텍스처를 탐험하세요.',
+    title: SITE_COPY.gallery.title,
+    description: SITE_COPY.gallery.description,
     openGraph: {
-      title: 'Generative Archive',
-      description: '텍스트로 그려낸 상상의 단면들을 기록합니다. 인공지능이 생성한 독창적인 비주얼과 실험적인 텍스처를 탐험하세요.',
+      title: SITE_COPY.gallery.title,
+      description: SITE_COPY.gallery.description,
       images: [{ url: ogImage, width: 1200, height: 630, alt: 'Generative Archive' }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Generative Archive',
-      description: '텍스트로 그려낸 상상의 단면들을 기록합니다.',
+      title: SITE_COPY.gallery.title,
+      description: SITE_COPY.gallery.description,
       images: [ogImage],
     },
   };

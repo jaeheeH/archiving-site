@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { createPublicClient } from "@/lib/supabase/public";
 import { getSiteUrl } from "@/lib/site-url";
+import { getArtCatalog } from "@/lib/art-catalog";
 // getSiteSettings는 revalidate 설정에 사용할 수 없으므로 sitemap 내부에서 baseUrl 용도로만 사용하거나 제거
 
 // 1. generateStaticParams 제거 (sitemap.ts에서 설정 오버라이드 용도로 작동하지 않음)
@@ -18,12 +19,14 @@ export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = createPublicClient();
+  const { artists, artworks } = await getArtCatalog();
   // const settings = await getSiteSettings(); // 필요한 경우 사용
 
   const baseUrl = getSiteUrl();
 
   // 정적 페이지들
   const staticPages: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}/news/stories`, changeFrequency: "daily", priority: 0.8 },
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -31,16 +34,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: `${baseUrl}/gallery`,
+      url: `${baseUrl}/art`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/blog`,
+      url: `${baseUrl}/artists`,
       lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
+      changeFrequency: "weekly",
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/references`,
@@ -62,6 +65,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
+  const artPages: MetadataRoute.Sitemap = artworks.map((artwork) => ({
+    url: `${baseUrl}/art/${artwork.id}`,
+    lastModified: new Date(artwork.collected_at),
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  const artistPages: MetadataRoute.Sitemap = artists.map((artist) => ({
+    url: `${baseUrl}/artists/${artist.id}`,
+    lastModified: new Date("2026-09-07"),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
   // 갤러리 아이템들
   const { data: galleries } = await supabase
     .from("gallery")
@@ -81,7 +98,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { data: posts } = await supabase
     .from("posts")
     .select("slug, updated_at")
-    .eq("type", "blog")
+    .in("type", ["blog", "news"])
     .eq("is_published", true)
     .not("published_at", "is", null)
     .order("updated_at", { ascending: false })
@@ -89,11 +106,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const blogPages: MetadataRoute.Sitemap =
     posts?.map((post) => ({
-      url: `${baseUrl}/blog/${post.slug}`,
+      url: `${baseUrl}/news/read/${post.slug}`,
       lastModified: new Date(post.updated_at),
       changeFrequency: "weekly",
       priority: 0.8,
     })) || [];
 
-  return [...staticPages, ...galleryPages, ...blogPages];
+  return [...staticPages, ...artPages, ...artistPages, ...galleryPages, ...blogPages];
 }

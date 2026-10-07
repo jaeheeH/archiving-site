@@ -31,6 +31,7 @@ type Gallery = {
 
 type BlogPost = {
   id: string;
+  type: 'blog' | 'news';
   title: string;
   subtitle: string | null;
   summary: string | null;
@@ -91,7 +92,7 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
 
   const stats = useMemo(
     () => [
-      { id: "blog" as const, label: "Blog", count: posts.length },
+      { id: "blog" as const, label: "기사", count: posts.length },
       { id: "gallery" as const, label: "Gallery", count: galleries.length },
       { id: "reference" as const, label: "References", count: references.length },
     ],
@@ -153,7 +154,7 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
         <p className="archive-eyebrow mb-3 text-[var(--archive-faint)]">Activity</p>
         <h2 className="text-2xl font-bold tracking-tight text-gray-950">내 활동</h2>
         <p className="mt-2 text-sm leading-6 text-[var(--archive-muted)]">
-          북마크한 블로그와 저장한 갤러리, 레퍼런스를 확인합니다.
+          북마크한 기사와 저장한 갤러리, 레퍼런스를 확인합니다.
         </p>
       </div>
 
@@ -192,7 +193,7 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
               return (
                 <Link
                   key={item.id}
-                  href={`/blog/${item.slug}`}
+                  href={`/news/read/${item.slug}`}
                   className="group overflow-hidden rounded-lg border border-[var(--archive-line)] bg-white transition hover:border-[#ff4800] hover:shadow-sm"
                 >
                   <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
@@ -201,6 +202,7 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
                         src={item.title_image_url}
                         alt={item.title}
                         fill
+                        unoptimized={item.type === 'news'}
                         className="object-cover transition duration-500 group-hover:scale-105"
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
@@ -224,7 +226,7 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
                   <div className="p-4">
                     <div className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase text-[#ff4800]">
                       <FileText className="h-3.5 w-3.5" />
-                      Blog
+                      기사
                     </div>
                     <h3 className="line-clamp-2 text-sm font-semibold leading-6 text-gray-950">{item.title}</h3>
                     <p className="mt-2 line-clamp-2 min-h-10 text-xs leading-5 text-[var(--archive-muted)]">{excerpt}</p>
@@ -373,9 +375,9 @@ function EmptyState({ type }: { type: ActivityType }) {
   const config = {
     blog: {
       icon: <FileText className="h-6 w-6" />,
-      title: "북마크한 블로그가 없습니다.",
-      href: "/blog",
-      cta: "블로그 읽으러 가기",
+      title: "북마크한 기사가 없습니다.",
+      href: "/news/stories",
+      cta: "기사 읽으러 가기",
     },
     gallery: {
       icon: <ImageIcon className="h-6 w-6" />,

@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import ReferenceContent from './ReferenceContent';
 import { getReferencesPageData } from '@/lib/public-data';
 import { getSiteUrl } from '@/lib/site-url';
+import { SITE_COPY } from '@/lib/site-copy';
 
 // ⚡ ISR 설정: 24시간마다 재검증
 export const revalidate = 86400;
@@ -14,17 +15,17 @@ export async function generateMetadata() {
   const ogImage = `${siteUrl}/api/og?type=references-list`;
 
   return {
-    title: 'References',
-    description: '디자인, 개발, 마케팅 등 다양한 분야의 영감을 주는 사이트들을 모았습니다.',
+    title: '참고사이트',
+    description: SITE_COPY.references.description,
     openGraph: {
-      title: 'References',
-      description: '디자인, 개발, 마케팅 등 다양한 분야의 영감을 주는 사이트들을 모았습니다.',
-      images: [{ url: ogImage, width: 1200, height: 630, alt: 'ARCH-B References' }],
+      title: '참고사이트',
+      description: SITE_COPY.references.description,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: 'ARCH.B 참고사이트' }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'References',
-      description: '디자인, 개발, 마케팅 등 다양한 분야의 영감을 주는 사이트들을 모았습니다.',
+      title: '참고사이트',
+      description: SITE_COPY.references.description,
       images: [ogImage],
     },
   };
