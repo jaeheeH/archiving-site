@@ -390,14 +390,14 @@ export default function EditGalleryClient({
       <div className="flex gap-2 modalBottom p-6">
         <button
           onClick={save}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="content-table-create"
           disabled={saving}
         >
           {saving ? statusText || "저장 중..." : "저장하기"}
         </button>
         <button
           onClick={onClose}
-          className="px-4 py-2 border rounded hover:bg-gray-100"
+          className="content-table-action"
         >
           취소
         </button>

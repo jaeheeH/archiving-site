@@ -31,6 +31,9 @@
 .archive-caption a { color: #1a8917; text-decoration: underline; text-underline-offset: 3px; }
 .archive-caption strong { font-weight: 600; color: #1a8917; }
 .archive-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: start; gap: 40px 26px; }
+.archive-masonry { column-count: 3; column-gap: 26px; }
+.archive-masonry > .archive-card { display: inline-block; width: 100%; break-inside: avoid; margin-bottom: 40px; vertical-align: top; }
+.archive-masonry .archive-media { aspect-ratio: var(--archive-image-ratio, 1.65); }
 .archive-card { min-width: 0; }
 .archive-card > a { display: block; }
 .archive-media { position: relative; display: block; width: 100%; aspect-ratio: 1.65; overflow: hidden; background: #f4f4f1; border-radius: 0; }
@@ -59,13 +62,15 @@
 .archive-section-heading h2 { font-size: 25px; font-weight: 730; letter-spacing: -.8px; }
 .archive-section-heading a { color: #1a8917; font-size: 13px; }
 @media(max-width:1100px) { .archive-artwork-layout { grid-template-columns: minmax(0,1fr) 300px; gap: 30px; } }
-@media(max-width:950px) { .archive-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .archive-artwork-layout { grid-template-columns: 1fr; } }
+@media(max-width:950px) { .archive-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .archive-masonry { column-count: 2; } .archive-artwork-layout { grid-template-columns: 1fr; } }
 @media(max-width:760px) { .archb-archive { padding-left: 20px; padding-right: 20px; } }
 @media(max-width:640px) {
   .archb-archive { padding: 32px 20px 88px; }
   .archive-heading h1,.archive-artwork-info h1 { font-size: 31px; letter-spacing: -1px; }
   .archive-heading > p,.archive-heading > div > p:last-child { font-size: 15px; }
   .archive-grid { grid-template-columns: 1fr; gap: 30px; }
+  .archive-masonry { column-count: 1; }
+  .archive-masonry > .archive-card { margin-bottom: 30px; }
   .archive-card h2,.archive-card h3 { font-size: 22px; }
   .archive-controls { flex-direction: column; align-items: stretch; }
   .archive-controls select { width: 100%; }

@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import type { Article } from "./news-feeds";
 import { editorialSchema, type Editorial } from "./news-editorial";
+import type { WritingState } from "./news-pipeline";
 
 export const NEWS_FORMAT = "archb-news-v1";
 export const newsSlug = (url: string) => `news-${createHash("sha256").update(url).digest("hex").slice(0, 20)}`;
@@ -11,4 +12,4 @@ export function newsPost(article: Article & Partial<Editorial> & { original_titl
     content: { format: NEWS_FORMAT, source_url: article.url, source: article.source, category: article.category, source_published_at: article.published_at, original_title: article.original_title || article.title, ...(published ? { paragraphs: article.paragraphs, points: article.points } : { source_text: article.source_text || article.description }) },
   };
 }
-export type NewsPost = ReturnType<typeof newsPost> & { id: string; author_id: string | null; created_at: string; updated_at: string; view_count: number; scrap_count: number; content: { paragraphs?: Editorial["paragraphs"]; points?: string[]; source_text?: string } };
+export type NewsPost = ReturnType<typeof newsPost> & { id: string; author_id: string | null; created_at: string; updated_at: string; view_count: number; scrap_count: number; content: { paragraphs?: Editorial["paragraphs"]; points?: string[]; source_text?: string; automation?: WritingState } };

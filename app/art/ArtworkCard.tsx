@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { getArtworkArtist, type Artwork } from "@/lib/art-catalog";
 
 export default async function ArtworkCard({ artwork }: { artwork: Artwork }) {
@@ -8,7 +9,7 @@ export default async function ArtworkCard({ artwork }: { artwork: Artwork }) {
   return (
     <article className="archive-card archive-art-card group">
       <Link href={`/art/${artwork.id}`} className="block">
-        <div className="archive-media">
+        <div className="archive-media" style={{ "--archive-image-ratio": artwork.image_width > 0 && artwork.image_height > 0 ? `${artwork.image_width} / ${artwork.image_height}` : "1.65" } as CSSProperties}>
           <Image
             unoptimized
             src={artwork.preview_url}

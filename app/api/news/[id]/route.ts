@@ -25,7 +25,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const saved = await db.from("posts").update({
       title: article.title, summary: article.summary, tags: article.tags, is_published,
       published_at: is_published ? post.published_at || post.content.source_published_at || new Date().toISOString() : null,
-      content: { ...post.content, paragraphs: article.paragraphs, points: article.points },
+      content: { ...post.content, paragraphs: article.paragraphs, points: article.points, automation: post.content.automation?.status === 'writing' ? undefined : post.content.automation },
       updated_at: new Date().toISOString(),
     }).eq("id", id).eq("type", "news");
     if (saved.error) throw saved.error;

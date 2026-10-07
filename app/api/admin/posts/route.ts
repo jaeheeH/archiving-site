@@ -54,6 +54,7 @@ function applyPostFilters<T>(query: T, params: {
   categoryId: string | null;
   draftOnly: boolean;
   publishedOnly: boolean;
+  reviewOnly: boolean;
   query: string;
 }): T {
   let nextQuery = (query as PostFilterableQuery).eq('type', params.type) as T;
@@ -75,7 +76,10 @@ function applyPostFilters<T>(query: T, params: {
     }
   }
 
-  if (params.draftOnly) {
+  if (params.reviewOnly && params.type === 'news') {
+    nextQuery = filterable().eq('is_published', false) as T;
+    nextQuery = filterable().not('content->paragraphs->0', 'is', 'null') as T;
+  } else if (params.draftOnly) {
     nextQuery = filterable().eq('is_published', false) as T;
   } else if (params.publishedOnly) {
     nextQuery = filterable().eq('is_published', true) as T;
@@ -95,6 +99,7 @@ export async function GET(request: Request) {
     const categoryId = searchParams.get('category_id');
     const draftOnly = searchParams.get('draft_only') === 'true';
     const publishedOnly = searchParams.get('published_only') === 'true';
+    const reviewOnly = searchParams.get('review_only') === 'true';
     const query = (searchParams.get('q') || '').trim().slice(0, 100);
     const sortBy = normalizeSortField(searchParams.get('sort_by'));
     const sortOrder = normalizeSortOrder(searchParams.get('sort_order'));
@@ -146,6 +151,7 @@ export async function GET(request: Request) {
       categoryId,
       draftOnly,
       publishedOnly,
+      reviewOnly,
       query,
     };
 

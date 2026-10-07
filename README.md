@@ -35,8 +35,12 @@ bun dev
 
 가공 뉴스는 기존 Supabase `posts`에 `type = news`, `content.format = archb-news-v1`로 저장합니다. 원문은 비공개 초안으로 수집하고, 가공한 본문·핵심 요점·출처가 있는 기사만 공개합니다. 분석 문단은 ‘ARCH.B 분석’으로 구분합니다. 기존 작성 글은 `type = blog`와 Tiptap 본문·작성자·북마크를 보존하면서 통합 목록에서 에디토리얼로 표시합니다. CMS는 기존 편집 화면을 사용합니다.
 
+국내 수집처로 [토스테크](https://toss.tech/), [당근 기술 블로그](https://medium.com/daangn), [여기어때 기술블로그](https://techblog.gccompany.co.kr/)의 공식 RSS를 함께 사용합니다. 국내 글도 같은 조사·작성·미발행 초안 흐름을 따릅니다. RSS 태그로 디자인·개발을 분류하고, 분야 태그가 없는 토스는 제목·요약·작성자 소개를 보완 근거로 사용합니다. 순수 조직문화·채용 태그 글은 제외하고, Medium의 RSS 추적값을 제거해 같은 글의 중복 수집을 막습니다.
+
 - `GET /api/news`: 공개된 한국어 기사
-- `POST /api/news/collect`: 지정된 RSS 매체를 비공개 초안으로 수집
+- `POST /api/news/collect`: 지정된 RSS를 중복 없이 수집하고 대기 뉴스 1편의 조사·자동 작성·초안 저장까지 실행
+- `GET /api/news/process`: 권한 범위의 자동 작성 대기·진행·실패 상태
+- `POST /api/news/process`: 대기 뉴스 1편을 조사·작성해 미발행 초안으로 저장
 - `GET /api/news/editorial`: 가공 대기 초안 20편
 - `POST /api/news/editorial`: `{ articles: [...] }` 형식의 가공 기사 저장·공개
 - `PATCH /api/news/[id]`: 담당 계정 권한으로 초안 저장·기사 발행
@@ -45,11 +49,23 @@ bun dev
 - `GET/PATCH /api/news/placement`: 관리자·부관리자의 대표 기사와 에디터 추천 지정
 - `PUT /api/posts/[id]/like`: `{ liked: boolean }`으로 로그인 계정의 좋아요 추가·취소
 
-수집과 가공 API는 기존 관리자·서브 관리자·에디터 로그인 권한을 확인합니다. 서버 키를 브라우저에 전달하지 않습니다. 예약 자동화는 꺼둔 상태이며, 이 통합은 스케줄러를 등록하지 않습니다.
+수집과 가공 API는 기존 관리자·서브 관리자·에디터 로그인 권한을 확인합니다. 서버 키를 브라우저에 전달하지 않습니다. 사용자 요청에 따라 매일 한국 시간 오전 9시에 Codex의 `ARCH.B 뉴스 수집·자동 작성` 정기 실행을 활성화했습니다. 수집부터 조사·작성까지 최대 15편씩 처리하고, 남은 대기는 다음 실행으로 이어집니다. 결과는 미발행 초안이며 검토 후 직접 발행합니다. 로컬 프로젝트 실행이므로 컴퓨터와 Codex 앱이 실행 중이어야 합니다.
 
 초기 기사 자료 12편은 `content/news/initial-articles.json`에 있고, 짧은 11편의 보강 초안은 `content/news/researched-articles.json`에 있습니다. 편집기에서 **보강 초안 검토 → 편집기로 가져오기 → 저장·발행** 순서로 적용합니다. 조사와 초안 열기는 현재 기사를 변경하지 않습니다. 발행은 본문 1,800~3,000자, 사실·분석을 구분한 4~6개 섹션, 원출처와 공식 1차 자료를 포함한 서로 다른 참고자료 2개 이상을 검증합니다. 기준에 못 맞춘 생성 결과는 같은 조사 자료로 한 번만 보정하며, 실패하면 기존 내용을 보존합니다.
 
 초기 자료를 가져올 때는 `npx tsx --env-file=.env.local scripts/import-news.mjs`를 실행합니다. 중복된 기존 기사와 작성자는 보존하며, 품질 기준을 충족하지 않은 원자료는 비공개로 가져옵니다. 편집 계정이 여러 개면 `ARCHB_NEWS_AUTHOR_ID`로 기존 계정을 지정합니다. 수동 초안 생성 CLI는 `npx tsx --env-file=.env.local scripts/research-news.mjs`이며 DB 저장 없이 검토 파일만 만듭니다.
+
+### 자동 수집·작성 실행
+
+```bash
+# 기존 환경과 기존 작성자 계정으로 실행 (자동 발행하지 않음):
+npx tsx --env-file=.env.local scripts/run-news-pipeline.mjs --author 9079a7b7-0641-436d-9b3d-c0e31b374e6f --limit 15
+# 수집·AI 호출·저장 없이 연결과 대기 상태 확인:
+npx tsx --env-file=.env.local scripts/run-news-pipeline.mjs --author 9079a7b7-0641-436d-9b3d-c0e31b374e6f --dry-run
+npx tsx scripts/check-news-pipeline.mjs
+```
+
+뉴스 관리의 **수집 + 자동 작성**은 같은 흐름을 실행하고 **대기 뉴스 자동 작성**은 기존 대기만 처리합니다. 수동 실행 화면을 닫으면 현재 요청이 중단될 수 있으며, 정기 실행은 브라우저 화면과 독립적으로 진행합니다. 작성 완료된 본문과 발행 기사는 다시 쓰지 않습니다. `content.automation`에 처리 상태·시도 수·실패 원인을, `content.research`에 조사 근거를 보관합니다. 실패 건은 최소 1시간 뒤에 재시도하며 최대 3회 후 수동 검토로 남깁니다. 중단된 작성은 10분 뒤 다시 처리할 수 있습니다. `updated_at` 조건으로 작업을 선점하고 저장하므로 중복 실행과 사용자 편집을 덮어쓰지 않습니다. ARCH.B 프로젝트 연결과 현재 작성 권한을 확인하고, 다른 Supabase 프로젝트는 거부합니다.
 
 ## 작품·작가 관리와 DB
 

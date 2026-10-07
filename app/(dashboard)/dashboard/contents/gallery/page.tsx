@@ -7,6 +7,7 @@ import { useToast } from "@/components/ToastProvider";
 
 import GalleryCard from "@/components/gallery/GalleryCard";
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
+import ContentPagination from "@/app/(dashboard)/components/ContentPagination";
 import EditGalleryClient from "./[id]/edit/EditGalleryClient";
 
 type GalleryItem = {
@@ -272,12 +273,13 @@ const fetchTopTags = async (search: string, tags: string[]) => {
   return (
     <div>
       <header className="dashboard-Header">
-        <DashboardTitle title="갤러리 목록" />
+        <DashboardTitle title="갤러리 관리" />
         <div className="flex gap-2 items-center">
           <Link
-            className="btn-link-primary btn-line-36"
+            className="content-table-create"
             href="/dashboard/contents/gallery/create"
           >
+            <i className="ri-add-line" aria-hidden="true" />
             업로드
           </Link>
         </div>
@@ -285,12 +287,13 @@ const fetchTopTags = async (search: string, tags: string[]) => {
 
       <div className="dashboard-container">
         {/* 검색 및 필터 */}
-        <div className="my-4 space-y-4">
+        <div className="content-table-filters content-table-gallery-filters">
           {/* 검색창 및 뷰 모드 */}
-          <div className="flex gap-3 items-center">
-            <div className="flex-1 relative">
+          <div className="flex flex-wrap gap-3 items-center">
+            <div className="min-w-[180px] flex-1 relative">
               <input
-                type="text"
+                type="search"
+                aria-label="갤러리 검색"
                 placeholder="제목, 설명, 태그로 검색..."
                 value={searchInput}
                 onChange={(e) => handleSearchChange(e.target.value)}
@@ -298,6 +301,7 @@ const fetchTopTags = async (search: string, tags: string[]) => {
               />
               {searchInput && (
                 <button
+                  aria-label="검색 초기화"
                   onClick={() => {
                     setSearchInput("");
                     setPage(1);
@@ -311,7 +315,9 @@ const fetchTopTags = async (search: string, tags: string[]) => {
             <div className="viewModeList gap-2 flex">
               <button
                 onClick={() => setViewMode("masonry")}
-                className={`border rounded ${
+                aria-label="메이슨리 보기"
+                aria-pressed={viewMode === 'masonry'}
+                className={`content-table-action content-view-mode ${
                   viewMode === "masonry" ? "on" : ""
                 }`}
               >
@@ -320,14 +326,18 @@ const fetchTopTags = async (search: string, tags: string[]) => {
 
               <button
                 onClick={() => setViewMode("grid")}
-                className={`border rounded ${viewMode === "grid" ? "on" : ""}`}
+                aria-label="그리드 보기"
+                aria-pressed={viewMode === 'grid'}
+                className={`content-table-action content-view-mode ${viewMode === "grid" ? "on" : ""}`}
               >
                 <i className="ri-layout-grid-line"></i>
               </button>
 
               <button
                 onClick={() => setViewMode("list")}
-                className={`border rounded ${viewMode === "list" ? "on" : ""}`}
+                aria-label="리스트 보기"
+                aria-pressed={viewMode === 'list'}
+                className={`content-table-action content-view-mode ${viewMode === "list" ? "on" : ""}`}
               >
                 <i className="ri-list-view"></i>
               </button>
@@ -420,21 +430,14 @@ const fetchTopTags = async (search: string, tags: string[]) => {
 
         {/* 페이지네이션 */}
         {totalPages > 1 && (
-          <div className="flex justify-center mt-6 gap-2">
-            <button
-              onClick={() => updatePage(Math.max(1, page - 1))}
-              disabled={page === 1}
-              className="px-3 py-1 border rounded disabled:opacity-50"
-            >
-              이전
-            </button>
-
+          <ContentPagination label="갤러리 페이지" page={page} totalPages={totalPages} onPageChange={updatePage}>
             {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => {
               const pageNum = i + 1 + Math.floor((page - 1) / 10) * 10;
               if (pageNum > totalPages) return null;
               return (
                 <button
                   key={pageNum}
+                  aria-current={page === pageNum ? 'page' : undefined}
                   onClick={() => updatePage(pageNum)}
                   className={`px-3 py-1 border rounded ${
                     page === pageNum ? "bg-black text-white" : ""
@@ -445,14 +448,7 @@ const fetchTopTags = async (search: string, tags: string[]) => {
               );
             })}
 
-            <button
-              onClick={() => updatePage(Math.min(totalPages, page + 1))}
-              disabled={page === totalPages}
-              className="px-3 py-1 border rounded disabled:opacity-50"
-            >
-              다음
-            </button>
-          </div>
+          </ContentPagination>
         )}
       </div>
 

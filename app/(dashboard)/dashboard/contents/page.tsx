@@ -111,14 +111,14 @@ export default async function ContentsDashboardPage() {
         <div className="flex items-center gap-2">
           <Link
             href="/dashboard/contents/gallery/create"
-            className="inline-flex h-9 items-center gap-2 rounded-md border border-gray-200 bg-white px-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="content-table-action"
           >
             <ImageIcon className="h-4 w-4" />
             이미지 추가
           </Link>
           <Link
             href="/dashboard/contents/blog/create"
-            className="inline-flex h-9 items-center gap-2 rounded-md bg-gray-900 px-3 text-sm font-medium text-white hover:bg-gray-800"
+            className="content-table-create"
           >
             <Plus className="h-4 w-4" />
             글 작성
@@ -191,7 +191,7 @@ export default async function ContentsDashboardPage() {
                   </Link>
                   {section.createHref && <Link
                     href={section.createHref}
-                    className="rounded-md border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                    className="content-table-action"
                   >
                     추가
                   </Link>}

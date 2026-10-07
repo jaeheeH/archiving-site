@@ -89,7 +89,7 @@ export default function NewsEditor({ postId }: { postId: string }) {
   }
 
   return <div>
-    <header className="dashboard-Header"><div><h1>뉴스 편집</h1><p className="mt-1 text-xs text-gray-500">한국어 본문과 참고자료를 정리합니다.</p></div><Link href="/dashboard/contents/news" className="rounded-md border border-gray-200 bg-white px-4 py-2 text-sm">목록으로</Link></header>
+    <header className="dashboard-Header"><div><h1>뉴스 편집</h1><p className="mt-1 text-xs text-gray-500">한국어 본문과 참고자료를 정리합니다.</p></div><Link href="/dashboard/contents/news" className="content-table-action">목록으로</Link></header>
     <main className="dashboard-container">
       {!post ? <p role={error ? "alert" : "status"} className="text-sm text-gray-500">{error || "뉴스를 불러오는 중…"}</p> : <form onSubmit={save} onChange={() => setDirty(true)} className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_280px]">
         <div className="min-w-0 space-y-6">
@@ -137,8 +137,8 @@ export default function NewsEditor({ postId }: { postId: string }) {
             {error && <p role="alert" className="text-sm leading-6 text-red-700">{error}</p>}
             {issues.length > 0 && <ul className="space-y-2 text-xs text-red-700">{issues.map((issue, i) => <li key={i}>{issue.field}: {issue.message}</li>)}</ul>}
             {notice && <p role="status" className="text-sm leading-6 text-emerald-700">{notice}</p>}
-            <button type="submit" value={post.is_published ? "published" : "draft"} disabled={busy || researching} className="w-full rounded-md bg-gray-900 px-4 py-2.5 text-sm font-medium text-white disabled:opacity-50">{busy ? "저장 중…" : post.is_published ? "변경사항 저장" : "임시저장"}</button>
-            <button type="submit" value={post.is_published ? "draft" : "published"} disabled={busy || researching} className="w-full rounded-md border border-gray-200 px-4 py-2.5 text-sm disabled:opacity-50">{post.is_published ? "비공개로 저장" : "발행"}</button>
+            <button type="submit" value={post.is_published ? "published" : "draft"} disabled={busy || researching} className="content-table-create w-full">{busy ? "저장 중…" : post.is_published ? "변경사항 저장" : "임시저장"}</button>
+            <button type="submit" value={post.is_published ? "draft" : "published"} disabled={busy || researching} className="content-table-action w-full">{post.is_published ? "비공개로 저장" : "발행"}</button>
             {post.is_published && <Link href={`/news/read/${post.slug}`} target="_blank" rel="noopener noreferrer" className="block text-center text-sm text-emerald-700">기사 보기 ↗</Link>}
           </section>
           <section className="space-y-3 rounded-lg border border-gray-200 bg-white p-5"><h2 className="text-sm font-semibold">자료 조사·초안 생성</h2><p className="text-xs leading-6 text-gray-500">공식 자료를 우선 조사하고 검토용 초안을 만듭니다. 초안 생성만으로 현재 기사가 바뀌지 않습니다.</p>{prepared && <button type="button" disabled={busy || researching} onClick={() => setPreview(prepared)} className="w-full rounded-md border border-emerald-300 px-4 py-2.5 text-sm text-emerald-700 disabled:opacity-50">보강 초안 검토 · {prepared.research.characterCount}자</button>}<button type="button" onClick={research} disabled={busy || researching} className="w-full rounded-md border border-gray-200 px-4 py-2.5 text-sm disabled:opacity-50">{researching ? '자료 조사 중…' : '자료 조사·초안 생성'}</button></section>

@@ -18,7 +18,7 @@ export default function NewsList({ articles, category: initialCategory, query: i
   const tags = [...new Set(articles.flatMap(a => a.tags))].slice(0, 10);
   const sources = [...new Set(articles.map(a => a.source))];
   return <main className="archb-news news-list-page">
-    <div className="news-list-intro"><Link href="/" className="news-back">주요 뉴스</Link><h1>모든 기사</h1><p>디자인·개발·인테리어의 소식과 ARCH.B 에디토리얼을 함께 읽습니다.</p></div>
+    <div className="news-list-intro"><Link href="/" className="news-back">주요 뉴스</Link><h1>뉴스</h1><p>디자인·개발·인테리어의 소식과 ARCH.B 에디토리얼을 함께 읽습니다.</p></div>
     <div className="news-list-layout"><div className="news-list-main">
     <div className="news-list-controls"><nav aria-label="뉴스 분야">{Object.entries({ all: "전체", ...CATEGORIES }).map(([key, label]) => <Link key={key} href={filterUrl('category', key)} aria-current={category === key ? 'page' : undefined} scroll={false}>{label}</Link>)}</nav></div>
     <div className="news-list-caption"><span>{query ? `“${query}” 검색 결과` : collection ? "주제별 에디토리얼" : source ? `${source}의 이야기` : "새롭게 도착한 이야기"}{query && <Link href={filterUrl('q', '')} scroll={false}>검색 초기화</Link>}{(source || collection) && <Link href="/news/stories">모든 기사</Link>}</span><span aria-live="polite">{filtered.length}편</span></div>

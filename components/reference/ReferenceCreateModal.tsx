@@ -532,14 +532,14 @@ export default function ReferenceCreateModal({
         <div className="sticky bottom-0 bg-white border-t px-6 py-4 flex gap-2 justify-end">
           <button
             onClick={handleClose}
-            className="px-4 py-2 border rounded hover:bg-gray-100"
+            className="content-table-action"
             disabled={loading}
           >
             취소
           </button>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+            className="content-table-create"
             disabled={loading}
           >
             {loading ? "저장 중..." : "저장하기"}

@@ -2,10 +2,10 @@ import "server-only";
 import { unstable_cache, revalidateTag, revalidatePath } from "next/cache";
 import { createPublicClient } from "@/lib/supabase/public";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { FEEDS, fetchFeed, CATEGORIES } from "./news-feeds";
+import { FEEDS, CATEGORIES } from "./news-feeds";
 import { editorialBatchSchema, type Editorial } from "./news-editorial";
 import { checkPostOwnershipOrAdmin } from "./supabase/post-utils";
-import { NEWS_FORMAT, newsPost, newsSlug, type NewsArticle } from "./news-record";
+import { NEWS_FORMAT, newsSlug, type NewsArticle } from "./news-record";
 export type { NewsArticle } from "./news-record";
 export const NEWS_CACHE_TAG = "archb-news";
 const columns = "id,type,slug,title,subtitle,summary,tags,title_image_url,published_at,content,author_id,category_id";
@@ -28,7 +28,7 @@ export const readNews = unstable_cache(async () => {
   if (error) throw error;
   const articles = mapPublishedRows((data || []) as PublishedRow[]);
   return { articles, sources: [...FEEDS, { id: "archb-editorial", name: "ARCH.B", category: "editorial" as const, url: "/" }].map(feed => ({ ...feed, count: articles.filter(a => a.source === feed.name).length })) };
-}, ["archb-published-news-and-editorials"], { revalidate: 600, tags: [NEWS_CACHE_TAG, "public-posts"] });
+}, ["archb-published-news-and-editorials", JSON.stringify(FEEDS)], { revalidate: 600, tags: [NEWS_CACHE_TAG, "public-posts"] });
 export const readNewsArticle = unstable_cache(async (slug: string) => {
   const { data, error } = await createPublicClient().from("posts").select(columns).eq("slug", slug).in("type", ["news", "blog"]).eq("is_published", true).not("published_at", "is", null).maybeSingle();
   if (error) throw error;
@@ -36,16 +36,8 @@ export const readNewsArticle = unstable_cache(async (slug: string) => {
 }, ["archb-article-by-slug"], { revalidate: 600, tags: [NEWS_CACHE_TAG, "public-posts"] });
 
 export async function collectNews(authorId: string) {
-  const db = createAdminClient();
-  const results = await Promise.all(FEEDS.map(async feed => {
-    try {
-      const articles = await fetchFeed(feed);
-      const { error } = await db.from("posts").upsert(articles.map(article => ({ ...newsPost(article), author_id: authorId })), { onConflict: "slug", ignoreDuplicates: true });
-      if (error) throw error;
-      return { source: feed.name, checked: articles.length, error: null };
-    } catch (cause) { return { source: feed.name, checked: 0, error: cause instanceof Error ? cause.message.slice(0, 200) : "수집 실패" }; }
-  }));
-  return { results };
+  const { collectNewsInto } = await import('./news-pipeline');
+  return collectNewsInto(createAdminClient(), authorId);
 }
 type Permission = { authorized: true; userId: string; role: string; error: null };
 export async function pendingNews(permission: Permission) {

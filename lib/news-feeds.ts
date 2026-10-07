@@ -8,7 +8,11 @@ export const FEEDS: { id: string; name: string; category: Category; url: string 
   { id: "smashing", name: "Smashing Magazine", category: "development", url: "https://www.smashingmagazine.com/feed/" },
   { id: "github", name: "GitHub Changelog", category: "development", url: "https://github.blog/changelog/feed/" },
   { id: "dezeen-interiors", name: "Dezeen Interiors", category: "interiors", url: "https://www.dezeen.com/interiors/feed/" },
+  { id: "toss", name: "토스테크", category: "development", url: "https://toss.tech/rss.xml" },
+  { id: "daangn", name: "당근 기술 블로그", category: "development", url: "https://medium.com/feed/daangn" },
+  { id: "gccompany", name: "여기어때 기술블로그", category: "development", url: "https://techblog.gccompany.co.kr/feed" },
 ];
+const domesticFeeds = new Set(["toss", "daangn", "gccompany"]);
 const parser = new XMLParser({ ignoreAttributes: false, removeNSPrefix: true, parseTagValue: false, processEntities: true, htmlEntities: true });
 const array = <T>(value: T | T[] | undefined): T[] => value === undefined ? [] : Array.isArray(value) ? value : [value];
 const value = (input: unknown): string => typeof input === "string" ? input : typeof input === "object" && input !== null && "#text" in input ? String(input["#text"]) : "";
@@ -19,6 +23,7 @@ export function canonicalUrl(input: string, base: string): string | null {
     if (!input || !["https:", "http:"].includes(url.protocol) || url.username || url.password) return null;
     url.hash = "";
     for (const key of [...url.searchParams.keys()]) if (/^utm_|^(fbclid|gclid)$/i.test(key)) url.searchParams.delete(key);
+    if (/^rss--/.test(url.searchParams.get("source") || "")) url.searchParams.delete("source");
     url.searchParams.sort();
     return url.href;
   } catch { return null; }
@@ -46,15 +51,21 @@ export function parseFeed(xml: string, feed: typeof FEEDS[number], now = Date.no
     const rawImage = html.match(/<img\b[^>]*\bsrc=["'](https:[^"']+)["']/i)?.[1] || String(thumbnail?.["@_url"] ?? imageContent?.["@_url"] ?? (String(enclosure?.["@_type"] ?? "").startsWith("image/") ? enclosure?.["@_url"] : "") ?? "");
     const image = canonicalUrl(rawImage.replace(/^http:\/\/(static\.dezeen\.com|archive\.smashing\.media)\//, "https://$1/").replace(/&amp;/g, "&"), feed.url);
     const tags = array(item.category).map((tag) => plainText(tag) || String((tag as Record<string, unknown>)?.["@_term"] ?? "")).filter(Boolean).map((tag) => tag.slice(0, 40));
-    const category = feed.id === "design-milk" && tags.some(tag => /interior|workplace|commercial/i.test(tag)) ? "interiors" : feed.category;
-    return [{ url, title, description: plainText(item.description ?? item.summary ?? item.content).slice(0, 450), source_text: plainText(html).slice(0, 12000), category, source: feed.name, published_at: new Date(date).toISOString(), image: image?.startsWith("https:") ? image : null, tags: [...new Set(tags)].slice(0, 6) }];
+    const sourceText = plainText(html).slice(0, 12000);
+    const description = (plainText(item.description ?? item.summary) || sourceText).slice(0, 450);
+    const cultureTag = /^(기업문화|조직문화|채용|culture|culture-and-benefit|benefit)$/i;
+    if (domesticFeeds.has(feed.id) && tags.some(tag => cultureTag.test(tag)) && tags.every(tag => cultureTag.test(tag) || tag === "여기어때")) return [];
+    // ponytail: title/summary and author-intro hints fill missing RSS categories; add publisher metadata if finer classification is needed.
+    const domesticDesign = domesticFeeds.has(feed.id) && (tags.some(tag => /^(design|ux|ui|ux-design|product-design|brand-design|브랜드디자인|디자인)$/i.test(tag)) || (feed.id === "toss" && (/디자이너|디자인|사용자 경험|\b(?:UX|UI)\b|브랜딩|캐릭터|아이콘/i.test(`${title} ${description}`) || /\bDesigner\b|디자이너/i.test(sourceText.slice(0, 500)))));
+    const category = domesticDesign ? "design" : feed.id === "design-milk" && tags.some(tag => /interior|workplace|commercial/i.test(tag)) ? "interiors" : feed.category;
+    return [{ url, title, description, source_text: sourceText, category, source: feed.name, published_at: new Date(date).toISOString(), image: image?.startsWith("https:") ? image : null, tags: [...new Set(tags)].slice(0, 6) }];
   });
 }
 export async function fetchFeed(feed: typeof FEEDS[number]) {
   const response = await fetch(feed.url, { headers: { "User-Agent": "ARCH.B/1.0 RSS Reader", Accept: "application/rss+xml, application/atom+xml, application/xml" }, signal: AbortSignal.timeout(15_000), redirect: "manual" });
   if (!response.ok) throw new Error(`수집처 응답: HTTP ${response.status}`);
   if (Number(response.headers.get("content-length")) > 2_000_000) throw new Error("피드 크기 한도를 초과했습니다.");
-  // ponytail: five bounded publisher feeds; add streaming parsing if large feeds are needed.
+  // ponytail: bounded publisher feeds; add streaming parsing if large feeds are needed.
   const reader = response.body?.getReader();
   if (!reader) throw new Error("피드 응답이 비어 있습니다.");
   const chunks: Uint8Array[] = [];

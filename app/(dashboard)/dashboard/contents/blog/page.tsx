@@ -4,6 +4,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useToast } from "@/components/ToastProvider";
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
+import ContentPagination from "@/app/(dashboard)/components/ContentPagination";
 import Link from "next/link";
 
 type Post = {
@@ -386,12 +387,12 @@ function BlogContent() {
     <div>
       {/* 헤더 */}
       <header className="dashboard-Header">
-        <DashboardTitle title="블로그 관리" />
+        <DashboardTitle title="에디토리얼 관리" />
         <div className="flex gap-2 items-center">
           {selectedIds.length > 0 && (
             <button
               onClick={handleBulkDelete}
-              className="px-3 py-2 bg-red-500 text-white rounded text-sm hover:bg-red-600"
+              className="content-table-action content-table-action-danger"
             >
               <i className="ri-delete-bin-line mr-1"></i>
               {selectedIds.length}개 삭제
@@ -399,7 +400,7 @@ function BlogContent() {
           )}
           <Link
             href="/dashboard/contents/blog/create"
-            className="px-3 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 inline-flex items-center"
+            className="content-table-create"
           >
             <i className="ri-add-line mr-1"></i>
             새 글 작성
@@ -409,9 +410,9 @@ function BlogContent() {
 
       <div className="dashboard-container">
         {/* 필터 & 정렬 */}
-        <div className="flex justify-between items-center mb-4 pb-4 border-b">
+        <div className="content-table-filters">
           {/* 카테고리 탭 필터 */}
-          <div className="flex gap-2 overflow-x-auto">
+          <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto">
             <button
               onClick={() => handleCategoryChange("all")}
               className={`px-3 py-2 text-sm rounded whitespace-nowrap transition ${
@@ -489,7 +490,7 @@ function BlogContent() {
           </div>
 
           {/* 초안보기 토글 */}
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <label className="text-sm text-gray-700 whitespace-nowrap">초안보기</label>
             <button
               onClick={() => handleDraftToggle(!showDraftOnly)}
@@ -497,6 +498,7 @@ function BlogContent() {
                 showDraftOnly ? "bg-blue-600" : "bg-gray-300"
               }`}
               role="switch"
+              aria-label="초안보기"
               aria-checked={showDraftOnly}
             >
               <span
@@ -509,12 +511,12 @@ function BlogContent() {
         </div>
 
         {/* 테이블 */}
-        <div className="overflow-x-auto border rounded-lg">
-          <table className="w-full">
+        <div className="content-table-wrap">
+          <table className="content-table" aria-label="에디토리얼 목록">
             <thead className="bg-gray-100 border-b">
               <tr>
                 {/* 체크박스 */}
-                <th className="p-3 w-12">
+                <th className="content-table-check">
                   <input
                     type="checkbox"
                     checked={
@@ -522,13 +524,14 @@ function BlogContent() {
                       selectedIds.length === paginatedPosts.length
                     }
                     onChange={(e) => handleSelectAll(e.target.checked)}
+                    aria-label="에디토리얼 모두 선택"
                     className="rounded cursor-pointer"
                   />
                 </th>
                 {/* 헤더들 */}
                 <th
                   onClick={() => handleSort("created_at")}
-                  className="text-left p-3 font-medium text-sm text-gray-700 cursor-pointer hover:bg-gray-200 transition"
+                  className="content-table-title text-left p-3 font-medium text-sm text-gray-700 cursor-pointer hover:bg-gray-200 transition"
                 >
                   <div className="flex items-center gap-2">
                     제목
@@ -543,7 +546,7 @@ function BlogContent() {
                 </th>
                 <th
                   onClick={() => handleSort("created_at")}
-                  className="text-left p-3 font-medium text-sm text-gray-700 cursor-pointer hover:bg-gray-200 transition"
+                  className="content-table-date text-left p-3 font-medium text-sm text-gray-700 cursor-pointer hover:bg-gray-200 transition"
                 >
                   <div className="flex items-center gap-2">
                     작성일
@@ -554,7 +557,7 @@ function BlogContent() {
                 </th>
                 <th
                   onClick={() => handleSort("published_at")}
-                  className="text-left p-3 font-medium text-sm text-gray-700 cursor-pointer hover:bg-gray-200 transition"
+                  className="content-table-date text-left p-3 font-medium text-sm text-gray-700 cursor-pointer hover:bg-gray-200 transition"
                 >
                   <div className="flex items-center gap-2">
                     발행일
@@ -565,7 +568,7 @@ function BlogContent() {
                 </th>
                 <th
                   onClick={() => handleSort("view_count")}
-                  className="text-left p-3 font-medium text-sm text-gray-700 cursor-pointer hover:bg-gray-200 transition"
+                  className="content-table-count text-left p-3 font-medium text-sm text-gray-700 cursor-pointer hover:bg-gray-200 transition"
                 >
                   <div className="flex items-center truncate gap-2">
                     조회수
@@ -576,7 +579,7 @@ function BlogContent() {
                 </th>
                 <th
                   onClick={() => handleSort("scrap_count")}
-                  className="text-left p-3 font-medium text-sm text-gray-700 cursor-pointer hover:bg-gray-200 transition"
+                  className="content-table-count text-left p-3 font-medium text-sm text-gray-700 cursor-pointer hover:bg-gray-200 transition"
                 >
                   <div className="flex items-center gap-2 truncate">
                     스크랩
@@ -585,13 +588,13 @@ function BlogContent() {
                     )}
                   </div>
                 </th>
-                <th className="text-center p-3 font-medium text-sm text-gray-700 truncate">
+                <th className="content-table-status text-center p-3 font-medium text-sm text-gray-700 truncate">
                   발행상태
                 </th>
-                <th className="text-center p-3 font-medium text-sm text-gray-700">
+                <th className="content-table-action-cell">
                   수정
                 </th>
-                <th className="text-center p-3 font-medium text-sm text-gray-700">
+                <th className="content-table-action-cell">
                   삭제
                 </th>
               </tr>
@@ -606,6 +609,7 @@ function BlogContent() {
                         type="checkbox"
                         checked={selectedIds.includes(post.id)}
                         onChange={(e) => handleSelectItem(post.id, e.target.checked)}
+                        aria-label={`${post.title} 선택`}
                         className="rounded cursor-pointer"
                       />
                     </td>
@@ -654,63 +658,43 @@ function BlogContent() {
                     </td>
                     {/* 발행상태 토글 */}
                     <td className="p-3 text-center">
-                      {canPublishPost(post) ? (
-                        <button
-                          onClick={() => handleTogglePublish(post)}
-                          className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                            post.is_published ? "bg-green-600" : "bg-gray-300"
-                          }`}
-                          role="switch"
-                          aria-checked={post.is_published}
-                        >
-                          <span
-                            className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                              post.is_published ? "translate-x-5" : "translate-x-0"
-                            }`}
-                          />
-                        </button>
-                      ) : (
-                        <div
-                          className="relative inline-flex h-6 w-11 flex-shrink-0 rounded-full border-2 border-transparent bg-gray-200 opacity-50 cursor-not-allowed"
-                          role="switch"
-                          aria-checked={post.is_published}
-                        >
-                          <span
-                            className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                              post.is_published ? "translate-x-5" : "translate-x-0"
-                            }`}
-                          />
-                        </div>
-                      )}
+                      <button type="button" disabled={!canPublishPost(post)} onClick={() => handleTogglePublish(post)} className="content-table-badge" data-state={post.is_published ? 'published' : 'draft'} role="switch" aria-label={`${post.title} 발행 상태`} aria-checked={post.is_published}>{post.is_published ? '발행' : '미발행'}</button>
                     </td>
                     {/* 수정 */}
-                    <td className="p-3 text-center">
+                    <td className="content-table-action-cell">
                       {canEditPost(post) ? (
                         <Link
                           href={`/dashboard/contents/blog/${post.id}/edit`}
-                          className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition inline-block"
+                          className="content-table-action"
+                          aria-label={`${post.title} 수정`}
                         >
+                          <i className="ri-edit-line" aria-hidden="true"></i>
                           수정
                         </Link>
                       ) : (
-                        <span className="px-3 py-1.5 text-sm bg-gray-50 text-gray-400 rounded cursor-not-allowed inline-block">
+                        <button type="button" disabled className="content-table-action" aria-label={`${post.title} 수정`}>
+                          <i className="ri-edit-line" aria-hidden="true"></i>
                           수정
-                        </span>
+                        </button>
                       )}
                     </td>
                     {/* 삭제 */}
-                    <td className="p-3 text-center">
+                    <td className="content-table-action-cell">
                       {canDeletePost(post) ? (
                         <button
                           onClick={() => handleDelete(post.id)}
-                          className="px-3 py-1.5 text-sm bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                          type="button"
+                          className="content-table-action content-table-action-danger"
+                          aria-label={`${post.title} 삭제`}
                         >
+                          <i className="ri-delete-bin-line" aria-hidden="true"></i>
                           삭제
                         </button>
                       ) : (
-                        <span className="px-3 py-1.5 text-sm bg-gray-50 text-gray-400 rounded cursor-not-allowed">
+                        <button type="button" disabled className="content-table-action content-table-action-danger" aria-label={`${post.title} 삭제`}>
+                          <i className="ri-delete-bin-line" aria-hidden="true"></i>
                           삭제
-                        </span>
+                        </button>
                       )}
                     </td>
                   </tr>
@@ -727,24 +711,17 @@ function BlogContent() {
         </div>
 
         {/* 정보 */}
-        <div className="mt-4 text-sm text-gray-600">
+        <div className="content-table-meta mt-4">
           총 {totalCount}개 중 {visibleStart}-{visibleEnd}개 표시
         </div>
 
         {/* 페이지네이션 */}
         {totalPages > 1 && (
-          <div className="flex justify-center mt-6 gap-2">
-            <button
-              onClick={() => updatePage(Math.max(1, page - 1))}
-              disabled={page === 1}
-              className="px-3 py-1 border rounded disabled:opacity-50 hover:bg-gray-100"
-            >
-              이전
-            </button>
-
+          <ContentPagination label="에디토리얼 페이지" page={page} totalPages={totalPages} onPageChange={updatePage}>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
               <button
                 key={num}
+                aria-current={page === num ? 'page' : undefined}
                 onClick={() => updatePage(num)}
                 className={`px-3 py-1 border rounded ${
                   page === num ? "bg-black text-white" : "hover:bg-gray-100"
@@ -754,14 +731,7 @@ function BlogContent() {
               </button>
             ))}
 
-            <button
-              onClick={() => updatePage(Math.min(totalPages, page + 1))}
-              disabled={page === totalPages}
-              className="px-3 py-1 border rounded disabled:opacity-50 hover:bg-gray-100"
-            >
-              다음
-            </button>
-          </div>
+          </ContentPagination>
         )}
       </div>
     </div>

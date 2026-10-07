@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { getArtCatalog } from "@/lib/art-catalog";
 
 export const metadata: Metadata = {
@@ -28,14 +29,14 @@ export default async function ArtistsPage({ searchParams }: ArtistsPageProps) {
 
       <div className="archive-caption border-t border-border"><p>{q ? `“${q}” 검색 결과 · ` : '함께 보는 작가 · '}<strong>{filteredArtists.length}</strong>명</p>{q ? <Link href="/artists">검색 초기화</Link> : <Link href="/art">전체 작품 보기 →</Link>}</div>
       {!filteredArtists.length && <div className="archive-empty">검색 결과가 없습니다. 한글 또는 원문 이름으로 찾아보세요.</div>}
-      <section aria-label="작가 목록" className="archive-grid">
+      <section aria-label="작가 목록" className="archive-masonry">
         {filteredArtists.map((artist) => {
           const artistArtworks = artworks.filter(work => work.artist_ids.includes(artist.id));
           const museums = new Set(artistArtworks.map((artwork) => artwork.museum));
           const cover = artistArtworks[0];
           return (
             <article key={artist.id} className="archive-card archive-artist-card group"><Link href={`/artists/${artist.id}`}>
-              <div className="archive-media">
+              <div className="archive-media" style={{ "--archive-image-ratio": cover && cover.image_width > 0 && cover.image_height > 0 ? `${cover.image_width} / ${cover.image_height}` : "1.65" } as CSSProperties}>
                 {cover && <Image unoptimized src={cover.preview_url} alt={`${artist.name_ko || artist.name} 대표 작품`} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-contain p-4 transition-transform duration-500 group-hover:scale-[1.025]" />}
               </div>
               <div className="archive-card-copy">

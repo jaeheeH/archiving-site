@@ -14,7 +14,7 @@ html[data-theme="my-design-system"] .client-header.editorial-header{background:#
 .editorial-archive-nav{display:flex;align-items:center;gap:22px;border-left:1px solid #ddd;padding-left:26px}
 .editorial-archive-nav a{font-size:13px;font-weight:400;color:#777;white-space:nowrap}
 .editorial-archive-nav a:hover,.editorial-archive-nav a[aria-current="page"]{color:#1a8917}
-html[data-theme="my-design-system"] .editorial-header .client-header-menu>a{font-size:14px;letter-spacing:-.2px;text-transform:none}
+html[data-theme="my-design-system"] .editorial-header .client-header-menu>a{font-size:14px;letter-spacing:-.2px;text-transform:none;padding:0 12px}
 .news-archive-links a{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee;font-size:14px}
 .news-archive-links small{font-size:12px;color:#777}
 .editorial-footer{max-width:1232px;margin:30px auto 0;padding:30px 0;border-top:1px solid #dedede;background:#fff}

@@ -4,6 +4,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useToast } from "@/components/ToastProvider";
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
+import ContentPagination from "@/app/(dashboard)/components/ContentPagination";
 import ReferenceTableRow from "@/components/reference/ReferenceTableRow";
 import ReferenceCreateModal from "@/components/reference/ReferenceCreateModal";
 import ReferenceEditModal from "@/components/reference/ReferenceEditModal";
@@ -283,12 +284,12 @@ function ReferenceContent() {
     <div>
       {/* 헤더 */}
       <header className="dashboard-Header">
-        <DashboardTitle title="레퍼런스 목록" />
+        <DashboardTitle title="참고사이트 관리" />
         <div className="flex gap-2 items-center">
           {selectedIds.length > 0 && (
             <button
               onClick={handleBulkDelete}
-              className="px-3 py-2 bg-red-500 text-white rounded text-sm hover:bg-red-600"
+              className="content-table-action content-table-action-danger"
             >
               <i className="ri-delete-bin-line mr-1"></i>
               {selectedIds.length}개 삭제
@@ -296,7 +297,7 @@ function ReferenceContent() {
           )}
           <button
             onClick={() => setCreateModalOpen(true)}
-            className="px-3 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
+            className="content-table-create"
           >
             <i className="ri-add-line mr-1"></i>
             추가
@@ -306,9 +307,9 @@ function ReferenceContent() {
 
       <div className="dashboard-container">
         {/* 필터 & 정렬 */}
-        <div className="flex justify-between items-center mb-4 pb-4 border-b">
+        <div className="content-table-filters">
           {/* 범주 탭 필터 */}
-          <div className="flex gap-2 overflow-x-auto">
+          <div className="flex min-w-0 flex-1 gap-2 overflow-x-auto">
             <button
               onClick={() => {
                 setSelectedRange(null);
@@ -397,7 +398,7 @@ function ReferenceContent() {
           </div>
 
           {/* 정렬 옵션 */}
-          <div className="flex gap-2">
+          <div className="flex shrink-0 gap-2">
             <select
               value={sortBy}
               onChange={(e) => {
@@ -429,12 +430,12 @@ function ReferenceContent() {
         </div>
 
         {/* 테이블 */}
-        <div className="overflow-x-auto border rounded-lg">
-          <table className="w-full">
+        <div className="content-table-wrap">
+          <table className="content-table" aria-label="참고사이트 목록">
             <thead className="bg-gray-100 border-b">
               <tr>
                 {/* 체크박스 */}
-                <th className="p-3 w-12">
+                <th className="content-table-check">
                   <input
                     type="checkbox"
                     checked={
@@ -442,29 +443,30 @@ function ReferenceContent() {
                       selectedIds.length === references.length
                     }
                     onChange={(e) => handleSelectAll(e.target.checked)}
+                    aria-label="참고사이트 모두 선택"
                     className="rounded cursor-pointer"
                   />
                 </th>
                 {/* 헤더들 */}
-                <th className="text-left p-3 font-medium text-sm text-gray-700">
+                <th className="content-table-title text-left p-3 font-medium text-sm text-gray-700">
                   제목
                 </th>
                 <th className="text-left p-3 font-medium text-sm text-gray-700">
                   설명
                 </th>
-                <th className="text-left p-3 font-medium text-sm text-gray-700">
+                <th className="content-table-url text-left p-3 font-medium text-sm text-gray-700">
                   URL
                 </th>
-                <th className="text-left p-3 font-medium text-sm text-gray-700">
+                <th className="content-table-category text-left p-3 font-medium text-sm text-gray-700">
                   카테고리
                 </th>
-                <th className="text-center p-3 font-medium text-sm text-gray-700">
+                <th className="content-table-count text-center p-3 font-medium text-sm text-gray-700">
                   클릭수
                 </th>
-                <th className="text-center p-3 font-medium text-sm text-gray-700">
+                <th className="content-table-action-cell">
                   수정
                 </th>
-                <th className="text-center p-3 font-medium text-sm text-gray-700">
+                <th className="content-table-action-cell">
                   삭제
                 </th>
               </tr>
@@ -501,25 +503,18 @@ function ReferenceContent() {
         </div>
 
         {/* 정보 */}
-        <div className="mt-4 text-sm text-gray-600">
+        <div className="content-table-meta mt-4">
           총 {totalCount}개 중 {(page - 1) * limit + 1}-
           {Math.min(page * limit, totalCount)}개 표시
         </div>
 
         {/* 페이지네이션 */}
         {totalPages > 1 && (
-          <div className="flex justify-center mt-6 gap-2">
-            <button
-              onClick={() => updatePage(Math.max(1, page - 1))}
-              disabled={page === 1}
-              className="px-3 py-1 border rounded disabled:opacity-50 hover:bg-gray-100"
-            >
-              이전
-            </button>
-
+          <ContentPagination label="참고사이트 페이지" page={page} totalPages={totalPages} onPageChange={updatePage}>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
               <button
                 key={num}
+                aria-current={page === num ? 'page' : undefined}
                 onClick={() => updatePage(num)}
                 className={`px-3 py-1 border rounded ${
                   page === num
@@ -531,14 +526,7 @@ function ReferenceContent() {
               </button>
             ))}
 
-            <button
-              onClick={() => updatePage(Math.min(totalPages, page + 1))}
-              disabled={page === totalPages}
-              className="px-3 py-1 border rounded disabled:opacity-50 hover:bg-gray-100"
-            >
-              다음
-            </button>
-          </div>
+          </ContentPagination>
         )}
       </div>
 

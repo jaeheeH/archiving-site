@@ -60,7 +60,7 @@ export default async function ArtPage({ searchParams }: ArtPageProps) {
       </div>
 
       {filteredArtworks.length ? (
-        <section aria-label="작품 목록" className="archive-grid">
+        <section aria-label="작품 목록" className="archive-masonry">
           {filteredArtworks.map((artwork) => <ArtworkCard key={artwork.id} artwork={artwork} />)}
         </section>
       ) : (

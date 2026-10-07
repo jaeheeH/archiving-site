@@ -37,7 +37,7 @@ export default function CatalogEditor({ kind, row, artists, writable }: { kind: 
     finally { setBusy(false); }
   }
   return <div>
-    <header className="dashboard-Header"><h1>{label} {row ? writable ? '편집' : '조회' : '추가'}</h1><Link href={`/dashboard/contents/${kind}`} className="rounded-md border px-4 py-2 text-sm">목록으로</Link></header>
+    <header className="dashboard-Header"><h1>{label} {row ? writable ? '편집' : '조회' : '추가'}</h1><Link href={`/dashboard/contents/${kind}`} className="content-table-action">목록으로</Link></header>
     <main className="dashboard-container"><form onSubmit={save} onChange={() => setDirty(true)} className="max-w-4xl space-y-6 rounded-lg border border-gray-200 bg-white p-6">
       <fieldset disabled={!writable || busy} className="grid gap-5 md:grid-cols-2">
         {kind === 'artists' ? <>{field('name', '원문 이름', artist?.name, 'text', 200)}{field('name_ko', '한국어 이름', artist?.name_ko || '', 'text', 200)}{field('source_ids', '기관별 작가 ID · 쉼표로 구분', artist?.source_ids.join(', '))}</> : <>
@@ -50,7 +50,7 @@ export default function CatalogEditor({ kind, row, artists, writable }: { kind: 
       {artist?.artwork_ids.length ? <section><h2 className="mb-2 text-sm font-semibold">연결된 작품</h2><div className="flex flex-wrap gap-3">{artist.artwork_ids.map(id => <Link key={id} href={`/dashboard/contents/art/${id}/edit`} className="text-sm text-emerald-700 underline">{id}</Link>)}</div><p className="mt-2 text-xs text-gray-500">작품 편집에서 작가 연결을 변경할 수 있습니다.</p></section> : null}
       {row && <Link href={`/${kind}/${row.id}`} target="_blank" className="inline-block text-sm text-emerald-700">공개 화면 보기 ↗</Link>}
       {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
-      {writable ? <button disabled={busy} className="rounded-md bg-gray-900 px-5 py-2.5 text-sm text-white disabled:opacity-50">{busy ? '저장 중…' : '저장'}</button> : <p className="text-sm text-gray-500">조회 모드입니다.</p>}
+      {writable ? <button disabled={busy} className="content-table-create">{busy ? '저장 중…' : '저장'}</button> : <p className="text-sm text-gray-500">조회 모드입니다.</p>}
     </form></main>
   </div>;
 }

@@ -229,7 +229,7 @@ export default function GalleryDetailModal({
                 <div className="pt-4 border-t space-y-2">
                   <button
                     onClick={() => setShowSimilarModal(true)}
-                    className="w-full bg-[var(--archive-brand)] px-4 py-2 text-white transition-colors hover:bg-[var(--archive-brand-hover)]"
+                    className="content-table-action w-full"
                   >
                     <i className="ri-image-line mr-2"></i>
                     유사 이미지 보기
@@ -238,9 +238,9 @@ export default function GalleryDetailModal({
                   {onEdit && (
                     <button
                       onClick={handleEdit}
-                      className="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                      className="content-table-action w-full"
                     >
-                      <i className="ri-edit-line mr-2"></i>
+                      <i className="ri-edit-line" aria-hidden="true"></i>
                       수정
                     </button>
                   )}
@@ -248,9 +248,9 @@ export default function GalleryDetailModal({
                   {onDelete && (
                     <button
                       onClick={handleDelete}
-                      className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                      className="content-table-action content-table-action-danger w-full"
                     >
-                      <i className="ri-delete-bin-line mr-2"></i>
+                      <i className="ri-delete-bin-line" aria-hidden="true"></i>
                       삭제
                     </button>
                   )}

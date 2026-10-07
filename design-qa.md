@@ -60,3 +60,34 @@ This later request supersedes the blue accents and 24px dashboard card radii abo
 - Browser checks: 390px gallery/account/dashboard, 768px activity/image detail, 1280px profile and 1440px news/gallery/CMS/dashboard/archives. No page overflow. Gallery search, Enter-to-open, close/filter restoration and green input focus verified. Final browser warning/error log was empty.
 - Evidence: C:/Users/kadfg/.codex/visualizations/2026/10/07/archb-unified/ (dashboard-desktop.png, contents-desktop.png, gallery-desktop.png, gallery-mobile.png, gallery-detail-tablet.png, mypage-desktop.png, activity-tablet.png, account-mobile.png).
 - No database/account/content/scheduler changes were performed for this styling request. User-owned editing tabs and form values were left intact.
+
+
+## 뉴스 수집·작성 통합 — 2026-10-07
+
+- User authorized reactivating daily 09:00 Korea time. Created and verified ACTIVE thread automation `arch-b`, named ARCH.B 뉴스 수집·자동 작성; local CLI writes at most 15 private drafts per run. Computer/app availability is required for this local schedule.
+- CMS now presents collection + automatic writing, processing of existing waiting items, waiting/writing/failure counts, review-ready drafts and per-article failure reasons. No automatic publication.
+- Pipeline reuses the five RSS feeds, Gemini 3.8 Flash investigation/generation and strict editorial quality validator. Stores source/provenance, research and bounded retry state on existing news records without a schema migration.
+- Optimistic updated_at conditions claim and complete work, protect concurrent edits, prevent duplicate processing and resume interrupted claims. Existing authors/IDs/images/counters and published/human drafts are preserved. Current role scopes are checked before writing.
+- Live test on ARCH.B: 162 feed items checked, zero duplicate insertions; one existing waiting item became a private draft with 2,330 characters, five sections and five cited references. Author verified as the existing ARCH-B account; publication false. Review route: /dashboard/contents/news/50db8356-a6d4-4bc6-b4c8-fbd13322ed98/edit.
+- Pipeline checks cover successful private storage, repeated runs, invalid output, failure/retry limits, missing key, interrupted claims, sub-admin exclusions and concurrent human edits. Anonymous collect/process/status returns 401. Scoped ESLint has zero errors; TypeScript/build/public news checks pass.
+- Automated run configuration is persisted in the Codex app rather than embedded in application code. The old paused CreativeScope automation was not present in this host's automation directory.
+
+## 로그인 화면 단순화 — 2026-10-07
+
+- Source visual truth: user-annotated `/login` screenshot plus the matching unauthenticated capture `C:/Users/kadfg/.codex/visualizations/2026/10/07/archb-login-simple/before-desktop.png`.
+- Implementation: `C:/Users/kadfg/.codex/visualizations/2026/10/07/archb-login-simple/after-desktop.png`. Source and implementation were opened together at original resolution in the same comparison input; both are 1280 × 720 pixels and CSS viewport at 1× density. No crop or density normalization was needed.
+- State: unauthenticated, light theme. A separate loopback origin displayed the login page without signing out the user's authenticated session. Provider authentication was not submitted.
+- Intentional changes: remove the large promotional heading, two-column layout, English eyebrow and full-width footer. Use a centered 360px column with the existing ARCH.B wordmark, concise sign-in copy, equal provider buttons, legal links and home link.
+- Fonts/typography: Pretendard remains loaded. Existing wordmark uses 28px, the title 24px, button labels 14px and supporting/legal copy 14px/12px. Long promotional copy no longer splits mid-word.
+- Spacing/layout: 32px between the wordmark, title group and provider group; 12px between 48px-high buttons. Mobile preserves 24px side padding and naturally wraps the legal copy. No frame, shadow or decorative hero was added.
+- Colors/tokens: shared white background, charcoal text, gray borders/muted copy and green keyboard focus. Buttons use the existing background/border/muted roles.
+- Assets: retained text wordmark and installed Remixicon Google/Kakao provider icons; no generated or substitute illustration assets. Icons are aria-hidden and button names remain clean.
+- Copy/content: concise Korean login instruction; Google/Kakao choices, terms, privacy and home remain available. Provider handlers, session checks and safe return-path behavior are unchanged.
+- Focused raster crop was unnecessary: all labels and provider icons are readable in the original-resolution desktop comparison. Mobile focus screenshots confirm the shared green outline.
+- Additional evidence: `after-mobile.png` at 390 × 844; `after-small-mobile.png` at 320 × 568; `after-tablet.png` at 768 × 1024. No horizontal overflow at any checked width; the 320px section fits inside the viewport. Temporary viewport overrides were reset.
+- Keyboard navigation advances from the wordmark to Google and then Kakao, with a visible 2px focus outline. Browser warning/error log was empty. Scoped ESLint and production build (228 pages, including TypeScript) passed.
+- Comparison history: the initial rendered simplification met the requested scoped changes with no actionable P0/P1/P2 finding; no corrective visual iteration was required. Full external OAuth sign-in was intentionally outside the visual verification scope.
+- Live handoff: waited for the existing news-writing queue to report no active writer, restarted only the verified ARCH.B preview process and confirmed the new screen on port 3000 (`after-desktop-live.png`). The temporary 3001 preview was closed. The live news API also confirms the three domestic sources from the preceding request are now loaded.
+- Follow-through on the preceding feed request: the first live API check revealed that its source list persisted across deployment in the ten-minute news cache. The shared news cache now includes the feed configuration in its key. The new configured-source regression check, public article/permission checks and rebuilt live API pass with all eight feeds; no content or author record was changed by this fix.
+
+final result: passed

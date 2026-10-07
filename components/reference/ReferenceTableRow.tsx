@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 interface ReferenceTableRowProps {
   id: number;
   title: string;
@@ -43,6 +41,7 @@ export default function ReferenceTableRow({
           type="checkbox"
           checked={isSelected}
           onChange={(e) => onSelect(id, e.target.checked)}
+          aria-label={`${title} 선택`}
           className="rounded cursor-pointer"
         />
       </td>
@@ -126,29 +125,31 @@ export default function ReferenceTableRow({
       </td>
 
       {/* 액션 - 수정 버튼 */}
-      <td className="p-3">
+      <td className="content-table-action-cell">
         <button
+          type="button"
           onClick={() => onEdit(id)}
-          className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
-          title="수정"
+          className="content-table-action"
+          aria-label={`${title} 수정`}
         >
-          <i className="ri-edit-line mr-1"></i>
+          <i className="ri-edit-line" aria-hidden="true"></i>
           수정
         </button>
       </td>
 
       {/* 액션 - 삭제 버튼 */}
-      <td className="p-3">
+      <td className="content-table-action-cell">
         <button
+          type="button"
           onClick={() => {
             if (confirm("이 레퍼런스를 삭제하시겠습니까?")) {
               onDelete(id);
             }
           }}
-          className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
-          title="삭제"
+          className="content-table-action content-table-action-danger"
+          aria-label={`${title} 삭제`}
         >
-          <i className="ri-delete-bin-line mr-1"></i>
+          <i className="ri-delete-bin-line" aria-hidden="true"></i>
           삭제
         </button>
       </td>
