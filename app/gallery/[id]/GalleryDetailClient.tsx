@@ -559,7 +559,7 @@ export default function GalleryDetailClient({
               <div className="mb-5 flex items-center justify-between gap-4">
                 <div className="flex min-w-0 items-center gap-2">
 
-                  <h1 className="truncate text-sm font-bold text-[var(--archive-ink)]">이미지 상세</h1>
+                  <p className="truncate text-sm font-bold text-[var(--archive-ink)]">이미지 상세</p>
                 </div>
                 <div className="flex items-center gap-1">
                   <button
@@ -595,7 +595,7 @@ export default function GalleryDetailClient({
                 </div>
               </div>
 
-              <h2 className="mb-3 break-words text-lg font-semibold leading-6 text-[var(--archive-ink)]">{gallery.title}</h2>
+              <h1 className="mb-3 break-words text-lg font-semibold leading-6 text-[var(--archive-ink)]">{gallery.title}</h1>
               <p className="max-w-full whitespace-pre-wrap break-words text-xs leading-5 text-[var(--archive-muted)] [overflow-wrap:anywhere]">
                 {detailText}
               </p>

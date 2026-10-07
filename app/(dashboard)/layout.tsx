@@ -1,5 +1,7 @@
 import Sidebar from "./components/Sidebar";
 import "./css/style.scss";
+import { PRIVATE_ROBOTS } from '@/lib/seo';
+export const metadata = { robots: PRIVATE_ROBOTS };
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (

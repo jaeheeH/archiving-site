@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import ArtworkCard from "./ArtworkCard";
 import { getArtCatalog } from "@/lib/art-catalog";
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: "아트",
-  description: "출처와 이용 근거를 확인한 실제 작품을 작가, 시기, 소장처별로 탐색합니다.",
-};
+export async function generateMetadata({ searchParams }: ArtPageProps) {
+  const { q, artist, museum } = await searchParams;
+  return pageMetadata({ path: '/art', title: '아트 · 작품 아카이브', description: '출처와 이용 근거를 확인한 실제 작품을 작가, 시기, 소장처별로 탐색합니다.', noindex: !!(q?.trim() || artist || museum) });
+}
 
 type ArtPageProps = {
   searchParams: Promise<{ q?: string; artist?: string; museum?: string }>;

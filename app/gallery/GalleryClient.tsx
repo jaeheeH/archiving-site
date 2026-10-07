@@ -50,10 +50,11 @@ function GallerySkeleton() {
 interface GalleryClientProps {
   initialGallery: GalleryItem[];
   initialTotalPages: number;
+  initialPage: number;
 }
 
 // --- Main Component ---
-export default function GalleryClient({ initialGallery, initialTotalPages }: GalleryClientProps) {
+export default function GalleryClient({ initialGallery, initialTotalPages, initialPage }: GalleryClientProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -66,7 +67,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
   const [fetching, setFetching] = useState(false);
 
   // ✅ [수정 핵심] 초기값을 URL 파라미터에서 바로 읽어옵니다. (1로 고정하지 않음)
-  const [page, setPage] = useState(() => Number(searchParams.get('page')) || 1);
+  const [page, setPage] = useState(initialPage);
   const [searchInput, setSearchInput] = useState(() => searchParams.get('search') || '');
   const [selectedTags, setSelectedTags] = useState<string[]>(() => {
     const tags = searchParams.get('tags');
@@ -209,6 +210,13 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setPage(pageNum);
   };
+  const pageHref = (number: number) => {
+    const params = new URLSearchParams();
+    if (number > 1) params.set('page', String(number));
+    if (debouncedSearch.trim()) params.set('search', debouncedSearch.trim());
+    if (selectedTags.length) params.set('tags', selectedTags.join(','));
+    return `/gallery${params.size ? `?${params}` : ''}`;
+  };
 
   const renderGalleryContent = () => {
     if (loading || (fetching && gallery.length === 0)) {
@@ -326,34 +334,39 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
         {/* 페이지네이션 */}
         {!loading && gallery.length > 0 && totalPages > 1 && (
           <div className={`mt-16 flex flex-wrap items-center justify-center gap-2 transition-opacity duration-200 ${fetching ? 'pointer-events-none opacity-50' : 'opacity-100'}`}>
-            <button
+            <Link
+              href={pageHref(Math.max(1, page - 1))}
               onClick={() => updatePage(Math.max(1, page - 1))}
-              disabled={page === 1}
-              className="border border-[var(--archive-line)] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--archive-ink)] transition hover:border-[var(--archive-brand)] hover:bg-[var(--archive-brand)] hover:text-white disabled:text-[var(--archive-muted)] disabled:opacity-40 disabled:hover:border-[var(--archive-line)] disabled:hover:bg-transparent disabled:hover:text-[var(--archive-muted)]"
+              aria-disabled={page === 1}
+              tabIndex={page === 1 ? -1 : undefined}
+              className="border border-[var(--archive-line)] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--archive-ink)] transition hover:border-[var(--archive-brand)] hover:bg-[var(--archive-brand)] hover:text-white aria-disabled:pointer-events-none aria-disabled:text-[var(--archive-muted)] aria-disabled:opacity-40"
             >
               Previous
-            </button>
+            </Link>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
-              <button
+              <Link
                 key={pageNumber}
+                href={pageHref(pageNumber)}
                 aria-current={pageNumber === page ? "page" : undefined}
                 onClick={() => updatePage(pageNumber)}
-                className={`h-9 w-9 text-[12px] font-semibold transition ${
+                className={`flex h-9 w-9 items-center justify-center text-[12px] font-semibold transition ${
                   pageNumber === page
                     ? 'bg-[var(--archive-ink)] text-[var(--archive-canvas)]'
                     : 'text-[var(--archive-muted)] hover:bg-[var(--archive-bg-light)] hover:text-[var(--archive-brand)]'
                 }`}
               >
                 {pageNumber}
-              </button>
+              </Link>
             ))}
-            <button
+            <Link
+              href={pageHref(Math.min(totalPages, page + 1))}
               onClick={() => updatePage(Math.min(totalPages, page + 1))}
-              disabled={page === totalPages}
-              className="border border-[var(--archive-line)] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--archive-ink)] transition hover:border-[var(--archive-brand)] hover:bg-[var(--archive-brand)] hover:text-white disabled:text-[var(--archive-muted)] disabled:opacity-40 disabled:hover:border-[var(--archive-line)] disabled:hover:bg-transparent disabled:hover:text-[var(--archive-muted)]"
+              aria-disabled={page === totalPages}
+              tabIndex={page === totalPages ? -1 : undefined}
+              className="border border-[var(--archive-line)] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--archive-ink)] transition hover:border-[var(--archive-brand)] hover:bg-[var(--archive-brand)] hover:text-white aria-disabled:pointer-events-none aria-disabled:text-[var(--archive-muted)] aria-disabled:opacity-40"
             >
               Next
-            </button>
+            </Link>
           </div>
         )}
       </section>

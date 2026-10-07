@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { CACHE_TAGS } from "@/lib/public-data";
 import { getErrorMessage } from "@/lib/error-message";
 
@@ -266,7 +266,9 @@ export async function POST(req: NextRequest) {
 
       if (error) throw error;
 
-      revalidateTag(CACHE_TAGS.siteSettings, "max");
+      revalidateTag(CACHE_TAGS.siteSettings, { expire: 0 });
+      revalidatePath('/', 'layout');
+      revalidatePath('/robots.txt');
 
       return NextResponse.json({
         success: true,
@@ -285,7 +287,9 @@ export async function POST(req: NextRequest) {
 
       if (error) throw error;
 
-      revalidateTag(CACHE_TAGS.siteSettings, "max");
+      revalidateTag(CACHE_TAGS.siteSettings, { expire: 0 });
+      revalidatePath('/', 'layout');
+      revalidatePath('/robots.txt');
 
       return NextResponse.json({
         success: true,

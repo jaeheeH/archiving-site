@@ -4,7 +4,7 @@ export const SITE_COPY = {
     tagline: "DESIGN, TECHNOLOGY AND SPACES.",
     statement: "새로운 소식에서, 더 깊은 시선으로.",
     description:
-      "디자인·개발·인테리어의 소식과 에디토리얼을 전하고, 작품·작가·참고사이트로 생각을 넓힙니다.",
+      "디자인·AI·제품·개발·인테리어의 소식과 에디토리얼을 전하고, 작품·작가·참고사이트로 생각을 넓힙니다.",
     authorBio: "작품을 보고 수집하며 발견한 맥락을 기록합니다.",
   },
   home: {

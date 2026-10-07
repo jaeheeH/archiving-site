@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { getSiteSettings } from "@/lib/site-settings";
 import { getSiteUrl } from "@/lib/site-url";
+import { isSearchPreview } from '@/lib/seo';
 
 export const revalidate = 3600;
 
@@ -9,7 +10,7 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
   const baseUrl = getSiteUrl();
 
   // robots_allow가 false면 모든 크롤링 차단
-  if (settings && !settings.robots_allow) {
+  if (settings?.robots_allow === false || isSearchPreview()) {
     return {
       rules: {
         userAgent: "*",
@@ -23,8 +24,8 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
-        disallow: ["/dashboard/", "/api/"],
+        allow: ["/", "/api/og"],
+        disallow: ["/dashboard", "/api/", "/mypage", "/auth/", "/extension/"],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,

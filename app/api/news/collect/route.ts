@@ -1,8 +1,9 @@
+import { after } from 'next/server';
 import { checkPostEditPermission } from "@/lib/supabase/post-utils";
-import { collectNews } from "@/lib/news";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { assertNewsProject, writePendingNews } from "@/lib/news-pipeline";
-export const maxDuration = 180;
+import { assertNewsProject, newsWritingQueue } from "@/lib/news-pipeline";
+import { createNewsJob } from '@/lib/news-jobs';
+export const maxDuration = 3000;
 export async function POST(request: Request) {
   const permission = await checkPostEditPermission();
   if (!permission.authorized) return permission.error;
@@ -10,13 +11,11 @@ export async function POST(request: Request) {
   if (origin && origin !== new URL(request.url).origin) return Response.json({ error: "허용되지 않은 요청입니다." }, { status: 403 });
   try {
     assertNewsProject(process.env.NEXT_PUBLIC_SUPABASE_URL!);
-    const collection = await collectNews(permission.userId);
-    try {
-      const writing = await writePendingNews(createAdminClient(), permission, { signal: AbortSignal.any([request.signal, AbortSignal.timeout(150_000)]) });
-      return Response.json({ ...collection, writing });
-    } catch (cause) {
-      return Response.json({ ...collection, error: `원문 수집 결과는 저장되었습니다. ${cause instanceof Error ? cause.message : '자동 작성에 실패했습니다.'}` }, { status: 503 });
-    }
+    const db = createAdminClient();
+    const queue = await newsWritingQueue(db, permission);
+    const { job, run } = createNewsJob(db, permission, { withCollection: true });
+    if (run) after(run);
+    return Response.json({ ...queue, job }, { status: 202, headers: { 'Cache-Control': 'private, no-store' } });
   }
-  catch { return Response.json({ error: "뉴스 수집에 실패했습니다." }, { status: 503 }); }
+  catch (cause) { return Response.json({ error: cause instanceof Error ? cause.message : '수집·자동 작성 작업을 시작하지 못했습니다.' }, { status: 503 }); }
 }

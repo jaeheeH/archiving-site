@@ -273,7 +273,7 @@ export default function BlogDetailClient({
   // Tiptap 에디터 설정
   const editor = useEditor({
     extensions: [
-      StarterKit as unknown as AnyExtension,
+      StarterKit.configure({ heading: { levels: [2, 3, 4, 5, 6] } }) as unknown as AnyExtension,
       ImageExtension,
       ReadOnlyImageGalleryNode,
       ReadOnlyColumnsNode,
@@ -592,9 +592,9 @@ export default function BlogDetailClient({
   return (
     <div className="archive-article news-detail-page min-h-screen bg-[var(--archive-canvas)] text-[var(--archive-ink)]">
       <article>
-        <header className="border-b border-[var(--archive-line)]">
-          <div className="mx-auto max-w-[var(--archive-page)] px-6 py-12 lg:py-16">
-            <div className="mb-5 flex flex-wrap items-center gap-2 text-[12px] text-[var(--archive-muted)]">
+        <header className="news-detail-header">
+          <div className="mx-auto max-w-[var(--archive-page)] px-6 pt-12">
+            <div className="mb-4 flex flex-wrap items-center gap-2 text-[12px] text-[var(--archive-muted)]">
               <NextLink href={news?.categoryUrl || '/news/stories?category=editorial'} className="font-semibold transition-colors hover:text-[var(--archive-brand)]">
                 {news?.categoryName || '에디토리얼'}
               </NextLink>
@@ -611,7 +611,7 @@ export default function BlogDetailClient({
               )}
             </div>
 
-            <h1 className="max-w-[880px] text-[31px] font-extrabold leading-[1.22] tracking-tight md:text-[40px] lg:text-[46px]">
+            <h1 className="text-[31px] font-bold leading-[1.22] tracking-tight md:text-[40px]">
               {post.title}
             </h1>
 
@@ -672,6 +672,7 @@ export default function BlogDetailClient({
               </div>
             </div>
             {reactionError && <p role="alert" className="mt-3 text-sm text-red-700">{reactionError}</p>}
+            <hr className="news-detail-divider" />
           </div>
         </header>
 
@@ -705,7 +706,7 @@ export default function BlogDetailClient({
 
               <div className="article-editor archive-article-body">
                 <div className="tiptap-content">
-                  {news ? children : <EditorContent editor={editor} />}
+                  {news ? children : editor ? <EditorContent editor={editor} /> : children}
                 </div>
               </div>
 

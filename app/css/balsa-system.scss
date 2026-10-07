@@ -19,7 +19,7 @@ html[data-theme="my-design-system"] {
   --color-gray-200: #dedede;
   --color-gray-300: #c7c7c7;
   --color-gray-400: #8a8a8a;
-  --color-gray-500: #777777;
+  --color-gray-500: var(--balsa-role-muted-foreground);
   --color-gray-600: #6b6b6b;
   --color-gray-700: #4a4a4a;
   --color-gray-800: #333333;
@@ -50,6 +50,79 @@ html[data-theme="my-design-system"] {
   --sidebar-accent-foreground: var(--balsa-role-selected-foreground);
   --sidebar-border: var(--balsa-role-border);
   --sidebar-ring: var(--balsa-role-primary);
+  background: var(--balsa-role-background);
+}
+
+html[data-theme="my-design-system"].dark {
+  --color-gray-50: var(--balsa-role-surface);
+  --color-gray-100: var(--balsa-role-muted);
+  --color-gray-200: var(--balsa-role-border);
+  --color-gray-300: #576060;
+  --color-gray-400: #8c9797;
+  --color-gray-500: var(--balsa-role-muted-foreground);
+  --color-gray-600: var(--balsa-role-secondary);
+  --color-gray-700: #ced5d5;
+  --color-gray-800: #dee4e4;
+  --color-gray-900: var(--balsa-role-foreground);
+  --color-gray-950: var(--balsa-role-foreground);
+  --color-red-50: #321f1f;
+  --color-red-100: #422626;
+  --color-red-200: #6f3939;
+  --color-amber-50: #30291a;
+  --color-amber-100: #413722;
+  --color-amber-200: #655330;
+  --color-amber-700: #e6c277;
+  --color-amber-800: #edcd8c;
+  --color-yellow-50: #30291a;
+  --color-yellow-100: #413722;
+  --color-yellow-700: #e6c277;
+  --color-yellow-800: #edcd8c;
+  --color-green-50: var(--balsa-color-selected);
+  --color-green-100: var(--balsa-color-selected);
+  --color-green-700: var(--balsa-color-selected-foreground);
+  --color-green-800: var(--balsa-color-selected-foreground);
+}
+
+html[data-theme="my-design-system"] .color-mode-toggle {
+  min-width: 44px;
+  min-height: 44px;
+  color: var(--balsa-role-foreground);
+  background: transparent;
+  font-size: 20px;
+}
+
+html[data-theme="my-design-system"] .color-mode-toggle:hover {
+  background: var(--balsa-role-muted);
+  color: var(--balsa-role-foreground);
+}
+
+html[data-theme="my-design-system"] .bg-white {
+  background-color: var(--balsa-role-background);
+}
+
+html[data-theme="my-design-system"] :is(.bg-white\/90, .bg-white\/95) {
+  background-color: color-mix(in oklab, var(--balsa-role-background) 95%, transparent);
+}
+
+html[data-theme="my-design-system"].dark .text-black {
+  color: var(--balsa-role-foreground);
+}
+
+/* Neutral filled controls use the inverse pair; image overlays keep white text. */
+html[data-theme="my-design-system"] :is(.bg-gray-800, .bg-gray-900, .bg-gray-950, .bg-gray-950\/75, [class~="bg-[var(--archive-ink)]"]).text-white {
+  color: var(--balsa-role-inverse-foreground);
+}
+
+html[data-theme="my-design-system"].dark :is(.text-red-600, .text-red-700, .text-red-800) {
+  color: var(--balsa-role-destructive);
+}
+
+html[data-theme="my-design-system"].dark :is(.bg-emerald-600, .bg-emerald-700, .bg-blue-600, .bg-indigo-600, .bg-primary).text-white,
+html[data-theme="my-design-system"] [class~="hover:bg-[var(--archive-brand)]"]:is(.text-white, [class~="hover:text-white"]):hover {
+  color: var(--balsa-role-primary-foreground);
+}
+
+html[data-theme="my-design-system"] .modal-contents .sticky {
   background: var(--balsa-role-background);
 }
 
@@ -335,19 +408,19 @@ html[data-theme="my-design-system"] #sideBar nav :is(a, div[role="button"]) {
 
 html[data-theme="my-design-system"] .dashboard-shell {
   --color-blue-50: var(--archive-brand-soft);
-  --color-blue-100: #e1efdf;
-  --color-blue-200: #c6e1c3;
+  --color-blue-100: var(--archive-brand-soft);
+  --color-blue-200: var(--archive-line);
   --color-blue-500: var(--archive-brand);
   --color-blue-600: var(--archive-brand);
   --color-blue-700: var(--archive-brand-hover);
-  --color-blue-900: #10570e;
+  --color-blue-900: var(--archive-brand-hover);
   --color-indigo-50: var(--archive-brand-soft);
-  --color-indigo-100: #e1efdf;
+  --color-indigo-100: var(--archive-brand-soft);
   --color-indigo-500: var(--archive-brand);
   --color-indigo-600: var(--archive-brand);
   --color-indigo-700: var(--archive-brand-hover);
   --color-emerald-50: var(--archive-brand-soft);
-  --color-emerald-200: #c6e1c3;
+  --color-emerald-200: var(--archive-line);
   --color-emerald-600: var(--archive-brand);
   --color-emerald-700: var(--archive-brand-hover);
 }
@@ -381,12 +454,13 @@ html[data-theme="my-design-system"] .dashboard-shell :is(.btn-line-36, .btn-line
   border-color: var(--archive-ink);
   border-radius: var(--balsa-radius-control, 4px);
   background: var(--archive-ink);
-  color: var(--balsa-role-primary-foreground);
+  color: var(--balsa-role-inverse-foreground);
 }
 
 html[data-theme="my-design-system"] .dashboard-shell :is(.btn-line-36, .btn-line-40, .btn-line-48, .btn-sumit):hover {
   border-color: var(--archive-brand);
   background: var(--archive-brand);
+  color: var(--balsa-role-primary-foreground);
 }
 
 html[data-theme="my-design-system"] .dashboard-shell :is(.input-text-36, .textArea) {

@@ -27,6 +27,7 @@ export async function collectNewsInto(db: SupabaseClient, authorId: string) {
   const results = await Promise.all(FEEDS.map(async feed => {
     try {
       const articles = await fetchFeed(feed);
+      if (!articles.length) return { source: feed.name, checked: 0, inserted: 0, error: null };
       const saved = await db.from('posts').upsert(articles.map(article => ({ ...newsPost(article), author_id: authorId })), { onConflict: 'slug', ignoreDuplicates: true }).select('id');
       if (saved.error) throw saved.error;
       return { source: feed.name, checked: articles.length, inserted: saved.data?.length || 0, error: null };
@@ -71,8 +72,13 @@ export async function writePendingNews(db: SupabaseClient, viewer: NewsViewer, o
   if (!options.writer && !process.env.GEMINI_API_KEY) throw new Error('Gemini API 설정이 필요합니다.');
   const rows = (await pendingRows(db, viewer)).filter(row => canAutoWrite(row));
   rows.sort((a, b) => Date.parse(b.content.source_published_at || b.updated_at) - Date.parse(a.content.source_published_at || a.updated_at));
-  // Round-robin by publisher keeps a large feed from starving the other fields.
-  const queues = [...new Set(rows.map(row => row.content.source))].map(source => rows.filter(row => row.content.source === source));
+  // Prioritize publishers not recently attempted, including across daily batches smaller than the source count.
+  const history = await db.from('posts').select('source:content->>source,updated_at').eq('type', 'news').not('content->automation->>started_at', 'is', null).order('updated_at', { ascending: false }).limit(500);
+  if (history.error) throw new Error('매체별 작성 기록을 확인하지 못했습니다.');
+  const lastAttempt = new Map<string, number>();
+  for (const row of history.data || []) if (row.source && !lastAttempt.has(row.source)) lastAttempt.set(row.source, Date.parse(row.updated_at));
+  // ponytail: the latest 500 attempts cover the current 23 feeds; persist a per-source cursor if the catalog grows beyond this window.
+  const queues = [...new Set(rows.map(row => row.content.source))].sort((a, b) => (lastAttempt.get(a || '') || 0) - (lastAttempt.get(b || '') || 0)).map(source => rows.filter(row => row.content.source === source));
   const ordered: PendingPost[] = [];
   while (queues.some(queue => queue.length)) for (const queue of queues) { const row = queue.shift(); if (row) ordered.push(row); }
   const items: { id: string; title: string; status: 'ready' | 'failed' | 'skipped'; error?: string }[] = [];
@@ -101,7 +107,7 @@ export async function writePendingNews(db: SupabaseClient, viewer: NewsViewer, o
       items.push({ id: post.id, title: post.title, status: failed.data ? 'failed' : 'skipped', error });
     }
     options.onProgress?.(items.at(-1)!);
-    if (items.at(-1)?.error?.includes('사용량 한도')) break;
+    if (/사용량 한도|Gemini.+요청.+(?:401|403)|API key not valid/i.test(items.at(-1)?.error || '')) break;
   }
   return { written: items.filter(item => item.status === 'ready').length, failed: items.filter(item => item.status === 'failed').length, skipped: items.filter(item => item.status === 'skipped').length, items, remaining: (await newsWritingQueue(db, viewer)).waiting };
 }

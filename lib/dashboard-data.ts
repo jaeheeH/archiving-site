@@ -2,6 +2,7 @@ import "server-only";
 import { getArtCatalog } from "./art-catalog";
 import { buildDashboardMetrics, dashboardPeriod, type MetricMember, type MetricPost, type MetricView } from "./dashboard-metrics";
 import { editorialSchema } from "./news-editorial";
+import { publicPage, type TrafficStats } from "./site-traffic";
 
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -383,9 +384,10 @@ export async function getDashboardOverview(days?: number) {
     ),
   ]);
 
-  const operations = days === undefined ? null : await readDashboardOperations(context, days);
+  const [operations, traffic] = days === undefined ? [null, null] : await Promise.all([readDashboardOperations(context, days), readVisitorAnalytics(context, days)]);
   return {
     operations,
+    traffic,
     viewer: {
       id: context.user.id,
       email: context.user.email || context.profile?.email || "",
@@ -459,6 +461,33 @@ async function readDashboardOperations(context: DashboardContext, days: number) 
     return [p.id, { qualityReady: parsed.success, qualityReasons: parsed.success ? [] : [...new Set(parsed.error.issues.map(issue => issue.message))] }];
   }) : []);
   return { ...buildDashboardMetrics(postsResult.value.map(p => ({ ...p, ...readiness.get(p.id) })), viewsResult.status === "fulfilled" ? viewsResult.value : null, membersResult.status === "fulfilled" ? membersResult.value : null, period.days, now), qualityAvailable: qualityResult.status === "fulfilled", warnings };
+}
+
+async function readVisitorAnalytics(context: DashboardContext, days: number) {
+  if (!["admin", "sub-admin"].includes(context.role)) return null;
+  const period = dashboardPeriod(days);
+  const { data, error } = await context.admin.rpc("site_traffic_stats", {
+    p_start: period.start, p_end: period.now,
+    p_previous_start: period.previousStart, p_previous_end: period.previousEnd,
+  });
+  if (error) {
+    console.error("Visitor analytics read failed:", error.message);
+    return { period, stats: null, error: "방문 기록을 불러오지 못했습니다. 잠시 후 다시 확인해 주세요." };
+  }
+  const stats = data as TrafficStats;
+  const slugs = stats.pages.filter(p => /^\/(news\/read|blog)\//.test(p.path)).map(p => p.path.split('/').at(-1)!);
+  if (slugs.length) {
+    const { data: posts } = await context.admin.from("posts").select("slug,title").eq("is_published", true).in("slug", slugs);
+    const titles = new Map((posts || []).map(p => [p.slug, p.title]));
+    stats.pages = stats.pages.map(p => ({ ...p, title: titles.get(p.path.split('/').at(-1)!) || publicPage(p.path)?.label || p.section }));
+  } else stats.pages = stats.pages.map(p => ({ ...p, title: publicPage(p.path)?.label || p.section }));
+  return { period, stats, error: null };
+}
+
+export async function getVisitorAnalytics(days = 7) {
+  const context = await getDashboardContext();
+  if (!context) return null;
+  return readVisitorAnalytics(context, days);
 }
 
 export async function getGalleryAnalytics() {

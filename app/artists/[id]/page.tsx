@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ArtworkCard from "@/app/art/ArtworkCard";
 import { getArtCatalog, getArtist, getArtworksByArtist } from "@/lib/art-catalog";
+import { pageMetadata, jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
 
 type ArtistPageProps = { params: Promise<{ id: string }> };
 
@@ -12,8 +13,9 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: ArtistPageProps): Promise<Metadata> {
   const artist = await getArtist((await params).id);
-  if (!artist) return {};
-  return { title: artist.name_ko || artist.name, description: `${artist.name}의 수집 작품을 기관과 시기별로 살펴봅니다.` };
+  if (!artist) notFound();
+  const works = await getArtworksByArtist(artist.id);
+  return pageMetadata({ path: `/artists/${artist.id}`, title: `${artist.name_ko || artist.name} · 작가`, description: `${artist.name}의 수집 작품 ${works.length}점을 소장 기관과 시기별로 살펴봅니다. 작품 상세 정보와 원출처를 함께 확인합니다.`, image: works[0]?.preview_url });
 }
 
 export default async function ArtistPage({ params }: ArtistPageProps) {
@@ -25,6 +27,10 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
 
   return (
     <main className="archb-archive archive-detail">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd([
+        breadcrumb([{ name: '홈', path: '/' }, { name: '작가', path: '/artists' }, { name: artist.name_ko || artist.name, path: `/artists/${artist.id}` }]),
+        { '@context': 'https://schema.org', '@type': 'ProfilePage', '@id': sitePageUrl(`/artists/${artist.id}`), mainEntity: { '@type': 'Person', name: artist.name_ko || artist.name, alternateName: artist.name, url: sitePageUrl(`/artists/${artist.id}`) } },
+      ]) }} />
       <nav className="archive-breadcrumb" aria-label="현재 위치">
         <Link href="/artists" className="hover:text-foreground">작가</Link><span aria-hidden="true">/</span><span>{artist.name_ko || artist.name}</span>
       </nav>

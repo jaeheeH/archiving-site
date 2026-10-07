@@ -3,6 +3,7 @@ import { CACHE_SECONDS, CACHE_TAGS } from "@/lib/public-data";
 import { getSiteUrl } from "@/lib/site-url";
 import { SITE_COPY } from "@/lib/site-copy";
 import { createPublicClient } from "@/lib/supabase/public";
+import { isSearchPreview } from '@/lib/seo';
 
 export type SiteSettings = {
   site_name: string;
@@ -129,7 +130,7 @@ export function getDefaultMetadata(settings: SiteSettings | null) {
       "디자인",
       "아카이빙",
       "갤러리",
-      "블로그",
+      "뉴스", "예술", "작가", "인테리어", "개발",
     ],
     openGraph: {
       type: "website",
@@ -153,10 +154,11 @@ export function getDefaultMetadata(settings: SiteSettings | null) {
       description: settings?.twitter_description || siteDescription,
       images: [twitterImage],
     },
-    robots: settings?.robots_allow
+    robots: settings?.robots_allow !== false && !isSearchPreview()
       ? {
           index: true,
           follow: true,
+          googleBot: { index: true, follow: true, 'max-image-preview': 'large' as const, 'max-snippet': -1, 'max-video-preview': -1 },
         }
       : {
           index: false,

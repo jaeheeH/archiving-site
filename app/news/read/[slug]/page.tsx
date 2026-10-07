@@ -6,23 +6,35 @@ import { CATEGORIES } from "@/lib/news-feeds";
 import type { Metadata } from "next";
 import { getBlogPostData } from "@/lib/public-data";
 import BlogDetailClient from "@/app/blog/[slug]/BlogDetailClient";
+import { cache } from 'react';
+import { pageMetadata, jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
+import EditorialContent from '@/app/components/EditorialContent';
 export const dynamic = "force-dynamic";
+const getArticleData = cache(async (slug: string) => {
+  const [article, data] = await Promise.all([readNewsArticle(slug), getBlogPostData(slug)]);
+  if (data?.redirectSlug) permanentRedirect(`/news/read/${encodeURIComponent(data.redirectSlug)}`);
+  if (!data?.post || !data.post.published_at || (data.post.type !== 'blog' && !(data.post.type === 'news' && article?.kind === 'news'))) notFound();
+  return { article, ...data };
+});
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const article = await readNewsArticle(slug);
-  const post = article ? null : (await getBlogPostData(slug))?.post;
-  const title = article?.title || post?.title;
-  const description = article?.description || post?.summary || "ARCH.B의 소식과 에디토리얼";
+  const { article, post, authorProfile } = await getArticleData(slug);
+  const title = post.title;
+  const description = article?.description || post.summary || post.subtitle || 'ARCH.B의 소식과 에디토리얼';
   const image = `/api/og?type=article&slug=${encodeURIComponent(slug)}`;
-  return title ? { title: { absolute: `${title} · ARCH.B` }, description, alternates: { canonical: `/news/read/${slug}` }, openGraph: { type: "article", title, description, url: `/news/read/${slug}`, siteName: "ARCH.B", images: [{ url: image, width: 1200, height: 630 }], publishedTime: article?.published_at || post?.published_at || undefined }, twitter: { card: "summary_large_image", title, description, images: [image] } } : { title: "기사를 찾을 수 없습니다 · ARCH.B" };
+  const metadata = pageMetadata({ path: `/news/read/${encodeURIComponent(post.slug)}`, title, description, image });
+  return { ...metadata, authors: [{ name: authorProfile?.nickname || authorProfile?.name || 'ARCH.B' }], openGraph: { ...metadata.openGraph, type: 'article', publishedTime: post.published_at, modifiedTime: post.updated_at, tags: post.tags || [], authors: [authorProfile?.nickname || authorProfile?.name || 'ARCH.B'] } };
 }
 export default async function ReadPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const [article, data] = await Promise.all([readNewsArticle(slug), getBlogPostData(slug)]);
-  if (data?.redirectSlug) permanentRedirect(`/news/read/${encodeURIComponent(data.redirectSlug)}`);
-  if (!data?.post || !data.post.published_at || (data.post.type !== "blog" && !(data.post.type === "news" && article?.kind === "news"))) notFound();
+  const data = await getArticleData(slug);
+  const { article, post, authorProfile } = data;
   const news = article?.kind === "news" ? article : null;
-  return <BlogDetailClient
+  const url = sitePageUrl(`/news/read/${encodeURIComponent(post.slug)}`);
+  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd([
+    breadcrumb([{ name: '홈', path: '/' }, { name: '뉴스', path: '/news/stories' }, { name: post.title, path: `/news/read/${encodeURIComponent(post.slug)}` }]),
+    { '@context': 'https://schema.org', '@type': news ? 'NewsArticle' : 'BlogPosting', '@id': `${url}#article`, mainEntityOfPage: { '@type': 'WebPage', '@id': url }, url, headline: post.title, description: news?.description || post.summary || post.subtitle || undefined, inLanguage: 'ko-KR', datePublished: post.published_at, dateModified: post.updated_at, ...(post.title_image_url ? { image: [sitePageUrl(post.title_image_url)] } : {}), author: { '@type': authorProfile ? 'Person' : 'Organization', name: authorProfile?.nickname || authorProfile?.name || 'ARCH.B' }, publisher: { '@id': sitePageUrl('/#publisher') }, articleSection: news ? CATEGORIES[news.category] : data.category?.name || '에디토리얼', keywords: post.tags || [], ...(news ? { citation: [...new Set([news.url, ...news.paragraphs.flatMap(p => typeof p === 'string' ? [] : p.references.map(r => r.url))])] } : {}) },
+  ]) }} /><BlogDetailClient
     initialPost={{ ...data.post, userScraped: false }}
     initialCategory={data.category}
     initialAuthorProfile={data.authorProfile}
@@ -31,5 +43,6 @@ export default async function ReadPage({ params }: { params: Promise<{ slug: str
   >
     {news && <div className="reading-body">{news.paragraphs.every(p => typeof p === "string") && <h2>어떤 소식인가요?</h2>}{news.paragraphs.map((paragraph, i) => typeof paragraph === "string" ? <p key={i}>{paragraph}</p> : <section className="reading-section" key={i}>{paragraph.kind === "analysis" && <span className="analysis-label">ARCH.B 분석</span>}<h2>{paragraph.heading}</h2>{paragraph.paragraphs.map((text, index) => <p key={index}>{text}</p>)}{paragraph.references.length > 0 && <div className="reading-references">{paragraph.references.map(reference => <a href={reference.url} key={reference.url} target="_blank" rel="noopener noreferrer">{reference.kind === "primary" && <span className="sr-only">공식 1차 자료: </span>}{reference.label}<ExternalLink size={14} /><span className="sr-only"> (새 창)</span></a>)}</div>}</section>)}
       <div className="reading-tags">{news.tags.map(tag => <a href={`/news/stories?q=${encodeURIComponent(tag)}`} key={tag}>{tag}</a>)}</div><section className="source-credit"><h2>출처</h2><p>{news.source}의 원출처와 본문에 표시한 참고자료를 바탕으로 한국어로 재구성했습니다. ‘ARCH.B 분석’은 자료를 읽고 덧붙인 편집 해석입니다.</p><a href={news.url} target="_blank" rel="noopener noreferrer">{news.original_title}<ExternalLink size={15} /><span className="sr-only"> (새 창)</span></a></section></div>}
-  </BlogDetailClient>;
+    {!news && <EditorialContent content={post.content} />}
+  </BlogDetailClient></>;
 }

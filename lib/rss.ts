@@ -64,7 +64,7 @@ export async function getBlogRssXml() {
   const supabase = createPublicClient();
   const baseUrl = getSiteUrl();
   const siteName = "ARCH.B";
-  const siteDescription = "디자인·개발·인테리어의 뉴스와 ARCH.B 에디토리얼을 함께 전합니다.";
+  const siteDescription = "디자인·AI·제품·개발·인테리어의 뉴스와 ARCH.B 에디토리얼을 함께 전합니다.";
 
   const [postsRes, categoriesRes] = await Promise.all([
     supabase

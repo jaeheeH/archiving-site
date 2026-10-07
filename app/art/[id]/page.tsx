@@ -4,6 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import ArtworkCard from "../ArtworkCard";
 import { getArtCatalog, getArtwork, getArtworkArtist, getArtworksByArtist } from "@/lib/art-catalog";
+import { pageMetadata, jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
 
 type ArtworkPageProps = { params: Promise<{ id: string }> };
 
@@ -13,12 +14,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: ArtworkPageProps): Promise<Metadata> {
   const artwork = await getArtwork((await params).id);
-  if (!artwork) return {};
-
-  return {
-    title: artwork.title_ko,
-    description: `${artwork.artist}의 ${artwork.title}. ${artwork.museum} 소장.`,
-  };
+  if (!artwork) notFound();
+  return pageMetadata({ path: `/art/${artwork.id}`, title: `${artwork.title_ko} · ${artwork.artist}`, description: `${artwork.artist}의 ${artwork.title}. ${artwork.date}, ${artwork.medium}. ${artwork.museum} 소장. 작품 정보와 원출처를 살펴봅니다.`, image: artwork.preview_url });
 }
 
 export default async function ArtworkPage({ params }: ArtworkPageProps) {
@@ -32,6 +29,10 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
 
   return (
     <main className="archb-archive archive-detail">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd([
+        breadcrumb([{ name: '홈', path: '/' }, { name: '아트', path: '/art' }, { name: artwork.title_ko, path: `/art/${artwork.id}` }]),
+        { '@context': 'https://schema.org', '@type': 'VisualArtwork', '@id': sitePageUrl(`/art/${artwork.id}#artwork`), url: sitePageUrl(`/art/${artwork.id}`), name: artwork.title_ko, alternateName: artwork.title, image: artwork.preview_url, artMedium: artwork.medium, ...(artist ? { creator: { '@type': 'Person', name: artist.name_ko || artist.name, url: sitePageUrl(`/artists/${artist.id}`) } } : {}), isBasedOn: artwork.source_url },
+      ]) }} />
       <nav className="archive-breadcrumb" aria-label="현재 위치">
         <Link href="/art" className="hover:text-foreground">아트</Link>
         <span aria-hidden="true">/</span>

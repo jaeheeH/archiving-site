@@ -1,5 +1,5 @@
 import { XMLParser, XMLValidator } from "fast-xml-parser";
-export const CATEGORIES = { design: "디자인", development: "개발", interiors: "인테리어", editorial: "에디토리얼" } as const;
+export const CATEGORIES = { design: "디자인", development: "개발", ai: "AI", technology: "제품·기술", interiors: "인테리어", editorial: "에디토리얼" } as const;
 export type Category = keyof typeof CATEGORIES;
 export type Article = { url: string; title: string; description: string; category: Category; source: string; published_at: string; image: string | null; tags: string[]; source_text?: string };
 export const FEEDS: { id: string; name: string; category: Category; url: string }[] = [
@@ -11,6 +11,21 @@ export const FEEDS: { id: string; name: string; category: Category; url: string 
   { id: "toss", name: "토스테크", category: "development", url: "https://toss.tech/rss.xml" },
   { id: "daangn", name: "당근 기술 블로그", category: "development", url: "https://medium.com/feed/daangn" },
   { id: "gccompany", name: "여기어때 기술블로그", category: "development", url: "https://techblog.gccompany.co.kr/feed" },
+  { id: "meta-engineering", name: "Meta Engineering", category: "development", url: "https://engineering.fb.com/feed/" },
+  { id: "meta", name: "Meta Newsroom", category: "technology", url: "https://about.fb.com/feed/" },
+  { id: "google", name: "Google Blog", category: "technology", url: "https://blog.google/rss/" },
+  { id: "adobe", name: "Adobe Developers Blog", category: "development", url: "https://blog.developer.adobe.com/rss.xml" },
+  { id: "midjourney", name: "Midjourney", category: "ai", url: "https://updates.midjourney.com/rss/" },
+  { id: "samsung", name: "삼성전자 뉴스룸", category: "technology", url: "https://news.samsung.com/kr/feed" },
+  { id: "apple", name: "Apple Newsroom", category: "technology", url: "https://www.apple.com/newsroom/rss-feed.rss" },
+  { id: "microsoft", name: "Microsoft Blog", category: "technology", url: "https://blogs.microsoft.com/feed/" },
+  { id: "nvidia", name: "NVIDIA Blog", category: "ai", url: "https://blogs.nvidia.com/feed/" },
+  { id: "openai", name: "OpenAI News", category: "ai", url: "https://openai.com/news/rss.xml" },
+  { id: "huggingface", name: "Hugging Face", category: "ai", url: "https://huggingface.co/blog/feed.xml" },
+  { id: "figma", name: "Figma Blog", category: "design", url: "https://www.figma.com/blog/feed/atom.xml" },
+  { id: "linear", name: "Linear", category: "design", url: "https://linear.app/rss/now.xml" },
+  { id: "cloudflare", name: "Cloudflare Blog", category: "development", url: "https://blog.cloudflare.com/rss/" },
+  { id: "chrome", name: "Chrome for Developers", category: "development", url: "https://developer.chrome.com/static/blog/feed.xml" },
 ];
 const domesticFeeds = new Set(["toss", "daangn", "gccompany"]);
 const parser = new XMLParser({ ignoreAttributes: false, removeNSPrefix: true, parseTagValue: false, processEntities: true, htmlEntities: true });
@@ -33,7 +48,7 @@ export function parseFeed(xml: string, feed: typeof FEEDS[number], now = Date.no
   if (xml.length > 2_000_000 || /<!DOCTYPE|<!ENTITY/i.test(xml.replace(/<!\[CDATA\[[\s\S]*?\]\]>/g, "")) || XMLValidator.validate(xml) !== true) throw new Error("유효한 RSS/Atom 응답이 아닙니다.");
   const document = parser.parse(xml);
   const items = document.rss?.channel?.item ?? document.feed?.entry;
-  if (!items) throw new Error("피드에 뉴스 항목이 없습니다.");
+  if (!document.rss?.channel && !document.feed) throw new Error("유효한 RSS/Atom 응답이 아닙니다.");
   const seen = new Set<string>();
   return array<Record<string, unknown>>(items).slice(0, 50).flatMap((item) => {
     const title = plainText(item.title).slice(0, 300);
@@ -42,7 +57,7 @@ export function parseFeed(xml: string, feed: typeof FEEDS[number], now = Date.no
     const link = typeof atomLink === "object" ? String(atomLink["@_href"] ?? "") : value(item.link);
     const url = canonicalUrl(link, feed.url);
     const date = Date.parse(value(item.pubDate ?? item.published ?? item.updated));
-    if (!title || !url || !Number.isFinite(date) || date > now + 86_400_000 || seen.has(url)) return [];
+    if (!title || !url || !Number.isFinite(date) || date > now + 86_400_000 || date < now - 90 * 86_400_000 || seen.has(url)) return [];
     seen.add(url);
     const html = value(item.encoded ?? item.content ?? item.description ?? item.summary);
     const enclosure = item.enclosure as Record<string, unknown> | undefined;
@@ -57,9 +72,11 @@ export function parseFeed(xml: string, feed: typeof FEEDS[number], now = Date.no
     if (domesticFeeds.has(feed.id) && tags.some(tag => cultureTag.test(tag)) && tags.every(tag => cultureTag.test(tag) || tag === "여기어때")) return [];
     // ponytail: title/summary and author-intro hints fill missing RSS categories; add publisher metadata if finer classification is needed.
     const domesticDesign = domesticFeeds.has(feed.id) && (tags.some(tag => /^(design|ux|ui|ux-design|product-design|brand-design|브랜드디자인|디자인)$/i.test(tag)) || (feed.id === "toss" && (/디자이너|디자인|사용자 경험|\b(?:UX|UI)\b|브랜딩|캐릭터|아이콘/i.test(`${title} ${description}`) || /\bDesigner\b|디자이너/i.test(sourceText.slice(0, 500)))));
-    const category = domesticDesign ? "design" : feed.id === "design-milk" && tags.some(tag => /interior|workplace|commercial/i.test(tag)) ? "interiors" : feed.category;
+    const aiTopic = /\b(?:AI|artificial intelligence|generative|LLM|GPT[-\d]*|Gemini|Claude|Llama|Firefly|Midjourney|diffusion model|machine learning)\b|인공지능|생성형|언어 모델|머신러닝/i.test(`${title} ${tags.join(" ")}`);
+    const designTopic = domesticDesign || tags.some(tag => /^(design|ux|ui|ux-design|product-design|brand-design|디자인)$/i.test(tag));
+    const category = aiTopic ? "ai" : designTopic ? "design" : feed.id === "design-milk" && tags.some(tag => /interior|workplace|commercial/i.test(tag)) ? "interiors" : feed.category;
     return [{ url, title, description, source_text: sourceText, category, source: feed.name, published_at: new Date(date).toISOString(), image: image?.startsWith("https:") ? image : null, tags: [...new Set(tags)].slice(0, 6) }];
-  });
+  }).sort((a, b) => Date.parse(b.published_at) - Date.parse(a.published_at)).slice(0, 20);
 }
 export async function fetchFeed(feed: typeof FEEDS[number]) {
   const response = await fetch(feed.url, { headers: { "User-Agent": "ARCH.B/1.0 RSS Reader", Accept: "application/rss+xml, application/atom+xml, application/xml" }, signal: AbortSignal.timeout(15_000), redirect: "manual" });
@@ -81,6 +98,5 @@ export async function fetchFeed(feed: typeof FEEDS[number]) {
   let offset = 0;
   for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength; }
   const articles = parseFeed(new TextDecoder().decode(bytes), feed);
-  if (!articles.length) throw new Error("유효한 제목·링크·발행일을 가진 뉴스가 없습니다.");
   return articles;
 }

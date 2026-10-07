@@ -8,7 +8,7 @@
   --balsa-color-surface-elevated: #ffffff;
   --balsa-color-surface-elevated-foreground: #242424;
   --balsa-color-muted: #f0f0ee;
-  --balsa-color-muted-foreground: #777777;
+  --balsa-color-muted-foreground: #707070;
   --balsa-color-primary: #1a8917;
   --balsa-color-primary-foreground: #ffffff;
   --balsa-color-primary-hover: #146c12;
@@ -21,4 +21,28 @@
   --balsa-color-selected: #eef6ed;
   --balsa-color-selected-foreground: #146c12;
   --balsa-color-focus-ring: #1a8917;
+}
+
+[data-palette="my-design-system"].dark {
+  color-scheme: dark;
+  --balsa-color-background: #141717;
+  --balsa-color-foreground: #edf0f0;
+  --balsa-color-surface: #1c2020;
+  --balsa-color-surface-foreground: #edf0f0;
+  --balsa-color-surface-elevated: #262b2b;
+  --balsa-color-surface-elevated-foreground: #edf0f0;
+  --balsa-color-muted: #292e2e;
+  --balsa-color-muted-foreground: #a4aeae;
+  --balsa-color-primary: #68cb66;
+  --balsa-color-primary-foreground: #102410;
+  --balsa-color-primary-hover: #85d783;
+  --balsa-color-primary-active: #a0e29e;
+  --balsa-color-secondary: #b4bebe;
+  --balsa-color-accent: #68cb66;
+  --balsa-color-accent-foreground: #102410;
+  --balsa-color-border: #353c3c;
+  --balsa-color-input-border: #424a4a;
+  --balsa-color-selected: #223722;
+  --balsa-color-selected-foreground: #85d783;
+  --balsa-color-focus-ring: #68cb66;
 }

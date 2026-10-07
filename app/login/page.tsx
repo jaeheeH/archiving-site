@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { normalizeSiteUrl } from "@/lib/site-url";
 import { createClient } from "@/lib/supabase/client";
 import { SITE_COPY } from "@/lib/site-copy";
+import ColorModeToggle from '@/app/components/ColorModeToggle';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -78,6 +79,7 @@ export default function LoginPage() {
 
   return (
     <main className="flex min-h-svh items-center justify-center bg-background px-6 py-12 text-foreground">
+      <ColorModeToggle className="absolute right-6 top-6" />
       <section aria-labelledby="login-title" className="w-full max-w-[360px] text-center">
         <Link href="/" aria-label="ARCH.B 홈으로" className="inline-block text-[28px] font-extrabold tracking-[-0.04em]">
           {SITE_COPY.brand.name}

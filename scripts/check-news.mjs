@@ -24,6 +24,8 @@ assert.ok(editorialText(expanded.paragraphs).length > 2500);
 assert.ok(expanded.paragraphs.some(p => p.kind === "analysis"));
 assert.ok(expanded.paragraphs.some(p => p.references?.length));
 assert.equal(editorialSchema.safeParse({ ...editorial(expanded), paragraphs: ["너무 짧은 본문"] }).success, false);
+const repeatedReference = 'https://example.com/%ec%82%bc';
+assert.equal(editorialSchema.safeParse({ ...editorial(expanded), url: repeatedReference, paragraphs: expanded.paragraphs.map(section => ({ ...section, references: [{ label: '동일한 원출처', kind: 'primary', url: repeatedReference }, { label: '추적 주소 변형', kind: 'primary', url: 'https://www.example.com/%EC%82%BC?utm_source=rss#intro' }] })) }).success, false, 'URL casing and tracking variations cannot count as two independent references');
 assert.equal(editorialBatchSchema.safeParse({ articles: [editorial(expanded), editorial(expanded)] }).success, false);
 assert.ok(newsEditSchema.safeParse({ article: editorial(expanded), is_published: true }).success);
 const incomplete = { ...editorial(expanded), title: "Work in progress", summary: "", paragraphs: [], points: [], tags: [] };
@@ -118,7 +120,8 @@ if (base) {
     assert.equal(new URL(response.headers.get("location"), base).pathname + new URL(response.headers.get("location"), base).search, target);
   }
   const rss = await (await fetch(new URL("/rss.xml", base))).text();
-  assert.ok(rss.includes(`/news/read/${editorials[0].slug}`));
+  const rssSlugs = [...rss.matchAll(/<link>[^<]*\/news\/read\/([^<]+)<\/link>/g)].map(match => match[1]);
+  assert.ok(rssSlugs.length > 0 && rssSlugs.length <= 50 && rssSlugs.every(slug => published.some(post => post.slug === slug)), 'RSS must contain up to 50 current published articles; older editorials may fall outside that window');
   assert.ok(!/<link>[^<]*\/blog\//.test(rss));
   const root = await (await fetch(new URL("/", base))).text();
   assert.ok(root.includes("주요 뉴스") && root.includes("에디토리얼") && !root.includes('class="archive-home'));

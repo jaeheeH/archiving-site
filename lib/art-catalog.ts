@@ -26,6 +26,7 @@ export type Artwork = {
   image_height: number;
   collected_at: string;
   title_ko_status: string;
+  updated_at?: string;
 };
 
 export type Artist = {
@@ -34,6 +35,7 @@ export type Artist = {
   name_ko: string | null;
   source_ids: string[];
   artwork_ids: string[];
+  updated_at?: string;
 };
 
 // Share one DB snapshot across cards in a render; saved catalog data is read fresh on the next request.

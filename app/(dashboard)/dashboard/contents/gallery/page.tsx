@@ -429,27 +429,7 @@ const fetchTopTags = async (search: string, tags: string[]) => {
         </div>
 
         {/* 페이지네이션 */}
-        {totalPages > 1 && (
-          <ContentPagination label="갤러리 페이지" page={page} totalPages={totalPages} onPageChange={updatePage}>
-            {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => {
-              const pageNum = i + 1 + Math.floor((page - 1) / 10) * 10;
-              if (pageNum > totalPages) return null;
-              return (
-                <button
-                  key={pageNum}
-                  aria-current={page === pageNum ? 'page' : undefined}
-                  onClick={() => updatePage(pageNum)}
-                  className={`px-3 py-1 border rounded ${
-                    page === pageNum ? "bg-black text-white" : ""
-                  }`}
-                >
-                  {pageNum}
-                </button>
-              );
-            })}
-
-          </ContentPagination>
-        )}
+        <ContentPagination label="갤러리 페이지" page={page} totalPages={totalPages} onPageChange={updatePage} />
       </div>
 
       {/* 수정 모달 */}

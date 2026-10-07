@@ -1,11 +1,9 @@
 import React from "react";
 import { formatKoreanDate } from "@/lib/date-format";
 import { SITE_COPY } from "@/lib/site-copy";
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata = {
-  title: "Privacy Policy | ARCH-B",
-  description: "ARCH-B의 개인정보 처리방침입니다.",
-};
+export const metadata = pageMetadata({ path: '/privacy', title: '개인정보 처리방침', description: 'ARCH.B의 개인정보 처리방침입니다.' });
 
 const POLICY_EFFECTIVE_DATE = new Date("2026-07-29T00:00:00+09:00");
 
@@ -50,6 +48,7 @@ export default function PrivacyPage() {
                 <li><strong>자동 수집 항목:</strong> IP 주소, 쿠키, 서비스 이용 기록, 방문 기록, 기기 정보</li>
               </ul>
             </div>
+            <p className="mt-3 text-gray-600">방문 분석에는 공개 페이지 경로, 방문 시각, 외부 유입 도메인, 기기 유형과 브라우저를 구분하는 해시 처리된 임의 식별값을 사용합니다. 방문 분석 기록에는 원본 IP 주소, 계정 정보, 검색어, URL 쿼리나 전체 유입 URL을 저장하지 않습니다. 방문자 쿠키는 30일, 방문 구분 쿠키는 마지막 활동 후 30분간 유지됩니다. 브라우저의 Do Not Track 및 Global Privacy Control 설정을 따릅니다.</p>
           </section>
 
           <section>
@@ -61,6 +60,7 @@ export default function PrivacyPage() {
               - 회원 탈퇴 시 지체 없이 파기합니다.<br />
               - 단, 관계 법령 위반에 따른 수사·조사 등이 진행 중인 경우에는 해당 수사·조사 종료 시까지 보유할 수 있습니다.
             </p>
+            <p className="mt-2 text-gray-600">방문 분석 기록은 최근 90일을 보관하며, 새로운 방문이 시작될 때 90일이 지난 기록을 정리합니다. 계정 정보와 연결하지 않으며, 집계 결과는 관리자·부관리자에게만 제공됩니다.</p>
           </section>
 
           <section>

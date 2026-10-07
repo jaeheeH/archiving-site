@@ -5,8 +5,9 @@ import Link from "next/link";
 import NewsPlacement from "./NewsPlacement";
 import ContentPagination from "@/app/(dashboard)/components/ContentPagination";
 import { useSearchParams } from "next/navigation";
-import { CATEGORIES } from "@/lib/news-feeds";
+import { CATEGORIES, FEEDS } from "@/lib/news-feeds";
 import type { NewsPost } from "@/lib/news-record";
+import type { NewsProcessStatus } from "@/lib/news-jobs";
 
 function NewsManager() {
   const searchParams = useSearchParams();
@@ -17,9 +18,11 @@ function NewsManager() {
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [reload, setReload] = useState(0);
-  const [queue, setQueue] = useState<{ waiting: number; writing: number; failed: number } | null>(null);
-  const pipeline = useRef<AbortController | null>(null);
-  useEffect(() => () => pipeline.current?.abort(), []);
+  const [queue, setQueue] = useState<NewsProcessStatus | null>(null);
+  const [queueError, setQueueError] = useState("");
+  const previousProgress = useRef<string | null>(null);
+  const job = queue?.job;
+  const jobActive = !!job && ['queued', 'collecting', 'writing'].includes(job.status);
   const page = Math.max(1, Math.min(10000, Number.parseInt(searchParams.get("page") || "1", 10) || 1));
   const category = searchParams.get("category") || "all";
   const status = searchParams.get("status") || "all";
@@ -35,33 +38,41 @@ function NewsManager() {
       if (!response.ok) throw new Error(data.error || "뉴스를 불러오지 못했습니다.");
       setPosts(data.data); setTotal(data.pagination.total); setError("");
     }).catch(cause => { if (!controller.signal.aborted) setError(cause.message); }).finally(() => { if (!controller.signal.aborted) setLoading(false); });
-    fetch('/api/news/process', { signal: controller.signal }).then(async response => { if (!response.ok) throw new Error(); setQueue(await response.json()); }).catch(() => { if (!controller.signal.aborted) setQueue(null); });
     return () => controller.abort();
   }, [page, category, status, query, reload]);
 
+  useEffect(() => {
+    const controller = new AbortController();
+    let timer: ReturnType<typeof setTimeout>;
+    const refresh = async () => {
+      let delay = 15000;
+      try {
+        const response = await fetch('/api/news/process', { signal: controller.signal, cache: 'no-store' });
+        const data = await response.json() as NewsProcessStatus & { error?: string };
+        if (!response.ok) throw new Error(data.error || '작성 상태를 불러오지 못했습니다.');
+        if (controller.signal.aborted) return;
+        setQueue(data); setQueueError('');
+        const progress = JSON.stringify([data.job?.id, data.job?.status, data.job?.written, data.job?.failed, data.waiting, data.writing]);
+        if (previousProgress.current !== null && previousProgress.current !== progress) setReload(value => value + 1);
+        previousProgress.current = progress;
+        if (data.writing || (data.job && ['queued', 'collecting', 'writing'].includes(data.job.status))) delay = 3000;
+      } catch (cause) { if (!controller.signal.aborted) setQueueError(cause instanceof Error ? cause.message : '작성 상태를 불러오지 못했습니다.'); }
+      finally { if (!controller.signal.aborted) timer = setTimeout(refresh, delay); }
+    };
+    void refresh();
+    return () => { controller.abort(); clearTimeout(timer); };
+  }, [jobActive]);
+
   async function collect(withCollection = true) {
-    const controller = new AbortController(); pipeline.current = controller;
-    setWorking("collect"); setNotice(withCollection ? "뉴스를 수집하고 자료 조사·기사 작성을 진행합니다." : "대기 뉴스의 자료 조사·기사 작성을 진행합니다."); setError("");
+    setWorking("collect"); setNotice('서버에 자동 작성 작업을 요청하고 있습니다.'); setError("");
     try {
-      const response = await fetch(withCollection ? "/api/news/collect" : "/api/news/process", { method: "POST", signal: controller.signal });
+      const response = await fetch(withCollection ? "/api/news/collect" : "/api/news/process", { method: "POST" });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "수집·자동 작성에 실패했습니다.");
-      const results = (data.results || []) as { inserted: number; error: string | null }[];
-      const collected = results.reduce((sum, item) => sum + item.inserted, 0);
-      let step = withCollection ? data.writing : data;
-      let written = 0, failed = 0;
-      for (let index = 0; index < 15; index++) {
-        written += step.written; failed += step.failed;
-        setNotice(`${withCollection ? `새 뉴스 ${collected}편 수집 · ` : ''}초안 ${written}편 작성 · 실패 ${failed}편 · 작성 대기 ${step.remaining}편${step.remaining && index < 14 ? ' · 계속 작성 중…' : ''}${results.some(item => item.error) ? ' 일부 매체의 수집에 실패했습니다.' : ''}`);
-        setReload(value => value + 1);
-        if (step.items?.some((item: { error?: string }) => /사용량 한도|Gemini.+요청.+(?:401|403)|API key not valid/i.test(item.error || ''))) throw new Error('Gemini 호출을 중단했습니다. 작성된 초안은 저장되어 있으며 실패 원인은 각 기사에서 확인할 수 있습니다.');
-        if (!step.remaining || index === 14 || controller.signal.aborted) break;
-        const next = await fetch('/api/news/process', { method: 'POST', signal: controller.signal });
-        step = await next.json();
-        if (!next.ok) throw new Error(step.error || '자동 작성에 실패했습니다.');
-      }
-    } catch (cause) { if (!controller.signal.aborted) { setError(cause instanceof Error ? cause.message : "수집·자동 작성에 실패했습니다."); setReload(value => value + 1); } }
-    finally { if (!controller.signal.aborted) setWorking(""); }
+      if (!response.ok) throw new Error(data.error || "자동 작성 작업을 시작하지 못했습니다.");
+      setQueue(data); setReload(value => value + 1);
+      setNotice('서버에서 자동 작성을 시작했습니다. 다른 페이지로 이동하거나 탭을 닫아도 계속 진행됩니다.');
+    } catch (cause) { setError(cause instanceof Error ? cause.message : "자동 작성 작업을 시작하지 못했습니다."); }
+    finally { setWorking(""); }
   }
 
   async function toggle(post: NewsPost) {
@@ -81,13 +92,27 @@ function NewsManager() {
   return <div>
     <header className="dashboard-Header">
       <div><h1>뉴스 관리</h1><p className="mt-1 text-xs text-gray-500">수집부터 자료 조사·한국어 초안 작성까지 자동으로 진행합니다.</p></div>
-      <div className="flex flex-wrap gap-2"><button type="button" onClick={() => collect(false)} disabled={!!working} className="content-table-action">대기 뉴스 자동 작성</button><button type="button" onClick={() => collect()} disabled={!!working} className="content-table-create">{working === "collect" ? "수집·작성 중…" : "수집 + 자동 작성"}</button></div>
+      <div className="flex flex-wrap gap-2"><button type="button" onClick={() => collect(false)} disabled={!!working || jobActive || !queue || !!queueError} className="content-table-action">대기 뉴스 자동 작성</button><button type="button" onClick={() => collect()} disabled={!!working || jobActive || !queue || !!queueError} className="content-table-create">{working === "collect" ? "작업 요청 중…" : jobActive ? "서버에서 실행 중…" : "수집 + 자동 작성"}</button></div>
     </header>
     <main className="dashboard-container space-y-5">
       <section className="rounded-lg border border-gray-200 bg-white p-5" aria-label="뉴스 자동 작성">
-        <h2 className="text-sm font-semibold">수집 → 참고자료 조사 → 기사 작성 → 초안 검토</h2>
+        <h2 className="text-sm font-semibold">수집 → 참고자료 조사 → 기사 작성 → 사실 검수 → 초안 검토</h2>
         <p className="mt-2 text-xs leading-6 text-gray-500">공식 근거를 포함한 참고자료를 조사하고 1,800~3,000자 기사를 작성합니다. 한 번에 최대 15편을 처리하며, 이미 작성된 글은 덮어쓰지 않습니다. 발행은 검토 후 직접 진행합니다.</p>
+        <p className="mt-1 text-xs leading-6 text-gray-500">작업은 서버에서 실행되므로 페이지 이동·탭 종료 후에도 이어집니다. 현재 로컬 환경에서는 컴퓨터와 서버가 켜져 있어야 합니다.</p>
+        <details className="mt-3 border-t border-gray-100 pt-3">
+          <summary className="cursor-pointer text-sm font-medium">수집처 {FEEDS.length}곳 · 기사 품질 기준</summary>
+          <p className="mt-2 text-xs leading-6 text-gray-500">최근 90일의 소식을 매체별 최대 20편씩 확인하고 중복을 제외합니다. 매체를 번갈아 조사하며, 기업의 주장·실제 출시 조건·성능 근거를 확인합니다. 서로 다른 참고자료 2개 이상과 공식 근거가 필요하며, 사실 검수에서 문제가 나오면 한 번 수정·재검수합니다. 통과한 초안도 발행 전 편집자의 검토가 필요합니다.</p>
+          <ul className="mt-3 grid gap-2 text-xs sm:grid-cols-2 lg:grid-cols-3">{FEEDS.map(feed => <li key={feed.id}><a href={feed.url} target="_blank" rel="noopener noreferrer" className="text-gray-900 hover:underline">{feed.name} ↗</a><span className="ml-2 text-gray-500">{CATEGORIES[feed.category]}</span></li>)}</ul>
+        </details>
         <p className="mt-3 text-sm text-gray-700">{queue ? `작성 대기 ${queue.waiting}편 · 진행 중 ${queue.writing}편 · 실패 기록 ${queue.failed}편` : '작성 상태를 확인하고 있습니다.'}</p>
+        {queueError && <p role="alert" className="mt-2 text-sm text-red-700">{queueError} 작업 상태를 다시 확인하고 있습니다.</p>}
+        {job && <div className="mt-4 border-t border-gray-100 pt-3 text-sm" role="status" aria-live="polite">
+          <p className="font-medium">{job.status === 'queued' ? '작업 준비 중' : job.status === 'collecting' ? '새 뉴스 수집 중' : job.status === 'writing' ? '서버에서 조사·작성 중' : job.status === 'failed' ? '자동 작성 중단' : '자동 작성 완료'}</p>
+          <p className="mt-1 text-gray-600">{job.withCollection && `새 뉴스 ${job.collected}편 수집 · `}초안 {job.written}편 작성 · 실패 {job.failed}편 · 최대 {job.limit}편 처리</p>
+          {job.currentTitle && <p className="mt-2 text-xs text-gray-500">현재 작성: {job.currentTitle}</p>}
+          {!!job.collectionErrors && <p className="mt-2 text-xs text-red-700">{job.collectionErrors}개 매체의 수집에 실패했습니다. 수집된 뉴스는 계속 처리합니다.</p>}
+          {job.error && <p className="mt-2 text-xs text-red-700">{job.error}</p>}
+        </div>}
       </section>
       <NewsPlacement />
       <form key={searchParams.toString()} action="/dashboard/contents/news" method="get" className="content-table-filters">

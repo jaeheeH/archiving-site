@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import { ToastProvider } from "@/components/ToastProvider";
 import BalsaThemeActivation from "@/app/components/BalsaThemeActivation";
+import VisitorTracker from "@/app/components/VisitorTracker";
 import Header from "@/app/layout/Header";
 import Footer from "@/app/layout/Footer";
 import { getSiteSettings, getDefaultMetadata } from "@/lib/site-settings";
 import { getSiteUrl } from "@/lib/site-url";
+import { jsonLd } from '@/lib/seo';
+import { SITE_COPY } from '@/lib/site-copy';
+import { COLOR_MODE_INIT_SCRIPT } from '@/lib/color-mode';
 import "./globals.css";
 import "@/styles/balsa-foundation.css";
 import "@/styles/balsa-theme.css";
@@ -54,6 +58,7 @@ export default async function RootLayout({
       data-palette="my-design-system"
       data-theme="my-design-system"
       data-balsa-adapt
+      suppressHydrationWarning
     >
       <head>
         <link
@@ -99,7 +104,8 @@ export default async function RootLayout({
         )}
 
         {/* Theme Color */}
-        <meta name="theme-color" content={settings?.theme_color || "#1570EF"} />
+        <meta name="theme-color" content={settings?.theme_color || '#ffffff'} data-light-color={settings?.theme_color || '#ffffff'} />
+        <script dangerouslySetInnerHTML={{ __html: COLOR_MODE_INIT_SCRIPT }} />
         <meta name="p:domain_verify" content="bf63e4dfeb108fe297cdffdabe10cd78"/>
 
         {/* Google Analytics 4 */}
@@ -141,24 +147,14 @@ export default async function RootLayout({
            아래 body 태그 안으로 이동했습니다.
         */}
 
-        {/* Structured Data (Schema.org) */}
-        {settings?.schema_type === "Organization" && settings.organization_name && (
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                name: settings.organization_name,
-                url: siteUrl,
-                logo: settings.logo_url || undefined,
-              }),
-            }}
-          />
-        )}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd({ '@context': 'https://schema.org', '@graph': [
+          { '@type': 'WebSite', '@id': `${siteUrl}/#website`, url: siteUrl, name: 'ARCH.B', alternateName: 'ARCH-B', description: SITE_COPY.brand.description, inLanguage: 'ko-KR', publisher: { '@id': `${siteUrl}/#publisher` } },
+          { '@type': 'Organization', '@id': `${siteUrl}/#publisher`, name: 'ARCH.B', url: siteUrl, ...(settings?.logo_url ? { logo: settings.logo_url } : {}) },
+        ] }) }} />
       </head>
       <body className="antialiased">
         <BalsaThemeActivation />
+        <VisitorTracker />
         {/* Google Tag Manager (noscript) */}
         {gtmId && (
           <noscript>

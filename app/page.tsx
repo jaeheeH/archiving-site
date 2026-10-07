@@ -3,7 +3,8 @@ import Link from "next/link";
 import { readNewsPlacement } from "@/lib/news-placement";
 import { readNews, type NewsArticle as Article } from "@/lib/news";
 import { CATEGORIES, type Category } from "@/lib/news-feeds";
-export const metadata = { title: { absolute: "ARCH.B · 디자인, 개발, 인테리어" }, description: "디자인과 기술, 공간의 새로운 소식과 ARCH.B의 깊이 있는 시선. 작품·작가·참고사이트를 함께 탐색합니다." };
+import { pageMetadata } from '@/lib/seo';
+export const metadata = pageMetadata({ path: '/', title: '디자인·AI·기술 뉴스와 아트 아카이브', description: '디자인과 AI, 제품·개발·공간의 새로운 소식과 ARCH.B의 깊이 있는 시선. 작품·작가·참고사이트를 함께 탐색합니다.' });
 export const dynamic = "force-dynamic";
 const path = (article: Article) => `/news/read/${article.slug}`;
 const date = (value: string) => new Intl.DateTimeFormat("ko-KR", { month: "long", day: "numeric", timeZone: "Asia/Seoul" }).format(new Date(value));
@@ -12,6 +13,8 @@ const sectionCopy = {
   design: { title: "형태가 바꾸는 일상", description: "사물과 재료, 새로운 디자인의 가능성." },
   development: { title: "더 나은 것을 만드는 기술", description: "코드와 도구, 만드는 사람들의 다음 선택." },
   interiors: { title: "공간에 담긴 생각", description: "머무는 곳에서 발견하는 새로운 경험." },
+  ai: { title: "창작과 일에 스며드는 AI", description: "모델과 도구의 변화, 실제 활용과 확인해야 할 한계." },
+  technology: { title: "제품이 바꾸는 다음 일상", description: "새로운 기기와 서비스, 기술이 만드는 경험." },
 };
 function StoryCard({ article }: { article: Article }) {
   return <article className={`news-card ${!article.image ? "news-card-text" : ""}`}>

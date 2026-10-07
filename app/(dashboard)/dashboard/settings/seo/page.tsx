@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useToast } from "@/components/ToastProvider";
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
 import ImageUpload from "@/components/ImageUpload";
+import { getSiteUrl } from '@/lib/site-url';
 
 type SiteSettings = {
   site_name: string;
@@ -198,6 +199,22 @@ export default function SEOSettingsPage() {
       </header>
 
       <div className="dashboard-container">
+        <section className="mb-6 rounded-lg border border-[var(--archive-line)] bg-white p-5 text-sm" aria-label="검색 노출 준비">
+          <h2 className="font-semibold">검색 노출 준비</h2>
+          <p className="mt-2 text-[var(--archive-muted)]">대표 도메인: {getSiteUrl()} · 사이트맵과 RSS는 공개된 콘텐츠만 포함합니다.</p>
+          <div className="mt-3 flex flex-wrap gap-3 text-xs">
+            <span>수집 {settings.robots_allow ? '허용' : '차단'}</span>
+            <span>구글 소유 확인 값 {settings.google_verification ? '저장됨' : '미설정'}</span>
+            <span>네이버 소유 확인 값 {settings.naver_verification ? '저장됨' : '미설정'}</span>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-4 text-[var(--archive-brand)]">
+            <a href={`${getSiteUrl()}/sitemap.xml`} target="_blank" rel="noopener noreferrer">사이트맵 ↗</a>
+            <a href={`${getSiteUrl()}/rss.xml`} target="_blank" rel="noopener noreferrer">RSS ↗</a>
+            <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">Google Search Console ↗</a>
+            <a href="https://searchadvisor.naver.com/console/board" target="_blank" rel="noopener noreferrer">네이버 서치어드바이저 ↗</a>
+          </div>
+          <p className="mt-3 text-xs leading-5 text-[var(--archive-muted)]">확인 값 저장은 등록 완료를 뜻하지 않습니다. 배포 후 각 도구에서 소유 확인을 완료하고 사이트맵을 제출하세요. 네이버에는 RSS도 제출할 수 있습니다.</p>
+        </section>
         {/* 탭 네비게이션 */}
         <div className="border-b mb-6">
           <div className="flex gap-4">
@@ -550,74 +567,18 @@ export default function SEOSettingsPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold mb-2">
-                Sitemap 재생성 주기
-              </label>
-              <select
-                value={settings.sitemap_revalidate}
-                onChange={(e) =>
-                  handleInputChange("sitemap_revalidate", parseInt(e.target.value))
-                }
-                className="w-full px-3 py-2 border rounded"
-              >
-                <option value={3600}>1시간 (3600초)</option>
-                <option value={21600}>6시간 (21600초)</option>
-                <option value={43200}>12시간 (43200초)</option>
-                <option value={86400}>24시간 (86400초)</option>
-              </select>
-              <p className="text-sm text-gray-500 mt-1">
-                ISR을 통해 sitemap이 자동으로 재생성됩니다.
-              </p>
+              <h3 className="text-sm font-semibold">사이트맵 갱신</h3>
+              <p className="mt-1 text-sm text-gray-500">1시간마다 갱신하고, 콘텐츠 저장·발행 시 기존 캐시를 갱신합니다. 실제 콘텐츠 수정일만 표시합니다.</p>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold mb-2">
-                구조화 데이터 타입
-              </label>
-              <select
-                value={settings.schema_type}
-                onChange={(e) =>
-                  handleInputChange("schema_type", e.target.value)
-                }
-                className="w-full px-3 py-2 border rounded"
-              >
-                <option value="Organization">Organization (조직/회사)</option>
-                <option value="Person">Person (개인)</option>
-                <option value="WebSite">WebSite (웹사이트)</option>
-              </select>
+              <h3 className="text-sm font-semibold">페이지별 구조화 데이터</h3>
+              <p className="mt-1 text-sm text-gray-500">사이트·발행자는 WebSite·Organization, 뉴스는 NewsArticle, 에디토리얼은 BlogPosting으로 자동 생성됩니다. 작품·작가·이미지와 탐색 경로도 각각의 실제 정보로 표시합니다.</p>
             </div>
 
-            {settings.schema_type === "Organization" && (
-              <div>
-                <label className="block text-sm font-semibold mb-2">
-                  조직명
-                </label>
-                <input
-                  type="text"
-                  value={settings.organization_name}
-                  onChange={(e) =>
-                    handleInputChange("organization_name", e.target.value)
-                  }
-                  className="w-full px-3 py-2 border rounded"
-                  placeholder="예: ARCH-B"
-                />
-              </div>
-            )}
-
             <div>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={settings.canonical_enabled}
-                  onChange={(e) =>
-                    handleInputChange("canonical_enabled", e.target.checked)
-                  }
-                  className="w-4 h-4"
-                />
-                <span className="text-sm font-semibold">
-                  Canonical URL 자동 생성
-                </span>
-              </label>
+              <h3 className="text-sm font-semibold">대표 URL 자동 생성</h3>
+              <p className="mt-1 text-sm text-gray-500">공개 페이지는 대표 도메인의 주소를 사용합니다. 검색·필터 화면과 비공개 화면은 별도로 색인에서 제외합니다.</p>
             </div>
           </div>
         )}

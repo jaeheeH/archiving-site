@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { normalizeAvatarUrl } from "@/lib/avatar-url";
+import ColorModeToggle from '@/app/components/ColorModeToggle';
 
 // 유저 정보 타입 정의
 type UserProfile = {
@@ -266,6 +267,7 @@ export default function Header() {
             )}
 
           </nav>
+          <ColorModeToggle className="ml-3" />
         </div>
       </header>
 

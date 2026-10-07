@@ -716,23 +716,7 @@ function BlogContent() {
         </div>
 
         {/* 페이지네이션 */}
-        {totalPages > 1 && (
-          <ContentPagination label="에디토리얼 페이지" page={page} totalPages={totalPages} onPageChange={updatePage}>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-              <button
-                key={num}
-                aria-current={page === num ? 'page' : undefined}
-                onClick={() => updatePage(num)}
-                className={`px-3 py-1 border rounded ${
-                  page === num ? "bg-black text-white" : "hover:bg-gray-100"
-                }`}
-              >
-                {num}
-              </button>
-            ))}
-
-          </ContentPagination>
-        )}
+        <ContentPagination label="에디토리얼 페이지" page={page} totalPages={totalPages} onPageChange={updatePage} />
       </div>
     </div>
   );

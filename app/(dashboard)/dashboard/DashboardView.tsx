@@ -4,6 +4,7 @@ import { ArrowUpRight, Bookmark, CheckCheck, Eye, FileText, Heart, ImageIcon, Ne
 import { getDashboardOverview } from '@/lib/dashboard-data';
 import { periodChange } from '@/lib/dashboard-metrics';
 import TrendChart from './TrendChart';
+import VisitorAnalytics from './VisitorAnalytics';
 import './dashboard.css';
 
 const number = (value: number | null) => value === null ? '—' : new Intl.NumberFormat('ko-KR').format(value);
@@ -49,6 +50,7 @@ export default async function DashboardView({ searchParams, analytics = false }:
       <section aria-labelledby="operation-status"><div className="operation-section-heading"><div><h2 id="operation-status">운영 현황</h2><p>가공·발행·독자 반응의 흐름을 확인하세요. 오늘 진행 중인 수치가 포함됩니다.</p></div></div>
         <div className="operation-kpis">{cards.map(card => { const Icon = card.icon; return <Link key={card.label} href={card.href} className="operation-card kpi-card"><div className="kpi-label"><span>{card.label}</span><span className="operation-icon"><Icon size={17} aria-hidden="true" /></span></div><p className="kpi-number">{number(card.value)}<span>{card.unit}</span></p><div className="kpi-detail"><span>{card.detail}</span><ArrowUpRight size={13} aria-hidden="true" /></div></Link>; })}</div>
       </section>
+      {overview.traffic && <VisitorAnalytics traffic={overview.traffic} days={days} compact />}
       <div className="operation-charts">
         <section id="publishing-trend" className="operation-card"><div className="operation-section-heading"><div><h2>등록·발행 추이</h2><p>최근 {days}일 · 뉴스 등록일과 기사 발행일 기준</p></div>{admin && !analytics && <Link className="operation-pill" href={`/dashboard/analytics?days=${days}`}>전체 통계 <ArrowUpRight size={13} /></Link>}</div><div className="chart-legend"><span><i className="legend-registration" />뉴스 등록</span><span><i className="legend-publication" />기사 발행</span></div><TrendChart daily={metrics.daily} mode="publishing" /><div className="chart-totals"><div><span>오늘 등록 뉴스</span><strong>{number(metrics.todayRegistered)}편</strong></div><div><span>오늘 발행 기사</span><strong>{number(metrics.todayPublished)}편</strong></div></div></section>
         <section className="operation-card"><div className="operation-section-heading"><div><h2>기사 조회 흐름</h2><p>뉴스와 에디토리얼 · 기사별 24시간 중복 제외</p></div></div><TrendChart daily={metrics.daily} mode="views" /><div className="view-total"><span>최근 {days}일 합계</span><strong>{number(metrics.views)}건</strong><span>누적 조회 {number(metrics.cumulativeViews)}건</span></div></section>

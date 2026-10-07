@@ -1,4 +1,8 @@
 import type { NextConfig } from "next";
+import { PHASE_PRODUCTION_BUILD, PHASE_PRODUCTION_SERVER } from "next/constants";
+import { randomUUID } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 
 function getSupabaseImageHost() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -60,6 +64,8 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      ...((process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production') ? [{ source: '/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] }] : []),
+      ...['dashboard', 'mypage', 'login', 'auth', 'no-access', 'extension'].map(path => ({ source: `/${path}/:path*`, headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] })),
       {
         source: "/(.*)",
         headers: [
@@ -85,4 +91,12 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default function configure(phase: string): NextConfig {
+  // Use the same version for compiled assets and every server serving this build.
+  const deploymentId = process.env.NEXT_DEPLOYMENT_ID || (phase === PHASE_PRODUCTION_BUILD
+    ? randomUUID()
+    : phase === PHASE_PRODUCTION_SERVER
+      ? JSON.parse(readFileSync(join(process.cwd(), nextConfig.distDir || '.next', 'required-server-files.json'), 'utf8')).config.deploymentId
+      : undefined);
+  return deploymentId ? { ...nextConfig, deploymentId } : nextConfig;
+}

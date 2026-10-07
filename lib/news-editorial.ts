@@ -19,7 +19,7 @@ export const editorialSchema = z.object({
   const sections = value.paragraphs.filter(p => typeof p !== "string");
   if (!sections.some(p => p.kind === "reporting") || !sections.some(p => p.kind === "analysis")) context.addIssue({ code: "custom", path: ["paragraphs"], message: "사실·소식과 ARCH.B 분석을 각각 포함해주세요." });
   const referenceRows = sections.flatMap(p => p.references);
-  const referenceKey = (url: string) => { const parsed = new URL(url); parsed.hash = ''; parsed.hostname = parsed.hostname.replace(/^www\./, ''); parsed.pathname = parsed.pathname.replace(/\/$/, '') || '/'; return parsed.href; };
+  const referenceKey = (url: string) => { const parsed = new URL(url); parsed.hash = ''; parsed.hostname = parsed.hostname.replace(/^www\./, ''); parsed.pathname = parsed.pathname.replace(/\/$/, '') || '/'; for (const key of [...parsed.searchParams.keys()]) if (/^utm_|^(fbclid|gclid)$/i.test(key)) parsed.searchParams.delete(key); parsed.searchParams.sort(); return parsed.href.replace(/%[0-9a-f]{2}/gi, code => code.toUpperCase()); };
   const references = new Set(referenceRows.map(ref => referenceKey(ref.url)));
   if (!referenceRows.some(ref => ref.kind === "primary")) context.addIssue({ code: "custom", path: ["paragraphs"], message: "검토한 공식 1차 자료를 하나 이상 포함해주세요." });
   if (references.size < 2 || !references.has(referenceKey(value.url))) context.addIssue({ code: "custom", path: ["paragraphs"], message: "원출처를 포함한 서로 다른 참고자료 2개 이상이 필요합니다." });

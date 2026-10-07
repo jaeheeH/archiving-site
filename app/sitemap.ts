@@ -1,116 +1,31 @@
-import { MetadataRoute } from "next";
-import { createPublicClient } from "@/lib/supabase/public";
-import { getSiteUrl } from "@/lib/site-url";
-import { getArtCatalog } from "@/lib/art-catalog";
-// getSiteSettings는 revalidate 설정에 사용할 수 없으므로 sitemap 내부에서 baseUrl 용도로만 사용하거나 제거
+import type { MetadataRoute } from 'next';
+import { createPublicClient } from '@/lib/supabase/public';
+import { getArtCatalog } from '@/lib/art-catalog';
+import { CATEGORIES } from '@/lib/news-feeds';
+import { sitePageUrl } from '@/lib/seo';
 
-// 1. generateStaticParams 제거 (sitemap.ts에서 설정 오버라이드 용도로 작동하지 않음)
-
-// 2. 동적 생성 설정
-// 'force-static'을 쓰면 빌드 시점에 생성되고 revalidate 시간만큼 캐시됩니다.
-// 실시간성을 원하면 'force-dynamic'으로 변경해야 하지만, 
-// 사이트맵은 부하가 크므로 보통 ISR(force-static + revalidate)을 권장합니다.
-export const dynamic = "force-static"; 
-
-// 3. 갱신 주기 설정 (초 단위)
-// DB에서 가져온 값을 여기에 '변수'로 넣을 수 없습니다. 고정된 숫자를 써야 합니다.
-// 테스트 중이라 즉시 갱신이 필요하면 0으로, 평소엔 3600(1시간) or 86400(하루) 추천
-export const revalidate = 3600; 
+export const dynamic = 'force-static';
+export const revalidate = 3600;
+const lastModified = (value?: string | null) => value && Number.isFinite(Date.parse(value)) ? new Date(value) : undefined;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const supabase = createPublicClient();
+  const db = createPublicClient();
   const { artists, artworks } = await getArtCatalog();
-  // const settings = await getSiteSettings(); // 필요한 경우 사용
-
-  const baseUrl = getSiteUrl();
-
-  // 정적 페이지들
-  const staticPages: MetadataRoute.Sitemap = [
-    { url: `${baseUrl}/news/stories`, changeFrequency: "daily", priority: 0.8 },
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/art`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/artists`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/references`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/terms`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
-  ];
-
-  const artPages: MetadataRoute.Sitemap = artworks.map((artwork) => ({
-    url: `${baseUrl}/art/${artwork.id}`,
-    lastModified: new Date(artwork.collected_at),
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
-
-  const artistPages: MetadataRoute.Sitemap = artists.map((artist) => ({
-    url: `${baseUrl}/artists/${artist.id}`,
-    lastModified: new Date("2026-09-07"),
-    changeFrequency: "monthly",
-    priority: 0.7,
-  }));
-
-  // 갤러리 아이템들
-  const { data: galleries } = await supabase
-    .from("gallery")
-    .select("id, created_at")
-    .order("created_at", { ascending: false })
-    .limit(5000);
-
-  const galleryPages: MetadataRoute.Sitemap =
-    galleries?.map((gallery) => ({
-      url: `${baseUrl}/gallery/${gallery.id}`,
-      lastModified: new Date(gallery.created_at),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    })) || [];
-
-  // 블로그 포스트들
-  const { data: posts } = await supabase
-    .from("posts")
-    .select("slug, updated_at")
-    .in("type", ["blog", "news"])
-    .eq("is_published", true)
-    .not("published_at", "is", null)
-    .order("updated_at", { ascending: false })
-    .limit(5000);
-
-  const blogPages: MetadataRoute.Sitemap =
-    posts?.map((post) => ({
-      url: `${baseUrl}/news/read/${post.slug}`,
-      lastModified: new Date(post.updated_at),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    })) || [];
-
-  return [...staticPages, ...artPages, ...artistPages, ...galleryPages, ...blogPages];
+  const pages: MetadataRoute.Sitemap = ['/', '/news/stories', '/art', '/artists', '/references', '/gallery', '/privacy', '/terms', ...Object.keys(CATEGORIES).map(category => `/news/stories?category=${category}`)].map(path => ({ url: sitePageUrl(path) }));
+  pages.push(...artworks.map(work => ({ url: sitePageUrl(`/art/${work.id}`), lastModified: lastModified(work.updated_at || work.collected_at) })));
+  pages.push(...artists.map(artist => ({ url: sitePageUrl(`/artists/${artist.id}`), lastModified: lastModified(artist.updated_at) })));
+  for (let offset = 0; ; offset += 1000) {
+    const { data, error } = await db.from('gallery').select('id').order('id').range(offset, offset + 999);
+    if (error) throw error;
+    pages.push(...data.map(item => ({ url: sitePageUrl(`/gallery/${item.id}`) })));
+    if (data.length < 1000) break;
+  }
+  for (let offset = 0; ; offset += 1000) {
+    const { data, error } = await db.from('posts').select('slug,type,content,updated_at').in('type', ['blog', 'news']).eq('is_published', true).not('published_at', 'is', null).order('id').range(offset, offset + 999);
+    if (error) throw error;
+    pages.push(...data.filter(item => item.slug && (item.type === 'blog' || (item.content?.format === 'archb-news-v1' && Object.hasOwn(CATEGORIES, item.content.category) && Array.isArray(item.content.paragraphs) && Array.isArray(item.content.points)))).map(item => ({ url: sitePageUrl(`/news/read/${encodeURIComponent(item.slug)}`), lastModified: lastModified(item.updated_at) })));
+    if (data.length < 1000) break;
+  }
+  if (pages.length > 50000) throw new Error('Sitemap exceeds 50,000 URLs; split into sitemap files before adding more content.');
+  return pages;
 }
