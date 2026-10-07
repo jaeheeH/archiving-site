@@ -148,7 +148,7 @@ export default async function MyPage() {
           </div>
           <Link
             href="/mypage/profile"
-            className="mt-5 inline-flex h-9 w-full items-center justify-center gap-2 rounded-md border border-[var(--archive-line)] text-sm font-semibold text-gray-700 transition hover:border-[#ff4800] hover:text-[#ff4800]"
+            className="mt-5 inline-flex h-9 w-full items-center justify-center gap-2 rounded-md border border-[var(--archive-line)] text-sm font-semibold text-gray-700 transition hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]"
           >
             <UserRound className="h-4 w-4" />
             내 정보 수정
@@ -158,7 +158,7 @@ export default async function MyPage() {
 
       <Link
         href="/mypage/activity"
-        className="mb-3 flex items-center justify-between gap-4 border-y border-[var(--archive-line)] px-4 py-3 text-sm font-semibold text-[#ff4800] transition hover:border-[#ff4800]"
+        className="mb-3 flex items-center justify-between gap-4 border-y border-[var(--archive-line)] px-4 py-3 text-sm font-semibold text-[var(--archive-brand)] transition hover:border-[var(--archive-brand)]"
       >
         <span className="flex items-center gap-2">
           <Sparkles className="h-4 w-4" />
@@ -194,7 +194,7 @@ function TodayRecommendation({
     <section className="overflow-hidden rounded-lg border border-[var(--archive-line)] bg-white">
       <div className="grid gap-5 p-5 md:grid-cols-[1fr_260px] md:p-6">
         <div className="flex min-w-0 flex-col justify-center">
-          <p className="archive-eyebrow text-[#ff4800]">{recommendation?.label || "오늘의 추천"}</p>
+          <p className="archive-eyebrow text-[var(--archive-brand)]">{recommendation?.label || "오늘의 추천"}</p>
           <h2 className="mt-3 line-clamp-2 text-2xl font-bold tracking-tight text-gray-950 md:text-3xl">
             {recommendation?.title || "오늘 살펴볼 콘텐츠를 준비 중입니다."}
           </h2>
@@ -203,7 +203,7 @@ function TodayRecommendation({
           </p>
           <Link
             href={recommendation?.href || "/gallery"}
-            className="mt-6 inline-flex h-10 w-fit items-center gap-2 rounded-md bg-gray-950 px-4 text-sm font-semibold text-white transition hover:bg-[#ff4800]"
+            className="mt-6 inline-flex h-10 w-fit items-center gap-2 rounded-md bg-gray-950 px-4 text-sm font-semibold text-white transition hover:bg-[var(--archive-brand)]"
           >
             추천 보기
             <ArrowRight className="h-4 w-4" />
@@ -231,11 +231,11 @@ function SummaryCell({ label, value, href }: { label: string; value: number; hre
   return (
     <Link
       href={href}
-      className="group border-[var(--archive-line)] p-5 transition-colors hover:bg-[#ff4800]/5 sm:border-r xl:last:border-r-0"
+      className="group border-[var(--archive-line)] p-5 transition-colors hover:bg-[var(--archive-brand)]/5 sm:border-r xl:last:border-r-0"
     >
       <div className="flex items-center gap-1 text-sm font-semibold text-[var(--archive-muted)]">
         {label}
-        <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:text-[#ff4800]" />
+        <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:text-[var(--archive-brand)]" />
       </div>
       <p className="mt-8 text-3xl font-bold tracking-tight text-gray-950">{value}</p>
     </Link>
@@ -262,7 +262,7 @@ function RecentSavedList({
     <section>
       <div className="mb-3 flex items-end justify-between gap-4">
         <h3 className="text-lg font-bold tracking-tight text-gray-950">최근 저장 콘텐츠</h3>
-        <Link href="/mypage/activity" className="text-sm font-semibold text-[var(--archive-muted)] transition hover:text-[#ff4800]">
+        <Link href="/mypage/activity" className="text-sm font-semibold text-[var(--archive-muted)] transition hover:text-[var(--archive-brand)]">
           더보기
         </Link>
       </div>
@@ -287,10 +287,10 @@ function RecentSavedList({
                 href={item.href}
                 target={item.external ? "_blank" : undefined}
                 rel={item.external ? "noopener noreferrer" : undefined}
-                className="group grid gap-3 border-b border-[var(--archive-line)] py-4 transition-colors hover:bg-[#ff4800]/5 md:grid-cols-[130px_110px_1fr_72px] md:items-center"
+                className="group grid gap-3 border-b border-[var(--archive-line)] py-4 transition-colors hover:bg-[var(--archive-brand)]/5 md:grid-cols-[130px_110px_1fr_72px] md:items-center"
               >
                 <span className="px-3 text-xs text-[var(--archive-muted)]">{formatDate(item.date)}</span>
-                <span className="px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[#ff4800]">
+                <span className="px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--archive-brand)]">
                   {item.type}
                 </span>
                 <span className="grid min-w-0 grid-cols-[48px_1fr] gap-3 px-3">
@@ -302,7 +302,7 @@ function RecentSavedList({
                     )}
                   </span>
                   <span className="min-w-0">
-                    <span className="line-clamp-1 text-sm font-bold text-gray-950 transition group-hover:text-[#ff4800]">
+                    <span className="line-clamp-1 text-sm font-bold text-gray-950 transition group-hover:text-[var(--archive-brand)]">
                       {item.title}
                     </span>
                     <span className="mt-1 block truncate text-xs text-[var(--archive-muted)]">
@@ -310,7 +310,7 @@ function RecentSavedList({
                     </span>
                   </span>
                 </span>
-                <span className="hidden px-3 text-right text-xs font-semibold text-[var(--archive-muted)] transition group-hover:text-[#ff4800] md:block">
+                <span className="hidden px-3 text-right text-xs font-semibold text-[var(--archive-muted)] transition group-hover:text-[var(--archive-brand)] md:block">
                   보기
                 </span>
               </Link>

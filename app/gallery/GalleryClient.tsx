@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import ActiveFilter from "@/components/gallery/ActiveFilter";
 import { SITE_COPY } from "@/lib/site-copy";
@@ -30,7 +31,7 @@ function GallerySkeleton() {
   const masonryHeights = [240, 320, 210, 380, 290, 230, 350, 270, 310, 250, 340, 280];
 
   return (
-    <div className="columns-2 gap-2 space-y-2 sm:columns-2 md:columns-4 lg:columns-5 xl:columns-6">
+    <div className="columns-2 gap-4 space-y-6 md:columns-3 md:gap-6 xl:columns-4">
       {items.map((_, i) => {
         const deterministicHeight = masonryHeights[i % masonryHeights.length];
         return (
@@ -209,16 +210,6 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     setPage(pageNum);
   };
 
-  // ✅ [중요] 상세 페이지 이동 시 현재 쿼리 파라미터 전달
-  const handleItemClick = (id: number) => {
-    // 현재 URL의 쿼리 스트링 (page=3&tags=abc 등)을 그대로 가져감
-    const currentParams = searchParams.toString();
-    const queryString = currentParams ? `?${currentParams}` : '';
-    
-    // 상세 페이지로 이동
-    router.push(`/gallery/${id}${queryString}`);
-  };
-
   const renderGalleryContent = () => {
     if (loading || (fetching && gallery.length === 0)) {
       return <GallerySkeleton />;
@@ -245,12 +236,12 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
     }
 
     return (
-      <div className="columns-2 gap-8 space-y-8 sm:columns-2 md:columns-4 lg:columns-4 xl:columns-4">
+      <div className="columns-2 gap-4 space-y-6 md:columns-3 md:gap-6 xl:columns-4">
         {gallery.map((item) => (
           <GalleryItemImage
             key={item.id}
             item={item}
-            onClick={() => handleItemClick(item.id)}
+            href={`/gallery/${item.id}${searchParams.toString() ? `?${searchParams.toString()}` : ''}`}
           />
         ))}
       </div>
@@ -277,6 +268,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
               <i className="ri-search-line absolute left-0 top-1/2 -translate-y-1/2 text-[var(--archive-muted)]"></i>
               <input
                 type="text"
+                aria-label="갤러리 검색"
                 placeholder="제목, 설명, 태그로 검색"
                 value={searchInput}
                 onChange={(e) => handleSearchChange(e.target.value)}
@@ -284,6 +276,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
               />
               {searchInput && (
                 <button
+                  aria-label="갤러리 검색어 지우기"
                   onClick={() => { setSearchInput(''); setPage(1); }}
                   className="absolute right-0 top-1/2 -translate-y-1/2 p-1 text-[var(--archive-muted)] transition-colors hover:text-[var(--archive-brand)]"
                 >
@@ -300,6 +293,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
               {topTags.map((item) => (
                 <button
                   key={item.tag}
+                  aria-pressed={selectedTags.includes(item.tag)}
                   onClick={() => handleTagToggle(item.tag)}
                   className={`whitespace-nowrap border-b-2 pb-1 text-[13px] font-medium transition-colors ${
                     selectedTags.includes(item.tag)
@@ -342,6 +336,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
               <button
                 key={pageNumber}
+                aria-current={pageNumber === page ? "page" : undefined}
                 onClick={() => updatePage(pageNumber)}
                 className={`h-9 w-9 text-[12px] font-semibold transition ${
                   pageNumber === page
@@ -367,37 +362,21 @@ export default function GalleryClient({ initialGallery, initialTotalPages }: Gal
 }
 
 // --- Image Item Component ---
-function GalleryItemImage({ item, onClick }: { item: GalleryItem; onClick: () => void; }) {
-  const HoverOverlay = (
-    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-      <h3 className="text-white font-medium text-sm line-clamp-1 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-        {item.title}
-      </h3>
-      {item.tags && item.tags.length > 0 && (
-        <p className="text-gray-300 text-xs mt-1 translate-y-2 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-          #{item.tags[0]} {item.tags.length > 1 && `+${item.tags.length - 1}`}
-        </p>
-      )}
-    </div>
-  );
-
-  const containerClass = "group relative  overflow-hidden  cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300";
-
+function GalleryItemImage({ item, href }: { item: GalleryItem; href: string }) {
   return (
-    <div className={`${containerClass} break-inside-avoid`} onClick={onClick}>
-      <div className="relative w-full" style={{ aspectRatio: `${item.image_width} / ${item.image_height}` }}>
+    <Link href={href} className="gallery-image-card group block break-inside-avoid" aria-label={`${item.title} 이미지 상세`}>
+      <div className="relative w-full overflow-hidden bg-[var(--archive-bg-light)]" style={{ aspectRatio: `${item.image_width} / ${item.image_height}` }}>
         <Image
           src={item.thumbnail_url || item.image_url}
           alt={item.title}
           fill
-          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
+          sizes="(max-width: 767px) 50vw, (max-width: 1279px) 33vw, 300px"
           quality={75}
-          className="object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
-          placeholder="blur"
-          blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmM2Y0ZjYiIC8+PC9zdmc+"
+          className="object-cover group-hover:scale-[1.03] transition-transform duration-300 ease-out"
         />
-        {HoverOverlay}
       </div>
-    </div>
+      <h3 className="mt-3 line-clamp-2 text-sm font-semibold leading-6 text-[var(--archive-ink)] transition-colors group-hover:text-[var(--archive-brand)]">{item.title}</h3>
+      {item.tags?.length > 0 && <p className="mt-1 text-xs leading-5 text-[var(--archive-muted)]">#{item.tags[0]} {item.tags.length > 1 && `+${item.tags.length - 1}`}</p>}
+    </Link>
   );
 }

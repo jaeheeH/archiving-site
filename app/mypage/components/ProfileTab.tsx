@@ -31,7 +31,7 @@ type ProfileForm = {
 };
 
 const inputClass =
-  "w-full rounded-md border border-[var(--archive-line)] bg-white px-3 py-2.5 text-sm text-gray-900 outline-none transition focus:border-[#ff4800] focus:ring-2 focus:ring-[#ff4800]/10 disabled:bg-gray-50 disabled:text-gray-500";
+  "w-full rounded-md border border-[var(--archive-line)] bg-white px-3 py-2.5 text-sm text-gray-900 outline-none transition focus:border-[var(--archive-brand)] focus:ring-2 focus:ring-[var(--archive-brand)]/10 disabled:bg-gray-50 disabled:text-gray-500";
 
 export default function ProfileTab({ user }: { user: UserProfile }) {
   const router = useRouter();
@@ -240,7 +240,7 @@ export default function ProfileTab({ user }: { user: UserProfile }) {
                 </div>
               )}
             </div>
-            <label className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-md border border-[var(--archive-line)] bg-white px-3 text-sm font-medium text-gray-700 transition hover:border-[#ff4800] hover:text-[#ff4800]">
+            <label className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-md border border-[var(--archive-line)] bg-white px-3 text-sm font-medium text-gray-700 transition hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]">
               <Camera className="h-4 w-4" />
               이미지 변경
               <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={handleImageChange} />
@@ -313,7 +313,7 @@ export default function ProfileTab({ user }: { user: UserProfile }) {
           <button
             type="submit"
             disabled={saving}
-            className="ml-auto inline-flex h-10 items-center gap-2 rounded-md bg-gray-950 px-4 text-sm font-medium text-white transition hover:bg-[#ff4800] disabled:cursor-not-allowed disabled:opacity-50"
+            className="ml-auto inline-flex h-10 items-center gap-2 rounded-md bg-gray-950 px-4 text-sm font-medium text-white transition hover:bg-[var(--archive-brand)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             {saving ? "저장 중" : "변경사항 저장"}

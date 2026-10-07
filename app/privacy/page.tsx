@@ -17,7 +17,7 @@ export default function PrivacyPage() {
       <div className="max-w-4xl mx-auto px-4 py-20 md:py-28">
         {/* 헤더 섹션 */}
         <div className="mb-12 border-b border-gray-100 pb-8">
-          <p className="archive-eyebrow mb-3 text-[#ff4800]">Policy</p>
+          <p className="archive-eyebrow mb-3 text-[var(--archive-brand)]">Policy</p>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 dark:text-white">
             개인정보 처리방침
           </h1>

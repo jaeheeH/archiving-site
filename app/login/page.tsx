@@ -100,7 +100,7 @@ export default function LoginPage() {
 
           <section className="border-t border-border pt-8 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
             <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-secondary">Sign in</p>
-            <h2 className="mt-3 text-2xl font-bold">ARCH-B에 로그인</h2>
+            <h2 className="mt-3 text-2xl font-bold">ARCH.B에 로그인</h2>
             <p className="mt-3 text-sm leading-6 text-secondary">
               기존에 사용한 계정을 선택하면 저장한 기록으로 이어집니다.
             </p>

@@ -8,11 +8,11 @@ html, body, button, input, textarea, select {
 a,
 button {
   touch-action: manipulation;
-  -webkit-tap-highlight-color: rgb(255 72 0 / 14%);
+  -webkit-tap-highlight-color: rgb(26 137 23 / 14%);
 }
 
 :focus-visible {
-  outline: 2px solid #ff4800;
+  outline: 2px solid var(--archive-brand, #1a8917);
   outline-offset: 3px;
 }
 

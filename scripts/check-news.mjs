@@ -4,7 +4,10 @@ import { FEEDS, parseFeed, canonicalUrl } from "../lib/news-feeds.ts";
 import { editorialSchema, editorialBatchSchema, editorialText, newsEditSchema } from "../lib/news-editorial.ts";
 import { newsPost, newsSlug, NEWS_FORMAT } from "../lib/news-record.ts";
 
-const articles = JSON.parse(fs.readFileSync(new URL("../content/news/initial-articles.json", import.meta.url), "utf8"));
+const seed = JSON.parse(fs.readFileSync(new URL("../content/news/initial-articles.json", import.meta.url), "utf8"));
+const researched = JSON.parse(fs.readFileSync(new URL("../content/news/researched-articles.json", import.meta.url), "utf8"));
+assert.equal(researched.length, 11, "Every short article needs a reviewable expanded draft");
+const articles = seed.map(article => ({ ...article, ...(researched.find(draft => draft.article.url === article.url)?.article || {}) }));
 const editorial = ({ url, title, summary, paragraphs, points, tags }) => ({ url, title, summary, paragraphs, points, tags });
 editorialBatchSchema.parse({ articles: articles.map(editorial) });
 assert.equal(new Set(articles.map(a => newsSlug(a.url))).size, articles.length);

@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const ogImage = `${baseUrl}/api/og?type=gallery&id=${encodeURIComponent(id)}`;
 
   return {
-    title: `${gallery.title} | ARCH-B`,
+    title: gallery.title,
     description: gallery.description || 'AI Generated Art Gallery',
     openGraph: {
       type: 'article',

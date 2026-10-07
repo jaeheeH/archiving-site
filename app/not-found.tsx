@@ -5,7 +5,7 @@ export default function NotFound() {
     <main className="min-h-screen bg-white text-gray-950 dark:bg-[#0f0f0f] dark:text-white">
       <div className="mx-auto flex min-h-screen max-w-5xl flex-col justify-center px-4 py-24">
         <div className="border-y border-gray-200 py-16 dark:border-gray-800 md:py-24">
-          <p className="mb-5 text-sm font-bold uppercase tracking-[0.22em] text-[#ff4800]">
+          <p className="mb-5 text-sm font-bold uppercase tracking-[0.22em] text-[var(--archive-brand)]">
             404
           </p>
           <h1 className="max-w-3xl text-4xl font-black leading-tight md:text-6xl">
@@ -18,19 +18,19 @@ export default function NotFound() {
           <div className="mt-10 flex flex-wrap gap-3">
             <Link
               href="/"
-              className="inline-flex h-11 items-center justify-center bg-gray-950 px-5 text-sm font-bold text-white transition hover:bg-[#ff4800] dark:bg-white dark:text-gray-950 dark:hover:bg-[#ff4800] dark:hover:text-white"
+              className="inline-flex h-11 items-center justify-center bg-gray-950 px-5 text-sm font-bold text-white transition hover:bg-[var(--archive-brand)] dark:bg-white dark:text-gray-950 dark:hover:bg-[var(--archive-brand)] dark:hover:text-white"
             >
               홈으로 이동
             </Link>
             <Link
               href="/gallery"
-              className="inline-flex h-11 items-center justify-center border border-gray-300 px-5 text-sm font-bold text-gray-950 transition hover:border-[#ff4800] hover:text-[#ff4800] dark:border-gray-700 dark:text-white"
+              className="inline-flex h-11 items-center justify-center border border-gray-300 px-5 text-sm font-bold text-gray-950 transition hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)] dark:border-gray-700 dark:text-white"
             >
               갤러리 보기
             </Link>
             <Link
               href="/blog"
-              className="inline-flex h-11 items-center justify-center border border-gray-300 px-5 text-sm font-bold text-gray-950 transition hover:border-[#ff4800] hover:text-[#ff4800] dark:border-gray-700 dark:text-white"
+              className="inline-flex h-11 items-center justify-center border border-gray-300 px-5 text-sm font-bold text-gray-950 transition hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)] dark:border-gray-700 dark:text-white"
             >
               블로그 보기
             </Link>

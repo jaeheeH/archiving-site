@@ -23,6 +23,7 @@ export default function NewsEditor({ postId }: { postId: string }) {
   const [dirty, setDirty] = useState(false);
   const [researching, setResearching] = useState(false);
   const [preview, setPreview] = useState<ResearchResult | null>(null);
+  const [prepared, setPrepared] = useState<ResearchResult | null>(null);
   const [issues, setIssues] = useState<{ field: string; message: string }[]>([]);
   useUnsavedChanges(dirty);
 
@@ -56,10 +57,13 @@ export default function NewsEditor({ postId }: { postId: string }) {
       if (row.type !== "news" || row.content?.format !== "archb-news-v1") throw new Error("뉴스를 찾을 수 없습니다.");
       setPost(row); setTitle(row.title); setSummary(row.summary || ""); setPoints((row.content.points || []).join("\n")); setTags((row.tags || []).join(", ")); setParagraphs(row.content.paragraphs || []);
     }).catch(cause => { if (!controller.signal.aborted) setError(cause.message); });
+    fetch(`/api/news/${postId}/research`, { signal: controller.signal }).then(async response => {
+      if (response.ok) setPrepared((await response.json()).prepared);
+    }).catch(() => {});
     return () => controller.abort();
   }, [postId]);
 
-  function updateSection(index: number, value: Editorial["paragraphs"][number]) { setParagraphs(previous => previous.map((section, i) => i === index ? value : section)); }
+  function updateSection(index: number, value: Editorial["paragraphs"][number]) { setDirty(true); setParagraphs(previous => previous.map((section, i) => i === index ? value : section)); }
 
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -122,9 +126,9 @@ export default function NewsEditor({ postId }: { postId: string }) {
                 </div>)}
                 {section.references.length < 3 && <button type="button" className="text-xs font-medium text-emerald-700" onClick={() => updateSection(index, { ...section, references: [...section.references, { label: "", url: "", kind: "reporting" }] })}>+ 참고자료 추가</button>}
               </div>}
-              <button type="button" className="text-xs text-red-600" onClick={() => setParagraphs(previous => previous.filter((_, i) => i !== index))}>본문 {index + 1} 제거</button>
+              <button type="button" className="text-xs text-red-600" onClick={() => { setDirty(true); setParagraphs(previous => previous.filter((_, i) => i !== index)); }}>본문 {index + 1} 제거</button>
             </fieldset>)}
-            {paragraphs.length < 12 && <button type="button" className="rounded-md border border-gray-200 px-4 py-2 text-sm" onClick={() => setParagraphs(previous => [...previous, { heading: "", kind: "reporting", paragraphs: [""], references: [] }])}>+ 본문 섹션 추가</button>}
+            {paragraphs.length < 12 && <button type="button" className="rounded-md border border-gray-200 px-4 py-2 text-sm" onClick={() => { setDirty(true); setParagraphs(previous => [...previous, { heading: "", kind: "reporting", paragraphs: [""], references: [] }]); }}>+ 본문 섹션 추가</button>}
           </section>
         </div>
         <aside className="space-y-5">
@@ -137,7 +141,7 @@ export default function NewsEditor({ postId }: { postId: string }) {
             <button type="submit" value={post.is_published ? "draft" : "published"} disabled={busy || researching} className="w-full rounded-md border border-gray-200 px-4 py-2.5 text-sm disabled:opacity-50">{post.is_published ? "비공개로 저장" : "발행"}</button>
             {post.is_published && <Link href={`/news/read/${post.slug}`} target="_blank" rel="noopener noreferrer" className="block text-center text-sm text-emerald-700">기사 보기 ↗</Link>}
           </section>
-          <section className="space-y-3 rounded-lg border border-gray-200 bg-white p-5"><h2 className="text-sm font-semibold">자료 조사·초안 생성</h2><p className="text-xs leading-6 text-gray-500">공식 자료를 우선 조사하고 검토용 초안을 만듭니다. 초안 생성만으로 현재 기사가 바뀌지 않습니다.</p><button type="button" onClick={research} disabled={busy || researching} className="w-full rounded-md border border-gray-200 px-4 py-2.5 text-sm disabled:opacity-50">{researching ? '자료 조사 중…' : '자료 조사·초안 생성'}</button></section>
+          <section className="space-y-3 rounded-lg border border-gray-200 bg-white p-5"><h2 className="text-sm font-semibold">자료 조사·초안 생성</h2><p className="text-xs leading-6 text-gray-500">공식 자료를 우선 조사하고 검토용 초안을 만듭니다. 초안 생성만으로 현재 기사가 바뀌지 않습니다.</p>{prepared && <button type="button" disabled={busy || researching} onClick={() => setPreview(prepared)} className="w-full rounded-md border border-emerald-300 px-4 py-2.5 text-sm text-emerald-700 disabled:opacity-50">보강 초안 검토 · {prepared.research.characterCount}자</button>}<button type="button" onClick={research} disabled={busy || researching} className="w-full rounded-md border border-gray-200 px-4 py-2.5 text-sm disabled:opacity-50">{researching ? '자료 조사 중…' : '자료 조사·초안 생성'}</button></section>
           <section className="space-y-3 rounded-lg border border-gray-200 bg-white p-5"><h2 className="text-sm font-semibold">원출처</h2><p className="text-xs text-gray-500">{CATEGORIES[post.content.category]} · {post.content.source}</p><a href={post.content.source_url} target="_blank" rel="noopener noreferrer" className="block break-words text-sm text-emerald-700 hover:underline">{post.content.original_title} ↗</a>{post.content.source_text && <details className="text-xs leading-6 text-gray-500"><summary className="cursor-pointer">수집한 원문 요약</summary><p className="mt-2 whitespace-pre-wrap">{post.content.source_text}</p></details>}</section>
         </aside>
       </form>}

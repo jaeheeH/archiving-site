@@ -47,7 +47,7 @@ export default function PopularBlogs({ initialPosts, categories }: PopularBlogsP
                 href={`/blog/${post.slug}`}
                 className="block group"
               >
-                <div className="flex gap-3 border-b border-[var(--archive-line)] py-4 transition hover:border-[#ff4800]">
+                <div className="flex gap-3 border-b border-[var(--archive-line)] py-4 transition hover:border-[var(--archive-brand)]">
                   {/* 번호 */}
                   <div className="flex-shrink-0 w-8 text-center">
                     <p className="archive-index text-lg font-black text-primary">
@@ -57,7 +57,7 @@ export default function PopularBlogs({ initialPosts, categories }: PopularBlogsP
 
                   {/* 콘텐츠 */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="line-clamp-2 text-[13px] font-bold leading-[1.45] text-gray-900 transition group-hover:text-[#ff4800] dark:text-gray-100">
+                    <h3 className="line-clamp-2 text-[13px] font-bold leading-[1.45] text-gray-900 transition group-hover:text-[var(--archive-brand)] dark:text-gray-100">
                       {post.title}
                     </h3>
                     <p className="mt-1 line-clamp-1 text-xs text-gray-400 dark:text-gray-500">
@@ -76,7 +76,7 @@ export default function PopularBlogs({ initialPosts, categories }: PopularBlogsP
           href={`/blog`}
           className='block text-right'
         >
-          <p className='text-sm text-gray-900 hover:text-[#ff4800] dark:text-gray-100'>모든 기록 보기 &rarr;</p>
+          <p className='text-sm text-gray-900 hover:text-[var(--archive-brand)] dark:text-gray-100'>모든 기록 보기 &rarr;</p>
         </Link>
       </div>
     </aside>

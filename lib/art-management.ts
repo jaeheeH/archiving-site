@@ -1,8 +1,8 @@
 import 'server-only';
-import { revalidatePath, revalidateTag } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
-import { ART_CACHE_TAG, getArtCatalog } from './art-catalog';
+import { getArtCatalog } from './art-catalog';
 import { checkPostEditPermission } from './supabase/post-utils';
 import { createAdminClient } from './supabase/admin';
 
@@ -66,7 +66,6 @@ export async function saveArt(resource: Resource, request: Request, id?: string)
       const saved = await db.rpc('save_artwork', { p_record: { ...old, ...artwork, id: recordId, artist_status: artwork.artist_ids.length ? 'identified' : 'unidentified', collected_at: old.collected_at || new Date().toISOString(), title_ko_status: old.title_ko_status || 'working_translation' }, p_artist_ids: artwork.artist_ids });
       if (saved.error) throw saved.error;
     }
-    revalidateTag(ART_CACHE_TAG, { expire: 0 });
     for (const path of ['/art', '/artists', '/sitemap.xml', '/dashboard', '/dashboard/contents']) revalidatePath(path);
     revalidatePath('/art/[id]', 'page'); revalidatePath('/artists/[id]', 'page');
     return Response.json({ saved: true, id: recordId }, { status: id ? 200 : 201 });

@@ -25,6 +25,7 @@ const published = news.find(row => row.kind === 'news');
 for (const path of ['/api/admin/artworks', '/api/admin/artists', '/api/news/placement']) assert.equal((await request(path)).response.status, 401);
 assert.equal((await request(`/api/posts/${published.id}/like`, 'PUT', { liked: true })).response.status, 401);
 assert.equal((await request(`/api/news/${published.id}/research`, 'POST')).response.status, 401);
+assert.equal((await request(`/api/news/${published.id}/research`)).response.status, 401);
 console.log('PASS: publication quality and anonymous API boundaries');
 
 if (!process.argv.includes('--live')) process.exit(0);
@@ -57,6 +58,16 @@ try {
   if (inserted.error) throw inserted.error;
   postId = inserted.data.id;
   assert.equal((await request(`/api/posts/${postId}`, 'PUT', { type: 'news', title: article.title }, cookie)).response.status, 400);
+  if (process.argv.includes('--research')) {
+    const beforeResearch = await db.from('posts').select('title,content,updated_at').eq('id', postId).single();
+    const generated = await request(`/api/news/${postId}/research`, 'POST', undefined, cookie);
+    assert.equal(generated.response.status, 200, generated.data.error);
+    editorialSchema.parse(generated.data.article);
+    assert.ok(generated.data.research.primarySourceUrls.length > 0);
+    const afterResearch = await db.from('posts').select('title,content,updated_at').eq('id', postId).single();
+    assert.deepEqual(afterResearch.data, beforeResearch.data, 'Research must never save or publish automatically');
+    console.log('PASS: grounded Gemini research, official references, valid draft and unchanged stored article');
+  }
   assert.equal((await request(`/api/news/${postId}`, 'PATCH', { article: { ...article, summary: '', paragraphs: [], points: [] }, is_published: false }, cookie)).response.status, 200);
   assert.equal((await request(`/api/posts/${postId}/publish`, 'PATCH', { is_published: true }, cookie)).response.status, 400);
   assert.equal((await request(`/api/news/${postId}`, 'PATCH', { article, is_published: true }, cookie)).response.status, 200);
@@ -107,17 +118,31 @@ try {
   assert.equal((await request('/api/news/placement', 'PATCH', placement, cookie)).response.status, 403);
   console.log('PASS: sub-admin catalog edits, atomic links, public invalidation, read-only editors and curated placement');
 } finally {
+  const cleanupErrors = [];
   if (originalPlacement) {
     await db.from('users').update({ role: 'sub-admin' }).eq('id', userId);
     const restored = await request('/api/news/placement', 'PATCH', { featuredId: originalPlacement.featuredId, editorPickIds: originalPlacement.editorPickIds }, cookie);
-    assert.equal(restored.response.status, 200, 'Restore curated placement');
+    if (restored.response.status !== 200) cleanupErrors.push(new Error('Restore curated placement failed'));
   }
   if (userId) {
-    const removedLikes = await db.from('post_likes').delete().eq('user_id', userId); if (removedLikes.error) throw removedLikes.error;
+    const removedLikes = await db.from('post_likes').delete().eq('user_id', userId); if (removedLikes.error) cleanupErrors.push(removedLikes.error);
   }
-  for (const [table, id] of [['posts',postId],['artworks',artworkId],['artists',artistId]]) {
-    if (id) { const removed = await db.from(table).delete().eq('id', id); if (removed.error) throw removed.error; }
+  for (const [table, id] of [['posts',postId],['artworks',artworkId]]) {
+    if (id) { const removed = await db.from(table).delete().eq('id', id); if (removed.error) cleanupErrors.push(removed.error); }
   }
-  if (userId) { const removed = await db.auth.admin.deleteUser(userId); if (removed.error) throw removed.error; }
+  if (postId) {
+    const refreshed = await request('/api/posts/revalidate', 'POST', { slug: `archb-qa-${marker}` }, cookie);
+    if (refreshed.response.status !== 200) cleanupErrors.push(new Error('Article cleanup invalidation failed'));
+  }
+  if (artistId) {
+    // Use the catalog's normal save invalidation before deleting the last disposable record.
+    const writable = await db.from('users').update({ role: 'sub-admin' }).eq('id', userId);
+    if (writable.error) cleanupErrors.push(writable.error);
+    const refreshed = await request(`/api/admin/artists/${artistId}`, 'PATCH', { name: `QA ${marker}`, name_ko: '검증용 작가', source_ids: [] }, cookie);
+    if (refreshed.response.status !== 200) cleanupErrors.push(new Error('Catalog cleanup invalidation failed'));
+    const removed = await db.from('artists').delete().eq('id', artistId); if (removed.error) cleanupErrors.push(removed.error);
+  }
+  if (userId) { const removed = await db.auth.admin.deleteUser(userId); if (removed.error) cleanupErrors.push(removed.error); }
+  if (cleanupErrors.length) throw new AggregateError(cleanupErrors, 'Test cleanup failed');
   console.log('Disposable test records removed; original placement restored.');
 }

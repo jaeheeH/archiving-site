@@ -119,7 +119,7 @@ export default function GalleryDetailModal({
             <h2 className="text-xl font-semibold">{gallery.title}</h2>
             <button
               onClick={onClose}
-              className="text-2xl text-gray-500 transition-colors hover:text-[#ff4800]"
+              className="text-2xl text-gray-500 transition-colors hover:text-[var(--archive-brand)]"
             >
               <i className="ri-close-line"></i>
             </button>
@@ -200,7 +200,7 @@ export default function GalleryDetailModal({
                       {(gallery.gemini_tags || gallery.tags).map((tag, idx) => (
                         <span
                           key={idx}
-                          className="inline-block rounded-full bg-[#ff4800]/10 px-3 py-1 text-sm text-[#ff4800]"
+                          className="inline-block rounded-full bg-[var(--archive-brand)]/10 px-3 py-1 text-sm text-[var(--archive-brand)]"
                         >
                           {tag}
                         </span>
@@ -229,7 +229,7 @@ export default function GalleryDetailModal({
                 <div className="pt-4 border-t space-y-2">
                   <button
                     onClick={() => setShowSimilarModal(true)}
-                    className="w-full bg-[#ff4800] px-4 py-2 text-white transition-colors hover:bg-[#e33f00]"
+                    className="w-full bg-[var(--archive-brand)] px-4 py-2 text-white transition-colors hover:bg-[var(--archive-brand-hover)]"
                   >
                     <i className="ri-image-line mr-2"></i>
                     유사 이미지 보기

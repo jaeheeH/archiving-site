@@ -128,14 +128,14 @@ export default function Sidebar() {
                   flex items-center justify-between rounded-md text-sm
                   ${
                     pathname === item.href
-                      ? "bg-blue-50 text-blue-600 font-medium"
+                      ? "bg-[var(--archive-ink)] text-white font-medium"
                       : "text-gray-700 hover:bg-gray-50"
                   }
                 `}
               >
                 <div className="flex items-center gap-1">
                   <div className="nav-menu-icon">
-                    <i className={`${item.icon} ${ pathname === item.href ? "text-blue-600" : "text-gray-600" }`} />
+                    <i className={`${item.icon} ${ pathname === item.href ? "text-white" : "text-gray-600" }`} />
                   </div>
                   <span>{item.label}</span>
                 </div>
@@ -151,14 +151,14 @@ export default function Sidebar() {
                   flex w-full items-center justify-between cursor-pointer rounded-md text-left text-sm
                   ${
                     isParentActive
-                      ? "bg-blue-50 text-blue-600 font-medium"
+                      ? "bg-[var(--archive-ink)] text-white font-medium"
                       : "text-gray-700 hover:bg-gray-50"
                   }
                 `}
               >
                 <div className="flex items-center gap-1">
                   <div className="nav-menu-icon">
-                    <i className={`${item.icon} ${ isParentActive ? "text-blue-600" : "text-gray-600" }`} />
+                    <i className={`${item.icon} ${ isParentActive ? "text-white" : "text-gray-600" }`} />
                   </div>
                   <span>{item.label}</span>
                 </div>
@@ -183,7 +183,7 @@ export default function Sidebar() {
                         block rounded-md px-10 py-2 text-sm
                         ${
                           activeChild
-                            ? "bg-gray-100 text-gray-700 font-semibold"
+                            ? "bg-[var(--archive-brand-soft)] text-[var(--archive-brand)] font-semibold"
                             : "text-gray-700 hover:bg-gray-200"
                         }
                       `}
@@ -213,7 +213,7 @@ export default function Sidebar() {
         <i className="ri-menu-line" />
       </button>
       <div className="min-w-0">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">ARCH-B</p>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">ARCH.B</p>
         <p className="truncate text-sm font-semibold text-gray-950">{currentMenuLabel}</p>
       </div>
       <Link
@@ -237,7 +237,7 @@ export default function Sidebar() {
         />
         <aside className="dashboard-mobile-panel">
           <div className="side-logo">
-            <p>ARCH-B</p>
+            <p>ARCH.B</p>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
@@ -282,7 +282,7 @@ export default function Sidebar() {
     )}
 
     <aside className="border-r bg-white flex flex-col" id="sideBar">
-      <div className="side-logo"><p>ARCH-B</p></div>
+      <div className="side-logo"><p>ARCH.B</p></div>
 
       <div className="nav-section">
         <nav className="flex flex-col gap-2 px-3">

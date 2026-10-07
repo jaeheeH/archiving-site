@@ -84,7 +84,7 @@ export default function SimilarGalleryModal({
           </div>
           <button
             onClick={onClose}
-            className="text-2xl text-gray-500 transition-colors hover:text-[#ff4800]"
+            className="text-2xl text-gray-500 transition-colors hover:text-[var(--archive-brand)]"
           >
             ✕
           </button>
@@ -133,7 +133,7 @@ function SimilarImageCard({
 }) {
   return (
     <div
-      className="group cursor-pointer overflow-hidden border transition hover:border-[#ff4800] hover:shadow-lg"
+      className="group cursor-pointer overflow-hidden border transition hover:border-[var(--archive-brand)] hover:shadow-lg"
       onClick={() => {
         if (onSelectImage) {
           onSelectImage(item.id);
@@ -156,7 +156,7 @@ function SimilarImageCard({
 
       {/* 정보 */}
       <div className="p-3">
-        <h3 className="mb-1 truncate text-sm font-medium transition-colors group-hover:text-[#ff4800]">{item.title}</h3>
+        <h3 className="mb-1 truncate text-sm font-medium transition-colors group-hover:text-[var(--archive-brand)]">{item.title}</h3>
 
         {item.description && (
           <p className="text-xs text-gray-600 line-clamp-2 mb-2">
@@ -166,7 +166,7 @@ function SimilarImageCard({
 
         <div className="flex items-center justify-between">
           <span className="text-xs text-gray-500">유사도</span>
-          <span className="bg-[#ff4800]/10 px-2 py-1 text-xs text-[#ff4800]">
+          <span className="bg-[var(--archive-brand)]/10 px-2 py-1 text-xs text-[var(--archive-brand)]">
             {Math.round(item.similarity * 100)}%
           </span>
         </div>

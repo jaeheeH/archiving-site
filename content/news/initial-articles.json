@@ -167,7 +167,8 @@
         "references": [
           {
             "label": "NGV 전시 소개와 관람 안내",
-            "url": "https://www.ngv.vic.gov.au/exhibition/plant-life/"
+            "url": "https://www.ngv.vic.gov.au/exhibition/plant-life/",
+            "kind": "primary"
           }
         ]
       },
@@ -182,7 +183,8 @@
         "references": [
           {
             "label": "Dezeen의 작품 사례 소개",
-            "url": "https://www.dezeen.com/2026/10/05/plat-life-nature-of-design-ngv-melbourne/"
+            "url": "https://www.dezeen.com/2026/10/05/plat-life-nature-of-design-ngv-melbourne/",
+            "kind": "reporting"
           }
         ]
       },
@@ -196,7 +198,8 @@
         "references": [
           {
             "label": "NGV 공식 보도자료: 전시 재료와 연구 시제품",
-            "url": "https://www.ngv.vic.gov.au/media_release/plant-life-the-nature-of-design-explores-the-future-of-plant-based-materials-as-an-alternative-to-plastics-and-non-renewable-materials/"
+            "url": "https://www.ngv.vic.gov.au/media_release/plant-life-the-nature-of-design-explores-the-future-of-plant-based-materials-as-an-alternative-to-plastics-and-non-renewable-materials/",
+            "kind": "primary"
           }
         ]
       },

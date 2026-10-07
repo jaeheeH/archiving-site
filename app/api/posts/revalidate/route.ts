@@ -40,18 +40,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 특정 블로그 글 경로 재검증
+    const origin = request.headers.get('origin');
+    if (origin && origin !== new URL(request.url).origin) return NextResponse.json({ error: '허용되지 않은 요청입니다.' }, { status: 403 });
+    // Article aliases, feeds and the current public routes share the same content.
     revalidatePath(`/blog/${slug}`);
-    
-    // 선택사항: 블로그 목록 페이지도 재검증
-    revalidatePath('/blog');
-    revalidateTag(CACHE_TAGS.posts, 'max');
-    revalidateTag(CACHE_TAGS.home, 'max');
+    for (const path of [`/news/read/${slug}`, '/', '/news/stories', '/blog', '/rss.xml', '/sitemap.xml']) revalidatePath(path);
+    revalidateTag('archb-news', { expire: 0 });
+    revalidateTag(CACHE_TAGS.posts, { expire: 0 });
+    revalidateTag(CACHE_TAGS.home, { expire: 0 });
 
     return NextResponse.json(
       {
         success: true,
-        message: `블로그 글 "${slug}"이(가) 재검증되었습니다`,
+        message: `기사 "${slug}"이(가) 재검증되었습니다`,
         timestamp: new Date().toISOString(),
       },
       { status: 200 }

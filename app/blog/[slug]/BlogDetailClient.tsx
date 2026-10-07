@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import NextLink from 'next/link';
@@ -256,6 +256,7 @@ export default function BlogDetailClient({
   const [likesAvailable, setLikesAvailable] = useState(false);
   
   const [user, setUser] = useState<{ id: string } | null>(null);
+  const accountId = useRef<string | null>(null);
   const [hasRecordedView, setHasRecordedView] = useState(false);
   const [isScrapping, setIsScrapping] = useState(false);
   const headings = useMemo(() => extractHeadings(post.content), [post.content]);
@@ -302,22 +303,27 @@ export default function BlogDetailClient({
   // 1. 사용자 정보 가져오기
   useEffect(() => {
     const supabase = createClient();
-    void supabase.auth.getUser().then(({ data }) => setUser(data.user || null));
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => setUser(session?.user || null));
+    const syncUser = (next: { id: string } | null) => {
+      if (accountId.current !== (next?.id || null)) { setLikesAvailable(false); setReactionError(''); }
+      accountId.current = next?.id || null;
+      setUser(next);
+    };
+    void supabase.auth.getUser().then(({ data }) => syncUser(data.user || null));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => syncUser(session?.user || null));
     return () => subscription.unsubscribe();
   }, []);
 
   // 2. 카테고리 정보 가져오기 (ISR 초기 데이터가 없을 때만 보완)
   useEffect(() => {
     if (post?.category_id && !category) {
-      // eslint-disable-next-line react-hooks/immutability, react-hooks/set-state-in-effect
+      // eslint-disable-next-line react-hooks/immutability
       fetchCategory(post.category_id);
     }
   }, [post?.category_id, category]);
 
   useEffect(() => {
     if (post?.author_id && !authorProfile) {
-      // eslint-disable-next-line react-hooks/immutability, react-hooks/set-state-in-effect
+      // eslint-disable-next-line react-hooks/immutability
       fetchAuthorProfile(post.author_id);
     }
   }, [post?.author_id, authorProfile]);
@@ -345,12 +351,12 @@ export default function BlogDetailClient({
         .catch((err) => console.error('Background update failed:', err));
     }
     return () => { active = false; };
-  }, [user, post.slug]);
+  }, [user?.id, post.slug]);
 
   // 4. 조회수 기록
   useEffect(() => {
     if (post && !hasRecordedView) {
-      // eslint-disable-next-line react-hooks/immutability, react-hooks/set-state-in-effect
+      // eslint-disable-next-line react-hooks/immutability
       recordView();
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setHasRecordedView(true);
@@ -489,6 +495,7 @@ export default function BlogDetailClient({
       return;
     }
     if (!post || isScrapping) return;
+    const requestedAccount = user.id;
 
     try {
       setIsScrapping(true);
@@ -508,6 +515,7 @@ export default function BlogDetailClient({
       }
 
       const data = await res.json();
+      if (accountId.current !== requestedAccount) return;
       setIsScraped(data.scraped);
       setScrapCount(data.scrapCount);
     } catch (error) {
@@ -524,6 +532,7 @@ export default function BlogDetailClient({
       return;
     }
     if (isLiking) return;
+    const requestedAccount = user.id;
     const previous = { liked: isLiked, count: likeCount };
     setIsLiking(true);
     setReactionError('');
@@ -532,10 +541,12 @@ export default function BlogDetailClient({
     try {
       const response = await fetch(`/api/posts/${post.id}/like`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ liked: !previous.liked }) });
       const data = await response.json();
+      if (accountId.current !== requestedAccount) return;
       if (!response.ok) throw new Error(data.error || '좋아요를 저장하지 못했습니다.');
       setIsLiked(data.liked);
       setLikeCount(data.like_count);
     } catch (error) {
+      if (accountId.current !== requestedAccount) return;
       setIsLiked(previous.liked);
       setLikeCount(previous.count);
       setReactionError(error instanceof Error ? error.message : '좋아요를 저장하지 못했습니다.');
@@ -627,7 +638,7 @@ export default function BlogDetailClient({
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 text-[12px] text-[var(--archive-muted)]">
+              <div className="news-article-actions flex flex-wrap items-center gap-4 text-[12px] text-[var(--archive-muted)]">
                 <span className="flex items-center gap-1.5" title="조회수">
                   <i className="ri-eye-line text-[15px]" />
                   <span className="archive-index">{viewCount}</span>
@@ -711,29 +722,6 @@ export default function BlogDetailClient({
                 </button>
               </div>
 
-              <div className="mt-14 flex gap-4 lg:hidden">
-                <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--archive-line)] text-base font-bold">
-                  {authorAvatar ? (
-                    <Image
-                      src={authorAvatar}
-                      alt={authorName}
-                      fill
-                      sizes="48px"
-                      className="object-cover"
-                    />
-                  ) : (
-                    authorInitial
-                  )}
-                </div>
-                <div className="flex-1">
-                  <p className="archive-eyebrow mb-1 text-[var(--archive-faint)]">Written by</p>
-                  <p className="mb-2 text-lg font-bold">{authorName}</p>
-                  <p className="text-[14px] leading-6 text-[var(--archive-muted)]">
-                    {SITE_COPY.brand.authorBio}
-                  </p>
-                </div>
-              </div>
-
               {initialRelatedPosts.length > 0 && (
                 <section className="mt-16 border-y border-[var(--archive-line)] py-8">
                   <div className="mb-6 flex items-end justify-between gap-4">
@@ -802,7 +790,7 @@ export default function BlogDetailClient({
               </div>
             </main>
 
-            <aside className="hidden lg:block">
+            <aside className="news-detail-sidebar">
               <div className="sticky top-[100px] space-y-10">
                 <section>
                   <p className="archive-eyebrow mb-4 text-[var(--archive-faint)]">Article</p>

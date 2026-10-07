@@ -157,7 +157,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
                     className={`inline-flex h-11 items-center gap-3 rounded-md px-3 text-sm font-semibold transition-colors ${
                       isActive
                         ? "bg-gray-100 text-[var(--archive-ink)]"
-                        : "text-[var(--archive-muted)] hover:bg-[#ff4800]/10 hover:text-[#ff4800]"
+                        : "text-[var(--archive-muted)] hover:bg-[var(--archive-brand)]/10 hover:text-[var(--archive-brand)]"
                     }`}
                   >
                     <Icon className="h-4 w-4 shrink-0" />
@@ -190,7 +190,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
             <button
               type="button"
               onClick={handleSignOut}
-              className="mt-4 inline-flex h-11 w-full items-center gap-3 rounded-md px-3 text-sm font-semibold text-[var(--archive-muted)] transition-colors hover:bg-[#ff4800]/10 hover:text-[#ff4800]"
+              className="mt-4 inline-flex h-11 w-full items-center gap-3 rounded-md px-3 text-sm font-semibold text-[var(--archive-muted)] transition-colors hover:bg-[var(--archive-brand)]/10 hover:text-[var(--archive-brand)]"
             >
               <LogOut className="h-4 w-4 shrink-0" />
               로그아웃
@@ -230,7 +230,7 @@ function MenuLink({
       className={`inline-flex h-11 items-center gap-3 rounded-md px-3 text-sm font-semibold transition-colors ${
         active
           ? "bg-gray-100 text-[var(--archive-ink)]"
-          : "text-[var(--archive-muted)] hover:bg-[#ff4800]/10 hover:text-[#ff4800]"
+          : "text-[var(--archive-muted)] hover:bg-[var(--archive-brand)]/10 hover:text-[var(--archive-brand)]"
       }`}
     >
       <Icon className="h-4 w-4 shrink-0" />

@@ -102,7 +102,7 @@ export default function ExtensionConnectClient() {
   return (
     <main className="min-h-screen bg-white px-5 py-20 text-gray-950">
       <section className="mx-auto max-w-xl border border-gray-200 p-8">
-        <p className="archive-eyebrow text-[#ff4800]">Chrome Extension</p>
+        <p className="archive-eyebrow text-[var(--archive-brand)]">Chrome Extension</p>
         <h1 className="mt-3 text-3xl font-bold tracking-tight">ARCH-B 확장자 연결</h1>
         <p className="mt-4 text-sm leading-6 text-gray-500">{message}</p>
 
@@ -123,7 +123,7 @@ export default function ExtensionConnectClient() {
           {state === "unauthorized" && (
             <Link
               href="/login?redirect=/extension/connect"
-              className="inline-flex h-10 items-center justify-center bg-gray-950 px-4 text-sm font-semibold text-white transition hover:bg-[#ff4800]"
+              className="inline-flex h-10 items-center justify-center bg-gray-950 px-4 text-sm font-semibold text-white transition hover:bg-[var(--archive-brand)]"
             >
               로그인하기
             </Link>
@@ -132,14 +132,14 @@ export default function ExtensionConnectClient() {
             <button
               type="button"
               onClick={copyToken}
-              className="inline-flex h-10 items-center justify-center border border-gray-950 px-4 text-sm font-semibold transition hover:border-[#ff4800] hover:text-[#ff4800]"
+              className="inline-flex h-10 items-center justify-center border border-gray-950 px-4 text-sm font-semibold transition hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]"
             >
               {copied ? "복사됨" : "토큰 수동 복사"}
             </button>
           )}
           <Link
             href="/references"
-            className="inline-flex h-10 items-center justify-center border border-gray-200 px-4 text-sm font-semibold text-gray-600 transition hover:border-[#ff4800] hover:text-[#ff4800]"
+            className="inline-flex h-10 items-center justify-center border border-gray-200 px-4 text-sm font-semibold text-gray-600 transition hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]"
           >
             레퍼런스 보기
           </Link>

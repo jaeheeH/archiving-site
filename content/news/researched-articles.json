@@ -9,17 +9,19 @@
           "heading": "10년 만에 뉴욕을 찾은 조각적 개입",
           "kind": "reporting",
           "paragraphs": [
-            "조지아 출신이자 독일 베를린을 중심으로 활동하는 작가 테아 조르자제(Thea Djordjadze)가 뉴욕 맨해튼 80번가에 위치한 스프루스 마거스(Sprüth Magers) 갤러리에서 개인전 《A well of night》를 개최합니다. 이번 전시는 2026년 9월 18일부터 10월 24일까지 진행되며, 오프닝 리셉션은 9월 17일에 열립니다.",
+            "조지아 출신이자 독일 베를린을 중심으로 활동하는 작가 테아 조르자제(Thea Djordjadze)가 뉴욕 맨해튼 80번가에 위치한 스프루스 마거스(Sprüth Magers) 갤러리에서 개인전 《A well of night》를 개최합니다. 이번 전시는 2026년 9월 18일부터 10월 24일까지 진행되며, 오프닝 리셉션은 9월 17일에 열렸습니다.",
             "이번 프로젝트는 조르자제가 뉴욕에서 약 10년 만에 여는 개인전이자, 스프루스 마거스 갤러리의 뉴욕 전시 공간에서 선보이는 첫 번째 개인전이라는 점에서 미술계의 주목을 받고 있습니다. 작가는 기존 작품의 재구성 작업과 더불어 이번 전시를 위해 제작된 새로운 설치물 및 조각적 부조 회화들을 함께 선보입니다."
           ],
           "references": [
             {
               "label": "디자인 밀크 보도 기사",
-              "url": "https://design-milk.com/thea-djordjadze-a-well-of-night/"
+              "url": "https://design-milk.com/thea-djordjadze-a-well-of-night/",
+              "kind": "reporting"
             },
             {
               "label": "스프루스 마거스 공식 전시 안내",
-              "url": "https://spruethmagers.com/exhibitions/thea-djordjadze-a-well-of-night-new-york/"
+              "url": "https://spruethmagers.com/exhibitions/thea-djordjadze-a-well-of-night-new-york/",
+              "kind": "primary"
             }
           ]
         },
@@ -27,13 +29,13 @@
           "heading": "역사적 건축의 피부를 전환한 바닥의 변형",
           "kind": "reporting",
           "paragraphs": [
-            "전시가 열리는 스프루스 마거스 뉴욕 갤러리는 네오르네상스 양식의 고전적 건축물 2층에 자리 잡고 있습니다. 조르자제는 이 장소가 지닌 고유한 역사성과 장식적 요소를 배경으로 남겨두지 않고 직접적인 개입을 단행했습니다. 가장 두드러진 변화는 갤러리 내부의 어두운 원목 바닥(dark hardwood floors) 전체를 밝은색 비닐(light-colored vinyl) 시트로 덮어버린 작업입니다.",
-            "바닥 표면의 마감을 바꾸는 이러한 제스처는 전시 공간의 지각적 수평면을 완전히 재설정합니다. 관람객의 시선과 발걸음이 닿는 기초 면을 인위적이고 매끄러운 밝은 막으로 차단함으로써, 네오르네상스 건축의 권위적인 분위기와 기존 공간의 경계를 낯설게 전복하는 효과를 만듭니다."
+            "전시가 열리는 스프루스 마거스 뉴욕 갤러리는 네오르네상스 양식의 고전적 건축물 2층에 자리 잡고 있습니다. 조르자제는 이 장소가 지닌 고유한 역사성과 장식적 요소를 배경으로 남겨두지 않고 직접적인 개입을 단행했습니다. 가장 두드러진 변화는 갤러리 내부의 어두운 원목 바닥(dark hardwood floors) 전체를 밝은색 비닐(light-colored vinyl) 시트로 덮어버린 작업입니다."
           ],
           "references": [
             {
               "label": "스프루스 마거스 공식 전시 안내",
-              "url": "https://spruethmagers.com/exhibitions/thea-djordjadze-a-well-of-night-new-york/"
+              "url": "https://spruethmagers.com/exhibitions/thea-djordjadze-a-well-of-night-new-york/",
+              "kind": "primary"
             }
           ]
         },
@@ -47,7 +49,8 @@
           "references": [
             {
               "label": "디자인 밀크 보도 기사",
-              "url": "https://design-milk.com/thea-djordjadze-a-well-of-night/"
+              "url": "https://design-milk.com/thea-djordjadze-a-well-of-night/",
+              "kind": "reporting"
             }
           ]
         },
@@ -56,12 +59,14 @@
           "kind": "analysis",
           "paragraphs": [
             "전시 제목인 《A well of night》는 빛이 닿지 않는 깊은 수직 갱도라는 물리적 공간성과 모든 것을 삼켜버릴 듯한 끝없는 밤이라는 은유적 층위를 결합하고 있습니다. 이러한 제목은 건축물의 수직적 층위와 바닥을 덮은 인공적 표면, 그리고 그 위에 세워진 골조들이 빚어내는 공간적 깊이감을 효과적으로 환기합니다.",
-            "조르자제의 실천은 오브제를 진열하는 일반적인 전시 방식을 넘어섭니다. 모더니즘 디자인의 조형 언어와 조지아의 문화적 기억을 차용하면서, 좌대나 난간, 창틀 등 전시 공간의 보조 장치들을 작품의 본질적 요소로 끌어올립니다. 이를 통해 관람객은 개별 조각을 감상하는 것을 넘어, 공간 전체가 호흡하는 장소 감응형(site-responsive) 환경 안으로 편입되는 경험을 하게 될 것으로 해석할 수 있습니다."
+            "조르자제의 실천은 오브제를 진열하는 일반적인 전시 방식을 넘어섭니다. 모더니즘 디자인의 조형 언어와 조지아의 문화적 기억을 차용하면서, 좌대나 난간, 창틀 등 전시 공간의 보조 장치들을 작품의 본질적 요소로 끌어올립니다. 이를 통해 관람객은 개별 조각을 감상하는 것을 넘어, 공간 전체가 호흡하는 장소 감응형(site-responsive) 환경 안으로 편입되는 경험을 하게 될 것으로 해석할 수 있습니다.",
+            "바닥 표면의 마감을 바꾸는 이러한 제스처는 전시 공간의 지각적 수평면을 완전히 재설정합니다. 관람객의 시선과 발걸음이 닿는 기초 면을 인위적이고 매끄러운 밝은 막으로 차단함으로써, 네오르네상스 건축의 권위적인 분위기와 기존 공간의 경계를 낯설게 전복하는 효과를 만듭니다."
           ],
           "references": [
             {
               "label": "스프루스 마거스 작가 프로필",
-              "url": "https://spruethmagers.com/artists/thea-djordjadze/"
+              "url": "https://spruethmagers.com/artists/thea-djordjadze/",
+              "kind": "primary"
             }
           ]
         },
@@ -75,7 +80,8 @@
           "references": [
             {
               "label": "디자인 밀크 보도 기사",
-              "url": "https://design-milk.com/thea-djordjadze-a-well-of-night/"
+              "url": "https://design-milk.com/thea-djordjadze-a-well-of-night/",
+              "kind": "reporting"
             }
           ]
         }
@@ -127,14 +133,19 @@
         "Thea Djordjadze a well of night"
       ],
       "searchSuggestions": "<style>\n.container {\n  align-items: center;\n  border-radius: 8px;\n  display: flex;\n  font-family: Google Sans, Roboto, sans-serif;\n  font-size: 14px;\n  line-height: 20px;\n  padding: 8px 12px;\n}\n.chip {\n  display: inline-block;\n  border: solid 1px;\n  border-radius: 16px;\n  min-width: 14px;\n  padding: 5px 16px;\n  text-align: center;\n  user-select: none;\n  margin: 0 8px;\n  -webkit-tap-highlight-color: transparent;\n}\n.carousel {\n  overflow: auto;\n  scrollbar-width: none;\n  white-space: nowrap;\n  margin-right: -12px;\n}\n.headline {\n  display: flex;\n  margin-right: 4px;\n}\n.gradient-container {\n  position: relative;\n}\n.gradient {\n  position: absolute;\n  transform: translate(3px, -9px);\n  height: 36px;\n  width: 9px;\n}\n@media (prefers-color-scheme: light) {\n  .container {\n    background-color: #fafafa;\n    box-shadow: 0 0 0 1px #0000000f;\n  }\n  .headline-label {\n    color: #1f1f1f;\n  }\n  .chip {\n    background-color: #ffffff;\n    border-color: #d2d2d2;\n    color: #5e5e5e;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #f2f2f2;\n  }\n  .chip:focus {\n    background-color: #f2f2f2;\n  }\n  .chip:active {\n    background-color: #d8d8d8;\n    border-color: #b6b6b6;\n  }\n  .logo-dark {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #fafafa 15%, #fafafa00 100%);\n  }\n}\n@media (prefers-color-scheme: dark) {\n  .container {\n    background-color: #1f1f1f;\n    box-shadow: 0 0 0 1px #ffffff26;\n  }\n  .headline-label {\n    color: #fff;\n  }\n  .chip {\n    background-color: #2c2c2c;\n    border-color: #3c4043;\n    color: #fff;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #353536;\n  }\n  .chip:focus {\n    background-color: #353536;\n  }\n  .chip:active {\n    background-color: #464849;\n    border-color: #53575b;\n  }\n  .logo-light {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #1f1f1f 15%, #1f1f1f00 100%);\n  }\n}\n</style>\n<div class=\"container\">\n  <div class=\"headline\">\n    <svg class=\"logo-light\" width=\"18\" height=\"18\" viewBox=\"9 9 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M42.8622 27.0064C42.8622 25.7839 42.7525 24.6084 42.5487 23.4799H26.3109V30.1568H35.5897C35.1821 32.3041 33.9596 34.1222 32.1258 35.3448V39.6864H37.7213C40.9814 36.677 42.8622 32.2571 42.8622 27.0064V27.0064Z\" fill=\"#4285F4\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 43.8555C30.9659 43.8555 34.8687 42.3195 37.7213 39.6863L32.1258 35.3447C30.5898 36.3792 28.6306 37.0061 26.3109 37.0061C21.8282 37.0061 18.0195 33.9811 16.6559 29.906H10.9194V34.3573C13.7563 39.9841 19.5712 43.8555 26.3109 43.8555V43.8555Z\" fill=\"#34A853\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M16.6559 29.8904C16.3111 28.8559 16.1074 27.7588 16.1074 26.6146C16.1074 25.4704 16.3111 24.3733 16.6559 23.3388V18.8875H10.9194C9.74388 21.2072 9.06992 23.8247 9.06992 26.6146C9.06992 29.4045 9.74388 32.022 10.9194 34.3417L15.3864 30.8621L16.6559 29.8904V29.8904Z\" fill=\"#FBBC05\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 16.2386C28.85 16.2386 31.107 17.1164 32.9095 18.8091L37.8466 13.8719C34.853 11.082 30.9659 9.3736 26.3109 9.3736C19.5712 9.3736 13.7563 13.245 10.9194 18.8875L16.6559 23.3388C18.0195 19.2636 21.8282 16.2386 26.3109 16.2386V16.2386Z\" fill=\"#EA4335\"/>\n    </svg>\n    <svg class=\"logo-dark\" width=\"18\" height=\"18\" viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\">\n      <circle cx=\"24\" cy=\"23\" fill=\"#FFF\" r=\"22\"/>\n      <path d=\"M33.76 34.26c2.75-2.56 4.49-6.37 4.49-11.26 0-.89-.08-1.84-.29-3H24.01v5.99h8.03c-.4 2.02-1.5 3.56-3.07 4.56v.75l3.91 2.97h.88z\" fill=\"#4285F4\"/>\n      <path d=\"M15.58 25.77A8.845 8.845 0 0 0 24 31.86c1.92 0 3.62-.46 4.97-1.31l4.79 3.71C31.14 36.7 27.65 38 24 38c-5.93 0-11.01-3.4-13.45-8.36l.17-1.01 4.06-2.85h.8z\" fill=\"#34A853\"/>\n      <path d=\"M15.59 20.21a8.864 8.864 0 0 0 0 5.58l-5.03 3.86c-.98-2-1.53-4.25-1.53-6.64 0-2.39.55-4.64 1.53-6.64l1-.22 3.81 2.98.22 1.08z\" fill=\"#FBBC05\"/>\n      <path d=\"M24 14.14c2.11 0 4.02.75 5.52 1.98l4.36-4.36C31.22 9.43 27.81 8 24 8c-5.93 0-11.01 3.4-13.45 8.36l5.03 3.85A8.86 8.86 0 0 1 24 14.14z\" fill=\"#EA4335\"/>\n    </svg>\n    <div class=\"gradient-container\"><div class=\"gradient\"></div></div>\n  </div>\n  <div class=\"carousel\">\n<a class=\"chip\" href=\"https://www.google.com/search?q=Thea+Djordjadze+a+well+of+night&client=app-vertex-grounding&safesearch=active\">Thea Djordjadze a well of night</a>\n  </div>\n</div>",
-      "characterCount": 1877
+      "characterCount": 1878,
+      "primarySourceUrls": [
+        "https://spruethmagers.com/exhibitions/thea-djordjadze-a-well-of-night-new-york/",
+        "https://spruethmagers.com/artists/thea-djordjadze/"
+      ],
+      "reviewedAt": "2026-10-07T04:51:39.731Z"
     }
   },
   {
     "article": {
       "url": "https://github.blog/changelog/2026-10-05-secret-scanning-adds-detectors-for-lovable-supabase-and-more",
       "title": "GitHub 시크릿 스캐닝, Lovable·Supabase·Pydantic 신규 자격 증명 탐지기 도입",
-      "summary": "GitHub이 시크릿 스캐닝 기능에 Lovable Labs, Pydantic Services Inc., Supabase의 최신 API 키 및 인증 토큰 패턴 5종을 새로 추가했습니다. Lovable Labs는 파트너십 프로그램에 합류해 공개 저장소 노출 시 즉각적인 키 자동 무효화가 지원됩니다.",
+      "summary": "GitHub이 Lovable, Pydantic, Supabase의 API 키와 인증 토큰 패턴 5종을 탐지 대상에 추가했습니다. Lovable은 파트너 프로그램에 합류해 공개 저장소에서 발견된 키를 발급사에 전달받습니다. 탐지와 발급사의 후속 조치를 구분해 살펴봅니다.",
       "paragraphs": [
         {
           "heading": "최신 개발 스택 겨냥한 시크릿 스캐닝 탐지기 확대",
@@ -146,7 +157,8 @@
           "references": [
             {
               "label": "GitHub 변경 로그 공식 공지",
-              "url": "https://github.blog/changelog/2026-10-05-secret-scanning-adds-detectors-for-lovable-supabase-and-more"
+              "url": "https://github.blog/changelog/2026-10-05-secret-scanning-adds-detectors-for-lovable-supabase-and-more",
+              "kind": "primary"
             }
           ]
         },
@@ -154,13 +166,14 @@
           "heading": "Lovable Labs의 파트너십 프로그램 합류와 이원화된 보호 체계",
           "kind": "reporting",
           "paragraphs": [
-            "이번 변경에서 두드러진 점은 Lovable Labs가 GitHub '시크릿 스캐닝 파트너십 프로그램(Secret scanning partnership program)'의 정식 파트너로 합류했다는 사실입니다. 이에 따라 Lovable의 API 키는 공개 저장소에 실수로 커밋될 경우, 제3자가 이를 탈취해 악용하기 전에 GitHub이 Lovable 발급 시스템에 해당 사실을 실시간으로 직접 통보합니다. Lovable은 이를 확인해 해당 토큰을 즉시 폐기(revoke)하거나 자동 갱신(rotate) 처리할 수 있습니다.",
-            "반면 비공개 저장소(Private repository)에 저장된 코드베이스의 경우 기존 사용자 알림 체계에 따라 동작합니다. 비공개 저장소에서 해당 시크릿이 검출되면 외부 서비스로 토큰 내용이 유출되지 않고, 저장소 소유자 및 보안 관리자에게 즉각적인 시크릿 스캐닝 경고(Alert)를 발송하여 내부 팀이 자율적으로 위험도를 검토하고 키를 회전하도록 지원합니다."
+            "Lovable Labs는 이번 공지를 통해 GitHub의 시크릿 스캐닝 파트너 프로그램에 합류했습니다. 공개 저장소에서 파트너의 키가 발견되면 GitHub은 발급사에 이를 전달하고, 발급사는 해당 자격 증명을 폐기하거나 갱신할 수 있습니다. 공지가 설명하는 것은 발급사로 전달되는 대응 경로입니다. 모든 키가 발견 즉시 자동 폐기된다는 보장이나 처리 시간의 수치까지 제시한 것은 아닙니다.",
+            "GitHub은 파트너 시크릿과 사용자 시크릿을 구분합니다. 사용자 시크릿은 공개 또는 비공개 저장소에서 발견되면 시크릿 스캐닝 알림을 생성합니다. 따라서 새 패턴이 탐지 대상에 들어왔다는 사실과 파트너 통보, 푸시 보호, 유효성 검사가 모두 같은 조건으로 제공된다는 주장은 분리해서 읽어야 합니다. 팀은 공식 문서에서 사용하는 토큰의 지원 범위를 확인해야 합니다."
           ],
           "references": [
             {
               "label": "GitHub 변경 로그 공식 공지",
-              "url": "https://github.blog/changelog/2026-10-05-secret-scanning-adds-detectors-for-lovable-supabase-and-more"
+              "url": "https://github.blog/changelog/2026-10-05-secret-scanning-adds-detectors-for-lovable-supabase-and-more",
+              "kind": "primary"
             }
           ]
         },
@@ -169,12 +182,13 @@
           "kind": "analysis",
           "paragraphs": [
             "이번 탐지기 확장은 최근 급변하는 백엔드 및 인공지능 개발 환경의 특징을 충실히 반영한 조치로 해석할 수 있습니다. Supabase가 도입한 스코프 기반 개인 액세스 토큰(Scoped PAT)은 권한이 좁게 제한되어 안전성을 높이도록 설계되었지만, 여전히 데이터베이스 및 프로젝트 인프라에 직접적인 제어 권한을 부여하는 핵심 자격 증명입니다. 이러한 최신 토큰 규격이 누락 없이 탐지망에 포함된 것은 백엔드 리소스 무단 변경 리스크를 줄이는 데 유효해 보입니다.",
-            "또한 Pydantic Logfire와 AI Gateway 토큰, 프롬프트 기반 풀스택 빌더인 Lovable의 API 키가 스캐닝 대상이 된 점은 인공지능 에이전트와 LLM 프레임워크가 실무에 도입되는 과정에서 발생하는 구성 파일 유출 사고를 방어하려는 의도로 볼 수 있습니다. 자동화된 AI 보조 코딩 도구가 로컬 환경 설정 파일(.env)을 실수로 커밋 트리에 밀어 넣는 사고가 잦아지는 상황에서, 탐지 엔진이 이들 패턴을 즉시 인식하는 것은 긍정적인 방어벽이 될 것입니다."
+            "또한 Pydantic Logfire와 AI Gateway 토큰, 프롬프트 기반 풀스택 빌더인 Lovable의 API 키가 스캐닝 대상이 된 점은 인공지능 에이전트와 LLM 프레임워크가 실무에 도입되는 과정에서 발생하는 구성 파일 유출 사고를 방어하려는 의도로 볼 수 있습니다. 환경 설정 파일(.env)이 수동 또는 자동 작업 중 실수로 커밋될 수 있다는 점에서, 탐지 엔진이 이들 패턴을 즉시 인식하는 것은 긍정적인 방어벽이 될 것입니다."
           ],
           "references": [
             {
               "label": "Supabase 공식 변경 로그",
-              "url": "https://supabase.com/changelog"
+              "url": "https://supabase.com/changelog",
+              "kind": "primary"
             }
           ]
         },
@@ -182,13 +196,14 @@
           "heading": "파트너 연계 범위와 푸시 보호 적용 여부의 한계점",
           "kind": "analysis",
           "paragraphs": [
-            "다만 실무 적용 관점에서 모든 공급자 토큰이 동일한 수준의 자동 보호를 보장받는 것은 아니라는 점을 주의 깊게 살펴볼 필요가 있습니다. 이번 공지에서 Lovable Labs는 파트너십 프로그램 가입사로 명시되어 공개 유출 시 즉각적인 자동 폐기 통보가 보장되지만, Supabase의 신규 스코프 PAT나 Pydantic 토큰의 경우 발급사 측의 자동 폐기 파트너십 연계 여부가 공식적으로 명시되지 않았습니다. 즉, 일부 토큰은 공개 저장소에 노출되더라도 발급사 자동 무효화가 아닌 사용자 알림 단계에 머무를 가능성이 있습니다.",
+            "다만 실무 적용 관점에서 모든 공급자 토큰이 동일한 수준의 자동 보호를 보장받는 것은 아니라는 점을 주의 깊게 살펴볼 필요가 있습니다. 이번 공지에서 Lovable Labs는 파트너십 프로그램 가입사로 명시되어 공개 유출 시 발급사 통보 경로가 마련되지만, Supabase의 신규 스코프 PAT나 Pydantic 토큰의 경우 발급사 측의 자동 폐기 파트너십 연계 여부가 공식적으로 명시되지 않았습니다. 즉, 일부 토큰은 공개 저장소에 노출되더라도 발급사 자동 무효화가 아닌 사용자 알림 단계에 머무를 가능성이 있습니다.",
             "더불어 이번에 추가된 5종의 탐지 패턴이 푸시 이전에 커밋 자체를 차단하는 '푸시 보호(Push protection)' 기본 활성화 대상에 즉각 편입되었는지, 또한 토큰의 실제 유효 상태를 사전에 조회하는 유효성 검사기(Validator)가 동시 지원되는지는 발표 내용만으로 확인되지 않습니다. 따라서 보안 관리자는 시크릿 스캐닝 알림에만 전적으로 의존하기보다, 커밋 전 클라이언트 단계의 검증 스크립트 구축을 병행하는 것이 바람직해 보입니다."
           ],
           "references": [
             {
               "label": "GitHub 변경 로그 공식 공지",
-              "url": "https://github.blog/changelog/2026-10-05-secret-scanning-adds-detectors-for-lovable-supabase-and-more"
+              "url": "https://github.blog/changelog/2026-10-05-secret-scanning-adds-detectors-for-lovable-supabase-and-more",
+              "kind": "primary"
             }
           ]
         },
@@ -202,18 +217,20 @@
           "references": [
             {
               "label": "GitHub 변경 로그 공식 공지",
-              "url": "https://github.blog/changelog/2026-10-05-secret-scanning-adds-detectors-for-lovable-supabase-and-more"
+              "url": "https://github.blog/changelog/2026-10-05-secret-scanning-adds-detectors-for-lovable-supabase-and-more",
+              "kind": "primary"
             },
             {
               "label": "Supabase 공식 변경 로그",
-              "url": "https://supabase.com/changelog"
+              "url": "https://supabase.com/changelog",
+              "kind": "primary"
             }
           ]
         }
       ],
       "points": [
         "GitHub 시크릿 스캐닝에 Lovable, Pydantic, Supabase 관련 신규 탐지기 5종이 공식 추가되었습니다.",
-        "Lovable Labs가 파트너십 프로그램에 합류하여 공개 저장소에 키 노출 시 제공업체 측 자동 폐기 및 갱신이 실행됩니다.",
+        "Lovable의 키가 공개 저장소에서 발견되면 GitHub이 발급사에 전달하며, 폐기·갱신은 발급사의 후속 조치입니다.",
         "Supabase OAuth 토큰 및 신규 스코프 PAT, Pydantic Logfire 및 AI 게이트웨이 키가 탐지 범위에 포함되었습니다."
       ],
       "tags": [
@@ -264,7 +281,12 @@
         "\"secret scanning\" \"Secret scanning pattern updates\" \"Supabase\""
       ],
       "searchSuggestions": "<style>\n.container {\n  align-items: center;\n  border-radius: 8px;\n  display: flex;\n  font-family: Google Sans, Roboto, sans-serif;\n  font-size: 14px;\n  line-height: 20px;\n  padding: 8px 12px;\n}\n.chip {\n  display: inline-block;\n  border: solid 1px;\n  border-radius: 16px;\n  min-width: 14px;\n  padding: 5px 16px;\n  text-align: center;\n  user-select: none;\n  margin: 0 8px;\n  -webkit-tap-highlight-color: transparent;\n}\n.carousel {\n  overflow: auto;\n  scrollbar-width: none;\n  white-space: nowrap;\n  margin-right: -12px;\n}\n.headline {\n  display: flex;\n  margin-right: 4px;\n}\n.gradient-container {\n  position: relative;\n}\n.gradient {\n  position: absolute;\n  transform: translate(3px, -9px);\n  height: 36px;\n  width: 9px;\n}\n@media (prefers-color-scheme: light) {\n  .container {\n    background-color: #fafafa;\n    box-shadow: 0 0 0 1px #0000000f;\n  }\n  .headline-label {\n    color: #1f1f1f;\n  }\n  .chip {\n    background-color: #ffffff;\n    border-color: #d2d2d2;\n    color: #5e5e5e;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #f2f2f2;\n  }\n  .chip:focus {\n    background-color: #f2f2f2;\n  }\n  .chip:active {\n    background-color: #d8d8d8;\n    border-color: #b6b6b6;\n  }\n  .logo-dark {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #fafafa 15%, #fafafa00 100%);\n  }\n}\n@media (prefers-color-scheme: dark) {\n  .container {\n    background-color: #1f1f1f;\n    box-shadow: 0 0 0 1px #ffffff26;\n  }\n  .headline-label {\n    color: #fff;\n  }\n  .chip {\n    background-color: #2c2c2c;\n    border-color: #3c4043;\n    color: #fff;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #353536;\n  }\n  .chip:focus {\n    background-color: #353536;\n  }\n  .chip:active {\n    background-color: #464849;\n    border-color: #53575b;\n  }\n  .logo-light {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #1f1f1f 15%, #1f1f1f00 100%);\n  }\n}\n</style>\n<div class=\"container\">\n  <div class=\"headline\">\n    <svg class=\"logo-light\" width=\"18\" height=\"18\" viewBox=\"9 9 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M42.8622 27.0064C42.8622 25.7839 42.7525 24.6084 42.5487 23.4799H26.3109V30.1568H35.5897C35.1821 32.3041 33.9596 34.1222 32.1258 35.3448V39.6864H37.7213C40.9814 36.677 42.8622 32.2571 42.8622 27.0064V27.0064Z\" fill=\"#4285F4\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 43.8555C30.9659 43.8555 34.8687 42.3195 37.7213 39.6863L32.1258 35.3447C30.5898 36.3792 28.6306 37.0061 26.3109 37.0061C21.8282 37.0061 18.0195 33.9811 16.6559 29.906H10.9194V34.3573C13.7563 39.9841 19.5712 43.8555 26.3109 43.8555V43.8555Z\" fill=\"#34A853\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M16.6559 29.8904C16.3111 28.8559 16.1074 27.7588 16.1074 26.6146C16.1074 25.4704 16.3111 24.3733 16.6559 23.3388V18.8875H10.9194C9.74388 21.2072 9.06992 23.8247 9.06992 26.6146C9.06992 29.4045 9.74388 32.022 10.9194 34.3417L15.3864 30.8621L16.6559 29.8904V29.8904Z\" fill=\"#FBBC05\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 16.2386C28.85 16.2386 31.107 17.1164 32.9095 18.8091L37.8466 13.8719C34.853 11.082 30.9659 9.3736 26.3109 9.3736C19.5712 9.3736 13.7563 13.245 10.9194 18.8875L16.6559 23.3388C18.0195 19.2636 21.8282 16.2386 26.3109 16.2386V16.2386Z\" fill=\"#EA4335\"/>\n    </svg>\n    <svg class=\"logo-dark\" width=\"18\" height=\"18\" viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\">\n      <circle cx=\"24\" cy=\"23\" fill=\"#FFF\" r=\"22\"/>\n      <path d=\"M33.76 34.26c2.75-2.56 4.49-6.37 4.49-11.26 0-.89-.08-1.84-.29-3H24.01v5.99h8.03c-.4 2.02-1.5 3.56-3.07 4.56v.75l3.91 2.97h.88z\" fill=\"#4285F4\"/>\n      <path d=\"M15.58 25.77A8.845 8.845 0 0 0 24 31.86c1.92 0 3.62-.46 4.97-1.31l4.79 3.71C31.14 36.7 27.65 38 24 38c-5.93 0-11.01-3.4-13.45-8.36l.17-1.01 4.06-2.85h.8z\" fill=\"#34A853\"/>\n      <path d=\"M15.59 20.21a8.864 8.864 0 0 0 0 5.58l-5.03 3.86c-.98-2-1.53-4.25-1.53-6.64 0-2.39.55-4.64 1.53-6.64l1-.22 3.81 2.98.22 1.08z\" fill=\"#FBBC05\"/>\n      <path d=\"M24 14.14c2.11 0 4.02.75 5.52 1.98l4.36-4.36C31.22 9.43 27.81 8 24 8c-5.93 0-11.01 3.4-13.45 8.36l5.03 3.85A8.86 8.86 0 0 1 24 14.14z\" fill=\"#EA4335\"/>\n    </svg>\n    <div class=\"gradient-container\"><div class=\"gradient\"></div></div>\n  </div>\n  <div class=\"carousel\">\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Secret+scanning+adds+detectors+for+Lovable,+Supabase%22&client=app-vertex-grounding&safesearch=active\">&quot;Secret scanning adds detectors for Lovable, Supabase&quot;</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Secret+scanning%22+Lovable+Supabase+changelog&client=app-vertex-grounding&safesearch=active\">&quot;Secret scanning&quot; Lovable Supabase changelog</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22secret+scanning%22+%22Secret+scanning+pattern+updates%22+%22Supabase%22&client=app-vertex-grounding&safesearch=active\">&quot;secret scanning&quot; &quot;Secret scanning pattern updates&quot; &quot;Supabase&quot;</a>\n  </div>\n</div>",
-      "characterCount": 2548
+      "characterCount": 2452,
+      "primarySourceUrls": [
+        "https://github.blog/changelog/2026-10-05-secret-scanning-adds-detectors-for-lovable-supabase-and-more",
+        "https://supabase.com/changelog"
+      ],
+      "reviewedAt": "2026-10-07T04:51:39.732Z"
     }
   },
   {
@@ -277,17 +299,19 @@
           "heading": "맨해튼 심장부에 세운 11,705㎡ 규모의 새로운 축구 허브",
           "kind": "reporting",
           "paragraphs": [
-            "메이저 리그 사커(Major League Soccer, MLS)는 리그 출범 30주년과 2026 북중미 월드컵을 앞두고 뉴욕 맨해튼 미드타운 PENN 2(2 Penn Plaza) 15~16층으로 글로벌 본사를 확장 이전했다. 기존 브라이언트 파크 인근 오피스에서 옮겨온 신사옥은 총 면적 126,000평방피트(약 11,705㎡) 규모의 2개 층으로 조성되어 최대 약 600명의 인원을 수용할 수 있다. 인테리어 및 브랜딩 설계는 TPG 아키텍처(TPG Architecture)가 총괄했으며, 기술·미디어 통합은 TAD(Technology Architecture Design)가 협력해 2026년 상반기에 완공됐다.",
+            "MLS는 글로벌 본사를 뉴욕 맨해튼의 2 Penn Plaza로 이전했습니다. 리그 공식 발표에 따르면 두 개 층에 걸친 126,000평방피트, 약 11,705㎡의 공간을 TPG Architecture가 설계했습니다. 발표는 북중미 월드컵을 앞둔 이전으로 설명합니다. 10월에 나온 공간 소개 기사와 본사의 실제 이전 시점을 같은 날짜로 취급하지 않는 것이 필요합니다.",
             "이번 이전은 북미 축구 문화의 급격한 성장과 글로벌 위상 강화에 발맞추어 분산되었던 업무 기능을 단일 거점으로 통합하기 위해 추진되었다. 매디슨 스퀘어 가든과 인접한 지리적 입지를 갖춘 신사옥은 실시간 리그 경기 운영, 대외 파트너십, 글로벌 미디어 대응을 원활하게 수행할 수 있는 현대적 인프라를 전면에 내세웠다."
           ],
           "references": [
             {
               "label": "디자인 밀크 기사",
-              "url": "https://design-milk.com/mls-headquarters-tpg-architecture/"
+              "url": "https://design-milk.com/mls-headquarters-tpg-architecture/",
+              "kind": "reporting"
             },
             {
               "label": "MLS 공식 본사 발표",
-              "url": "https://www.mlssoccer.com/news/mls-unveils-new-global-headquarters-at-2-penn-plaza-in-manhattan"
+              "url": "https://www.mlssoccer.com/news/mls-unveils-new-global-headquarters-at-2-penn-plaza-in-manhattan",
+              "kind": "primary"
             }
           ]
         },
@@ -301,11 +325,13 @@
           "references": [
             {
               "label": "디진 프로젝트 리뷰",
-              "url": "https://www.dezeen.com/2026/09/29/major-league-soccer-new-york-headquarters-tpg-architecture/"
+              "url": "https://www.dezeen.com/2026/09/29/major-league-soccer-new-york-headquarters-tpg-architecture/",
+              "kind": "reporting"
             },
             {
               "label": "디자인 밀크 기사",
-              "url": "https://design-milk.com/mls-headquarters-tpg-architecture/"
+              "url": "https://design-milk.com/mls-headquarters-tpg-architecture/",
+              "kind": "reporting"
             }
           ]
         },
@@ -314,16 +340,18 @@
           "kind": "reporting",
           "paragraphs": [
             "15층과 16층을 유기적으로 잇는 대형 중앙 계단(Grand Staircase) 중심부에는 '미드필드(Midfield)'라 명명된 복층 로비 공간이 들어섰다. 경기 조율의 핵심인 미드필더의 역할처럼, 이 공간은 신사옥 전체의 유동 인구를 이어주는 구심점 역할을 한다. 계단 주변으로는 카페와 커피 바, 라운지, 웰니스 및 명상실이 맞물려 배치되어 직원들이 휴식과 캐주얼 미팅을 동시에 소화할 수 있도록 했다.",
-            "업무 구역에는 80개 이상의 회의실과 집중 협업 공간이 포진해 있다. 특히 전 세계에서 열리는 리그 매치를 실시간으로 관리하는 '매치데이 센터 운영 허브(Matchday Center Operations Hub)'가 조성되어 관제 센터의 기능을 겸한다. 기술 설계사 TAD가 구축한 디지털 사이니지 플랫폼을 통해 라이브 스코어, 리그 통계 지표, 미디어 영상이 사옥 곳곳의 스크린에 오차 없이 동기화된다."
+            "업무 구역에는 80개 이상의 회의실과 집중 협업 공간이 포진해 있다. 특히 전 세계에서 열리는 리그 매치를 실시간으로 관리하는 '매치데이 센터 운영 허브(Matchday Center Operations Hub)'가 조성되어 관제 센터의 기능을 겸한다. 기술 설계사 TAD가 구축한 디지털 사이니지 플랫폼을 통해 라이브 스코어, 리그 통계 지표, 미디어 영상이 사옥 곳곳의 스크린에 전달된다."
           ],
           "references": [
             {
               "label": "MLS 공식 본사 발표",
-              "url": "https://www.mlssoccer.com/news/mls-unveils-new-global-headquarters-at-2-penn-plaza-in-manhattan"
+              "url": "https://www.mlssoccer.com/news/mls-unveils-new-global-headquarters-at-2-penn-plaza-in-manhattan",
+              "kind": "primary"
             },
             {
               "label": "디자인 밀크 기사",
-              "url": "https://design-milk.com/mls-headquarters-tpg-architecture/"
+              "url": "https://design-milk.com/mls-headquarters-tpg-architecture/",
+              "kind": "reporting"
             }
           ]
         },
@@ -337,11 +365,13 @@
           "references": [
             {
               "label": "디자인 밀크 기사",
-              "url": "https://design-milk.com/mls-headquarters-tpg-architecture/"
+              "url": "https://design-milk.com/mls-headquarters-tpg-architecture/",
+              "kind": "reporting"
             },
             {
               "label": "디진 프로젝트 리뷰",
-              "url": "https://www.dezeen.com/2026/09/29/major-league-soccer-new-york-headquarters-tpg-architecture/"
+              "url": "https://www.dezeen.com/2026/09/29/major-league-soccer-new-york-headquarters-tpg-architecture/",
+              "kind": "reporting"
             }
           ]
         },
@@ -355,11 +385,13 @@
           "references": [
             {
               "label": "디자인 밀크 기사",
-              "url": "https://design-milk.com/mls-headquarters-tpg-architecture/"
+              "url": "https://design-milk.com/mls-headquarters-tpg-architecture/",
+              "kind": "reporting"
             },
             {
               "label": "MLS 공식 본사 발표",
-              "url": "https://www.mlssoccer.com/news/mls-unveils-new-global-headquarters-at-2-penn-plaza-in-manhattan"
+              "url": "https://www.mlssoccer.com/news/mls-unveils-new-global-headquarters-at-2-penn-plaza-in-manhattan",
+              "kind": "primary"
             }
           ]
         }
@@ -413,7 +445,11 @@
         "site:tpgarchitecture.com \"Major League Soccer\" OR \"MLS\""
       ],
       "searchSuggestions": "<style>\n.container {\n  align-items: center;\n  border-radius: 8px;\n  display: flex;\n  font-family: Google Sans, Roboto, sans-serif;\n  font-size: 14px;\n  line-height: 20px;\n  padding: 8px 12px;\n}\n.chip {\n  display: inline-block;\n  border: solid 1px;\n  border-radius: 16px;\n  min-width: 14px;\n  padding: 5px 16px;\n  text-align: center;\n  user-select: none;\n  margin: 0 8px;\n  -webkit-tap-highlight-color: transparent;\n}\n.carousel {\n  overflow: auto;\n  scrollbar-width: none;\n  white-space: nowrap;\n  margin-right: -12px;\n}\n.headline {\n  display: flex;\n  margin-right: 4px;\n}\n.gradient-container {\n  position: relative;\n}\n.gradient {\n  position: absolute;\n  transform: translate(3px, -9px);\n  height: 36px;\n  width: 9px;\n}\n@media (prefers-color-scheme: light) {\n  .container {\n    background-color: #fafafa;\n    box-shadow: 0 0 0 1px #0000000f;\n  }\n  .headline-label {\n    color: #1f1f1f;\n  }\n  .chip {\n    background-color: #ffffff;\n    border-color: #d2d2d2;\n    color: #5e5e5e;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #f2f2f2;\n  }\n  .chip:focus {\n    background-color: #f2f2f2;\n  }\n  .chip:active {\n    background-color: #d8d8d8;\n    border-color: #b6b6b6;\n  }\n  .logo-dark {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #fafafa 15%, #fafafa00 100%);\n  }\n}\n@media (prefers-color-scheme: dark) {\n  .container {\n    background-color: #1f1f1f;\n    box-shadow: 0 0 0 1px #ffffff26;\n  }\n  .headline-label {\n    color: #fff;\n  }\n  .chip {\n    background-color: #2c2c2c;\n    border-color: #3c4043;\n    color: #fff;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #353536;\n  }\n  .chip:focus {\n    background-color: #353536;\n  }\n  .chip:active {\n    background-color: #464849;\n    border-color: #53575b;\n  }\n  .logo-light {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #1f1f1f 15%, #1f1f1f00 100%);\n  }\n}\n</style>\n<div class=\"container\">\n  <div class=\"headline\">\n    <svg class=\"logo-light\" width=\"18\" height=\"18\" viewBox=\"9 9 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M42.8622 27.0064C42.8622 25.7839 42.7525 24.6084 42.5487 23.4799H26.3109V30.1568H35.5897C35.1821 32.3041 33.9596 34.1222 32.1258 35.3448V39.6864H37.7213C40.9814 36.677 42.8622 32.2571 42.8622 27.0064V27.0064Z\" fill=\"#4285F4\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 43.8555C30.9659 43.8555 34.8687 42.3195 37.7213 39.6863L32.1258 35.3447C30.5898 36.3792 28.6306 37.0061 26.3109 37.0061C21.8282 37.0061 18.0195 33.9811 16.6559 29.906H10.9194V34.3573C13.7563 39.9841 19.5712 43.8555 26.3109 43.8555V43.8555Z\" fill=\"#34A853\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M16.6559 29.8904C16.3111 28.8559 16.1074 27.7588 16.1074 26.6146C16.1074 25.4704 16.3111 24.3733 16.6559 23.3388V18.8875H10.9194C9.74388 21.2072 9.06992 23.8247 9.06992 26.6146C9.06992 29.4045 9.74388 32.022 10.9194 34.3417L15.3864 30.8621L16.6559 29.8904V29.8904Z\" fill=\"#FBBC05\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 16.2386C28.85 16.2386 31.107 17.1164 32.9095 18.8091L37.8466 13.8719C34.853 11.082 30.9659 9.3736 26.3109 9.3736C19.5712 9.3736 13.7563 13.245 10.9194 18.8875L16.6559 23.3388C18.0195 19.2636 21.8282 16.2386 26.3109 16.2386V16.2386Z\" fill=\"#EA4335\"/>\n    </svg>\n    <svg class=\"logo-dark\" width=\"18\" height=\"18\" viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\">\n      <circle cx=\"24\" cy=\"23\" fill=\"#FFF\" r=\"22\"/>\n      <path d=\"M33.76 34.26c2.75-2.56 4.49-6.37 4.49-11.26 0-.89-.08-1.84-.29-3H24.01v5.99h8.03c-.4 2.02-1.5 3.56-3.07 4.56v.75l3.91 2.97h.88z\" fill=\"#4285F4\"/>\n      <path d=\"M15.58 25.77A8.845 8.845 0 0 0 24 31.86c1.92 0 3.62-.46 4.97-1.31l4.79 3.71C31.14 36.7 27.65 38 24 38c-5.93 0-11.01-3.4-13.45-8.36l.17-1.01 4.06-2.85h.8z\" fill=\"#34A853\"/>\n      <path d=\"M15.59 20.21a8.864 8.864 0 0 0 0 5.58l-5.03 3.86c-.98-2-1.53-4.25-1.53-6.64 0-2.39.55-4.64 1.53-6.64l1-.22 3.81 2.98.22 1.08z\" fill=\"#FBBC05\"/>\n      <path d=\"M24 14.14c2.11 0 4.02.75 5.52 1.98l4.36-4.36C31.22 9.43 27.81 8 24 8c-5.93 0-11.01 3.4-13.45 8.36l5.03 3.85A8.86 8.86 0 0 1 24 14.14z\" fill=\"#EA4335\"/>\n    </svg>\n    <div class=\"gradient-container\"><div class=\"gradient\"></div></div>\n  </div>\n  <div class=\"carousel\">\n<a class=\"chip\" href=\"https://www.google.com/search?q=MLS+headquarters+TPG+Architecture+Manhattan+Design+Milk&client=app-vertex-grounding&safesearch=active\">MLS headquarters TPG Architecture Manhattan Design Milk</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=TPG+Architecture+Major+League+Soccer+headquarters&client=app-vertex-grounding&safesearch=active\">TPG Architecture Major League Soccer headquarters</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=site:tpgarchitecture.com+%22Major+League+Soccer%22+OR+%22MLS%22&client=app-vertex-grounding&safesearch=active\">site:tpgarchitecture.com &quot;Major League Soccer&quot; OR &quot;MLS&quot;</a>\n  </div>\n</div>",
-      "characterCount": 2162
+      "characterCount": 2017,
+      "primarySourceUrls": [
+        "https://www.mlssoccer.com/news/mls-unveils-new-global-headquarters-at-2-penn-plaza-in-manhattan"
+      ],
+      "reviewedAt": "2026-10-07T04:51:39.732Z"
     }
   },
   {
@@ -432,11 +468,18 @@
           "references": [
             {
               "label": "디자인 밀크 보도",
-              "url": "https://design-milk.com/shinji-japanese-steakhouse-toronto/"
+              "url": "https://design-milk.com/shinji-japanese-steakhouse-toronto/",
+              "kind": "reporting"
             },
             {
               "label": "신지 레스토랑 공식 웹사이트",
-              "url": "https://shinjijapanese.com/"
+              "url": "https://shinjijapanese.com/",
+              "kind": "primary"
+            },
+            {
+              "label": "오다미 공식 프로젝트 설명",
+              "url": "https://www.odami.ca/shinji-japanese",
+              "kind": "primary"
             }
           ]
         },
@@ -450,11 +493,13 @@
           "references": [
             {
               "label": "애저 매거진 기사",
-              "url": "https://www.azuremagazine.com/article/shinji-japanese-steakhouse-toronto-odami/"
+              "url": "https://www.azuremagazine.com/article/shinji-japanese-steakhouse-toronto-odami/",
+              "kind": "reporting"
             },
             {
               "label": "디자인 밀크 보도",
-              "url": "https://design-milk.com/shinji-japanese-steakhouse-toronto/"
+              "url": "https://design-milk.com/shinji-japanese-steakhouse-toronto/",
+              "kind": "reporting"
             }
           ]
         },
@@ -468,11 +513,13 @@
           "references": [
             {
               "label": "월페이퍼 리뷰",
-              "url": "https://www.wallpaper.com/travel/restaurants/shinji-toronto-canada-review"
+              "url": "https://www.wallpaper.com/travel/restaurants/shinji-toronto-canada-review",
+              "kind": "reporting"
             },
             {
               "label": "디자인 밀크 보도",
-              "url": "https://design-milk.com/shinji-japanese-steakhouse-toronto/"
+              "url": "https://design-milk.com/shinji-japanese-steakhouse-toronto/",
+              "kind": "reporting"
             }
           ]
         },
@@ -486,11 +533,13 @@
           "references": [
             {
               "label": "애저 매거진 기사",
-              "url": "https://www.azuremagazine.com/article/shinji-japanese-steakhouse-toronto-odami/"
+              "url": "https://www.azuremagazine.com/article/shinji-japanese-steakhouse-toronto-odami/",
+              "kind": "reporting"
             },
             {
               "label": "월페이퍼 리뷰",
-              "url": "https://www.wallpaper.com/travel/restaurants/shinji-toronto-canada-review"
+              "url": "https://www.wallpaper.com/travel/restaurants/shinji-toronto-canada-review",
+              "kind": "reporting"
             }
           ]
         },
@@ -504,11 +553,13 @@
           "references": [
             {
               "label": "디자인 밀크 보도",
-              "url": "https://design-milk.com/shinji-japanese-steakhouse-toronto/"
+              "url": "https://design-milk.com/shinji-japanese-steakhouse-toronto/",
+              "kind": "reporting"
             },
             {
               "label": "월페이퍼 리뷰",
-              "url": "https://www.wallpaper.com/travel/restaurants/shinji-toronto-canada-review"
+              "url": "https://www.wallpaper.com/travel/restaurants/shinji-toronto-canada-review",
+              "kind": "reporting"
             }
           ]
         }
@@ -582,30 +633,37 @@
         "Shinji Toronto Japanese Steakhouse"
       ],
       "searchSuggestions": "<style>\n.container {\n  align-items: center;\n  border-radius: 8px;\n  display: flex;\n  font-family: Google Sans, Roboto, sans-serif;\n  font-size: 14px;\n  line-height: 20px;\n  padding: 8px 12px;\n}\n.chip {\n  display: inline-block;\n  border: solid 1px;\n  border-radius: 16px;\n  min-width: 14px;\n  padding: 5px 16px;\n  text-align: center;\n  user-select: none;\n  margin: 0 8px;\n  -webkit-tap-highlight-color: transparent;\n}\n.carousel {\n  overflow: auto;\n  scrollbar-width: none;\n  white-space: nowrap;\n  margin-right: -12px;\n}\n.headline {\n  display: flex;\n  margin-right: 4px;\n}\n.gradient-container {\n  position: relative;\n}\n.gradient {\n  position: absolute;\n  transform: translate(3px, -9px);\n  height: 36px;\n  width: 9px;\n}\n@media (prefers-color-scheme: light) {\n  .container {\n    background-color: #fafafa;\n    box-shadow: 0 0 0 1px #0000000f;\n  }\n  .headline-label {\n    color: #1f1f1f;\n  }\n  .chip {\n    background-color: #ffffff;\n    border-color: #d2d2d2;\n    color: #5e5e5e;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #f2f2f2;\n  }\n  .chip:focus {\n    background-color: #f2f2f2;\n  }\n  .chip:active {\n    background-color: #d8d8d8;\n    border-color: #b6b6b6;\n  }\n  .logo-dark {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #fafafa 15%, #fafafa00 100%);\n  }\n}\n@media (prefers-color-scheme: dark) {\n  .container {\n    background-color: #1f1f1f;\n    box-shadow: 0 0 0 1px #ffffff26;\n  }\n  .headline-label {\n    color: #fff;\n  }\n  .chip {\n    background-color: #2c2c2c;\n    border-color: #3c4043;\n    color: #fff;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #353536;\n  }\n  .chip:focus {\n    background-color: #353536;\n  }\n  .chip:active {\n    background-color: #464849;\n    border-color: #53575b;\n  }\n  .logo-light {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #1f1f1f 15%, #1f1f1f00 100%);\n  }\n}\n</style>\n<div class=\"container\">\n  <div class=\"headline\">\n    <svg class=\"logo-light\" width=\"18\" height=\"18\" viewBox=\"9 9 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M42.8622 27.0064C42.8622 25.7839 42.7525 24.6084 42.5487 23.4799H26.3109V30.1568H35.5897C35.1821 32.3041 33.9596 34.1222 32.1258 35.3448V39.6864H37.7213C40.9814 36.677 42.8622 32.2571 42.8622 27.0064V27.0064Z\" fill=\"#4285F4\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 43.8555C30.9659 43.8555 34.8687 42.3195 37.7213 39.6863L32.1258 35.3447C30.5898 36.3792 28.6306 37.0061 26.3109 37.0061C21.8282 37.0061 18.0195 33.9811 16.6559 29.906H10.9194V34.3573C13.7563 39.9841 19.5712 43.8555 26.3109 43.8555V43.8555Z\" fill=\"#34A853\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M16.6559 29.8904C16.3111 28.8559 16.1074 27.7588 16.1074 26.6146C16.1074 25.4704 16.3111 24.3733 16.6559 23.3388V18.8875H10.9194C9.74388 21.2072 9.06992 23.8247 9.06992 26.6146C9.06992 29.4045 9.74388 32.022 10.9194 34.3417L15.3864 30.8621L16.6559 29.8904V29.8904Z\" fill=\"#FBBC05\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 16.2386C28.85 16.2386 31.107 17.1164 32.9095 18.8091L37.8466 13.8719C34.853 11.082 30.9659 9.3736 26.3109 9.3736C19.5712 9.3736 13.7563 13.245 10.9194 18.8875L16.6559 23.3388C18.0195 19.2636 21.8282 16.2386 26.3109 16.2386V16.2386Z\" fill=\"#EA4335\"/>\n    </svg>\n    <svg class=\"logo-dark\" width=\"18\" height=\"18\" viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\">\n      <circle cx=\"24\" cy=\"23\" fill=\"#FFF\" r=\"22\"/>\n      <path d=\"M33.76 34.26c2.75-2.56 4.49-6.37 4.49-11.26 0-.89-.08-1.84-.29-3H24.01v5.99h8.03c-.4 2.02-1.5 3.56-3.07 4.56v.75l3.91 2.97h.88z\" fill=\"#4285F4\"/>\n      <path d=\"M15.58 25.77A8.845 8.845 0 0 0 24 31.86c1.92 0 3.62-.46 4.97-1.31l4.79 3.71C31.14 36.7 27.65 38 24 38c-5.93 0-11.01-3.4-13.45-8.36l.17-1.01 4.06-2.85h.8z\" fill=\"#34A853\"/>\n      <path d=\"M15.59 20.21a8.864 8.864 0 0 0 0 5.58l-5.03 3.86c-.98-2-1.53-4.25-1.53-6.64 0-2.39.55-4.64 1.53-6.64l1-.22 3.81 2.98.22 1.08z\" fill=\"#FBBC05\"/>\n      <path d=\"M24 14.14c2.11 0 4.02.75 5.52 1.98l4.36-4.36C31.22 9.43 27.81 8 24 8c-5.93 0-11.01 3.4-13.45 8.36l5.03 3.85A8.86 8.86 0 0 1 24 14.14z\" fill=\"#EA4335\"/>\n    </svg>\n    <div class=\"gradient-container\"><div class=\"gradient\"></div></div>\n  </div>\n  <div class=\"carousel\">\n<a class=\"chip\" href=\"https://www.google.com/search?q=Shinji+Japanese+Steakhouse+Toronto+interior+designer&client=app-vertex-grounding&safesearch=active\">Shinji Japanese Steakhouse Toronto interior designer</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=Shinji+Japanese+Steakhouse+Toronto+design+milk&client=app-vertex-grounding&safesearch=active\">Shinji Japanese Steakhouse Toronto design milk</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=Shinji+Toronto+Japanese+Steakhouse&client=app-vertex-grounding&safesearch=active\">Shinji Toronto Japanese Steakhouse</a>\n  </div>\n</div>",
-      "characterCount": 2206
+      "characterCount": 2206,
+      "primarySourceUrls": [
+        "https://shinjijapanese.com/",
+        "https://www.odami.ca/shinji-japanese"
+      ],
+      "reviewedAt": "2026-10-07T04:51:39.732Z"
     }
   },
   {
     "article": {
       "url": "https://www.dezeen.com/2026/10/05/knekt-floor-lamp-hegren-lighting-furniture-products-dezeen-showroom/",
-      "title": "노르웨이 헤그렌, 암체어 환경에 최적화된 알루미늄 플로어 램프 '크네크트' 공개",
+      "title": "안락의자 곁의 빛을 조절하다: 헤그렌의 알루미늄 조명 크네크트",
       "summary": "노르웨이 디자인 브랜드 헤그렌이 안락의자 곁에서 일과 휴식을 보좌하는 '크네크트' 플로어 램프를 디진 쇼룸을 통해 선보였습니다. 현지 생산 알루미늄 판재를 절곡한 형태와 표준 E27 소켓, 툴리스 플랫팩 구조를 채택해 유지보수 편의성과 솔직한 조형미를 동시에 달성했습니다.",
       "paragraphs": [
         {
           "heading": "안락의자 곁을 보좌하는 조명, 노르웨이 헤그렌의 '크네크트'",
           "kind": "reporting",
           "paragraphs": [
-            "노르웨이 트론헤임에 거점을 둔 디자인 스튜디오 헤그렌(Hegren)이 새로운 플로어 램프 '크네크트(Knekt)'를 선보였습니다. 헤그렌의 설립자이자 디자이너인 헨리크 그레브스타드(Henrik Grevstad)가 완성한 이 조명은 글로벌 디자인 플랫폼 디진 쇼룸(Dezeen Showroom)의 신제품 컬렉션을 통해 공식적으로 소개되었습니다.",
+            "노르웨이 트론헤임에 거점을 둔 디자인 스튜디오 헤그렌(Hegren)이 플로어 램프 '크네크트(Knekt)'를 선보였습니다. 헤그렌의 설립자이자 디자이너인 헨리크 그레브스타드(Henrik Grevstad)가 완성한 이 조명은 글로벌 디자인 플랫폼 디진 쇼룸(Dezeen Showroom)의 신제품 컬렉션을 통해 공식적으로 소개되었습니다. 공식 제품 페이지는 설계 연도를 2025년으로 표기합니다. 2026년 디진 쇼룸 소개일과 제품 설계 연도를 구분해 읽어야 합니다.",
             "제품명인 크네크트는 노르웨이어로 중세 기사를 보좌하던 '종자(squire)'를 뜻합니다. 이는 안락의자(armchair) 곁에 밀착해 사용자의 활동을 충실하게 지원하는 조명의 공간적 쓰임새를 비유적으로 드러냅니다. 현대 주거 환경에서 안락의자가 단순한 휴식을 넘어 독서나 개인 업무를 수행하는 복합 공간으로 진화함에 따라, 공간 전체를 막연히 비추는 일반 조명 대신 특정 지점에 빛을 집중하는 지향성 조명(directional light)으로 기획되었습니다."
           ],
           "references": [
             {
               "label": "디진 쇼룸 신제품 라운드업 기사",
-              "url": "https://www.dezeen.com/2026/10/05/knekt-floor-lamp-hegren-lighting-furniture-products-dezeen-showroom/"
+              "url": "https://www.dezeen.com/2026/10/05/knekt-floor-lamp-hegren-lighting-furniture-products-dezeen-showroom/",
+              "kind": "reporting"
             },
             {
               "label": "디진 쇼룸 크네크트 램프 단독 소개",
-              "url": "https://www.dezeen.com/2026/09/29/knekt-floor-lamp-hegren-dezeen-showroom/"
+              "url": "https://www.dezeen.com/2026/09/29/knekt-floor-lamp-hegren-dezeen-showroom/",
+              "kind": "reporting"
             }
           ]
         },
@@ -619,7 +677,13 @@
           "references": [
             {
               "label": "디진 쇼룸 크네크트 램프 단독 소개",
-              "url": "https://www.dezeen.com/2026/09/29/knekt-floor-lamp-hegren-dezeen-showroom/"
+              "url": "https://www.dezeen.com/2026/09/29/knekt-floor-lamp-hegren-dezeen-showroom/",
+              "kind": "reporting"
+            },
+            {
+              "label": "헤그렌 공식 제품 정보",
+              "url": "https://www.hegren.no/products/knekt-raw",
+              "kind": "primary"
             }
           ]
         },
@@ -633,7 +697,8 @@
           "references": [
             {
               "label": "디진 쇼룸 신제품 라운드업 기사",
-              "url": "https://www.dezeen.com/2026/10/05/knekt-floor-lamp-hegren-lighting-furniture-products-dezeen-showroom/"
+              "url": "https://www.dezeen.com/2026/10/05/knekt-floor-lamp-hegren-lighting-furniture-products-dezeen-showroom/",
+              "kind": "reporting"
             }
           ]
         },
@@ -641,13 +706,14 @@
           "heading": "지속가능성의 본질을 구현한 표준화 부품과 수리 가능성",
           "kind": "analysis",
           "paragraphs": [
-            "최근 다수의 현대 조명이 일체형 LED 모듈을 채택하면서 고장 시 제품 전체를 폐기해야 하는 문제점을 안고 있는 반면, 크네크트는 검증된 표준 부품 중심의 아키텍처를 선택했습니다. 시중에서 대체품을 손쉽게 구할 수 있는 E27 소켓을 기본 사양으로 유지한 점은 장기적인 제품 수명을 보장하는 실질적인 지속가능성 접근법으로 해석됩니다.",
-            "또한 구조적 결합부를 감추지 않고 드러낸 오픈 컨스트럭션은 산업적인 미감을 드러내는 시각적 장치에 머무르지 않고, 부품 교체와 분해를 용이하게 하는 수리 가능성(repairability)의 바탕이 됩니다. 공구 없이 손으로 조립 가능한 플랫팩 배송 시스템 역시 운송 부피를 압축해 물류 탄소 발자국을 줄이는 실무적인 친환경 전략으로 볼 수 있습니다."
+            "최근 다수의 현대 조명이 일체형 LED 모듈을 채택하면서 고장 시 제품 전체를 폐기해야 하는 문제점을 안고 있는 반면, 크네크트는 검증된 표준 부품 중심의 아키텍처를 선택했습니다. 시중에서 대체품을 손쉽게 구할 수 있는 E27 소켓을 기본 사양으로 유지한 점은 장기 사용과 유지보수를 돕는 실질적인 지속가능성 접근법으로 해석됩니다.",
+            "또한 구조적 결합부를 감추지 않고 드러낸 오픈 컨스트럭션은 산업적인 미감을 드러내는 시각적 장치에 머무르지 않고, 부품 교체와 분해를 용이하게 하는 수리 가능성(repairability)의 바탕이 됩니다. 공구 없이 손으로 조립 가능한 플랫팩 배송 시스템 역시 운송 부피를 압축해 운송 부피를 줄이려는 전략으로 읽을 수 있습니다. 다만 실제 탄소 절감량은 별도의 비교 자료가 있어야 판단할 수 있습니다."
           ],
           "references": [
             {
               "label": "디진 쇼룸 크네크트 램프 단독 소개",
-              "url": "https://www.dezeen.com/2026/09/29/knekt-floor-lamp-hegren-dezeen-showroom/"
+              "url": "https://www.dezeen.com/2026/09/29/knekt-floor-lamp-hegren-dezeen-showroom/",
+              "kind": "reporting"
             }
           ]
         },
@@ -661,7 +727,8 @@
           "references": [
             {
               "label": "디진 쇼룸 신제품 라운드업 기사",
-              "url": "https://www.dezeen.com/2026/10/05/knekt-floor-lamp-hegren-lighting-furniture-products-dezeen-showroom/"
+              "url": "https://www.dezeen.com/2026/10/05/knekt-floor-lamp-hegren-lighting-furniture-products-dezeen-showroom/",
+              "kind": "reporting"
             }
           ]
         }
@@ -721,7 +788,11 @@
         "hegren \"Knekt\" floor lamp"
       ],
       "searchSuggestions": "<style>\n.container {\n  align-items: center;\n  border-radius: 8px;\n  display: flex;\n  font-family: Google Sans, Roboto, sans-serif;\n  font-size: 14px;\n  line-height: 20px;\n  padding: 8px 12px;\n}\n.chip {\n  display: inline-block;\n  border: solid 1px;\n  border-radius: 16px;\n  min-width: 14px;\n  padding: 5px 16px;\n  text-align: center;\n  user-select: none;\n  margin: 0 8px;\n  -webkit-tap-highlight-color: transparent;\n}\n.carousel {\n  overflow: auto;\n  scrollbar-width: none;\n  white-space: nowrap;\n  margin-right: -12px;\n}\n.headline {\n  display: flex;\n  margin-right: 4px;\n}\n.gradient-container {\n  position: relative;\n}\n.gradient {\n  position: absolute;\n  transform: translate(3px, -9px);\n  height: 36px;\n  width: 9px;\n}\n@media (prefers-color-scheme: light) {\n  .container {\n    background-color: #fafafa;\n    box-shadow: 0 0 0 1px #0000000f;\n  }\n  .headline-label {\n    color: #1f1f1f;\n  }\n  .chip {\n    background-color: #ffffff;\n    border-color: #d2d2d2;\n    color: #5e5e5e;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #f2f2f2;\n  }\n  .chip:focus {\n    background-color: #f2f2f2;\n  }\n  .chip:active {\n    background-color: #d8d8d8;\n    border-color: #b6b6b6;\n  }\n  .logo-dark {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #fafafa 15%, #fafafa00 100%);\n  }\n}\n@media (prefers-color-scheme: dark) {\n  .container {\n    background-color: #1f1f1f;\n    box-shadow: 0 0 0 1px #ffffff26;\n  }\n  .headline-label {\n    color: #fff;\n  }\n  .chip {\n    background-color: #2c2c2c;\n    border-color: #3c4043;\n    color: #fff;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #353536;\n  }\n  .chip:focus {\n    background-color: #353536;\n  }\n  .chip:active {\n    background-color: #464849;\n    border-color: #53575b;\n  }\n  .logo-light {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #1f1f1f 15%, #1f1f1f00 100%);\n  }\n}\n</style>\n<div class=\"container\">\n  <div class=\"headline\">\n    <svg class=\"logo-light\" width=\"18\" height=\"18\" viewBox=\"9 9 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M42.8622 27.0064C42.8622 25.7839 42.7525 24.6084 42.5487 23.4799H26.3109V30.1568H35.5897C35.1821 32.3041 33.9596 34.1222 32.1258 35.3448V39.6864H37.7213C40.9814 36.677 42.8622 32.2571 42.8622 27.0064V27.0064Z\" fill=\"#4285F4\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 43.8555C30.9659 43.8555 34.8687 42.3195 37.7213 39.6863L32.1258 35.3447C30.5898 36.3792 28.6306 37.0061 26.3109 37.0061C21.8282 37.0061 18.0195 33.9811 16.6559 29.906H10.9194V34.3573C13.7563 39.9841 19.5712 43.8555 26.3109 43.8555V43.8555Z\" fill=\"#34A853\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M16.6559 29.8904C16.3111 28.8559 16.1074 27.7588 16.1074 26.6146C16.1074 25.4704 16.3111 24.3733 16.6559 23.3388V18.8875H10.9194C9.74388 21.2072 9.06992 23.8247 9.06992 26.6146C9.06992 29.4045 9.74388 32.022 10.9194 34.3417L15.3864 30.8621L16.6559 29.8904V29.8904Z\" fill=\"#FBBC05\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 16.2386C28.85 16.2386 31.107 17.1164 32.9095 18.8091L37.8466 13.8719C34.853 11.082 30.9659 9.3736 26.3109 9.3736C19.5712 9.3736 13.7563 13.245 10.9194 18.8875L16.6559 23.3388C18.0195 19.2636 21.8282 16.2386 26.3109 16.2386V16.2386Z\" fill=\"#EA4335\"/>\n    </svg>\n    <svg class=\"logo-dark\" width=\"18\" height=\"18\" viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\">\n      <circle cx=\"24\" cy=\"23\" fill=\"#FFF\" r=\"22\"/>\n      <path d=\"M33.76 34.26c2.75-2.56 4.49-6.37 4.49-11.26 0-.89-.08-1.84-.29-3H24.01v5.99h8.03c-.4 2.02-1.5 3.56-3.07 4.56v.75l3.91 2.97h.88z\" fill=\"#4285F4\"/>\n      <path d=\"M15.58 25.77A8.845 8.845 0 0 0 24 31.86c1.92 0 3.62-.46 4.97-1.31l4.79 3.71C31.14 36.7 27.65 38 24 38c-5.93 0-11.01-3.4-13.45-8.36l.17-1.01 4.06-2.85h.8z\" fill=\"#34A853\"/>\n      <path d=\"M15.59 20.21a8.864 8.864 0 0 0 0 5.58l-5.03 3.86c-.98-2-1.53-4.25-1.53-6.64 0-2.39.55-4.64 1.53-6.64l1-.22 3.81 2.98.22 1.08z\" fill=\"#FBBC05\"/>\n      <path d=\"M24 14.14c2.11 0 4.02.75 5.52 1.98l4.36-4.36C31.22 9.43 27.81 8 24 8c-5.93 0-11.01 3.4-13.45 8.36l5.03 3.85A8.86 8.86 0 0 1 24 14.14z\" fill=\"#EA4335\"/>\n    </svg>\n    <div class=\"gradient-container\"><div class=\"gradient\"></div></div>\n  </div>\n  <div class=\"carousel\">\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Knekt%22+Hegren+lamp&client=app-vertex-grounding&safesearch=active\">&quot;Knekt&quot; Hegren lamp</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Henrik+Grevstad%22+%22Hegren%22&client=app-vertex-grounding&safesearch=active\">&quot;Henrik Grevstad&quot; &quot;Hegren&quot;</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Knekt+floor+lamp%22+Hegren&client=app-vertex-grounding&safesearch=active\">&quot;Knekt floor lamp&quot; Hegren</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=site:hegren.no+Knekt&client=app-vertex-grounding&safesearch=active\">site:hegren.no Knekt</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=hegren+%22Knekt%22+floor+lamp&client=app-vertex-grounding&safesearch=active\">hegren &quot;Knekt&quot; floor lamp</a>\n  </div>\n</div>",
-      "characterCount": 2035
+      "characterCount": 2133,
+      "primarySourceUrls": [
+        "https://www.hegren.no/products/knekt-raw"
+      ],
+      "reviewedAt": "2026-10-07T04:51:39.732Z"
     }
   },
   {
@@ -734,17 +805,19 @@
           "heading": "서촌의 골목 풍경과 덴마크 디자인의 만남",
           "kind": "reporting",
           "paragraphs": [
-            "덴마크 코펜하겐을 거점으로 활동하는 건축·디자인 스튜디오 스파콘(Spacon, Spacon & X)이 서울 종로구 서촌 자하문로 골목에 위치한 '에디션덴마크' 쇼룸 및 카페 공간 리뉴얼을 선보였다. 요한 퓔스비에르(Johan S. Fuglsbjerg)와 이지은 공동 대표가 이끄는 에디션덴마uk는 덴마크의 식문화와 라이프스타일 가치를 소개하는 브랜드로, 이번 프로젝트를 통해 단층 50㎡(약 15평) 면적의 컴팩트한 상업 공간을 완전히 새로운 표정으로 탈바꿈시켰다.",
+            "덴마크 코펜하겐을 거점으로 활동하는 건축·디자인 스튜디오 스파콘(Spacon, Spacon & X)이 서울 종로구 서촌 자하문로 골목에 위치한 '에디션덴마크' 쇼룸 및 카페 공간 리뉴얼을 선보였다. 요한 퓔스비에르(Johan S. Fuglsbjerg)와 이지은 공동 대표가 이끄는 에디션덴마크는 덴마크의 식문화와 라이프스타일 가치를 소개하는 브랜드로, 이번 프로젝트를 통해 단층 50㎡(약 15평) 면적의 컴팩트한 상업 공간을 완전히 새로운 표정으로 탈바꿈시켰다.",
             "스파콘의 파트너이자 건축가인 말레네 흐비트(Malene Hvidt)가 주도한 이번 작업은 한국과 덴마크 두 문화권이 공통으로 지닌 정서적 교감에 주목했다. 사람들이 한곳에 둘러앉아 따뜻한 음료를 마시며 대화를 나누는 모임 문화와 환대(Hospitality)의 가치를 공간의 중심 뼈대로 삼았다. 여기에 국내 가구 스튜디오 EAEA와의 협업을 더해 현지 제작의 세밀함과 북유럽의 조형 언어가 긴밀하게 맞물리도록 구성했다."
           ],
           "references": [
             {
               "label": "디진(Dezeen) 보도 기사",
-              "url": "https://www.dezeen.com/2026/10/05/edition-denmark-seoul-spacon-cafe-showroom/"
+              "url": "https://www.dezeen.com/2026/10/05/edition-denmark-seoul-spacon-cafe-showroom/",
+              "kind": "reporting"
             },
             {
               "label": "스파콘 스튜디오 공식 웹사이트",
-              "url": "https://spacon.studio/"
+              "url": "https://spacon.studio/",
+              "kind": "primary"
             }
           ]
         },
@@ -752,17 +825,19 @@
           "heading": "집의 온기를 재현한 재료와 색채의 층위",
           "kind": "reporting",
           "paragraphs": [
-            "전체 공간은 차가운 상업적 쇼룸의 분위기를 지양하고, 실제 사람이 거주하며 가꾸어 나가는 집과 같은 층위(Layered feeling of a home)를 재현하는 데 집중했다. 덴마uk 인테리어 디자인의 핵심 매개체인 목재를 주재료로 채택했으며, 구역별 성격에 맞춰 마감재와 색채를 섬세하게 변주했다.",
+            "전체 공간은 차가운 상업적 쇼룸의 분위기를 지양하고, 실제 사람이 거주하며 가꾸어 나가는 집과 같은 층위(Layered feeling of a home)를 재현하는 데 집중했다. 덴마크 인테리어 디자인의 핵심 매개체인 목재를 주재료로 채택했으며, 구역별 성격에 맞춰 마감재와 색채를 섬세하게 변주했다.",
             "음료를 즐기는 카페 영역에는 차분하고 편안한 쉼을 유도하기 위해 모스 그린(moss-green, 이끼 녹색)으로 착색한 목재를 적극 사용했다. 바닥에는 자연스러운 질감의 테라코타 타일을 깔아 발끝에서부터 전해지는 토속적이면서도 따뜻한 물성을 부여했다. 반면 쇼룸 전시 영역은 천장에 전면 거울 마감(mirrored ceiling)을 과감하게 적용했다. 이 거울 천장은 50㎡라는 협소한 물리적 면적 한계를 극복하고 시각적으로 층고와 공간을 수직 확장시키는 동시에, 진열된 오브제와 가구의 입체적인 형태를 다채로운 각도로 투영한다."
           ],
           "references": [
             {
               "label": "디진(Dezeen) 보도 기사",
-              "url": "https://www.dezeen.com/2026/10/05/edition-denmark-seoul-spacon-cafe-showroom/"
+              "url": "https://www.dezeen.com/2026/10/05/edition-denmark-seoul-spacon-cafe-showroom/",
+              "kind": "reporting"
             },
             {
               "label": "에디션덴마크 공식 브랜드 웹사이트",
-              "url": "https://editiondenmark.com/"
+              "url": "https://editiondenmark.com/",
+              "kind": "primary"
             }
           ]
         },
@@ -770,17 +845,19 @@
           "heading": "고전 빈티지와 맞춤 제작물이 빚어낸 가구 큐레이션",
           "kind": "reporting",
           "paragraphs": [
-            "공간 내부를 채우는 가구와 집기는 덴마크 가구 디자인의 유산과 현대 공예의 절묘한 공존을 보여준다. 스파콘은 덴마크 디자인의 거장 뵈르게 모겐센(Børge Mogensen)의 대표작인 'J39(일명 Folkestolen, 국민의자)' 빈티지 체어를 배치해 시간의 무게와 편안한 조형미를 불어넣었다. 세월을 품은 원목과 자연스러운 종이 지끈 좌판은 서촌 한옥 골목의 결곽도 자연스럽게 호흡한다.",
+            "공간 내부를 채우는 가구와 집기는 덴마크 가구 디자인의 유산과 현대 공예의 절묘한 공존을 보여준다. 스파콘은 덴마크 디자인의 거장 뵈르게 모겐센(Børge Mogensen)의 대표작인 'J39(일명 Folkestolen, 국민의자)' 빈티지 체어를 배치해 시간의 무게와 편안한 조형미를 불어넣었다. 세월을 품은 원목과 자연스러운 종이 지끈 좌판은 서촌 한옥 골목의 결과도 자연스럽게 호흡한다.",
             "이러한 빈티지 컬렉션의 바탕 위로 솔리드 체리 원목(solid cherry wood), 지끈 스툴(woven cord stools), 맞춤 제작 텍스타일 조명이 조화롭게 얹어졌다. 한국 가구 스튜디오 EAEA가 제작한 맞춤 가구들과 덴마크 꽃 모티프가 각인된 목재 및 알루미늄 자수 트레이 등 섬세한 일상 오브제들은 공간의 촉각적 완결성을 높인다. 사진가 문성주와 손미현이 기록한 공간 장면은 이 다채로운 텍스처들이 서촌의 빛과 만나 형성하는 은은한 명암을 가감 없이 보여준다."
           ],
           "references": [
             {
               "label": "디진(Dezeen) 보도 기사",
-              "url": "https://www.dezeen.com/2026/10/05/edition-denmark-seoul-spacon-cafe-showroom/"
+              "url": "https://www.dezeen.com/2026/10/05/edition-denmark-seoul-spacon-cafe-showroom/",
+              "kind": "reporting"
             },
             {
               "label": "스파콘 스튜디오 공식 웹사이트",
-              "url": "https://spacon.studio/"
+              "url": "https://spacon.studio/",
+              "kind": "primary"
             }
           ]
         },
@@ -794,11 +871,13 @@
           "references": [
             {
               "label": "디진(Dezeen) 보도 기사",
-              "url": "https://www.dezeen.com/2026/10/05/edition-denmark-seoul-spacon-cafe-showroom/"
+              "url": "https://www.dezeen.com/2026/10/05/edition-denmark-seoul-spacon-cafe-showroom/",
+              "kind": "reporting"
             },
             {
               "label": "에디션덴마크 공식 브랜드 웹사이트",
-              "url": "https://editiondenmark.com/"
+              "url": "https://editiondenmark.com/",
+              "kind": "primary"
             }
           ]
         },
@@ -807,16 +886,18 @@
           "kind": "analysis",
           "paragraphs": [
             "이번 프로젝트는 해외 디자인 스튜디오가 특정 도시의 역사적 맥락에 개입할 때 취할 수 있는 모범적인 협업 태도를 보여준다. 코펜하겐의 스파콘은 서촌이라는 특수한 한국적 로컬 환경에 자신들의 시그니처 스타일만을 일방적으로 강요하지 않았다. 대신 한국 가구 스튜디오 EAEA와의 공동 제작을 통해 현지 장인정신을 끌어들이고, '모임과 환대'라는 양국의 보편적 정서를 공간 테마로 삼음으로써 이질감을 덜어냈다.",
-            "특히 서촌 프로젝트를 기점으로 에디션덴마크와 스파콘의 파트너십이 일회성에 그치지 않고 코펜하겐 '3 데이즈 오브 디자인(3 Days of Design)'과 덴마크 디자인 뮤지엄 전시 협업 등으로 양방향 확장되었다는 점은 시사하는 바가 크다. 단일 인테리어 프로젝트가 브랜드의 아이덴티티를 확립하고, 나아가 국가 간 디자인 플랫폼으로 진화할 수 있음을 입증하는 대표적인 디자인 실무 레퍼런스로 평가할 수 있다."
+            "이 사례를 다른 지역의 매장에 적용할 때는 해외 디자인 언어를 그대로 옮기는 것보다 현지 제작자, 이용 방식, 주변 동선과 함께 조율하는 과정이 우선입니다. 카페의 실제 운영과 쇼룸의 판매가 같은 공간에서 이루어지는 만큼 가구의 유지보수, 진열 교체, 직원의 이동도 디자인과 함께 검토해야 합니다. 사진에서 보이는 분위기를 복제하는 데 머물지 않고, 어떤 협업과 운영 조건이 그 분위기를 유지하는지 살펴보는 것이 이번 프로젝트에서 얻을 수 있는 실무적 관점입니다."
           ],
           "references": [
             {
               "label": "디진(Dezeen) 보도 기사",
-              "url": "https://www.dezeen.com/2026/10/05/edition-denmark-seoul-spacon-cafe-showroom/"
+              "url": "https://www.dezeen.com/2026/10/05/edition-denmark-seoul-spacon-cafe-showroom/",
+              "kind": "reporting"
             },
             {
               "label": "스파콘 스튜디오 공식 웹사이트",
-              "url": "https://spacon.studio/"
+              "url": "https://spacon.studio/",
+              "kind": "primary"
             }
           ]
         }
@@ -910,7 +991,12 @@
         "에디션덴마크 Spacon 서울"
       ],
       "searchSuggestions": "<style>\n.container {\n  align-items: center;\n  border-radius: 8px;\n  display: flex;\n  font-family: Google Sans, Roboto, sans-serif;\n  font-size: 14px;\n  line-height: 20px;\n  padding: 8px 12px;\n}\n.chip {\n  display: inline-block;\n  border: solid 1px;\n  border-radius: 16px;\n  min-width: 14px;\n  padding: 5px 16px;\n  text-align: center;\n  user-select: none;\n  margin: 0 8px;\n  -webkit-tap-highlight-color: transparent;\n}\n.carousel {\n  overflow: auto;\n  scrollbar-width: none;\n  white-space: nowrap;\n  margin-right: -12px;\n}\n.headline {\n  display: flex;\n  margin-right: 4px;\n}\n.gradient-container {\n  position: relative;\n}\n.gradient {\n  position: absolute;\n  transform: translate(3px, -9px);\n  height: 36px;\n  width: 9px;\n}\n@media (prefers-color-scheme: light) {\n  .container {\n    background-color: #fafafa;\n    box-shadow: 0 0 0 1px #0000000f;\n  }\n  .headline-label {\n    color: #1f1f1f;\n  }\n  .chip {\n    background-color: #ffffff;\n    border-color: #d2d2d2;\n    color: #5e5e5e;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #f2f2f2;\n  }\n  .chip:focus {\n    background-color: #f2f2f2;\n  }\n  .chip:active {\n    background-color: #d8d8d8;\n    border-color: #b6b6b6;\n  }\n  .logo-dark {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #fafafa 15%, #fafafa00 100%);\n  }\n}\n@media (prefers-color-scheme: dark) {\n  .container {\n    background-color: #1f1f1f;\n    box-shadow: 0 0 0 1px #ffffff26;\n  }\n  .headline-label {\n    color: #fff;\n  }\n  .chip {\n    background-color: #2c2c2c;\n    border-color: #3c4043;\n    color: #fff;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #353536;\n  }\n  .chip:focus {\n    background-color: #353536;\n  }\n  .chip:active {\n    background-color: #464849;\n    border-color: #53575b;\n  }\n  .logo-light {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #1f1f1f 15%, #1f1f1f00 100%);\n  }\n}\n</style>\n<div class=\"container\">\n  <div class=\"headline\">\n    <svg class=\"logo-light\" width=\"18\" height=\"18\" viewBox=\"9 9 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M42.8622 27.0064C42.8622 25.7839 42.7525 24.6084 42.5487 23.4799H26.3109V30.1568H35.5897C35.1821 32.3041 33.9596 34.1222 32.1258 35.3448V39.6864H37.7213C40.9814 36.677 42.8622 32.2571 42.8622 27.0064V27.0064Z\" fill=\"#4285F4\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 43.8555C30.9659 43.8555 34.8687 42.3195 37.7213 39.6863L32.1258 35.3447C30.5898 36.3792 28.6306 37.0061 26.3109 37.0061C21.8282 37.0061 18.0195 33.9811 16.6559 29.906H10.9194V34.3573C13.7563 39.9841 19.5712 43.8555 26.3109 43.8555V43.8555Z\" fill=\"#34A853\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M16.6559 29.8904C16.3111 28.8559 16.1074 27.7588 16.1074 26.6146C16.1074 25.4704 16.3111 24.3733 16.6559 23.3388V18.8875H10.9194C9.74388 21.2072 9.06992 23.8247 9.06992 26.6146C9.06992 29.4045 9.74388 32.022 10.9194 34.3417L15.3864 30.8621L16.6559 29.8904V29.8904Z\" fill=\"#FBBC05\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 16.2386C28.85 16.2386 31.107 17.1164 32.9095 18.8091L37.8466 13.8719C34.853 11.082 30.9659 9.3736 26.3109 9.3736C19.5712 9.3736 13.7563 13.245 10.9194 18.8875L16.6559 23.3388C18.0195 19.2636 21.8282 16.2386 26.3109 16.2386V16.2386Z\" fill=\"#EA4335\"/>\n    </svg>\n    <svg class=\"logo-dark\" width=\"18\" height=\"18\" viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\">\n      <circle cx=\"24\" cy=\"23\" fill=\"#FFF\" r=\"22\"/>\n      <path d=\"M33.76 34.26c2.75-2.56 4.49-6.37 4.49-11.26 0-.89-.08-1.84-.29-3H24.01v5.99h8.03c-.4 2.02-1.5 3.56-3.07 4.56v.75l3.91 2.97h.88z\" fill=\"#4285F4\"/>\n      <path d=\"M15.58 25.77A8.845 8.845 0 0 0 24 31.86c1.92 0 3.62-.46 4.97-1.31l4.79 3.71C31.14 36.7 27.65 38 24 38c-5.93 0-11.01-3.4-13.45-8.36l.17-1.01 4.06-2.85h.8z\" fill=\"#34A853\"/>\n      <path d=\"M15.59 20.21a8.864 8.864 0 0 0 0 5.58l-5.03 3.86c-.98-2-1.53-4.25-1.53-6.64 0-2.39.55-4.64 1.53-6.64l1-.22 3.81 2.98.22 1.08z\" fill=\"#FBBC05\"/>\n      <path d=\"M24 14.14c2.11 0 4.02.75 5.52 1.98l4.36-4.36C31.22 9.43 27.81 8 24 8c-5.93 0-11.01 3.4-13.45 8.36l5.03 3.85A8.86 8.86 0 0 1 24 14.14z\" fill=\"#EA4335\"/>\n    </svg>\n    <div class=\"gradient-container\"><div class=\"gradient\"></div></div>\n  </div>\n  <div class=\"carousel\">\n<a class=\"chip\" href=\"https://www.google.com/search?q=Spacon+Edition+Denmark+seoul+cafe+showroom&client=app-vertex-grounding&safesearch=active\">Spacon Edition Denmark seoul cafe showroom</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Edition+Denmark%22+%22Spacon%22+seoul+dezeen&client=app-vertex-grounding&safesearch=active\">&quot;Edition Denmark&quot; &quot;Spacon&quot; seoul dezeen</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Spacon+%26+X%22+%22Edition+Denmark%22&client=app-vertex-grounding&safesearch=active\">&quot;Spacon &amp; X&quot; &quot;Edition Denmark&quot;</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=site:editiondenmark.com+%22Spacon%22&client=app-vertex-grounding&safesearch=active\">site:editiondenmark.com &quot;Spacon&quot;</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Spacon+%26+X%22+%22%EC%84%9C%EC%B4%8C%22+%22%EC%87%BC%EB%A3%B8%22&client=app-vertex-grounding&safesearch=active\">&quot;Spacon &amp; X&quot; &quot;서촌&quot; &quot;쇼룸&quot;</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%EC%97%90%EB%94%94%EC%85%98%EB%8D%B4%EB%A7%88%ED%81%AC+Spacon+%EC%84%9C%EC%9A%B8&client=app-vertex-grounding&safesearch=active\">에디션덴마크 Spacon 서울</a>\n  </div>\n</div>",
-      "characterCount": 2388
+      "characterCount": 2417,
+      "primarySourceUrls": [
+        "https://spacon.studio/",
+        "https://editiondenmark.com/"
+      ],
+      "reviewedAt": "2026-10-07T04:51:39.732Z"
     }
   },
   {
@@ -923,17 +1009,24 @@
           "heading": "맨해튼 심장부에 들어선 신축 타워와 브랜드의 확장",
           "kind": "reporting",
           "paragraphs": [
-            "미국 뉴욕 맨해튼 웨스트 48번가 32번지에 자리 잡은 '킴튼 에라 미드타운 뉴욕(Kimpton Era Midtown New York)'이 문을 열었습니다. 록펠러 센터 남측에 인접한 지상 33층 규모의 신축 타워로 조성된 이 호텔은 건축 설계에 SLCE 아키텍츠가 참여하고 내부 공간 디자인은 뉴욕 기반의 INC 아키텍처 & 디자인(INC Architecture & Design)이 총괄했습니다.",
+            "미국 뉴욕 맨해튼 웨스트 48번가 32번지에 자리 잡은 '킴튼 에라 미드타운 뉴욕(Kimpton Era Midtown New York)'은 호텔이 배포한 2026년 3월 11일 보도자료에서 개관을 알렸습니다. 디진의 10월 디자인 소개를 개관 날짜로 읽어서는 안 됩니다. 록펠러 센터 남측에 인접한 지상 33층 규모의 신축 타워로 조성된 이 호텔은 건축 설계에 SLCE 아키텍츠가 참여하고 내부 공간 디자인은 뉴욕 기반의 INC 아키텍처 & 디자인(INC Architecture & Design)이 총괄했습니다.",
             "개발사인 엑스텔 디벨롭먼트 컴퍼니(Extell Development Company)의 자체 호스피탈리티 부문이 처음으로 직접 위탁 관리에 나선 이 호텔은 총 529개 객실을 갖추었습니다. IHG 호텔 & 리조트의 라이프스타일 브랜드 킴튼으로 운영되며, 24시간 피트니스 센터와 함께 셰프 로코 디스피리토 및 전문 F&B 그룹 아피시(Apicii)가 협력한 4개의 다채로운 식음 공간이 건물 전반에 배치되었습니다."
           ],
           "references": [
             {
               "label": "디진 원문 보도",
-              "url": "https://www.dezeen.com/2026/10/03/kimpton-era-hotel-new-york-city-inc/"
+              "url": "https://www.dezeen.com/2026/10/03/kimpton-era-hotel-new-york-city-inc/",
+              "kind": "reporting"
             },
             {
               "label": "호텔 비즈니스 개관 소식",
-              "url": "https://hotelbusiness.com/kimpton-era-midtown-new-york-makes-its-debut/"
+              "url": "https://hotelbusiness.com/kimpton-era-midtown-new-york-makes-its-debut/",
+              "kind": "reporting"
+            },
+            {
+              "label": "킴튼 에라 호텔의 공식 개관 보도자료",
+              "url": "https://www.prnewswire.com/news-releases/kimpton-era-midtown-new-york-open-as-manhattans-newest-lifestyle-destination-302710160.html",
+              "kind": "primary"
             }
           ]
         },
@@ -947,11 +1040,13 @@
           "references": [
             {
               "label": "디진 원문 보도",
-              "url": "https://www.dezeen.com/2026/10/03/kimpton-era-hotel-new-york-city-inc/"
+              "url": "https://www.dezeen.com/2026/10/03/kimpton-era-hotel-new-york-city-inc/",
+              "kind": "reporting"
             },
             {
               "label": "후드라인 객실 디자인 분석",
-              "url": "https://hoodline.com/2026/10/new-kimpton-era-hotel-near-rockefeller-center-turns-rooms-into-tiny-ocean-liner-cabins/"
+              "url": "https://hoodline.com/2026/10/new-kimpton-era-hotel-near-rockefeller-center-turns-rooms-into-tiny-ocean-liner-cabins/",
+              "kind": "reporting"
             }
           ]
         },
@@ -965,11 +1060,13 @@
           "references": [
             {
               "label": "디진 원문 보도",
-              "url": "https://www.dezeen.com/2026/10/03/kimpton-era-hotel-new-york-city-inc/"
+              "url": "https://www.dezeen.com/2026/10/03/kimpton-era-hotel-new-york-city-inc/",
+              "kind": "reporting"
             },
             {
               "label": "호스피탈리티 디자인 보도",
-              "url": "https://hospitalitydesign.com/news/kimpton-era-midtown-new-york/184773"
+              "url": "https://hospitalitydesign.com/news/kimpton-era-midtown-new-york/184773",
+              "kind": "reporting"
             }
           ]
         },
@@ -983,7 +1080,8 @@
           "references": [
             {
               "label": "디진 원문 보도",
-              "url": "https://www.dezeen.com/2026/10/03/kimpton-era-hotel-new-york-city-inc/"
+              "url": "https://www.dezeen.com/2026/10/03/kimpton-era-hotel-new-york-city-inc/",
+              "kind": "reporting"
             }
           ]
         },
@@ -991,17 +1089,19 @@
           "heading": "도시 맥락의 재해석과 다층적 F&B 동선 설계",
           "kind": "analysis",
           "paragraphs": [
-            "INC는 2022년 인근 록펠러 센터의 랜드마크 리노베이션을 수행했던 경험을 바탕으로, 호텔 내부와 미드타운의 유구한 도시 경관을 유기적으로 이어냈습니다. 지상 레벨에서 3층 메인 라운지, 그리고 360도 맨해튼 파노라마 뷰를 제공하는 루프탑 바로 이어지는 수직적 식음 시설 배치는 투숙객뿐 아니라 외부 방문객의 유입을 유도하는 입체적 허브 역할을 의도한 것으로 보입니다.",
+            "공간의 배치는 호텔 내부와 미드타운의 유구한 도시 경관을 유기적으로 이어냈습니다. 지상 레벨에서 3층 메인 라운지, 그리고 360도 맨해튼 파노라마 뷰를 제공하는 루프탑 바로 이어지는 수직적 식음 시설 배치는 투숙객뿐 아니라 외부 방문객의 유입을 유도하는 입체적 허브 역할을 의도한 것으로 보입니다.",
             "업타운의 매끄러운 질감과 다운타운의 거친 물성을 충돌시키는 재료 선택 역시 상업적 럭셔리가 자칫 빠지기 쉬운 정형화된 공식을 탈피하려는 시도로 평가할 수 있습니다. 킴튼 에라의 이러한 공간 구성은 지역의 역사적 자산과 도심 속 일상의 경험을 현대적인 디자인 언어로 번역하려는 건축가들에게 유의미한 참고점을 제시합니다."
           ],
           "references": [
             {
               "label": "디진 원문 보도",
-              "url": "https://www.dezeen.com/2026/10/03/kimpton-era-hotel-new-york-city-inc/"
+              "url": "https://www.dezeen.com/2026/10/03/kimpton-era-hotel-new-york-city-inc/",
+              "kind": "reporting"
             },
             {
               "label": "호텔 매니지먼트 분석",
-              "url": "https://www.hotelmanagement.net/openings/kimpton-era-midtown-debuts-extells-first-managed-hotel-manhattan"
+              "url": "https://www.hotelmanagement.net/openings/kimpton-era-midtown-debuts-extells-first-managed-hotel-manhattan",
+              "kind": "reporting"
             }
           ]
         }
@@ -1066,7 +1166,11 @@
         "dezeen kimpton era hotel new york city inc"
       ],
       "searchSuggestions": "<style>\n.container {\n  align-items: center;\n  border-radius: 8px;\n  display: flex;\n  font-family: Google Sans, Roboto, sans-serif;\n  font-size: 14px;\n  line-height: 20px;\n  padding: 8px 12px;\n}\n.chip {\n  display: inline-block;\n  border: solid 1px;\n  border-radius: 16px;\n  min-width: 14px;\n  padding: 5px 16px;\n  text-align: center;\n  user-select: none;\n  margin: 0 8px;\n  -webkit-tap-highlight-color: transparent;\n}\n.carousel {\n  overflow: auto;\n  scrollbar-width: none;\n  white-space: nowrap;\n  margin-right: -12px;\n}\n.headline {\n  display: flex;\n  margin-right: 4px;\n}\n.gradient-container {\n  position: relative;\n}\n.gradient {\n  position: absolute;\n  transform: translate(3px, -9px);\n  height: 36px;\n  width: 9px;\n}\n@media (prefers-color-scheme: light) {\n  .container {\n    background-color: #fafafa;\n    box-shadow: 0 0 0 1px #0000000f;\n  }\n  .headline-label {\n    color: #1f1f1f;\n  }\n  .chip {\n    background-color: #ffffff;\n    border-color: #d2d2d2;\n    color: #5e5e5e;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #f2f2f2;\n  }\n  .chip:focus {\n    background-color: #f2f2f2;\n  }\n  .chip:active {\n    background-color: #d8d8d8;\n    border-color: #b6b6b6;\n  }\n  .logo-dark {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #fafafa 15%, #fafafa00 100%);\n  }\n}\n@media (prefers-color-scheme: dark) {\n  .container {\n    background-color: #1f1f1f;\n    box-shadow: 0 0 0 1px #ffffff26;\n  }\n  .headline-label {\n    color: #fff;\n  }\n  .chip {\n    background-color: #2c2c2c;\n    border-color: #3c4043;\n    color: #fff;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #353536;\n  }\n  .chip:focus {\n    background-color: #353536;\n  }\n  .chip:active {\n    background-color: #464849;\n    border-color: #53575b;\n  }\n  .logo-light {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #1f1f1f 15%, #1f1f1f00 100%);\n  }\n}\n</style>\n<div class=\"container\">\n  <div class=\"headline\">\n    <svg class=\"logo-light\" width=\"18\" height=\"18\" viewBox=\"9 9 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M42.8622 27.0064C42.8622 25.7839 42.7525 24.6084 42.5487 23.4799H26.3109V30.1568H35.5897C35.1821 32.3041 33.9596 34.1222 32.1258 35.3448V39.6864H37.7213C40.9814 36.677 42.8622 32.2571 42.8622 27.0064V27.0064Z\" fill=\"#4285F4\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 43.8555C30.9659 43.8555 34.8687 42.3195 37.7213 39.6863L32.1258 35.3447C30.5898 36.3792 28.6306 37.0061 26.3109 37.0061C21.8282 37.0061 18.0195 33.9811 16.6559 29.906H10.9194V34.3573C13.7563 39.9841 19.5712 43.8555 26.3109 43.8555V43.8555Z\" fill=\"#34A853\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M16.6559 29.8904C16.3111 28.8559 16.1074 27.7588 16.1074 26.6146C16.1074 25.4704 16.3111 24.3733 16.6559 23.3388V18.8875H10.9194C9.74388 21.2072 9.06992 23.8247 9.06992 26.6146C9.06992 29.4045 9.74388 32.022 10.9194 34.3417L15.3864 30.8621L16.6559 29.8904V29.8904Z\" fill=\"#FBBC05\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 16.2386C28.85 16.2386 31.107 17.1164 32.9095 18.8091L37.8466 13.8719C34.853 11.082 30.9659 9.3736 26.3109 9.3736C19.5712 9.3736 13.7563 13.245 10.9194 18.8875L16.6559 23.3388C18.0195 19.2636 21.8282 16.2386 26.3109 16.2386V16.2386Z\" fill=\"#EA4335\"/>\n    </svg>\n    <svg class=\"logo-dark\" width=\"18\" height=\"18\" viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\">\n      <circle cx=\"24\" cy=\"23\" fill=\"#FFF\" r=\"22\"/>\n      <path d=\"M33.76 34.26c2.75-2.56 4.49-6.37 4.49-11.26 0-.89-.08-1.84-.29-3H24.01v5.99h8.03c-.4 2.02-1.5 3.56-3.07 4.56v.75l3.91 2.97h.88z\" fill=\"#4285F4\"/>\n      <path d=\"M15.58 25.77A8.845 8.845 0 0 0 24 31.86c1.92 0 3.62-.46 4.97-1.31l4.79 3.71C31.14 36.7 27.65 38 24 38c-5.93 0-11.01-3.4-13.45-8.36l.17-1.01 4.06-2.85h.8z\" fill=\"#34A853\"/>\n      <path d=\"M15.59 20.21a8.864 8.864 0 0 0 0 5.58l-5.03 3.86c-.98-2-1.53-4.25-1.53-6.64 0-2.39.55-4.64 1.53-6.64l1-.22 3.81 2.98.22 1.08z\" fill=\"#FBBC05\"/>\n      <path d=\"M24 14.14c2.11 0 4.02.75 5.52 1.98l4.36-4.36C31.22 9.43 27.81 8 24 8c-5.93 0-11.01 3.4-13.45 8.36l5.03 3.85A8.86 8.86 0 0 1 24 14.14z\" fill=\"#EA4335\"/>\n    </svg>\n    <div class=\"gradient-container\"><div class=\"gradient\"></div></div>\n  </div>\n  <div class=\"carousel\">\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Kimpton+Era%22+INC+Architecture&client=app-vertex-grounding&safesearch=active\">&quot;Kimpton Era&quot; INC Architecture</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Kimpton+Era+hotel%22+New+York&client=app-vertex-grounding&safesearch=active\">&quot;Kimpton Era hotel&quot; New York</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=dezeen+kimpton+era+hotel+new+york+city+inc&client=app-vertex-grounding&safesearch=active\">dezeen kimpton era hotel new york city inc</a>\n  </div>\n</div>",
-      "characterCount": 2006
+      "characterCount": 2029,
+      "primarySourceUrls": [
+        "https://www.prnewswire.com/news-releases/kimpton-era-midtown-new-york-open-as-manhattans-newest-lifestyle-destination-302710160.html"
+      ],
+      "reviewedAt": "2026-10-07T04:51:39.732Z"
     }
   },
   {
@@ -1080,16 +1184,18 @@
           "kind": "reporting",
           "paragraphs": [
             "GitHub은 2026년 10월 2일(현지 시각) 공지를 통해 GitHub Enterprise Cloud 및 데이터 레지던시(Data Residency) 환경에서 새로 생성되는 모든 GitHub App 설치 토큰(Installation Token)에 상태 비저장(Stateless) 포맷을 기본 적용했다고 발표했습니다. 이번 조치는 2026년 4월 27일 시작된 단계적 롤아웃 절차가 최종 완료되었음을 의미합니다.",
-            "기존에 발급된 레거시 토큰은 최대 유효 기간인 1시간 동안 그대로 유효성을 유지하며, 별도의 강제 만료 조치는 취해지지 않았습니다. 또한 토큰 발급에 사용하는 REST API 엔드포인트(POST /app/installations/{installation_id}/access_tokens)와 유효 기간(1시간), 권한 모델(Permissions), 리포지토리 접근 범위(Scoping), 토큰 접두사('ghs_') 등의 핵심 동작 방식은 기존과 동일하게 유지됩니다. 반면 온프레미스 설치 환경인 GitHub Enterprise Server(GHES)는 이번 클라우드 기본 배포 대상에 포함되지 않았습니다."
+            "기존에 발급된 레거시 토큰은 최대 유효 기간인 1시간 동안 그대로 유효성을 유지하며, 별도의 강제 만료 조치는 취해지지 않았습니다. 또한 토큰 발급에 사용하는 REST API 엔드포인트(POST /app/installations/{installation_id}/access_tokens)와 유효 기간(1시간), 권한 모델(Permissions), 리포지토리 접근 범위(Scoping), 토큰 접두사('ghs_') 등의 핵심 동작 방식은 기존과 동일하게 유지됩니다. GitHub Enterprise Server를 사용하는 경우에는 자신이 운영하는 버전의 릴리스 문서를 별도로 확인해야 합니다."
           ],
           "references": [
             {
               "label": "GitHub 변경 로그 공식 공지",
-              "url": "https://github.blog/changelog/2026-10-02-stateless-github-app-installation-tokens-rolled-out"
+              "url": "https://github.blog/changelog/2026-10-02-stateless-github-app-installation-tokens-rolled-out",
+              "kind": "primary"
             },
             {
               "label": "GitHub App 설치 액세스 토큰 생성 공식 문서",
-              "url": "https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app"
+              "url": "https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app",
+              "kind": "primary"
             }
           ]
         },
@@ -1103,11 +1209,13 @@
           "references": [
             {
               "label": "GitHub 변경 로그: 임시 오버라이드 헤더 공지",
-              "url": "https://github.blog/changelog/2026-05-15-github-app-installation-tokens-per-request-override-header/"
+              "url": "https://github.blog/changelog/2026-05-15-github-app-installation-tokens-per-request-override-header/",
+              "kind": "primary"
             },
             {
               "label": "GitHub 변경 로그: 신규 포맷 도입 사전 공지",
-              "url": "https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/"
+              "url": "https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/",
+              "kind": "primary"
             }
           ]
         },
@@ -1115,13 +1223,14 @@
           "heading": "인프라 확장성을 위한 아키텍처 전환 배경",
           "kind": "analysis",
           "paragraphs": [
-            "GitHub이 설치 토큰을 상태 비저장 형태로 전환한 기술적 배경은 대규모 API 트래픽을 처리하는 중앙 집중식 상태 저장소의 병목 현상을 해소하기 위한 전략으로 풀이됩니다. 기존 방식에서는 API 요청이 들어올 때마다 중앙 데이터베이스나 캐시 레이어에서 토큰의 유효성과 권한 범위를 매번 조회해야 했으며, 이는 전체 서비스 규모가 확장될수록 인프라 부하를 가중시키는 요인이 될 수 있었습니다.",
-            "토큰 자체에 서명된 클레임을 내장하는 Stateless 구조를 채택함으로써, 각 API 게이트웨이 및 서비스 엔드포인트는 중앙 상태 저장소 조회 없이도 서명 검증만으로 토큰의 진위 여부를 즉각 판단할 수 있게 됩니다. 이러한 아키텍처 전환은 발급 및 검증 레이턴시를 낮추고 글로벌 트래픽 급증 시에도 API 인프라의 가용성을 유지하는 데 실질적인 이점을 제공할 것으로 분석됩니다."
+            "GitHub은 새 형식이 발급과 검증 속도를 높이고 API의 신뢰성을 개선한다고 설명합니다. 다만 공개 변경 로그만으로 내부 캐시와 데이터베이스의 구체적인 처리 경로나 지연 시간을 단정할 수는 없습니다. 상태 비저장 토큰의 일반적인 설계 원리를 GitHub의 실제 운영 구현과 동일한 것으로 취급하면 발표 범위를 넘어선 해석이 됩니다.",
+            "ARCH.B가 주목하는 지점은 서버 내부 구조보다 연동하는 쪽의 문자열 가정입니다. 서비스 제공자는 인증 인터페이스를 유지하면서 표현 형식을 바꿀 수 있습니다. 소비하는 시스템은 토큰을 해석하려 들기보다 발급 API가 돌려준 전체 값을 그대로 보관하고 전달해야 합니다. 응답 계약과 유효 기간을 기준으로 통합 코드를 설계하면 공급자의 포맷 변경에 덜 의존하게 됩니다."
           ],
           "references": [
             {
               "label": "GitHub 변경 로그 공식 공지",
-              "url": "https://github.blog/changelog/2026-10-02-stateless-github-app-installation-tokens-rolled-out"
+              "url": "https://github.blog/changelog/2026-10-02-stateless-github-app-installation-tokens-rolled-out",
+              "kind": "primary"
             }
           ]
         },
@@ -1135,7 +1244,8 @@
           "references": [
             {
               "label": "GitHub App 설치 액세스 토큰 생성 공식 문서",
-              "url": "https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app"
+              "url": "https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app",
+              "kind": "primary"
             }
           ]
         },
@@ -1143,17 +1253,19 @@
           "heading": "엔지니어링 팀을 위한 점검 체크리스트와 향후 과제",
           "kind": "analysis",
           "paragraphs": [
-            "엔지니어링 팀은 우선 GitHub App 토큰을 보관하는 데이터베이스 스키마와 환경 변수 저장소의 허용 길이를 최소 1,024자 이상으로 확장하는 작업이 권장됩니다. 아울러 토큰 검증 로직에서 고정 길이 가정을 제거하고 접두사('ghs_') 기반의 검증이나 완전한 불투명 문자열 처리 방식을 적용해야 하며, 리버스 프록시의 헤더 버퍼 크기 설정을 함께 확인해야 합니다.",
-            "한편 GitHub Enterprise Server(GHES) 환경에 Stateless 토큰이 언제 도입될지에 대한 로드맵은 아직 공개되지 않았으므로 온프레미스 사용 조직은 향후 릴리스 노트를 주시할 필요가 있습니다. 또한 Copilot 코드 리뷰 등에 쓰이는 사용자-서버(U2S) 토큰 포맷 역시 향후 몇 주 내 세부 정보가 공유될 예정이므로, 관련 인증 파이프라인 전반에 대한 선제적 준비가 요구됩니다."
+            "엔지니어링 팀은 우선 GitHub App 토큰을 보관하는 데이터베이스 스키마와 환경 변수 저장소의 고정 길이 제한을 제거하거나 충분한 여유를 두는 방안을 검토할 수 있습니다. 1,024자 같은 내부 기준은 팀의 구현 선택이며 GitHub이 보장하는 최대 길이가 아닙니다. 아울러 토큰 검증 로직에서 고정 길이 가정을 제거하고 접두사('ghs_') 기반의 검증이나 완전한 불투명 문자열 처리 방식을 적용해야 하며, 리버스 프록시의 헤더 버퍼 크기 설정을 함께 확인해야 합니다.",
+            "임시 오버라이드 헤더는 2026년 11월 30일 이후 무시될 예정입니다. 기존 형식과 새 형식을 검증한 뒤 운영 코드에서 헤더를 제거하는 일정도 관리해야 합니다. 이 기사에서 확인한 것은 설치 액세스 토큰 변경이며 다른 종류의 사용자 토큰 변경 일정을 함께 추정하지 않습니다. 새 토큰을 발급받아 저장·전송·로그 마스킹까지 이어지는 경로를 확인하는 것이 우선입니다."
           ],
           "references": [
             {
               "label": "GitHub 변경 로그 공식 공지",
-              "url": "https://github.blog/changelog/2026-10-02-stateless-github-app-installation-tokens-rolled-out"
+              "url": "https://github.blog/changelog/2026-10-02-stateless-github-app-installation-tokens-rolled-out",
+              "kind": "primary"
             },
             {
               "label": "GitHub 변경 로그: 신규 포맷 도입 사전 공지",
-              "url": "https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/"
+              "url": "https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/",
+              "kind": "primary"
             }
           ]
         }
@@ -1236,14 +1348,21 @@
         "github app stateless installation token"
       ],
       "searchSuggestions": "<style>\n.container {\n  align-items: center;\n  border-radius: 8px;\n  display: flex;\n  font-family: Google Sans, Roboto, sans-serif;\n  font-size: 14px;\n  line-height: 20px;\n  padding: 8px 12px;\n}\n.chip {\n  display: inline-block;\n  border: solid 1px;\n  border-radius: 16px;\n  min-width: 14px;\n  padding: 5px 16px;\n  text-align: center;\n  user-select: none;\n  margin: 0 8px;\n  -webkit-tap-highlight-color: transparent;\n}\n.carousel {\n  overflow: auto;\n  scrollbar-width: none;\n  white-space: nowrap;\n  margin-right: -12px;\n}\n.headline {\n  display: flex;\n  margin-right: 4px;\n}\n.gradient-container {\n  position: relative;\n}\n.gradient {\n  position: absolute;\n  transform: translate(3px, -9px);\n  height: 36px;\n  width: 9px;\n}\n@media (prefers-color-scheme: light) {\n  .container {\n    background-color: #fafafa;\n    box-shadow: 0 0 0 1px #0000000f;\n  }\n  .headline-label {\n    color: #1f1f1f;\n  }\n  .chip {\n    background-color: #ffffff;\n    border-color: #d2d2d2;\n    color: #5e5e5e;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #f2f2f2;\n  }\n  .chip:focus {\n    background-color: #f2f2f2;\n  }\n  .chip:active {\n    background-color: #d8d8d8;\n    border-color: #b6b6b6;\n  }\n  .logo-dark {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #fafafa 15%, #fafafa00 100%);\n  }\n}\n@media (prefers-color-scheme: dark) {\n  .container {\n    background-color: #1f1f1f;\n    box-shadow: 0 0 0 1px #ffffff26;\n  }\n  .headline-label {\n    color: #fff;\n  }\n  .chip {\n    background-color: #2c2c2c;\n    border-color: #3c4043;\n    color: #fff;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #353536;\n  }\n  .chip:focus {\n    background-color: #353536;\n  }\n  .chip:active {\n    background-color: #464849;\n    border-color: #53575b;\n  }\n  .logo-light {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #1f1f1f 15%, #1f1f1f00 100%);\n  }\n}\n</style>\n<div class=\"container\">\n  <div class=\"headline\">\n    <svg class=\"logo-light\" width=\"18\" height=\"18\" viewBox=\"9 9 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M42.8622 27.0064C42.8622 25.7839 42.7525 24.6084 42.5487 23.4799H26.3109V30.1568H35.5897C35.1821 32.3041 33.9596 34.1222 32.1258 35.3448V39.6864H37.7213C40.9814 36.677 42.8622 32.2571 42.8622 27.0064V27.0064Z\" fill=\"#4285F4\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 43.8555C30.9659 43.8555 34.8687 42.3195 37.7213 39.6863L32.1258 35.3447C30.5898 36.3792 28.6306 37.0061 26.3109 37.0061C21.8282 37.0061 18.0195 33.9811 16.6559 29.906H10.9194V34.3573C13.7563 39.9841 19.5712 43.8555 26.3109 43.8555V43.8555Z\" fill=\"#34A853\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M16.6559 29.8904C16.3111 28.8559 16.1074 27.7588 16.1074 26.6146C16.1074 25.4704 16.3111 24.3733 16.6559 23.3388V18.8875H10.9194C9.74388 21.2072 9.06992 23.8247 9.06992 26.6146C9.06992 29.4045 9.74388 32.022 10.9194 34.3417L15.3864 30.8621L16.6559 29.8904V29.8904Z\" fill=\"#FBBC05\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 16.2386C28.85 16.2386 31.107 17.1164 32.9095 18.8091L37.8466 13.8719C34.853 11.082 30.9659 9.3736 26.3109 9.3736C19.5712 9.3736 13.7563 13.245 10.9194 18.8875L16.6559 23.3388C18.0195 19.2636 21.8282 16.2386 26.3109 16.2386V16.2386Z\" fill=\"#EA4335\"/>\n    </svg>\n    <svg class=\"logo-dark\" width=\"18\" height=\"18\" viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\">\n      <circle cx=\"24\" cy=\"23\" fill=\"#FFF\" r=\"22\"/>\n      <path d=\"M33.76 34.26c2.75-2.56 4.49-6.37 4.49-11.26 0-.89-.08-1.84-.29-3H24.01v5.99h8.03c-.4 2.02-1.5 3.56-3.07 4.56v.75l3.91 2.97h.88z\" fill=\"#4285F4\"/>\n      <path d=\"M15.58 25.77A8.845 8.845 0 0 0 24 31.86c1.92 0 3.62-.46 4.97-1.31l4.79 3.71C31.14 36.7 27.65 38 24 38c-5.93 0-11.01-3.4-13.45-8.36l.17-1.01 4.06-2.85h.8z\" fill=\"#34A853\"/>\n      <path d=\"M15.59 20.21a8.864 8.864 0 0 0 0 5.58l-5.03 3.86c-.98-2-1.53-4.25-1.53-6.64 0-2.39.55-4.64 1.53-6.64l1-.22 3.81 2.98.22 1.08z\" fill=\"#FBBC05\"/>\n      <path d=\"M24 14.14c2.11 0 4.02.75 5.52 1.98l4.36-4.36C31.22 9.43 27.81 8 24 8c-5.93 0-11.01 3.4-13.45 8.36l5.03 3.85A8.86 8.86 0 0 1 24 14.14z\" fill=\"#EA4335\"/>\n    </svg>\n    <div class=\"gradient-container\"><div class=\"gradient\"></div></div>\n  </div>\n  <div class=\"carousel\">\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22github.blog/changelog%22+%22Stateless+GitHub+App+installation+tokens%22&client=app-vertex-grounding&safesearch=active\">&quot;github.blog/changelog&quot; &quot;Stateless GitHub App installation tokens&quot;</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=github+blog+changelog+stateless+github+app+installation+tokens&client=app-vertex-grounding&safesearch=active\">github blog changelog stateless github app installation tokens</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Stateless+GitHub+App+installation+tokens+rolled+out%22&client=app-vertex-grounding&safesearch=active\">&quot;Stateless GitHub App installation tokens rolled out&quot;</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=github+app+stateless+installation+token&client=app-vertex-grounding&safesearch=active\">github app stateless installation token</a>\n  </div>\n</div>",
-      "characterCount": 2335
+      "characterCount": 2325,
+      "primarySourceUrls": [
+        "https://github.blog/changelog/2026-10-02-stateless-github-app-installation-tokens-rolled-out",
+        "https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app",
+        "https://github.blog/changelog/2026-05-15-github-app-installation-tokens-per-request-override-header/",
+        "https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/"
+      ],
+      "reviewedAt": "2026-10-07T04:51:39.732Z"
     }
   },
   {
     "article": {
       "url": "https://github.blog/changelog/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level",
       "title": "깃허브, 코파일럿 코드 리뷰 API 공개 및 기본 분석 강도 '밸런스드'로 상향",
-      "summary": "깃허브가 코파일럿 코드 리뷰 기능을 REST 및 GraphQL API로 전면 개방하고 기본 노력 수준을 심층 분석 모델 기반의 'Balanced'로 공식 전환했습니다.",
+      "summary": "깃허브가 코파일럿 코드 리뷰 기능을 REST 및 GraphQL API로 지원하고 기본 노력 수준을 'Balanced'로 공식 전환했습니다.",
       "paragraphs": [
         {
           "heading": "코드 리뷰 자동화를 위한 REST 및 GraphQL API 인터페이스 개방",
@@ -1255,7 +1374,8 @@
           "references": [
             {
               "label": "깃허브 변경 로그 공식 안내",
-              "url": "https://github.blog/changelog/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level"
+              "url": "https://github.blog/changelog/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level",
+              "kind": "primary"
             }
           ]
         },
@@ -1270,7 +1390,8 @@
           "references": [
             {
               "label": "깃허브 공식 변경 로그 원문",
-              "url": "https://github.blog/changelog/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level/"
+              "url": "https://github.blog/changelog/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level/",
+              "kind": "primary"
             }
           ]
         },
@@ -1284,7 +1405,8 @@
           "references": [
             {
               "label": "노력 수준 정식 출시 안내",
-              "url": "https://github.blog/changelog/2026-08-07-copilot-code-review-effort-levels-are-generally-available/"
+              "url": "https://github.blog/changelog/2026-08-07-copilot-code-review-effort-levels-are-generally-available/",
+              "kind": "primary"
             }
           ]
         },
@@ -1297,8 +1419,9 @@
           ],
           "references": [
             {
-              "label": "daily.dev 기술 소식 분석",
-              "url": "https://daily.dev/posts/copilot-code-review-api-support-and-new-default-effort-level-wysypm6wu"
+              "label": "깃허브 공식 API 지원 안내",
+              "url": "https://github.blog/changelog/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level",
+              "kind": "primary"
             }
           ]
         },
@@ -1312,7 +1435,8 @@
           "references": [
             {
               "label": "깃허브 코파일럿 코드 리뷰 공식 문서",
-              "url": "https://docs.github.com/copilot/how-tos/copilot-on-github/use-copilot-agents/copilot-code-review"
+              "url": "https://docs.github.com/copilot/how-tos/copilot-on-github/use-copilot-agents/copilot-code-review",
+              "kind": "primary"
             }
           ]
         }
@@ -1378,30 +1502,39 @@
         "github changelog copilot code review api"
       ],
       "searchSuggestions": "<style>\n.container {\n  align-items: center;\n  border-radius: 8px;\n  display: flex;\n  font-family: Google Sans, Roboto, sans-serif;\n  font-size: 14px;\n  line-height: 20px;\n  padding: 8px 12px;\n}\n.chip {\n  display: inline-block;\n  border: solid 1px;\n  border-radius: 16px;\n  min-width: 14px;\n  padding: 5px 16px;\n  text-align: center;\n  user-select: none;\n  margin: 0 8px;\n  -webkit-tap-highlight-color: transparent;\n}\n.carousel {\n  overflow: auto;\n  scrollbar-width: none;\n  white-space: nowrap;\n  margin-right: -12px;\n}\n.headline {\n  display: flex;\n  margin-right: 4px;\n}\n.gradient-container {\n  position: relative;\n}\n.gradient {\n  position: absolute;\n  transform: translate(3px, -9px);\n  height: 36px;\n  width: 9px;\n}\n@media (prefers-color-scheme: light) {\n  .container {\n    background-color: #fafafa;\n    box-shadow: 0 0 0 1px #0000000f;\n  }\n  .headline-label {\n    color: #1f1f1f;\n  }\n  .chip {\n    background-color: #ffffff;\n    border-color: #d2d2d2;\n    color: #5e5e5e;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #f2f2f2;\n  }\n  .chip:focus {\n    background-color: #f2f2f2;\n  }\n  .chip:active {\n    background-color: #d8d8d8;\n    border-color: #b6b6b6;\n  }\n  .logo-dark {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #fafafa 15%, #fafafa00 100%);\n  }\n}\n@media (prefers-color-scheme: dark) {\n  .container {\n    background-color: #1f1f1f;\n    box-shadow: 0 0 0 1px #ffffff26;\n  }\n  .headline-label {\n    color: #fff;\n  }\n  .chip {\n    background-color: #2c2c2c;\n    border-color: #3c4043;\n    color: #fff;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #353536;\n  }\n  .chip:focus {\n    background-color: #353536;\n  }\n  .chip:active {\n    background-color: #464849;\n    border-color: #53575b;\n  }\n  .logo-light {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #1f1f1f 15%, #1f1f1f00 100%);\n  }\n}\n</style>\n<div class=\"container\">\n  <div class=\"headline\">\n    <svg class=\"logo-light\" width=\"18\" height=\"18\" viewBox=\"9 9 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M42.8622 27.0064C42.8622 25.7839 42.7525 24.6084 42.5487 23.4799H26.3109V30.1568H35.5897C35.1821 32.3041 33.9596 34.1222 32.1258 35.3448V39.6864H37.7213C40.9814 36.677 42.8622 32.2571 42.8622 27.0064V27.0064Z\" fill=\"#4285F4\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 43.8555C30.9659 43.8555 34.8687 42.3195 37.7213 39.6863L32.1258 35.3447C30.5898 36.3792 28.6306 37.0061 26.3109 37.0061C21.8282 37.0061 18.0195 33.9811 16.6559 29.906H10.9194V34.3573C13.7563 39.9841 19.5712 43.8555 26.3109 43.8555V43.8555Z\" fill=\"#34A853\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M16.6559 29.8904C16.3111 28.8559 16.1074 27.7588 16.1074 26.6146C16.1074 25.4704 16.3111 24.3733 16.6559 23.3388V18.8875H10.9194C9.74388 21.2072 9.06992 23.8247 9.06992 26.6146C9.06992 29.4045 9.74388 32.022 10.9194 34.3417L15.3864 30.8621L16.6559 29.8904V29.8904Z\" fill=\"#FBBC05\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 16.2386C28.85 16.2386 31.107 17.1164 32.9095 18.8091L37.8466 13.8719C34.853 11.082 30.9659 9.3736 26.3109 9.3736C19.5712 9.3736 13.7563 13.245 10.9194 18.8875L16.6559 23.3388C18.0195 19.2636 21.8282 16.2386 26.3109 16.2386V16.2386Z\" fill=\"#EA4335\"/>\n    </svg>\n    <svg class=\"logo-dark\" width=\"18\" height=\"18\" viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\">\n      <circle cx=\"24\" cy=\"23\" fill=\"#FFF\" r=\"22\"/>\n      <path d=\"M33.76 34.26c2.75-2.56 4.49-6.37 4.49-11.26 0-.89-.08-1.84-.29-3H24.01v5.99h8.03c-.4 2.02-1.5 3.56-3.07 4.56v.75l3.91 2.97h.88z\" fill=\"#4285F4\"/>\n      <path d=\"M15.58 25.77A8.845 8.845 0 0 0 24 31.86c1.92 0 3.62-.46 4.97-1.31l4.79 3.71C31.14 36.7 27.65 38 24 38c-5.93 0-11.01-3.4-13.45-8.36l.17-1.01 4.06-2.85h.8z\" fill=\"#34A853\"/>\n      <path d=\"M15.59 20.21a8.864 8.864 0 0 0 0 5.58l-5.03 3.86c-.98-2-1.53-4.25-1.53-6.64 0-2.39.55-4.64 1.53-6.64l1-.22 3.81 2.98.22 1.08z\" fill=\"#FBBC05\"/>\n      <path d=\"M24 14.14c2.11 0 4.02.75 5.52 1.98l4.36-4.36C31.22 9.43 27.81 8 24 8c-5.93 0-11.01 3.4-13.45 8.36l5.03 3.85A8.86 8.86 0 0 1 24 14.14z\" fill=\"#EA4335\"/>\n    </svg>\n    <div class=\"gradient-container\"><div class=\"gradient\"></div></div>\n  </div>\n  <div class=\"carousel\">\n<a class=\"chip\" href=\"https://www.google.com/search?q=github+changelog+%22Copilot+code+review%22+%22effort+level%22&client=app-vertex-grounding&safesearch=active\">github changelog &quot;Copilot code review&quot; &quot;effort level&quot;</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22copilot+code+review%22+%22API+support%22+%22effort+level%22+github+changelog&client=app-vertex-grounding&safesearch=active\">&quot;copilot code review&quot; &quot;API support&quot; &quot;effort level&quot; github changelog</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=github+changelog+copilot+code+review+api&client=app-vertex-grounding&safesearch=active\">github changelog copilot code review api</a>\n  </div>\n</div>",
-      "characterCount": 1869
+      "characterCount": 1869,
+      "primarySourceUrls": [
+        "https://github.blog/changelog/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level",
+        "https://github.blog/changelog/2026-10-02-copilot-code-review-api-support-and-new-default-effort-level/",
+        "https://github.blog/changelog/2026-08-07-copilot-code-review-effort-levels-are-generally-available/",
+        "https://docs.github.com/copilot/how-tos/copilot-on-github/use-copilot-agents/copilot-code-review"
+      ],
+      "reviewedAt": "2026-10-07T04:51:39.732Z"
     }
   },
   {
     "article": {
       "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/",
       "title": "미디어 쿼리의 단순 대체재가 아니다: CSS 컨테이너 쿼리를 대하는 새로운 접근법",
-      "summary": "CSS 컨테이너 쿼리는 주요 브라우저에서 94%의 지원율을 기록하며 안착했으나, 여전히 기존 미디어 쿼리의 대체재 정도로 오해받고 있습니다. 매크로 레이아웃과 마이크로 컴포넌트 레이아웃의 역할을 명확히 분리하고 기술적 제약 사항을 숙지해야 효과적인 반응형 웹 아키텍처를 구축할 수 있습니다.",
+      "summary": "CSS 컨테이너 쿼리는 화면 전체 대신 컴포넌트가 놓인 조상 요소의 크기를 읽습니다. 미디어 쿼리와 역할을 나누는 방법, 컨테이너 상대 단위, 크기 격리의 제약을 공식 기술 문서와 함께 살펴봅니다.",
       "paragraphs": [
         {
           "heading": "높은 브라우저 지원율과 현장 도입률 사이의 괴리",
           "kind": "reporting",
           "paragraphs": [
-            "스매싱 매거진(Smashing Magazine)에 기고된 빅터 아요미포의 분석에 따르면, CSS 컨테이너 쿼리(@container)는 주요 모던 브라우저 전반에서 약 94%라는 높은 지원율을 기록하며 기술적 준비를 마쳤습니다. 그러나 높은 가용성에 비해 실무 적용은 여전히 더딘 양상을 보이고 있습니다. 업계 조사인 State of CSS 설문 데이터를 살펴보면 응답 개발자의 86%가 컨테이너 쿼리의 존재를 인지하고 있지만, 실제 프로덕션 환경에서 이를 사용한다고 답한 비율은 41.4%에 그쳤습니다.",
-            "이러한 도입 격차는 기술 자체의 브라우저 파편화 문제라기보다는, 기존 미디어 쿼리 중심의 반응형 설계 패턴에서 벗어나지 못한 관행과 새로운 멘탈 모델에 대한 이해 부족에서 비롯된 것으로 풀이됩니다. W3C 표준 명세와 MDN 공식 기술 문서에 따르면 컨테이너 쿼리는 크롬, 사파리, 파이어폭스, 엣지 등 모든 주요 플랫폼에서 안정적으로 구동되는 정식 사양입니다."
+            "스매싱 매거진이 소개한 컨테이너 쿼리의 핵심은 반응형 설계의 기준을 화면 전체에서 컴포넌트가 놓인 자리로 옮기는 것입니다. MDN은 컨테이너의 크기 등을 조건으로 자손 요소의 스타일을 바꾸는 기능으로 설명합니다. 같은 카드가 넓은 본문과 좁은 사이드바에 각각 들어갈 때, 뷰포트의 폭이 같더라도 카드에 필요한 배치는 달라질 수 있습니다.",
+            "브라우저 지원율과 개발자 사용률은 조사 시점과 표본에 따라 달라지므로 이 글에서는 특정 수치를 현재의 보편적인 상태로 단정하지 않습니다. 실제 도입 판단에는 프로젝트가 지원하는 브라우저와 필요한 쿼리 종류를 확인해야 합니다. 크기 쿼리, 스타일 쿼리, 스크롤 상태 쿼리는 동일한 기능으로 묶어 지원을 가정하기보다 공식 문서의 호환성 표를 각각 읽어야 합니다."
           ],
           "references": [
             {
               "label": "스매싱 매거진 원문 기사",
-              "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/"
+              "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/",
+              "kind": "reporting"
             },
             {
               "label": "MDN 웹 기술 문서: 컨테이너 쿼리",
-              "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries"
+              "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries",
+              "kind": "primary"
             }
           ]
         },
@@ -1415,11 +1548,13 @@
           "references": [
             {
               "label": "스매싱 매거진 원문 기사",
-              "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/"
+              "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/",
+              "kind": "reporting"
             },
             {
               "label": "W3C CSS Containment Module Level 3 사양",
-              "url": "https://www.w3.org/TR/css-contain-3/"
+              "url": "https://www.w3.org/TR/css-contain-3/",
+              "kind": "primary"
             }
           ]
         },
@@ -1433,11 +1568,13 @@
           "references": [
             {
               "label": "W3C CSS Containment Module Level 3 사양",
-              "url": "https://www.w3.org/TR/css-contain-3/"
+              "url": "https://www.w3.org/TR/css-contain-3/",
+              "kind": "primary"
             },
             {
               "label": "스매싱 매거진 원문 기사",
-              "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/"
+              "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/",
+              "kind": "reporting"
             }
           ]
         },
@@ -1451,11 +1588,13 @@
           "references": [
             {
               "label": "MDN 웹 기술 문서: CSS 컨테이너 프로퍼티",
-              "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/container"
+              "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/container",
+              "kind": "primary"
             },
             {
               "label": "스매싱 매거진 원문 기사",
-              "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/"
+              "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/",
+              "kind": "reporting"
             }
           ]
         },
@@ -1469,17 +1608,19 @@
           "references": [
             {
               "label": "스매싱 매거진 원문 기사",
-              "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/"
+              "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/",
+              "kind": "reporting"
             },
             {
               "label": "MDN 웹 기술 문서: 컨테이너 쿼리",
-              "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries"
+              "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries",
+              "kind": "primary"
             }
           ]
         }
       ],
       "points": [
-        "브라우저 지원율은 약 94%에 달하지만 State of CSS 인용 기준 실제 사용률은 41.4%에 머물고 있습니다.",
+        "지원율의 단일 수치보다 프로젝트의 대상 브라우저와 필요한 쿼리 종류를 확인해야 합니다.",
         "미디어 쿼리는 뷰포트 기반 거시 구조를, 컨테이너 쿼리는 조상 요소 기반 미세 컴포넌트를 분담해야 합니다.",
         "자가 쿼리 불가와 크기 축소 현상 등 명세상 제약 조건을 정확히 파악해야 레이아웃 결함을 예방할 수 있습니다."
       ],
@@ -1549,7 +1690,13 @@
         "\"CSS Containment Module Level 3\" w3c"
       ],
       "searchSuggestions": "<style>\n.container {\n  align-items: center;\n  border-radius: 8px;\n  display: flex;\n  font-family: Google Sans, Roboto, sans-serif;\n  font-size: 14px;\n  line-height: 20px;\n  padding: 8px 12px;\n}\n.chip {\n  display: inline-block;\n  border: solid 1px;\n  border-radius: 16px;\n  min-width: 14px;\n  padding: 5px 16px;\n  text-align: center;\n  user-select: none;\n  margin: 0 8px;\n  -webkit-tap-highlight-color: transparent;\n}\n.carousel {\n  overflow: auto;\n  scrollbar-width: none;\n  white-space: nowrap;\n  margin-right: -12px;\n}\n.headline {\n  display: flex;\n  margin-right: 4px;\n}\n.gradient-container {\n  position: relative;\n}\n.gradient {\n  position: absolute;\n  transform: translate(3px, -9px);\n  height: 36px;\n  width: 9px;\n}\n@media (prefers-color-scheme: light) {\n  .container {\n    background-color: #fafafa;\n    box-shadow: 0 0 0 1px #0000000f;\n  }\n  .headline-label {\n    color: #1f1f1f;\n  }\n  .chip {\n    background-color: #ffffff;\n    border-color: #d2d2d2;\n    color: #5e5e5e;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #f2f2f2;\n  }\n  .chip:focus {\n    background-color: #f2f2f2;\n  }\n  .chip:active {\n    background-color: #d8d8d8;\n    border-color: #b6b6b6;\n  }\n  .logo-dark {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #fafafa 15%, #fafafa00 100%);\n  }\n}\n@media (prefers-color-scheme: dark) {\n  .container {\n    background-color: #1f1f1f;\n    box-shadow: 0 0 0 1px #ffffff26;\n  }\n  .headline-label {\n    color: #fff;\n  }\n  .chip {\n    background-color: #2c2c2c;\n    border-color: #3c4043;\n    color: #fff;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #353536;\n  }\n  .chip:focus {\n    background-color: #353536;\n  }\n  .chip:active {\n    background-color: #464849;\n    border-color: #53575b;\n  }\n  .logo-light {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #1f1f1f 15%, #1f1f1f00 100%);\n  }\n}\n</style>\n<div class=\"container\">\n  <div class=\"headline\">\n    <svg class=\"logo-light\" width=\"18\" height=\"18\" viewBox=\"9 9 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M42.8622 27.0064C42.8622 25.7839 42.7525 24.6084 42.5487 23.4799H26.3109V30.1568H35.5897C35.1821 32.3041 33.9596 34.1222 32.1258 35.3448V39.6864H37.7213C40.9814 36.677 42.8622 32.2571 42.8622 27.0064V27.0064Z\" fill=\"#4285F4\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 43.8555C30.9659 43.8555 34.8687 42.3195 37.7213 39.6863L32.1258 35.3447C30.5898 36.3792 28.6306 37.0061 26.3109 37.0061C21.8282 37.0061 18.0195 33.9811 16.6559 29.906H10.9194V34.3573C13.7563 39.9841 19.5712 43.8555 26.3109 43.8555V43.8555Z\" fill=\"#34A853\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M16.6559 29.8904C16.3111 28.8559 16.1074 27.7588 16.1074 26.6146C16.1074 25.4704 16.3111 24.3733 16.6559 23.3388V18.8875H10.9194C9.74388 21.2072 9.06992 23.8247 9.06992 26.6146C9.06992 29.4045 9.74388 32.022 10.9194 34.3417L15.3864 30.8621L16.6559 29.8904V29.8904Z\" fill=\"#FBBC05\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 16.2386C28.85 16.2386 31.107 17.1164 32.9095 18.8091L37.8466 13.8719C34.853 11.082 30.9659 9.3736 26.3109 9.3736C19.5712 9.3736 13.7563 13.245 10.9194 18.8875L16.6559 23.3388C18.0195 19.2636 21.8282 16.2386 26.3109 16.2386V16.2386Z\" fill=\"#EA4335\"/>\n    </svg>\n    <svg class=\"logo-dark\" width=\"18\" height=\"18\" viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\">\n      <circle cx=\"24\" cy=\"23\" fill=\"#FFF\" r=\"22\"/>\n      <path d=\"M33.76 34.26c2.75-2.56 4.49-6.37 4.49-11.26 0-.89-.08-1.84-.29-3H24.01v5.99h8.03c-.4 2.02-1.5 3.56-3.07 4.56v.75l3.91 2.97h.88z\" fill=\"#4285F4\"/>\n      <path d=\"M15.58 25.77A8.845 8.845 0 0 0 24 31.86c1.92 0 3.62-.46 4.97-1.31l4.79 3.71C31.14 36.7 27.65 38 24 38c-5.93 0-11.01-3.4-13.45-8.36l.17-1.01 4.06-2.85h.8z\" fill=\"#34A853\"/>\n      <path d=\"M15.59 20.21a8.864 8.864 0 0 0 0 5.58l-5.03 3.86c-.98-2-1.53-4.25-1.53-6.64 0-2.39.55-4.64 1.53-6.64l1-.22 3.81 2.98.22 1.08z\" fill=\"#FBBC05\"/>\n      <path d=\"M24 14.14c2.11 0 4.02.75 5.52 1.98l4.36-4.36C31.22 9.43 27.81 8 24 8c-5.93 0-11.01 3.4-13.45 8.36l5.03 3.85A8.86 8.86 0 0 1 24 14.14z\" fill=\"#EA4335\"/>\n    </svg>\n    <div class=\"gradient-container\"><div class=\"gradient\"></div></div>\n  </div>\n  <div class=\"carousel\">\n<a class=\"chip\" href=\"https://www.google.com/search?q=site:developer.mozilla.org+%22CSS+container+queries%22&client=app-vertex-grounding&safesearch=active\">site:developer.mozilla.org &quot;CSS container queries&quot;</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=smashingmagazine+container+queries+traditional+media+queries&client=app-vertex-grounding&safesearch=active\">smashingmagazine container queries traditional media queries</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Stop+Treating+CSS+Container+Queries+Like+Traditional+Media+Queries%22+smashing+magazine&client=app-vertex-grounding&safesearch=active\">&quot;Stop Treating CSS Container Queries Like Traditional Media Queries&quot; smashing magazine</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=site:smashingmagazine.com+%22Container+Queries%22+2026&client=app-vertex-grounding&safesearch=active\">site:smashingmagazine.com &quot;Container Queries&quot; 2026</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22CSS+Containment+Module+Level+3%22+w3c&client=app-vertex-grounding&safesearch=active\">&quot;CSS Containment Module Level 3&quot; w3c</a>\n  </div>\n</div>",
-      "characterCount": 2325
+      "characterCount": 2230,
+      "primarySourceUrls": [
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries",
+        "https://www.w3.org/TR/css-contain-3/",
+        "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/container"
+      ],
+      "reviewedAt": "2026-10-07T04:51:39.732Z"
     }
   },
   {
@@ -1567,7 +1714,7 @@
           ],
           "references": [
             {
-              "label": "디진 공식 보도",
+              "label": "디진 보도",
               "kind": "reporting",
               "url": "https://www.dezeen.com/2026/10/05/mvrdv-barcode-street-furniture-escofet/"
             },
@@ -1583,7 +1730,7 @@
           "kind": "reporting",
           "paragraphs": [
             "바코드 컬렉션의 핵심은 트리뷴(Tribune), 듄(Dune), 데스크(Desk)라는 세 가지 기본 모듈의 기하학적 결합에 있습니다. 세 모듈은 상호 호환성을 위해 80센티미터라는 통일된 높이 기준을 따르며, 선형 결합을 통해 바코드 패턴을 연출하거나 등을 맞대고 측면을 연결해 섬 형태의 독립된 휴게 구역을 형성할 수 있습니다.",
-            "트리뷴은 계단형 구조를 지녀 보행자가 기어오르거나 걸터앉아 주변 경관을 조망할 수 있는 240×200×80센티미터 규격(중량 3,070킬로그램)의 모듈이며 식수대를 결합할 수 있는 사양(중량 2,940킬로그램)을 함께 갖췄습니다. 듄 모듈은 완만한 경사면을 지녀 기대어 눕거나 몸을 기댈 수 있는 240×200×80센티미터 기본형(3,475킬로그램)과 식수대형(3,343킬로그램), 200×120×80센티미터의 확장형(3,436킬로그램)으로 세분화됩니다. 데스크 모듈은 테이블과 벤치가 합쳐진 200×120×80센티미터 크기의 세트(2,105킬로그램)뿐만 아니라 폭 53센티미터의 벤치(925킬로그램)와 폭 67센티미터의 테이블(1,180킬로그램)로 분리 적용이 가능해 야외 작업이나 식사 공간을 지원합니다."
+            "트리뷴은 계단형 구조를 지녀 보행자가 기어오르거나 걸터앉아 주변 경관을 조망할 수 있는 240×200×80센티미터 규격(중량 3,070킬로그램)의 모듈이며 식재홀을 결합할 수 있는 사양(중량 2,940킬로그램)을 함께 갖췄습니다. 듄 모듈은 완만한 경사면을 지녀 기대어 눕거나 몸을 기댈 수 있는 240×200×80센티미터 기본형(3,475킬로그램)과 식재홀형(3,343킬로그램), 200×120×80센티미터의 확장형(3,436킬로그램)으로 세분화됩니다. 데스크 모듈은 테이블과 벤치가 합쳐진 200×120×80센티미터 크기의 세트(2,105킬로그램)뿐만 아니라 폭 53센티미터의 벤치(925킬로그램)와 폭 67센티미터의 테이블(1,180킬로그램)로 분리 적용이 가능해 야외 작업이나 식사 공간을 지원합니다."
           ],
           "references": [
             {
@@ -1603,12 +1750,12 @@
           "kind": "reporting",
           "paragraphs": [
             "에스코펫의 콘크리트 주조 기술을 바탕으로 개발된 이 컬렉션은 식재 공간 결합 여부, 경사면의 배치 방향, 가구 단독 및 분리 배치 조건에 더해 총 여덟 가지 표면 마감 및 색상 옵션을 지원합니다. 이를 종합하면 공간 설계자가 선택할 수 있는 조합은 총 72가지에 이릅니다.",
-            "색상 체계는 에칭 처리된 화이트, 베이지, 레드, 그레이, 블랙의 기존 5종과 새롭게 추가된 그린 및 옐로우, 그리고 순환 자원인 재활용 골재를 적용한 에코 그레이(Eco-Grey) 배합으로 구성됩니다. 친환경 골재 배합 옵션은 도시 공공 프로젝트에서 요구되는 탄소 저감 및 자원 순환 지침을 충족하기 위한 기술 사양으로, 강도와 질감을 유지하면서도 지속가능성 기준을 보완하도록 기획되었습니다."
+            "색상 체계는 에칭 처리된 화이트, 베이지, 레드, 그레이, 블랙의 기존 5종과 새롭게 추가된 그린 및 옐로우, 그리고 순환 자원인 재활용 골재를 적용한 에코 그레이(Eco-Grey) 배합으로 구성됩니다. 친환경 골재 배합 옵션은 재활용 골재를 사용한다는 제조사 설명에 근거합니다. 특정 현장의 탄소 저감 목표나 규정 충족 여부는 제품 시험자료와 프로젝트 조건을 별도로 확인해야 합니다."
           ],
           "references": [
             {
               "label": "에스코펫 바코드 컬렉션 스토리",
-              "kind": "reporting",
+              "kind": "primary",
               "url": "https://www.escofet.com/stories/barcode-collection/"
             },
             {
@@ -1623,7 +1770,7 @@
           "kind": "analysis",
           "paragraphs": [
             "바코드 컬렉션이 제시하는 실무적 의의는 가로 가구를 개별 조달 품목이 아닌 건축적 지형(Landscape)으로 다룬다는 점에 있습니다. 전통적인 공공 벤치는 앉는 행위만을 일방적으로 규정하며 다른 행위의 발생을 배제하는 경향이 짙었습니다. 반면 계단과 사면, 데스크가 동일 높이 선상에서 결합되는 시스템은 보행자에게 눕기, 작업하기, 모이기, 관찰하기 등 행위의 주도권을 되돌려줍니다.",
-            "이러한 모듈형 지형은 대규모 광장이나 차량 통행이 제한된 보행 전용 지구에서 보행 동선을 자연스럽게 분할하거나 머무름을 유도하는 완충 지대로 기능할 수 있습니다. 특히 식수대 결합 모듈을 통해 녹지 인프라와 벤치를 하나의 콘크리트 매스로 통합하는 방식은 지상부 점유 면적을 효율화하고 유지관리 동선을 단순화하는 실무적 이점을 제공할 것으로 해석됩니다."
+            "이러한 모듈형 지형은 대규모 광장이나 차량 통행이 제한된 보행 전용 지구에서 보행 동선을 자연스럽게 분할하거나 머무름을 유도하는 완충 지대로 기능할 수 있습니다. 특히 식재홀 결합 모듈을 통해 녹지 인프라와 벤치를 하나의 콘크리트 매스로 통합하는 방식은 지상부 점유 면적을 효율화하고 유지관리 동선을 단순화하는 실무적 이점을 제공할 것으로 해석됩니다."
           ],
           "references": [
             {
@@ -1721,6 +1868,7 @@
         "https://www.mvrdv.com/projects/1188/the-barcode-collection",
         "https://www.escofet.com/en/producto/barcode-2/",
         "https://www.molins.es/en/blog/we-launch-barcode-collection-escofet-and-mvrdvs-new-modular-urban-furniture-collection/",
+        "https://www.escofet.com/stories/barcode-collection/",
         "https://cdn-mol-web-pro-fccrfzgbedcxa3fn.a02.azurefd.net/wp-content/uploads/2026/10/261001_PR_Escofet-and-MVRDV-launch-%E2%80%98Barcode-Collection-a-new-modular-urban-furniture-system-.pdf"
       ],
       "notes": "**ARCH.B 조사 메모: MVRDV 모듈형 콘크리트 가로 가구 ‘바코드(Barcode) 컬렉션’**\n\n---\n\n### 1. 개요 및 핵심 사실\n* **프로젝트명**: 바코드 컬렉션 (The Barcode Collection)\n* **디자인**: MVRDV (설계 주도: 공동 창립자 야코프 판 레인스 / Jacob van Rijs)\n* **제조·출시사**: 스페인 바르셀로나 기반의 가로 시설물·콘크리트 전문 제조사 에스코펫(Escofet 1886 S.A., 몰린스/Molins 그룹 소속)\n* **제품 성격**: 도시 공공 공간(광장, 거리 등)을 위한 모듈형 건축 콘크리트 가로 시설물 시스템\n* **기본 구성**: 세 가지 기본 모듈—트리뷴(Tribune), 듄(Dune), 데스크(Desk)—을 기본 단위로 하며, 모듈의 반복·회전·맞물림(등맞댐 및 측면 결합)을 통해 선형의 '바코드' 형태나 고립된 '섬(Island)' 형태 등 가변적인 공공 휴식 지형을 구축할 수 있도록 설계됨.\n\n---\n\n### 2. 주요 발표 일자 및 배경\n* **발표 시점**: \n  * 제조사(Escofet / Molins) 공식 론칭: 2026년 9월 30일 ~ 10월 1일\n  * Dezeen 기사 보도: 2026년 10월 5일 (기자: Jennifer Hahn)\n* **발표 장소 및 행사**:\n  * 바르셀로나 파빌리온(Mies van der Rohe Pavilion)에서 제품 실물 전시 및 공식 발표.\n  * '2026 바르셀로나 세계 건축 수도(Barcelona World Capital of Architecture 2026)' 협력 행사의 일환인 'Molins Talks' 강연 세션에서 공개됨.\n* **기획 배경**:\n  * 카탈로그에서 개별 벤치를 골라 정형화된 위치에 배치하는 기존 도시 가구의 단조로운 배치 관행을 탈피하고, 시민들이 공공 인프라를 능동적이고 \"예상치 못한 방식(unexpected ways)\"으로 점유하도록 유도하여 공공 공간을 '도시의 거실(living room of the city)'로 재구성하려는 의도에서 시작됨.\n\n---\n\n### 3. 세부 규격 및 수치 데이터 (공식 기술 사양)\n모듈 간 결합을 위해 동일한 높이(80cm)와 규격화된 폭 체계를 채택함.\n\n1. **트리뷴 (Tribune)**: 계단형 모듈 (오르기, 걸터앉기, 주변 조망 기능)\n   * 기본형: 240 × 200 × 80 cm / 무게 3,070 kg\n   * 식수대(Tree pit) 결합형 (좌/우 선택 가능): 240 × 200 × 80 cm / 무게 2,940 kg\n2. **듄 (Dune)**: 완만한 경사면 형태의 조각적 모듈 (기대어 눕거나 휴식)\n   * 기본형: 240 × 200 × 80 cm / 무게 3,475 kg\n   * 식수대(Tree pit) 결합형: 240 × 200 × 80 cm / 무게 3,343 kg\n   * 확장형(Extension): 200 × 120 × 80 cm / 무게 3,436 kg\n3. **데스크 (Desk)**: 테이블과 벤치가 결합된 모놀리식 일체형/분리형 모듈 (야외 업무, 식사, 대화 공간)\n   * 데스크 세트(Desk Set): 200 × 120 × 80 cm / 무게 2,105 kg\n   * 데스크 벤치(Bench 단독): 200 × 53 × 80 cm / 무게 925 kg\n   * 데스크 테이블(Table 단독): 200 × 67 × 80 cm / 무게 1,180 kg\n4. **색상 및 선택 옵션 조합**:\n   * 마감/색상 총 8종: 에칭 화이트(white), 에칭 베이지(beige), 에칭 레드(red), 에칭 그레이(grey), 에칭 블랙(black), 신규 출시된 그린(green)과 옐로우(yellow), 그리고 재활용 골재를 적용한 에코 그레이(Eco-Grey) 배합.\n   * 모듈 세부 옵션(식재홀 유무, 경사 방향, 벤치/테이블 분리)과 8개 색상을 조합하여 총 **72가지 선택 사양** 구성 가능.\n\n---\n\n### 4. 미확인 및 자료 부재 사항\n* 개별 모듈 및 완제품의 판매 가격 및 리드타임(납기일)은 공식 문서상 공개되지 않아 확인 불가.\n* 특정 도시나 프로젝트 현장에 영구 설치된 첫 번째 실물 적용지(납품처)에 관한 정보는 아직 공개되지 않음(바르셀로나 파빌리온 전시는 론칭 행사용 설치임).\n\n---\n\n### 5. 근거 자료 및 URL\n\n1. **원출처 미디어 기사**:\n   * *Dezeen*: \"MVRDV designs modular concrete street furniture to be occupied in 'unexpected ways'\" (2026.10.05 보도, Jennifer Hahn 작성)  \n     https://www.dezeen.com/2026/10/05/mvrdv-barcode-street-furniture-escofet/\n2. **건축가 공식 자료 (1차 근거)**:\n   * *MVRDV 프로젝트 아카이브*: \"The Barcode Collection\"  \n     https://www.mvrdv.com/projects/1188/the-barcode-collection\n   * *MVRDV 뉴스룸*: \"The living room of the city: MVRDV's 'Barcode Collection' for Escofet shows the potential of modular street furniture\"  \n     https://www.mvrdv.com/news/4906/mvrdv-barcode-collection-for-escofet-shows-the-potential-of-modular-street-furniture-\n3. **제작사 공식 기술 문서 및 보도자료 (1차 근거)**:\n   * *Escofet 공식 제품 상세 페이지*: \"BARCODE\" (규격, 도면, 중량, 재료 사양 포함)  \n     https://www.escofet.com/producto/urban-life/bancos/barcode\n   * *Molins 공식 보도자료*: \"Escofet and MVRDV launch 'Barcode Collection', a new modular urban furniture system\" (2026.10.01)  \n     https://www.molins.es/en/news/escofet-and-mvrdv-launch-barcode-collection-a-new-modular-urban-furniture-system/",
@@ -1732,7 +1880,8 @@
         "\"Barcode\" Escofet \"Tribune\" \"Dune\" \"Desk\" dimensions"
       ],
       "searchSuggestions": "<style>\n.container {\n  align-items: center;\n  border-radius: 8px;\n  display: flex;\n  font-family: Google Sans, Roboto, sans-serif;\n  font-size: 14px;\n  line-height: 20px;\n  padding: 8px 12px;\n}\n.chip {\n  display: inline-block;\n  border: solid 1px;\n  border-radius: 16px;\n  min-width: 14px;\n  padding: 5px 16px;\n  text-align: center;\n  user-select: none;\n  margin: 0 8px;\n  -webkit-tap-highlight-color: transparent;\n}\n.carousel {\n  overflow: auto;\n  scrollbar-width: none;\n  white-space: nowrap;\n  margin-right: -12px;\n}\n.headline {\n  display: flex;\n  margin-right: 4px;\n}\n.gradient-container {\n  position: relative;\n}\n.gradient {\n  position: absolute;\n  transform: translate(3px, -9px);\n  height: 36px;\n  width: 9px;\n}\n@media (prefers-color-scheme: light) {\n  .container {\n    background-color: #fafafa;\n    box-shadow: 0 0 0 1px #0000000f;\n  }\n  .headline-label {\n    color: #1f1f1f;\n  }\n  .chip {\n    background-color: #ffffff;\n    border-color: #d2d2d2;\n    color: #5e5e5e;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #f2f2f2;\n  }\n  .chip:focus {\n    background-color: #f2f2f2;\n  }\n  .chip:active {\n    background-color: #d8d8d8;\n    border-color: #b6b6b6;\n  }\n  .logo-dark {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #fafafa 15%, #fafafa00 100%);\n  }\n}\n@media (prefers-color-scheme: dark) {\n  .container {\n    background-color: #1f1f1f;\n    box-shadow: 0 0 0 1px #ffffff26;\n  }\n  .headline-label {\n    color: #fff;\n  }\n  .chip {\n    background-color: #2c2c2c;\n    border-color: #3c4043;\n    color: #fff;\n    text-decoration: none;\n  }\n  .chip:hover {\n    background-color: #353536;\n  }\n  .chip:focus {\n    background-color: #353536;\n  }\n  .chip:active {\n    background-color: #464849;\n    border-color: #53575b;\n  }\n  .logo-light {\n    display: none;\n  }\n  .gradient {\n    background: linear-gradient(90deg, #1f1f1f 15%, #1f1f1f00 100%);\n  }\n}\n</style>\n<div class=\"container\">\n  <div class=\"headline\">\n    <svg class=\"logo-light\" width=\"18\" height=\"18\" viewBox=\"9 9 35 35\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M42.8622 27.0064C42.8622 25.7839 42.7525 24.6084 42.5487 23.4799H26.3109V30.1568H35.5897C35.1821 32.3041 33.9596 34.1222 32.1258 35.3448V39.6864H37.7213C40.9814 36.677 42.8622 32.2571 42.8622 27.0064V27.0064Z\" fill=\"#4285F4\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 43.8555C30.9659 43.8555 34.8687 42.3195 37.7213 39.6863L32.1258 35.3447C30.5898 36.3792 28.6306 37.0061 26.3109 37.0061C21.8282 37.0061 18.0195 33.9811 16.6559 29.906H10.9194V34.3573C13.7563 39.9841 19.5712 43.8555 26.3109 43.8555V43.8555Z\" fill=\"#34A853\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M16.6559 29.8904C16.3111 28.8559 16.1074 27.7588 16.1074 26.6146C16.1074 25.4704 16.3111 24.3733 16.6559 23.3388V18.8875H10.9194C9.74388 21.2072 9.06992 23.8247 9.06992 26.6146C9.06992 29.4045 9.74388 32.022 10.9194 34.3417L15.3864 30.8621L16.6559 29.8904V29.8904Z\" fill=\"#FBBC05\"/>\n      <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M26.3109 16.2386C28.85 16.2386 31.107 17.1164 32.9095 18.8091L37.8466 13.8719C34.853 11.082 30.9659 9.3736 26.3109 9.3736C19.5712 9.3736 13.7563 13.245 10.9194 18.8875L16.6559 23.3388C18.0195 19.2636 21.8282 16.2386 26.3109 16.2386V16.2386Z\" fill=\"#EA4335\"/>\n    </svg>\n    <svg class=\"logo-dark\" width=\"18\" height=\"18\" viewBox=\"0 0 48 48\" xmlns=\"http://www.w3.org/2000/svg\">\n      <circle cx=\"24\" cy=\"23\" fill=\"#FFF\" r=\"22\"/>\n      <path d=\"M33.76 34.26c2.75-2.56 4.49-6.37 4.49-11.26 0-.89-.08-1.84-.29-3H24.01v5.99h8.03c-.4 2.02-1.5 3.56-3.07 4.56v.75l3.91 2.97h.88z\" fill=\"#4285F4\"/>\n      <path d=\"M15.58 25.77A8.845 8.845 0 0 0 24 31.86c1.92 0 3.62-.46 4.97-1.31l4.79 3.71C31.14 36.7 27.65 38 24 38c-5.93 0-11.01-3.4-13.45-8.36l.17-1.01 4.06-2.85h.8z\" fill=\"#34A853\"/>\n      <path d=\"M15.59 20.21a8.864 8.864 0 0 0 0 5.58l-5.03 3.86c-.98-2-1.53-4.25-1.53-6.64 0-2.39.55-4.64 1.53-6.64l1-.22 3.81 2.98.22 1.08z\" fill=\"#FBBC05\"/>\n      <path d=\"M24 14.14c2.11 0 4.02.75 5.52 1.98l4.36-4.36C31.22 9.43 27.81 8 24 8c-5.93 0-11.01 3.4-13.45 8.36l5.03 3.85A8.86 8.86 0 0 1 24 14.14z\" fill=\"#EA4335\"/>\n    </svg>\n    <div class=\"gradient-container\"><div class=\"gradient\"></div></div>\n  </div>\n  <div class=\"carousel\">\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22The+Barcode+Collection%22+site:mvrdv.com+%22Tribune%22+%22Dune%22+%22Desk%22&client=app-vertex-grounding&safesearch=active\">&quot;The Barcode Collection&quot; site:mvrdv.com &quot;Tribune&quot; &quot;Dune&quot; &quot;Desk&quot;</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=site:escofet.com+%22Barcode%22&client=app-vertex-grounding&safesearch=active\">site:escofet.com &quot;Barcode&quot;</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22MVRDV%22+%22Barcode%22+%22Escofet%22+street+furniture&client=app-vertex-grounding&safesearch=active\">&quot;MVRDV&quot; &quot;Barcode&quot; &quot;Escofet&quot; street furniture</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Barcode%22+site:escofet.com+%22dimensions%22+OR+%22dimensiones%22+OR+%22cm%22+OR+%22mm%22&client=app-vertex-grounding&safesearch=active\">&quot;Barcode&quot; site:escofet.com &quot;dimensions&quot; OR &quot;dimensiones&quot; OR &quot;cm&quot; OR &quot;mm&quot;</a>\n<a class=\"chip\" href=\"https://www.google.com/search?q=%22Barcode%22+Escofet+%22Tribune%22+%22Dune%22+%22Desk%22+dimensions&client=app-vertex-grounding&safesearch=active\">&quot;Barcode&quot; Escofet &quot;Tribune&quot; &quot;Dune&quot; &quot;Desk&quot; dimensions</a>\n  </div>\n</div>",
-      "characterCount": 2345
+      "characterCount": 2340,
+      "reviewedAt": "2026-10-07T04:51:39.732Z"
     }
   }
 ]

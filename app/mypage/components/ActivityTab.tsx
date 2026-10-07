@@ -165,7 +165,7 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
             type="button"
             onClick={() => setActiveTab(tab.id)}
             className={`relative inline-flex h-11 shrink-0 items-center gap-2 text-[13px] font-semibold transition ${
-              activeTab === tab.id ? "text-gray-950" : "text-[var(--archive-muted)] hover:text-[#ff4800]"
+              activeTab === tab.id ? "text-gray-950" : "text-[var(--archive-muted)] hover:text-[var(--archive-brand)]"
             }`}
           >
             {tab.label}
@@ -194,7 +194,7 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
                 <Link
                   key={item.id}
                   href={`/news/read/${item.slug}`}
-                  className="group overflow-hidden rounded-lg border border-[var(--archive-line)] bg-white transition hover:border-[#ff4800] hover:shadow-sm"
+                  className="group overflow-hidden rounded-lg border border-[var(--archive-line)] bg-white transition hover:border-[var(--archive-brand)] hover:shadow-sm"
                 >
                   <div className="relative aspect-[16/9] overflow-hidden bg-gray-100">
                     {item.title_image_url ? (
@@ -216,7 +216,7 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
                       type="button"
                       onClick={(event) => handleUnscrap(event, item.id, "blog")}
                       disabled={isRemoving}
-                      className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/95 text-[#ff4800] shadow-sm transition hover:text-red-600 disabled:opacity-60"
+                      className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/95 text-[var(--archive-brand)] shadow-sm transition hover:text-red-600 disabled:opacity-60"
                       title="북마크 취소"
                     >
                       {isRemoving ? <Loader2 className="h-4 w-4 animate-spin" /> : <BookmarkCheck className="h-4 w-4" />}
@@ -224,7 +224,7 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
                   </div>
 
                   <div className="p-4">
-                    <div className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase text-[#ff4800]">
+                    <div className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase text-[var(--archive-brand)]">
                       <FileText className="h-3.5 w-3.5" />
                       기사
                     </div>
@@ -253,7 +253,7 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
                 <Link
                   key={item.id}
                   href={`/gallery/${item.id}`}
-                  className="group overflow-hidden rounded-lg border border-[var(--archive-line)] bg-white transition hover:border-[#ff4800] hover:shadow-sm"
+                  className="group overflow-hidden rounded-lg border border-[var(--archive-line)] bg-white transition hover:border-[var(--archive-brand)] hover:shadow-sm"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                     {(item.thumbnail_url || item.image_url) ? (
@@ -274,7 +274,7 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
                       type="button"
                       onClick={(event) => handleUnscrap(event, item.id, "gallery")}
                       disabled={isRemoving}
-                      className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/95 text-[#ff4800] shadow-sm transition hover:text-red-600 disabled:opacity-60"
+                      className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/95 text-[var(--archive-brand)] shadow-sm transition hover:text-red-600 disabled:opacity-60"
                       title="스크랩 취소"
                     >
                       {isRemoving ? <Loader2 className="h-4 w-4 animate-spin" /> : <BookmarkCheck className="h-4 w-4" />}
@@ -317,7 +317,7 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
                   href={item.url || "/references"}
                   target={item.url ? "_blank" : undefined}
                   rel={item.url ? "noopener noreferrer" : undefined}
-                  className="group overflow-hidden rounded-lg border border-[var(--archive-line)] bg-white transition hover:border-[#ff4800] hover:shadow-sm"
+                  className="group overflow-hidden rounded-lg border border-[var(--archive-line)] bg-white transition hover:border-[var(--archive-brand)] hover:shadow-sm"
                 >
                   <div className="relative aspect-video overflow-hidden bg-gray-100">
                     {item.image_url ? (
@@ -341,7 +341,7 @@ export default function ActivityTab({ initialPosts, initialGalleries, initialRef
                       type="button"
                       onClick={(event) => handleUnscrap(event, item.id, "reference")}
                       disabled={isRemoving}
-                      className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/95 text-[#ff4800] shadow-sm transition hover:text-red-600 disabled:opacity-60"
+                      className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/95 text-[var(--archive-brand)] shadow-sm transition hover:text-red-600 disabled:opacity-60"
                       title="스크랩 취소"
                     >
                       {isRemoving ? <Loader2 className="h-4 w-4 animate-spin" /> : <BookmarkCheck className="h-4 w-4" />}
@@ -401,7 +401,7 @@ function EmptyState({ type }: { type: ActivityType }) {
       <p className="text-sm font-medium text-gray-700">{config.title}</p>
       <Link
         href={config.href}
-        className="mt-6 inline-flex h-10 items-center gap-2 rounded-md bg-gray-950 px-4 text-sm font-medium text-white transition hover:bg-[#ff4800]"
+        className="mt-6 inline-flex h-10 items-center gap-2 rounded-md bg-gray-950 px-4 text-sm font-medium text-white transition hover:bg-[var(--archive-brand)]"
       >
         {config.cta}
         <ArrowRight className="h-4 w-4" />

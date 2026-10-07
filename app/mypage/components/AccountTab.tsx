@@ -15,7 +15,7 @@ type PasswordForm = {
 type LoadingAction = "password" | "delete" | null;
 
 const inputClass =
-  "w-full rounded-md border border-[var(--archive-line)] bg-white px-3 py-2.5 text-sm text-gray-900 outline-none transition focus:border-[#ff4800] focus:ring-2 focus:ring-[#ff4800]/10";
+  "w-full rounded-md border border-[var(--archive-line)] bg-white px-3 py-2.5 text-sm text-gray-900 outline-none transition focus:border-[var(--archive-brand)] focus:ring-2 focus:ring-[var(--archive-brand)]/10";
 
 export default function AccountTab({ email }: { email: string }) {
   const router = useRouter();
@@ -135,7 +135,7 @@ export default function AccountTab({ email }: { email: string }) {
         <div className="flex flex-col gap-4 border-b border-[var(--archive-line)] p-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="flex items-center gap-2 text-sm font-semibold text-gray-950">
-              <ShieldCheck className="h-4 w-4 text-[#ff4800]" />
+              <ShieldCheck className="h-4 w-4 text-[var(--archive-brand)]" />
               로그인 계정
             </div>
             <p className="mt-1 break-all text-sm text-[var(--archive-muted)]">{email || "이메일 정보 없음"}</p>
@@ -144,7 +144,7 @@ export default function AccountTab({ email }: { email: string }) {
             type="button"
             onClick={handleSignOut}
             disabled={isBusy}
-            className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-[var(--archive-line)] bg-white px-3 text-sm font-medium text-gray-700 transition hover:border-[#ff4800] hover:text-[#ff4800] disabled:opacity-50"
+            className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-[var(--archive-line)] bg-white px-3 text-sm font-medium text-gray-700 transition hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)] disabled:opacity-50"
           >
             <LogOut className="h-4 w-4" />
             로그아웃
@@ -154,7 +154,7 @@ export default function AccountTab({ email }: { email: string }) {
         <div className="flex flex-col gap-4 border-b border-[var(--archive-line)] p-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="flex items-center gap-2 text-sm font-semibold text-gray-950">
-              <KeyRound className="h-4 w-4 text-[#ff4800]" />
+              <KeyRound className="h-4 w-4 text-[var(--archive-brand)]" />
               비밀번호
             </div>
             <p className="mt-1 text-sm text-[var(--archive-muted)]">이메일 로그인 비밀번호를 변경합니다.</p>
@@ -163,7 +163,7 @@ export default function AccountTab({ email }: { email: string }) {
             type="button"
             onClick={() => setShowPasswordModal(true)}
             disabled={isBusy}
-            className="inline-flex h-9 items-center justify-center rounded-md border border-[var(--archive-line)] bg-white px-3 text-sm font-medium text-gray-700 transition hover:border-[#ff4800] hover:text-[#ff4800] disabled:opacity-50"
+            className="inline-flex h-9 items-center justify-center rounded-md border border-[var(--archive-line)] bg-white px-3 text-sm font-medium text-gray-700 transition hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)] disabled:opacity-50"
           >
             변경
           </button>
@@ -219,14 +219,14 @@ export default function AccountTab({ email }: { email: string }) {
               <button
                 type="button"
                 onClick={resetPasswordModal}
-                className="flex-1 rounded-md border border-[var(--archive-line)] px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-[#ff4800] hover:text-[#ff4800]"
+                className="flex-1 rounded-md border border-[var(--archive-line)] px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]"
                 disabled={isBusy}
               >
                 취소
               </button>
               <button
                 type="submit"
-                className="inline-flex flex-1 items-center justify-center gap-2 rounded-md bg-gray-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-[#ff4800] disabled:opacity-50"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-md bg-gray-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-[var(--archive-brand)] disabled:opacity-50"
                 disabled={isBusy}
               >
                 {loadingAction === "password" && <Loader2 className="h-4 w-4 animate-spin" />}
@@ -258,7 +258,7 @@ export default function AccountTab({ email }: { email: string }) {
               <button
                 type="button"
                 onClick={resetDeleteModal}
-                className="flex-1 rounded-md border border-[var(--archive-line)] px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-[#ff4800] hover:text-[#ff4800]"
+                className="flex-1 rounded-md border border-[var(--archive-line)] px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]"
                 disabled={isBusy}
               >
                 취소
@@ -300,7 +300,7 @@ function Modal({
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-400 transition hover:bg-[#ff4800]/10 hover:text-[#ff4800]"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-400 transition hover:bg-[var(--archive-brand)]/10 hover:text-[var(--archive-brand)]"
             aria-label="닫기"
           >
             <X className="h-4 w-4" />

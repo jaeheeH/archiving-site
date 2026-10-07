@@ -17,6 +17,8 @@ export async function PATCH(
     const { id } = await params;
     const permCheck = await checkPostOwnershipOrAdmin(id);
     if (!permCheck.authorized) return permCheck.error;
+    const origin = request.headers.get('origin');
+    if (origin && origin !== new URL(request.url).origin) return Response.json({ error: '허용되지 않은 요청입니다.' }, { status: 403 });
 
     const supabase = createAdminClient();
 
@@ -88,7 +90,7 @@ export async function PATCH(
     revalidatePath("/rss.xml"); revalidatePath("/sitemap.xml");
     revalidateTag(CACHE_TAGS.posts, { expire: 0 });
     revalidateTag(CACHE_TAGS.home, { expire: 0 });
-    if (data.type === 'news') {
+    if (data.type === 'news' || data.type === 'blog') {
       revalidatePath('/'); revalidatePath('/news/stories');
       if (data.slug) revalidatePath(`/news/read/${data.slug}`);
     }

@@ -40,7 +40,7 @@ export default function ClientGalleryDetailModal({
   const [gallery, setGallery] = useState<GalleryDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [showSimilarModal, setShowSimilarModal] = useState(false);
-  
+
   // 상태 관리
   const [isScraped, setIsScraped] = useState(false);
   const [scrapLoading, setScrapLoading] = useState(false);
@@ -142,7 +142,7 @@ export default function ClientGalleryDetailModal({
   // 5. 공유하기 (Share)
   const handleShare = async () => {
     const url = window.location.href; // 현재 페이지 URL (또는 특정 ID URL 조합 가능)
-    
+
     if (navigator.share) {
       try {
         await navigator.share({
@@ -165,19 +165,19 @@ export default function ClientGalleryDetailModal({
   // 6. 이미지 다운로드 (Download)
   const handleDownload = async () => {
     if (!gallery?.image_url) return;
-    
+
     try {
       const response = await fetch(gallery.image_url);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      
+
       const link = document.createElement("a");
       link.href = url;
       // 파일명 설정 (제목 or ID)
       link.download = `${gallery.title.replace(/\s+/g, "_")}_${gallery.id}.webp`;
       document.body.appendChild(link);
       link.click();
-      
+
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
@@ -198,11 +198,11 @@ export default function ClientGalleryDetailModal({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 md:p-8"
       onClick={handleBackdropClick}
     >
-      <div 
+      <div
         className="bg-white w-full max-w-7xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col relative"
         onClick={(e) => e.stopPropagation()}
       >
-        
+
         {/* ✅ [상단 헤더] 좌측: 제목 / 우측: 액션 버튼들 */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-white sticky top-0 z-20 h-16 shrink-0">
           {/* 좌측: 제목 */}
@@ -229,10 +229,10 @@ export default function ClientGalleryDetailModal({
 
         {/* --- 본문 컨텐츠 (Flex Layout) --- */}
         <div className="flex flex-col md:flex-row h-[calc(100%-64px)] overflow-y-scroll">
-          
+
           {/* 1. 왼쪽 이미지 영역 */}
           <div className="w-full md:w-[60%] bg-gray-50 flex items-center justify-center p-6 md:p-12 relative overflow-hidden border-r border-gray-100 h-[40vh] md:h-full">
-            <div 
+            <div
               className="relative w-full h-full"
             >
               <Image
@@ -257,9 +257,9 @@ export default function ClientGalleryDetailModal({
                 onClick={handleScrapToggle}
                 disabled={scrapLoading}
                 className={`p-2 rounded-full transition-all ${
-                  isScraped 
-                    ? "bg-[#ff4800]/10 text-[#ff4800] hover:bg-[#ff4800]/15" 
-                    : "text-gray-500 hover:bg-[#ff4800]/10 hover:text-[#ff4800]"
+                  isScraped
+                    ? "bg-[var(--archive-brand)]/10 text-[var(--archive-brand)] hover:bg-[var(--archive-brand)]/15"
+                    : "text-gray-500 hover:bg-[var(--archive-brand)]/10 hover:text-[var(--archive-brand)]"
                 }`}
                 title={isScraped ? "스크랩 취소" : "스크랩"}
               >
@@ -268,7 +268,7 @@ export default function ClientGalleryDetailModal({
               {/* 공유 버튼 */}
               <button
                 onClick={handleShare}
-                className="rounded-full p-2 text-gray-500 transition-colors hover:bg-[#ff4800]/10 hover:text-[#ff4800]"
+                className="rounded-full p-2 text-gray-500 transition-colors hover:bg-[var(--archive-brand)]/10 hover:text-[var(--archive-brand)]"
                 title="공유하기"
               >
                 <i className="ri-share-line text-xl"></i>
@@ -277,7 +277,7 @@ export default function ClientGalleryDetailModal({
               {/* 다운로드 버튼 */}
               <button
                 onClick={handleDownload}
-                className="rounded-full p-2 text-gray-500 transition-colors hover:bg-[#ff4800]/10 hover:text-[#ff4800]"
+                className="rounded-full p-2 text-gray-500 transition-colors hover:bg-[var(--archive-brand)]/10 hover:text-[var(--archive-brand)]"
                 title="이미지 다운로드"
               >
                 <i className="ri-download-line text-xl"></i>
@@ -320,9 +320,9 @@ export default function ClientGalleryDetailModal({
                     <button
                       onClick={handleCopyPrompt}
                       className={`flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-md transition-all ${
-                        isCopied 
-                          ? 'bg-green-50 text-green-600' 
-                          : 'text-gray-500 hover:bg-[#ff4800]/10 hover:text-[#ff4800]'
+                        isCopied
+                          ? 'bg-green-50 text-green-600'
+                          : 'text-gray-500 hover:bg-[var(--archive-brand)]/10 hover:text-[var(--archive-brand)]'
                       }`}
                     >
                       {isCopied ? (
@@ -347,7 +347,7 @@ export default function ClientGalleryDetailModal({
                         key={`${tag}-${idx}`}
                         href={`/gallery?tags=${encodeURIComponent(tag)}`}
                         onClick={onClose}
-                        className="border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-500 transition-all hover:border-[#ff4800] hover:text-[#ff4800]"
+                        className="border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-500 transition-all hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]"
                       >
                         #{tag}
                       </Link>
@@ -361,7 +361,7 @@ export default function ClientGalleryDetailModal({
             <div className="p-6 border-t border-gray-100 bg-white z-10 shrink-0">
               <button
                 onClick={() => setShowSimilarModal(true)}
-                className="flex w-full items-center justify-center gap-2 bg-black py-3.5 font-medium text-white shadow-lg shadow-gray-200 transition-colors hover:bg-[#ff4800]"
+                className="flex w-full items-center justify-center gap-2 bg-black py-3.5 font-medium text-white shadow-lg shadow-gray-200 transition-colors hover:bg-[var(--archive-brand)]"
               >
                 <i className="ri-image-line"></i>
                 <span>View Similar Styles</span>

@@ -119,6 +119,7 @@ export function getDefaultMetadata(settings: SiteSettings | null) {
   }
 
   return {
+    metadataBase: new URL(siteUrl),
     title: {
       default: siteName,
       template: `%s | ${siteName}`,

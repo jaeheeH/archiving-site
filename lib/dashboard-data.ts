@@ -1,5 +1,7 @@
 import "server-only";
 import { getArtCatalog } from "./art-catalog";
+import { buildDashboardMetrics, dashboardPeriod, type MetricMember, type MetricPost, type MetricView } from "./dashboard-metrics";
+import { editorialSchema } from "./news-editorial";
 
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -56,7 +58,7 @@ type FilterableQuery = {
   not(column: string, operator: string, value: string): unknown;
 };
 
-function applyAuthorScope<T>(query: T, context: DashboardContext, column: "author" | "author_id"): T {
+function applyAuthorScope<T>(query: T, context: DashboardContext, column: "author" | "author_id" | "posts.author_id"): T {
   const scopedQuery = query as FilterableQuery;
 
   if (context.role === "editor") {
@@ -217,9 +219,9 @@ export async function getDashboardContext() {
   };
 }
 
-export async function getDashboardOverview() {
+export async function getDashboardOverview(days?: number) {
   const context = await getDashboardContext();
-  if (!context) return null;
+  if (!context || context.role === "user") return null;
 
   const { admin } = context;
   const catalog = await getArtCatalog();
@@ -233,14 +235,14 @@ export async function getDashboardOverview() {
 
   const galleryBase = () =>
     applyAuthorScope(
-      admin.from("gallery").select("id", { count: "estimated", head: true }),
+      admin.from("gallery").select("id", { count: "exact", head: true }),
       context,
       "author"
     );
 
   const referencesBase = () =>
     applyAuthorScope(
-      admin.from("references").select("id", { count: "estimated", head: true }),
+      admin.from("references").select("id", { count: "exact", head: true }),
       context,
       "author"
     );
@@ -277,7 +279,7 @@ export async function getDashboardOverview() {
     readCount(galleryBase()),
     readCount(referencesBase()),
     context.role === "admin" || context.role === "sub-admin"
-      ? readCount(admin.from("users").select("id", { count: "estimated", head: true }))
+      ? readCount(admin.from("users").select("id", { count: "exact", head: true }))
       : Promise.resolve({ value: 0 }),
     readCount(
       admin
@@ -381,7 +383,9 @@ export async function getDashboardOverview() {
     ),
   ]);
 
+  const operations = days === undefined ? null : await readDashboardOperations(context, days);
   return {
+    operations,
     viewer: {
       id: context.user.id,
       email: context.user.email || context.profile?.email || "",
@@ -418,6 +422,43 @@ export async function getDashboardOverview() {
       references: topReferences,
     },
   };
+}
+
+async function readDashboardOperations(context: DashboardContext, days: number) {
+  const now = new Date();
+  const period = dashboardPeriod(days, now);
+  async function allRows<T>(query: (start: number) => PromiseLike<{ data: T[] | null; error: QueryError }>) {
+    const rows: T[] = [];
+    // ponytail: paged reads fit this small catalog; move aggregation into SQL if traffic makes these reads costly.
+    for (let start = 0; ; start += 1000) {
+      const { data, error } = await query(start);
+      if (error) throw new Error(error.message);
+      rows.push(...(data || []));
+      if (!data || data.length < 1000) return rows;
+    }
+  }
+  const [postsResult, viewsResult, membersResult, qualityResult] = await Promise.allSettled([
+    allRows<MetricPost>(start => applyAuthorScope(context.admin.from("posts")
+      .select("id,type,title,slug,is_published,created_at,published_at,view_count,scrap_count,like_count,category:content->>category,author_id")
+      .in("type", ["news", "blog"]).order("id").range(start, start + 999), context, "author_id")),
+    allRows<MetricView>(start => applyAuthorScope(context.admin.from("post_views")
+      .select("post_id,created_at,posts!inner(author_id,type)").in("posts.type", ["news", "blog"])
+      .gte("created_at", period.previousStart).lte("created_at", period.now).order("id").range(start, start + 999), context, "posts.author_id")),
+    ["admin", "sub-admin"].includes(context.role) ? allRows<MetricMember>(start => context.admin.from("users").select("role,created_at").order("id").range(start, start + 999)) : Promise.resolve(null),
+    allRows<{ id: string; title: string; summary: string; source_url: string; paragraphs: unknown; points: unknown; tags: string[] }>(start => applyAuthorScope(context.admin.from("posts")
+      .select("id,title,summary,source_url:content->>source_url,paragraphs:content->paragraphs,points:content->points,tags,author_id")
+      .eq("type", "news").eq("is_published", true).order("id").range(start, start + 999), context, "author_id")),
+  ]);
+  if (postsResult.status === "rejected") throw postsResult.reason;
+  const warnings: string[] = [];
+  if (viewsResult.status === "rejected") warnings.push("조회 기록을 불러오지 못했습니다. 기간 조회는 집계 불가로 표시합니다.");
+  if (membersResult.status === "rejected") warnings.push("회원 현황을 불러오지 못했습니다.");
+  if (qualityResult.status === "rejected") warnings.push("발행 기사 품질 점검을 불러오지 못했습니다.");
+  const readiness = new Map(qualityResult.status === "fulfilled" ? qualityResult.value.map(p => {
+    const parsed = editorialSchema.safeParse({ url: p.source_url, title: p.title, summary: p.summary, paragraphs: p.paragraphs, points: p.points, tags: p.tags });
+    return [p.id, { qualityReady: parsed.success, qualityReasons: parsed.success ? [] : [...new Set(parsed.error.issues.map(issue => issue.message))] }];
+  }) : []);
+  return { ...buildDashboardMetrics(postsResult.value.map(p => ({ ...p, ...readiness.get(p.id) })), viewsResult.status === "fulfilled" ? viewsResult.value : null, membersResult.status === "fulfilled" ? membersResult.value : null, period.days, now), qualityAvailable: qualityResult.status === "fulfilled", warnings };
 }
 
 export async function getGalleryAnalytics() {

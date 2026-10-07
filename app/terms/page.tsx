@@ -79,7 +79,7 @@ export default function TermsPage() {
     <main className="min-h-screen w-full bg-white text-gray-900 dark:bg-[#0f0f0f] dark:text-gray-100">
       <div className="mx-auto max-w-4xl px-4 py-20 md:py-28">
         <div className="mb-12 border-b border-gray-100 pb-8 dark:border-gray-800">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-[#ff4800]">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-[var(--archive-brand)]">
             Policy
           </p>
           <h1 className="mb-4 text-3xl font-bold md:text-4xl">이용약관</h1>
@@ -106,7 +106,7 @@ export default function TermsPage() {
             <h2 className="mb-3 text-base font-bold text-gray-950 dark:text-white">운영팀</h2>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               이메일:{" "}
-              <a href="mailto:archbehind@gmail.com" className="font-medium text-[#ff4800]">
+              <a href="mailto:archbehind@gmail.com" className="font-medium text-[var(--archive-brand)]">
                 archbehind@gmail.com
               </a>
             </p>
@@ -114,7 +114,7 @@ export default function TermsPage() {
 
           <section className="border-t border-gray-100 pt-8 text-sm text-gray-500 dark:border-gray-800 dark:text-gray-400">
             <p>이 이용약관은 {effectiveDate}부터 적용됩니다.</p>
-            <Link href="/privacy" className="mt-4 inline-flex font-medium text-[#ff4800]">
+            <Link href="/privacy" className="mt-4 inline-flex font-medium text-[var(--archive-brand)]">
               개인정보 처리방침 보기
             </Link>
           </section>

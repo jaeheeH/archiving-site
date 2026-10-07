@@ -1,8 +1,30 @@
 html[data-theme="my-design-system"] {
-  --layout-page-gutter: clamp(16px, 3vw, 40px);
+  --layout-page-gutter: 24px;
   --layout-content-max: 1280px;
   --layout-workspace-max: 1440px;
   --layout-readable-max: 720px;
+  --archive-canvas: var(--balsa-role-background);
+  --archive-ink: var(--balsa-role-foreground);
+  --archive-muted: var(--balsa-role-secondary);
+  --archive-faint: var(--balsa-role-muted-foreground);
+  --archive-line: var(--balsa-role-border);
+  --archive-brand: var(--balsa-role-primary);
+  --archive-brand-hover: var(--balsa-color-primary-hover);
+  --archive-bg-light: var(--balsa-role-surface);
+  --archive-bg-regular: var(--balsa-role-muted);
+  --archive-surface: var(--balsa-role-background);
+  --archive-brand-soft: var(--balsa-color-selected);
+  --color-gray-50: #f7f7f5;
+  --color-gray-100: #f0f0ee;
+  --color-gray-200: #dedede;
+  --color-gray-300: #c7c7c7;
+  --color-gray-400: #8a8a8a;
+  --color-gray-500: #777777;
+  --color-gray-600: #6b6b6b;
+  --color-gray-700: #4a4a4a;
+  --color-gray-800: #333333;
+  --color-gray-900: #242424;
+  --color-gray-950: #242424;
   --background: var(--balsa-role-background);
   --foreground: var(--balsa-role-foreground);
   --card: var(--balsa-role-surface);
@@ -88,9 +110,9 @@ html[data-theme="my-design-system"] :is(
   --archive-faint: var(--balsa-role-muted-foreground);
   --archive-line: var(--balsa-role-border);
   --archive-brand: var(--balsa-role-primary);
-  --archive-bg-light: var(--balsa-role-background);
+  --archive-bg-light: var(--balsa-role-surface);
   --archive-bg-regular: var(--balsa-role-surface);
-  --archive-surface: var(--balsa-role-surface);
+  --archive-surface: var(--balsa-role-background);
   --archive-page: var(--layout-content-max);
   background: var(--archive-canvas);
   color: var(--archive-ink);
@@ -104,7 +126,7 @@ html[data-theme="my-design-system"] .archive-eyebrow {
 }
 
 html[data-theme="my-design-system"] :is(.archive-page-shell, .archive-blog, .archive-article) > section:first-child {
-  background: var(--balsa-role-surface);
+  background: var(--balsa-role-background);
 }
 
 html[data-theme="my-design-system"] :is(.archive-page-shell, .archive-blog) > section:first-child > div {
@@ -112,10 +134,15 @@ html[data-theme="my-design-system"] :is(.archive-page-shell, .archive-blog) > se
   padding-bottom: 28px;
 }
 
+html[data-theme="my-design-system"] .archive-page-shell > section:not(.mx-auto) > div,
+html[data-theme="my-design-system"] .archive-page-shell > .mx-auto {
+  padding-inline: var(--layout-page-gutter);
+}
+
 html[data-theme="my-design-system"] :is(.archive-page-shell, .archive-blog) > section:first-child h1 {
   max-width: var(--layout-readable-max);
-  font-size: clamp(32px, 4vw, 48px);
-  font-weight: 600;
+  font-size: clamp(31px, 4vw, 40px);
+  font-weight: 750;
   line-height: 1.3;
   letter-spacing: -0.04em;
   word-break: keep-all;
@@ -204,7 +231,11 @@ html[data-theme="my-design-system"] .archive-page-shell a.group {
 }
 
 html[data-theme="my-design-system"] .archive-page-shell a.group:hover {
-  border-color: var(--balsa-role-secondary);
+  border-color: var(--balsa-role-primary);
+}
+
+html[data-theme="my-design-system"] .archive-page-shell a.gallery-image-card {
+  border-radius: 0;
 }
 
 html[data-theme="my-design-system"] .archive-page-shell :is(input, select, textarea),
@@ -213,6 +244,20 @@ html[data-theme="my-design-system"] .dashboard-shell :is(input, select, textarea
   border-radius: var(--balsa-radius-control, 4px);
   background: var(--balsa-role-background);
   color: var(--balsa-role-foreground);
+}
+
+html[data-theme="my-design-system"] :is(.archive-page-shell, .dashboard-shell) :is(input, select, textarea):focus-visible {
+  border-color: var(--archive-brand);
+}
+
+html[data-theme="my-design-system"] :is(.archive-page-shell, .dashboard-shell) :is(input, select, textarea):disabled {
+  background: var(--archive-bg-light);
+  color: var(--archive-muted);
+  cursor: not-allowed;
+}
+
+html[data-theme="my-design-system"] input:is([type="checkbox"], [type="radio"]) {
+  accent-color: var(--archive-brand);
 }
 
 html[data-theme="my-design-system"] .archive-page-shell :is(input, select, textarea):hover,
@@ -236,9 +281,17 @@ html[data-theme="my-design-system"] .dashboard-Contents > div > .dashboard-Heade
 }
 
 html[data-theme="my-design-system"] .dashboard-Contents > div > .dashboard-Header {
-  height: 56px;
-  padding: 12px 24px;
+  min-height: 88px;
+  height: auto;
+  padding: 20px 24px;
   border-bottom: 1px solid var(--balsa-role-border);
+}
+
+html[data-theme="my-design-system"] .dashboard-Contents > div > .dashboard-Header h1 {
+  font-size: 26px;
+  font-weight: 750;
+  letter-spacing: -.8px;
+  line-height: 1.4;
 }
 
 html[data-theme="my-design-system"] .dashboard-Contents > div > .dashboard-container {
@@ -258,8 +311,8 @@ html[data-theme="my-design-system"] #sideBar .side-logo {
 }
 
 html[data-theme="my-design-system"] #sideBar .side-logo > p {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 800;
   letter-spacing: -0.04em;
 }
 
@@ -280,18 +333,23 @@ html[data-theme="my-design-system"] #sideBar nav :is(a, div[role="button"]) {
   border-radius: var(--balsa-radius-control, 4px);
 }
 
-html[data-theme="my-design-system"] .dashboard-shell .bg-blue-50 {
-  background: var(--balsa-role-primary);
-  color: var(--balsa-role-primary-foreground);
-}
-
-html[data-theme="my-design-system"] .dashboard-shell .text-blue-600 {
-  color: var(--balsa-role-primary);
-}
-
-html[data-theme="my-design-system"] .dashboard-shell .bg-blue-50.text-blue-600,
-html[data-theme="my-design-system"] .dashboard-shell .bg-blue-50 .text-blue-600 {
-  color: var(--balsa-role-primary-foreground);
+html[data-theme="my-design-system"] .dashboard-shell {
+  --color-blue-50: var(--archive-brand-soft);
+  --color-blue-100: #e1efdf;
+  --color-blue-200: #c6e1c3;
+  --color-blue-500: var(--archive-brand);
+  --color-blue-600: var(--archive-brand);
+  --color-blue-700: var(--archive-brand-hover);
+  --color-blue-900: #10570e;
+  --color-indigo-50: var(--archive-brand-soft);
+  --color-indigo-100: #e1efdf;
+  --color-indigo-500: var(--archive-brand);
+  --color-indigo-600: var(--archive-brand);
+  --color-indigo-700: var(--archive-brand-hover);
+  --color-emerald-50: var(--archive-brand-soft);
+  --color-emerald-200: #c6e1c3;
+  --color-emerald-600: var(--archive-brand);
+  --color-emerald-700: var(--archive-brand-hover);
 }
 
 html[data-theme="my-design-system"] .dashboard-shell :is(.bg-white, .modalContents) {
@@ -320,10 +378,15 @@ html[data-theme="my-design-system"] .dashboard-shell :is(.shadow, .shadow-sm, .s
 
 html[data-theme="my-design-system"] .dashboard-shell :is(.btn-line-36, .btn-line-40, .btn-line-48, .btn-sumit) {
   min-height: 44px;
-  border-color: var(--balsa-role-primary);
+  border-color: var(--archive-ink);
   border-radius: var(--balsa-radius-control, 4px);
-  background: var(--balsa-role-primary);
+  background: var(--archive-ink);
   color: var(--balsa-role-primary-foreground);
+}
+
+html[data-theme="my-design-system"] .dashboard-shell :is(.btn-line-36, .btn-line-40, .btn-line-48, .btn-sumit):hover {
+  border-color: var(--archive-brand);
+  background: var(--archive-brand);
 }
 
 html[data-theme="my-design-system"] .dashboard-shell :is(.input-text-36, .textArea) {
@@ -371,5 +434,13 @@ html[data-theme="my-design-system"] .dashboard-shell :is(time, [class*="date"], 
 
   html[data-theme="my-design-system"] .dashboard-Contents > div > .dashboard-container {
     padding: 16px 16px 32px;
+  }
+
+  html[data-theme="my-design-system"] .dashboard-Contents > div > .dashboard-Header {
+    padding: 16px;
+  }
+
+  html[data-theme="my-design-system"] .dashboard-Contents > div > .dashboard-Header h1 {
+    font-size: 24px;
   }
 }

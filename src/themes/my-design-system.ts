@@ -29,8 +29,8 @@ export const myDesignSystemTheme = defineTheme({
       },
       "radius": {
         "control": 4,
-        "surface": 7,
-        "panel": 9,
+        "surface": 8,
+        "panel": 8,
         "badge": 9999,
         "toggle": 9999,
         "codeControl": 4
