@@ -1,8 +1,8 @@
 import 'server-only';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
-import { getArtCatalog } from './art-catalog';
+import { getFreshArtCatalog, ART_CATALOG_TAG } from './art-catalog';
 import { checkPostEditPermission } from './supabase/post-utils';
 import { createAdminClient } from './supabase/admin';
 
@@ -24,7 +24,7 @@ export async function listArt(resource: Resource, request: Request, id?: string)
   if (!permission.authorized) return permission.error;
   if (id && !idSchema.safeParse(id).success) return Response.json({ error: '잘못된 ID입니다.' }, { status: 400 });
   try {
-    const catalog = await getArtCatalog();
+    const catalog = await getFreshArtCatalog();
     const writable = permission.role === 'admin' || permission.role === 'sub-admin';
     if (id) {
       const record = catalog[resource].find(row => row.id === id);
@@ -66,6 +66,7 @@ export async function saveArt(resource: Resource, request: Request, id?: string)
       const saved = await db.rpc('save_artwork', { p_record: { ...old, ...artwork, id: recordId, artist_status: artwork.artist_ids.length ? 'identified' : 'unidentified', collected_at: old.collected_at || new Date().toISOString(), title_ko_status: old.title_ko_status || 'working_translation' }, p_artist_ids: artwork.artist_ids });
       if (saved.error) throw saved.error;
     }
+    revalidateTag(ART_CATALOG_TAG, { expire: 0 });
     for (const path of ['/art', '/artists', '/sitemap.xml', '/dashboard', '/dashboard/contents']) revalidatePath(path);
     revalidatePath('/art/[id]', 'page'); revalidatePath('/artists/[id]', 'page');
     return Response.json({ saved: true, id: recordId }, { status: id ? 200 : 201 });

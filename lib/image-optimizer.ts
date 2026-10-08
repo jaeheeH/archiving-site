@@ -1,6 +1,7 @@
+import { canOptimizeImage } from './public-image';
 /**
  * 이미지 URL을 최적화된 형식으로 변환
- * Supabase Storage의 이미지를 WebP로 변환하고 리사이징
+ * Next Image의 기존 캐시와 이미지 변환을 사용
  */
 
 export function optimizeImageUrl(
@@ -12,28 +13,10 @@ export function optimizeImageUrl(
     format?: 'webp' | 'jpeg' | 'png';
   } = {}
 ): string {
-  if (!url) return url;
-
-  const { width = 1200, height, quality = 80, format = 'webp' } = options;
-
-  // Supabase Storage URL인지 확인
-  if (!url.includes('supabase.co')) {
-    return url;
-  }
-
-  // 이미 쿼리 파라미터가 있으면 제거
-  const cleanUrl = url.split('?')[0];
-
-  // 이미지 변환 파라미터 구성
-  const params = new URLSearchParams();
-  
-  if (width) params.append('width', String(width));
-  if (height) params.append('height', String(height));
-  if (format) params.append('format', format);
-  if (quality) params.append('quality', String(quality));
-
-  // transform 파라미터로 URL 재구성
-  return `${cleanUrl}?${params.toString()}`;
+  if (!url || !canOptimizeImage(url)) return url;
+  const width = [16, 32, 64, 128, 256, 384, 640, 828, 1200].find(size => size >= (options.width || 1200)) || 1200;
+  // Use Next's existing optimizer; arbitrary query parameters on a Storage object do not resize it.
+  return `/_next/image?url=${encodeURIComponent(url)}&w=${width}&q=75`;
 }
 
 /**

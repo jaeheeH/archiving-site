@@ -7,6 +7,7 @@ type Props = { page: number; totalPages: number; label: string } & (
 
 export default function ContentPagination({ page, totalPages, label, href, onPageChange }: Props) {
   const last = Math.max(1, Number.isFinite(totalPages) ? Math.trunc(totalPages) : 1);
+  if (last === 1) return null;
   const current = Math.min(last, Math.max(1, Number.isFinite(page) ? Math.trunc(page) : 1));
   const start = Math.max(1, Math.min(current - 2, last - 4));
   const control = (target: number, name: string, icon?: string, disabled = false) => {
@@ -24,6 +25,5 @@ export default function ContentPagination({ page, totalPages, label, href, onPag
     <div className="content-pagination-pages">{Array.from({ length: Math.min(5, last) }, (_, i) => start + i).map(number => <span key={number}>{control(number, String(number))}</span>)}</div>
     {control(current + 1, '다음', 'ri-arrow-right-s-line', current === last)}
     {control(last, '마지막', 'ri-arrow-right-double-line', current === last)}
-    <span className="content-pagination-summary" aria-live="polite">{current} / {last}</span>
   </nav>;
 }

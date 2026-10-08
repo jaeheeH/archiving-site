@@ -3,7 +3,7 @@
 import { Suspense } from 'react';
 import ReferenceContent from './ReferenceContent';
 import { getReferencesPageData } from '@/lib/public-data';
-import { pageMetadata } from '@/lib/seo';
+import { getPageMetadata } from '@/lib/site-settings';
 import { SITE_COPY } from '@/lib/site-copy';
 
 // ⚡ ISR 설정: 24시간마다 재검증
@@ -12,7 +12,7 @@ export const revalidate = 86400;
 // 동적 메타데이터 생성
 export async function generateMetadata({ searchParams }: { searchParams: Promise<{ q?: string; category?: string }> }) {
   const params = await searchParams;
-  return pageMetadata({ path: '/references', title: '참고사이트', description: SITE_COPY.references.description, image: '/api/og?type=references-list', noindex: !!(params.q?.trim() || (params.category && params.category !== 'all')) });
+  return getPageMetadata({ path: '/references', title: '참고사이트', description: SITE_COPY.references.description, image: '/api/og?type=references-list', noindex: !!(params.q?.trim() || (params.category && params.category !== 'all')) });
 }
 
 export default async function ReferencesPage() {

@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { formatKoreanDate } from "@/lib/date-format";
-import { pageMetadata } from '@/lib/seo';
+import { getPageMetadata } from '@/lib/site-settings';
 
-export const metadata = pageMetadata({ path: '/terms', title: '이용약관', description: 'ARCH.B의 이용약관입니다.' });
+export async function generateMetadata() { return getPageMetadata({ path: '/terms', title: '이용약관', description: 'ARCH.B의 이용약관입니다.' }); }
 
 const TERMS_EFFECTIVE_DATE = new Date("2026-07-29T00:00:00+09:00");
 

@@ -3,9 +3,10 @@ import { CACHE_SECONDS, CACHE_TAGS } from "@/lib/public-data";
 import { getSiteUrl } from "@/lib/site-url";
 import { SITE_COPY } from "@/lib/site-copy";
 import { createPublicClient } from "@/lib/supabase/public";
-import { isSearchPreview } from '@/lib/seo';
+import { isSearchPreview, pageMetadata, sitePageUrl } from '@/lib/seo';
 
 export type SiteSettings = {
+  updated_at?: string | null;
   site_name: string;
   site_description: string | null;
   site_keywords: string[] | null;
@@ -35,6 +36,7 @@ export type SiteSettings = {
 };
 
 const PUBLIC_SITE_SETTINGS_COLUMNS = `
+  updated_at,
   site_name,
   site_description,
   site_keywords,
@@ -100,6 +102,15 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
   }
 }
 
+export async function getPageMetadata(options: Parameters<typeof pageMetadata>[0]) {
+  const settings = await getSiteSettings();
+  let image = options.image || settings?.og_image || '/api/og?type=default';
+  if (image.startsWith('/api/og?') && !image.includes('&v=')) image += `&v=2-${encodeURIComponent(settings?.updated_at || 'default')}`;
+  const metadata = pageMetadata({ ...options, image });
+  if (!options.image && settings?.twitter_image) metadata.twitter = { ...metadata.twitter, images: [sitePageUrl(settings.twitter_image)] };
+  return metadata;
+}
+
 /**
  * 기본 메타데이터 생성
  */
@@ -109,7 +120,7 @@ export function getDefaultMetadata(settings: SiteSettings | null) {
     settings?.site_description ||
     `${SITE_COPY.brand.statement} ${SITE_COPY.brand.description}`;
   const siteUrl = getSiteUrl();
-  const defaultOgImage = `${siteUrl}/api/og?type=default`;
+  const defaultOgImage = `${siteUrl}/api/og?type=default&v=2-${encodeURIComponent(settings?.updated_at || 'default')}`;
   const ogImage = settings?.og_image || defaultOgImage;
   const twitterImage = settings?.twitter_image || ogImage;
 

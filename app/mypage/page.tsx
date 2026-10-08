@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/app/components/ArchiveImage";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
@@ -47,10 +47,10 @@ function getDailyIndex(length: number) {
 }
 
 export default async function MyPage() {
-  const [user, activity, homeData] = await Promise.all([
+  const [user, activity, catalog] = await Promise.all([
     getMypageProfile(),
     getMypageActivity(),
-    getHomeData(),
+    getArtCatalog(),
   ]);
 
   if (!user || !activity) {
@@ -58,10 +58,11 @@ export default async function MyPage() {
   }
 
   const totalSaved = activity.posts.length + activity.galleries.length + activity.references.length;
-  const { artworks, artists } = await getArtCatalog();
+  const { artworks, artists } = catalog;
   const dailyArtwork = artworks[getDailyIndex(artworks.length)];
-  const fallbackBlog = homeData.latestBlogs[0];
-  const fallbackReference = homeData.references[0];
+  const homeData = dailyArtwork ? null : await getHomeData();
+  const fallbackBlog = homeData?.latestBlogs[0];
+  const fallbackReference = homeData?.references[0];
   const todayRecommendation = dailyArtwork
     ? {
         label: "오늘의 작품",
@@ -97,7 +98,7 @@ export default async function MyPage() {
       href: `/news/read/${post.slug}`,
       date: post.published_at || post.created_at,
       image: post.title_image_url,
-      unoptimized: post.type === 'news',
+      unoptimized: false,
       icon: <FileText className="h-5 w-5" />,
     })),
     ...activity.galleries.map((gallery) => ({

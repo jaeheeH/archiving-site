@@ -4,22 +4,11 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import NextLink from 'next/link';
-import { EditorContent, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import ImageExtension from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
-import Underline from '@tiptap/extension-underline';
-import TextAlign from '@tiptap/extension-text-align';
-import { Table } from '@tiptap/extension-table';
-import { TableCell } from '@tiptap/extension-table-cell';
-import { TableHeader } from '@tiptap/extension-table-header';
-import { TableRow } from '@tiptap/extension-table-row';
 import { createClient } from '@/lib/supabase/client';
-import type { AnyExtension, JSONContent } from '@tiptap/core';
+import type { JSONContent } from '@tiptap/core';
+import type { ArticleHeading } from '@/lib/article-outline';
+import ArchiveImage from '@/app/components/ArchiveImage';
 
-import { ReadOnlyImageGalleryNode } from '@/components/Editor/ReadOnlyImageGalleryNode';
-import { ReadOnlyColumnsNode } from '@/components/Editor/ReadOnlyColumnsNode';
-import { optimizeImageUrl } from '@/lib/image-optimizer';
 import { normalizeAvatarUrl } from '@/lib/avatar-url';
 import { SITE_COPY } from '@/lib/site-copy';
 import { CATEGORIES } from '@/lib/news-feeds';
@@ -33,7 +22,7 @@ export interface Post {
   title: string;
   subtitle: string | null;
   summary: string | null;
-  content: TiptapContent;
+  content?: TiptapContent;
   slug: string;
   published_at: string | null;
   created_at: string;
@@ -87,68 +76,8 @@ interface BlogDetailClientProps {
     readingMinutes: number;
   };
   children?: ReactNode;
+  outline?: { headings: ArticleHeading[]; readingMinutes: number };
 }
-
-interface ArticleHeading {
-  id: string;
-  level: number;
-  text: string;
-}
-
-const getNodeText = (node: TiptapContent): string => {
-  if (!node) return '';
-  if (typeof node === 'string') return node;
-  if (Array.isArray(node)) return node.map(getNodeText).join('');
-  if (typeof node.text === 'string') return node.text;
-  if (!Array.isArray(node.content)) return '';
-  return node.content.map(getNodeText).join('');
-};
-
-const createHeadingId = (text: string, index: number) => {
-  const slug = text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\p{L}\p{N}\s-]/gu, '')
-    .replace(/\s+/g, '-')
-    .slice(0, 80);
-
-  return slug || `section-${index + 1}`;
-};
-
-const extractHeadings = (content: TiptapContent): ArticleHeading[] => {
-  const headings: ArticleHeading[] = [];
-  const seenIds = new Map<string, number>();
-
-  const visit = (node: TiptapContent) => {
-    if (!node) return;
-    if (typeof node === 'string') return;
-    if (Array.isArray(node)) {
-      node.forEach(visit);
-      return;
-    }
-    if (node.type === 'heading' && [2, 3].includes(node.attrs?.level)) {
-      const text = getNodeText(node).trim();
-      if (text) {
-        const baseId = createHeadingId(text, headings.length);
-        const seenCount = seenIds.get(baseId) || 0;
-        seenIds.set(baseId, seenCount + 1);
-
-        headings.push({
-          id: seenCount > 0 ? `${baseId}-${seenCount + 1}` : baseId,
-          level: Number(node.attrs?.level || 2),
-          text,
-        });
-      }
-    }
-
-    if (Array.isArray(node.content)) {
-      node.content.forEach(visit);
-    }
-  };
-
-  visit(content);
-  return headings;
-};
 
 const extractSummaryItems = (text: string | null | undefined): string[] => {
   if (!text) return [];
@@ -236,6 +165,7 @@ export default function BlogDetailClient({
   initialRelatedPosts = [],
   news,
   children,
+  outline = { headings: [], readingMinutes: 1 },
 }: BlogDetailClientProps) {
   const router = useRouter();
   
@@ -255,58 +185,27 @@ export default function BlogDetailClient({
   const [reactionError, setReactionError] = useState('');
   const [likesAvailable, setLikesAvailable] = useState(false);
   
+  const [authReady, setAuthReady] = useState(false);
   const [user, setUser] = useState<{ id: string } | null>(null);
   const accountId = useRef<string | null>(null);
   const [hasRecordedView, setHasRecordedView] = useState(false);
   const [isScrapping, setIsScrapping] = useState(false);
-  const headings = useMemo(() => extractHeadings(post.content), [post.content]);
-  const editorialReadingMinutes = useMemo(() => {
-    const textLength = getNodeText(post.content).replace(/\s+/g, '').length;
-    return Math.max(1, Math.ceil(textLength / 600));
-  }, [post.content]);
+  const headings = outline.headings;
+  const editorialReadingMinutes = outline.readingMinutes;
   const summaryItems = useMemo(
     () => news?.points || extractSummaryItems(post.summary || post.subtitle),
     [news, post.summary, post.subtitle]
   );
   const readingMinutes = news?.readingMinutes || editorialReadingMinutes;
 
-  // Tiptap 에디터 설정
-  const editor = useEditor({
-    extensions: [
-      StarterKit.configure({ heading: { levels: [2, 3, 4, 5, 6] } }) as unknown as AnyExtension,
-      ImageExtension,
-      ReadOnlyImageGalleryNode,
-      ReadOnlyColumnsNode,
-      Table.configure({
-        resizable: true,
-        handleWidth: 4,
-        cellMinWidth: 50,
-        lastColumnResizable: true,
-        allowTableNodeSelection: true,
-      }),
-      TableRow,
-      TableHeader,
-      TableCell,
-      Link.configure({
-        openOnClick: true,
-      }),
-      Underline,
-      TextAlign.configure({
-        types: ['heading', 'paragraph', 'image', 'imageGallery'],
-      }),
-    ],
-    editable: false,
-    immediatelyRender: false,
-    content: news ? undefined : initialPost.content,
-  });
-
   // 1. 사용자 정보 가져오기
   useEffect(() => {
     const supabase = createClient();
     const syncUser = (next: { id: string } | null) => {
-      if (accountId.current !== (next?.id || null)) { setLikesAvailable(false); setReactionError(''); }
+      if (accountId.current !== (next?.id || null)) { setLikesAvailable(false); setIsScraped(false); setIsLiked(false); setReactionError(''); }
       accountId.current = next?.id || null;
       setUser(next);
+      setAuthReady(true);
     };
     void supabase.auth.getUser().then(({ data }) => syncUser(data.user || null));
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => syncUser(session?.user || null));
@@ -331,9 +230,10 @@ export default function BlogDetailClient({
   // 3. [중요] 로그인 유저일 경우, 최신 스크랩 상태 동기화 (ISR 보완)
   useEffect(() => {
     let active = true;
-    if (post.slug) {
+    const controller = new AbortController();
+    if (post.slug && authReady) {
       // 이미 화면은 보이고 있으므로, 백그라운드에서 조용히 내 상태만 업데이트
-      fetch(`/api/posts/by-slug/${post.slug}`)
+      fetch(`/api/posts/by-slug/${post.slug}`, { signal: controller.signal })
         .then((res) => {
            if(res.ok) return res.json();
            throw new Error('Fetch failed');
@@ -348,28 +248,21 @@ export default function BlogDetailClient({
           setLikeCount(data.like_count || 0);
           // setViewCount(data.view_count); // 조회수는 아래 recordView에서 처리하므로 생략 가능
         })
-        .catch((err) => console.error('Background update failed:', err));
+        .catch((err) => { if (!controller.signal.aborted) console.error('Background update failed:', err); });
     }
-    return () => { active = false; };
-  }, [user?.id, post.slug]);
+    return () => { active = false; controller.abort(); };
+  }, [user?.id, post.slug, authReady]);
 
   // 4. 조회수 기록
   useEffect(() => {
-    if (post && !hasRecordedView) {
+    if (authReady && post && !hasRecordedView) {
       // eslint-disable-next-line react-hooks/immutability
       recordView();
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setHasRecordedView(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [post.id, hasRecordedView]); // post 객체가 변경되는 것을 방지하기 위해 ID 의존
-
-  // 5. 에디터 콘텐츠 동기화 (혹시 모를 타이밍 문제 방지)
-  useEffect(() => {
-    if (!news && post?.content && editor && editor.isEmpty) {
-      editor.commands.setContent(post.content);
-    }
-  }, [post.content, editor, news]);
+  }, [post.id, hasRecordedView, authReady]); // post 객체가 변경되는 것을 방지하기 위해 ID 의존
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -381,45 +274,7 @@ export default function BlogDetailClient({
     }, 100);
 
     return () => clearTimeout(timer);
-  }, [headings, editor]);
-
-  // 6. 이미지 최적화 (기존 로직 유지)
-  useEffect(() => {
-    const optimizeEditorImages = () => {
-      try {
-        const images = document.querySelectorAll('.tiptap-content img');
-        if (images.length === 0) return;
-
-        images.forEach((img: Element) => {
-          const src = img.getAttribute('src');
-          if (src && src.includes('supabase.co')) {
-            const optimizedSrc = optimizeImageUrl(src, {
-              width: 1000,
-              format: 'webp',
-              quality: 75,
-            });
-
-            const srcset = [
-              `${optimizeImageUrl(src, { width: 400, format: 'webp', quality: 75 })} 400w`,
-              `${optimizeImageUrl(src, { width: 800, format: 'webp', quality: 75 })} 800w`,
-              `${optimizeImageUrl(src, { width: 1200, format: 'webp', quality: 75 })} 1200w`,
-            ].join(', ');
-
-            img.setAttribute('src', optimizedSrc);
-            img.setAttribute('srcset', srcset);
-            img.setAttribute('sizes', '(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1200px');
-            img.setAttribute('loading', 'lazy');
-            img.setAttribute('decoding', 'async');
-          }
-        });
-      } catch (error) {
-        console.warn('Image optimization failed:', error);
-      }
-    };
-
-    const timer = setTimeout(optimizeEditorImages, 300);
-    return () => clearTimeout(timer);
-  }, [post?.content, editor]); // editor 의존성 추가
+  }, [headings]);
 
   // --- Functions ---
 
@@ -699,14 +554,14 @@ export default function BlogDetailClient({
 
           {post.title_image_url && (
             <figure className="news-detail-thumbnail">
-              <img src={post.title_image_url} alt={post.title} referrerPolicy="no-referrer" fetchPriority="high" />
+              <ArchiveImage src={post.title_image_url} width={1200} height={800} sizes="(max-width: 1024px) 100vw, 820px" alt={post.title} referrerPolicy="no-referrer" />
               {news && <figcaption className="news-detail-image-credit">이미지 제공: {news.source} · 원출처 기사</figcaption>}
             </figure>
           )}
 
               <div className="article-editor archive-article-body">
                 <div className="tiptap-content">
-                  {news ? children : editor ? <EditorContent editor={editor} /> : children}
+                  {children}
                 </div>
               </div>
 
@@ -747,9 +602,8 @@ export default function BlogDetailClient({
                       >
                         <div className="relative mb-4 aspect-[4/3] overflow-hidden bg-[var(--archive-bg-light)]">
                           {related.title_image_url ? (
-                            <Image
+                            <ArchiveImage
                               src={related.title_image_url}
-                              unoptimized={related.type === "news"}
                               alt={related.title}
                               fill
                               sizes="(max-width: 768px) 100vw, 33vw"

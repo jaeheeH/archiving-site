@@ -12,7 +12,7 @@ const { pageMetadata, jsonLd, sitePageUrl, isSearchPreview } = SeoModule;
 const EditorialContent = EditorialModule.default || EditorialModule;
 const configure = ConfigModule.default || ConfigModule;
 const nextConfig = configure(PHASE_PRODUCTION_SERVER);
-assert.equal(nextConfig.deploymentId, process.env.NEXT_DEPLOYMENT_ID || JSON.parse(readFileSync(new URL('../.next/required-server-files.json', import.meta.url), 'utf8')).config.deploymentId, 'Runtime must serve the compiled deployment version');
+assert.equal(nextConfig.deploymentId, process.env.NEXT_DEPLOYMENT_ID || JSON.parse(readFileSync(new URL(`../${process.env.ARCHB_BUILD_DIR || '.next'}/required-server-files.json`, import.meta.url), 'utf8')).config.deploymentId, 'Runtime must serve the compiled deployment version');
 const firstBuild = configure(PHASE_PRODUCTION_BUILD);
 assert.ok(firstBuild.deploymentId);
 if (!process.env.NEXT_DEPLOYMENT_ID) {

@@ -1,7 +1,8 @@
 import { createHmac, randomUUID } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import { ignoredVisitor, publicPage, referrerHost, visitorDevice } from '@/lib/site-traffic';
+import { ignoredVisitor, publicPage, referrerHost, referrerPath, visitorDevice } from '@/lib/site-traffic';
+import { visitorEnvironment, visitorNetwork } from '@/lib/visitor-request';
 
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i;
 
@@ -29,8 +30,10 @@ export async function POST(request: NextRequest) {
     const { error } = await db.from('site_page_views').upsert({
       id: input.id, visitor_hash: hash('visitor', visitor), session_hash: hash('session', session),
       path: page.path, section: page.section, device: visitorDevice(agent),
+      ...visitorEnvironment(agent), ...visitorNetwork(request.headers),
       is_entry: session !== sessionCookie,
       referrer_host: session !== sessionCookie ? referrerHost(input.referrer, new URL(request.url).hostname) : null,
+      referrer_path: session !== sessionCookie ? referrerPath(input.referrer, new URL(request.url).hostname) : null,
     }, { onConflict: 'id', ignoreDuplicates: true });
     if (error) throw error;
     if (session !== sessionCookie) {

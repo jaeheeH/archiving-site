@@ -9,6 +9,7 @@ import { getSiteUrl } from "@/lib/site-url";
 import { jsonLd } from '@/lib/seo';
 import { SITE_COPY } from '@/lib/site-copy';
 import { COLOR_MODE_INIT_SCRIPT } from '@/lib/color-mode';
+import "./css/pretendard.css";
 import "./globals.css";
 import "@/styles/balsa-foundation.css";
 import "@/styles/balsa-theme.css";
@@ -61,13 +62,6 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <link
-          rel="stylesheet"
-          as="style"
-          crossOrigin="anonymous"
-          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
-        />
-        
         {/* Favicon */}
         {settings?.favicon_url && (
           <link rel="icon" href={settings.favicon_url} />

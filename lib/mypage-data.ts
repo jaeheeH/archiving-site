@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
@@ -57,7 +58,7 @@ export type MypageActivity = {
 
 const ACTIVITY_LIMIT = 80;
 
-async function getMypageContext() {
+const getMypageContext = cache(async () => {
   const supabase = await createClient();
   const {
     data: { user },
@@ -69,7 +70,7 @@ async function getMypageContext() {
     admin: createAdminClient(),
     user,
   };
-}
+});
 
 type SupabaseRowsQuery<T> = PromiseLike<{
   data: T[] | null;
@@ -101,7 +102,7 @@ function uniqueIds(values: Array<number | string | null | undefined>) {
   return Array.from(new Set(values.filter((value): value is number | string => value != null)));
 }
 
-export async function getMypageProfile(): Promise<MypageProfile | null> {
+export const getMypageProfile = cache(async (): Promise<MypageProfile | null> => {
   const context = await getMypageContext();
   if (!context) return null;
 
@@ -131,7 +132,7 @@ export async function getMypageProfile(): Promise<MypageProfile | null> {
     avatar_url: normalizeAvatarUrl(firstString(profile?.avatar_url, metadata.avatar_url, metadata.picture)),
     role: firstString(profile?.role) || "user",
   };
-}
+});
 
 export async function getMypageActivity(): Promise<MypageActivity | null> {
   const context = await getMypageContext();

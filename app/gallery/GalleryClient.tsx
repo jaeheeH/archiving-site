@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
-import Image from 'next/image';
+import { useEffect, useRef, useState, useTransition } from 'react';
+import Image from '@/app/components/ArchiveImage';
 import Link from 'next/link';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import ActiveFilter from "@/components/gallery/ActiveFilter";
@@ -48,176 +48,55 @@ function GallerySkeleton() {
 
 // --- Props ---
 interface GalleryClientProps {
+  initialTopTags: TopTag[];
   initialGallery: GalleryItem[];
   initialTotalPages: number;
   initialPage: number;
 }
 
 // --- Main Component ---
-export default function GalleryClient({ initialGallery, initialTotalPages, initialPage }: GalleryClientProps) {
+export default function GalleryClient({ initialGallery, initialTotalPages, initialPage, initialTopTags }: GalleryClientProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  // State
-  const [gallery, setGallery] = useState<GalleryItem[]>(initialGallery);
-  const [totalPages, setTotalPages] = useState(initialTotalPages);
-  
-  const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(false);
-
-  // ✅ [수정 핵심] 초기값을 URL 파라미터에서 바로 읽어옵니다. (1로 고정하지 않음)
-  const [page, setPage] = useState(initialPage);
-  const [searchInput, setSearchInput] = useState(() => searchParams.get('search') || '');
-  const [selectedTags, setSelectedTags] = useState<string[]>(() => {
-    const tags = searchParams.get('tags');
-    return tags ? tags.split(',').filter(Boolean) : [];
-  });
-  const [topTags, setTopTags] = useState<TopTag[]>([]);
-  const [loadingTags, setLoadingTags] = useState(true);
-
-  // 디바운스 검색어 초기값도 URL 기준
-  const [debouncedSearch, setDebouncedSearch] = useState(() => searchParams.get('search') || '');
-  
-  const isHydrated = useRef(false);
-
-  async function fetchGallery(pageNum: number, search: string, tags: string[]) {
-    try {
-      setFetching(true);
-      const params = new URLSearchParams();
-      params.set('page', String(pageNum));
-      params.set('limit', '36');
-      if (search.trim()) params.set('search', search.trim());
-      if (tags.length > 0) params.set('tags', tags.join(','));
-
-      const res = await fetch(`/api/gallery?${params.toString()}`, { cache: 'no-store' });
-      const data = await res.json().catch(() => null);
-
-      if (!res.ok) {
-        throw new Error(data?.error || '갤러리 조회 실패');
-      }
-
-      setGallery(data.data || []);
-      setTotalPages(data.pagination.totalPages);
-    } catch (error) {
-      console.error('❌ Fetch 에러:', error);
-    } finally {
-      setLoading(false);
-      setFetching(false);
-    }
-  }
-
-  async function fetchTopTags() {
-    try {
-      setLoadingTags(true);
-      const res = await fetch('/api/gallery/tags/top');
-      if (!res.ok) throw new Error('태그 조회 실패');
-      const data = await res.json();
-      setTopTags(data.tags || []);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoadingTags(false);
-    }
-  }
-
-  // 1. URL 파라미터 변경 감지 (뒤로 가기 시 상태 동기화)
-  useEffect(() => {
-    // 마운트 직후에는 실행하지 않음 (이미 useState 초기값으로 잡았으므로)
-    if (!isHydrated.current) {
-      isHydrated.current = true;
-      return;
-    }
-
-    const p = Number(searchParams.get('page') || 1);
-    const s = searchParams.get('search') || '';
-    const t = searchParams.get('tags') || '';
-    const tArr = t ? t.split(',').filter(Boolean) : [];
-
-    // 현재 상태와 URL이 다를 때만 업데이트 (중복 렌더링 방지)
-    /* eslint-disable react-hooks/set-state-in-effect */
-    if (p !== page) setPage(p);
-    if (s !== searchInput) {
-      setSearchInput(s);
-      setDebouncedSearch(s);
-    }
-    if (t !== selectedTags.join(',')) setSelectedTags(tArr);
-    /* eslint-enable react-hooks/set-state-in-effect */
-    
-  }, [searchParams]); // searchParams가 변할 때만 실행 (뒤로가기 등)
-
-  // 2. 검색어 디바운스
-  useEffect(() => {
-    // 초기 로딩시에는 실행 안 함 (이미 동기화됨)
-    if (searchInput === (searchParams.get('search') || '')) return;
-
-    const timer = setTimeout(() => setDebouncedSearch(searchInput), 300);
-    return () => clearTimeout(timer);
-  }, [searchInput]);
-
-  // 3. 검색어 변경 시 페이지 리셋
-  useEffect(() => {
-    // 실제 검색어가 바뀌었을 때만 페이지 1로 리셋
-    const urlSearch = searchParams.get('search') || '';
-    if (debouncedSearch !== urlSearch) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setPage(1);
-    }
-  }, [debouncedSearch]);
-
-  // 4. 데이터 페칭
-  useEffect(() => {
-    // 첫 렌더링이고, URL 파라미터가 초기값과 같다면(즉, 이미 서버/기본 데이터와 같다면) 스킵
-    // 하지만 페이지 이동으로 돌아왔을 때는 데이터를 다시 불러와야 할 수도 있음.
-    // 여기서는 안전하게 로직을 수행하되, 중복 호출을 최소화.
-    
-    // URL 업데이트 로직
-    const params = new URLSearchParams();
-    if (page > 1) params.set('page', String(page)); // 1페이지면 생략 깔끔
-    if (debouncedSearch.trim()) params.set('search', debouncedSearch.trim());
-    if (selectedTags.length > 0) params.set('tags', selectedTags.join(','));
-    
-    const queryString = params.toString();
-    const newUrl = `${pathname}${queryString ? `?${queryString}` : ''}`;
-
-    // URL을 교체해야 하는 경우 (사용자 액션으로 인한 상태 변경)
-    if (window.location.search !== (queryString ? `?${queryString}` : '')) {
-      router.replace(newUrl, { scroll: false });
-    }
-
-    // 데이터 요청
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchGallery(page, debouncedSearch, selectedTags);
-
-  }, [page, debouncedSearch, selectedTags]);
-
-  // 태그 초기화
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchTopTags();
-  }, []);
-
-  const handleSearchChange = (value: string) => setSearchInput(value);
-  
-  const handleTagToggle = (tag: string) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setPage(1);
-    setSelectedTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
-  };
-  
-  const updatePage = (pageNum: number) => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setPage(pageNum);
-  };
-  const pageHref = (number: number) => {
+  const gallery = initialGallery;
+  const totalPages = initialTotalPages;
+  const page = initialPage;
+  const [fetching, startTransition] = useTransition();
+  const loading = false;
+  const urlSearch = searchParams.get('search') || '';
+  const selectedTags = (searchParams.get('tags') || '').split(',').filter(Boolean);
+  const [searchInput, setSearchInput] = useState(urlSearch);
+  const topTags = initialTopTags;
+  const loadingTags = false;
+  const pageHref = (number: number, search = urlSearch, tags = selectedTags) => {
     const params = new URLSearchParams();
     if (number > 1) params.set('page', String(number));
-    if (debouncedSearch.trim()) params.set('search', debouncedSearch.trim());
-    if (selectedTags.length) params.set('tags', selectedTags.join(','));
-    return `/gallery${params.size ? `?${params}` : ''}`;
+    if (search.trim()) params.set('search', search.trim());
+    if (tags.length) params.set('tags', tags.join(','));
+    return `${pathname}${params.size ? `?${params}` : ''}`;
   };
-
+  const requestedSearch = useRef<string | null>(null);
+  const navigate = (url: string) => {
+    requestedSearch.current = new URL(url, window.location.origin).searchParams.get('search') || '';
+    startTransition(() => router.replace(url, { scroll: false }));
+  };
+  useEffect(() => {
+    if (requestedSearch.current === urlSearch) { requestedSearch.current = null; return; }
+    // Browser back/forward changes the input; an in-flight search must preserve newer typing.
+    setSearchInput(urlSearch);
+  }, [urlSearch]);
+  useEffect(() => {
+    if (searchInput.trim() === urlSearch) return;
+    const timer = setTimeout(() => navigate(pageHref(1, searchInput)), 300);
+    return () => clearTimeout(timer);
+    // URL navigation fetches fresh server props; no second browser API request.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchInput, urlSearch]);
+  const handleSearchChange = (value: string) => setSearchInput(value);
+  const handleTagToggle = (tag: string) => navigate(pageHref(1, searchInput, selectedTags.includes(tag) ? selectedTags.filter(t => t !== tag) : [...selectedTags, tag]));
+  const updatePage = () => window.scrollTo({ top: 0, behavior: 'smooth' });
   const renderGalleryContent = () => {
     if (loading || (fetching && gallery.length === 0)) {
       return <GallerySkeleton />;
@@ -233,7 +112,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages, initi
           </p>
           {hasActiveFilter && (
             <button
-              onClick={() => { setSearchInput(''); setPage(1); setSelectedTags([]); }}
+              onClick={() => { setSearchInput(''); navigate(pageHref(1, '', [])); }}
               className="mt-6 border border-[var(--archive-line)] bg-white px-5 py-2.5 text-sm font-medium transition-colors hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]"
             >
               검색 조건 초기화
@@ -285,7 +164,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages, initi
               {searchInput && (
                 <button
                   aria-label="갤러리 검색어 지우기"
-                  onClick={() => { setSearchInput(''); setPage(1); }}
+                  onClick={() => { setSearchInput(''); }}
                   className="absolute right-0 top-1/2 -translate-y-1/2 p-1 text-[var(--archive-muted)] transition-colors hover:text-[var(--archive-brand)]"
                 >
                   <i className="ri-close-circle-fill text-lg"></i>
@@ -336,7 +215,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages, initi
           <div className={`mt-16 flex flex-wrap items-center justify-center gap-2 transition-opacity duration-200 ${fetching ? 'pointer-events-none opacity-50' : 'opacity-100'}`}>
             <Link
               href={pageHref(Math.max(1, page - 1))}
-              onClick={() => updatePage(Math.max(1, page - 1))}
+              onClick={updatePage}
               aria-disabled={page === 1}
               tabIndex={page === 1 ? -1 : undefined}
               className="border border-[var(--archive-line)] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--archive-ink)] transition hover:border-[var(--archive-brand)] hover:bg-[var(--archive-brand)] hover:text-white aria-disabled:pointer-events-none aria-disabled:text-[var(--archive-muted)] aria-disabled:opacity-40"
@@ -348,7 +227,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages, initi
                 key={pageNumber}
                 href={pageHref(pageNumber)}
                 aria-current={pageNumber === page ? "page" : undefined}
-                onClick={() => updatePage(pageNumber)}
+                onClick={updatePage}
                 className={`flex h-9 w-9 items-center justify-center text-[12px] font-semibold transition ${
                   pageNumber === page
                     ? 'bg-[var(--archive-ink)] text-[var(--archive-canvas)]'
@@ -360,7 +239,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages, initi
             ))}
             <Link
               href={pageHref(Math.min(totalPages, page + 1))}
-              onClick={() => updatePage(Math.min(totalPages, page + 1))}
+              onClick={updatePage}
               aria-disabled={page === totalPages}
               tabIndex={page === totalPages ? -1 : undefined}
               className="border border-[var(--archive-line)] px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--archive-ink)] transition hover:border-[var(--archive-brand)] hover:bg-[var(--archive-brand)] hover:text-white aria-disabled:pointer-events-none aria-disabled:text-[var(--archive-muted)] aria-disabled:opacity-40"

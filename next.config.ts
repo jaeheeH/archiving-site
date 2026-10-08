@@ -3,6 +3,7 @@ import { PHASE_PRODUCTION_BUILD, PHASE_PRODUCTION_SERVER } from "next/constants"
 import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { PUBLIC_IMAGE_HOSTS } from './lib/public-image';
 
 function getSupabaseImageHost() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -18,10 +19,13 @@ function getSupabaseImageHost() {
 const supabaseImageHost = getSupabaseImageHost();
 
 const nextConfig: NextConfig = {
+  // Keep performance QA builds separate from the build currently serving the site.
+  distDir: process.env.ARCHB_BUILD_DIR || '.next',
   poweredByHeader: false,
   images: {
     formats: ['image/webp'],
     remotePatterns: [
+      ...PUBLIC_IMAGE_HOSTS.map(hostname => ({ protocol: 'https' as const, hostname })),
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
@@ -64,6 +68,7 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      { source: '/fonts/pretendard-v1.3.9/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }] },
       ...((process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production') ? [{ source: '/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] }] : []),
       ...['dashboard', 'mypage', 'login', 'auth', 'no-access', 'extension'].map(path => ({ source: `/${path}/:path*`, headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] })),
       {

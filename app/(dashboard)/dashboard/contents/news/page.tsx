@@ -4,13 +4,14 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import NewsPlacement from "./NewsPlacement";
 import ContentPagination from "@/app/(dashboard)/components/ContentPagination";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CATEGORIES, FEEDS } from "@/lib/news-feeds";
 import type { NewsPost } from "@/lib/news-record";
 import type { NewsProcessStatus } from "@/lib/news-jobs";
 
 function NewsManager() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [posts, setPosts] = useState<NewsPost[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -36,15 +37,23 @@ function NewsManager() {
     fetch(`/api/admin/posts?${params}`, { signal: controller.signal }).then(async response => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "뉴스를 불러오지 못했습니다.");
+      if (controller.signal.aborted) return;
+      const lastPage = Math.max(1, Math.ceil(data.pagination.total / 20));
+      if (page > lastPage) {
+        const next = new URLSearchParams({ q: query, category, status, page: String(lastPage) });
+        router.replace(`/dashboard/contents/news?${next}`, { scroll: false });
+        return;
+      }
       setPosts(data.data); setTotal(data.pagination.total); setError("");
     }).catch(cause => { if (!controller.signal.aborted) setError(cause.message); }).finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
-  }, [page, category, status, query, reload]);
+  }, [page, category, status, query, reload, router]);
 
   useEffect(() => {
     const controller = new AbortController();
     let timer: ReturnType<typeof setTimeout>;
     const refresh = async () => {
+      if (document.hidden || controller.signal.aborted) return;
       let delay = 15000;
       try {
         const response = await fetch('/api/news/process', { signal: controller.signal, cache: 'no-store' });
@@ -57,10 +66,12 @@ function NewsManager() {
         previousProgress.current = progress;
         if (data.writing || (data.job && ['queued', 'collecting', 'writing'].includes(data.job.status))) delay = 3000;
       } catch (cause) { if (!controller.signal.aborted) setQueueError(cause instanceof Error ? cause.message : '작성 상태를 불러오지 못했습니다.'); }
-      finally { if (!controller.signal.aborted) timer = setTimeout(refresh, delay); }
+      finally { if (!controller.signal.aborted && !document.hidden) timer = setTimeout(refresh, delay); }
     };
+    const visibility = () => { clearTimeout(timer); if (!document.hidden) void refresh(); };
+    document.addEventListener('visibilitychange', visibility);
     void refresh();
-    return () => { controller.abort(); clearTimeout(timer); };
+    return () => { controller.abort(); clearTimeout(timer); document.removeEventListener('visibilitychange', visibility); };
   }, [jobActive]);
 
   async function collect(withCollection = true) {
@@ -134,8 +145,12 @@ function NewsManager() {
               <td className="p-4 text-gray-600"><p>{CATEGORIES[post.content?.category] || "미분류"}</p><p className="mt-1 text-xs">{post.content?.source || "—"}</p></td>
               <td className="whitespace-nowrap p-4 text-gray-500">{post.published_at ? new Date(post.published_at).toLocaleDateString("ko-KR") : "—"}</td>
               <td className="content-table-count whitespace-nowrap text-gray-500">{post.view_count || 0} · {post.scrap_count || 0}</td>
-              <td className="content-table-status"><button type="button" disabled={!!working || (!post.is_published && !post.content?.paragraphs?.length)} onClick={() => toggle(post)} aria-label={`${post.is_published ? "발행 취소" : "발행"}: ${post.title}`} className="content-table-badge" data-state={post.is_published ? 'published' : 'draft'}>{post.is_published ? "발행" : post.content?.paragraphs?.length ? "검토 대기" : post.content?.automation?.status === 'writing' ? '조사·작성 중' : post.content?.automation?.status === 'failed' ? '작성 실패' : "작성 대기"}</button>{post.content?.automation?.error && <p className="mt-2 max-w-[180px] text-xs leading-5 text-red-700">{post.content.automation.error}</p>}</td>
-              <td className="content-table-action-cell"><Link href={`/dashboard/contents/news/${post.id}/edit`} className="content-table-action" aria-label={`${post.title} 수정`}><i className="ri-edit-line" aria-hidden="true" />수정</Link>{post.is_published && <Link href={`/news/read/${post.slug}`} target="_blank" rel="noopener noreferrer" className="mt-2 block whitespace-nowrap text-xs text-gray-500 hover:underline">기사 보기 ↗</Link>}</td>
+              <td className="content-table-status">{post.is_published ? <button type="button" disabled={!!working} onClick={() => toggle(post)} aria-label={`발행 취소: ${post.title}`} className="content-table-badge" data-state="published">발행</button> : <span className="content-table-badge" data-state="draft">{post.content?.paragraphs?.length ? "검토 대기" : post.content?.automation?.status === 'writing' ? '조사·작성 중' : post.content?.automation?.status === 'failed' ? '작성 실패' : "작성 대기"}</span>}{post.content?.automation?.error && <p className="mt-2 max-w-[180px] text-xs leading-5 text-red-700">{post.content.automation.error}</p>}</td>
+              <td className="content-table-action-cell"><div className="flex flex-col items-center gap-2">
+                {!post.is_published && !!post.content?.paragraphs?.length && <button type="button" onClick={() => toggle(post)} disabled={!!working} aria-label={`바로 발행: ${post.title}`} aria-busy={working === post.id} className="content-table-create">{working === post.id ? "발행 중…" : "바로 발행"}</button>}
+                <Link href={`/dashboard/contents/news/${post.id}/edit`} className="content-table-action" aria-label={`${post.title} 수정`}><i className="ri-edit-line" aria-hidden="true" />수정</Link>
+                {post.is_published && <Link href={`/news/read/${post.slug}`} target="_blank" rel="noopener noreferrer" className="block whitespace-nowrap text-xs text-gray-500 hover:underline">기사 보기 ↗</Link>}
+              </div></td>
             </tr>)}
           </tbody>
         </table>

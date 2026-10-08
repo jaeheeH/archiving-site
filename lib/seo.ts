@@ -10,12 +10,12 @@ export function pageMetadata({ path, title, description, image = '/api/og?type=d
   path: string; title: string; description: string; image?: string; noindex?: boolean;
 }): Metadata {
   const url = sitePageUrl(path);
-  const imageUrl = sitePageUrl(image);
+  const imageUrl = sitePageUrl(image.startsWith('/api/og?') && !image.includes('&v=') ? `${image}&v=2` : image);
   return {
     title: { absolute: `${title} · ARCH.B` }, description,
     alternates: { canonical: url },
     ...(noindex ? { robots: { index: false, follow: true } } : {}),
-    openGraph: { type: 'website', title, description, url, siteName: 'ARCH.B', locale: 'ko_KR', images: [{ url: imageUrl, alt: title }] },
+    openGraph: { type: 'website', title, description, url, siteName: 'ARCH.B', locale: 'ko_KR', images: [{ url: imageUrl, ...(image.startsWith('/api/og?') ? { width: 1200, height: 630, type: 'image/png' } : {}), alt: title }] },
     twitter: { card: 'summary_large_image', title, description, images: [imageUrl] },
   };
 }

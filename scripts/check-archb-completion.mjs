@@ -5,6 +5,7 @@ import fs from 'node:fs/promises';
 import { randomUUID, randomBytes } from 'node:crypto';
 import { createClient } from '@supabase/supabase-js';
 import { createServerClient } from '@supabase/ssr';
+import sharp from 'sharp';
 import { editorialSchema, newsEditSchema } from '../lib/news-editorial.ts';
 
 const fixture = JSON.parse(await fs.readFile(new URL('../content/news/initial-articles.json', import.meta.url), 'utf8')).find(article => article.url.includes('plat-life'));
@@ -70,12 +71,24 @@ try {
   }
   assert.equal((await request(`/api/news/${postId}`, 'PATCH', { article: { ...article, summary: '', paragraphs: [], points: [] }, is_published: false }, cookie)).response.status, 200);
   assert.equal((await request(`/api/posts/${postId}/publish`, 'PATCH', { is_published: true }, cookie)).response.status, 400);
-  assert.equal((await request(`/api/news/${postId}`, 'PATCH', { article, is_published: true }, cookie)).response.status, 200);
+  assert.equal((await request(`/api/news/${postId}`, 'PATCH', { article, is_published: false }, cookie)).response.status, 200);
+  const reviewPath = '/api/admin/posts?type=news&review_only=true&limit=100';
+  assert.ok((await request(reviewPath, 'GET', undefined, cookie)).data.data.some(row => row.id === postId));
+  assert.equal((await request(`/api/posts/${postId}/publish`, 'PATCH', { is_published: true }, cookie)).response.status, 200);
+  assert.ok(!(await request(reviewPath, 'GET', undefined, cookie)).data.data.some(row => row.id === postId));
   const saved = await db.from('posts').select('slug,author_id,is_published,content').eq('id', postId).single();
   assert.equal(saved.data.author_id, userId); assert.equal(saved.data.is_published, true);
   assert.equal((await fetch(new URL(`/news/read/${saved.data.slug}`, base))).status, 200);
   assert.ok((await (await fetch(new URL('/rss.xml', base))).text()).includes(saved.data.slug));
   assert.ok((await (await fetch(new URL('/sitemap.xml', base))).text()).includes(saved.data.slug));
+  for (const image of [null, `https://storage.googleapis.com/archb-performance-${marker}/missing.webp`]) {
+    const changed = await db.from('posts').update({ title_image_url: image }).eq('id', postId); if (changed.error) throw changed.error;
+    const og = await fetch(new URL(`/api/og?type=article&slug=${saved.data.slug}`, base));
+    assert.equal(og.status, 200);
+    const png = await sharp(Buffer.from(await og.arrayBuffer())).metadata();
+    assert.equal(png.format, 'png'); assert.equal(png.width, 1200); assert.equal(png.height, 630);
+  }
+  console.log('PASS: published articles without an image or with an inaccessible original return a complete PNG card');
   assert.equal((await request(`/api/news/${postId}`, 'PATCH', { article: { ...article, url: 'https://example.com/changed' }, is_published: false }, cookie)).response.status, 400);
   assert.equal((await request(`/api/posts/${postId}/publish`, 'PATCH', { is_published: false }, cookie)).response.status, 200);
   console.log('PASS: editor ownership, private drafts, quality gates, publish, RSS, sitemap and preserved authors');
@@ -90,7 +103,13 @@ try {
   assert.equal((await request(`/api/posts/${published.id}/like`, 'PUT', { liked: 'yes' }, cookie)).response.status, 400);
   for (let i = 0; i < 2; i++) assert.equal((await request(`/api/posts/${published.id}/like`, 'PUT', { liked: false }, cookie)).data.like_count, baseline);
   assert.equal((await request(`/api/posts/${postId}/like`, 'PUT', { liked: true }, cookie)).response.status, 404);
-  console.log('PASS: account-bound likes, reload state, idempotency, malformed requests and unpublished rejection');
+  const scrapBaseline = (await request(`/api/posts/by-slug/${published.slug}`)).data.scrap_count;
+  const addedScrap = await request(`/api/posts/${published.id}/scrap`, 'POST', undefined, cookie);
+  assert.equal(addedScrap.response.status, 200); assert.equal(addedScrap.data.scraped, true); assert.equal(addedScrap.data.scrapCount, scrapBaseline + 1);
+  assert.equal((await request(`/api/posts/by-slug/${published.slug}`, 'GET', undefined, cookie)).data.userScraped, true);
+  const removedScrap = await request(`/api/posts/${published.id}/scrap`, 'POST', undefined, cookie);
+  assert.equal(removedScrap.response.status, 200); assert.equal(removedScrap.data.scraped, false); assert.equal(removedScrap.data.scrapCount, scrapBaseline);
+  console.log('PASS: account-bound likes/bookmarks, reload state, idempotency, malformed requests and unpublished rejection');
 
   const promoted = await db.from('users').update({ role: 'sub-admin' }).eq('id', userId); if (promoted.error) throw promoted.error;
   assert.equal((await request(`/api/news/${published.id}/research`, 'POST', undefined, cookie)).response.status, 403, 'Sub-admins cannot process an administrator’s news');
@@ -125,6 +144,7 @@ try {
     if (restored.response.status !== 200) cleanupErrors.push(new Error('Restore curated placement failed'));
   }
   if (userId) {
+    const removedScraps = await db.from('post_scraps').delete().eq('user_id', userId); if (removedScraps.error) cleanupErrors.push(removedScraps.error);
     const removedLikes = await db.from('post_likes').delete().eq('user_id', userId); if (removedLikes.error) cleanupErrors.push(removedLikes.error);
   }
   for (const [table, id] of [['posts',postId],['artworks',artworkId]]) {

@@ -1,10 +1,11 @@
+import { getPageMetadata } from '@/lib/site-settings';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import GalleryDetailClient from './GalleryDetailClient';
 import { getGalleryDetailData } from '@/lib/public-data';
 import { createPublicClient } from '@/lib/supabase/public';
 import { Suspense } from 'react';
-import { pageMetadata, jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
+import { jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -46,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data?.gallery) notFound();
 
   const { gallery } = data;
-  return pageMetadata({ path: `/gallery/${id}`, title: gallery.title, description: gallery.description || gallery.gemini_description || 'ARCH.B의 이미지와 프롬프트 아카이브.', image: `/api/og?type=gallery&id=${id}` });
+  return getPageMetadata({ path: `/gallery/${id}`, title: gallery.title, description: gallery.description || gallery.gemini_description || 'ARCH.B의 이미지와 프롬프트 아카이브.', image: `/api/og?type=gallery&id=${id}` });
 }
 
 export default async function GalleryDetailPage({ params }: Props) {

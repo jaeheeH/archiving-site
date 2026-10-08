@@ -1,11 +1,11 @@
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/app/components/ArchiveImage";
 import type { CSSProperties } from "react";
 import { getArtCatalog } from "@/lib/art-catalog";
-import { pageMetadata } from '@/lib/seo';
+import { getPageMetadata } from '@/lib/site-settings';
 
 export async function generateMetadata({ searchParams }: ArtistsPageProps) {
-  return pageMetadata({ path: '/artists', title: '작가 아카이브', description: '여러 기관의 작품을 같은 작가별로 연결해 탐색합니다.', noindex: !!(await searchParams).q?.trim() });
+  return getPageMetadata({ path: '/artists', title: '작가 아카이브', description: '여러 기관의 작품을 같은 작가별로 연결해 탐색합니다.', noindex: !!(await searchParams).q?.trim() });
 }
 
 type ArtistsPageProps = { searchParams: Promise<{ q?: string }> };
@@ -36,7 +36,7 @@ export default async function ArtistsPage({ searchParams }: ArtistsPageProps) {
           return (
             <article key={artist.id} className="archive-card archive-artist-card group"><Link href={`/artists/${artist.id}`}>
               <div className="archive-media" style={{ "--archive-image-ratio": cover && cover.image_width > 0 && cover.image_height > 0 ? `${cover.image_width} / ${cover.image_height}` : "1.65" } as CSSProperties}>
-                {cover && <Image unoptimized src={cover.preview_url} alt={`${artist.name_ko || artist.name} 대표 작품`} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-contain" />}
+                {cover && <Image src={cover.preview_url} alt={`${artist.name_ko || artist.name} 대표 작품`} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-contain" />}
               </div>
               <div className="archive-card-copy">
                 <p className="archive-card-label">작품 {artistArtworks.length}점 · {museums.size}개 기관</p>

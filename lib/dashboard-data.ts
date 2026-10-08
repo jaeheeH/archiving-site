@@ -1,8 +1,11 @@
 import "server-only";
+import { cache } from "react";
+import { unstable_cache } from "next/cache";
+import { createPublicClient } from "./supabase/public";
 import { getArtCatalog } from "./art-catalog";
 import { buildDashboardMetrics, dashboardPeriod, type MetricMember, type MetricPost, type MetricView } from "./dashboard-metrics";
 import { editorialSchema } from "./news-editorial";
-import { publicPage, type TrafficStats } from "./site-traffic";
+import { publicPage, type TrafficStats, type VisitorSessionList, type VisitorEventList } from "./site-traffic";
 
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -185,7 +188,20 @@ function sortEntries(entries: Record<string, number>, limit = 6) {
     .map(([label, count]) => ({ label, count }));
 }
 
-export async function getDashboardContext() {
+const readPublicNewsQuality = unstable_cache(async () => {
+  const rows: { id: string; qualityReady: boolean; qualityReasons: string[] }[] = [];
+  for (let offset = 0; ; offset += 500) {
+    const { data, error } = await createPublicClient().from('posts').select('id,title,summary,source_url:content->>source_url,paragraphs:content->paragraphs,points:content->points,tags').eq('type', 'news').eq('is_published', true).not('published_at', 'is', null).order('id').range(offset, offset + 499);
+    if (error) throw error;
+    for (const post of data || []) {
+      const parsed = editorialSchema.safeParse({ url: post.source_url, title: post.title, summary: post.summary, paragraphs: post.paragraphs, points: post.points, tags: post.tags });
+      rows.push({ id: post.id, qualityReady: parsed.success, qualityReasons: parsed.success ? [] : [...new Set(parsed.error.issues.map(issue => issue.message))] });
+    }
+    if (!data || data.length < 500) return rows;
+  }
+}, ['public-news-quality-v1'], { revalidate: 600, tags: ['public-posts', 'archb-news'] });
+
+export const getDashboardContext = cache(async () => {
   const supabase = await createClient();
   const {
     data: { user },
@@ -218,14 +234,15 @@ export async function getDashboardContext() {
     role,
     adminUserIds,
   };
-}
+});
 
 export async function getDashboardOverview(days?: number) {
   const context = await getDashboardContext();
   if (!context || context.role === "user") return null;
 
   const { admin } = context;
-  const catalog = await getArtCatalog();
+  const catalogPromise = getArtCatalog();
+  const operationsPromise = days === undefined ? Promise.resolve([null, null] as const) : Promise.all([readDashboardOperations(context, days), readVisitorAnalytics(context, days)]);
 
   const postBase = (type = "blog") =>
     applyAuthorScope(
@@ -248,53 +265,22 @@ export async function getDashboardOverview(days?: number) {
       "author"
     );
 
-  const [
-    postTotal,
-    postPublished,
-    postDraft,
-    newsTotal,
-    newsPublished,
-    newsDraft,
-    latestNews,
-    galleryTotal,
-    referencesTotal,
-    userTotal,
-    brandTotal,
-    generatedImageTotal,
-    latestPosts,
-    latestGallery,
-    latestReferences,
-    latestGeneratedImages,
-    topPosts,
-    topReferences,
-  ] = await Promise.all([
-    readCount(postBase()),
-    readCount(postBase().eq("is_published", true)),
-    readCount(postBase().eq("is_published", false)),
-    readCount(postBase("news")),
-    readCount(postBase("news").eq("is_published", true)),
-    readCount(postBase("news").eq("is_published", false)),
-    readRows<{ id: string; title: string; updated_at: string | null; is_published: boolean }>(
+  const [postTotal, postPublished, postDraft, newsTotal, newsPublished, newsDraft, latestNews, galleryTotal, referencesTotal, userTotal, latestPosts, latestGallery, latestReferences] = await Promise.all([
+readCount(postBase()),
+readCount(postBase().eq("is_published", true)),
+readCount(postBase().eq("is_published", false)),
+readCount(postBase("news")),
+readCount(postBase("news").eq("is_published", true)),
+readCount(postBase("news").eq("is_published", false)),
+days === undefined ? readRows<{ id: string; title: string; updated_at: string | null; is_published: boolean }>(
       applyAuthorScope(admin.from("posts").select("id,title,updated_at,is_published,author_id").eq("type", "news").order("updated_at", { ascending: false }).limit(5), context, "author_id")
-    ),
-    readCount(galleryBase()),
-    readCount(referencesBase()),
-    context.role === "admin" || context.role === "sub-admin"
+    ) : Promise.resolve([]),
+readCount(galleryBase()),
+readCount(referencesBase()),
+context.role === "admin" || context.role === "sub-admin"
       ? readCount(admin.from("users").select("id", { count: "exact", head: true }))
       : Promise.resolve({ value: 0 }),
-    readCount(
-      admin
-        .from("brands")
-        .select("id", { count: "estimated", head: true })
-        .eq("user_id", context.user.id)
-    ),
-    readCount(
-      admin
-        .from("generated_images")
-        .select("id", { count: "estimated", head: true })
-        .eq("user_id", context.user.id)
-    ),
-    readRows<{
+days === undefined ? readRows<{
       id: string;
       title: string;
       slug: string | null;
@@ -313,9 +299,9 @@ export async function getDashboardOverview(days?: number) {
         context,
         "author_id"
       )
-    ),
-    readLatestGallery(context),
-    readRows<{
+    ) : Promise.resolve([]),
+days === undefined ? readLatestGallery(context) : Promise.resolve([]),
+days === undefined ? readRows<{
       id: number;
       title: string;
       url: string | null;
@@ -332,59 +318,11 @@ export async function getDashboardOverview(days?: number) {
         context,
         "author"
       )
-    ),
-    readRows<{
-      id: string;
-      image_url: string;
-      prompt: string | null;
-      aspect_ratio: string | null;
-      created_at: string | null;
-    }>(
-      admin
-        .from("generated_images")
-        .select("id, image_url, prompt, aspect_ratio, created_at")
-        .eq("user_id", context.user.id)
-        .order("created_at", { ascending: false })
-        .limit(6)
-    ),
-    readRows<{
-      id: string;
-      title: string;
-      slug: string | null;
-      view_count: number | null;
-      scrap_count: number | null;
-      is_published: boolean;
-    }>(
-      applyAuthorScope(
-        admin
-          .from("posts")
-          .select("id, title, slug, view_count, scrap_count, is_published, author_id")
-          .eq("type", "blog")
-          .order("view_count", { ascending: false })
-          .limit(5),
-        context,
-        "author_id"
-      )
-    ),
-    readRows<{
-      id: number;
-      title: string;
-      url: string | null;
-      clicks: number | null;
-    }>(
-      applyAuthorScope(
-        admin
-          .from("references")
-          .select("id, title, url, clicks, author")
-          .order("clicks", { ascending: false })
-          .limit(5),
-        context,
-        "author"
-      )
-    ),
+    ) : Promise.resolve([]),
+
   ]);
 
-  const [operations, traffic] = days === undefined ? [null, null] : await Promise.all([readDashboardOperations(context, days), readVisitorAnalytics(context, days)]);
+  const [catalog, [operations, traffic]] = await Promise.all([catalogPromise, operationsPromise]);
   return {
     operations,
     traffic,
@@ -406,8 +344,6 @@ export async function getDashboardOverview(days?: number) {
       galleryTotal: galleryTotal.value,
       referencesTotal: referencesTotal.value,
       usersTotal: userTotal.value,
-      brandsTotal: brandTotal.value,
-      generatedImagesTotal: generatedImageTotal.value,
       contentTotal: totalCount([newsTotal, postTotal, galleryTotal, referencesTotal]) + catalog.artworks.length,
     },
     latest: {
@@ -417,11 +353,6 @@ export async function getDashboardOverview(days?: number) {
       posts: latestPosts,
       gallery: latestGallery,
       references: latestReferences,
-      generatedImages: latestGeneratedImages,
-    },
-    top: {
-      posts: topPosts,
-      references: topReferences,
     },
   };
 }
@@ -447,19 +378,14 @@ async function readDashboardOperations(context: DashboardContext, days: number) 
       .select("post_id,created_at,posts!inner(author_id,type)").in("posts.type", ["news", "blog"])
       .gte("created_at", period.previousStart).lte("created_at", period.now).order("id").range(start, start + 999), context, "posts.author_id")),
     ["admin", "sub-admin"].includes(context.role) ? allRows<MetricMember>(start => context.admin.from("users").select("role,created_at").order("id").range(start, start + 999)) : Promise.resolve(null),
-    allRows<{ id: string; title: string; summary: string; source_url: string; paragraphs: unknown; points: unknown; tags: string[] }>(start => applyAuthorScope(context.admin.from("posts")
-      .select("id,title,summary,source_url:content->>source_url,paragraphs:content->paragraphs,points:content->points,tags,author_id")
-      .eq("type", "news").eq("is_published", true).order("id").range(start, start + 999), context, "author_id")),
+    readPublicNewsQuality(),
   ]);
   if (postsResult.status === "rejected") throw postsResult.reason;
   const warnings: string[] = [];
   if (viewsResult.status === "rejected") warnings.push("조회 기록을 불러오지 못했습니다. 기간 조회는 집계 불가로 표시합니다.");
   if (membersResult.status === "rejected") warnings.push("회원 현황을 불러오지 못했습니다.");
   if (qualityResult.status === "rejected") warnings.push("발행 기사 품질 점검을 불러오지 못했습니다.");
-  const readiness = new Map(qualityResult.status === "fulfilled" ? qualityResult.value.map(p => {
-    const parsed = editorialSchema.safeParse({ url: p.source_url, title: p.title, summary: p.summary, paragraphs: p.paragraphs, points: p.points, tags: p.tags });
-    return [p.id, { qualityReady: parsed.success, qualityReasons: parsed.success ? [] : [...new Set(parsed.error.issues.map(issue => issue.message))] }];
-  }) : []);
+  const readiness = new Map(qualityResult.status === "fulfilled" ? qualityResult.value.map(p => [p.id, { qualityReady: p.qualityReady, qualityReasons: p.qualityReasons }]) : []);
   return { ...buildDashboardMetrics(postsResult.value.map(p => ({ ...p, ...readiness.get(p.id) })), viewsResult.status === "fulfilled" ? viewsResult.value : null, membersResult.status === "fulfilled" ? membersResult.value : null, period.days, now), qualityAvailable: qualityResult.status === "fulfilled", warnings };
 }
 
@@ -488,6 +414,21 @@ export async function getVisitorAnalytics(days = 7) {
   const context = await getDashboardContext();
   if (!context) return null;
   return readVisitorAnalytics(context, days);
+}
+
+export async function getVisitorSessions(days: number, options: { page: number; query: string; session: string; eventPage: number }) {
+  const context = await getDashboardContext();
+  if (!context || !['admin', 'sub-admin'].includes(context.role)) return null;
+  const period = dashboardPeriod(days);
+  const [list, events] = await Promise.all([
+    context.admin.rpc('site_traffic_sessions', { p_start: period.start, p_end: period.now, p_page: options.page, p_query: options.query }),
+    /^[a-f0-9]{64}$/.test(options.session) ? context.admin.rpc('site_traffic_session_events', { p_session: options.session, p_start: period.start, p_end: period.now, p_page: options.eventPage }) : Promise.resolve(null),
+  ]);
+  return {
+    list: list.error ? null : list.data as VisitorSessionList,
+    events: !events || events.error ? null : events.data as VisitorEventList,
+    error: list.error || events?.error ? '방문 상세 기록을 불러오지 못했습니다. 잠시 후 다시 확인해 주세요.' : null,
+  };
 }
 
 export async function getGalleryAnalytics() {

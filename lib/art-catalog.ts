@@ -1,5 +1,6 @@
 import "server-only";
 import { cache } from "react";
+import { unstable_cache } from 'next/cache';
 import { createPublicClient } from "@/lib/supabase/public";
 import artworkData from "@/research/art-collection/artworks.json";
 import artistData from "@/research/art-collection/artists.json";
@@ -38,8 +39,9 @@ export type Artist = {
   updated_at?: string;
 };
 
-// Share one DB snapshot across cards in a render; saved catalog data is read fresh on the next request.
-export const getArtCatalog = cache(async () => {
+export const ART_CATALOG_TAG = 'public-art-catalog';
+// Editors bypass the shared cache; repeated reads in one render still share a snapshot.
+export const getFreshArtCatalog = cache(async () => {
   const db = createPublicClient();
   const [works, people, links] = await Promise.all([
     db.from("artworks").select("id,data,updated_at").order("id"),
@@ -56,6 +58,7 @@ export const getArtCatalog = cache(async () => {
   const artists = (people.data || []).map(row => ({ ...row, artwork_ids: (links.data || []).filter(link => link.artist_id === row.id).map(link => link.artwork_id) })) as Artist[];
   return { artworks, artists, databaseReady: true };
 });
+export const getArtCatalog = unstable_cache(getFreshArtCatalog, ['art-catalog-v1'], { revalidate: 600, tags: [ART_CATALOG_TAG] });
 
 export async function getArtwork(id: string) { return (await getArtCatalog()).artworks.find(work => work.id === id); }
 export async function getArtist(id: string) { return (await getArtCatalog()).artists.find(artist => artist.id === id); }

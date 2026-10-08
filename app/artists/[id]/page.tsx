@@ -1,9 +1,10 @@
+import { getPageMetadata } from '@/lib/site-settings';
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ArtworkCard from "@/app/art/ArtworkCard";
 import { getArtCatalog, getArtist, getArtworksByArtist } from "@/lib/art-catalog";
-import { pageMetadata, jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
+import { jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
 
 type ArtistPageProps = { params: Promise<{ id: string }> };
 
@@ -15,7 +16,7 @@ export async function generateMetadata({ params }: ArtistPageProps): Promise<Met
   const artist = await getArtist((await params).id);
   if (!artist) notFound();
   const works = await getArtworksByArtist(artist.id);
-  return pageMetadata({ path: `/artists/${artist.id}`, title: `${artist.name_ko || artist.name} · 작가`, description: `${artist.name}의 수집 작품 ${works.length}점을 소장 기관과 시기별로 살펴봅니다. 작품 상세 정보와 원출처를 함께 확인합니다.`, image: works[0]?.preview_url });
+  return getPageMetadata({ path: `/artists/${artist.id}`, title: `${artist.name_ko || artist.name} · 작가`, description: `${artist.name}의 수집 작품 ${works.length}점을 소장 기관과 시기별로 살펴봅니다. 작품 상세 정보와 원출처를 함께 확인합니다.`, image: works[0]?.preview_url });
 }
 
 export default async function ArtistPage({ params }: ArtistPageProps) {

@@ -1,10 +1,11 @@
+import { getPageMetadata } from '@/lib/site-settings';
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/app/components/ArchiveImage";
 import { notFound } from "next/navigation";
 import ArtworkCard from "../ArtworkCard";
 import { getArtCatalog, getArtwork, getArtworkArtist, getArtworksByArtist } from "@/lib/art-catalog";
-import { pageMetadata, jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
+import { jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
 
 type ArtworkPageProps = { params: Promise<{ id: string }> };
 
@@ -15,7 +16,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: ArtworkPageProps): Promise<Metadata> {
   const artwork = await getArtwork((await params).id);
   if (!artwork) notFound();
-  return pageMetadata({ path: `/art/${artwork.id}`, title: `${artwork.title_ko} · ${artwork.artist}`, description: `${artwork.artist}의 ${artwork.title}. ${artwork.date}, ${artwork.medium}. ${artwork.museum} 소장. 작품 정보와 원출처를 살펴봅니다.`, image: artwork.preview_url });
+  return getPageMetadata({ path: `/art/${artwork.id}`, title: `${artwork.title_ko} · ${artwork.artist}`, description: `${artwork.artist}의 ${artwork.title}. ${artwork.date}, ${artwork.medium}. ${artwork.museum} 소장. 작품 정보와 원출처를 살펴봅니다.`, image: artwork.preview_url });
 }
 
 export default async function ArtworkPage({ params }: ArtworkPageProps) {
@@ -42,7 +43,7 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
       <article className="archive-artwork-layout">
         <div className="archive-artwork-media">
           <Image
-            unoptimized
+
             src={artwork.preview_url}
             alt={`${artwork.title_ko} — ${artist?.name_ko || artwork.artist}`}
             width={artwork.image_width}

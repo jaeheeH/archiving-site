@@ -61,7 +61,7 @@ export function buildDashboardMetrics(posts: MetricPost[], views: MetricView[] |
   const topArticles = published.map(p => ({ ...p, periodViews: viewsByPost.get(p.id) || 0 }))
     .sort((a, b) => (hasPeriodViews ? b.periodViews - a.periodViews : value(b.view_count) - value(a.view_count)) || a.title.localeCompare(b.title));
   const categoryNames: Record<string, string> = CATEGORIES;
-  const categories = ['디자인', '개발', '인테리어', '에디토리얼', '기타'].map(label => ({
+  const categories = [...new Set(Object.values(CATEGORIES)), '기타'].map(label => ({
     label, count: published.filter(p => (p.type === 'blog' ? '에디토리얼' : categoryNames[p.category || ''] || '기타') === label).length,
   }));
   const roleNames: Record<string, string> = { admin: '관리자', 'sub-admin': '부관리자', editor: '에디터', user: '일반 회원' };

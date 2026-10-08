@@ -6,6 +6,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { normalizeAvatarUrl } from "@/lib/avatar-url";
 import ColorModeToggle from '@/app/components/ColorModeToggle';
+import ArchiveImage from '@/app/components/ArchiveImage';
 import BrandLogo from '@/app/components/BrandLogo';
 
 // 유저 정보 타입 정의
@@ -20,7 +21,6 @@ type UserProfile = {
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
-  const [mounted, setMounted] = useState(false);
   const [userInfo, setUserInfo] = useState<UserProfile | null>(null);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement | null>(null);
@@ -32,14 +32,13 @@ export default function Header() {
   
   const showHeader = !NO_HEADER_ROUTES.some(route => pathname.startsWith(route));
 
-  // 초기화 및 데이터 로드
   useEffect(() => {
-    queueMicrotask(() => setMounted(true));
-  }, []);
-
-  useEffect(() => {
-    // 유저 정보 조회 (Auth + DB 최신 데이터)
+    if (!showHeader) return;
+    let active = true;
+    let requestVersion = 0;
+    // The menu is display-only; all privileged requests still validate server-side.
     const fetchUser = async () => {
+      const version = ++requestVersion;
       const { data: { session } } = await supabase.auth.getSession();
       const authUser = session?.user;
 
@@ -50,6 +49,7 @@ export default function Header() {
           .eq("id", authUser.id)
           .single();
 
+        if (!active || version !== requestVersion) return;
         if (dbUser && !error) {
           setUserInfo({
             id: authUser.id,
@@ -67,13 +67,15 @@ export default function Header() {
             role: "user",
           });
         }
-      } else {
+      } else if (active && version === requestVersion) {
         setUserInfo(null);
       }
     };
 
-    fetchUser();
-  }, [supabase]);
+    void fetchUser();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(event => { if (event !== 'INITIAL_SESSION') void fetchUser(); });
+    return () => { active = false; subscription.unsubscribe(); };
+  }, [supabase, showHeader]);
 
   useEffect(() => {
     queueMicrotask(() => setProfileMenuOpen(false));
@@ -137,7 +139,6 @@ export default function Header() {
     return pathname === href || pathname.startsWith(`${href}/`);
   };
 
-  if (!mounted) return null;
 
   const managementLink = getManagementLink(userInfo?.role);
   const loginHref =
@@ -177,19 +178,20 @@ export default function Header() {
             <div className="editorial-archive-nav" role="group" aria-label="아카이브">
               {archiveItems.map(item => <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</Link>)}
             </div>
-            {/* 유저 프로필 영역 */}
+            {/* Reserve the account area while the session loads. */}
+            <div className="client-header-account flex w-[144px] justify-end">
             {userInfo ? (
               <div ref={profileMenuRef} className="relative">
                 <button
                   type="button"
                   onClick={() => setProfileMenuOpen((open) => !open)}
-                  className="flex items-center gap-2 rounded-md py-1 pl-1 pr-2 transition hover:bg-muted"
+                  className="flex max-w-full items-center gap-2 rounded-md py-1 pl-1 pr-2 transition hover:bg-muted"
                   aria-expanded={profileMenuOpen}
                   aria-haspopup="menu"
                 >
                   <span className="h-8 w-8 overflow-hidden rounded-full border border-border bg-muted">
                     {userInfo.avatar_url ? (
-                      <img
+                      <ArchiveImage width={32} height={32} sizes="32px"
                         src={userInfo.avatar_url}
                         alt={userInfo.nickname}
                         className="h-full w-full object-cover"
@@ -214,7 +216,7 @@ export default function Header() {
                     <div className="mb-3 flex items-center gap-3 px-2 py-2">
                       <div className="h-12 w-12 overflow-hidden rounded-full bg-muted">
                         {userInfo.avatar_url ? (
-                          <img src={userInfo.avatar_url} alt={userInfo.nickname} className="h-full w-full object-cover" />
+                          <ArchiveImage width={48} height={48} sizes="48px" src={userInfo.avatar_url} alt={userInfo.nickname} className="h-full w-full object-cover" />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center text-sm font-bold text-secondary">
                             {userInfo.nickname?.charAt(0).toUpperCase() || "U"}
@@ -266,6 +268,7 @@ export default function Header() {
                 로그인
               </Link>
             )}
+            </div>
 
           </nav>
           <ColorModeToggle className="ml-3" />

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ToastProvider";
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
+import Image from 'next/image';
 import ImageUpload from "@/components/ImageUpload";
 import { getSiteUrl } from '@/lib/site-url';
 
@@ -385,6 +386,7 @@ export default function SEOSettingsPage() {
                   />
                 </div>
 
+                {!settings.og_image && <div><p className="mb-2 text-xs text-gray-500">이미지를 등록하지 않으면 ARCH.B 공유 카드를 자동 생성합니다.</p><Image unoptimized src="/api/og?type=default&v=2" width={1200} height={630} alt="자동 생성되는 ARCH.B 공유 카드" className="max-w-xl w-full rounded border" /></div>}
                 <ImageUpload
                   label="OG 이미지"
                   currentUrl={settings.og_image}
@@ -445,6 +447,7 @@ export default function SEOSettingsPage() {
                   />
                 </div>
 
+                {!settings.twitter_image && <div><p className="mb-2 text-xs text-gray-500">별도 이미지가 없으면 OG 이미지를 함께 사용합니다.</p><Image unoptimized src={settings.og_image || '/api/og?type=default&v=2'} width={1200} height={630} alt="Twitter 공유 이미지 미리보기" className="max-w-xl w-full rounded border" /></div>}
                 <ImageUpload
                   label="Twitter 이미지"
                   currentUrl={settings.twitter_image}

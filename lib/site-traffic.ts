@@ -18,6 +18,27 @@ export function referrerHost(value: unknown, ownHost: string): string | null {
   } catch { return null; }
 }
 
+export function referrerPath(value: unknown, ownHost: string): string | null {
+  if (!referrerHost(value, ownHost)) return null;
+  try {
+    const path = new URL(value as string).pathname;
+    return path.length <= 512 ? path : null;
+  } catch { return null; }
+}
+
+export type VisitorSession = {
+  session_hash: string; visitor_hash: string; started_at: string; last_at: string; pageviews: number;
+  entry_path: string; last_path: string; referrer_host: string | null; referrer_path: string | null;
+  ip_address: string | null; country_code: string | null; device: string; browser: string | null; os: string | null;
+};
+export type VisitorEvent = {
+  id: string; created_at: string; path: string; section: string; is_entry: boolean;
+  referrer_host: string | null; referrer_path: string | null; ip_address: string | null;
+  device: string; browser: string | null; os: string | null; country_code: string | null;
+};
+export type VisitorSessionList = { sessions: VisitorSession[]; total: number; page: number; totalPages: number };
+export type VisitorEventList = { events: VisitorEvent[]; total: number; page: number; totalPages: number };
+
 export function visitorDevice(userAgent: string): 'desktop' | 'mobile' | 'tablet' {
   if (/ipad|tablet|macintosh.*mobile|android(?!.*mobile)/i.test(userAgent)) return 'tablet';
   return /mobile|iphone|ipod/i.test(userAgent) ? 'mobile' : 'desktop';

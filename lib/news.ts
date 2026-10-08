@@ -7,6 +7,8 @@ import { editorialBatchSchema, type Editorial } from "./news-editorial";
 import { checkPostOwnershipOrAdmin } from "./supabase/post-utils";
 import { NEWS_FORMAT, newsSlug, type NewsArticle } from "./news-record";
 export type { NewsArticle } from "./news-record";
+import type { NewsSummary } from './news-list';
+import { cache } from 'react';
 export const NEWS_CACHE_TAG = "archb-news";
 const columns = "id,type,slug,title,subtitle,summary,tags,title_image_url,published_at,content,author_id,category_id";
 
@@ -15,7 +17,7 @@ type PublishedRow = {
   tags: string[] | null; title_image_url: string | null; published_at: string; category_id: string;
   content: { format?: string; category: NewsArticle["category"]; source_url: string; original_title: string; source: string; source_published_at?: string; paragraphs: NewsArticle["paragraphs"]; points: string[] } | null;
 };
-function mapPublishedRows(rows: PublishedRow[]) {
+export function mapPublishedRows(rows: PublishedRow[]) {
   return rows.flatMap<NewsArticle>(row => {
     if (row.type === "blog") return [{ id: row.id, slug: row.slug, kind: "editorial" as const, collection: row.category_id, url: `/news/read/${row.slug}`, original_title: row.title, title: row.title, summary: row.summary || row.subtitle || "", description: row.summary || row.subtitle || "ARCH.B의 관점으로 읽는 이야기.", tags: row.tags || [], image: row.title_image_url, published_at: row.published_at, source: "ARCH.B", category: "editorial" as const, paragraphs: [], points: [] }];
     const content = row.content;
@@ -24,11 +26,19 @@ function mapPublishedRows(rows: PublishedRow[]) {
   });
 }
 export const readNews = unstable_cache(async () => {
-  const { data, error } = await createPublicClient().from("posts").select(columns).in("type", ["news", "blog"]).eq("is_published", true).not("published_at", "is", null).order("published_at", { ascending: false }).limit(300);
-  if (error) throw error;
-  const articles = mapPublishedRows((data || []) as PublishedRow[]);
+  const articles: NewsArticle[] = [];
+  for (let offset = 0; ; offset += 500) {
+    const { data, error } = await createPublicClient().from('posts').select(columns).in('type', ['news', 'blog']).eq('is_published', true).not('published_at', 'is', null).order('published_at', { ascending: false }).order('id').range(offset, offset + 499);
+    if (error) throw error;
+    articles.push(...mapPublishedRows((data || []) as PublishedRow[]));
+    if (!data || data.length < 500) break;
+  }
   return { articles, sources: [...FEEDS, { id: "archb-editorial", name: "ARCH.B", category: "editorial" as const, url: "/" }].map(feed => ({ ...feed, count: articles.filter(a => a.source === feed.name).length })) };
-}, ["archb-published-news-and-editorials", JSON.stringify(FEEDS)], { revalidate: 600, tags: [NEWS_CACHE_TAG, "public-posts"] });
+}, ["archb-published-news-and-editorials-v2", JSON.stringify(FEEDS)], { revalidate: 600, tags: [NEWS_CACHE_TAG, "public-posts"] });
+export const readNewsSummaries = cache(async (): Promise<{ articles: NewsSummary[] }> => {
+  const { articles } = await readNews();
+  return { articles: articles.map(article => ({ id: article.id, slug: article.slug, kind: article.kind, collection: article.collection, url: article.url, original_title: article.original_title, title: article.title, summary: article.summary, description: article.description, tags: article.tags, image: article.image, published_at: article.published_at, source: article.source, category: article.category })) };
+});
 export const readNewsArticle = unstable_cache(async (slug: string) => {
   const { data, error } = await createPublicClient().from("posts").select(columns).eq("slug", slug).in("type", ["news", "blog"]).eq("is_published", true).not("published_at", "is", null).maybeSingle();
   if (error) throw error;

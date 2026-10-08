@@ -1,8 +1,15 @@
+/* eslint-disable @next/next/no-img-element -- ImageResponse renders img nodes into PNG rather than a web page. */
 import { ImageResponse } from "next/og";
 import { createPublicClient } from "@/lib/supabase/public";
-import { getSiteUrl } from "@/lib/site-url";
+import sharp from 'sharp';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { readOgImage } from '@/lib/og-image';
+import { getSiteSettings } from '@/lib/site-settings';
 
-export const runtime = "edge";
+export const runtime = "nodejs";
+const logo = readFile(join(process.cwd(), 'public/logo.png')).then(bytes => `data:image/png;base64,${bytes.toString('base64')}`);
+
 
 const OG_SIZE = {
   width: 1200,
@@ -51,14 +58,9 @@ function getDomain(url: string | null | undefined) {
   }
 }
 
-function getOgSafeImageUrl(url: string | null | undefined, origin: string) {
+function getOgSafeImageUrl(url: string | null | undefined) {
   if (!url) return null;
-  if (!url.includes("supabase.co")) return url;
-
-  const cleanUrl = url.split("?")[0];
-  const proxyUrl = new URL("/api/og-image", origin);
-  proxyUrl.searchParams.set("src", cleanUrl);
-  return proxyUrl.toString();
+  return url;
 }
 
 async function getCategoryName(categoryId: string | null | undefined) {
@@ -74,13 +76,14 @@ async function getCategoryName(categoryId: string | null | undefined) {
   return data?.name || null;
 }
 
-async function getBlogPayload(slug: string, origin: string): Promise<OgPayload | null> {
+async function getBlogPayload(slug: string): Promise<OgPayload | null> {
   const supabase = createPublicClient();
   const { data, error } = await supabase
     .from("posts")
-    .select("type,title,subtitle,summary,title_image_url,thumbnail_url,category_id,published_at,created_at,content")
+    .select("type,title,subtitle,summary,title_image_url,thumbnail_url,category_id,published_at,created_at")
     .in("type", ["blog", "news"])
     .eq("is_published", true)
+    .not('published_at', 'is', null)
     .eq("slug", slug)
     .maybeSingle();
 
@@ -93,13 +96,13 @@ async function getBlogPayload(slug: string, origin: string): Promise<OgPayload |
     label: data.type === "news" ? "뉴스" : category || "에디토리얼",
     title: data.title,
     description: data.summary || data.subtitle || "ARCH.B에서 기록한 최신 인사이트입니다.",
-    imageUrl: getOgSafeImageUrl(data.thumbnail_url || data.title_image_url, origin),
+    imageUrl: getOgSafeImageUrl(data.thumbnail_url || data.title_image_url),
     meta: formatDate(data.published_at || data.created_at),
     variant: "blog",
   };
 }
 
-async function getGalleryPayload(id: string, origin: string): Promise<OgPayload | null> {
+async function getGalleryPayload(id: string): Promise<OgPayload | null> {
   const galleryId = Number(id);
   if (!Number.isFinite(galleryId)) return null;
 
@@ -117,13 +120,13 @@ async function getGalleryPayload(id: string, origin: string): Promise<OgPayload 
     label: data.category || "Image",
     title: data.title,
     description: data.description || data.gemini_description || "텍스트로 그려낸 상상의 단면을 기록합니다.",
-    imageUrl: getOgSafeImageUrl(data.image_url, origin),
+    imageUrl: getOgSafeImageUrl(data.image_url),
     meta: formatDate(data.created_at),
     variant: "gallery",
   };
 }
 
-async function getReferencePayload(id: string, origin: string): Promise<OgPayload | null> {
+async function getReferencePayload(id: string): Promise<OgPayload | null> {
   const referenceId = Number(id);
   if (!Number.isFinite(referenceId)) return null;
 
@@ -141,7 +144,7 @@ async function getReferencePayload(id: string, origin: string): Promise<OgPayloa
     label: data.range?.[0] || data.category || "Reference",
     title: data.title,
     description: data.description || "ARCH.B가 큐레이션한 디자인 레퍼런스입니다.",
-    imageUrl: getOgSafeImageUrl(data.image_url || data.logo_url, origin),
+    imageUrl: getOgSafeImageUrl(data.image_url || data.logo_url),
     domain: getDomain(data.url),
     variant: "reference",
   };
@@ -188,7 +191,7 @@ function getDefaultPayload(type: string | null): OgPayload {
 }
 
 async function getPayload(request: Request): Promise<OgPayload> {
-  const { origin, searchParams } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
   const type = searchParams.get("type");
   const withoutImage = searchParams.get("image") === "0";
 
@@ -196,51 +199,25 @@ async function getPayload(request: Request): Promise<OgPayload> {
     withoutImage ? { ...payload, imageUrl: null } : payload;
 
   if (type === "blog" || type === "news" || type === "article") {
-    const payload = await getBlogPayload(searchParams.get("slug") || "", origin);
+    const payload = await getBlogPayload(searchParams.get("slug") || "");
     if (payload) return normalizePayload(payload);
   }
 
   if (type === "gallery") {
-    const payload = await getGalleryPayload(searchParams.get("id") || "", origin);
+    const payload = await getGalleryPayload(searchParams.get("id") || "");
     if (payload) return normalizePayload(payload);
   }
 
   if (type === "reference") {
-    const payload = await getReferencePayload(searchParams.get("id") || "", origin);
+    const payload = await getReferencePayload(searchParams.get("id") || "");
     if (payload) return normalizePayload(payload);
   }
 
   return normalizePayload(getDefaultPayload(type));
 }
 
-function BrandMark() {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-      <div
-        style={{
-          display: "flex",
-          width: 38,
-          height: 38,
-          alignItems: "center",
-          justifyContent: "center",
-          border: `1px solid ${LINE}`,
-          color: BRAND,
-          fontSize: 20,
-          fontWeight: 900,
-        }}
-      >
-        A
-      </div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <span style={{ color: INK, fontSize: 24, fontWeight: 900, letterSpacing: -1 }}>
-          ARCH.B
-        </span>
-        <span style={{ color: MUTED, fontSize: 13, letterSpacing: 2 }}>
-          ARCHIVE BEHIND
-        </span>
-      </div>
-    </div>
-  );
+function BrandMark({ logoUrl }: { logoUrl: string }) {
+  return <div style={{ display: 'flex', alignItems: 'center' }}><img src={logoUrl} alt="ARCH-B" width={176} height={32} style={{ objectFit: 'contain' }} /></div>;
 }
 
 function ImagePanel({ payload }: { payload: OgPayload }) {
@@ -303,7 +280,7 @@ function ImagePanel({ payload }: { payload: OgPayload }) {
   );
 }
 
-function OgCard({ payload }: { payload: OgPayload }) {
+function OgCard({ payload, logoUrl }: { payload: OgPayload; logoUrl: string }) {
   const hasImage = Boolean(payload.imageUrl);
   const imageWidth = payload.variant === "gallery" ? 520 : 470;
 
@@ -333,7 +310,7 @@ function OgCard({ payload }: { payload: OgPayload }) {
           padding: "58px 64px",
         }}
       >
-        <BrandMark />
+        <BrandMark logoUrl={logoUrl} />
 
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -411,12 +388,17 @@ function OgCard({ payload }: { payload: OgPayload }) {
 
 export async function GET(request: Request) {
   const payload = await getPayload(request);
-  const response = new ImageResponse(<OgCard payload={payload} />, OG_SIZE);
-
-  response.headers.set(
-    "Cache-Control",
-    "public, max-age=0, s-maxage=60"
-  );
-
-  return response;
+  if (!payload.imageUrl && new URL(request.url).searchParams.get('type') === 'default') {
+    const custom = (await getSiteSettings())?.og_image;
+    if (custom) {
+      const bytes = await readOgImage(custom).then(data => sharp(data).resize(1200, 630, { fit: 'contain', background: '#ffffff' }).png().toBuffer()).catch(() => null);
+      if (bytes) return new Response(new Uint8Array(bytes), { headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=0, s-maxage=60' } });
+    }
+  }
+  if (payload.imageUrl) payload.imageUrl = await readOgImage(payload.imageUrl).then(bytes => `data:image/jpeg;base64,${bytes.toString('base64')}`).catch(() => null);
+  const logoUrl = await logo;
+  const render = (card: OgPayload) => new ImageResponse(<OgCard payload={card} logoUrl={logoUrl} />, OG_SIZE).arrayBuffer();
+  // Finish rendering before committing HTTP headers, including failures inside the image stream.
+  const bytes = await render(payload).catch(() => render({ ...payload, imageUrl: null }));
+  return new Response(bytes, { headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=0, s-maxage=600, stale-while-revalidate=3600' } });
 }

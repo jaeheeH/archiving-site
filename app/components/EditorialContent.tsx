@@ -1,6 +1,13 @@
 import { Fragment, type ReactNode } from 'react';
 import type { JSONContent } from '@tiptap/core';
 import { getSiteUrl } from '@/lib/site-url';
+import ArchiveImage from './ArchiveImage';
+import EditorialGallery from './EditorialGallery';
+
+function imageSize(value: unknown, fallback: number) {
+  const size = Number(value);
+  return Number.isFinite(size) && size > 0 ? Math.max(1, Math.min(10000, Math.round(size))) : fallback;
+}
 
 function safeUrl(value: unknown, image = false) {
   if (typeof value !== 'string') return undefined;
@@ -10,7 +17,7 @@ function safeUrl(value: unknown, image = false) {
   } catch { return undefined; }
 }
 
-// Initial HTML for crawlers and readers without JavaScript; the read-only editor takes over after hydration.
+// The public reader renders stored content as HTML; Tiptap stays in the editor.
 export default function EditorialContent({ content }: { content: JSONContent | JSONContent[] | string | null }) {
   const nodes = (items?: JSONContent[]): ReactNode => items?.map((node, index) => <Fragment key={index}>{render(node)}</Fragment>);
   const render = (node: JSONContent): ReactNode => {
@@ -41,8 +48,9 @@ export default function EditorialContent({ content }: { content: JSONContent | J
       case 'listItem': return <li>{children}</li>;
       case 'blockquote': return <blockquote>{children}</blockquote>;
       case 'codeBlock': return <pre><code>{children}</code></pre>;
-      case 'image': return safeUrl(attrs.src, true) ? <img src={safeUrl(attrs.src, true)} alt={typeof attrs.alt === 'string' ? attrs.alt : ''} title={typeof attrs.title === 'string' ? attrs.title : undefined} loading="lazy" /> : null;
-      case 'imageGallery': return <div className="image-gallery-readonly">{Array.isArray(attrs.images) && attrs.images.map((url: unknown, index: number) => safeUrl(url, true) ? <img key={index} src={safeUrl(url, true)} alt={`본문 이미지 ${index + 1}`} loading="lazy" /> : null)}</div>;
+      case 'image': return safeUrl(attrs.src, true) ? <ArchiveImage src={safeUrl(attrs.src, true)!} width={imageSize(attrs.width, 1200)} height={imageSize(attrs.height, 800)} sizes="(max-width: 1024px) 100vw, 820px" alt={typeof attrs.alt === 'string' ? attrs.alt : ''} title={typeof attrs.title === 'string' ? attrs.title : undefined} loading="lazy" /> : null;
+      case 'imageGallery': return <EditorialGallery images={Array.isArray(attrs.images) ? attrs.images.flatMap((url: unknown) => safeUrl(url, true) || []) : []} slider={attrs.layout === 'swiper'} />;
+      case 'columns': return <div className={`editorial-columns ${Number(attrs.columns) === 3 ? 'editorial-columns-three' : ''}`}>{children}</div>;
       case 'table': return <table><tbody>{children}</tbody></table>;
       case 'tableRow': return <tr>{children}</tr>;
       case 'tableCell': case 'tableHeader': {

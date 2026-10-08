@@ -1,6 +1,7 @@
+import ArchiveImage from '@/app/components/ArchiveImage';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
-import { getArtCatalog } from '@/lib/art-catalog';
+import { getFreshArtCatalog } from '@/lib/art-catalog';
 import { getDashboardContext } from '@/lib/dashboard-data';
 import CatalogEditor from './CatalogEditor';
 import ContentPagination from '@/app/(dashboard)/components/ContentPagination';
@@ -11,7 +12,7 @@ const label = { art: '아트', artists: '작가' };
 export default async function CatalogPage({ kind, searchParams }: { kind: Kind; searchParams: Promise<{ q?: string; page?: string }> }) {
   const context = await getDashboardContext();
   if (!context) redirect(`/login?redirect=/dashboard/contents/${kind}`);
-  const catalog = await getArtCatalog();
+  const catalog = await getFreshArtCatalog();
   const writable = ['admin', 'sub-admin'].includes(context.role) && catalog.databaseReady;
   const { q = '', page: rawPage = '1' } = await searchParams;
   const query = q.slice(0, 100).trim().toLocaleLowerCase('ko');
@@ -29,7 +30,7 @@ export default async function CatalogPage({ kind, searchParams }: { kind: Kind; 
         <table className="content-table content-table-compact text-left" aria-label={`${label[kind]} 목록`}>
           <thead><tr><th className="content-table-title">{kind === 'art' ? '작품' : '작가'}</th><th>{kind === 'art' ? '작가 · 소장처' : '원문 이름 · 작품 수'}</th><th className="content-table-action-cell">관리</th></tr></thead>
           <tbody>
-            {rows.slice((page - 1) * 20, page * 20).map(row => <tr key={row.id} className="border-b hover:bg-gray-50"><td><div className="flex min-w-0 items-center gap-3">{row.image && <img src={row.image} alt="" className="h-8 w-12 shrink-0 rounded object-contain" referrerPolicy="no-referrer" />}<Link href={`/dashboard/contents/${kind}/${row.id}/edit`} className="min-w-0 truncate text-sm font-medium hover:underline" title={row.title}>{row.title}</Link></div></td><td><p className="line-clamp-2 text-sm text-gray-500">{row.description}</p></td><td className="content-table-action-cell"><Link href={`/dashboard/contents/${kind}/${row.id}/edit`} className="content-table-action" aria-label={`${row.title} ${writable ? '수정' : '조회'}`}><i className={writable ? 'ri-edit-line' : 'ri-eye-line'} aria-hidden="true" />{writable ? '수정' : '조회'}</Link></td></tr>)}
+            {rows.slice((page - 1) * 20, page * 20).map(row => <tr key={row.id} className="border-b hover:bg-gray-50"><td><div className="flex min-w-0 items-center gap-3">{row.image && <ArchiveImage width={48} height={32} sizes="48px" src={row.image} alt="" className="h-8 w-12 shrink-0 rounded object-contain" referrerPolicy="no-referrer" />}<Link href={`/dashboard/contents/${kind}/${row.id}/edit`} className="min-w-0 truncate text-sm font-medium hover:underline" title={row.title}>{row.title}</Link></div></td><td><p className="line-clamp-2 text-sm text-gray-500">{row.description}</p></td><td className="content-table-action-cell"><Link href={`/dashboard/contents/${kind}/${row.id}/edit`} className="content-table-action" aria-label={`${row.title} ${writable ? '수정' : '조회'}`}><i className={writable ? 'ri-edit-line' : 'ri-eye-line'} aria-hidden="true" />{writable ? '수정' : '조회'}</Link></td></tr>)}
             {!rows.length && <tr><td colSpan={3} className="p-10 text-center text-sm text-gray-500">검색 결과가 없습니다.</td></tr>}
           </tbody>
         </table>
@@ -42,7 +43,7 @@ export default async function CatalogPage({ kind, searchParams }: { kind: Kind; 
 export async function CatalogEditPage({ kind, id }: { kind: Kind; id?: string }) {
   const context = await getDashboardContext();
   if (!context) redirect(`/login?redirect=/dashboard/contents/${kind}`);
-  const catalog = await getArtCatalog();
+  const catalog = await getFreshArtCatalog();
   const row = id ? (kind === 'art' ? catalog.artworks : catalog.artists).find(row => row.id === id) : undefined;
   if (id && !row) notFound();
   const writable = ['admin', 'sub-admin'].includes(context.role) && catalog.databaseReady;
