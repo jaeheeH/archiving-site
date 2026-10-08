@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createClient } from '@supabase/supabase-js';
-import { assertNewsProject, canAutoWrite, writePendingNews } from '../lib/news-pipeline.ts';
+import { assertNewsProject, canAutoWrite, canRetryNews, writePendingNews, newsWritingQueue } from '../lib/news-pipeline.ts';
+import { DuplicateNewsError } from '../lib/news-duplicates.ts';
 import { NEWS_FORMAT } from '../lib/news-record.ts';
 import { researchNews } from '../lib/news-research.ts';
 
@@ -15,9 +16,9 @@ const db = createClient('https://test.supabase.co', 'test-key', { auth: { persis
   if (url.pathname.endsWith('/users')) {
     data = url.searchParams.get('role') === 'eq.admin' ? [{ id: 'admin' }] : [{ role }];
   } else {
-    const selected = rows.filter(row => match(row, 'id') && match(row, 'updated_at') && match(row, 'is_published') && match(row, 'author_id') && (!url.searchParams.has('content->paragraphs') || row.content.paragraphs === undefined) && (!url.searchParams.has('content->automation->>started_at') || row.content.automation?.started_at) && (!url.searchParams.get('author_id')?.startsWith('not.in.') || !url.searchParams.get('author_id').includes(row.author_id)));
+    const selected = rows.filter(row => match(row, 'id') && match(row, 'updated_at') && match(row, 'is_published') && match(row, 'author_id') && (!url.searchParams.has('content->paragraphs') || (url.searchParams.get('content->paragraphs') === 'not.is.null' ? row.content.paragraphs !== undefined : row.content.paragraphs === undefined)) && (!url.searchParams.has('content->automation->>started_at') || row.content.automation?.started_at) && (!url.searchParams.get('author_id')?.startsWith('not.in.') || !url.searchParams.get('author_id').includes(row.author_id)) && (!url.searchParams.has('or') || row.is_published || url.searchParams.get('or').includes(`author_id.eq.${row.author_id})`)));
     if (options.method === 'PATCH') { const patch = JSON.parse(options.body); for (const row of selected) Object.assign(row, patch); }
-    data = selected.map(row => url.searchParams.get('select') === 'source:content->>source,updated_at' ? { source: row.content.source, updated_at: row.updated_at } : structuredClone(row));
+    data = selected.map(row => url.searchParams.get('select') === 'source:content->>source,updated_at' ? { source: row.content.source, updated_at: row.updated_at } : url.searchParams.get('select').includes('original_title:') ? { id: row.id, slug: row.slug, title: row.title, summary: row.summary, is_published: row.is_published, ...Object.fromEntries(['source','source_url','source_published_at','original_title'].map(key => [key,row.content[key]])) } : structuredClone(row));
   }
   const headers = new Headers(options.headers);
   if (headers.get('accept')?.includes('application/vnd.pgrst.object')) data = data[0] || null;
@@ -39,6 +40,12 @@ result = await writePendingNews(db, viewer, { writer: async () => { throw new Er
 assert.equal(result.failed, 1); assert.equal(rows[0].title, 'Original title'); assert.equal(rows[0].content.source_text, 'Original material'); assert.equal(canAutoWrite(rows[0]), false);
 rows[0].content.automation.retry_after = '2020-01-01'; assert.equal(canAutoWrite(rows[0]), true);
 rows[0].content.automation.attempts = 3; assert.equal(canAutoWrite(rows[0]), false);
+assert.equal(canRetryNews(rows[0]), true);
+assert.equal(canRetryNews({ ...rows[0], is_published: true }), false);
+assert.equal(canRetryNews({ ...rows[0], content: { ...rows[0].content, paragraphs: [] } }), false);
+assert.equal(canRetryNews({ ...rows[0], content: { ...rows[0].content, automation: { status:'writing',attempts:4,started_at:new Date().toISOString(),job_id:'retry-job' } } },'retry-job'), false,'A live article claim remains protected');
+await assert.rejects(writePendingNews(db, viewer, { writer, manualRetry:true }), /한 편/);
+await assert.rejects(writePendingNews(db, viewer, { writer, manualRetry:true,postId:'p',limit:2 }), /한 편/);
 rows = [raw('p')];
 result = await writePendingNews(db, viewer, { writer: async () => ({ ...prepared, article: { ...prepared.article, paragraphs: [] } }) });
 assert.equal(result.failed, 1); assert.equal(rows[0].content.paragraphs, undefined, 'Invalid output cannot become a draft');
@@ -54,6 +61,27 @@ result = await writePendingNews(db, viewer, { writer: async () => { rows[0].auth
 assert.equal(result.skipped, 1); assert.equal(rows[0].title, 'Original title'); assert.equal(rows[0].author_id, 'other');
 rows = [raw('p')]; rows[0].content.automation = { status: 'writing', attempts: 1, started_at: '2020-01-01' };
 assert.equal((await writePendingNews(db, viewer, { writer })).written, 1, 'Interrupted claims can resume');
+
+const duplicateMatch = { id: 'existing', slug: 'existing-slug', title: '기존 기사', source: '매체', is_published: true, reason: '같은 발표의 번역본' };
+rows = [raw('duplicate')];
+result = await writePendingNews(db, viewer, { writer: async () => { throw new DuplicateNewsError([duplicateMatch]); } });
+assert.equal(result.duplicates, 1); assert.equal(result.failed, 0); assert.equal(result.written, 0);
+assert.equal(rows[0].title, 'Original title'); assert.equal(rows[0].content.source_text, 'Original material'); assert.equal(rows[0].is_published, false);
+assert.equal(rows[0].content.duplicate_review.status, 'pending'); assert.equal(rows[0].content.automation.error, undefined);
+assert.equal(canAutoWrite(rows[0]), false); assert.equal(canRetryNews(rows[0]), false);
+assert.equal((await newsWritingQueue(db, viewer)).duplicates, 1);
+assert.equal((await writePendingNews(db, viewer, { writer })).written, 0, 'Duplicate holds cannot be retried automatically');
+rows[0].content.duplicate_review.status = 'allowed'; rows[0].content.automation = undefined;
+result = await writePendingNews(db, viewer, { writer: async input => { assert.deepEqual(input.duplicateCandidates, []); return structuredClone(prepared); } });
+assert.equal(result.written, 1); assert.equal(rows[0].content.duplicate_review, undefined, 'Private comparison metadata must not enter a finished article');
+
+rows = [raw('incoming'), { ...raw('my-draft'), content: { ...raw('p').content, paragraphs: [] } }, { ...raw('private', 'another'), content: { ...raw('p').content, paragraphs: [] } }, { ...raw('public', 'another'), is_published: true, content: { ...raw('p').content, paragraphs: [] } }];
+await writePendingNews(db, viewer, { postId: 'incoming', writer: async input => {
+  const ids = input.duplicateCandidates.map(candidate => candidate.id);
+  assert.ok(ids.includes('my-draft') && ids.includes('public'));
+  assert.ok(!ids.includes('private') && !ids.includes('incoming'), 'Another account’s private draft and self are not comparison targets');
+  return structuredClone(prepared);
+} });
 rows = [raw('p', 'admin'), raw('q', 'sub')]; role = 'sub-admin';
 result = await writePendingNews(db, { userId: 'sub', role }, { writer }); assert.equal(result.written, 1); assert.equal(rows[0].content.paragraphs, undefined);
 await assert.rejects(writePendingNews(db, viewer, { writer }), /권한/);

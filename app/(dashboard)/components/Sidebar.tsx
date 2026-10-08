@@ -67,7 +67,7 @@ export default function Sidebar() {
       children: [
         { label: "설정 개요", href: "/dashboard/settings" },
         { label: "SEO(검색엔진최적화)", href: "/dashboard/settings/seo" },
-        { label: "메인 배너", href: "/dashboard/settings/banner" },
+        { label: "광고 배너", href: "/dashboard/settings/banner" },
       ],
     }
   ];

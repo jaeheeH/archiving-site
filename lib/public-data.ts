@@ -4,6 +4,7 @@ import { unstable_cache } from "next/cache";
 import { createPublicClient } from "@/lib/supabase/public";
 import { CATEGORIES } from './news-feeds';
 import { normalizeAvatarUrl } from "@/lib/avatar-url";
+import { BANNER_COLUMNS, pickBanner, type Banner } from './banners';
 
 export const CACHE_TAGS = {
   siteSettings: "site-settings",
@@ -20,6 +21,17 @@ export const CACHE_SECONDS = {
 } as const;
 
 export const PUBLIC_API_CACHE_CONTROL = `public, s-maxage=${CACHE_SECONDS.short}, stale-while-revalidate=${CACHE_SECONDS.medium}`;
+
+const readBannerRows = unstable_cache(async () => {
+  const { data, error } = await createPublicClient().from('banners').select(BANNER_COLUMNS).eq('is_active', true).order('order_index').order('created_at').order('id');
+  if (error) throw error;
+  return (data || []) as Banner[];
+}, ['news-sidebar-banners'], { revalidate: CACHE_SECONDS.short, tags: [CACHE_TAGS.home] });
+
+export async function getNewsSidebarBanner() {
+  try { return pickBanner(await readBannerRows()); }
+  catch { console.error('News sidebar banner could not be loaded'); return null; }
+}
 
 const GALLERY_LIST_COLUMNS = `
   id,

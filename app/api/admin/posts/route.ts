@@ -55,6 +55,7 @@ function applyPostFilters<T>(query: T, params: {
   draftOnly: boolean;
   publishedOnly: boolean;
   reviewOnly: boolean;
+  duplicateOnly: boolean;
   query: string;
 }): T {
   let nextQuery = (query as PostFilterableQuery).eq('type', params.type) as T;
@@ -76,7 +77,12 @@ function applyPostFilters<T>(query: T, params: {
     }
   }
 
-  if (params.reviewOnly && params.type === 'news') {
+  if (params.duplicateOnly && params.type === 'news') {
+    nextQuery = filterable().eq('is_published', false) as T;
+    nextQuery = filterable().eq('content->automation->>status', 'duplicate') as T;
+    nextQuery = filterable().eq('content->duplicate_review->>status', 'pending') as T;
+    nextQuery = filterable().is('content->paragraphs', null) as T;
+  } else if (params.reviewOnly && params.type === 'news') {
     nextQuery = filterable().eq('is_published', false) as T;
     nextQuery = filterable().not('content->paragraphs->0', 'is', 'null') as T;
   } else if (params.draftOnly) {
@@ -100,6 +106,7 @@ export async function GET(request: Request) {
     const draftOnly = searchParams.get('draft_only') === 'true';
     const publishedOnly = searchParams.get('published_only') === 'true';
     const reviewOnly = searchParams.get('review_only') === 'true';
+    const duplicateOnly = searchParams.get('duplicate_only') === 'true';
     const query = (searchParams.get('q') || '').trim().slice(0, 100);
     const sortBy = normalizeSortField(searchParams.get('sort_by'));
     const sortOrder = normalizeSortOrder(searchParams.get('sort_order'));
@@ -152,6 +159,7 @@ export async function GET(request: Request) {
       draftOnly,
       publishedOnly,
       reviewOnly,
+      duplicateOnly,
       query,
     };
 

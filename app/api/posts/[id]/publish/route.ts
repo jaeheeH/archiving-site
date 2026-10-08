@@ -6,7 +6,7 @@ import { CACHE_TAGS } from '@/lib/public-data';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { checkPostOwnershipOrAdmin } from '@/lib/supabase/post-utils';
 import { editorialSchema } from '@/lib/news-editorial';
-import { NEWS_FORMAT } from '@/lib/news-record';
+import { NEWS_FORMAT, completedNewsWriting } from '@/lib/news-record';
 
 // PATCH: 발행 상태만 토글
 export async function PATCH(
@@ -40,7 +40,7 @@ export async function PATCH(
     // 기존 포스트 조회
     const { data: existingPost, error: existingPostError } = await supabase
       .from('posts')
-      .select('published_at, is_published, slug, type, title, summary, tags, content')
+      .select('published_at, is_published, slug, type, title, summary, tags, content, updated_at')
       .eq('id', id)
       .maybeSingle();
 
@@ -76,15 +76,18 @@ export async function PATCH(
       .update({
         is_published: isPublished,
         published_at,
+        ...(existingPost.type === 'news' && isPublished && (existingPost.content.automation || existingPost.content.duplicate_review) ? { content: { ...existingPost.content, duplicate_review: undefined, automation: completedNewsWriting(existingPost.content.automation) } } : {}),
         updated_at: new Date().toISOString(),
       })
       .eq('id', id)
+      .filter('updated_at', existingPost.updated_at === null ? 'is' : 'eq', existingPost.updated_at ?? 'null')
       .select('id, slug, type, is_published, published_at, updated_at')
-      .single();
+      .maybeSingle();
 
     if (error) {
       return Response.json({ error: error.message }, { status: 400 });
     }
+    if (!data) return Response.json({ error: '기사가 변경되었습니다. 새로고침 후 다시 발행해주세요.' }, { status: 409 });
 
     revalidateTag("archb-news", { expire: 0 });
     revalidatePath("/rss.xml"); revalidatePath("/sitemap.xml");

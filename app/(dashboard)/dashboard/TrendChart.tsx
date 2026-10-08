@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-type Day = { date: string; registered: number; published: number; views: number | null; visitors?: number; sessions?: number };
+type Day = { date: string; registered: number; published: number; views: number | null; visitors?: number; sessions?: number; impressions?: number; clicks?: number };
 
-export default function TrendChart({ daily, mode }: { daily: Day[]; mode: 'publishing' | 'views' | 'visitors' }) {
+export default function TrendChart({ daily, mode }: { daily: Day[]; mode: 'publishing' | 'views' | 'visitors' | 'banners' }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [active, setActive] = useState<number | null>(null);
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function TrendChart({ daily, mode }: { daily: Day[]; mode: 'publi
       const muted = style.getPropertyValue('--archive-muted').trim() || '#6b6b6b';
       ctx.scale(ratio, ratio);
       const left = 32, right = width - 14, top = 12, bottom = height - 30;
-      const series = mode === 'views' ? [daily.map(d => d.views || 0)] : mode === 'visitors' ? [daily.map(d => d.visitors || 0), daily.map(d => d.sessions || 0)] : [daily.map(d => d.registered), daily.map(d => d.published)];
+      const series = mode === 'views' ? [daily.map(d => d.views || 0)] : mode === 'visitors' ? [daily.map(d => d.visitors || 0), daily.map(d => d.sessions || 0)] : mode === 'banners' ? [daily.map(d => d.impressions || 0), daily.map(d => d.clicks || 0)] : [daily.map(d => d.registered), daily.map(d => d.published)];
       const largest = Math.max(1, ...series.flat());
       const step = Math.max(1, Math.ceil(largest / 4)), max = step * 4;
       const x = (i: number) => left + (right - left) * (mode === 'views' ? (i + .5) / daily.length : i / Math.max(1, daily.length - 1));
@@ -59,14 +59,14 @@ export default function TrendChart({ daily, mode }: { daily: Day[]; mode: 'publi
     return () => { observer.disconnect(); themeObserver.disconnect(); };
   }, [daily, mode]);
   const selected = active === null ? null : daily[active];
-  const labels = mode === 'visitors' ? ['방문자', '방문 횟수'] : ['뉴스 등록', '기사 발행'];
+  const labels = mode === 'visitors' ? ['방문자', '방문 횟수'] : mode === 'banners' ? ['노출', '클릭'] : ['뉴스 등록', '기사 발행'];
   const unavailable = mode === 'views' && daily.every(d => d.views === null);
   return (
     <div className="operation-chart">
       {unavailable ? <p className="chart-unavailable">조회 기록을 불러올 수 없습니다.</p> : <canvas ref={canvas} role="img" aria-label={mode === 'views' ? '일별 기사 조회 기록. 아래 데이터 표에서 정확한 값을 확인할 수 있습니다.' : `일별 ${labels.join('·')} 추이. 아래 데이터 표에서 정확한 값을 확인할 수 있습니다.`}
         onPointerMove={event => { const box = event.currentTarget.getBoundingClientRect(); setActive(Math.min(daily.length - 1, Math.max(0, Math.round((event.clientX - box.left - 32) / Math.max(1, box.width - 46) * (daily.length - 1))))); }} onPointerLeave={() => setActive(null)} />}
-      <p className="chart-readout" aria-live="polite">{selected ? `${selected.date} · ${mode === 'views' ? `조회 ${selected.views ?? '집계 불가'}건` : mode === 'visitors' ? `방문자 ${selected.visitors}명 · 방문 ${selected.sessions}회` : `뉴스 등록 ${selected.registered}편 · 기사 발행 ${selected.published}편`}` : '차트 위에 커서를 올리거나 아래 표에서 일별 수치를 확인하세요.'}</p>
-      <details className="chart-data"><summary>데이터 표 보기</summary><div tabIndex={0} role="region" aria-label="일별 통계 표"><table><caption className="sr-only">일별 {mode === 'views' ? '기사 조회' : labels.join('·')} 수치</caption><thead><tr><th scope="col">날짜</th>{mode === 'views' ? <th scope="col">조회 기록</th> : <><th scope="col">{labels[0]}</th><th scope="col">{labels[1]}</th></>}</tr></thead><tbody>{daily.map(d => <tr key={d.date}><th scope="row">{d.date}</th>{mode === 'views' ? <td>{d.views ?? '집계 불가'}</td> : <><td>{mode === 'visitors' ? d.visitors : d.registered}</td><td>{mode === 'visitors' ? d.sessions : d.published}</td></>}</tr>)}</tbody></table></div></details>
+      <p className="chart-readout" aria-live="polite">{selected ? `${selected.date} · ${mode === 'views' ? `조회 ${selected.views ?? '집계 불가'}건` : mode === 'visitors' ? `방문자 ${selected.visitors}명 · 방문 ${selected.sessions}회` : mode === 'banners' ? `노출 ${selected.impressions}회 · 클릭 ${selected.clicks}회` : `뉴스 등록 ${selected.registered}편 · 기사 발행 ${selected.published}편`}` : '차트 위에 커서를 올리거나 아래 표에서 일별 수치를 확인하세요.'}</p>
+      <details className="chart-data"><summary>데이터 표 보기</summary><div tabIndex={0} role="region" aria-label="일별 통계 표"><table><caption className="sr-only">일별 {mode === 'views' ? '기사 조회' : labels.join('·')} 수치</caption><thead><tr><th scope="col">날짜</th>{mode === 'views' ? <th scope="col">조회 기록</th> : <><th scope="col">{labels[0]}</th><th scope="col">{labels[1]}</th></>}</tr></thead><tbody>{daily.map(d => <tr key={d.date}><th scope="row">{d.date}</th>{mode === 'views' ? <td>{d.views ?? '집계 불가'}</td> : <><td>{mode === 'visitors' ? d.visitors : mode === 'banners' ? d.impressions : d.registered}</td><td>{mode === 'visitors' ? d.sessions : mode === 'banners' ? d.clicks : d.published}</td></>}</tr>)}</tbody></table></div></details>
     </div>
   );
 }

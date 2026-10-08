@@ -51,6 +51,7 @@
   .content-table-action-cell { width: 100px; text-align: center; }
   tbody tr:last-child { border-bottom: 0; }
   &.content-table-compact { min-width: 640px; .content-table-title { width: 40%; } }
+  &.content-table-banners { min-width: 940px; }
   &.content-table-news {
     .content-table-title { width: 42%; }
     .content-table-count { width: 96px; }

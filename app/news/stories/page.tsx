@@ -5,6 +5,7 @@ import { CATEGORIES } from '@/lib/news-feeds';
 import { getPageMetadata } from '@/lib/site-settings';
 import { newsPage, newsListUrl, type NewsFilters } from '@/lib/news-list';
 import { redirect } from 'next/navigation';
+import { getNewsSidebarBanner } from '@/lib/public-data';
 type Search = NewsFilters;
 export async function generateMetadata({ searchParams }: { searchParams: Promise<Search> }) {
   const params = await searchParams;
@@ -14,10 +15,10 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
 }
 export default async function StoriesPage({ searchParams }: { searchParams: Promise<Search> }) {
   const params = await searchParams;
-  const result = await Promise.all([readNewsSummaries(), readNewsPlacement()]).catch(() => null);
+  const result = await Promise.all([readNewsSummaries(), readNewsPlacement(), getNewsSidebarBanner()]).catch(() => null);
   if (!result) return <main className="archb-news empty" role="alert"><h1>뉴스를 불러오지 못했습니다.</h1><a href="/news/stories">다시 불러오기</a></main>;
-  const [{ articles }, placement] = result;
+  const [{ articles }, placement, banner] = result;
   const resultPage = newsPage(articles, params);
   if (resultPage.requestedPage !== resultPage.pagination.page) redirect(newsListUrl({ ...resultPage.filters, page: resultPage.pagination.page }));
-  return <NewsList articles={articles} editorPickIds={placement.editorPickIds} category={params.category} query={params.q?.slice(0, 100)} source={params.source?.slice(0, 100)} collection={params.collection?.slice(0, 100)} page={resultPage.pagination.page} />;
+  return <NewsList articles={articles} banner={banner} editorPickIds={placement.editorPickIds} category={params.category} query={params.q?.slice(0, 100)} source={params.source?.slice(0, 100)} collection={params.collection?.slice(0, 100)} page={resultPage.pagination.page} />;
 }

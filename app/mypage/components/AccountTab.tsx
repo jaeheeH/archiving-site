@@ -2,20 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { KeyRound, Loader2, LogOut, ShieldCheck, Trash2, X } from "lucide-react";
+import { Loader2, LogOut, ShieldCheck, Trash2, X } from "lucide-react";
 
 import { useToast } from "@/components/ToastProvider";
 import { createClient } from "@/lib/supabase/client";
 
-type PasswordForm = {
-  newPassword: string;
-  confirmPassword: string;
-};
-
-type LoadingAction = "password" | "delete" | null;
-
-const inputClass =
-  "w-full rounded-md border border-[var(--archive-line)] bg-white px-3 py-2.5 text-sm text-gray-900 outline-none transition focus:border-[var(--archive-brand)] focus:ring-2 focus:ring-[var(--archive-brand)]/10";
+type LoadingAction = "delete" | null;
 
 export default function AccountTab({ email }: { email: string }) {
   const router = useRouter();
@@ -23,60 +15,13 @@ export default function AccountTab({ email }: { email: string }) {
   const toastContext = useToast();
   const addToast = toastContext?.addToast || (() => {});
 
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [passwordForm, setPasswordForm] = useState<PasswordForm>({
-    newPassword: "",
-    confirmPassword: "",
-  });
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [loadingAction, setLoadingAction] = useState<LoadingAction>(null);
-
-  const resetPasswordModal = () => {
-    setShowPasswordModal(false);
-    setPasswordForm({ newPassword: "", confirmPassword: "" });
-  };
 
   const resetDeleteModal = () => {
     setShowDeleteModal(false);
     setDeleteConfirmText("");
-  };
-
-  const handlePasswordChange = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!passwordForm.newPassword || !passwordForm.confirmPassword) {
-      addToast("새 비밀번호를 입력해주세요.", "error");
-      return;
-    }
-
-    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      addToast("새 비밀번호가 일치하지 않습니다.", "error");
-      return;
-    }
-
-    if (passwordForm.newPassword.length < 8) {
-      addToast("비밀번호는 8자 이상이어야 합니다.", "error");
-      return;
-    }
-
-    setLoadingAction("password");
-
-    try {
-      const { error } = await supabase.auth.updateUser({
-        password: passwordForm.newPassword,
-      });
-
-      if (error) throw error;
-
-      addToast("비밀번호가 변경되었습니다.", "success");
-      resetPasswordModal();
-    } catch (error) {
-      console.error("Password change failed:", error);
-      addToast("비밀번호 변경에 실패했습니다.", "error");
-    } finally {
-      setLoadingAction(null);
-    }
   };
 
   const handleDeleteAccount = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -151,24 +96,6 @@ export default function AccountTab({ email }: { email: string }) {
           </button>
         </div>
 
-        <div className="flex flex-col gap-4 border-b border-[var(--archive-line)] p-5 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <div className="flex items-center gap-2 text-sm font-semibold text-gray-950">
-              <KeyRound className="h-4 w-4 text-[var(--archive-brand)]" />
-              비밀번호
-            </div>
-            <p className="mt-1 text-sm text-[var(--archive-muted)]">이메일 로그인 비밀번호를 변경합니다.</p>
-          </div>
-          <button
-            type="button"
-            onClick={() => setShowPasswordModal(true)}
-            disabled={isBusy}
-            className="inline-flex h-9 items-center justify-center rounded-md border border-[var(--archive-line)] bg-white px-3 text-sm font-medium text-gray-700 transition hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)] disabled:opacity-50"
-          >
-            변경
-          </button>
-        </div>
-
         <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="flex items-center gap-2 text-sm font-semibold text-red-600">
@@ -188,54 +115,6 @@ export default function AccountTab({ email }: { email: string }) {
           </button>
         </div>
       </div>
-
-      {showPasswordModal && (
-        <Modal title="비밀번호 변경" onClose={resetPasswordModal}>
-          <form onSubmit={handlePasswordChange} className="space-y-4">
-            <label className="grid gap-1.5">
-              <span className="text-sm font-medium text-gray-700">새 비밀번호</span>
-              <input
-                type="password"
-                value={passwordForm.newPassword}
-                onChange={(event) => setPasswordForm({ ...passwordForm, newPassword: event.target.value })}
-                className={inputClass}
-                minLength={8}
-                autoComplete="new-password"
-              />
-            </label>
-            <label className="grid gap-1.5">
-              <span className="text-sm font-medium text-gray-700">새 비밀번호 확인</span>
-              <input
-                type="password"
-                value={passwordForm.confirmPassword}
-                onChange={(event) => setPasswordForm({ ...passwordForm, confirmPassword: event.target.value })}
-                className={inputClass}
-                minLength={8}
-                autoComplete="new-password"
-              />
-            </label>
-
-            <div className="flex gap-2 pt-2">
-              <button
-                type="button"
-                onClick={resetPasswordModal}
-                className="flex-1 rounded-md border border-[var(--archive-line)] px-4 py-2 text-sm font-medium text-gray-700 transition hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]"
-                disabled={isBusy}
-              >
-                취소
-              </button>
-              <button
-                type="submit"
-                className="inline-flex flex-1 items-center justify-center gap-2 rounded-md bg-gray-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-[var(--archive-brand)] disabled:opacity-50"
-                disabled={isBusy}
-              >
-                {loadingAction === "password" && <Loader2 className="h-4 w-4 animate-spin" />}
-                변경
-              </button>
-            </div>
-          </form>
-        </Modal>
-      )}
 
       {showDeleteModal && (
         <Modal title="회원 탈퇴" onClose={resetDeleteModal} tone="danger">

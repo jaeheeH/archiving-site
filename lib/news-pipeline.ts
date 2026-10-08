@@ -3,10 +3,11 @@ import { FEEDS, fetchFeed } from './news-feeds';
 import { NEWS_FORMAT, newsPost } from './news-record';
 import { editorialSchema } from './news-editorial';
 import { researchNews, type ResearchResult } from './news-research';
+import { DuplicateNewsError, duplicateCandidates, type DuplicateCandidate, type DuplicateReview } from './news-duplicates';
 
 export type NewsViewer = { userId: string; role: string };
-export type WritingState = { status: 'writing' | 'ready' | 'failed'; attempts: number; started_at: string; finished_at?: string; retry_after?: string; error?: string; job_id?: string };
-type PendingPost = { id: string; title: string; author_id: string | null; updated_at: string; is_published: boolean; content: Record<string, unknown> & { format?: string; source_url?: string; original_title?: string; source?: string; category?: string; source_published_at?: string; source_text?: string; paragraphs?: unknown; automation?: WritingState } };
+export type WritingState = { status: 'writing' | 'ready' | 'failed' | 'duplicate'; attempts: number; started_at: string; finished_at?: string; retry_after?: string; error?: string; job_id?: string };
+type PendingPost = { id: string; title: string; author_id: string | null; updated_at: string; is_published: boolean; content: Record<string, unknown> & { format?: string; source_url?: string; original_title?: string; source?: string; category?: string; source_published_at?: string; source_text?: string; paragraphs?: unknown; automation?: WritingState; duplicate_review?: DuplicateReview } };
 type Writer = typeof researchNews;
 const editorRoles = ['admin', 'sub-admin', 'editor'];
 
@@ -52,11 +53,20 @@ export async function collectNewsInto(db: SupabaseClient, authorId: string, jobI
   return { results, inserted };
 }
 
+function isUnwrittenNews(post: Pick<PendingPost, 'is_published' | 'content'>) {
+  return !post.is_published && post.content?.format === NEWS_FORMAT && !!post.content.source_url && post.content.paragraphs === undefined;
+}
+
+export function canRetryNews(post: Pick<PendingPost, 'is_published' | 'content'>, jobId?: string, now = Date.now()) {
+  const state = post.content.automation;
+  return isUnwrittenNews(post) && (state?.status === 'failed' || (!!jobId && state?.status === 'writing' && state.job_id === jobId && now - Date.parse(state.started_at) >= 10 * 60_000));
+}
+
 export function canAutoWrite(post: PendingPost, now = Date.now()) {
-  if (post.is_published || post.content?.format !== NEWS_FORMAT || !post.content.source_url || post.content.paragraphs !== undefined) return false;
+  if (!isUnwrittenNews(post)) return false;
   const state = post.content.automation;
   if (!state) return true;
-  if (state.status === 'ready' || state.attempts >= 3) return false;
+  if (state.status === 'ready' || state.status === 'duplicate' || state.attempts >= 3) return false;
   if (state.status === 'writing' && now - Date.parse(state.started_at) < 10 * 60_000) return false;
   return !state.retry_after || Date.parse(state.retry_after) <= now;
 }
@@ -81,7 +91,21 @@ async function pendingRows(db: SupabaseClient, viewer: NewsViewer, options: { po
 
 export async function newsWritingQueue(db: SupabaseClient, viewer: NewsViewer) {
   const rows = await pendingRows(db, viewer);
-  return { waiting: rows.filter(row => canAutoWrite(row)).length, writing: rows.filter(row => row.content.automation?.status === 'writing' && !canAutoWrite(row)).length, failed: rows.filter(row => row.content.automation?.status === 'failed').length };
+  return { waiting: rows.filter(row => canAutoWrite(row)).length, writing: rows.filter(row => row.content.automation?.status === 'writing' && !canAutoWrite(row)).length, failed: rows.filter(row => row.content.automation?.status === 'failed').length, duplicates: rows.filter(row => row.content.automation?.status === 'duplicate' && row.content.duplicate_review?.status === 'pending').length };
+}
+
+async function readDuplicateCandidates(db: SupabaseClient, viewer: NewsViewer, post: PendingPost) {
+  const existing: DuplicateCandidate[] = [];
+  // Only public articles and this author's drafts can be shown as comparison targets.
+  const query = db.from('posts').select('id,slug,title,summary,is_published,original_title:content->>original_title,source_url:content->>source_url,source:content->>source,source_published_at:content->>source_published_at')
+    .eq('type', 'news').neq('id', post.id).not('content->paragraphs', 'is', null).or(`is_published.eq.true,author_id.eq.${viewer.userId}`).order('id');
+  for (let offset = 0; ; offset += 500) {
+    const result = await query.range(offset, offset + 499);
+    if (result.error) throw new Error('중복 비교용 기사를 불러오지 못했습니다.');
+    existing.push(...result.data as DuplicateCandidate[]);
+    if (result.data.length < 500) break;
+  }
+  return duplicateCandidates({ url: post.content.source_url!, title: post.content.original_title || post.title, source: post.content.source || '', publishedAt: post.content.source_published_at }, existing.filter(candidate => candidate.id !== post.id));
 }
 
 export async function readQueuedNews(db: SupabaseClient, viewer: NewsViewer, postId: string) {
@@ -103,12 +127,13 @@ export async function selectPendingNews(db: SupabaseClient, viewer: NewsViewer) 
   return ordered;
 }
 
-export async function writePendingNews(db: SupabaseClient, viewer: NewsViewer, options: { limit?: number; postId?: string; jobId?: string; signal?: AbortSignal; writer?: Writer; onProgress?: (result: { id: string; title: string; status: string; error?: string }) => void } = {}) {
+export async function writePendingNews(db: SupabaseClient, viewer: NewsViewer, options: { limit?: number; postId?: string; manualRetry?: boolean; jobId?: string; signal?: AbortSignal; writer?: Writer; onProgress?: (result: { id: string; title: string; status: string; error?: string }) => void } = {}) {
   const limit = options.limit ?? 1;
   if (!Number.isInteger(limit) || limit < 1 || limit > 25) throw new Error('한 번에 1~25편을 작성할 수 있습니다.');
+  if (options.manualRetry && (!options.postId || limit !== 1)) throw new Error('수동 재작성은 실패한 기사 한 편만 요청할 수 있습니다.');
   if (!options.writer && !process.env.GEMINI_API_KEY) throw new Error('Gemini API 설정이 필요합니다.');
-  const ordered = options.postId ? (await pendingRows(db, viewer, { postId: options.postId })).filter(row => canAutoWrite(row)) : await selectPendingNews(db, viewer);
-  const items: { id: string; title: string; status: 'ready' | 'failed' | 'skipped'; error?: string }[] = [];
+  const ordered = options.postId ? (await pendingRows(db, viewer, { postId: options.postId })).filter(row => options.manualRetry ? canRetryNews(row, options.jobId) : canAutoWrite(row)) : await selectPendingNews(db, viewer);
+  const items: { id: string; title: string; status: 'ready' | 'failed' | 'skipped' | 'duplicate'; error?: string }[] = [];
   for (const post of ordered) {
     if (items.filter(item => item.status !== 'skipped').length >= limit || options.signal?.aborted) break;
     const started = new Date().toISOString();
@@ -119,22 +144,25 @@ export async function writePendingNews(db: SupabaseClient, viewer: NewsViewer, o
     options.onProgress?.({ id: post.id, title: post.title, status: 'writing' });
     try {
       const signal = options.signal ? AbortSignal.any([options.signal, AbortSignal.timeout(180_000)]) : AbortSignal.timeout(180_000);
-      const result: ResearchResult = await (options.writer || researchNews)({ url: post.content.source_url!, title: post.content.original_title || post.title, source: post.content.source || '', category: post.content.category || '', sourceText: (post.content.source_text || '').slice(0, 6000) }, signal);
+      const candidates = post.content.duplicate_review?.status === 'allowed' ? [] : await readDuplicateCandidates(db, viewer, post);
+      const result: ResearchResult = await (options.writer || researchNews)({ url: post.content.source_url!, title: post.content.original_title || post.title, source: post.content.source || '', category: post.content.category || '', sourceText: (post.content.source_text || '').slice(0, 6000), publishedAt: post.content.source_published_at, duplicateCandidates: candidates }, signal);
       const article = editorialSchema.parse(result.article);
       if (article.url !== post.content.source_url) throw new Error('조사 결과의 원출처가 일치하지 않습니다.');
       const admins = await authorizedScope(db, viewer);
       if (viewer.role === 'sub-admin' && post.author_id && admins.includes(post.author_id)) throw new Error('관리자 작성 기사는 가공할 수 없습니다.');
-      const saved = await db.from('posts').update({ title: article.title, summary: article.summary, tags: article.tags, content: { ...post.content, paragraphs: article.paragraphs, points: article.points, research: result.research, automation: { ...state, status: 'ready', finished_at: new Date().toISOString() } }, updated_at: new Date().toISOString() }).eq('id', post.id).filter('author_id', post.author_id === null ? 'is' : 'eq', post.author_id || 'null').eq('updated_at', claim.data.updated_at).eq('is_published', false).select('id').maybeSingle();
+      const saved = await db.from('posts').update({ title: article.title, summary: article.summary, tags: article.tags, content: { ...post.content, paragraphs: article.paragraphs, points: article.points, research: result.research, duplicate_review: undefined, automation: { ...state, status: 'ready', finished_at: new Date().toISOString() } }, updated_at: new Date().toISOString() }).eq('id', post.id).filter('author_id', post.author_id === null ? 'is' : 'eq', post.author_id || 'null').eq('updated_at', claim.data.updated_at).eq('is_published', false).select('id').maybeSingle();
       if (saved.error) throw new Error('작성한 초안을 저장하지 못했습니다.');
       items.push({ id: post.id, title: article.title, status: saved.data ? 'ready' : 'skipped' });
     } catch (cause) {
       const error = cause instanceof Error ? cause.message.slice(0, 500) : '자동 작성에 실패했습니다.';
-      const failed = await db.from('posts').update({ content: { ...post.content, automation: { ...state, status: 'failed', finished_at: new Date().toISOString(), retry_after: new Date(Date.now() + 60 * 60_000).toISOString(), error } }, updated_at: new Date().toISOString() }).eq('id', post.id).filter('author_id', post.author_id === null ? 'is' : 'eq', post.author_id || 'null').eq('updated_at', claim.data.updated_at).eq('is_published', false).select('id').maybeSingle();
+      const duplicate = cause instanceof DuplicateNewsError;
+      const finished = new Date().toISOString();
+      const failed = await db.from('posts').update({ content: { ...post.content, ...(duplicate ? { duplicate_review: { status: 'pending', checked_at: finished, matches: cause.matches } } : {}), automation: { ...state, status: duplicate ? 'duplicate' : 'failed', finished_at: finished, ...(duplicate ? {} : { retry_after: new Date(Date.now() + 60 * 60_000).toISOString(), error }) } }, updated_at: finished }).eq('id', post.id).filter('author_id', post.author_id === null ? 'is' : 'eq', post.author_id || 'null').eq('updated_at', claim.data.updated_at).eq('is_published', false).select('id').maybeSingle();
       if (failed.error) throw new Error('작성 실패 상태를 저장하지 못했습니다.');
-      items.push({ id: post.id, title: post.title, status: failed.data ? 'failed' : 'skipped', error });
+      items.push({ id: post.id, title: post.title, status: failed.data ? duplicate ? 'duplicate' : 'failed' : 'skipped', ...(duplicate ? {} : { error }) });
     }
     options.onProgress?.(items.at(-1)!);
     if (/사용량 한도|Gemini.+요청.+(?:401|403)|API key not valid/i.test(items.at(-1)?.error || '')) break;
   }
-  return { written: items.filter(item => item.status === 'ready').length, failed: items.filter(item => item.status === 'failed').length, skipped: items.filter(item => item.status === 'skipped').length, items, remaining: (await newsWritingQueue(db, viewer)).waiting };
+  return { written: items.filter(item => item.status === 'ready').length, failed: items.filter(item => item.status === 'failed').length, duplicates: items.filter(item => item.status === 'duplicate').length, skipped: items.filter(item => item.status === 'skipped').length, items, remaining: (await newsWritingQueue(db, viewer)).waiting };
 }

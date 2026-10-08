@@ -1,8 +1,8 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkPostOwnershipOrAdmin } from "@/lib/supabase/post-utils";
-import { newsEditSchema } from "@/lib/news-editorial";
-import { NEWS_FORMAT } from "@/lib/news-record";
+import { editorialSchema, newsEditSchema } from "@/lib/news-editorial";
+import { NEWS_FORMAT, completedNewsWriting } from "@/lib/news-record";
 import { CACHE_TAGS } from "@/lib/public-data";
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -25,7 +25,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const saved = await db.from("posts").update({
       title: article.title, summary: article.summary, tags: article.tags, is_published,
       published_at: is_published ? post.published_at || post.content.source_published_at || new Date().toISOString() : null,
-      content: { ...post.content, paragraphs: article.paragraphs, points: article.points, automation: post.content.automation?.status === 'writing' ? undefined : post.content.automation },
+      content: { ...post.content, paragraphs: article.paragraphs, points: article.points, duplicate_review: undefined, automation: is_published || editorialSchema.safeParse(article).success ? completedNewsWriting(post.content.automation) : undefined },
       updated_at: new Date().toISOString(),
     }).eq("id", id).eq("type", "news");
     if (saved.error) throw saved.error;

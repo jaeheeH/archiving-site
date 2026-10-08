@@ -3,8 +3,11 @@ import { CATEGORIES } from "@/lib/news-feeds";
 import { newsPage, newsListUrl, type NewsSummary } from '@/lib/news-list';
 import ContentPagination from '@/app/(dashboard)/components/ContentPagination';
 import ArchiveImage from '@/app/components/ArchiveImage';
+import NewsSidebarBanner from '@/app/components/NewsSidebarBanner';
+import { NewsSources } from '@/app/components/NewsSources';
+import type { Banner } from '@/lib/banners';
 const date = (value: string) => new Intl.DateTimeFormat("ko-KR", { month: "long", day: "numeric", timeZone: "Asia/Seoul" }).format(new Date(value));
-export default function NewsList({ articles, category: initialCategory, query: initialQuery, source, collection, editorPickIds = [], page = 1 }: { editorPickIds?: string[]; articles: NewsSummary[]; page?: number; category?: string; query?: string; source?: string; collection?: string }) {
+export default function NewsList({ articles, category: initialCategory, query: initialQuery, source, collection, editorPickIds = [], page = 1, banner }: { banner?: Banner | null; editorPickIds?: string[]; articles: NewsSummary[]; page?: number; category?: string; query?: string; source?: string; collection?: string }) {
   const query = initialQuery || "";
   const category = initialCategory && Object.hasOwn(CATEGORIES, initialCategory) ? initialCategory : "all";
   const filterUrl = (name: 'q' | 'category', value: string) => {
@@ -18,7 +21,6 @@ export default function NewsList({ articles, category: initialCategory, query: i
   const chosen = editorPickIds.flatMap(id => articles.find(a => a.id === id) || []);
   const picks = chosen.length ? chosen : articles.slice(0, 3);
   const tags = [...new Set(articles.flatMap(a => a.tags))].slice(0, 10);
-  const sources = [...new Set(articles.map(a => a.source))];
   return <main className="archb-news news-list-page">
     <div className="news-list-intro"><Link href="/" className="news-back">주요 뉴스</Link><h1>뉴스</h1><p>디자인·AI·제품·개발·인테리어의 소식과 ARCH.B 에디토리얼을 함께 읽습니다.</p></div>
     <div className="news-list-layout"><div className="news-list-main">
@@ -29,7 +31,8 @@ export default function NewsList({ articles, category: initialCategory, query: i
     </div><aside className="news-sidebar news-list-sidebar" aria-label="추천 기사와 관심 주제">
       <section><h2>에디터의 선택</h2>{picks.map(article => <article className="news-editor-pick" key={article.slug}><p>{CATEGORIES[article.category]} · {article.source}</p><h3><Link prefetch={false} href={`/news/read/${article.slug}`}>{article.title}</Link></h3><time dateTime={article.published_at}>{date(article.published_at)}</time></article>)}</section>
       <section><h2>관심 주제</h2><div className="news-keywords">{tags.map(tag => <Link key={tag} href={filterUrl('q', tag)} scroll={false}>{tag}</Link>)}</div></section>
-      <section><h2>함께 읽는 매체</h2>{sources.map(name => <Link className="news-source-link" href={`/news/stories?source=${encodeURIComponent(name)}`} key={name}><span>{name}</span><small>{articles.filter(a => a.source === name).length}편</small></Link>)}</section>
+      <NewsSidebarBanner key={JSON.stringify([query, category, source, collection, page])} banner={banner} />
+      <NewsSources sources={articles.map(article => article.source)} />
       <p className="news-source-note">가공 기사의 원출처와 에디토리얼 작성자는 각 기사 본문에서 확인할 수 있습니다.</p>
     </aside></div>
   </main>;

@@ -4,6 +4,9 @@ import { readNewsPlacement } from "@/lib/news-placement";
 import { readNewsSummaries } from "@/lib/news";
 import type { NewsSummary as Article } from '@/lib/news-list';
 import ArchiveImage from '@/app/components/ArchiveImage';
+import NewsSidebarBanner from '@/app/components/NewsSidebarBanner';
+import { NewsSources } from '@/app/components/NewsSources';
+import { getNewsSidebarBanner } from '@/lib/public-data';
 import { CATEGORIES, type Category } from "@/lib/news-feeds";
 import { getPageMetadata } from '@/lib/site-settings';
 export async function generateMetadata() { return getPageMetadata({ path: '/', title: '디자인·AI·기술 뉴스와 아트 아카이브', description: '디자인과 AI, 제품·개발·공간의 새로운 소식과 ARCH.B의 깊이 있는 시선. 작품·작가·참고사이트를 함께 탐색합니다.' }); }
@@ -28,14 +31,14 @@ export default async function Home() {
   let articles: Article[] = [];
   let error = false;
   let placement: Awaited<ReturnType<typeof readNewsPlacement>>;
-  try { const [news, result] = await Promise.all([readNewsSummaries(), readNewsPlacement()]); articles = news.articles; placement = result; }
+  let banner: Awaited<ReturnType<typeof getNewsSidebarBanner>> = null;
+  try { const [news, result, ad] = await Promise.all([readNewsSummaries(), readNewsPlacement(), getNewsSidebarBanner()]); articles = news.articles; placement = result; banner = ad; }
   catch (cause) { console.error("Home stories", cause); error = true; }
   placement ??= { featuredId: null, editorPickIds: [] };
   const featured = articles.find(a => a.id === placement.featuredId) ?? articles[0];
   const latest = articles.filter(a => a.url !== featured?.url).slice(0, 4);
   const promoted = new Set([featured?.url, ...latest.map(a => a.url)]);
   const tags = [...new Set(articles.flatMap(a => a.tags))].slice(0, 9);
-  const sources = [...new Set(articles.map(a => a.source))];
   return <div className="archb-news">
     <a className="skip-link" href="#news-stories">주요 기사로 바로 가기</a>
     <main id="news-stories"><h1 className="sr-only">ARCH.B 뉴스</h1>
@@ -44,7 +47,22 @@ export default async function Home() {
         <div className="news-top-stories"><article className="news-cover" aria-label="커버 스토리">{featured.image && <a className="news-cover-image" href={path(featured)} tabIndex={-1} aria-hidden="true"><ArchiveImage width={1200} height={800} sizes="(max-width: 768px) 100vw, 480px" src={featured.image} alt="" preload referrerPolicy="no-referrer" /></a>}<div className="news-cover-copy"><div className="news-topic-tags"><a href={`/news/stories?category=${featured.category}`}>{CATEGORIES[featured.category]}</a>{featured.tags.slice(0, 2).map(tag => <a href={`/news/stories?q=${encodeURIComponent(tag)}`} key={tag}>{tag}</a>)}</div><h3><a href={path(featured)}>{featured.title}</a></h3><p className="news-cover-summary">{featured.description}</p><div className="news-cover-bottom"><span>{featured.source} · <time dateTime={featured.published_at}>{date(featured.published_at)}</time></span><a href={path(featured)}>기사 읽기</a></div></div></article>
         <section className="news-latest" aria-label="최신 주요 뉴스">{latest.map(article => <article key={article.url}>{article.image && <a className="news-latest-image" href={path(article)} tabIndex={-1} aria-hidden="true"><ArchiveImage width={640} height={420} sizes="75px" src={article.image} alt="" loading="lazy" referrerPolicy="no-referrer" /></a>}<div><p className="news-latest-meta"><a href={`/news/stories?category=${article.category}`}>{CATEGORIES[article.category]}</a><span>{article.source}</span></p><h3><a href={path(article)}>{article.title}</a></h3><p className="news-latest-summary">{article.description}</p></div></article>)}</section></div>
         {(Object.keys(CATEGORIES) as Category[]).map(category => { const categoryStories = articles.filter(a => a.category === category && a.url !== featured.url); const stories = [...categoryStories.filter(a => !promoted.has(a.url)), ...categoryStories.filter(a => promoted.has(a.url))].slice(0, 3); if (!stories.length) return null; const copy = sectionCopy[category]; return <section className="news-section" key={category}><div className="news-section-heading"><div><p className="news-kicker">{CATEGORIES[category]}</p><h2>{copy.title}</h2><p>{copy.description}</p></div><a href={`/news/stories?category=${category}`}>전체 보기</a></div><div className="news-card-grid">{stories.map(article => <StoryCard article={article} key={article.url} />)}</div></section>; })}
-      </div><aside className="news-sidebar" aria-label="뉴스 탐색"><section><h2>분야별 모아보기</h2><p className="news-sidebar-description">{articles.length}편의 뉴스와 에디토리얼</p><div className="news-category-links">{(Object.keys(CATEGORIES) as Category[]).map(category => <a href={`/news/stories?category=${category}`} key={category}><span>{CATEGORIES[category]}</span><strong>{articles.filter(a => a.category === category).length}<small>편</small></strong></a>)}</div></section><section><h2>뉴스 속 키워드</h2><div className="news-keywords">{tags.map(tag => <a href={`/news/stories?q=${encodeURIComponent(tag)}`} key={tag}>{tag}</a>)}</div></section><section><h2>함께 읽는 매체</h2>{sources.map(source => <a className="news-source-link" href={`/news/stories?source=${encodeURIComponent(source)}`} key={source}><span>{source}</span><small>{articles.filter(a => a.source === source).length}편</small></a>)}</section><section className="news-archive-links"><h2>더 깊이 탐색하기</h2><Link href="/art"><span>아트</span><small>작품과 이야기 ↗</small></Link><Link href="/artists"><span>작가</span><small>만드는 사람들 ↗</small></Link><Link href="/references"><span>참고사이트</span><small>관점을 넓히는 곳 ↗</small></Link></section><p className="news-source-note">매체의 소식과 ARCH.B의 작성 글을 함께 읽습니다. 가공 기사는 원출처를, 에디토리얼은 작성자를 본문에 표시합니다.</p></aside></div>}
+      </div><aside className="news-sidebar" aria-label="뉴스 탐색">
+        <section><h2>뉴스 속 키워드</h2><div className="news-keywords">{tags.map(tag => <a href={`/news/stories?q=${encodeURIComponent(tag)}`} key={tag}>{tag}</a>)}</div></section>
+        <NewsSidebarBanner banner={banner} />
+        <NewsSources sources={articles.map(article => article.source)} />
+        <section className="news-archive-links">
+          <h2>더 깊이 탐색하기</h2>
+          <Link href="/art"><span>아트</span><small>작품과 이야기 ↗</small></Link>
+          <Link href="/artists"><span>작가</span><small>만드는 사람들 ↗</small></Link>
+          <Link href="/references"><span>참고사이트</span><small>관점을 넓히는 곳 ↗</small></Link>
+          <div className="news-suggestion">
+            <p className="news-source-note">소개하고 싶은 소식이나 참고사이트, 개선 의견이 있다면 알려주세요.</p>
+            <a href="mailto:archbehind@gmail.com?subject=ARCH.B%20%EC%A0%9C%EC%95%88"><span>제안 보내기</span><small aria-hidden="true">↗</small></a>
+          </div>
+        </section>
+        <p className="news-source-note">매체의 소식과 ARCH.B의 작성 글을 함께 읽습니다. 가공 기사는 원출처를, 에디토리얼은 작성자를 본문에 표시합니다.</p>
+      </aside></div>}
     </main>
   </div>;
 }

@@ -1,5 +1,17 @@
 import assert from 'node:assert/strict';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { NewsSources } from '../app/components/NewsSources.tsx';
 import { FEEDS, CATEGORIES, fetchFeed, parseFeed } from '../lib/news-feeds.ts';
+
+const sourcesMarkup = articles => renderToStaticMarkup(createElement(NewsSources, { sources: articles.map(article => article.source) }));
+assert.ok(!sourcesMarkup([]).includes('<button'), 'Empty sources must not offer an expansion');
+assert.ok(!sourcesMarkup(Array.from({ length: 6 }, (_, i) => ({ source: `Source ${i}` }))).includes('<button'), 'Six sources must not offer an empty expansion');
+const expandedSources = sourcesMarkup([{ source: 'Design & Code' }, ...Array.from({ length: 7 }, (_, i) => ({ source: `Source ${i}` })), { source: 'Design & Code' }]);
+const [visibleSources, toggle] = expandedSources.split('<button');
+assert.equal((visibleSources.match(/class="news-source-link"/g) || []).length, 6, 'Only six sources are initially visible');
+assert.ok(toggle.includes('aria-expanded="false"') && toggle.includes('aria-controls='), 'The bottom toggle must expose its collapsed state and controlled list');
+assert.ok(expandedSources.includes('source=Design%20%26%20Code') && expandedSources.includes('<small>2편</small>'), 'Source URLs and counts must survive grouping');
 
 assert.equal(new Set(FEEDS.map(feed => feed.id)).size, FEEDS.length);
 assert.equal(new Set(FEEDS.map(feed => feed.url)).size, FEEDS.length);

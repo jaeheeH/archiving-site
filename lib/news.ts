@@ -5,7 +5,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { FEEDS, CATEGORIES } from "./news-feeds";
 import { editorialBatchSchema, type Editorial } from "./news-editorial";
 import { checkPostOwnershipOrAdmin } from "./supabase/post-utils";
-import { NEWS_FORMAT, newsSlug, type NewsArticle } from "./news-record";
+import { NEWS_FORMAT, newsSlug, completedNewsWriting, type NewsArticle } from "./news-record";
 export type { NewsArticle } from "./news-record";
 import type { NewsSummary } from './news-list';
 import { cache } from 'react';
@@ -33,8 +33,9 @@ export const readNews = unstable_cache(async () => {
     articles.push(...mapPublishedRows((data || []) as PublishedRow[]));
     if (!data || data.length < 500) break;
   }
+  articles.sort((a, b) => Date.parse(b.published_at) - Date.parse(a.published_at) || a.id.localeCompare(b.id));
   return { articles, sources: [...FEEDS, { id: "archb-editorial", name: "ARCH.B", category: "editorial" as const, url: "/" }].map(feed => ({ ...feed, count: articles.filter(a => a.source === feed.name).length })) };
-}, ["archb-published-news-and-editorials-v2", JSON.stringify(FEEDS)], { revalidate: 600, tags: [NEWS_CACHE_TAG, "public-posts"] });
+}, ["archb-published-news-and-editorials-v3", JSON.stringify(FEEDS)], { revalidate: 600, tags: [NEWS_CACHE_TAG, "public-posts"] });
 export const readNewsSummaries = cache(async (): Promise<{ articles: NewsSummary[] }> => {
   const { articles } = await readNews();
   return { articles: articles.map(article => ({ id: article.id, slug: article.slug, kind: article.kind, collection: article.collection, url: article.url, original_title: article.original_title, title: article.title, summary: article.summary, description: article.description, tags: article.tags, image: article.image, published_at: article.published_at, source: article.source, category: article.category })) };
@@ -71,7 +72,7 @@ export async function saveNewsEditorials(articles: Editorial[], permission: Perm
   if (data?.length !== articles.length) throw new Error("수집된 뉴스만 가공할 수 있습니다.");
   const permissions = await Promise.all(data.map(row => checkPostOwnershipOrAdmin(row.id, permission)));
   if (permissions.some(permission => !permission.authorized)) throw new Error("가공할 권한이 없는 기사가 포함되어 있습니다.");
-  const rows = articles.map(article => { const row = data.find(r => r.slug === newsSlug(article.url))!; return { id: row.id, author_id: row.author_id, type: "news", slug: row.slug, title: article.title, summary: article.summary, tags: article.tags, title_image_url: row.title_image_url, is_published: true, published_at: row.content.source_published_at, content: { ...row.content, source_text: undefined, paragraphs: article.paragraphs, points: article.points } }; });
+  const rows = articles.map(article => { const row = data.find(r => r.slug === newsSlug(article.url))!; return { id: row.id, author_id: row.author_id, type: "news", slug: row.slug, title: article.title, summary: article.summary, tags: article.tags, title_image_url: row.title_image_url, is_published: true, published_at: row.content.source_published_at, content: { ...row.content, source_text: undefined, paragraphs: article.paragraphs, points: article.points, duplicate_review: undefined, automation: completedNewsWriting(row.content.automation) } }; });
   const saved = await db.from("posts").upsert(rows, { onConflict: "id" });
   if (saved.error) throw saved.error;
   revalidateTag(NEWS_CACHE_TAG, { expire: 0 });

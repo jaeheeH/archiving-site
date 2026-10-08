@@ -2,13 +2,20 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import { FEEDS, parseFeed, canonicalUrl } from "../lib/news-feeds.ts";
 import { editorialSchema, editorialBatchSchema, editorialText, newsEditSchema } from "../lib/news-editorial.ts";
-import { newsPost, newsSlug, NEWS_FORMAT } from "../lib/news-record.ts";
+import { newsPost, newsSlug, NEWS_FORMAT, completedNewsWriting } from "../lib/news-record.ts";
+import { NEWS_PAGE_SIZE } from "../lib/news-list.ts";
 
 const seed = JSON.parse(fs.readFileSync(new URL("../content/news/initial-articles.json", import.meta.url), "utf8"));
 const researched = JSON.parse(fs.readFileSync(new URL("../content/news/researched-articles.json", import.meta.url), "utf8"));
 assert.equal(researched.length, 11, "Every short article needs a reviewable expanded draft");
 const articles = seed.map(article => ({ ...article, ...(researched.find(draft => draft.article.url === article.url)?.article || {}) }));
 const editorial = ({ url, title, summary, paragraphs, points, tags }) => ({ url, title, summary, paragraphs, points, tags });
+const failedWriting = { status: 'failed', attempts: 3, started_at: '2026-10-08T00:00:00Z', finished_at: '2026-10-08T00:01:00Z', job_id: 'previous-job', retry_after: '2026-10-08T01:00:00Z', error: 'Previous validation failure' };
+const completedWriting = completedNewsWriting(failedWriting, '2026-10-08T02:00:00Z');
+assert.deepEqual(completedWriting, { status: 'ready', attempts: 3, started_at: failedWriting.started_at, finished_at: '2026-10-08T02:00:00Z', job_id: 'previous-job' }, 'Successful saves must clear the previous error and retry timer while retaining writing history');
+assert.equal(failedWriting.status, 'failed', 'Cleaning a saved state must not mutate an in-flight snapshot');
+assert.equal(completedNewsWriting(undefined), undefined, 'Manual-only news must not acquire synthetic automation history');
+assert.equal(completedNewsWriting({ ...failedWriting, status: 'writing' }).status, 'ready');
 editorialBatchSchema.parse({ articles: articles.map(editorial) });
 assert.equal(new Set(articles.map(a => newsSlug(a.url))).size, articles.length);
 assert.ok(!JSON.stringify(articles).includes("CreativeScope"));
@@ -62,6 +69,12 @@ if (base) {
   assert.equal(result.status, 200);
   const newsResult = await result.json();
   const published = newsResult.articles;
+  assert.ok(published.every(article => Number.isFinite(Date.parse(article.published_at))), 'Public articles need valid displayed publication dates');
+  assert.ok(published.every((article, index) => !index || Date.parse(published[index - 1].published_at) > Date.parse(article.published_at) || (Date.parse(published[index - 1].published_at) === Date.parse(article.published_at) && published[index - 1].id.localeCompare(article.id) <= 0)), 'News must sort by the displayed date, with stable IDs for equal timestamps');
+  for (let page = 1; page <= Math.min(2, Math.ceil(published.length / NEWS_PAGE_SIZE)); page++) {
+    const list = await (await fetch(new URL(`/api/news?view=list&page=${page}`, base))).json();
+    assert.deepEqual(list.articles.map(article => article.id), published.slice((page - 1) * NEWS_PAGE_SIZE, page * NEWS_PAGE_SIZE).map(article => article.id), 'Pagination must follow the globally sorted feed');
+  }
   assert.ok(FEEDS.every(feed => newsResult.sources.some(source => source.id === feed.id && source.name === feed.name && source.url === feed.url && source.category === feed.category)), 'Configured sources must refresh when the feed list changes, including across server restarts');
   assert.ok(published.length >= articles.length);
   assert.ok(published.filter(a => a.kind === "news").every(a => a.paragraphs?.length && !a.source_text));
@@ -109,7 +122,7 @@ if (base) {
     }
     if (path === `/news/read/${newsSlug(expanded.url)}`) {
       assert.ok(html.includes('ARCH.B 분석') && html.includes('source-credit') && html.includes('이미지 제공:'));
-      const firstParagraph = expanded.paragraphs[0].paragraphs[0];
+      const firstParagraph = published.find(article => article.slug === newsSlug(expanded.url)).paragraphs[0].paragraphs[0];
       assert.ok(html.includes(firstParagraph), 'Processed article body must remain server rendered');
     }
   }

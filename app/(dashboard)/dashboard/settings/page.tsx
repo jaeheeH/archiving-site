@@ -12,8 +12,8 @@ export default function SettingsIndexPage() {
       icon: Search,
     },
     {
-      title: "메인 배너",
-      description: "홈 화면에 노출되는 배너 이미지와 링크를 정리합니다.",
+      title: "광고 배너",
+      description: "메인·뉴스 사이드바의 광고 이미지, 연결 주소와 노출 기간을 관리합니다.",
       href: "/dashboard/settings/banner",
       icon: ImageIcon,
     },
