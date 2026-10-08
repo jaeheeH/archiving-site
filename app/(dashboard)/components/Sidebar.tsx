@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import "../css/sideBar.scss";
 import ColorModeToggle from '@/app/components/ColorModeToggle';
+import BrandLogo from '@/app/components/BrandLogo';
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -215,7 +216,7 @@ export default function Sidebar() {
         <i className="ri-menu-line" />
       </button>
       <div className="min-w-0">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-400">ARCH.B</p>
+        <BrandLogo width={92} />
         <p className="truncate text-sm font-semibold text-gray-950">{currentMenuLabel}</p>
       </div>
       <ColorModeToggle className="ml-auto" />
@@ -240,7 +241,7 @@ export default function Sidebar() {
         />
         <aside className="dashboard-mobile-panel">
           <div className="side-logo">
-            <p>ARCH.B</p>
+            <Link href="/dashboard" className="inline-flex"><BrandLogo /></Link>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
@@ -285,7 +286,7 @@ export default function Sidebar() {
     )}
 
     <aside className="border-r bg-white flex flex-col" id="sideBar">
-      <div className="side-logo"><p>ARCH.B</p><ColorModeToggle /></div>
+      <div className="side-logo"><Link href="/dashboard" className="inline-flex"><BrandLogo /></Link><ColorModeToggle /></div>
 
       <div className="nav-section">
         <nav className="flex flex-col gap-2 px-3">

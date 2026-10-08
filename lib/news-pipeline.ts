@@ -5,7 +5,7 @@ import { editorialSchema } from './news-editorial';
 import { researchNews, type ResearchResult } from './news-research';
 
 export type NewsViewer = { userId: string; role: string };
-export type WritingState = { status: 'writing' | 'ready' | 'failed'; attempts: number; started_at: string; finished_at?: string; retry_after?: string; error?: string };
+export type WritingState = { status: 'writing' | 'ready' | 'failed'; attempts: number; started_at: string; finished_at?: string; retry_after?: string; error?: string; job_id?: string };
 type PendingPost = { id: string; title: string; author_id: string | null; updated_at: string; is_published: boolean; content: Record<string, unknown> & { format?: string; source_url?: string; original_title?: string; source?: string; category?: string; source_published_at?: string; source_text?: string; paragraphs?: unknown; automation?: WritingState } };
 type Writer = typeof researchNews;
 const editorRoles = ['admin', 'sub-admin', 'editor'];
@@ -14,26 +14,42 @@ export function assertNewsProject(url: string) {
   if (new URL(url).hostname !== 'overgjynkrnwayfammid.supabase.co') throw new Error('ARCH.B Supabase 프로젝트 연결을 확인해주세요.');
 }
 
+export async function getNewsViewer(db: SupabaseClient, userId: string): Promise<NewsViewer> {
+  const user = await db.from('users').select('role').eq('id', userId).single();
+  if (user.error) throw new Error('뉴스 작성자 계정을 조회하지 못했습니다.');
+  if (!editorRoles.includes(user.data?.role)) throw new Error('뉴스를 작성할 권한이 없습니다.');
+  return { userId, role: user.data.role };
+}
+
 async function authorizedScope(db: SupabaseClient, viewer: NewsViewer) {
-  const user = await db.from('users').select('role').eq('id', viewer.userId).single();
-  if (user.error || user.data?.role !== viewer.role || !editorRoles.includes(viewer.role)) throw new Error('뉴스를 작성할 권한이 없습니다.');
+  if ((await getNewsViewer(db, viewer.userId)).role !== viewer.role) throw new Error('뉴스를 작성할 권한이 없습니다.');
   if (viewer.role !== 'sub-admin') return [] as string[];
   const admins = await db.from('users').select('id').eq('role', 'admin');
   if (admins.error) throw new Error('작성자 권한을 확인하지 못했습니다.');
   return (admins.data || []).map(row => row.id as string);
 }
 
-export async function collectNewsInto(db: SupabaseClient, authorId: string) {
+export async function collectNewsInto(db: SupabaseClient, authorId: string, jobId?: string) {
   const results = await Promise.all(FEEDS.map(async feed => {
     try {
       const articles = await fetchFeed(feed);
       if (!articles.length) return { source: feed.name, checked: 0, inserted: 0, error: null };
-      const saved = await db.from('posts').upsert(articles.map(article => ({ ...newsPost(article), author_id: authorId })), { onConflict: 'slug', ignoreDuplicates: true }).select('id');
+      const saved = await db.from('posts').upsert(articles.map(article => {
+        const post = newsPost(article);
+        return { ...post, author_id: authorId, content: { ...post.content, ...(jobId ? { collection_job_id: jobId } : {}) } };
+      }), { onConflict: 'slug', ignoreDuplicates: true }).select('id');
       if (saved.error) throw saved.error;
       return { source: feed.name, checked: articles.length, inserted: saved.data?.length || 0, error: null };
     } catch (cause) { return { source: feed.name, checked: 0, inserted: 0, error: cause instanceof Error ? cause.message.slice(0, 200) : '수집 실패' }; }
   }));
-  return { results };
+  // Count persisted inserts, including those committed before a lost job checkpoint.
+  let inserted = results.reduce((sum, item) => sum + item.inserted, 0);
+  if (jobId) {
+    const count = await db.from('posts').select('id', { count: 'exact', head: true }).eq('author_id', authorId).eq('content->>collection_job_id', jobId);
+    if (count.error) throw new Error('수집한 기사 수를 확인하지 못했습니다.');
+    inserted = count.count || 0;
+  }
+  return { results, inserted };
 }
 
 export function canAutoWrite(post: PendingPost, now = Date.now()) {
@@ -45,9 +61,11 @@ export function canAutoWrite(post: PendingPost, now = Date.now()) {
   return !state.retry_after || Date.parse(state.retry_after) <= now;
 }
 
-async function pendingRows(db: SupabaseClient, viewer: NewsViewer) {
+async function pendingRows(db: SupabaseClient, viewer: NewsViewer, options: { postId?: string; includeWritten?: boolean } = {}) {
   const admins = await authorizedScope(db, viewer);
-  let query = db.from('posts').select('id,title,author_id,updated_at,is_published,content').eq('type', 'news').eq('is_published', false).is('content->paragraphs', null).order('created_at', { ascending: false });
+  let query = db.from('posts').select('id,title,author_id,updated_at,is_published,content').eq('type', 'news').eq('is_published', false).order('created_at', { ascending: false });
+  if (!options.includeWritten) query = query.is('content->paragraphs', null);
+  if (options.postId) query = query.eq('id', options.postId);
   if (viewer.role === 'editor') query = query.eq('author_id', viewer.userId);
   if (admins.length) query = query.not('author_id', 'in', `(${admins.join(',')})`);
   const rows: PendingPost[] = [];
@@ -66,10 +84,11 @@ export async function newsWritingQueue(db: SupabaseClient, viewer: NewsViewer) {
   return { waiting: rows.filter(row => canAutoWrite(row)).length, writing: rows.filter(row => row.content.automation?.status === 'writing' && !canAutoWrite(row)).length, failed: rows.filter(row => row.content.automation?.status === 'failed').length };
 }
 
-export async function writePendingNews(db: SupabaseClient, viewer: NewsViewer, options: { limit?: number; signal?: AbortSignal; writer?: Writer; onProgress?: (result: { id: string; title: string; status: string; error?: string }) => void } = {}) {
-  const limit = options.limit ?? 1;
-  if (!Number.isInteger(limit) || limit < 1 || limit > 25) throw new Error('한 번에 1~25편을 작성할 수 있습니다.');
-  if (!options.writer && !process.env.GEMINI_API_KEY) throw new Error('Gemini API 설정이 필요합니다.');
+export async function readQueuedNews(db: SupabaseClient, viewer: NewsViewer, postId: string) {
+  return (await pendingRows(db, viewer, { postId, includeWritten: true }))[0] || null;
+}
+
+export async function selectPendingNews(db: SupabaseClient, viewer: NewsViewer) {
   const rows = (await pendingRows(db, viewer)).filter(row => canAutoWrite(row));
   rows.sort((a, b) => Date.parse(b.content.source_published_at || b.updated_at) - Date.parse(a.content.source_published_at || a.updated_at));
   // Prioritize publishers not recently attempted, including across daily batches smaller than the source count.
@@ -81,11 +100,19 @@ export async function writePendingNews(db: SupabaseClient, viewer: NewsViewer, o
   const queues = [...new Set(rows.map(row => row.content.source))].sort((a, b) => (lastAttempt.get(a || '') || 0) - (lastAttempt.get(b || '') || 0)).map(source => rows.filter(row => row.content.source === source));
   const ordered: PendingPost[] = [];
   while (queues.some(queue => queue.length)) for (const queue of queues) { const row = queue.shift(); if (row) ordered.push(row); }
+  return ordered;
+}
+
+export async function writePendingNews(db: SupabaseClient, viewer: NewsViewer, options: { limit?: number; postId?: string; jobId?: string; signal?: AbortSignal; writer?: Writer; onProgress?: (result: { id: string; title: string; status: string; error?: string }) => void } = {}) {
+  const limit = options.limit ?? 1;
+  if (!Number.isInteger(limit) || limit < 1 || limit > 25) throw new Error('한 번에 1~25편을 작성할 수 있습니다.');
+  if (!options.writer && !process.env.GEMINI_API_KEY) throw new Error('Gemini API 설정이 필요합니다.');
+  const ordered = options.postId ? (await pendingRows(db, viewer, { postId: options.postId })).filter(row => canAutoWrite(row)) : await selectPendingNews(db, viewer);
   const items: { id: string; title: string; status: 'ready' | 'failed' | 'skipped'; error?: string }[] = [];
   for (const post of ordered) {
     if (items.filter(item => item.status !== 'skipped').length >= limit || options.signal?.aborted) break;
     const started = new Date().toISOString();
-    const state: WritingState = { status: 'writing', started_at: started, attempts: (post.content.automation?.attempts || 0) + 1 };
+    const state: WritingState = { status: 'writing', started_at: started, attempts: (post.content.automation?.attempts || 0) + 1, ...(options.jobId ? { job_id: options.jobId } : {}) };
     const claim = await db.from('posts').update({ content: { ...post.content, automation: state }, updated_at: started }).eq('id', post.id).filter('author_id', post.author_id === null ? 'is' : 'eq', post.author_id || 'null').eq('updated_at', post.updated_at).eq('is_published', false).select('updated_at').maybeSingle();
     if (claim.error) throw new Error('기사 작성 상태를 저장하지 못했습니다.');
     if (!claim.data) { items.push({ id: post.id, title: post.title, status: 'skipped' }); continue; }

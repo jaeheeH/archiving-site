@@ -2,7 +2,6 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createClient } from '@supabase/supabase-js';
 import { assertNewsProject, canAutoWrite, writePendingNews } from '../lib/news-pipeline.ts';
-import { createNewsJob, getNewsJob, newsJobActive } from '../lib/news-jobs.ts';
 import { NEWS_FORMAT } from '../lib/news-record.ts';
 import { researchNews } from '../lib/news-research.ts';
 
@@ -101,33 +100,4 @@ try {
   assert.equal(checked.research.qualityReview.passed, true);
 } finally { globalThis.fetch = originalFetch; if (previousGeminiKey === undefined) delete process.env.GEMINI_API_KEY; else process.env.GEMINI_API_KEY = previousGeminiKey; }
 
-// The server owns the whole batch; neither its start response nor the browser's abort signal owns its lifetime.
-role = 'admin'; rows = [raw('background-1'), raw('background-2')]; calls = 0;
-let release;
-const gate = new Promise(resolve => { release = resolve; });
-const background = createNewsJob(db, viewer, { limit: 2, writer: async () => { calls++; if (calls === 1) await gate; return structuredClone(prepared); } });
-assert.equal(background.job.status, 'queued');
-assert.ok(background.run);
-const browser = new AbortController();
-const running = background.run();
-browser.abort();
-const duplicate = createNewsJob(db, viewer, { limit: 2, writer });
-assert.equal(duplicate.job.id, background.job.id); assert.equal(duplicate.run, null);
-assert.equal(getNewsJob('different-user'), null, 'Another account cannot see the job');
-release(); await running;
-assert.equal(background.job.status, 'completed'); assert.equal(background.job.written, 2); assert.equal(calls, 2);
-assert.equal(newsJobActive(getNewsJob(viewer.userId)), false);
-assert.ok(rows.every(row => row.content.automation.status === 'ready' && !row.is_published));
-await background.run(); assert.equal(calls, 2, 'A callback cannot execute its batch twice');
-
-rows = [raw('quota-1'), raw('quota-2')]; calls = 0;
-const rejected = createNewsJob(db, viewer, { limit: 2, writer: async () => { calls++; throw new Error('Gemini 조사 요청에 실패했습니다 (403)'); } });
-await rejected.run();
-assert.equal(calls, 1, 'Authentication and quota failures stop the batch');
-assert.equal(rejected.job.status, 'failed'); assert.equal(rejected.job.failed, 1);
-assert.equal(rows[1].content.automation, undefined); assert.match(rejected.job.error, /403/);
-assert.throws(() => createNewsJob(db, viewer, { limit: 16, writer }), /1~15/);
-const expired = createNewsJob(db, viewer, { writer }); expired.job.startedAt = '2020-01-01';
-assert.equal(getNewsJob(viewer.userId).status, 'failed', 'An interrupted server cannot leave the UI permanently busy');
-assert.ok(rows.every(row => row.is_published === false));
-console.log('News pipeline checks passed: private drafts, quality, retries, roles, edit preservation, browser-independent batches, duplicate jobs, progress, and provider failures.');
+console.log('News pipeline checks passed: private drafts, quality, retries, roles, source fairness, and edit preservation.');

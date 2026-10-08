@@ -6,6 +6,7 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { normalizeAvatarUrl } from "@/lib/avatar-url";
 import ColorModeToggle from '@/app/components/ColorModeToggle';
+import BrandLogo from '@/app/components/BrandLogo';
 
 // 유저 정보 타입 정의
 type UserProfile = {
@@ -151,7 +152,7 @@ export default function Header() {
         <div className="contents client-header-frame mx-auto flex max-w-[1280px] items-center px-4 md:px-6">
           <div className="client-header-left flex items-center">
             <Link href="/" className="client-header-logo flex shrink-0 items-center">
-              <span className="editorial-wordmark">ARCH.B</span>
+              <BrandLogo />
             </Link>
           </div>
 
