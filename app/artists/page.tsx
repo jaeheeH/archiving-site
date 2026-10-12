@@ -1,5 +1,6 @@
 import { matchesSearch, queryText } from '@/lib/search-text';
 import { SaveButton } from '@/app/components/SavedProvider';
+import ArchiveMasonry from '@/app/components/ArchiveMasonry';
 import Link from "next/link";
 import Image from "@/app/components/ArchiveImage";
 import type { CSSProperties } from "react";
@@ -31,25 +32,30 @@ export default async function ArtistsPage({ searchParams }: ArtistsPageProps) {
       <form action="/artists" className="resource-search-form"><label className="sr-only" htmlFor="artist-query">작가 검색</label><input id="artist-query" type="search" name="q" defaultValue={q} maxLength={100} placeholder="작가 이름·소개 검색" /><button className="archive-button">검색</button></form>
       <div className="archive-caption border-t border-border"><p>{q ? `“${q}” 검색 결과 · ` : '함께 보는 작가 · '}<strong>{filteredArtists.length}</strong>명</p>{q ? <Link href="/artists">검색 초기화</Link> : <Link href="/art">전체 작품 보기 →</Link>}</div>
       {!filteredArtists.length && <div className="archive-empty">검색 결과가 없습니다. 한글 또는 원문 이름으로 찾아보세요.</div>}
-      <section aria-label="작가 목록" className="archive-masonry">
+      <ArchiveMasonry label="작가 목록">
         {filteredArtists.map((artist) => {
           const artistArtworks = artworks.filter(work => work.artist_ids.includes(artist.id));
           const museums = new Set(artistArtworks.map((artwork) => artwork.museum));
           const cover = artistArtworks[0];
           return (
-            <article key={artist.id} className="archive-card archive-artist-card group"><Link href={`/artists/${artist.id}`}>
-              <div className="archive-media" style={{ "--archive-image-ratio": cover && cover.image_width > 0 && cover.image_height > 0 ? `${cover.image_width} / ${cover.image_height}` : "1.65" } as CSSProperties}>
+            <article key={artist.id} className="archive-card archive-artist-card group">
+              <Link href={`/artists/${artist.id}`} className="archive-media" style={{ "--archive-image-ratio": cover && cover.image_width > 0 && cover.image_height > 0 ? `${cover.image_width} / ${cover.image_height}` : "1.65" } as CSSProperties}>
                 {cover && <Image src={cover.preview_url} alt={`${artist.name_ko || artist.name} 대표 작품`} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-contain" />}
-              </div>
+              </Link>
               <div className="archive-card-copy">
                 <p className="archive-card-label">작품 {artistArtworks.length}점 · {museums.size}개 기관</p>
-                <h2>{artist.name_ko || artist.name}</h2>
+                <div className="archive-card-title-row">
+                  <h2><Link href={`/artists/${artist.id}`}>{artist.name_ko || artist.name}</Link></h2>
+                  <SaveButton type="artist" id={artist.id} title={artist.name_ko || artist.name} iconOnly />
+                </div>
                 {artist.name_ko && <p className="archive-card-description">{artist.name}</p>}
+                {artist.profile?.context && <p className="archive-card-meta mt-3">{[artist.profile.lifespan, artist.profile.context].filter(Boolean).join(' · ')}</p>}
+                {artist.profile?.description && <p className="archive-card-description line-clamp-3 mt-3">{artist.profile.description}</p>}
               </div>
-            </Link><div className="mt-3 flex justify-end"><SaveButton type="artist" id={artist.id} title={artist.name_ko || artist.name} /></div></article>
+            </article>
           );
         })}
-      </section>
+      </ArchiveMasonry>
       <p className="archive-note">등록 작품 수는 작가의 전작이 아니라, ARCH.B가 확인한 현재 아카이브의 수집 범위입니다.</p>
     </main>
   );

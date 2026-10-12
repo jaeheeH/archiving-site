@@ -7,7 +7,11 @@ import { createClient } from '@supabase/supabase-js';
 import { createElement } from 'react';
 import * as jsxRuntime from 'react/jsx-runtime';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { XMLParser } from 'fast-xml-parser';
+import { XMLParser, XMLValidator } from 'fast-xml-parser';
+import { resolveSitemap } from 'next/dist/build/webpack/loaders/metadata/resolve-route-data.js';
+
+const articleImage = 'https://blog.developer.adobe.com/en/publish/2026/09/media_1fd1a586959673f63c0300c56659bc74ff143715c.png?format=pjpg&optimize=medium&width=1200';
+const galleryImage = 'https://images.example.com/gallery.jpg?fit=contain&label=R&amp;D';
 
 let posts = [], gallery = [], failedTable, queries = [];
 const categories = { design: '디자인', development: '개발', interiors: '인테리어', ai: 'AI', technology: '제품·기술', editorial: '에디토리얼' };
@@ -44,13 +48,13 @@ const mocks = {
   '@/lib/news-feeds': { CATEGORIES: categories },
   '@/lib/gallery-search-data': {}, './gallery-search-data': {}, './search-text': {},
   '@/lib/avatar-url': { normalizeAvatarUrl: value => value }, './banners': {},
-  '@/lib/art-catalog': { getArtCatalog: async () => ({ artists: [{ id: 'artist', updated_at: '2026-10-10' }], artworks: [{ id: 'work', preview_url: '/art.jpg', updated_at: '2026-10-10' }] }) },
+  '@/lib/art-catalog': { getArtCatalog: async () => ({ artists: [{ id: 'artist', updated_at: '2026-10-10' }], artworks: [{ id: 'work', preview_url: '/art.jpg?width=600&quality=75', updated_at: '2026-10-10' }] }) },
   'react/jsx-runtime': jsxRuntime,
 };
 function loadModule(path) {
   const exports = {};
   const code = ts.transpileModule(readFileSync(new URL(path, import.meta.url), 'utf8'), { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS } }).outputText;
-  vm.runInNewContext(code, { exports, URL, console, process, require: name => { assert.ok(mocks[name], `Unexpected dependency: ${name}`); return mocks[name]; } });
+  vm.runInNewContext(code, { exports, URL, Date, console, process, require: name => { assert.ok(mocks[name], `Unexpected dependency: ${name}`); return mocks[name]; } });
   return exports;
 }
 mocks['./site-url'] = mocks['@/lib/site-url'] = loadModule('../lib/site-url.ts');
@@ -59,10 +63,10 @@ const { sitePageUrl, jsonLd, breadcrumb } = mocks['@/lib/seo'];
 const sitemap = loadModule('../app/sitemap.ts').default;
 mocks['@/lib/news-feeds'] = mocks['./news-feeds'] = { CATEGORIES: categories };
 const { getBlogRssXml } = loadModule('../lib/rss.ts');
-const makePost = index => ({ id: `11111111-1111-4111-8111-${String(index).padStart(12, '0')}`, slug: `story-${index}`, title: `제목 ${index} & <자료>`, summary: '요약', type: index % 2 ? 'news' : 'blog', is_published: true, published_at: '2026-10-10T00:00:00Z', updated_at: '2026-10-11T00:00:00Z', title_image_url: 'https://images.example.com/news.jpg', content: { format: 'archb-news-v1', category: 'design', paragraphs: [], points: [] }, author_id: null, tags: [] });
+const makePost = index => ({ id: `11111111-1111-4111-8111-${String(index).padStart(12, '0')}`, slug: `story-${index}`, title: `제목 ${index} & <자료>`, summary: '요약', type: index % 2 ? 'news' : 'blog', is_published: true, published_at: '2026-10-10T00:00:00Z', updated_at: '2026-10-11T00:00:00Z', title_image_url: articleImage, content: { format: 'archb-news-v1', category: 'design', paragraphs: [], points: [] }, author_id: null, tags: [] });
 posts = Array.from({ length: 501 }, (_, index) => makePost(index));
 posts.push({ ...makePost(999), is_published: false }, { ...makePost(998), type: 'news', content: { format: 'invalid' } });
-gallery = Array.from({ length: 1001 }, (_, index) => ({ id: index + 1, image_url: 'https://images.example.com/gallery.jpg' }));
+gallery = Array.from({ length: 1001 }, (_, index) => ({ id: index + 1, image_url: galleryImage }));
 const entries = await sitemap();
 assert.equal(entries.filter(entry => entry.url.includes('/news/read/')).length, 501, 'All summary pages are included');
 assert.equal(entries.filter(entry => /\/gallery\/\d+$/.test(entry.url)).length, 1001);
@@ -71,6 +75,13 @@ assert.ok(!entries.some(entry => entry.url.endsWith('/story-999') || entry.url.e
 for (const entry of entries.filter(entry => /\/(art|gallery|news\/read)\//.test(entry.url))) assert.ok(entry.images[0].startsWith('https://'));
 assert.equal(entries.find(entry => entry.url.endsWith('/story-0')).lastModified.toISOString(), '2026-10-11T00:00:00.000Z');
 assert.ok(queries.every(query => !query.select.split(',').includes('content')), 'Sitemap never fetches article bodies');
+const sitemapXml = resolveSitemap(entries);
+assert.equal(XMLValidator.validate(sitemapXml), true, 'The installed Next.js serializer must produce valid XML for image URLs with query strings');
+const parsedEntries = new XMLParser().parse(sitemapXml).urlset.url;
+assert.equal(parsedEntries.length, entries.length);
+assert.equal(parsedEntries.find(entry => entry.loc.endsWith('/story-0'))['image:image']['image:loc'], articleImage, 'XML escaping preserves the actual article image URL');
+assert.equal(parsedEntries.find(entry => entry.loc.endsWith('/gallery/1'))['image:image']['image:loc'], galleryImage, 'A literal entity-like query value is preserved after XML parsing');
+assert.equal(parsedEntries.find(entry => entry.loc.endsWith('/art/work'))['image:image']['image:loc'], sitePageUrl('/art.jpg?width=600&quality=75'));
 
 queries = []; gallery = []; posts = [makePost(0), { ...makePost(1), updated_at: '2026-10-12T00:00:00Z' }, { ...makePost(2), is_published: false }, { ...makePost(3), type: 'news', content: { format: 'invalid' } }];
 const parser = new XMLParser();

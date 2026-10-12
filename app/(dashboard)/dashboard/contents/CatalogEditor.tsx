@@ -27,7 +27,7 @@ export default function CatalogEditor({ kind, row, artists, articles = [], writa
       sources: Array.from({ length: 5 }, (_, index) => ({ label: value(`profile.sources.${index}.label`), url: value(`profile.sources.${index}.url`) })).filter(source => source.label || source.url),
       related_post_ids: form.getAll('profile.related_post_ids').map(String),
     } } : {
-      ...Object.fromEntries(['title', 'title_ko', 'museum', 'artist', 'date', 'medium', 'medium_ko', 'dimensions', 'dimensions_ko', 'culture', 'accession', 'source_url', 'preview_url', 'policy_url', 'license'].map(name => [name, value(name)])),
+      ...Object.fromEntries(['title', 'title_ko', 'museum', 'artist', 'date', 'medium', 'medium_ko', 'dimensions', 'dimensions_ko', 'description', 'culture', 'accession', 'source_url', 'preview_url', 'policy_url', 'license'].map(name => [name, value(name)])),
       artist_ids: form.getAll('artist_ids').map(String), themes: list('themes'), image_width: Number(value('image_width')), image_height: Number(value('image_height')),
     };
     setBusy(true); setError(''); setIssues([]);
@@ -56,6 +56,8 @@ export default function CatalogEditor({ kind, row, artists, articles = [], writa
           {field('title', '원문 제목', work?.title, 'text', 300)}{field('title_ko', '한국어 제목', work?.title_ko, 'text', 300)}{field('museum', '소장처', work?.museum)}{field('artist', '원출처 작가 표기', work?.artist)}
           <fieldset className="space-y-2 rounded-md border p-4 md:col-span-2"><legend className="px-1 text-sm font-medium">연결 작가</legend><div className="grid gap-2 sm:grid-cols-2">{artists.map(person => <label key={person.id} className="flex items-center gap-2 text-sm"><input name="artist_ids" type="checkbox" value={person.id} defaultChecked={work?.artist_ids.includes(person.id)} />{person.name_ko || person.name}</label>)}</div></fieldset>
           {field('date', '제작 시기', work?.date)}{field('culture', '문화', work?.culture)}
+          {textarea('description', '작품 소개 · 원출처 해설을 바탕으로 작성', work?.description)}
+          <p className="text-xs leading-6 text-gray-500 md:col-span-2">아래 원출처 URL에서 확인할 수 있는 내용만 작성합니다. 미술관의 해석이나 추정은 그 근거와 불확실성을 소개에 함께 표시해주세요.</p>
           {field('medium_ko', '재료·기법 · 한국어', work?.medium_ko)}{field('medium', '재료·기법 · 원문', work?.medium)}
           {textarea('dimensions_ko', '작품 크기 · 한국어 (cm 기준)', work?.dimensions_ko)}{textarea('dimensions', '작품 크기 · 원문', work?.dimensions, 500)}
           <p className="text-xs leading-6 text-gray-500 md:col-span-2">한국어 정보가 있으면 먼저 표시합니다. 원문은 상세 페이지에서 펼쳐 볼 수 있습니다. 작품 자체·액자 포함·전체 크기를 구분하고, 원출처의 수치 순서를 유지해주세요.</p>

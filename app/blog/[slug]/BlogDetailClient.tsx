@@ -33,8 +33,6 @@ export interface Post {
   view_count: number;
   scrap_count: number;
   author_id: string | null;
-  like_count?: number;
-  userLiked?: boolean;
   userScraped: boolean; // 서버에서 올 때는 기본적으로 false일 수 있음 (ISR 특성상)
 }
 
@@ -183,11 +181,6 @@ export default function BlogDetailClient({
   const scrapCount=useSavedCount('post',post.id) ?? storedScrapCount;
   const [viewCount, setViewCount] = useState(initialPost.view_count || 0);
   const [copied, setCopied] = useState(false);
-  const [isLiked, setIsLiked] = useState(initialPost.userLiked || false);
-  const [likeCount, setLikeCount] = useState(initialPost.like_count || 0);
-  const [isLiking, setIsLiking] = useState(false);
-  const [reactionError, setReactionError] = useState('');
-  const [likesAvailable, setLikesAvailable] = useState(false);
   
   const [authReady, setAuthReady] = useState(false);
   const [user, setUser] = useState<{ id: string } | null>(null);
@@ -206,7 +199,7 @@ export default function BlogDetailClient({
   useEffect(() => {
     const supabase = createClient();
     const syncUser = (next: { id: string } | null) => {
-      if (accountId.current !== (next?.id || null)) { setLikesAvailable(false); setIsScraped(false); setIsLiked(false); setReactionError(''); }
+      if (accountId.current !== (next?.id || null)) setIsScraped(false);
       accountId.current = next?.id || null;
       setUser(next);
       setAuthReady(true);
@@ -244,12 +237,9 @@ export default function BlogDetailClient({
         })
         .then((data) => {
           if (!active) return;
-          setLikesAvailable(data.likes_available);
           // 내 스크랩 상태와 최신 스크랩/조회수 카운트 동기화
           setIsScraped(data.userScraped);
           setScrapCount(data.scrap_count);
-          setIsLiked(data.userLiked || false);
-          setLikeCount(data.like_count || 0);
           // setViewCount(data.view_count); // 조회수는 아래 recordView에서 처리하므로 생략 가능
         })
         .catch((err) => { if (!controller.signal.aborted) console.error('Background update failed:', err); });
@@ -384,33 +374,6 @@ export default function BlogDetailClient({
     }
   };
 
-  const handleLike = async () => {
-    if (!user) {
-      router.push(`/login?redirect=${encodeURIComponent(window.location.pathname)}`);
-      return;
-    }
-    if (isLiking) return;
-    const requestedAccount = user.id;
-    const previous = { liked: isLiked, count: likeCount };
-    setIsLiking(true);
-    setReactionError('');
-    setIsLiked(!previous.liked);
-    setLikeCount(Math.max(0, previous.count + (previous.liked ? -1 : 1)));
-    try {
-      const response = await fetch(`/api/posts/${post.id}/like`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ liked: !previous.liked }) });
-      const data = await response.json();
-      if (accountId.current !== requestedAccount) return;
-      if (!response.ok) throw new Error(data.error || '좋아요를 저장하지 못했습니다.');
-      setIsLiked(data.liked);
-      setLikeCount(data.like_count);
-    } catch (error) {
-      if (accountId.current !== requestedAccount) return;
-      setIsLiked(previous.liked);
-      setLikeCount(previous.count);
-      setReactionError(error instanceof Error ? error.message : '좋아요를 저장하지 못했습니다.');
-    } finally { setIsLiking(false); }
-  };
-
   const handleCopyLink = async () => {
     try {
       if (!navigator.clipboard) throw new Error('Clipboard unavailable');
@@ -523,13 +486,8 @@ export default function BlogDetailClient({
                   <i className={`ri-bookmark-${isScraped ? 'fill' : 'line'} text-[14px]`} />
                   <span className="archive-index">{scrapCount}</span>
                 </button>
-                <button type="button" onClick={handleLike} disabled={isLiking || !likesAvailable} aria-label="좋아요" aria-pressed={isLiked} className="flex items-center gap-1.5 transition-colors hover:text-[var(--archive-brand)] disabled:opacity-50">
-                  <i className={`ri-heart-${isLiked ? 'fill' : 'line'} text-[15px]`} aria-hidden="true" />
-                  <span className="archive-index">{likeCount}</span>
-                </button>
               </div>
             </div>
-            {reactionError && <p role="alert" className="mt-3 text-sm text-red-700">{reactionError}</p>}
             <hr className="news-detail-divider" />
           </div>
         </header>

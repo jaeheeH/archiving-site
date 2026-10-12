@@ -10,7 +10,6 @@ import {
   FileText,
   ImageIcon,
   Sparkles,
-  UserRound,
 } from "lucide-react";
 
 import { getMypageProfile } from "@/lib/mypage-data";
@@ -90,33 +89,8 @@ export default async function MyPage() {
 
   return (
     <section className="w-full">
-      <div className="mb-8 grid gap-5 xl:grid-cols-[1fr_320px]">
+      <div className="mb-8">
         <TodayRecommendation recommendation={todayRecommendation} />
-
-        <div className="rounded-lg border border-[var(--archive-line)] bg-white p-5">
-          <div className="flex items-center gap-4">
-            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border border-[var(--archive-line)] bg-gray-100">
-              {user.avatar_url ? (
-                <Image src={user.avatar_url} alt={user.nickname} fill sizes="64px" className="object-cover" />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center text-lg font-bold text-gray-500">
-                  {user.nickname.charAt(0) || user.email.charAt(0) || "U"}
-                </div>
-              )}
-            </div>
-            <div className="min-w-0">
-              <p className="text-base font-bold text-gray-950">{user.nickname || "사용자"}</p>
-              <p className="mt-1 truncate text-sm text-[var(--archive-muted)]">{user.email}</p>
-            </div>
-          </div>
-          <Link
-            href="/mypage/profile"
-            className="mt-5 inline-flex h-9 w-full items-center justify-center gap-2 rounded-md border border-[var(--archive-line)] text-sm font-semibold text-gray-700 transition hover:border-[var(--archive-brand)] hover:text-[var(--archive-brand)]"
-          >
-            <UserRound className="h-4 w-4" />
-            내 정보 수정
-          </Link>
-        </div>
       </div>
 
       <Link
@@ -194,7 +168,7 @@ function SummaryCell({ label, value, href }: { label: string; value: number; hre
   return (
     <Link
       href={href}
-      className="group border-[var(--archive-line)] p-5 transition-colors hover:bg-[var(--archive-brand)]/5 sm:border-r xl:last:border-r-0"
+      className="group rounded-none border-[var(--archive-line)] p-5 transition-colors hover:bg-[var(--archive-brand)]/5 sm:border-r xl:last:border-r-0"
     >
       <div className="flex items-center gap-1 text-sm font-semibold text-[var(--archive-muted)]">
         {label}

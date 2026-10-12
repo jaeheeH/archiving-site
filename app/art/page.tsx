@@ -1,6 +1,7 @@
 import { matchesSearch, queryText } from '@/lib/search-text';
 import Link from "next/link";
 import ArtworkCard from "./ArtworkCard";
+import ArchiveMasonry from '@/app/components/ArchiveMasonry';
 import { getArtCatalog } from "@/lib/art-catalog";
 import { getPageMetadata } from '@/lib/site-settings';
 
@@ -23,7 +24,7 @@ export default async function ArtPage({ searchParams }: ArtPageProps) {
   const museums = [...new Set(artworks.map((artwork) => artwork.museum))].sort();
   const filteredArtworks = artworks.filter((artwork) => {
     const names = artwork.artist_ids.flatMap(id => { const person = artists.find(a => a.id === id); return [person?.name,person?.name_ko]; });
-    const match = matchesSearch(query, [artwork.title_ko,artwork.title,artwork.artist,artwork.medium,artwork.medium_ko,...artwork.themes,...names]);
+    const match = matchesSearch(query, [artwork.title_ko,artwork.title,artwork.artist,artwork.description,artwork.medium,artwork.medium_ko,...artwork.themes,...names]);
 
     return (
       match &&
@@ -63,9 +64,9 @@ export default async function ArtPage({ searchParams }: ArtPageProps) {
       </div>
 
       {filteredArtworks.length ? (
-        <section aria-label="작품 목록" className="archive-masonry">
+        <ArchiveMasonry label="작품 목록">
           {filteredArtworks.map((artwork) => <ArtworkCard key={artwork.id} artwork={artwork} />)}
-        </section>
+        </ArchiveMasonry>
       ) : (
         <div className="archive-empty">조건에 맞는 작품이 없습니다.</div>
       )}

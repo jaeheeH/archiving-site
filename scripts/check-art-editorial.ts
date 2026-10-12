@@ -5,6 +5,7 @@ import { artistProfileSchema, artistSchema, artworkSchema } from '../lib/art-inp
 const editorial = JSON.parse(readFileSync('research/art-collection/editorial.json', 'utf8'));
 const works = JSON.parse(readFileSync('research/art-collection/artworks.json', 'utf8'));
 const artists = JSON.parse(readFileSync('research/art-collection/artists.json', 'utf8')).artists;
+const expansion = JSON.parse(readFileSync('research/art-collection/expansion.json', 'utf8'));
 assert.equal(editorial.artworks.length, works.length);
 assert.equal(editorial.artists.length, artists.length);
 assert.equal(new Set(editorial.artworks.map((row: { id: string }) => row.id)).size, works.length);
@@ -17,15 +18,24 @@ for (const row of editorial.artists) {
 for (const row of editorial.artworks) {
   const original = works.find((work: { id: string }) => work.id === row.id);
   assert(original, row.id);
-  assert(row.medium_ko && row.dimensions_ko);
+  assert(row.medium_ko && row.dimensions_ko && row.description);
+  assert(row.description.length >= 60 && row.description.length <= 1500, row.id);
   // Compare every cm group, including framed, overall and each-panel measurements.
   const cmGroups = (text: string) => [...text.matchAll(/(\d+(?:\.\d+)?(?:\s*[x×]\s*\d+(?:\.\d+)?)+)\s*cm/g)].map(match => match[1].replace(/\s*[x×]\s*/g, '×')).sort();
   assert.deepEqual(cmGroups(row.dimensions_ko), cmGroups(original.dimensions), row.id);
   const input = Object.fromEntries(Object.keys(artworkSchema.shape).filter(key => key in original).map(key => [key, original[key]]));
   input.culture = String(input.culture || '');
-  const parsed = artworkSchema.safeParse({ ...input, medium_ko: row.medium_ko, dimensions_ko: row.dimensions_ko });
+  const parsed = artworkSchema.safeParse({ ...input, medium_ko: row.medium_ko, dimensions_ko: row.dimensions_ko, description: row.description });
   assert(parsed.success, `${row.id}: ${parsed.error?.message}`);
-  assert(artworkSchema.safeParse(input).success, 'older clients can omit translations');
+  assert(artworkSchema.safeParse(input).success, 'older clients can omit translations and introductions');
+  assert(!artworkSchema.safeParse({ ...input, description: '가'.repeat(1501) }).success, 'oversized introductions rejected');
+}
+for (const work of expansion.artworks) {
+  const input = Object.fromEntries(Object.keys(artworkSchema.shape).filter(key => key in work).map(key => [key, work[key]]));
+  const parsed = artworkSchema.safeParse(input);
+  assert(parsed.success, `${work.id}: ${parsed.error?.message}`);
+  const cmGroups = (value: string) => [...value.matchAll(/(\d+(?:\.\d+)?(?:\s*[x×]\s*\d+(?:\.\d+)?)+)\s*cm/g)].map(match => match[1].replace(/\s*[x×]\s*/g, '×')).sort();
+  assert.deepEqual(cmGroups(work.dimensions_ko), cmGroups(work.dimensions), `${work.id}: preserve every cm measurement`);
 }
 const profile = editorial.artists[0].profile;
 assert(!artistProfileSchema.safeParse({ ...profile, sources: [] }).success, 'introductions need a source');

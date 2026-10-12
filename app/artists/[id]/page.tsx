@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ArtworkCard from "@/app/art/ArtworkCard";
+import ArchiveMasonry from '@/app/components/ArchiveMasonry';
 import { getArtCatalog, getArtist, getArtworksByArtist } from "@/lib/art-catalog";
 import { jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
 import { readNewsSummaries } from '@/lib/news';
@@ -62,9 +63,9 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
         <strong className="text-foreground">현재 수집 범위</strong> · {museums.join(" · ")}. 이 페이지의 수량은 해당 작가의 전작이 아니라 ARCH.B가 확인한 표본입니다.
       </div>
 
-      <section aria-label={`${artist.name_ko || artist.name} 작품 목록`} className="archive-grid">
+      <ArchiveMasonry label={`${artist.name_ko || artist.name} 작품 목록`}>
         {artistArtworks.map((artwork) => <ArtworkCard key={artwork.id} artwork={artwork} />)}
-      </section>
+      </ArchiveMasonry>
       {related.length > 0 && <section className="archive-section" aria-labelledby="artist-related-articles"><div className="archive-section-heading"><h2 id="artist-related-articles">함께 읽는 글</h2></div><div className="archive-grid">{related.map(article => <article className="archive-card border-t border-border pt-4" key={article.id}><p className="archive-card-meta">{article.source}</p><h3><Link href={`/news/read/${article.slug}`}>{article.title}</Link></h3><p className="archive-card-description line-clamp-3">{article.summary}</p><Link href={`/news/read/${article.slug}`} className="mt-4 inline-block text-sm underline underline-offset-4">글 읽기 →</Link></article>)}</div></section>}
     </main>
   );

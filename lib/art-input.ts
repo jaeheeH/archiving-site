@@ -13,7 +13,7 @@ export const artistSchema = z.object({ name: text(200).min(1), name_ko: text(200
 export const artworkSchema = z.object({
   title: text().min(1), title_ko: text().min(1), museum: text().min(1), artist: text(),
   artist_ids: z.array(artIdSchema).max(20), date: text(100), medium: text(500), dimensions: text(500),
-  medium_ko: text(500).optional(), dimensions_ko: text(1500).optional(),
+  medium_ko: text(500).optional(), dimensions_ko: text(1500).optional(), description: text(1500).optional(),
   culture: text(), accession: text(), source_url: url, preview_url: url, policy_url: url,
   license: text(200).min(1), themes: z.array(text(50).min(1)).max(20),
   image_width: z.number().int().min(1).max(50000), image_height: z.number().int().min(1).max(50000),

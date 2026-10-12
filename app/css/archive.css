@@ -24,21 +24,21 @@
 .archive-caption a { color: var(--archive-brand); text-decoration: underline; text-underline-offset: 3px; }
 .archive-caption strong { font-weight: 600; color: var(--archive-brand); }
 .archive-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: start; gap: 40px 26px; }
-.archive-masonry { column-count: 3; column-gap: 26px; }
-.archive-masonry > .archive-card { display: inline-block; width: 100%; break-inside: avoid; margin-bottom: 40px; vertical-align: top; }
+.archive-masonry { --masonry-columns: 3; position: relative; display: grid; grid-template-columns: repeat(var(--masonry-columns),minmax(0,1fr)); align-items: start; gap: 40px 26px; }
+.archive-masonry[data-layout=ready] > .archive-card { position: absolute; top: 0; left: 0; }
 .archive-masonry .archive-media { aspect-ratio: var(--archive-image-ratio, 1.65); }
 .archive-card { min-width: 0; }
 .archive-card > a { display: block; }
 .archive-media { position: relative; display: block; width: 100%; aspect-ratio: 1.65; overflow: hidden; background: var(--archive-bg-light); border-radius: 0; }
-.archive-art-card .archive-media,.archive-artist-card .archive-media { background: transparent; }
+.archive-art-card .archive-media,.archive-artist-card .archive-media { background: transparent; aspect-ratio: var(--archive-image-ratio, 1.65); }
 .archive-card-copy { padding-top: 13px; }
-.archive-card h2,.archive-card h3 { font-size: 20px; font-weight: 720; line-height: 1.45; letter-spacing: -.5px; margin: 10px 0; }
+.archive-card h2,.archive-card h3,.resource-card h2 { font-size: 20px; font-weight: 720; line-height: 1.45; letter-spacing: -.5px; margin: 10px 0; }
 .archive-card .archive-card-description { font-size: 15px; color: var(--archive-muted); line-height: 1.75; }
 .archive-card-meta { font-size: 12px; line-height: 1.7; color: var(--archive-muted); }
 .archive-card-label { font-size: 12px; color: var(--archive-brand); line-height: 1.6; }
 .archive-card-title-row { display: flex; align-items: start; justify-content: space-between; gap: 8px; }
 .archive-card-title-row h2 { flex: 1; min-width: 0; }
-.archive-bookmark { display: grid; place-items: center; width: 40px; min-height: 44px; flex-shrink: 0; color: var(--archive-faint); margin-right: -8px; }
+.archive-bookmark { display: grid; place-items: center; width: 40px; min-height: 44px; flex-shrink: 0; color: var(--archive-faint); margin-right: -8px; font-size: 18px; }
 .archive-bookmark[aria-pressed=true],.archive-bookmark:hover { color: var(--archive-brand); }
 .archive-bookmark:disabled { opacity: .5; }
 .archive-domain { display: flex; align-items: center; gap: 8px; margin-top: 18px; font-size: 12px; color: var(--archive-muted); }
@@ -58,15 +58,14 @@
 .archive-section-heading h2 { font-size: 25px; font-weight: 730; letter-spacing: -.8px; }
 .archive-section-heading a { color: var(--archive-brand); font-size: 13px; }
 @media(max-width:1100px) { .archive-artwork-layout { grid-template-columns: minmax(0,1fr) 300px; gap: 30px; } }
-@media(max-width:950px) { .archive-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .archive-masonry { column-count: 2; } .archive-artwork-layout { grid-template-columns: 1fr; } }
+@media(max-width:950px) { .archive-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .archive-masonry { --masonry-columns: 2; } .archive-artwork-layout { grid-template-columns: 1fr; } }
 @media(max-width:760px) { .archb-archive { padding-left: 20px; padding-right: 20px; } }
 @media(max-width:640px) {
   .archb-archive { padding: 32px 20px 88px; }
   .archive-heading h1,.archive-artwork-info h1 { font-size: 31px; letter-spacing: -1px; }
   .archive-heading > p,.archive-heading > div > p:last-child { font-size: 15px; }
   .archive-grid { grid-template-columns: 1fr; gap: 30px; }
-  .archive-masonry { column-count: 1; }
-  .archive-masonry > .archive-card { margin-bottom: 30px; }
+  .archive-masonry { --masonry-columns: 1; row-gap: 30px; }
   .archive-card h2,.archive-card h3 { font-size: 22px; }
   .archive-controls { flex-direction: column; align-items: stretch; }
   .archive-controls select { width: 100%; }
@@ -82,15 +81,14 @@
 .resource-search-form { display:flex; gap:12px; margin:24px 0; }
 .resource-search-form input { min-width:0; flex:1; border:1px solid var(--archive-line); background:var(--background); padding:12px 14px; color:var(--archive-ink); }
 .resource-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:36px 24px; }
-.resource-card { min-width:0; border-bottom:1px solid var(--archive-line); padding-bottom:20px; }
-.resource-card-media { position:relative; aspect-ratio:1.6; overflow:hidden; }
+.resource-card { min-width:0; }
+.resource-card-media { display:block; position:relative; aspect-ratio:1.6; overflow:hidden; }
 .resource-placeholder { height:100%; display:grid; place-items:center; color:var(--archive-muted); border:1px solid var(--archive-line); font-size:32px; }
-.resource-card-meta { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:12px 0 8px; color:var(--archive-brand); font-size:12px; }
 .resource-save { display:inline-flex; align-items:center; gap:6px; min-height:44px; padding:4px 10px; border:1px solid var(--archive-line); border-radius:4px; background:var(--background); color:var(--archive-muted); font-size:12px; }
 .resource-save[aria-pressed=true] { color:var(--archive-brand); border-color:var(--archive-brand); }
 .resource-save:disabled { opacity:.55; cursor:wait; }
-.resource-save:focus-visible,.resource-page a:focus-visible { outline:2px solid var(--archive-brand); outline-offset:4px; }
-.resource-card h2 { font-size:18px; font-weight:600; line-height:1.6; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.resource-save:focus-visible,.archive-bookmark:focus-visible,.resource-page a:focus-visible { outline:2px solid var(--archive-brand); outline-offset:4px; }
+.resource-card h2 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
 .resource-card-description { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; margin:10px 0; font-size:13px; line-height:1.9; color:var(--archive-muted); }
 .resource-card-source { font-size:11px; color:var(--archive-muted); overflow-wrap:anywhere; }
 .resource-empty-links { display:flex; gap:20px; flex-wrap:wrap; margin-top:18px; }

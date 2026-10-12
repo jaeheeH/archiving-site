@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "@/app/components/ArchiveImage";
 import { notFound } from "next/navigation";
 import ArtworkCard from "../ArtworkCard";
+import ArchiveMasonry from '@/app/components/ArchiveMasonry';
 import { getArtCatalog, getArtwork, getArtworkArtist, getArtworksByArtist } from "@/lib/art-catalog";
 import { jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
 
@@ -95,15 +96,21 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
         </div>
       </article>
 
+      {artwork.description && <section className="archive-section" aria-labelledby="artwork-introduction">
+        <div className="archive-section-heading"><h2 id="artwork-introduction">작품 이야기</h2></div>
+        <p className="max-w-3xl whitespace-pre-line text-base leading-8">{artwork.description}</p>
+        <a href={artwork.source_url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block text-xs leading-6 text-muted-foreground underline underline-offset-4">확인 출처 · 작품 정보 <span aria-hidden="true">↗</span><span className="sr-only"> · 새 창</span></a>
+      </section>}
+
       {related.length > 0 && (
         <section className="archive-section" aria-labelledby="related-artworks">
           <div className="archive-section-heading">
             <h2 id="related-artworks">이 작가의 다른 작품</h2>
             <Link href={`/artists/${artist?.id}`} className="text-sm font-semibold hover:underline">작가 아카이브</Link>
           </div>
-          <div className="archive-grid">
+          <ArchiveMasonry label="이 작가의 다른 작품">
             {related.map((item) => <ArtworkCard key={item.id} artwork={item} />)}
-          </div>
+          </ArchiveMasonry>
         </section>
       )}
     </main>

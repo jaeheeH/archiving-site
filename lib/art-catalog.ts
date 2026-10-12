@@ -5,6 +5,7 @@ import { createPublicClient } from "@/lib/supabase/public";
 import artworkData from "@/research/art-collection/artworks.json";
 import artistData from "@/research/art-collection/artists.json";
 import editorialData from '@/research/art-collection/editorial.json';
+import expansionData from '@/research/art-collection/expansion.json';
 import type { ArtistProfile } from './art-input';
 
 export type Artwork = {
@@ -20,6 +21,7 @@ export type Artwork = {
   dimensions: string;
   medium_ko?: string;
   dimensions_ko?: string;
+  description?: string;
   culture: string;
   accession: string;
   source_url: string;
@@ -55,7 +57,15 @@ export const getFreshArtCatalog = cache(async () => {
   ]);
   const errors = [works.error, people.error, links.error].filter(Boolean);
   if (errors.length) {
-    if (errors.every(error => error?.code === "PGRST205")) return { artworks: artworkData.map(work => ({ ...work, ...editorialData.artworks.find(item => item.id === work.id) })) as Artwork[], artists: artistData.artists.map(artist => ({ ...artist, profile: editorialData.artists.find(item => item.id === artist.id)?.profile })) as Artist[], databaseReady: false };
+    if (errors.every(error => error?.code === "PGRST205")) {
+      const artworks = [...artworkData.map(work => ({ ...work, ...editorialData.artworks.find(item => item.id === work.id) })), ...expansionData.artworks] as Artwork[];
+      const artists = artistData.artists.map(artist => ({ ...artist,
+        source_ids: (expansionData.artist_source_ids as Record<string, string[]>)[artist.id] || artist.source_ids,
+        artwork_ids: artworks.filter(work => work.artist_ids.includes(artist.id)).map(work => work.id),
+        profile: editorialData.artists.find(item => item.id === artist.id)?.profile,
+      })) as Artist[];
+      return { artworks, artists, databaseReady: false };
+    }
     throw errors[0];
   }
   // ponytail: a catalog below 1,000 rows fits one read; paginate this catalog when it grows beyond that ceiling.
@@ -63,7 +73,7 @@ export const getFreshArtCatalog = cache(async () => {
   const artists = (people.data || []).map(row => ({ ...row, artwork_ids: (links.data || []).filter(link => link.artist_id === row.id).map(link => link.artwork_id) })) as Artist[];
   return { artworks, artists, databaseReady: true };
 });
-export const getArtCatalog = unstable_cache(getFreshArtCatalog, ['art-catalog-v2'], { revalidate: 600, tags: [ART_CATALOG_TAG] });
+export const getArtCatalog = unstable_cache(getFreshArtCatalog, ['art-catalog-v3'], { revalidate: 600, tags: [ART_CATALOG_TAG] });
 
 export async function getArtwork(id: string) { return (await getArtCatalog()).artworks.find(work => work.id === id); }
 export async function getArtist(id: string) { return (await getArtCatalog()).artists.find(artist => artist.id === id); }

@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# local news writing records
+/research/news-backlog-*/
+
 # next.js
 /.next/
 /.next-performance/

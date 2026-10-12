@@ -79,11 +79,12 @@ export default function SavedProvider({ children }: { children: ReactNode }) {
   };
   return <SavedContext.Provider value={{ ready, counts, keys, busy, toggle }}>{children}</SavedContext.Provider>;
 }
-export function SaveButton({ type, id, title }: { type: ResourceType; id: string; title: string }) {
+export function SaveButton({ type, id, title, iconOnly = false }: { type: ResourceType; id: string; title: string; iconOnly?: boolean }) {
   const saved = useContext(SavedContext);
   const key = `${type}:${id}`;
   const active = !!saved?.keys.has(key);
-  return <button type="button" className="resource-save" aria-label={`${title} ${active ? '저장 취소' : '저장'}`} aria-pressed={active} disabled={!saved?.ready || saved.busy.has(key)} onClick={() => void saved?.toggle(type, id)}><i aria-hidden="true" className={saved?.busy.has(key) ? 'ri-loader-4-line animate-spin' : active ? 'ri-bookmark-fill' : 'ri-bookmark-line'} /><span>{active ? '저장됨' : '저장'}</span></button>;
+  const action = active ? '저장 취소' : '저장';
+  return <button type="button" className={iconOnly ? 'archive-bookmark' : 'resource-save'} aria-label={`${title} ${action}`} title={iconOnly ? action : undefined} aria-pressed={active} disabled={!saved?.ready || saved.busy.has(key)} onClick={() => void saved?.toggle(type, id)}><i aria-hidden="true" className={saved?.busy.has(key) ? 'ri-loader-4-line animate-spin' : active ? 'ri-bookmark-fill' : 'ri-bookmark-line'} />{!iconOnly && <span>{active ? '저장됨' : '저장'}</span>}</button>;
 }
 
 export function useSavedResource(type: ResourceType, id: string) {

@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const artworks = JSON.parse(fs.readFileSync(new URL('../research/art-collection/artworks.json', import.meta.url), 'utf8'));
+const artworks = [...JSON.parse(fs.readFileSync(new URL('../research/art-collection/artworks.json', import.meta.url), 'utf8')), ...JSON.parse(fs.readFileSync(new URL('../research/art-collection/expansion.json', import.meta.url), 'utf8')).artworks];
 const { artists } = JSON.parse(fs.readFileSync(new URL('../research/art-collection/artists.json', import.meta.url), 'utf8'));
+const editorial = JSON.parse(fs.readFileSync(new URL('../research/art-collection/editorial.json', import.meta.url), 'utf8'));
+const references = JSON.parse(fs.readFileSync(new URL('../content/references/editorial.json', import.meta.url), 'utf8')).references;
 const base = process.argv[2] || 'http://localhost:3000';
 const html = async path => {
   const response = await fetch(new URL(path, base));
@@ -25,5 +27,17 @@ for (const path of [`/art/${sample.id}`, `/artists/${artist.id}`]) {
 }
 const artworkPage = await html(`/art/${sample.id}`);
 assert.ok(artworkPage.includes('원출처 보기') && artworkPage.includes('이용 정책') && artworkPage.includes(sample.license));
+assert.ok(artworkPage.includes('artwork-introduction') && artworkPage.includes(editorial.artworks.find(work => work.id === sample.id).description), 'Sourced artwork introduction');
+const introductionSearch = await html(`/art?q=${encodeURIComponent('신인상주의')}`);
+assert.equal(count(introductionSearch, 'art'), 1, 'Search includes artwork introductions');
+assert.ok(introductionSearch.includes('/art/met-436532'));
+assert.ok((await html(`/search?q=${encodeURIComponent('신인상주의')}&type=artwork`)).includes('/art/met-436532'), 'Unified search includes artwork introductions');
+assert.ok((await html('/artists')).includes(editorial.artists.find(row => row.id === artist.id).profile.description), 'Artist cards show existing sourced profiles');
+for (const person of artists) {
+  assert.equal(count(await html(`/artists/${person.id}`), 'art'), artworks.filter(work => work.artist_ids.includes(person.id)).length, `${person.id}: complete artist collection`);
+}
+assert.ok((await html('/art/met-437877')).includes('가톨릭 신앙의 알레고리'), 'New artwork detail');
+const referencePage = await html('/references');
+for (const reference of references) assert.ok(referencePage.includes(reference.description) && referencePage.includes(reference.title), reference.title);
 assert.ok((await html('/references')).includes('참고사이트'));
 console.log(`ARCH.B archive checks passed: ${artworks.length} artworks, ${artists.length} artists, combined search/filters and detail sources.`);

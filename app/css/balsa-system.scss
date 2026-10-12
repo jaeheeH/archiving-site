@@ -303,6 +303,10 @@ html[data-theme="my-design-system"] .archive-page-shell a.group {
   background: var(--balsa-role-background);
 }
 
+html[data-theme="my-design-system"] .archive-page-shell a.group.rounded-none {
+  border-radius: 0;
+}
+
 html[data-theme="my-design-system"] .archive-page-shell a.group:hover {
   border-color: var(--balsa-role-primary);
 }

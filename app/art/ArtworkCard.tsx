@@ -9,27 +9,26 @@ export default async function ArtworkCard({ artwork }: { artwork: Artwork }) {
 
   return (
     <article className="archive-card archive-art-card group">
-      <Link href={`/art/${artwork.id}`} className="block">
-        <div className="archive-media" style={{ "--archive-image-ratio": artwork.image_width > 0 && artwork.image_height > 0 ? `${artwork.image_width} / ${artwork.image_height}` : "1.65" } as CSSProperties}>
+      <Link href={`/art/${artwork.id}`} className="archive-media" style={{ "--archive-image-ratio": artwork.image_width > 0 && artwork.image_height > 0 ? `${artwork.image_width} / ${artwork.image_height}` : "1.65" } as CSSProperties}>
           <Image
             src={artwork.preview_url}
             alt={`${artwork.title_ko} — ${artist?.name_ko || artwork.artist}`}
             fill
             loading="lazy"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-contain"
+            className="object-cover"
           />
+      </Link>
+      <div className="archive-card-copy">
+        <p className="archive-card-label">{artwork.museum}</p>
+        <div className="archive-card-title-row">
+          <h2><Link href={`/art/${artwork.id}`}>{artwork.title_ko}</Link></h2>
+          <SaveButton type="artwork" id={artwork.id} title={artwork.title_ko} iconOnly />
         </div>
-        <div className="archive-card-copy">
-          <p className="archive-card-label">{artwork.museum}</p>
-          <h2>
-            {artwork.title_ko}
-          </h2>
-          <p className="archive-card-description">
-            {artist?.name_ko || artist?.name || "작가 미상"} · {artwork.date}
-          </p>
-        </div>
-      </Link><div className="mt-3 flex justify-end"><SaveButton type="artwork" id={artwork.id} title={artwork.title_ko} /></div>
+        <p className="archive-card-description">
+          {artist?.name_ko || artist?.name || "작가 미상"} · {artwork.date}
+        </p>
+      </div>
     </article>
   );
 }

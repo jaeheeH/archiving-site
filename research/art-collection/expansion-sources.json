@@ -1,0 +1,4188 @@
+{
+  "verified_at": "2026-10-12T05:14:20.411Z",
+  "sources": [
+    {
+      "id": "cma-135299",
+      "artist_id": "vincent-van-gogh",
+      "creator_source_id": "cma:1779",
+      "source_url": "https://clevelandart.org/art/1958.31",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/135299",
+      "raw": {
+        "id": 135299,
+        "title": "Adeline Ravoux",
+        "accession_number": "1958.31",
+        "creation_date": "1890",
+        "technique": "oil on fabric",
+        "measurements": "Framed: 72.5 x 73.5 x 8.5 cm (28 9/16 x 28 15/16 x 3 3/8 in.); Unframed: 50.2 x 50.5 cm (19 3/4 x 19 7/8 in.)",
+        "culture": [
+          "Netherlands"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "In May 1890, Vincent van Gogh arrived in Auvers, a small town north of Paris, where he rented a room at the inn of Arthur Ravoux. This portrait, completed during the last months of the artist’s life, depicts Ravoux’s 13-year-old daughter, Adeline. Van Gogh wrote that rather than photographic resemblance, he wanted his portraits to convey the “impassioned aspects” of contemporary life through the “modern taste for color.”",
+        "did_you_know": "Adeline Ravoux, at age 13, was not pleased with her portrait and did not think the image resembled her. Today, a photograph exists of Adeline in her late seventies and the resemblance is truly remarkable.",
+        "url": "https://clevelandart.org/art/1958.31",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.31/1958.31_web.jpg",
+            "width": "900",
+            "height": "897",
+            "filesize": "451143",
+            "filename": "1958.31_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.31/1958.31_print.jpg",
+            "width": "3400",
+            "height": "3389",
+            "filesize": "6008242",
+            "filename": "1958.31_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.31/1958.31_full.tif",
+            "width": "11512",
+            "height": "11476",
+            "filesize": "396370084",
+            "filename": "1958.31_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1779,
+            "description": "Vincent van Gogh (Dutch, 1853–1890)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-138464",
+      "artist_id": "jacques-louis-david",
+      "creator_source_id": "cma:1643",
+      "source_url": "https://clevelandart.org/art/1962.37",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/138464",
+      "raw": {
+        "id": 138464,
+        "title": "Cupid and Psyche",
+        "accession_number": "1962.37",
+        "creation_date": "1817",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 221 x 282 x 10 cm (87 x 111 x 3 15/16 in.); Unframed: 184.2 x 241.6 cm (72 1/2 x 95 1/8 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "David used the story of Cupid and Psyche to explore the conflict between idealized love and physical reality. Cupid, lover of the beautiful mortal Psyche, visited her nightly on the condition that she not know his identity. Cupid was usually depicted as an ideal adolescent, but here David presents him as an ungainly teenager smirking at his sexual conquest. David took inspiration from a number of ancient texts, including an obscure, recently published Greek poem by Moschus that describes Cupid as a mean-spirited brat with flashing eyes and curly hair.",
+        "did_you_know": "Jacques-Louis David included two butterflies in this painting: one above the slumbering Psyche and the other on the base of the couple's bed frame.",
+        "url": "https://clevelandart.org/art/1962.37",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1962.37/1962.37_web.jpg",
+            "width": "1180",
+            "height": "893",
+            "filesize": "695293",
+            "filename": "1962.37_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1962.37/1962.37_print.jpg",
+            "width": "3400",
+            "height": "2574",
+            "filesize": "5203435",
+            "filename": "1962.37_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1962.37/1962.37_full.tif",
+            "width": "5000",
+            "height": "3785",
+            "filesize": "56804216",
+            "filename": "1962.37_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1643,
+            "description": "Jacques-Louis David (French, 1748–1825)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-130163",
+      "artist_id": "jacques-louis-david",
+      "creator_source_id": "cma:1643",
+      "source_url": "https://clevelandart.org/art/1952.542",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/130163",
+      "raw": {
+        "id": 130163,
+        "title": "Young Woman with a Turban",
+        "accession_number": "1952.542",
+        "creation_date": "c. 1780",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 76 x 66 x 8 cm (29 15/16 x 26 x 3 1/8 in.); Unframed: 55.2 x 46 cm (21 3/4 x 18 1/8 in.)",
+        "culture": [
+          "France"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Known as a <em>tête d'expression</em> or \"expressive head,\" this painting represents an essential part of the academic training of history painters who specialized in religious, mythological, or historical subjects. In 1760, such exercises became standard at the École des Beaux-Arts (School of Fine Arts) in Paris, then known as Académie royale de peinture et de sculpture. Focusing on the relationship between morality and beauty, the goal of a history painter is not only to create a pleasing image, but also to represent the emotions of the soul.",
+        "did_you_know": "The high quality of this painting was of such renown that David’s students requested permission to copy it.",
+        "url": "https://clevelandart.org/art/1952.542",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1952.542/1952.542_web.jpg",
+            "width": "747",
+            "height": "893",
+            "filesize": "448297",
+            "filename": "1952.542_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1952.542/1952.542_print.jpg",
+            "width": "2846",
+            "height": "3400",
+            "filesize": "6284260",
+            "filename": "1952.542_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1952.542/1952.542_full.tif",
+            "width": "3983",
+            "height": "4759",
+            "filesize": "56896308",
+            "filename": "1952.542_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1643,
+            "description": "Jacques-Louis David (French, 1748–1825)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-147526",
+      "artist_id": "jacques-louis-david",
+      "creator_source_id": "cma:1643",
+      "source_url": "https://clevelandart.org/art/1973.36",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/147526",
+      "raw": {
+        "id": 147526,
+        "title": "The Prisoner",
+        "accession_number": "1973.36",
+        "creation_date": "c. 1816–22",
+        "technique": "black chalk on cream laid paper",
+        "measurements": "Sheet: 13.1 x 19.6 cm (5 3/16 x 7 11/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This drawing belongs to a series of enigmatic sheets that the French artist Jacques-Louis David created while living as an exile in Brussels from 1816 until his death in 1825. Many of these untitled works present close-up views of expressive heads and were given by the artist to his friends. This image of a turbaned man next to a hanging chain and oil lamp loosely references David's painting <em>The Intercession of Saint Roch</em> (1780) from much earlier in his career.",
+        "did_you_know": "Scholars have suggested that Jacques-Louis David might have intended this drawing as a portrait of Napoleon Bonaparte, who the artist supported. The former leader died a prisoner on the island of Saint Helena in 1821.",
+        "url": "https://clevelandart.org/art/1973.36",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1973.36/1973.36_web.jpg",
+            "width": "1263",
+            "height": "858",
+            "filesize": "830860",
+            "filename": "1973.36_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1973.36/1973.36_print.jpg",
+            "width": "3400",
+            "height": "2310",
+            "filesize": "6308053",
+            "filename": "1973.36_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1973.36/1973.36_full.tif",
+            "width": "6395",
+            "height": "4344",
+            "filesize": "83378000",
+            "filename": "1973.36_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1643,
+            "description": "Jacques-Louis David (French, 1748–1825)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-170727",
+      "artist_id": "jacques-louis-david",
+      "creator_source_id": "cma:1643",
+      "source_url": "https://clevelandart.org/art/2013.249",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/170727",
+      "raw": {
+        "id": 170727,
+        "title": "Phryne before Her Judges",
+        "accession_number": "2013.249",
+        "creation_date": "c. 1816–20",
+        "technique": "black chalk on wove paper discolored to beige",
+        "measurements": "Sheet: 13.3 x 19.6 cm (5 1/4 x 7 11/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Known in his own time for large-scale paintings on historical subjects, Jacques-Louis David drew avidly to plan his compositions. Late in life, however, his use of drawing changed dramatically, resulting in works such as this pair. After falling out of political favor during the French Revolution (1789–99), David moved to Brussels in exile. There, he crafted small, enigmatic drawings of close-up figures. <em>Phryne</em> features a mythological courtesan charged with blasphemy, while <em>The Prisoner</em> is vaguer, with an unidentifiable man grimacing alongside a chain and oil lamp. David embraced this uncertainty, writing at the time that “I just threw down . . . the mad ideas that came into my head.”",
+        "did_you_know": "The two male figures at center may be <em>têtes d’expression</em>, which convey emotion through pose and expression.",
+        "url": "https://clevelandart.org/art/2013.249",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/2013.249/2013.249_web.jpg",
+            "width": "900",
+            "height": "615",
+            "filesize": "203505",
+            "filename": "2013.249_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/2013.249/2013.249_print.jpg",
+            "width": "3400",
+            "height": "2324",
+            "filesize": "2741494",
+            "filename": "2013.249_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/2013.249/2013.249_full.tif",
+            "width": "7431",
+            "height": "5080",
+            "filesize": "113277136",
+            "filename": "2013.249_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1643,
+            "description": "Jacques-Louis David (French, 1748–1825)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-131338",
+      "artist_id": "jmw-turner",
+      "creator_source_id": "cma:1280",
+      "source_url": "https://clevelandart.org/art/1954.129",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/131338",
+      "raw": {
+        "id": 131338,
+        "title": "Flüelen, from the Lake of Lucerne",
+        "accession_number": "1954.129",
+        "creation_date": "1845",
+        "technique": "watercolor with gouache and scratch-away",
+        "measurements": "Sheet: 29.2 x 47.9 cm (11 1/2 x 18 7/8 in.)",
+        "culture": [
+          "England, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "In this watercolor, created late in his life, J.M.W. Turner depicted the small Swiss town of Flüelen and its shimmering reflection out of violet-colored mist. The work belongs to a group of highly finished works that the artist created during several summer trips to Switzerland between 1841 and 1845. The swirling vortex of light underscores the grandeur of nature, while the inclusion of figures going about their daily lives within the vastness of the Alps is a reminder of the reality of the scene. At the time he painted this view, Turner was considered the great master of Romantic landscape painting in England.",
+        "did_you_know": "The art critic John Ruskin described the series of watercolors to which this work belongs as \"sunset drawings,\" referring to to the fact that they were made at the end of Turner's career rather than their subject matter.",
+        "url": "https://clevelandart.org/art/1954.129",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1954.129/1954.129_web.jpg",
+            "width": "1263",
+            "height": "772",
+            "filesize": "169517",
+            "filename": "1954.129_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1954.129/1954.129_print.jpg",
+            "width": "3400",
+            "height": "2079",
+            "filesize": "1266382",
+            "filename": "1954.129_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1954.129/1954.129_full.tif",
+            "width": "6376",
+            "height": "3900",
+            "filesize": "74623620",
+            "filename": "1954.129_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1280,
+            "description": "Joseph Mallord William Turner (British, 1775–1851)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-437852",
+      "artist_id": "jmw-turner",
+      "creator_source_id": "met:162573",
+      "source_url": "https://www.metmuseum.org/art/collection/search/437852",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/437852",
+      "raw": {
+        "objectID": 437852,
+        "isHighlight": false,
+        "accessionNumber": "89.15.9",
+        "accessionYear": "1889",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/DP169566.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/DP169566.jpg",
+        "additionalImages": [],
+        "constituents": [
+          {
+            "constituentID": 162573,
+            "role": "Artist",
+            "name": "Joseph Mallord William Turner",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500026846",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q159758",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "Saltash with the Water Ferry, Cornwall",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Joseph Mallord William Turner",
+        "artistDisplayBio": "British, London 1775–1851 London",
+        "artistSuffix": "",
+        "artistAlphaSort": "Turner, Joseph Mallord William",
+        "artistNationality": "British",
+        "artistBeginDate": "1775",
+        "artistEndDate": "1851",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q159758",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500026846",
+        "objectDate": "1811",
+        "objectBeginDate": 1811,
+        "objectEndDate": 1811,
+        "medium": "Oil on canvas",
+        "dimensions": "35 3/8 x 47 1/2 in. (89.9 x 120.7 cm)",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 89.9,
+              "Width": 120.7
+            }
+          },
+          {
+            "elementName": "Framed",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Depth": 17.78,
+              "Height": 134.6203,
+              "Width": 164.4653
+            }
+          }
+        ],
+        "creditLine": "Marquand Collection, Gift of Henry G. Marquand, 1889",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2025-01-30T04:54:21.21Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/437852",
+        "tags": [
+          {
+            "term": "Buildings",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300004789",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q41176"
+          },
+          {
+            "term": "Men",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300025928",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q8441"
+          },
+          {
+            "term": "Women",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300025943",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q467"
+          },
+          {
+            "term": "Boats",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300178749",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q35872"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q19904861",
+        "isTimelineWork": true,
+        "GalleryNumber": "808"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-437854",
+      "artist_id": "jmw-turner",
+      "creator_source_id": "met:162573",
+      "source_url": "https://www.metmuseum.org/art/collection/search/437854",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/437854",
+      "raw": {
+        "objectID": 437854,
+        "isHighlight": true,
+        "accessionNumber": "96.29",
+        "accessionYear": "1896",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/DP-13360-001.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/DP-13360-001.jpg",
+        "additionalImages": [],
+        "constituents": [
+          {
+            "constituentID": 162573,
+            "role": "Artist",
+            "name": "Joseph Mallord William Turner",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500026846",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q159758",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "Whalers",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Joseph Mallord William Turner",
+        "artistDisplayBio": "British, London 1775–1851 London",
+        "artistSuffix": "",
+        "artistAlphaSort": "Turner, Joseph Mallord William",
+        "artistNationality": "British",
+        "artistBeginDate": "1775",
+        "artistEndDate": "1851",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q159758",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500026846",
+        "objectDate": "ca. 1845",
+        "objectBeginDate": 1840,
+        "objectEndDate": 1850,
+        "medium": "Oil on canvas",
+        "dimensions": "36 1/8 x 48 1/4 in. (91.8 x 122.6 cm)",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 91.8,
+              "Width": 122.6
+            }
+          },
+          {
+            "elementName": "Framed",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Depth": 10.795,
+              "Height": 127.0003,
+              "Width": 157.4803
+            }
+          }
+        ],
+        "creditLine": "Catharine Lorillard Wolfe Collection, Wolfe Fund, 1896",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-02-06T04:55:31.413Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/437854",
+        "tags": [
+          {
+            "term": "Whales",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300250157",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q1865281"
+          },
+          {
+            "term": "Seascapes",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300117546",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q158607"
+          },
+          {
+            "term": "Boats",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300178749",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q35872"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q19904831",
+        "isTimelineWork": true,
+        "GalleryNumber": "808"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-437877",
+      "artist_id": "johannes-vermeer",
+      "creator_source_id": "met:108413",
+      "source_url": "https://www.metmuseum.org/art/collection/search/437877",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/437877",
+      "raw": {
+        "objectID": 437877,
+        "isHighlight": false,
+        "accessionNumber": "32.100.18",
+        "accessionYear": "1932",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/DP145924.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/DP145924.jpg",
+        "additionalImages": [],
+        "constituents": [
+          {
+            "constituentID": 108413,
+            "role": "Artist",
+            "name": "Johannes Vermeer",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500032927",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q41264",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "Allegory of the Catholic Faith",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Johannes Vermeer",
+        "artistDisplayBio": "Dutch, Delft 1632–1675 Delft",
+        "artistSuffix": "",
+        "artistAlphaSort": "Vermeer, Johannes",
+        "artistNationality": "Dutch",
+        "artistBeginDate": "1632",
+        "artistEndDate": "1675",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q41264",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500032927",
+        "objectDate": "ca. 1670–72",
+        "objectBeginDate": 1670,
+        "objectEndDate": 1672,
+        "medium": "Oil on canvas",
+        "dimensions": "45 x 35 in. (114.3 x 88.9 cm)",
+        "measurements": [
+          {
+            "elementName": "Framed",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Depth": 6.350013,
+              "Height": 144.78029,
+              "Width": 119.38024
+            }
+          },
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 114.3,
+              "Width": 88.9
+            }
+          }
+        ],
+        "creditLine": "The Friedsam Collection, Bequest of Michael Friedsam, 1931",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-08-21T04:55:11.907Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/437877",
+        "tags": [
+          {
+            "term": "Books",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300028051",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q571"
+          },
+          {
+            "term": "Interiors",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300391239",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q2998430"
+          },
+          {
+            "term": "Apples",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300266417",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q89"
+          },
+          {
+            "term": "Women",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300025943",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q467"
+          },
+          {
+            "term": "Snakes",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300250870",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q2102"
+          },
+          {
+            "term": "Christ",
+            "AAT_URL": "http://vocab.getty.edu/page/ia/901000087",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q642420"
+          },
+          {
+            "term": "Globes",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300028089",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q133792"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q467359",
+        "isTimelineWork": true,
+        "GalleryNumber": "614"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-437878",
+      "artist_id": "johannes-vermeer",
+      "creator_source_id": "met:108413",
+      "source_url": "https://www.metmuseum.org/art/collection/search/437878",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/437878",
+      "raw": {
+        "objectID": 437878,
+        "isHighlight": false,
+        "accessionNumber": "14.40.611",
+        "accessionYear": "1914",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/DP355525.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/DP355525.jpg",
+        "additionalImages": [
+          "https://images.metmuseum.org/CRDImages/ep/original/SF X-radiograph.jpg"
+        ],
+        "constituents": [
+          {
+            "constituentID": 108413,
+            "role": "Artist",
+            "name": "Johannes Vermeer",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500032927",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q41264",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "A Maid Asleep",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Johannes Vermeer",
+        "artistDisplayBio": "Dutch, Delft 1632–1675 Delft",
+        "artistSuffix": "",
+        "artistAlphaSort": "Vermeer, Johannes",
+        "artistNationality": "Dutch",
+        "artistBeginDate": "1632",
+        "artistEndDate": "1675",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q41264",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500032927",
+        "objectDate": "ca. 1656–57",
+        "objectBeginDate": 1656,
+        "objectEndDate": 1657,
+        "medium": "Oil on canvas",
+        "dimensions": "34 1/2 x 30 1/8 in. (87.6 x 76.5 cm)",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 87.6,
+              "Width": 76.5
+            }
+          }
+        ],
+        "creditLine": "Bequest of Benjamin Altman, 1913",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-08-21T04:55:11.907Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/437878",
+        "tags": [
+          {
+            "term": "Interiors",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300391239",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q2998430"
+          },
+          {
+            "term": "Fruit",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300011868",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q1364"
+          },
+          {
+            "term": "Sleeping",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300375130",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q35831"
+          },
+          {
+            "term": "Women",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300025943",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q467"
+          },
+          {
+            "term": "Servants",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300025874",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q54128"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q684935",
+        "isTimelineWork": true,
+        "GalleryNumber": "614"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-437879",
+      "artist_id": "johannes-vermeer",
+      "creator_source_id": "met:108413",
+      "source_url": "https://www.metmuseum.org/art/collection/search/437879",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/437879",
+      "raw": {
+        "objectID": 437879,
+        "isHighlight": true,
+        "accessionNumber": "1979.396.1",
+        "accessionYear": "1979",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/DP353256.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/DP353256.jpg",
+        "additionalImages": [
+          "https://images.metmuseum.org/CRDImages/ep/original/LC-1979_396_1-2.jpg",
+          "https://images.metmuseum.org/CRDImages/ep/original/LC-1979_396_1-3.jpg"
+        ],
+        "constituents": [
+          {
+            "constituentID": 108413,
+            "role": "Artist",
+            "name": "Johannes Vermeer",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500032927",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q41264",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "Study of a Young Woman",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Johannes Vermeer",
+        "artistDisplayBio": "Dutch, Delft 1632–1675 Delft",
+        "artistSuffix": "",
+        "artistAlphaSort": "Vermeer, Johannes",
+        "artistNationality": "Dutch",
+        "artistBeginDate": "1632",
+        "artistEndDate": "1675",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q41264",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500032927",
+        "objectDate": "ca. 1665–67",
+        "objectBeginDate": 1665,
+        "objectEndDate": 1667,
+        "medium": "Oil on canvas",
+        "dimensions": "17 1/2 x 15 3/4 in. (44.5 x 40 cm)",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 44.5,
+              "Width": 40
+            }
+          }
+        ],
+        "creditLine": "Gift of Mr. and Mrs. Charles Wrightsman, in memory of Theodore Rousseau Jr., 1979",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-01-21T04:52:24.343Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/437879",
+        "tags": [
+          {
+            "term": "Portraits",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300015637",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q134307"
+          },
+          {
+            "term": "Women",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300025943",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q467"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q958088",
+        "isTimelineWork": true,
+        "GalleryNumber": "614"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-437880",
+      "artist_id": "johannes-vermeer",
+      "creator_source_id": "met:108413",
+      "source_url": "https://www.metmuseum.org/art/collection/search/437880",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/437880",
+      "raw": {
+        "objectID": 437880,
+        "isHighlight": false,
+        "accessionNumber": "25.110.24",
+        "accessionYear": "1925",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/DP354965.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/DP354965.jpg",
+        "additionalImages": [],
+        "constituents": [
+          {
+            "constituentID": 108413,
+            "role": "Artist",
+            "name": "Johannes Vermeer",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500032927",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q41264",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "Young Woman with a Lute",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Johannes Vermeer",
+        "artistDisplayBio": "Dutch, Delft 1632–1675 Delft",
+        "artistSuffix": "",
+        "artistAlphaSort": "Vermeer, Johannes",
+        "artistNationality": "Dutch",
+        "artistBeginDate": "1632",
+        "artistEndDate": "1675",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q41264",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500032927",
+        "objectDate": "ca. 1662–63",
+        "objectBeginDate": 1662,
+        "objectEndDate": 1663,
+        "medium": "Oil on canvas",
+        "dimensions": "20 1/4 x 18 in. (51.4 x 45.7 cm)",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 51.4,
+              "Width": 45.7
+            }
+          },
+          {
+            "elementName": "Framed",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Depth": 7.62,
+              "Height": 79.3752,
+              "Width": 73.0251
+            }
+          }
+        ],
+        "creditLine": "Bequest of Collis P. Huntington, 1900",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2025-04-19T04:59:33.577Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/437880",
+        "tags": [
+          {
+            "term": "Interiors",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300391239",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q2998430"
+          },
+          {
+            "term": "Women",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300025943",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q467"
+          },
+          {
+            "term": "Music",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300435214",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q638"
+          },
+          {
+            "term": "Lutes",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300042101",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q180733"
+          },
+          {
+            "term": "Maps",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300028094",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q4006"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q839359",
+        "isTimelineWork": true,
+        "GalleryNumber": "614"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-135336",
+      "artist_id": "edouard-manet",
+      "creator_source_id": "cma:1796",
+      "source_url": "https://clevelandart.org/art/1958.34",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/135336",
+      "raw": {
+        "id": 135336,
+        "title": "Berthe Morisot with a Muff",
+        "accession_number": "1958.34",
+        "creation_date": "c. 1871–72",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 91.1 x 76.5 x 7.3 cm (35 7/8 x 30 1/8 x 2 7/8 in.); Unframed: 74 x 60 cm (29 1/8 x 23 5/8 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This is one of two portraits Manet painted of Morisot dressed for winter in a heavy coat and feathered hat. (See <em>Berthe Morisot with a Half Veil</em>, also in this gallery.) Manet’s wide brushstrokes and crosshatchings, which describe areas of shadow, evoke the sketchy quality of Morisot’s own paintings, likely Manet’s nod to his subject’s identity as an artist.",
+        "did_you_know": "Manet kept this portrait of Morisot throughout his life, and it was listed in the inventory of his studio after his death.",
+        "url": "https://clevelandart.org/art/1958.34",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.34/1958.34_web.jpg",
+            "width": "726",
+            "height": "900",
+            "filesize": "251668",
+            "filename": "1958.34_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.34/1958.34_print.jpg",
+            "width": "2744",
+            "height": "3400",
+            "filesize": "4392059",
+            "filename": "1958.34_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.34/1958.34_full.tif",
+            "width": "11668",
+            "height": "14455",
+            "filesize": "506012684",
+            "filename": "1958.34_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1796,
+            "description": "Édouard Manet (French, 1832–1883)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-119697",
+      "artist_id": "edouard-manet",
+      "creator_source_id": "cma:1796",
+      "source_url": "https://clevelandart.org/art/1940.534",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/119697",
+      "raw": {
+        "id": 119697,
+        "title": "Boats at Berck-sur-Mer",
+        "accession_number": "1940.534",
+        "creation_date": "1873",
+        "technique": "oil on fabric",
+        "measurements": "Framed: 52.5 x 74 x 7 cm (20 11/16 x 29 1/8 x 2 3/4 in.); Unframed: 34 x 55.8 cm (13 3/8 x 21 15/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Ever since his childhood, Manet spent almost every summer at the seashore. At age 16, after failing the entrance exam for the naval academy, he embarked as an apprentice on a training ship, traveling as far away as Rio de Janeiro. The sea would always capture his imagination, and in 1864 he painted several seascapes. This painting was made nearly ten years later, while the artist was staying in Berck-sur-Mer, near Boulogne. Exploring light and movement, he rapidly sketched the sails of the countless ships that dance in the wind on blue-green waves highlighted with white. Manet even added a slight curve to the horizon, thus conveying an impression of infinite space, despite the painting's small size.",
+        "did_you_know": null,
+        "url": "https://clevelandart.org/art/1940.534",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1940.534/1940.534_web.jpg",
+            "width": "1263",
+            "height": "760",
+            "filesize": "681084",
+            "filename": "1940.534_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1940.534/1940.534_print.jpg",
+            "width": "3400",
+            "height": "2045",
+            "filesize": "5414908",
+            "filename": "1940.534_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1940.534/1940.534_full.tif",
+            "width": "6000",
+            "height": "3609",
+            "filesize": "64993020",
+            "filename": "1940.534_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1796,
+            "description": "Édouard Manet (French, 1832–1883)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-134236",
+      "artist_id": "edouard-manet",
+      "creator_source_id": "cma:1796",
+      "source_url": "https://clevelandart.org/art/1956.718",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/134236",
+      "raw": {
+        "id": 134236,
+        "title": "Claire Campbell",
+        "accession_number": "1956.718",
+        "creation_date": "1876",
+        "technique": "Pastel with oil on fine-weave canvas",
+        "measurements": "Unframed: 55.2 x 45.7 cm (21 3/4 x 18 in.)",
+        "culture": [
+          "America"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "During the late 1870s, Edouard Manet began to experience health problems that made it difficult for him to work in oil painting. Instead, he began to draw using pastel, a powdery medium that allowed him to render line and color with each stroke. This work is one of numerous portraits that Manet created around this time with the medium. It depicts Claire Campbell, a fashionable young British woman whose father published <em>The Daily Telegraph</em>, a British newspaper. Manet used the velvety texture of pastel to render the subject's skin and hair, limiting his palette to mostly neutral tones such as white, gray, and black.",
+        "did_you_know": "Edouard Manet almost always depicted the subjects of his pastel portraits against plain colored backgrounds, as seen in this work.",
+        "url": "https://clevelandart.org/art/1956.718",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1956.718/1956.718_web.jpg",
+            "width": "741",
+            "height": "900",
+            "filesize": "179451",
+            "filename": "1956.718_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1956.718/1956.718_print.jpg",
+            "width": "2799",
+            "height": "3400",
+            "filesize": "3937897",
+            "filename": "1956.718_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1956.718/1956.718_full.tif",
+            "width": "11421",
+            "height": "13872",
+            "filesize": "475325580",
+            "filename": "1956.718_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1796,
+            "description": "Édouard Manet (French, 1832–1883)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-436944",
+      "artist_id": "edouard-manet",
+      "creator_source_id": "met:162094",
+      "source_url": "https://www.metmuseum.org/art/collection/search/436944",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436944",
+      "raw": {
+        "objectID": 436944,
+        "isHighlight": true,
+        "accessionNumber": "49.58.2",
+        "accessionYear": "1949",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/dp130799.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/dp130799.jpg",
+        "additionalImages": [],
+        "constituents": [
+          {
+            "constituentID": 162094,
+            "role": "Artist",
+            "name": "Edouard Manet",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500010363",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q40599",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "The Spanish Singer",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Edouard Manet",
+        "artistDisplayBio": "French, Paris 1832–1883 Paris",
+        "artistSuffix": "",
+        "artistAlphaSort": "Manet, Edouard",
+        "artistNationality": "French",
+        "artistBeginDate": "1832",
+        "artistEndDate": "1883",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q40599",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500010363",
+        "objectDate": "1860",
+        "objectBeginDate": 1860,
+        "objectEndDate": 1860,
+        "medium": "Oil on canvas",
+        "dimensions": "58 x 45 in. (147.3 x 114.3 cm)",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 147.3,
+              "Width": 114.3
+            }
+          },
+          {
+            "elementName": "Framed",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Depth": 16.51,
+              "Height": 190.5004,
+              "Width": 151.1303
+            }
+          }
+        ],
+        "creditLine": "Gift of William Church Osborn, 1949",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-07-30T04:49:13.073Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/436944",
+        "tags": [
+          {
+            "term": "Men",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300025928",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q8441"
+          },
+          {
+            "term": "Portraits",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300015637",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q134307"
+          },
+          {
+            "term": "Music",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300435214",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q638"
+          },
+          {
+            "term": "Guitars",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300042025",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q6607"
+          },
+          {
+            "term": "Musicians",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300025666",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q639669"
+          },
+          {
+            "term": "Singers",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300025684",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q177220"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q2024709",
+        "isTimelineWork": true,
+        "GalleryNumber": "810"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-436895",
+      "artist_id": "fra-filippo-lippi",
+      "creator_source_id": "met:107934",
+      "source_url": "https://www.metmuseum.org/art/collection/search/436895",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436895",
+      "raw": {
+        "objectID": 436895,
+        "isHighlight": false,
+        "accessionNumber": "49.7.9",
+        "accessionYear": "1949",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/DP-20746-001.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/DP-20746-001.jpg",
+        "additionalImages": [
+          "https://images.metmuseum.org/CRDImages/ep/original/F_49_7_9.jpg"
+        ],
+        "constituents": [
+          {
+            "constituentID": 107934,
+            "role": "Artist",
+            "name": "Fra Filippo Lippi",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500019158",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q205148",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "Madonna and Child Enthroned with Two Angels",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Fra Filippo Lippi",
+        "artistDisplayBio": "Italian, Florence ca. 1406–1469 Spoleto",
+        "artistSuffix": "",
+        "artistAlphaSort": "Lippi, Fra Filippo",
+        "artistNationality": "Italian",
+        "artistBeginDate": "1406",
+        "artistEndDate": "1469",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q205148",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500019158",
+        "objectDate": "ca. 1440",
+        "objectBeginDate": 1435,
+        "objectEndDate": 1445,
+        "medium": "Tempera and gold on wood, transferred from wood",
+        "dimensions": "Arched top, 48 1/4 x 24 3/4 in. (122.6 x 62.9 cm)",
+        "measurements": [
+          {
+            "elementName": "Framed",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Depth": 8.255,
+              "Height": 139.7003,
+              "Width": 80.6452
+            }
+          },
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 122.6,
+              "Width": 62.9
+            }
+          }
+        ],
+        "creditLine": "The Jules Bache Collection, 1949",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2025-10-09T04:51:37.793Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/436895",
+        "tags": [
+          {
+            "term": "Books",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300028051",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q571"
+          },
+          {
+            "term": "Angels",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300379004",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q235113"
+          },
+          {
+            "term": "Madonna and Child",
+            "AAT_URL": "http://vocab.getty.edu/page/ia/901000052",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q9309699"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q3842542",
+        "isTimelineWork": true,
+        "GalleryNumber": "603"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-436897",
+      "artist_id": "fra-filippo-lippi",
+      "creator_source_id": "met:107934",
+      "source_url": "https://www.metmuseum.org/art/collection/search/436897",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436897",
+      "raw": {
+        "objectID": 436897,
+        "isHighlight": false,
+        "accessionNumber": "35.31.1a–c",
+        "accessionYear": "1935",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/DP-17016-001.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/DP-17016-001.jpg",
+        "additionalImages": [
+          "https://images.metmuseum.org/CRDImages/ep/original/DP-24384-001.jpg",
+          "https://images.metmuseum.org/CRDImages/ep/original/DP-24384-003.jpg",
+          "https://images.metmuseum.org/CRDImages/ep/original/Lippi Altarpiece 1.jpg",
+          "https://images.metmuseum.org/CRDImages/ep/original/Lippi Altarpiece 2.jpg",
+          "https://images.metmuseum.org/CRDImages/ep/original/Filippo Lippi nocap.jpg"
+        ],
+        "constituents": [
+          {
+            "constituentID": 107934,
+            "role": "Artist",
+            "name": "Fra Filippo Lippi",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500019158",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q205148",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting, altarpiece",
+        "title": "Saint Lawrence Enthroned with Saints and Donors",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Fra Filippo Lippi",
+        "artistDisplayBio": "Italian, Florence ca. 1406–1469 Spoleto",
+        "artistSuffix": "",
+        "artistAlphaSort": "Lippi, Fra Filippo",
+        "artistNationality": "Italian",
+        "artistBeginDate": "1406",
+        "artistEndDate": "1469",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q205148",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500019158",
+        "objectDate": "1440s",
+        "objectBeginDate": 1440,
+        "objectEndDate": 1449,
+        "medium": "Tempera on wood, gold ground",
+        "dimensions": "Central panel (a), overall, with arched top and added strips, 47 3/4 x 45 1/2 in. (121.3 x 115.6 cm); right panel (b) 28 1/2 x 15 3/8 in. (72.4 x 39.1 cm); left panel (c) 28 1/2 x 15 1/2 in. (72.4 x 39.4 cm) [panels substantially altered in size and shape",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 121.3,
+              "Width": 115.6
+            }
+          }
+        ],
+        "creditLine": "Rogers Fund, 1935",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-03-25T04:56:54.88Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/436897",
+        "tags": [
+          {
+            "term": "Men",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300025928",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q8441"
+          },
+          {
+            "term": "Saint Lawrence",
+            "AAT_URL": "http://vocab.getty.edu/page/ia/901001055",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q17590"
+          },
+          {
+            "term": "Saints",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300150555",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q43115"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q3538918",
+        "isTimelineWork": false,
+        "GalleryNumber": "603"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-140148",
+      "artist_id": "fra-filippo-lippi",
+      "creator_source_id": "cma:2197",
+      "source_url": "https://clevelandart.org/art/1964.150",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/140148",
+      "raw": {
+        "id": 140148,
+        "title": "Pair of Panels from a Triptych: The Archangel Michael and St. Anthony Abbot",
+        "accession_number": "1964.150",
+        "creation_date": "1458",
+        "technique": "tempera on wood panel",
+        "measurements": "Framed: 94 x 40 x 6.5 cm (37 x 15 3/4 x 2 9/16 in.); Unframed: 81.3 x 29.8 x 3 cm (32 x 11 3/4 x 1 3/16 in.)",
+        "culture": [
+          "Italy, Florence"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "cover",
+        "cover_accession_number": null,
+        "description": "These panels depicting Saints Anthony the Abbot and Michael originally flanked a central scene of the Madonna and Child with Angels, now lost, to form a triptych. Giovanni di Cosimo de’ Medici of Florence commissioned the ensemble in 1457 as a diplomatic gift to Alfonso V of Aragon. Fra Filippo Lippi, a Carmelite friar and one of the great masters of early Renaissance Florence, depicted realistic, weighty figures in a three-dimensional space using a system of linear perspective, inspired partly by Masaccio’s Brancacci Chapel, and reflected in the background architecture. Saint Anthony the Abbot rejected all earthly possessions in pursuit of a contemplative life in the desert. He is generally regarded as the founder of monasticism and is depicted wearing a monk’s habit. Saint Michael’s sword, shield, and exquisitely bejeweled armor celebrate his role as heaven’s defender against evil.",
+        "did_you_know": "Saint Michael's opulent appearance reflects the wealth and status of both the patron and the recipient of these paintings.",
+        "url": "https://clevelandart.org/art/1964.150",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1964.150/1964.150_web.jpg",
+            "width": "843",
+            "height": "900",
+            "filesize": "302851",
+            "filename": "1964.150_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1964.150/1964.150_print.jpg",
+            "width": "3186",
+            "height": "3400",
+            "filesize": "3741604",
+            "filename": "1964.150_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1964.150/1964.150_full.tif",
+            "width": "13200",
+            "height": "14087",
+            "filesize": "557880840",
+            "filename": "1964.150_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 2197,
+            "description": "Fra Filippo Lippi (Italian, c. 1406–1469)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-125816",
+      "artist_id": "fra-filippo-lippi",
+      "creator_source_id": "cma:2197",
+      "source_url": "https://clevelandart.org/art/1947.70",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/125816",
+      "raw": {
+        "id": 125816,
+        "title": "The Funeral of Saint Stephen",
+        "accession_number": "1947.70",
+        "creation_date": "c. 1460",
+        "technique": "pen and brown ink with brush and brown wash with traces of stylus over traces of black chalk",
+        "measurements": "Sheet: 24.9 x 19.3 cm (9 13/16 x 7 5/8 in.); Secondary Support: 24.9 x 19.3 cm (9 13/16 x 7 5/8 in.)",
+        "culture": [
+          "Italy, Florence"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Since frescoes in 15th-century Italy often presented complex narratives, details of storytelling had to be carefully worked out before beginning to paint on wet plaster. Here Fra (Father) Filippo Lippi made a preliminary plan for a composition depicting the funeral of Saint Stephen, part of his fresco cycle on the lives of Saints Stephen and John the Baptist in the cathedral of Prato. His use of the free-flowing but permanent medium of ink allows us to see today the areas where he changed his mind—such as the placement of Stephen’s head and the figure at the altar.",
+        "did_you_know": null,
+        "url": "https://clevelandart.org/art/1947.70",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1947.70/1947.70_web.jpg",
+            "width": "694",
+            "height": "900",
+            "filesize": "382165",
+            "filename": "1947.70_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1947.70/1947.70_print.jpg",
+            "width": "2623",
+            "height": "3400",
+            "filesize": "4658191",
+            "filename": "1947.70_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1947.70/1947.70_full.tif",
+            "width": "7636",
+            "height": "9899",
+            "filesize": "226796485",
+            "filename": "1947.70_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 2197,
+            "description": "Fra Filippo Lippi (Italian, c. 1406–1469)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-101461",
+      "artist_id": "william-merritt-chase",
+      "creator_source_id": "cma:3071",
+      "source_url": "https://clevelandart.org/art/1920.254",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/101461",
+      "raw": {
+        "id": 101461,
+        "title": "Portrait of My Daughter Alice",
+        "accession_number": "1920.254",
+        "creation_date": "c. 1895",
+        "technique": "oil on canvas",
+        "measurements": "Unframed: 183 x 121.2 cm (72 1/16 x 47 11/16 in.)",
+        "culture": [
+          "America"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": null,
+        "did_you_know": "Born in 1887,  Alice Dieudonnée Chase was nicknamed \"Cosy.\"",
+        "url": "https://clevelandart.org/art/1920.254",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1920.254/1920.254_web.jpg",
+            "width": "592",
+            "height": "893",
+            "filesize": "73546",
+            "filename": "1920.254_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1920.254/1920.254_print.jpg",
+            "width": "2253",
+            "height": "3400",
+            "filesize": "1114714",
+            "filename": "1920.254_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1920.254/1920.254_full.tif",
+            "width": "3933",
+            "height": "5935",
+            "filesize": "70051624",
+            "filename": "1920.254_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 3071,
+            "description": "William Merritt Chase (American, 1849–1916)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-117715",
+      "artist_id": "william-merritt-chase",
+      "creator_source_id": "cma:3071",
+      "source_url": "https://clevelandart.org/art/1938.333",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/117715",
+      "raw": {
+        "id": 117715,
+        "title": "The Old Road to the Sea",
+        "accession_number": "1938.333",
+        "creation_date": "c. 1893",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 134.3 x 159.7 x 10.8 cm (52 7/8 x 62 7/8 x 4 1/4 in.); Unframed: 101.5 x 127 cm (39 15/16 x 50 in.); Former: 118.5 x 144 x 5.5 cm (46 5/8 x 56 11/16 x 2 3/16 in.)",
+        "culture": [
+          "America"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "One of the most influential of the American Impressionists, William Merritt Chase established his own summer school at Shinnecock, on the eastern tip of Long Island, New York. Attracted to the low-lying dunes and beaches, Chase and his students were among the first American artists to pursue open-air painting. With its varied brushwork and warm colors, this painting is among the finest works Chase produced at Shinnecock. The panoramic scene glows with the light of a summer day. The Chase school at Shinnecock, active from 1891-1902, was instrumental in expanding the influence of Impressionism in the United States.",
+        "did_you_know": "Chase loved big dogs, variously owning a greyhound, a borzoi, and an Irish wolfhound.",
+        "url": "https://clevelandart.org/art/1938.333",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1938.333/1938.333_web.jpg",
+            "width": "900",
+            "height": "719",
+            "filesize": "228709",
+            "filename": "1938.333_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1938.333/1938.333_print.jpg",
+            "width": "3400",
+            "height": "2717",
+            "filesize": "3503503",
+            "filename": "1938.333_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1938.333/1938.333_full.tif",
+            "width": "14172",
+            "height": "11327",
+            "filesize": "481607520",
+            "filename": "1938.333_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 3071,
+            "description": "William Merritt Chase (American, 1849–1916)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-134863",
+      "artist_id": "william-merritt-chase",
+      "creator_source_id": "cma:3071",
+      "source_url": "https://clevelandart.org/art/1957.423",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/134863",
+      "raw": {
+        "id": 134863,
+        "title": "Gray Day on the Bay",
+        "accession_number": "1957.423",
+        "creation_date": "c. 1886",
+        "technique": "oil on wood",
+        "measurements": "Unframed: 23.7 x 34.2 cm (9 5/16 x 13 7/16 in.)",
+        "culture": [
+          "America"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": null,
+        "did_you_know": null,
+        "url": "https://clevelandart.org/art/1957.423",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1957.423/1957.423_web.jpg",
+            "width": "1263",
+            "height": "860",
+            "filesize": "779233",
+            "filename": "1957.423_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1957.423/1957.423_print.jpg",
+            "width": "3400",
+            "height": "2314",
+            "filesize": "6561331",
+            "filename": "1957.423_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1957.423/1957.423_full.tif",
+            "width": "6435",
+            "height": "4380",
+            "filesize": "84581988",
+            "filename": "1957.423_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 3071,
+            "description": "William Merritt Chase (American, 1849–1916)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "collection_record_and_image_observation"
+    },
+    {
+      "id": "cma-134862",
+      "artist_id": "william-merritt-chase",
+      "creator_source_id": "cma:3071",
+      "source_url": "https://clevelandart.org/art/1957.422",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/134862",
+      "raw": {
+        "id": 134862,
+        "title": "Marine",
+        "accession_number": "1957.422",
+        "creation_date": "c. 1888",
+        "technique": "oil on wood",
+        "measurements": "Unframed: 23.3 x 31.5 cm (9 3/16 x 12 3/8 in.)",
+        "culture": [
+          "America"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": null,
+        "did_you_know": null,
+        "url": "https://clevelandart.org/art/1957.422",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1957.422/1957.422_web.jpg",
+            "width": "1195",
+            "height": "893",
+            "filesize": "693519",
+            "filename": "1957.422_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1957.422/1957.422_print.jpg",
+            "width": "3400",
+            "height": "2540",
+            "filesize": "6163872",
+            "filename": "1957.422_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1957.422/1957.422_full.tif",
+            "width": "5744",
+            "height": "4292",
+            "filesize": "73985520",
+            "filename": "1957.422_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 3071,
+            "description": "William Merritt Chase (American, 1849–1916)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "collection_record_and_image_observation"
+    },
+    {
+      "id": "cma-144732",
+      "artist_id": "frederic-edwin-church",
+      "creator_source_id": "cma:2697",
+      "source_url": "https://clevelandart.org/art/1969.52",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/144732",
+      "raw": {
+        "id": 144732,
+        "title": "Storm in the Mountains",
+        "accession_number": "1969.52",
+        "creation_date": "1847",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 98.7 x 86.4 x 9.2 cm (38 7/8 x 34 x 3 5/8 in.); Unframed: 75.5 x 62.8 cm (29 3/4 x 24 3/4 in.); Former: 94.5 x 81.5 x 9 cm (37 3/16 x 32 1/16 x 3 9/16 in.)",
+        "culture": [
+          "United States"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Dominating this composition is a lightning-blasted tree embodying nature's awe-inspiring power and endless cycle of life and death. A popular motif because of these associations, the blasted tree was favored by many landscape painters like Church, who prominently featured it here.",
+        "did_you_know": "Church's spectacular home and studio, named Olana, is preserved as a New York State Historical Site.",
+        "url": "https://clevelandart.org/art/1969.52",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1969.52/1969.52_web.jpg",
+            "width": "742",
+            "height": "893",
+            "filesize": "506435",
+            "filename": "1969.52_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1969.52/1969.52_print.jpg",
+            "width": "2824",
+            "height": "3400",
+            "filesize": "7320432",
+            "filename": "1969.52_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1969.52/1969.52_full.tif",
+            "width": "4813",
+            "height": "5794",
+            "filesize": "83687840",
+            "filename": "1969.52_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 2697,
+            "description": "Frederic Edwin Church (American, 1826–1900)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-173180",
+      "artist_id": "frederic-edwin-church",
+      "creator_source_id": "cma:2697",
+      "source_url": "https://clevelandart.org/art/1915.684",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/173180",
+      "raw": {
+        "id": 173180,
+        "title": "The Monastery of San Pedro (Our Lady of the Snows)",
+        "accession_number": "1915.684",
+        "creation_date": "1879",
+        "technique": "oil on canvas",
+        "measurements": "Unframed: 118.8 x 183.2 cm (46 3/4 x 72 1/8 in.)",
+        "culture": [
+          "America"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Although the location that inspired the painting has been subject to scholarly debate, many believe it derives from Church’s travels through the Ecuadorean Andes nearly a quarter century earlier. The composition reads as an allegory of spiritual salvation: perched atop a dramatic cliff, a brilliantly backlit monastery overlooks a shadowed foreground where a solitary figure navigates a rugged path.",
+        "did_you_know": "This painting was commissioned by Cleveland banker and railroad executive Hinman B. Hurlbut (1819–1884), who also cofounded the Cleveland Museum of Art.",
+        "url": "https://clevelandart.org/art/1915.684",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1915.684/1915.684_web.jpg",
+            "width": "1263",
+            "height": "812",
+            "filesize": "704556",
+            "filename": "1915.684_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1915.684/1915.684_print.jpg",
+            "width": "3400",
+            "height": "2186",
+            "filesize": "5854279",
+            "filename": "1915.684_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1915.684/1915.684_full.tif",
+            "width": "6400",
+            "height": "4115",
+            "filesize": "79035720",
+            "filename": "1915.684_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 2697,
+            "description": "Frederic Edwin Church (American, 1826–1900)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-148774",
+      "artist_id": "frederic-edwin-church",
+      "creator_source_id": "cma:2697",
+      "source_url": "https://clevelandart.org/art/1976.30",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/148774",
+      "raw": {
+        "id": 148774,
+        "title": "Niagara Falls by Moonlight",
+        "accession_number": "1976.30",
+        "creation_date": "probably 1856",
+        "technique": "graphite and white gouache",
+        "measurements": "Sheet: 11.6 x 16.4 cm (4 9/16 x 6 7/16 in.)",
+        "culture": [
+          "America"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "By the time Frederic E. Church executed this study of the Canadian side of Horseshoe Falls, Niagara Falls was already an icon of both American art and the American nation. Tourists and artists flocked to the falls in pursuit of a firsthand experience of the sublime, a sensation of elation and terror that portrayals of Niagara Falls had notorious difficulty reproducing. Church’s celebrated oil painting <em>The Great Fall, Niagara</em> (1857) was one of the few depictions believed to capture the fall’s power in pictorial terms. Like many artists of the Hudson River School, Church used drawings made on site to preserve the visual memory of the place he intended to paint in oil. Cleveland’s sheet was possibly executed during one of the four trips he took to the falls in 1856 to prepare for <em>Niagara. </em>As a night scene, this study in light and shadow is unusual among Church’s drawings. The dark brown paper enhances the image’s nocturnal quality and allowed Church to render the atmospheric effects of mist and clouds. He used white gouache not only as a highlight, but also to define the luminous forms of water and vapor, crafting the landscape’s substance out of negative and positive space. On the picture’s left-hand side, Church represented the man-made Terrapin Tower in shadowy miniature, a testament to his interest in site-specific details—and also, perhaps, a reminder of the diminutive status of human creation in the face of awesome natural forces.",
+        "did_you_know": "In this drawing, Church manipulates negative space—the space around and between his drawn subjects—to suggest the forms of water and smoke.",
+        "url": "https://clevelandart.org/art/1976.30",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1976.30/1976.30_web.jpg",
+            "width": "1263",
+            "height": "823",
+            "filesize": "718106",
+            "filename": "1976.30_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1976.30/1976.30_print.jpg",
+            "width": "3400",
+            "height": "2216",
+            "filesize": "5140633",
+            "filename": "1976.30_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1976.30/1976.30_full.tif",
+            "width": "6148",
+            "height": "4007",
+            "filesize": "73937752",
+            "filename": "1976.30_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 2697,
+            "description": "Frederic Edwin Church (American, 1826–1900)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-10481",
+      "artist_id": "frederic-edwin-church",
+      "creator_source_id": "met:161773",
+      "source_url": "https://www.metmuseum.org/art/collection/search/10481",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/10481",
+      "raw": {
+        "objectID": 10481,
+        "isHighlight": true,
+        "accessionNumber": "09.95",
+        "accessionYear": "1909",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ad/original/DT78.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ad/web-large/DT78.jpg",
+        "additionalImages": [
+          "https://images.metmuseum.org/CRDImages/ad/original/DP156437.jpg",
+          "https://images.metmuseum.org/CRDImages/ad/original/DP244561.jpg",
+          "https://images.metmuseum.org/CRDImages/ad/original/RC_041R5.jpg",
+          "https://images.metmuseum.org/CRDImages/ad/original/DT282445.jpg",
+          "https://images.metmuseum.org/CRDImages/ad/original/DT282444.jpg",
+          "https://images.metmuseum.org/CRDImages/ad/original/DT282446.jpg",
+          "https://images.metmuseum.org/CRDImages/ad/original/DT330502.jpg",
+          "https://images.metmuseum.org/CRDImages/ad/original/DT330503.jpg",
+          "https://images.metmuseum.org/CRDImages/ad/original/DP-18107-001.jpg",
+          "https://images.metmuseum.org/CRDImages/ad/original/DP-18107-269.jpg"
+        ],
+        "constituents": [
+          {
+            "constituentID": 161773,
+            "role": "Artist",
+            "name": "Frederic Edwin Church",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500115265",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q366212",
+            "gender": ""
+          }
+        ],
+        "department": "The American Wing",
+        "objectName": "Painting",
+        "title": "Heart of the Andes",
+        "culture": "American",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Frederic Edwin Church",
+        "artistDisplayBio": "American, Hartford, Connecticut 1826–1900 New York",
+        "artistSuffix": "",
+        "artistAlphaSort": "Church, Frederic Edwin",
+        "artistNationality": "American",
+        "artistBeginDate": "1826",
+        "artistEndDate": "1900",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q366212",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500115265",
+        "objectDate": "1859",
+        "objectBeginDate": 1859,
+        "objectEndDate": 1859,
+        "medium": "Oil on canvas",
+        "dimensions": "66 1/8 x 120 3/16 in. (168 x 302.9cm)",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 168,
+              "Width": 305.27686
+            }
+          },
+          {
+            "elementName": "Framed",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Depth": 19.05,
+              "Height": 212.7254,
+              "Weight": 177.35643,
+              "Width": 350.5207
+            }
+          },
+          {
+            "elementName": "Other",
+            "elementDescription": "\"Travel\" frame",
+            "elementMeasurements": {
+              "Depth": 19.05,
+              "Height": 212.7254,
+              "Width": 350.5207
+            }
+          }
+        ],
+        "creditLine": "Bequest of Margaret E. Dows, 1909",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-01-14T04:51:02.887Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/10481",
+        "tags": [
+          {
+            "term": "Rivers",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300008707",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q4022"
+          },
+          {
+            "term": "Waterfalls",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300008736",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q34038"
+          },
+          {
+            "term": "Forests",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300387598",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q4421"
+          },
+          {
+            "term": "Mountains",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300008795",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q8502"
+          },
+          {
+            "term": "Landscapes",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300132294",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q191163"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q334604",
+        "isTimelineWork": true,
+        "GalleryNumber": "760"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-125234",
+      "artist_id": "claude-monet",
+      "creator_source_id": "cma:1844",
+      "source_url": "https://clevelandart.org/art/1947.196",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/125234",
+      "raw": {
+        "id": 125234,
+        "title": "Low Tide at Pourville, near Dieppe, 1882",
+        "accession_number": "1947.196",
+        "creation_date": "1882",
+        "technique": "oil on fabric",
+        "measurements": "Framed: 65.4 x 106.7 x 10.5 cm (25 3/4 x 42 x 4 1/8 in.); Unframed: 59.9 x 81.3 cm (23 9/16 x 32 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This is one of several views Claude Monet painted of Pourville, a fishing village on the north coast of France in Normandy. Pourville featured a boardwalk, a broad beach, and stunning cliffs. According to the artist's correspondence, the village was nothing special, but he was inspired by the landscape: \"One could not be any closer to the sea than I am, on the pebbled beach itself and the waves beat at the foot of the house.\" During the spring of 1882 in Pourville, Monet stayed in a small hotel similar to the dwellings seen at the foot of the cliff to the right in this painting.",
+        "did_you_know": "The narrow strokes of black paint along the the edge of the water at the base of the cliff indicate bathers.",
+        "url": "https://clevelandart.org/art/1947.196",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1947.196/1947.196_web.jpg",
+            "width": "900",
+            "height": "664",
+            "filesize": "261130",
+            "filename": "1947.196_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1947.196/1947.196_print.jpg",
+            "width": "3400",
+            "height": "2508",
+            "filesize": "4906385",
+            "filename": "1947.196_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1947.196/1947.196_full.tif",
+            "width": "15254",
+            "height": "11254",
+            "filesize": "515035628",
+            "filename": "1947.196_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1844,
+            "description": "Claude Monet (French, 1840–1926)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-95272",
+      "artist_id": "claude-monet",
+      "creator_source_id": "cma:1844",
+      "source_url": "https://clevelandart.org/art/1916.1044",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/95272",
+      "raw": {
+        "id": 95272,
+        "title": "Gardener's House at Antibes",
+        "accession_number": "1916.1044",
+        "creation_date": "1888",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 91.1 x 118.4 x 13.7 cm (35 7/8 x 46 5/8 x 5 3/8 in.); Unframed: 66.3 x 93 cm (26 1/8 x 36 5/8 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "In 1888, Claude Monet spent four months in Antibes, a city in southeastern France on the Mediterranean coast, to derive inspiration for painting. Although his visit was occasionally challenged by strong winds that threatened to knock over his easel, the artist was able to complete nearly 40 works. This especially vibrant canvas is a depiction of a gardener’s house set against the sea and the distant Alps. Monet portrays intense midday light through thickly applied paint in bright colors that evoke the region’s sun-drenched climate. Small daubs of green on the slender trees framing the house suggest the onset of spring.",
+        "did_you_know": "Monet painted 35 canvases during his visit to Antibes from January to May 1888.",
+        "url": "https://clevelandart.org/art/1916.1044",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1916.1044/1916.1044_web.jpg",
+            "width": "900",
+            "height": "640",
+            "filesize": "414344",
+            "filename": "1916.1044_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1916.1044/1916.1044_print.jpg",
+            "width": "3400",
+            "height": "2418",
+            "filesize": "5893352",
+            "filename": "1916.1044_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1916.1044/1916.1044_full.tif",
+            "width": "15628",
+            "height": "11116",
+            "filesize": "521195240",
+            "filename": "1916.1044_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1844,
+            "description": "Claude Monet (French, 1840–1926)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-130391",
+      "artist_id": "claude-monet",
+      "creator_source_id": "cma:1844",
+      "source_url": "https://clevelandart.org/art/1953.155",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/130391",
+      "raw": {
+        "id": 130391,
+        "title": "Spring Flowers",
+        "accession_number": "1953.155",
+        "creation_date": "1864",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 144.5 x 117.2 x 12.1 cm (56 7/8 x 46 1/8 x 4 3/4 in.); Unframed: 116.8 x 90.5 cm (46 x 35 5/8 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This early work reveals Claude Monet's fascination with capturing the transitory effects that became the primary focus of his later innovations. Painted with almost scientific accuracy, this still life has a freshness and immediacy derived partly from its composition. Isolated against a dark background, the fully mature peonies, potted hydrangeas, and basketed lilacs spill downward and outward from the geraniums at the rear. At the same time, Monet's energetic brushwork conveys the sparkling play of light on leaves and petals.",
+        "did_you_know": "Monet is quoted as saying, \"I perhaps owe having become a painter to flowers<em>.</em>\" He painted this work in 1864, the first productive year of his career.",
+        "url": "https://clevelandart.org/art/1953.155",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1953.155/1953.155_web.jpg",
+            "width": "685",
+            "height": "900",
+            "filesize": "215454",
+            "filename": "1953.155_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1953.155/1953.155_print.jpg",
+            "width": "2589",
+            "height": "3400",
+            "filesize": "2740556",
+            "filename": "1953.155_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1953.155/1953.155_full.tif",
+            "width": "11304",
+            "height": "14845",
+            "filesize": "503456588",
+            "filename": "1953.155_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1844,
+            "description": "Claude Monet (French, 1840–1926)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-135480",
+      "artist_id": "pierre-auguste-renoir",
+      "creator_source_id": "cma:1765",
+      "source_url": "https://clevelandart.org/art/1958.47",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/135480",
+      "raw": {
+        "id": 135480,
+        "title": "The Apple Seller",
+        "accession_number": "1958.47",
+        "creation_date": "c. 1890",
+        "technique": "oil on fabric",
+        "measurements": "Framed: 93 x 82.2 x 9.5 cm (36 5/8 x 32 3/8 x 3 3/4 in.); Unframed: 65.8 x 54.5 cm (25 7/8 x 21 7/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This painting depicts a young country girl offering apples to Renoir's wife, Aline. The boy in the straw hat may be the artist's nephew, Edmond, but the young girl with the ribbon in her hair has not been identified. Bathed in soft, dappled sunlight, the figures are united through the fluid brushstrokes that cover the canvas. The leaping dog provides an accent of humor and motion in an otherwise tranquil scene. The picture was probably completed at Essoyes, in eastern France.",
+        "did_you_know": "Using repetitive, soft, light-of-touch brushstrokes to form patches of color, Renoir creates a sense of dappled light that reflects on the ground and caresses the figures, giving the painting an ethereal, dreamlike quality.",
+        "url": "https://clevelandart.org/art/1958.47",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.47/1958.47_web.jpg",
+            "width": "740",
+            "height": "900",
+            "filesize": "319549",
+            "filename": "1958.47_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.47/1958.47_print.jpg",
+            "width": "2795",
+            "height": "3400",
+            "filesize": "4929363",
+            "filename": "1958.47_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.47/1958.47_full.tif",
+            "width": "11502",
+            "height": "13993",
+            "filesize": "482875736",
+            "filename": "1958.47_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1765,
+            "description": "Pierre-Auguste Renoir (French, 1841–1919)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-128364",
+      "artist_id": "pierre-auguste-renoir",
+      "creator_source_id": "cma:1765",
+      "source_url": "https://clevelandart.org/art/1951.324",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/128364",
+      "raw": {
+        "id": 128364,
+        "title": "Young Woman Arranging Her Earring",
+        "accession_number": "1951.324",
+        "creation_date": "1905",
+        "technique": "oil on fabric",
+        "measurements": "Framed: 76.5 x 67.5 x 10 cm (30 1/8 x 26 9/16 x 3 15/16 in.); Unframed: 55.3 x 46.4 cm (21 3/4 x 18 1/4 in.)",
+        "culture": [
+          "France, 20th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "During his later years, Pierre-Auguste Renoir moved away from pure Impressionism toward a classicizing style featuring strong, monumental figures of substantial weight and volume. This depiction of a woman arranging her earrings, a superb example of that trend in the artist's late work, may have been inspired by one of the figures in Eugène Delacroix’s <em>Women of Algiers in their Apartment </em>(Musée du Louvre, Paris).",
+        "did_you_know": "The model for this painting is Gabrielle Renard—a housekeeper, nursemaid, studio assistant, and frequent model to Renoir.",
+        "url": "https://clevelandart.org/art/1951.324",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1951.324/1951.324_web.jpg",
+            "width": "748",
+            "height": "900",
+            "filesize": "273653",
+            "filename": "1951.324_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1951.324/1951.324_print.jpg",
+            "width": "2827",
+            "height": "3400",
+            "filesize": "4424800",
+            "filename": "1951.324_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1951.324/1951.324_full.tif",
+            "width": "11152",
+            "height": "13411",
+            "filesize": "448709296",
+            "filename": "1951.324_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1765,
+            "description": "Pierre-Auguste Renoir (French, 1841–1919)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-118159",
+      "artist_id": "pierre-auguste-renoir",
+      "creator_source_id": "cma:1765",
+      "source_url": "https://clevelandart.org/art/1939.269",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/118159",
+      "raw": {
+        "id": 118159,
+        "title": "Bathers Playing with a Crab",
+        "accession_number": "1939.269",
+        "creation_date": "c. 1897",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 75.5 x 85.5 x 10 cm (29 3/4 x 33 11/16 x 3 15/16 in.); Unframed: 54.6 x 65.7 cm (21 1/2 x 25 7/8 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "After viewing Renaissance paintings on a trip to Italy in 1881, Renoir attempted to bring greater order and stability to Impressionism by merging flickering light effects with solid forms. He conveyed this new ambition in a series of paintings of nude bathers, a subject that preoccupied him from 1883 until his death in 1919. Avant-garde artists of the 20th century admired his ability to blend modernist and classicizing tendencies.",
+        "did_you_know": null,
+        "url": "https://clevelandart.org/art/1939.269",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1939.269/1939.269_web.jpg",
+            "width": "900",
+            "height": "748",
+            "filesize": "257732",
+            "filename": "1939.269_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1939.269/1939.269_print.jpg",
+            "width": "3400",
+            "height": "2824",
+            "filesize": "4162481",
+            "filename": "1939.269_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1939.269/1939.269_full.tif",
+            "width": "13687",
+            "height": "11370",
+            "filesize": "466895756",
+            "filename": "1939.269_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1765,
+            "description": "Pierre-Auguste Renoir (French, 1841–1919)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-120286",
+      "artist_id": "pierre-auguste-renoir",
+      "creator_source_id": "cma:1765",
+      "source_url": "https://clevelandart.org/art/1941.14",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/120286",
+      "raw": {
+        "id": 120286,
+        "title": "Roses in a Vase",
+        "accession_number": "1941.14",
+        "creation_date": "c. 1890",
+        "technique": "oil on fabric",
+        "measurements": "Unframed: 25.5 x 34 cm (10 1/16 x 13 3/8 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "The palette Renoir used to depict the seven roses in this still life ranges from various shades of red to warm whites, light yellows, and pinks. The artist declared, \"'Painting flowers lets my brain rest. It does not cause the same tension of spirit as when I face a model. When I paint flowers, I put down tones, I boldly try values, without having to worry about losing a canvas.'\" He was particularly fond of roses, whose full, rounded shapes he likened to the female body. In 1861, Renoir met Claude Monet (1840–1926) and later shared a studio with him. Monet became an important influence on Renoir's art, as can be seen here in the rapid brush strokes, thinly scuffled background, and buildup of paint (impasto) in the blooms.",
+        "did_you_know": "Renoir was an excellent singer who wanted to be a musician, but for financial reasons left school at age thirteen to work as an apprentice painter in a porcelain factory.",
+        "url": "https://clevelandart.org/art/1941.14",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1941.14/1941.14_web.jpg",
+            "width": "900",
+            "height": "654",
+            "filesize": "261361",
+            "filename": "1941.14_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1941.14/1941.14_print.jpg",
+            "width": "3400",
+            "height": "2469",
+            "filesize": "3692212",
+            "filename": "1941.14_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1941.14/1941.14_full.tif",
+            "width": "14577",
+            "height": "10586",
+            "filesize": "462967104",
+            "filename": "1941.14_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1765,
+            "description": "Pierre-Auguste Renoir (French, 1841–1919)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-137259",
+      "artist_id": "gustave-courbet",
+      "creator_source_id": "cma:1600",
+      "source_url": "https://clevelandart.org/art/1962.2",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/137259",
+      "raw": {
+        "id": 137259,
+        "title": "Mme L . . . (Laure Borreau)",
+        "accession_number": "1962.2",
+        "creation_date": "1863",
+        "technique": "oil on fabric",
+        "measurements": "Framed: 112.4 x 93 x 12.1 cm (44 1/4 x 36 5/8 x 4 3/4 in.); Unframed: 81 x 61.2 cm (31 7/8 x 24 1/8 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Gustave Courbet painted four portraits of Madame Laure Borreau; this is the last and most highly developed. As a realist, Courbet aimed to represent what he saw in the visible, tangible world. He represented Madame Borreau in a black silk dress embellished with lace and a matching hat. Gold and violet lights of sunset softly illuminate the background. However, the portrait is not idealized. Courbet’s inclusion of her shadowed eyes and full-fleshed neck prompted one critic to write, “I daresay in nature she may be very pretty, but in Courbet’s picture she is nothing less than offensive.”",
+        "did_you_know": "Courbet once wrote of Laure Borreau, the sitter in this portrait, \"I am in love with a splendid lady, the driving force behind my triumph.\"",
+        "url": "https://clevelandart.org/art/1962.2",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1962.2/1962.2_web.jpg",
+            "width": "684",
+            "height": "893",
+            "filesize": "345987",
+            "filename": "1962.2_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1962.2/1962.2_print.jpg",
+            "width": "2604",
+            "height": "3400",
+            "filesize": "5231419",
+            "filename": "1962.2_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1962.2/1962.2_full.tif",
+            "width": "4123",
+            "height": "5384",
+            "filesize": "66624912",
+            "filename": "1962.2_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1600,
+            "description": "Gustave Courbet (French, 1819–1877)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-148739",
+      "artist_id": "gustave-courbet",
+      "creator_source_id": "cma:1600",
+      "source_url": "https://clevelandart.org/art/1976.18",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/148739",
+      "raw": {
+        "id": 148739,
+        "title": "Landscape with Large Trees",
+        "accession_number": "1976.18",
+        "creation_date": "c. 1870",
+        "technique": "black chalk with stumping on brown wove paper",
+        "measurements": "Sheet: 38.1 x 52.4 cm (15 x 20 5/8 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "The relatively few drawings that Gustave Courbet produced include the group of landscapes to which this example belongs. Rather than referencing a specific place, it combines a wide range of source material—tourist destinations the artist visited in Switzerland, his home in the Franche-Comté region, and paintings by Claude Lorrain and other historical landscapists. Courbet began by applying a hazy middletone in charcoal before adding detail with a darker, sharpened stick. Although surely appealing to collectors of the time, such works also had ideological significance, presenting an untouched terrain that suggested independence and freedom.",
+        "did_you_know": "The slightly blurred appearance of this drawing recalls a similar effect common in early landscape photography.",
+        "url": "https://clevelandart.org/art/1976.18",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1976.18/1976.18_web.jpg",
+            "width": "1235",
+            "height": "893",
+            "filesize": "236693",
+            "filename": "1976.18_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1976.18/1976.18_print.jpg",
+            "width": "3400",
+            "height": "2458",
+            "filesize": "2135588",
+            "filename": "1976.18_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1976.18/1976.18_full.tif",
+            "width": "7815",
+            "height": "5651",
+            "filesize": "132510924",
+            "filename": "1976.18_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1600,
+            "description": "Gustave Courbet (French, 1819–1877)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-436002",
+      "artist_id": "gustave-courbet",
+      "creator_source_id": "met:161790",
+      "source_url": "https://www.metmuseum.org/art/collection/search/436002",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436002",
+      "raw": {
+        "objectID": 436002,
+        "isHighlight": true,
+        "accessionNumber": "29.100.57",
+        "accessionYear": "1929",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/DP-17680-001.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/DP-17680-001.jpg",
+        "additionalImages": [],
+        "constituents": [
+          {
+            "constituentID": 161790,
+            "role": "Artist",
+            "name": "Gustave Courbet",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500010927",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q34618",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "Woman with a Parrot",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Gustave Courbet",
+        "artistDisplayBio": "French, Ornans 1819–1877 La Tour-de-Peilz",
+        "artistSuffix": "",
+        "artistAlphaSort": "Courbet, Gustave",
+        "artistNationality": "French",
+        "artistBeginDate": "1819",
+        "artistEndDate": "1877",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q34618",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500010927",
+        "objectDate": "1866",
+        "objectBeginDate": 1866,
+        "objectEndDate": 1866,
+        "medium": "Oil on canvas",
+        "dimensions": "51 x 77 in. (129.5 x 195.6 cm)",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 129.5,
+              "Width": 195.6
+            }
+          },
+          {
+            "elementName": "Framed",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Depth": 13.335,
+              "Height": 165.1003,
+              "Width": 231.1405
+            }
+          }
+        ],
+        "creditLine": "H. O. Havemeyer Collection, Bequest of Mrs. H. O. Havemeyer, 1929",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-10-10T04:49:47.847Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/436002",
+        "tags": [
+          {
+            "term": "Female Nudes",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300189568",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q40446"
+          },
+          {
+            "term": "Parrots",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300250076",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q15548309"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q8030760",
+        "isTimelineWork": true,
+        "GalleryNumber": "811"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-436023",
+      "artist_id": "gustave-courbet",
+      "creator_source_id": "met:161790",
+      "source_url": "https://www.metmuseum.org/art/collection/search/436023",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436023",
+      "raw": {
+        "objectID": 436023,
+        "isHighlight": false,
+        "accessionNumber": "29.100.122",
+        "accessionYear": "1929",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/DT1964.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/DT1964.jpg",
+        "additionalImages": [],
+        "constituents": [
+          {
+            "constituentID": 161790,
+            "role": "Artist",
+            "name": "Gustave Courbet",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500010927",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q34618",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "The Source of the Loue",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Gustave Courbet",
+        "artistDisplayBio": "French, Ornans 1819–1877 La Tour-de-Peilz",
+        "artistSuffix": "",
+        "artistAlphaSort": "Courbet, Gustave",
+        "artistNationality": "French",
+        "artistBeginDate": "1819",
+        "artistEndDate": "1877",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q34618",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500010927",
+        "objectDate": "1864",
+        "objectBeginDate": 1864,
+        "objectEndDate": 1864,
+        "medium": "Oil on canvas",
+        "dimensions": "39 1/4 x 56 in. (99.7 x 142.2 cm)",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 99.7,
+              "Width": 142.2
+            }
+          },
+          {
+            "elementName": "Framed",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Depth": 13.97,
+              "Height": 133.3503,
+              "Width": 175.8954
+            }
+          }
+        ],
+        "creditLine": "H. O. Havemeyer Collection, Bequest of Mrs. H. O. Havemeyer, 1929",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2025-04-30T04:49:03.02Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/436023",
+        "tags": [
+          {
+            "term": "Rivers",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300008707",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q4022"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q19905309",
+        "isTimelineWork": true,
+        "GalleryNumber": "811"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-115405",
+      "artist_id": "paul-cezanne",
+      "creator_source_id": "cma:1754",
+      "source_url": "https://clevelandart.org/art/1936.19",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/115405",
+      "raw": {
+        "id": 115405,
+        "title": "The Pigeon Tower at Bellevue",
+        "accession_number": "1936.19",
+        "creation_date": "1890",
+        "technique": "oil on fabric",
+        "measurements": "Framed: 95.5 x 113 x 7 cm (37 5/8 x 44 1/2 x 2 3/4 in.); Unframed: 65.6 x 81.5 cm (25 13/16 x 32 1/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Paul Cezanne painted this composition in three horizontal planes: the azure blue of the sky; the luminous white of the tower and the farmyard buildings; and the burnt-orange shade of the foreground earth, whose color is indicative of the iron-rich soil of Provence. The shimmering greens of Cezanne’s favorite cypress and olive trees are interspersed across the middle ground. The composition is pared down to its essentials, devoid of extraneous detail; it exemplifies his ambition “to make something solid and enduring, like the art in museums.”",
+        "did_you_know": "Cézanne’s method of compressing space and simplifying forms into flattened, geometric shapes provided the foundation for both Fauvism and Cubism.",
+        "url": "https://clevelandart.org/art/1936.19",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1936.19/1936.19_web.jpg",
+            "width": "900",
+            "height": "723",
+            "filesize": "263547",
+            "filename": "1936.19_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1936.19/1936.19_print.jpg",
+            "width": "3400",
+            "height": "2733",
+            "filesize": "4151430",
+            "filename": "1936.19_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1936.19/1936.19_full.tif",
+            "width": "14104",
+            "height": "11338",
+            "filesize": "479765284",
+            "filename": "1936.19_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1754,
+            "description": "Paul Cezanne (French, 1839–1906)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-135173",
+      "artist_id": "paul-cezanne",
+      "creator_source_id": "cma:1754",
+      "source_url": "https://clevelandart.org/art/1958.20",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/135173",
+      "raw": {
+        "id": 135173,
+        "title": "The Brook",
+        "accession_number": "1958.20",
+        "creation_date": "c. 1895–1900",
+        "technique": "oil on fabric",
+        "measurements": "Framed: 74.9 x 97.2 x 8.3 cm (29 1/2 x 38 1/4 x 3 1/4 in.); Unframed: 59.2 x 81 cm (23 5/16 x 31 7/8 in.)",
+        "culture": [
+          "France, late 19th-early 20th Century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Although Cezanne exhibited twice with the Impressionists, he rejected his friends’ goals of capturing the fleeting effects of light and atmosphere in their art. Instead, he sought to create balance among the forms and colors in his compositions. This painting depicts the valley of the Arc River that runs southeast of Cezanne’s home in Aix-en-Provence. Throughout the composition, he juxtaposed strokes of different hues, describing the leaves, branches, and the stream with color rather than drawing the outlines of forms.",
+        "did_you_know": "Cezanne rarely did preparatory sketches for his paintings. The shapes on the canvas are provided by tonal contrasts and color sensation.",
+        "url": "https://clevelandart.org/art/1958.20",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.20/1958.20_web.jpg",
+            "width": "900",
+            "height": "651",
+            "filesize": "318429",
+            "filename": "1958.20_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.20/1958.20_print.jpg",
+            "width": "3400",
+            "height": "2460",
+            "filesize": "4116585",
+            "filename": "1958.20_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.20/1958.20_full.tif",
+            "width": "15414",
+            "height": "11154",
+            "filesize": "515816820",
+            "filename": "1958.20_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1754,
+            "description": "Paul Cezanne (French, 1839–1906)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-435868",
+      "artist_id": "paul-cezanne",
+      "creator_source_id": "met:161761",
+      "source_url": "https://www.metmuseum.org/art/collection/search/435868",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/435868",
+      "raw": {
+        "objectID": 435868,
+        "isHighlight": true,
+        "accessionNumber": "61.101.1",
+        "accessionYear": "1961",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/DP231550.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/DP231550.jpg",
+        "additionalImages": [],
+        "constituents": [
+          {
+            "constituentID": 161761,
+            "role": "Artist",
+            "name": "Paul Cézanne",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500004793",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q35548",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "The Card Players",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Paul Cézanne",
+        "artistDisplayBio": "French, Aix-en-Provence 1839–1906 Aix-en-Provence",
+        "artistSuffix": "",
+        "artistAlphaSort": "Cézanne, Paul",
+        "artistNationality": "French",
+        "artistBeginDate": "1839",
+        "artistEndDate": "1906",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q35548",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500004793",
+        "objectDate": "1890–92",
+        "objectBeginDate": 1890,
+        "objectEndDate": 1892,
+        "medium": "Oil on canvas",
+        "dimensions": "25 3/4 x 32 1/4 in. (65.4 x 81.9 cm)",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 65.4,
+              "Width": 81.9
+            }
+          },
+          {
+            "elementName": "Framed",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Depth": 11.43,
+              "Height": 91.4402,
+              "Width": 109.2202
+            }
+          }
+        ],
+        "creditLine": "Bequest of Stephen C. Clark, 1960",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-09-15T04:51:59.283Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/435868",
+        "tags": [
+          {
+            "term": "Men",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300025928",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q8441"
+          },
+          {
+            "term": "Playing Cards",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300211294",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q47883"
+          },
+          {
+            "term": "Smoking",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300380156",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q662860"
+          },
+          {
+            "term": "Games",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300069657",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q11410"
+          },
+          {
+            "term": "Pipes",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300248067",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q104526"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q19911459",
+        "isTimelineWork": true,
+        "GalleryNumber": ""
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-435866",
+      "artist_id": "paul-cezanne",
+      "creator_source_id": "met:161761",
+      "source_url": "https://www.metmuseum.org/art/collection/search/435866",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/435866",
+      "raw": {
+        "objectID": 435866,
+        "isHighlight": false,
+        "accessionNumber": "61.103",
+        "accessionYear": "1961",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/DT1940.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/DT1940.jpg",
+        "additionalImages": [],
+        "constituents": [
+          {
+            "constituentID": 161761,
+            "role": "Artist",
+            "name": "Paul Cézanne",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500004793",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q35548",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "Apples",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Paul Cézanne",
+        "artistDisplayBio": "French, Aix-en-Provence 1839–1906 Aix-en-Provence",
+        "artistSuffix": "",
+        "artistAlphaSort": "Cézanne, Paul",
+        "artistNationality": "French",
+        "artistBeginDate": "1839",
+        "artistEndDate": "1906",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q35548",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500004793",
+        "objectDate": "1878–79",
+        "objectBeginDate": 1878,
+        "objectEndDate": 1879,
+        "medium": "Oil on canvas",
+        "dimensions": "Overall: 9 x 13 in. (22.9 x 33 cm)",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 22.9,
+              "Width": 33
+            }
+          },
+          {
+            "elementName": "Framed",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Depth": 8.255016,
+              "Height": 38.100075,
+              "Width": 47.625095
+            }
+          },
+          {
+            "elementName": "Glazing",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Length": 23.812548,
+              "Width": 33.49632
+            }
+          }
+        ],
+        "creditLine": "The Mr. and Mrs. Henry Ittleson Jr. Purchase Fund, 1961",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-10-06T04:59:37.62Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/435866",
+        "tags": [
+          {
+            "term": "Apples",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300266417",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q89"
+          },
+          {
+            "term": "Still Life",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300015638",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q170571"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q20168332",
+        "isTimelineWork": false,
+        "GalleryNumber": ""
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-118800",
+      "artist_id": "katsushika-hokusai",
+      "creator_source_id": "cma:23328",
+      "source_url": "https://clevelandart.org/art/1940.1002",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/118800",
+      "raw": {
+        "id": 118800,
+        "title": "Rain Below the Mountain (from the series Thirty-six Views of Mt. Fuji)",
+        "accession_number": "1940.1002",
+        "creation_date": "early 1830s",
+        "technique": "color woodblock print",
+        "measurements": "Overall: 25.4 x 38.4 cm (10 x 15 1/8 in.)",
+        "culture": [
+          "Japan, Edo period (1615–1868)"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Hokusai probably composed this print as a complement to<em> Mt. Fuji in Clear Weather </em>(see <a href=\"https://www.clevelandart.org/art/1930.189\">CMA 1930.189</a>) and to illustrate the mountain’s majesty in different weather. Here, a sudden shower covers most of the mountain’s base and slope with dark clouds.",
+        "did_you_know": null,
+        "url": "https://clevelandart.org/art/1940.1002",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1940.1002/1940.1002_web.jpg",
+            "width": "1263",
+            "height": "852",
+            "filesize": "195135",
+            "filename": "1940.1002_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1940.1002/1940.1002_print.jpg",
+            "width": "3400",
+            "height": "2294",
+            "filesize": "1349582",
+            "filename": "1940.1002_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1940.1002/1940.1002_full.tif",
+            "width": "6114",
+            "height": "4126",
+            "filesize": "75703100",
+            "filename": "1940.1002_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 23328,
+            "description": "Katsushika Hokusai (Japanese, 1760–1849)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-123249",
+      "artist_id": "katsushika-hokusai",
+      "creator_source_id": "cma:23328",
+      "source_url": "https://clevelandart.org/art/1943.5",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/123249",
+      "raw": {
+        "id": 123249,
+        "title": "Basket of Peonies",
+        "accession_number": "1943.5",
+        "creation_date": "1810 or 1814",
+        "technique": "color woodblock print; surimono",
+        "measurements": "Sheet: 52.1 x 38.3 cm (20 1/2 x 15 1/16 in.)",
+        "culture": [
+          "Japan, Edo period (1615–1868)"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "A <em>surimono</em> is a privately commissioned print used to announce or commemorate a special event. This picture celebrates an event in the life of the actor Ichikawa Danjuro VII, whose emblem was the peony. According to Japanese tradition, the peony–one of the flowers of the four seasons–is the flower of summer.",
+        "did_you_know": null,
+        "url": "https://clevelandart.org/art/1943.5",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1943.5/1943.5_web.jpg",
+            "width": "900",
+            "height": "674",
+            "filesize": "176974",
+            "filename": "1943.5_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1943.5/1943.5_print.jpg",
+            "width": "3400",
+            "height": "2546",
+            "filesize": "2550408",
+            "filename": "1943.5_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1943.5/1943.5_full.tif",
+            "width": "7525",
+            "height": "5636",
+            "filesize": "127262080",
+            "filename": "1943.5_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 23328,
+            "description": "Katsushika Hokusai (Japanese, 1760–1849)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-95413",
+      "artist_id": "katsushika-hokusai",
+      "creator_source_id": "cma:23328",
+      "source_url": "https://clevelandart.org/art/1916.1164",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/95413",
+      "raw": {
+        "id": 95413,
+        "title": "Poem by Emperor Tenchi, from the series One Hundred Poems by One Hundred Poets Explained by the Nurse",
+        "accession_number": "1916.1164",
+        "creation_date": "1835–36",
+        "technique": "color woodblock print",
+        "measurements": "Sheet: 24.4 x 37 cm (9 5/8 x 14 9/16 in.)",
+        "culture": [
+          "Japan, Edo period (1615–1868)"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This autumn landscape with rice farmers and travelers is from Katsushika Hokusai’s series of prints inspired by the anthology <em>One Hundred Poems by One Hundred Poets</em> (<em>Hyakunin isshu uba ga etoki</em>). While traveling through the countryside, like the two figures in the center, a sudden storm forced the Emperor Tenchi (reigned 661–72) to take shelter in a rice farmer’s hut. The experience produced tears of sympathy for the common people toiling under heavy burdens and living in rough, flimsy homes.<br><br>The poem at the upper right next to the cartouche reads:<br>Lying on the rough<br>Mats of rice-harvest guards<br>In the autumn fields,<br>I find the sleeves of my robe wet.<br>Is the dew so heavy?",
+        "did_you_know": null,
+        "url": "https://clevelandart.org/art/1916.1164",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1916.1164/1916.1164_web.jpg",
+            "width": "900",
+            "height": "601",
+            "filesize": "232893",
+            "filename": "1916.1164_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1916.1164/1916.1164_print.jpg",
+            "width": "3400",
+            "height": "2272",
+            "filesize": "2895159",
+            "filename": "1916.1164_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1916.1164/1916.1164_full.tif",
+            "width": "7680",
+            "height": "5133",
+            "filesize": "118295460",
+            "filename": "1916.1164_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 23328,
+            "description": "Katsushika Hokusai (Japanese, 1760–1849)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-95392",
+      "artist_id": "katsushika-hokusai",
+      "creator_source_id": "cma:23328",
+      "source_url": "https://clevelandart.org/art/1916.1145",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/95392",
+      "raw": {
+        "id": 95392,
+        "title": "The Rush Gatherer, from the series A True Mirror of Chinese and Japanese Poetry",
+        "accession_number": "1916.1145",
+        "creation_date": "1834–35",
+        "technique": "color woodblock print",
+        "measurements": "Sheet: 52.1 x 23 cm (20 1/2 x 9 1/16 in.)",
+        "culture": [
+          "Japan, Edo period (1615–1868)"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "The subject of this design may be related to a 1309 poem that contains the following lines: <br>When I was cutting horse-tails<br>The autumn moon appeared, <br>Shining through the trees on Mount Sonahara.",
+        "did_you_know": null,
+        "url": "https://clevelandart.org/art/1916.1145",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1916.1145/1916.1145_web.jpg",
+            "width": "408",
+            "height": "900",
+            "filesize": "166693",
+            "filename": "1916.1145_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1916.1145/1916.1145_print.jpg",
+            "width": "1542",
+            "height": "3400",
+            "filesize": "2100758",
+            "filename": "1916.1145_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1916.1145/1916.1145_full.tif",
+            "width": "3572",
+            "height": "7877",
+            "filesize": "84438904",
+            "filename": "1916.1145_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 23328,
+            "description": "Katsushika Hokusai (Japanese, 1760–1849)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-120225",
+      "artist_id": "utagawa-hiroshige",
+      "creator_source_id": "cma:50381",
+      "source_url": "https://clevelandart.org/art/1940.986",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/120225",
+      "raw": {
+        "id": 120225,
+        "title": "Fireworks at Ryōgoku, from the series One Hundred Views of Famous Places in Edo",
+        "accession_number": "1940.986",
+        "creation_date": "1858",
+        "technique": "color woodblock print",
+        "measurements": "Sheet: 33.7 x 22 cm (13 1/4 x 8 11/16 in.)",
+        "culture": [
+          "Japan, Edo period (1615–1868)"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "The Ryōgoku Bridge, a repeated subject of Hiroshige’s prints, spanned the Sumida River connecting bustling Edo (present-day Tokyo) neighborhoods. Here, Hiroshige devoted nearly half the composition to the night sky glittering with fireworks. Restaurants and other businesses along the riverbank frequently sponsored these dazzling displays during the 1850s. The pyrotechnics drew large crowds, who gathered atop the bridge, along the shore, in teashops, and on rented pleasure boats to enjoy the show.",
+        "did_you_know": null,
+        "url": "https://clevelandart.org/art/1940.986",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1940.986/1940.986_web.jpg",
+            "width": "594",
+            "height": "900",
+            "filesize": "213692",
+            "filename": "1940.986_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1940.986/1940.986_print.jpg",
+            "width": "2244",
+            "height": "3400",
+            "filesize": "3151558",
+            "filename": "1940.986_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1940.986/1940.986_full.tif",
+            "width": "5250",
+            "height": "7954",
+            "filesize": "125304816",
+            "filename": "1940.986_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 50381,
+            "description": "Utagawa Hiroshige (Japanese, 1797–1858)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-156858",
+      "artist_id": "utagawa-hiroshige",
+      "creator_source_id": "cma:50381",
+      "source_url": "https://clevelandart.org/art/1992.73",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/156858",
+      "raw": {
+        "id": 156858,
+        "title": "Tsukudajima from  Eitai Bridge, from the series One Hundred Views of Famous Places in Edo",
+        "accession_number": "1992.73",
+        "creation_date": "1858",
+        "technique": "color woodblock print",
+        "measurements": "Sheet: 36.5 x 24.5 cm (14 3/8 x 9 5/8 in.)",
+        "culture": [
+          "Japan, Edo period (1615–1868)"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This woodblock print is from the series of landscape views of Edo, present-day Tokyo, from Hiroshige’s late career. The series title is in the dark red rectangular cartouche on the upper right, while the name of the print is in the pink square. Although Tsukudajima and Eitai Bridge are important enough to merit mentions in the title, the island is tiny and in the distance at the mouth of the river, and only part of a bridge piling is visible. <br><br>Hiroshige’s dramatic composition instead foregrounds the oar of a passing boat. Other vessels in the middle distance moored under the starry sky. Fishing boats with burning torches to attract fish ply the water both near the bridge and beyond the island.",
+        "did_you_know": "Moonlight casts a glow on the masts and ships at anchor, and stars dust the evening sky.",
+        "url": "https://clevelandart.org/art/1992.73",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1992.73/1992.73_web.jpg",
+            "width": "612",
+            "height": "900",
+            "filesize": "188603",
+            "filename": "1992.73_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1992.73/1992.73_print.jpg",
+            "width": "2313",
+            "height": "3400",
+            "filesize": "2814441",
+            "filename": "1992.73_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1992.73/1992.73_full.tif",
+            "width": "5207",
+            "height": "7655",
+            "filesize": "119607512",
+            "filename": "1992.73_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 50381,
+            "description": "Utagawa Hiroshige (Japanese, 1797–1858)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-136757",
+      "artist_id": "sakai-hoitsu",
+      "creator_source_id": "cma:35484",
+      "source_url": "https://clevelandart.org/art/1961.259",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/136757",
+      "raw": {
+        "id": 136757,
+        "title": "Chrysanthemums by the Water",
+        "accession_number": "1961.259",
+        "creation_date": "1761–1828",
+        "technique": "fan painting: ink, color, and gold on paper",
+        "measurements": "Painting: 25.3 x 55.3 cm (9 15/16 x 21 3/4 in.); Overall: 37.1 x 68.5 cm (14 5/8 x 26 15/16 in.)",
+        "culture": [
+          "Japan, Edo period (1615–1868)"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": null,
+        "did_you_know": null,
+        "url": "https://clevelandart.org/art/1961.259",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1961.259/1961.259_web.jpg",
+            "width": "900",
+            "height": "492",
+            "filesize": "203086",
+            "filename": "1961.259_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1961.259/1961.259_print.jpg",
+            "width": "3400",
+            "height": "1860",
+            "filesize": "2468649",
+            "filename": "1961.259_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1961.259/1961.259_full.tif",
+            "width": "7897",
+            "height": "4320",
+            "filesize": "102375580",
+            "filename": "1961.259_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 35484,
+            "description": "Sakai Hōitsu (Japanese, 1761–1828)",
+            "role": "artist",
+            "qualifier": null
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-45392",
+      "artist_id": "sakai-hoitsu",
+      "creator_source_id": "met:11868",
+      "source_url": "https://www.metmuseum.org/art/collection/search/45392",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/45392",
+      "raw": {
+        "objectID": 45392,
+        "isHighlight": false,
+        "accessionNumber": "57.156.3",
+        "accessionYear": "1957",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/as/original/DT966.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/as/web-large/DT966.jpg",
+        "additionalImages": [],
+        "constituents": [
+          {
+            "constituentID": 11868,
+            "role": "Artist",
+            "name": "Sakai Hōitsu",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500121066",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q3469342",
+            "gender": ""
+          }
+        ],
+        "department": "Asian Art",
+        "objectName": "Screen",
+        "title": "Persimmon Tree",
+        "culture": "Japan",
+        "period": "Edo period (1615–1868)",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Sakai Hōitsu",
+        "artistDisplayBio": "Japanese, 1761–1828",
+        "artistSuffix": "",
+        "artistAlphaSort": "Sakai Hōitsu",
+        "artistNationality": "Japanese",
+        "artistBeginDate": "1761",
+        "artistEndDate": "1828",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q3469342",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500121066",
+        "objectDate": "1816",
+        "objectBeginDate": 1816,
+        "objectEndDate": 1816,
+        "medium": "Two-panel folding screen; ink and color on paper",
+        "dimensions": "Image: 56 9/16 × 56 5/8 in. (143.7 × 143.8 cm)\r\nOverall: 64 1/8 in. × 64 in. (162.9 × 162.6 cm)",
+        "measurements": [
+          {
+            "elementName": "Image",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 143.7,
+              "Width": 143.8
+            }
+          },
+          {
+            "elementName": "Other",
+            "elementDescription": "Folded",
+            "elementMeasurements": {
+              "Height": 165.7353,
+              "Length": 5.08,
+              "Width": 82.5502
+            }
+          },
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 162.87782,
+              "Width": 162.5603
+            }
+          }
+        ],
+        "creditLine": "Rogers Fund, 1957",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-03-04T04:56:21.393Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/45392",
+        "tags": [
+          {
+            "term": "Fruit",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300011868",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q1364"
+          },
+          {
+            "term": "Trees",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300132410",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q10884"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q83562492",
+        "isTimelineWork": true,
+        "GalleryNumber": ""
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-53423",
+      "artist_id": "sakai-hoitsu",
+      "creator_source_id": "met:11868",
+      "source_url": "https://www.metmuseum.org/art/collection/search/53423",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/53423",
+      "raw": {
+        "objectID": 53423,
+        "isHighlight": false,
+        "accessionNumber": "2015.300.93.1, .2",
+        "accessionYear": "2015",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/as/original/DP704936.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/as/web-large/DP704936.jpg",
+        "additionalImages": [
+          "https://images.metmuseum.org/CRDImages/as/original/DP704940.jpg",
+          "https://images.metmuseum.org/CRDImages/as/original/DP704937.jpg",
+          "https://images.metmuseum.org/CRDImages/as/original/DP704938.jpg",
+          "https://images.metmuseum.org/CRDImages/as/original/DP704939.jpg",
+          "https://images.metmuseum.org/CRDImages/as/original/DP704941.jpg",
+          "https://images.metmuseum.org/CRDImages/as/original/DP704942.jpg",
+          "https://images.metmuseum.org/CRDImages/as/original/DP704943.jpg"
+        ],
+        "constituents": [
+          {
+            "constituentID": 11868,
+            "role": "Artist",
+            "name": "Sakai Hōitsu",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500121066",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q3469342",
+            "gender": ""
+          }
+        ],
+        "department": "Asian Art",
+        "objectName": "Screens",
+        "title": "Blossoming Cherry Trees",
+        "culture": "Japan",
+        "period": "Edo period (1615–1868)",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Sakai Hōitsu",
+        "artistDisplayBio": "Japanese, 1761–1828",
+        "artistSuffix": "",
+        "artistAlphaSort": "Sakai Hōitsu",
+        "artistNationality": "Japanese",
+        "artistBeginDate": "1761",
+        "artistEndDate": "1828",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q3469342",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500121066",
+        "objectDate": "ca. 1805",
+        "objectBeginDate": 1795,
+        "objectEndDate": 1815,
+        "medium": "Pair of six-panel folding screens; ink, color, and gold leaf on paper",
+        "dimensions": "Image: 38 x 82 3/16 in. (96.5 x 208.8 cm)\r\nOverall with mounting: 39 9/16 × 83 3/4 in. (100.5 × 212.8 cm)",
+        "measurements": [
+          {
+            "elementName": "Image",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 96.5,
+              "Width": 208.8
+            }
+          },
+          {
+            "elementName": "Overall with mounting",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 100.5,
+              "Width": 212.8
+            }
+          }
+        ],
+        "creditLine": "Mary Griggs Burke Collection, Gift of the Mary and Jackson Burke Foundation, 2015",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-10-02T04:59:41.64Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/53423",
+        "tags": [
+          {
+            "term": "Flowers",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300132399",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q506"
+          },
+          {
+            "term": "Leaves",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300011892",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q33971"
+          },
+          {
+            "term": "Trees",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300132410",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q10884"
+          }
+        ],
+        "objectWikidata_URL": "",
+        "isTimelineWork": false,
+        "GalleryNumber": "231"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-705791",
+      "artist_id": "sakai-hoitsu",
+      "creator_source_id": "met:11868",
+      "source_url": "https://www.metmuseum.org/art/collection/search/705791",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/705791",
+      "raw": {
+        "objectID": 705791,
+        "isHighlight": false,
+        "accessionNumber": "2019.419.2",
+        "accessionYear": "2019",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/as/original/DP-29305-002.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/as/web-large/DP-29305-002.jpg",
+        "additionalImages": [
+          "https://images.metmuseum.org/CRDImages/as/original/DP-29305-001.jpg"
+        ],
+        "constituents": [
+          {
+            "constituentID": 11868,
+            "role": "Artist",
+            "name": "Sakai Hōitsu",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500121066",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q3469342",
+            "gender": ""
+          }
+        ],
+        "department": "Asian Art",
+        "objectName": "Hanging scroll",
+        "title": "Willow Kannon",
+        "culture": "Japan",
+        "period": "Edo period (1615–1868)",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Sakai Hōitsu",
+        "artistDisplayBio": "Japanese, 1761–1828",
+        "artistSuffix": "",
+        "artistAlphaSort": "Sakai Hōitsu",
+        "artistNationality": "Japanese",
+        "artistBeginDate": "1761",
+        "artistEndDate": "1828",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q3469342",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500121066",
+        "objectDate": "probably 1810s",
+        "objectBeginDate": 1810,
+        "objectEndDate": 1819,
+        "medium": "Hanging scroll; ink, color, and gold leaf on silk",
+        "dimensions": "Image: 32 5/8 × 14 1/8 in. (82.9 × 35.9 cm)\r\nOverall with mounting: 76 × 18 5/8 in. (193 × 47.3 cm)\r\nOverall with knobs: 76 × 21 in. (193 × 53.3 cm)",
+        "measurements": [
+          {
+            "elementName": "Image",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 82.86767,
+              "Width": 35.87757
+            }
+          },
+          {
+            "elementName": "Overall with knobs",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 193.04039,
+              "Width": 53.340107
+            }
+          },
+          {
+            "elementName": "Overall with mounting",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 193.04039,
+              "Width": 47.307594
+            }
+          }
+        ],
+        "creditLine": "Fishbein-Bender Collection, Gift of T. Richard Fishbein and Estelle P. Bender, in celebration of the Museum’s 150th Anniversary, 2019",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2025-10-13T04:51:27.14Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/705791",
+        "tags": null,
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q126120310",
+        "isTimelineWork": false,
+        "GalleryNumber": ""
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "met-436698",
+      "artist_id": "jacob-van-hulsdonck",
+      "creator_source_id": "met:107803",
+      "source_url": "https://www.metmuseum.org/art/collection/search/436698",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436698",
+      "raw": {
+        "objectID": 436698,
+        "isHighlight": false,
+        "accessionNumber": "64.294",
+        "accessionYear": "1964",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/ep64.294.bw.R.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/ep64.294.bw.R.jpg",
+        "additionalImages": [],
+        "constituents": [
+          {
+            "constituentID": 107803,
+            "role": "Artist",
+            "name": "Jacob van Hulsdonck",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500019495",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q1677696",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "Still Life: A Basket of Grapes and Other Fruit",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Jacob van Hulsdonck",
+        "artistDisplayBio": "Flemish, 1582–1647",
+        "artistSuffix": "",
+        "artistAlphaSort": "Hulsdonck, Jacob van",
+        "artistNationality": "Flemish",
+        "artistBeginDate": "1582",
+        "artistEndDate": "1647",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q1677696",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500019495",
+        "objectDate": "probably ca. 1635–45",
+        "objectBeginDate": 1635,
+        "objectEndDate": 1645,
+        "medium": "Oil on wood",
+        "dimensions": "19 5/8 x 25 1/2 in. (49.8 x 64.8 cm)",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 49.8,
+              "Width": 64.8
+            }
+          }
+        ],
+        "creditLine": "The Alfred N. Punnett Endowment Fund, 1964",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-10-06T04:59:37.62Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/436698",
+        "tags": [
+          {
+            "term": "Grapes",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300379338",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q10978"
+          },
+          {
+            "term": "Lemons",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300266423",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q1093742"
+          },
+          {
+            "term": "Still Life",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300015638",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q170571"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q19913297",
+        "isTimelineWork": false,
+        "GalleryNumber": ""
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "getty-103rhk",
+      "artist_id": "jacob-van-hulsdonck",
+      "creator_source_id": "getty:103JZE",
+      "source_url": "https://www.getty.edu/art/collection/object/103RHK",
+      "api_url": "https://data.getty.edu/museum/collection/object/7bca04fe-6630-4b07-a221-ea9d0735b1c3",
+      "raw": {
+        "name": "Still Life with Lemons, Oranges, and a Pomegranate",
+        "description": "Jacob van Hulsdonck, the master of a prosperous studio specializing in still life painting, meticulously rendered every surface and texture of fruit, porcelain, and wooden tabletop in this painting. He was careful to paint the still life from a high vantage point so that most of the table and the bowl's contents could be seen. Lemons, oranges, and a pomegranate, some split open to expose their succulent insides, rest in a Chinese blue-and-white porcelain bowl, dating from the Wan-Li period of the Ming dynasty.   \n The still life attests to the fragile and fleeting properties of the natural world. The dimpled skin of the lemons and oranges; the juicy, glistening insides of the pomegranate held gently together by the thin white tissue of the pulp; the leaves and blooms still attached to fruit; and the shiny droplets of water in the foreground are all brilliant, short-lived effects captured on panel.",
+        "identifier": [
+          "86.PB.538"
+        ],
+        "material": "Oil on panel",
+        "license": "http://creativecommons.org/publicdomain/zero/1.0/",
+        "size": "Unframed: 41.9 × 49.5 cm (16 1/2 × 19 1/2 in.)",
+        "thumbnailUrl": "https://media.getty.edu/iiif/image/a896cb5c-eb24-41e0-b956-124f49580cf4/full/!300,300/0/default.jpg",
+        "creditText": [
+          "<p>Images provided here are believed to be in the public domain and     are available under <a href=\"https://creativecommons.org/publicdomain/zero/1.0/\">CC0</a>     through Getty&rsquo;s <a href=\"http://www.getty.edu/about/opencontent.html\">Open Content Program</a>.     Texts provided here are &copy; J. Paul Getty Trust, licensed under     <a href=\"https://creativecommons.org/licenses/by/4.0/legalcode\">CC BY 4.0</a>.     Terms of use for the Getty logo can be found     <a href=\"http://www.getty.edu/legal/copyright.html#logo\"> here</a>.    </p>"
+        ],
+        "url": "https://www.getty.edu/art/collection/object/103RHK",
+        "sameAs": "https://www.getty.edu/art/collection/object/103RHK",
+        "creator": [
+          {
+            "name": "Jacob van Hulsdonck",
+            "url": "https://www.getty.edu/art/collection/person/103JZE",
+            "sameAs": "https://www.getty.edu/art/collection/person/103JZE",
+            "@type": "Person"
+          }
+        ],
+        "temporal": "about 1620–1630",
+        "@context": "https://www.schema.org",
+        "@type": "Painting"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "nga-161665",
+      "artist_id": "jacob-van-hulsdonck",
+      "creator_source_id": "nga:37716",
+      "source_url": "https://www.nga.gov/artworks/161665-wild-strawberries-and-carnation-wan-li-bowl",
+      "raw": {
+        "museum": "National Gallery of Art",
+        "title": "Wild Strawberries and a Carnation in a Wan-Li Bowl",
+        "artist": "Jacob van Hulsdonck",
+        "date": "c. 1620",
+        "medium": "oil on copper",
+        "dimensions": "overall (copper panel): 28.3 × 36.2 cm; overall (with wood strip edges): 29.6 × 37.3 cm",
+        "culture": "Flemish",
+        "accession": "2013.1.1",
+        "source_url": "https://www.nga.gov/artworks/161665-wild-strawberries-and-carnation-wan-li-bowl",
+        "image_url": "https://api.nga.gov/iiif/1bbb9eaf-15eb-4cce-b602-62b0d7b618b1/full/full/0/default.jpg",
+        "preview_url": "https://api.nga.gov/iiif/1bbb9eaf-15eb-4cce-b602-62b0d7b618b1/full/1200,/0/default.jpg",
+        "license": "CC0",
+        "license_evidence": {
+          "object_media_public_domain": true,
+          "object_notice": "This object’s media is free and in the public domain."
+        },
+        "policy_url": "https://www.nga.gov/terms-and-notices"
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "bowes-bm-99",
+      "artist_id": "jacob-van-hulsdonck",
+      "creator_source_id": "ulan:500019495",
+      "source_url": "https://artuk.org/discover/artworks/breakfast-piece-45768",
+      "raw": {
+        "museum": "The Bowes Museum",
+        "title": "Breakfast Piece",
+        "artist": "Jacob van Hulsdonck",
+        "date": "1614",
+        "medium": "oil on panel",
+        "dimensions": "65.4 × 106.8 cm",
+        "culture": "Flemish",
+        "accession": "B.M.99",
+        "source_url": "https://artuk.org/discover/artworks/breakfast-piece-45768",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Jacob_van_Hulsdonck_%281582-1647%29_-_Breakfast_Piece_-_B.M.99_-_Bowes_Museum.jpg",
+        "preview_url": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Jacob_van_Hulsdonck_%281582-1647%29_-_Breakfast_Piece_-_B.M.99_-_Bowes_Museum.jpg",
+        "license": "Public Domain (PDM 1.0 · PD-Art)",
+        "license_evidence": {
+          "public_domain_mark": "https://creativecommons.org/publicdomain/mark/1.0/",
+          "pd_art": true
+        },
+        "policy_url": "https://commons.wikimedia.org/wiki/File:Jacob_van_Hulsdonck_(1582-1647)_-_Breakfast_Piece_-_B.M.99_-_Bowes_Museum.jpg"
+      },
+      "description_basis": "collection_record_and_image_observation"
+    }
+  ]
+}

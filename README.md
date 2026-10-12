@@ -2,7 +2,7 @@
 
 디자인·AI·제품·개발·인테리어의 뉴스와 에디토리얼을 중심으로, 작품·작가·참고사이트를 함께 탐색하는 매체입니다.
 
-현재 저장소에는 The Met과 Cleveland Museum of Art에서 검증한 작품 30점과 확인 작가 19명의 표본이 있습니다. 이 표본은 화면과 데이터 구조를 검증하기 위한 것이며 첫 공개 목표 수량이 아닙니다.
+현재 저장소에는 출처와 공개 이미지 이용 조건을 확인한 작품 87점과 작가 19명의 자료가 있습니다. 2026-10-12 작품 57점을 보강해 16명은 작가별 최소 5점 기준을 충족했습니다. 김시·이택균·Yeoseol은 추가 작품의 귀속과 이미지 이용 조건을 확인해야 하며 현재 1점씩입니다.
 
 ## 프로젝트 기준
 
@@ -89,6 +89,12 @@ npx tsx scripts/check-pagination.mjs
 서버에 접수만 하고 종료하려면 기존 실행 명령에 `--enqueue-only`를 추가합니다. 서버 재시작 후에도 남아 있는 DB 작업을 이어 처리합니다. 큐 검증: `npx tsx scripts/check-news-queue.mjs`, 파이프라인 검증: `npx tsx scripts/check-news-pipeline.mjs`. `supabase/tests/durable_news_jobs.sql`은 실제 DB에서 임대·복구·권한을 검사한 뒤 모두 롤백하는 테스트입니다.
 
 ## 작품·작가 관리와 DB
+
+작품 30점의 짧은 소개는 소장 미술관 해설을 바탕으로 `research/art-collection/editorial.json`에 정리했습니다. 공개 상세의 ‘작품 이야기’, 작품 목록·통합 검색, CMS의 작품 소개 필드가 같은 `data.description`을 사용합니다. 작가 목록은 기존 출처가 있는 소개와 활동 분야를 함께 보여줍니다.
+
+작가별 5점 보강 자료 57점은 `research/art-collection/expansion.json`, 출처의 작가 식별자·개별 이용 근거·원문 정보는 `expansion-sources.json`에 보존했습니다. 새 DB에서는 초기 자료를 넣은 뒤 `supabase/seed-art-expansion.sql`을 실행합니다. 이 보강 SQL은 기존 작품이나 작가 소개를 덮어쓰지 않고 작품·연결을 추가하며, 같은 ID에 다른 내용이 있으면 전체 작업을 중단합니다. 테이블이 없는 환경의 파일 기반 목록도 보강 자료를 함께 읽습니다.
+
+참고사이트 25곳의 한국어 소개·분류·확인 출처는 `content/references/editorial.json`에 기록했습니다. 2026-10-12 공식 페이지를 대조했고, 직접 조회가 제한된 Godly와 Studio Vanadium은 공식 도메인의 검색 색인으로 확인했다고 구분했습니다. 원자료와 DB 연결 검증은 `node scripts/check-content-quality.mjs`, 실제 공개 DB 검증은 `node --env-file=.env.local scripts/check-content-quality.mjs --live`로 실행합니다. 이후 CMS에서 편집한 내용은 배포용 초기 자료와 차이가 날 수 있으므로 이 검증은 기록한 보강 자료와의 일치 여부를 확인하는 용도입니다.
 
 ARCH.B의 Supabase 프로젝트는 `overgjynkrnwayfammid`입니다. 적용한 스키마는 `supabase/migrations`, 기존 작품 30점·작가 19명과 출처를 보존한 초기 데이터는 `supabase/seed-art-catalog.sql`에 있습니다. 공개 목록·검색·상세와 CMS가 같은 `artworks`, `artists`, `artwork_artists`를 읽습니다. 콘텐츠 관리 순서는 뉴스 → 아트 → 작가 → 참고사이트 → 에디토리얼 → 갤러리입니다. 관리자·부관리자는 작품·작가를 추가·수정하고 에디터는 조회합니다. 이미지는 HTTPS URL로 등록합니다.
 

@@ -1,0 +1,305 @@
+{
+  "verified_at": "2026-10-12",
+  "references": [
+    {
+      "id": 3,
+      "title": "디자인 삼성",
+      "description": "삼성의 제품과 디지털 경험을 다루는 공식 디자인 채널입니다. 제품 디자인 이야기와 디자이너 인터뷰를 통해 브랜드의 시각 언어와 디자인 과정을 살펴볼 수 있습니다.",
+      "url": "https://design.samsung.com/global/main/",
+      "range": [
+        "디자인",
+        "브랜딩"
+      ],
+      "source_url": "https://design.samsung.com/global/main/",
+      "verification": "official_page"
+    },
+    {
+      "id": 4,
+      "title": "타이포그래피 서울",
+      "description": "타입과 타이포그래피를 다루는 온라인 디자인 매체입니다. 창작자 인터뷰, 전시·도서 리뷰와 연재를 통해 글자 디자인의 사례와 작업 배경을 읽을 수 있습니다.",
+      "url": "https://typographyseoul.com/home/",
+      "range": [
+        "디자인",
+        "브랜딩"
+      ],
+      "source_url": "https://typographyseoul.com/about/",
+      "verification": "official_page"
+    },
+    {
+      "id": 5,
+      "title": "heyPOP",
+      "description": "디자인 프로젝트와 창작자, 전시·팝업·공간 소식을 소개하는 매체입니다. 프로젝트의 기획 배경을 읽거나 방문할 전시와 공간을 찾을 때 참고할 수 있습니다.",
+      "url": "https://heypop.kr/",
+      "range": [
+        "전시 & 팝업",
+        "브랜딩",
+        "공간"
+      ],
+      "source_url": "https://heypop.kr/",
+      "verification": "official_page"
+    },
+    {
+      "id": 6,
+      "title": "아키비스트",
+      "description": "전시·예술 공간·작품과 연구 자료를 모은 예술 정보 아카이브입니다. 진행 중인 전시를 유형과 지역으로 살펴보고, 지도에서 공간을 찾아볼 수 있습니다.",
+      "url": "https://archivist.kr/",
+      "range": [
+        "전시 & 팝업",
+        "공간"
+      ],
+      "source_url": "https://archivist.kr/",
+      "verification": "official_page"
+    },
+    {
+      "id": 7,
+      "title": "월간 SPACE",
+      "description": "건축 전문지 월간 SPACE의 온라인 채널입니다. 건축 프로젝트와 비평, 도시·공간 관련 기사를 통해 설계 사례와 그 배경을 함께 읽을 수 있습니다.",
+      "url": "https://vmspace.com/",
+      "range": [
+        "공간"
+      ],
+      "source_url": "https://vmspace.com/",
+      "verification": "official_page"
+    },
+    {
+      "id": 8,
+      "title": "Godly",
+      "description": "웹사이트 디자인 사례를 모아 보여 주는 큐레이션 디렉터리입니다. 포트폴리오와 서비스 사이트의 화면 구성, 시각 표현을 탐색할 때 참고할 수 있습니다.",
+      "url": "https://godly.website/",
+      "range": [
+        "UI/UX",
+        "디자인"
+      ],
+      "source_url": "https://godly.website/",
+      "verification": "official_search_index"
+    },
+    {
+      "id": 9,
+      "title": "Studio Vanadium",
+      "description": "브랜드 전략과 아이덴티티, 그래픽·디지털 디자인을 다루는 스튜디오입니다. 프로젝트와 서비스 소개에서 로고, 패키지, 웹 등 브랜드 접점의 표현을 살펴볼 수 있습니다.",
+      "url": "https://www.studiovanadium.com",
+      "range": [
+        "브랜딩",
+        "디자인"
+      ],
+      "source_url": "https://www.studiovanadium.com",
+      "verification": "official_search_index"
+    },
+    {
+      "id": 10,
+      "title": "Cosmos",
+      "description": "이미지와 시각 자료를 탐색하는 플랫폼입니다. 그래픽 디자인, 타이포그래피, 예술, 공간 등 주제별 자료와 컬렉션을 둘러보며 참고 이미지를 찾을 수 있습니다.",
+      "url": "https://www.cosmos.so/explore",
+      "range": [
+        "디자인",
+        "브랜딩",
+        "공간"
+      ],
+      "source_url": "https://www.cosmos.so/explore",
+      "verification": "official_page"
+    },
+    {
+      "id": 11,
+      "title": "Designspiration",
+      "description": "디자인·사진·타이포그래피 이미지를 탐색하고 저장하는 플랫폼입니다. 시각 자료를 모으고 컬렉션으로 정리하며 작업에 참고할 이미지를 찾을 수 있습니다.",
+      "url": "https://www.designspiration.com/",
+      "range": [
+        "디자인",
+        "사진"
+      ],
+      "source_url": "https://www.designspiration.com/",
+      "verification": "official_page"
+    },
+    {
+      "id": 12,
+      "title": "Mindsparkle Mag",
+      "description": "브랜드 아이덴티티와 그래픽, 웹 디자인 프로젝트를 소개하는 온라인 매거진입니다. 프로젝트 설명과 이미지를 함께 보며 작업의 시각 언어를 살펴볼 수 있습니다.",
+      "url": "https://mindsparklemag.com/inspiration",
+      "range": [
+        "디자인",
+        "브랜딩",
+        "UI/UX"
+      ],
+      "source_url": "https://mindsparklemag.com/inspiration",
+      "verification": "official_page"
+    },
+    {
+      "id": 13,
+      "title": "Siteinspire",
+      "description": "웹사이트 디자인 사례와 제작자 정보를 모은 디렉터리입니다. 포트폴리오와 여러 유형의 사이트를 비교하며 페이지 구성과 디자인 표현을 참고할 수 있습니다.",
+      "url": "https://www.siteinspire.com/",
+      "range": [
+        "UI/UX",
+        "디자인"
+      ],
+      "source_url": "https://www.siteinspire.com/",
+      "verification": "official_page"
+    },
+    {
+      "id": 14,
+      "title": "On Careers",
+      "description": "스포츠웨어 브랜드 On의 공식 채용·기업문화 사이트입니다. 팀과 직무를 소개하는 콘텐츠, 브랜드 메시지와 채용 페이지의 정보 구성을 참고할 수 있습니다.",
+      "url": "https://culture.on.com/",
+      "range": [
+        "브랜딩",
+        "UI/UX"
+      ],
+      "source_url": "https://culture.on.com/",
+      "verification": "official_page"
+    },
+    {
+      "id": 15,
+      "title": "Wall of Portfolios",
+      "description": "디자이너의 포트폴리오 웹사이트를 모아 보여 주는 디렉터리입니다. UI·UX와 제품 디자인 포트폴리오의 작업 소개 방식과 화면 구성을 비교할 수 있습니다.",
+      "url": "https://www.wallofportfolios.in",
+      "range": [
+        "UI/UX",
+        "디자인"
+      ],
+      "source_url": "https://www.wallofportfolios.in",
+      "verification": "official_page"
+    },
+    {
+      "id": 16,
+      "title": "Awwwards",
+      "description": "웹사이트를 선정하고 소개하는 어워드·디자인 플랫폼입니다. 후보와 수상작, 분야별 사이트에서 웹 디자인과 인터랙션 사례를 탐색할 수 있습니다.",
+      "url": "https://www.awwwards.com",
+      "range": [
+        "UI/UX",
+        "디자인"
+      ],
+      "source_url": "https://www.awwwards.com",
+      "verification": "official_page"
+    },
+    {
+      "id": 17,
+      "title": "Base Design",
+      "description": "브랜드 구축과 디자인 프로젝트를 소개하는 스튜디오입니다. 프로젝트와 작업 색인을 통해 브랜드 아이덴티티의 적용 사례와 시각 표현을 살펴볼 수 있습니다.",
+      "url": "https://www.basedesign.com",
+      "range": [
+        "브랜딩",
+        "디자인"
+      ],
+      "source_url": "https://www.basedesign.com",
+      "verification": "official_page"
+    },
+    {
+      "id": 18,
+      "title": "Ordinary People",
+      "description": "브랜드 전략과 아트 디렉션을 다루는 디자인 스튜디오입니다. 그래픽 아이덴티티, 전시 그래픽, 설치와 사인 등 다양한 프로젝트의 적용 사례를 볼 수 있습니다.",
+      "url": "https://ordinarypeople.info",
+      "range": [
+        "브랜딩",
+        "디자인"
+      ],
+      "source_url": "https://ordinarypeople.info",
+      "verification": "official_page"
+    },
+    {
+      "id": 19,
+      "title": "Minimalio",
+      "description": "미니멀한 포트폴리오를 위한 WordPress 테마와 제작 사례를 소개합니다. 사진가·디자이너·작가의 사이트 쇼케이스와 데모를 비교하며 작업을 보여 주는 방식을 참고할 수 있습니다.",
+      "url": "https://minimalio.org",
+      "range": [
+        "UI/UX",
+        "디자인"
+      ],
+      "source_url": "https://minimalio.org",
+      "verification": "official_page"
+    },
+    {
+      "id": 20,
+      "title": "PRINT Magazine",
+      "description": "그래픽 디자인과 시각 문화를 다루는 온라인 매체입니다. 브랜드 아이덴티티, 타이포그래피, 출판과 디자인 관련 기사에서 작업 사례와 비평을 읽을 수 있습니다.",
+      "url": "https://www.printmag.com",
+      "range": [
+        "디자인",
+        "브랜딩"
+      ],
+      "source_url": "https://www.printmag.com",
+      "verification": "official_page"
+    },
+    {
+      "id": 21,
+      "title": "HERE CREATIVE",
+      "description": "CGI·3D, 영상, 사진과 디자인 분야의 아티스트와 스튜디오를 소개하는 크리에이티브 에이전시입니다. 제작자 소개와 작업 사례에서 브랜드 콘텐츠의 표현 방식을 참고할 수 있습니다.",
+      "url": "https://www.herecreative.co",
+      "range": [
+        "디자인",
+        "사진"
+      ],
+      "source_url": "https://www.herecreative.co",
+      "verification": "official_page"
+    },
+    {
+      "id": 22,
+      "title": "Them Frames",
+      "description": "사진가 인터뷰와 사진집, 작업·편집 도구에 관한 기사를 발행하는 매체입니다. 사진 프로젝트의 배경과 제작자의 시선을 읽으며 촬영·편집 아이디어를 얻을 수 있습니다.",
+      "url": "https://themframes.com",
+      "range": [
+        "사진"
+      ],
+      "source_url": "https://themframes.com",
+      "verification": "official_page"
+    },
+    {
+      "id": 23,
+      "title": "KOBY",
+      "description": "사진가 Ian Kobylanski의 포트폴리오입니다. 광고·라이프스타일, 인물, 패션과 거리 사진을 살펴보며 인물을 담는 방식과 촬영 프로젝트의 구성을 참고할 수 있습니다.",
+      "url": "https://www.koby.photography/",
+      "range": [
+        "사진",
+        "패션"
+      ],
+      "source_url": "https://www.koby.photography/",
+      "verification": "official_page"
+    },
+    {
+      "id": 24,
+      "title": "Visual Journal",
+      "description": "브랜딩, 편집과 그래픽 디자인 프로젝트를 소개하는 디자인 블로그입니다. 프로젝트 이미지를 통해 타이포그래피, 인쇄물과 시각 아이덴티티의 적용 사례를 볼 수 있습니다.",
+      "url": "https://visualjournal.it/",
+      "range": [
+        "브랜딩",
+        "디자인"
+      ],
+      "source_url": "https://visualjournal.it/",
+      "verification": "official_page"
+    },
+    {
+      "id": 25,
+      "title": "Steven Holl Architects",
+      "description": "Steven Holl Architects의 공식 스튜디오 사이트입니다. 건축 프로젝트와 스튜디오의 작업 방식을 통해 공간 구성과 설계 접근을 살펴볼 수 있습니다.",
+      "url": "https://www.stevenholl.com/studio/",
+      "range": [
+        "공간"
+      ],
+      "source_url": "https://www.stevenholl.com/studio/",
+      "verification": "official_page"
+    },
+    {
+      "id": 26,
+      "title": "디블러 · de.blur",
+      "description": "브랜딩 디자인 스튜디오 디블러의 공식 사이트입니다. 브랜드 전략과 아이덴티티, 로고와 패키지 등 프로젝트의 디자인 적용 사례를 참고할 수 있습니다.",
+      "url": "https://www.de-blur.com/",
+      "range": [
+        "브랜딩",
+        "디자인"
+      ],
+      "source_url": "https://www.de-blur.com/",
+      "verification": "official_page"
+    },
+    {
+      "id": 27,
+      "title": "REF Digital",
+      "description": "웹사이트, 모바일 앱, 전자상거래와 디지털 경험을 만드는 에이전시입니다. 프로젝트와 서비스 소개를 통해 디지털 서비스의 화면과 경험 설계 사례를 살펴볼 수 있습니다.",
+      "url": "https://ref.digital/",
+      "range": [
+        "UI/UX",
+        "개발"
+      ],
+      "source_url": "https://ref.digital/",
+      "verification": "official_page"
+    }
+  ]
+}
