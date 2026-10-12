@@ -1,0 +1,153 @@
+{
+  "id": "f41f40ef-85e4-4b63-a782-691f7440e895",
+  "article": {
+    "url": "https://blogs.microsoft.com/blog/2026/07/20/microsoft-expands-azure-ai-and-hpc-infrastructure-with-amd/",
+    "title": "Azure·AMD 협력 확대, 데이터 처리·칩 설계·AI 추론에 서로 다른 인프라",
+    "summary": "마이크로소프트와 AMD가 Helios와 차세대 EPYC 기반의 Azure 인프라 확대를 발표했다. HDv2·HXv2·ND MI455X v7의 용도를 나누고 CPU·메모리·네트워크를 함께 구성한다. 공개한 예정 사양과 이용 가능성, 실제 작업의 성능을 구분해 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "서로 다른 작업에 세 가지 구성을 제시하다",
+        "kind": "reporting",
+        "paragraphs": [
+          "마이크로소프트는 2026년 7월 20일 AMD와의 협력을 통해 Azure의 AI·고성능 컴퓨팅 인프라를 확대한다고 발표했다. 데이터 처리용 HDv2, 전자 설계 자동화와 기술 계산용 HXv2, AI 추론용 ND MI455X v7이라는 세 가지 향후 가상머신 구성을 소개했다. 하나의 GPU 모델만 추가하는 발표보다 서로 다른 작업의 자원을 나누는 구상이다.",
+          "AMD의 같은 날 공식 발표도 차세대 EPYC와 Helios, 네트워크 및 소프트웨어를 포괄하는 협력이라고 설명한다. Helios의 고객 공급을 2026년 하반기에 시작한다는 계획을 제시했다. 이는 Azure의 모든 지역에서 세 구성을 즉시 사용할 수 있다는 출시 공지가 아니며, 실제 제공 지역과 계정의 이용 조건은 별도로 확인할 항목이다."
+        ],
+        "references": [
+          {
+            "label": "마이크로소프트의 Azure·AMD 인프라 공식 발표",
+            "kind": "primary",
+            "url": "https://blogs.microsoft.com/blog/2026/07/20/microsoft-expands-azure-ai-and-hpc-infrastructure-with-amd/"
+          },
+          {
+            "label": "AMD의 Azure 협력·Helios 공급 계획 공식 발표",
+            "kind": "primary",
+            "url": "https://ir.amd.com/news-events/press-releases/detail/1291/microsoft-to-deploy-next-gen-amd-instinct-and-amd-epyc-processors-as-the-companies-expand-their-long-term-strategic-partnership"
+          }
+        ]
+      },
+      {
+        "heading": "데이터와 반도체 설계에는 다른 CPU 구성을",
+        "kind": "reporting",
+        "paragraphs": [
+          "마이크로소프트가 공개한 HDv2 사양은 약 500개의 물리적 6세대 EPYC 코어와 4TB 메모리, 32TB 로컬 NVMe 저장 공간, 400Gb 네트워크다. 데이터 준비와 검색, 강화학습 및 에이전트 조정 같은 CPU 작업을 대상으로 제시했다. 이 사양을 모델 학습에 쓰는 GPU의 개수로 읽을 수는 없다.",
+          "HXv2에는 176개의 6세대 EPYC 코어와 5GHz 초과 클록, 코어당 접근 가능한 캐시의 50% 증가를 소개했다. 약 2TB 또는 4TB의 메모리 구성과 800Gb InfiniBand도 포함한다. 이는 회사가 설명한 예정 구성이다. 캐시 증가율과 네트워크 사양을 모든 설계·시뮬레이션 작업의 처리 속도 증가율로 바꾸는 비교 결과는 발표하지 않았다."
+        ],
+        "references": [
+          {
+            "label": "마이크로소프트의 Azure·AMD 인프라 공식 발표",
+            "kind": "primary",
+            "url": "https://blogs.microsoft.com/blog/2026/07/20/microsoft-expands-azure-ai-and-hpc-infrastructure-with-amd/"
+          }
+        ]
+      },
+      {
+        "heading": "추론을 위한 랙 규모와 연결 계층",
+        "kind": "reporting",
+        "paragraphs": [
+          "AMD는 Helios를 Instinct MI455X GPU와 EPYC Venice CPU, Pensando 네트워크 및 ROCm 소프트웨어를 결합한 랙 규모 플랫폼이라고 설명한다. Azure에서는 모델 추론과 AI 서비스, 고객 애플리케이션에 사용할 방향을 밝혔다. ND MI455X v7도 마이크로소프트 발표에서 추론용 구성으로 제시됐다.",
+          "협력에는 Pensando DPU의 적용 확대와 Azure Boost를 통한 네트워크 통합도 포함된다. 개별 가속기뿐 아니라 서버 사이와 서비스의 연결을 구성하는 범위다. 양사는 유연성과 효율을 기대하지만 공개 자료에 동일한 고객 작업을 다른 구성과 비교한 전체 비용·에너지 측정은 제시하지 않았다. 예정 제품의 사양과 회사의 기대, 실측 결과는 서로 나누어 읽어야 한다."
+        ],
+        "references": [
+          {
+            "label": "AMD의 Azure 협력·Helios 공급 계획 공식 발표",
+            "kind": "primary",
+            "url": "https://ir.amd.com/news-events/press-releases/detail/1291/microsoft-to-deploy-next-gen-amd-instinct-and-amd-epyc-processors-as-the-companies-expand-their-long-term-strategic-partnership"
+          },
+          {
+            "label": "마이크로소프트의 Azure·AMD 인프라 공식 발표",
+            "kind": "primary",
+            "url": "https://blogs.microsoft.com/blog/2026/07/20/microsoft-expands-azure-ai-and-hpc-infrastructure-with-amd/"
+          }
+        ]
+      },
+      {
+        "heading": "가속기 밖의 병목도 함께 보는 이유",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 데이터 준비와 설계, 추론을 나눈 구성이 AI 인프라를 하나의 성능 숫자로 비교하기 어렵다는 사실을 드러낸다고 본다. 모델을 실행하기 전에 자료를 읽고 정리하는 단계가 느리면 다른 연산 장치의 여유만으로 전체 흐름이 빨라지지 않을 수 있다. 네트워크로 나누어 계산하는 작업과 한 코어에서 처리하는 작업도 같은 사양에 반응하는 방식이 다르다.",
+          "따라서 코어와 메모리, 네트워크의 큰 숫자를 보는 데서 선택을 끝내기보다 실제 업무가 어디에서 기다리는지 관찰할 필요가 있다. 대표 입력을 처리할 때 자료를 읽는 시간과 계산하는 시간, 다른 작업과 연결되는 시간을 나누어 보면 예정 구성의 용도와 비교할 근거가 생긴다. 이 분석은 인프라를 직접 실행한 시험이 아니라 공개된 작업 분류에서 도출한 판단 기준이다."
+        ],
+        "references": [
+          {
+            "label": "마이크로소프트의 Azure·AMD 인프라 공식 발표",
+            "kind": "primary",
+            "url": "https://blogs.microsoft.com/blog/2026/07/20/microsoft-expands-azure-ai-and-hpc-infrastructure-with-amd/"
+          },
+          {
+            "label": "AMD의 Azure 협력·Helios 공급 계획 공식 발표",
+            "kind": "primary",
+            "url": "https://ir.amd.com/news-events/press-releases/detail/1291/microsoft-to-deploy-next-gen-amd-instinct-and-amd-epyc-processors-as-the-companies-expand-their-long-term-strategic-partnership"
+          }
+        ]
+      },
+      {
+        "heading": "선택지가 늘어도 실제 제공 조건은 남는다",
+        "kind": "analysis",
+        "paragraphs": [
+          "하드웨어의 선택지가 늘면 각 작업에 맞는 구성을 시험할 가능성도 넓어진다. 그러나 같은 코드가 다른 실행 환경에서 같은 방식으로 돌아가는지와 얼마의 비용이 드는지는 실제 설정에서 확인해야 한다. 장치 사양만 비교하면 소프트웨어와 자료 이동, 필요한 지역의 자원 확보 같은 조건이 빠질 수 있다.",
+          "이번 발표에서는 새 구성의 역할과 공급 계획을 보존하는 것이 우선이다. 이후 일반 제공과 요금, 구체적인 크기가 공개되면 당시의 예정 사양과 실제 서비스를 나란히 비교할 수 있다. 회사가 말한 유연성을 모든 고객의 즉시 이용 가능성으로 확대하거나 효율을 검증된 절감률로 바꾸면 발표의 경계가 사라진다.",
+          "이용자의 검토 기록에는 작업을 성공으로 본 조건도 남아야 한다. 같은 입력을 처리해도 지연 시간과 결과의 정확성, 실패 뒤 복구를 무엇으로 평가했는지에 따라 좋은 구성이 달라진다. 서로 다른 인프라를 제안하는 발표는 그 기준을 대신 정하지 않는다. 공개된 자원의 역할과 자신의 업무 조건을 연결할 때 선택의 의미가 구체화된다."
+        ],
+        "references": [
+          {
+            "label": "마이크로소프트의 Azure·AMD 인프라 공식 발표",
+            "kind": "primary",
+            "url": "https://blogs.microsoft.com/blog/2026/07/20/microsoft-expands-azure-ai-and-hpc-infrastructure-with-amd/"
+          },
+          {
+            "label": "AMD의 Azure 협력·Helios 공급 계획 공식 발표",
+            "kind": "primary",
+            "url": "https://ir.amd.com/news-events/press-releases/detail/1291/microsoft-to-deploy-next-gen-amd-instinct-and-amd-epyc-processors-as-the-companies-expand-their-long-term-strategic-partnership"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "HDv2는 데이터 처리, HXv2는 설계·기술 계산, ND MI455X v7은 AI 추론용으로 제시됐다.",
+      "AMD는 Helios 고객 공급을 2026년 하반기에 시작할 계획이라고 발표했다.",
+      "예정 사양과 회사의 효율 기대를 실제 제공·실측 절감률로 확대하지 않아야 한다."
+    ],
+    "tags": [
+      "Azure",
+      "AMD",
+      "AI인프라",
+      "고성능컴퓨팅"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "마이크로소프트의 Azure·AMD 인프라 공식 발표",
+        "url": "https://blogs.microsoft.com/blog/2026/07/20/microsoft-expands-azure-ai-and-hpc-infrastructure-with-amd/"
+      },
+      {
+        "label": "AMD의 Azure 협력·Helios 공급 계획 공식 발표",
+        "url": "https://ir.amd.com/news-events/press-releases/detail/1291/microsoft-to-deploy-next-gen-amd-instinct-and-amd-epyc-processors-as-the-companies-expand-their-long-term-strategic-partnership"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blogs.microsoft.com/blog/2026/07/20/microsoft-expands-azure-ai-and-hpc-infrastructure-with-amd/",
+      "https://ir.amd.com/news-events/press-releases/detail/1291/microsoft-to-deploy-next-gen-amd-instinct-and-amd-epyc-processors-as-the-companies-expand-their-long-term-strategic-partnership"
+    ],
+    "notes": "Microsoft7/20원문과 AMD7/20공식 IR 보도자료 전문을 직접 웹 확인. HDv2almost500physicalCPU/4TB/32TB/400Gb,HXv2176cores>5GHz/cache50%/2or4TB/800GbInfiniBand 예정사양 정확대조. AMDHeliosMI455X+Venice+Pensando+ROCm/2026H2shipplan vs AzureglobalGA구분. 회사효율기대단정없음·독립비교/실제VM실행 없음. unrelated HPCknownissues페이지는 해당제품조건입증불가로인용제외. snapshot.pending 동일HeliosAzure단일,후보2ProjectPerception/FY26별도사건.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "0fd957f9-9a32-449e-b967-9c3722e4574f",
+    "6167e724-63c8-400d-8d69-56c2d7d52293"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:02:50.102Z",
+    "checks": [
+      "양사의같은7월20일협력발표 대조",
+      "CPU 코어와 GPU·VM 용도 구분",
+      "메모리·캐시·네트워크 예정 사양과 실측 성능 분리",
+      "Helios 하반기공급과Azure지역별GA 구분",
+      "전체 pending 및 후보의 동일 사건 중복 없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

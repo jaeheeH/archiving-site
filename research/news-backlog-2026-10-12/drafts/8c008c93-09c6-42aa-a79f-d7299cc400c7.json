@@ -1,0 +1,159 @@
+{
+  "id": "8c008c93-09c6-42aa-a79f-d7299cc400c7",
+  "article": {
+    "url": "https://www.apple.com/newsroom/2026/09/major-updates-for-apples-software-platforms-are-now-available/",
+    "title": "애플 OS27 배포, 반응 속도·검색·유리 표현의 변화와 기능별 조건",
+    "summary": "애플이9월14일부터 여러 플랫폼의 OS27 기능을 배포하기 시작했다. 앱 실행과 파일 처리, 검색과 Liquid Glass 조정을 개선했다고 설명한다. 성능 수치는 특정 회사 시험의 최대치이며 운영체제 설치와 AI의 기기·언어·지역 지원은 다른 조건이다.",
+    "paragraphs": [
+      {
+        "heading": "여러 기기의 일상 작업을 함께 다듬은 배포",
+        "kind": "reporting",
+        "paragraphs": [
+          "애플은 9월14일 iOS27과 iPadOS27, macOS27, watchOS27, visionOS27과 tvOS27에 걸쳐 새 기능을 배포하기 시작했다고 발표했다. 주요 내용에는 AI와 자녀 보호 도구가 포함되지만, 이번 기사에서는 앱 실행과 파일 처리, 네트워크·검색·표시처럼 운영체제의 기본 경험이 달라지는 부분을 중심으로 살폈다. 개별 기능의 지원 시점까지 모두 같은 날짜라는 의미는 아니다.",
+          "회사는 아이폰·아이패드에서 앱이 더 빨리 열리고 새로 찍은 사진이 사진 앱에 더 빨리 들어오며 AirDrop 전송도 개선됐다고 설명한다. 아이패드는 외부 드라이브로 파일을 보고 옮기는 동작, 맥은 네트워크 파일 탐색과 화면 전환 등을 개선했다는 발표다. 확인된 회사 설명과 각 작업의 측정 조건을 함께 읽을 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "애플의9월14일 플랫폼 업데이트",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/major-updates-for-apples-software-platforms-are-now-available/"
+          }
+        ]
+      },
+      {
+        "heading": "최대 성능 수치마다 시험 기기가 다르다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 각주는 앱 실행의 최대30% 개선을 아이폰11프로맥스에서 iOS26.6과 사전 출시 iOS27을 비교한 회사 시험으로 설명한다. 사진 로딩의 최대70%는 아이폰15와5만개 자료가 있는 라이브러리, AirDrop의 최대80%는 아이폰16플러스의30MB 사진 전송이었다. 세 수치를 같은 최신 아이폰의 모든 작업 성과로 합칠 수는 없다.",
+          "아이패드의 최대5배 파일 처리에는 M4 아이패드프로와 APFS로 포맷한 USB4 외부 SSD,1만개 JPG 파일이라는 조건이 붙는다. 원문은 설정·콘텐츠·환경과 사용 방식 등에 따라 결과가 달라진다고 명시한다. 실제 업무 파일과 액세서리에서 같은 이득을 확인한 독립 측정은 이 기사에서 수행하지 않았다."
+        ],
+        "references": [
+          {
+            "label": "애플의9월14일 플랫폼 업데이트",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/major-updates-for-apples-software-platforms-are-now-available/"
+          },
+          {
+            "label": "iOS27 공식 기능·조건 안내",
+            "kind": "primary",
+            "url": "https://www.apple.com/os/ios/"
+          }
+        ]
+      },
+      {
+        "heading": "검색과 읽기 경험을 바꾸는 선택",
+        "kind": "reporting",
+        "paragraphs": [
+          "현재 iOS 공식 안내는 메일 검색의 새 순위 체계가 관련 결과를 위로 올리는 기능과, Liquid Glass의 투명한 표현에서 더 진한 표현까지 조절할 슬라이더를 설명한다. 아이콘의 선명도와 대비·굴절의 표현도 다듬었다는 회사 설명이다. 화면의 인상과 이용자가 필요한 정보를 찾는 순서를 각각 조정하는 변화다.",
+          "저대역폭에서 큰 사진이나 영상이 전송 중일 때도 후속 메시지를 계속 보낼 수 있도록 했다는 발표도 있다. 원본 자료의 전달 완료와 텍스트 응답을 분리하려는 동작이다. 다만 전송이나 네트워크 전환이 모든 환경에서 중단되지 않는다고 보장한 자료는 아니며, 원문은 기기와 지역·언어별로 기능이 다를 수 있다고 덧붙인다."
+        ],
+        "references": [
+          {
+            "label": "애플의9월14일 플랫폼 업데이트",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/major-updates-for-apples-software-platforms-are-now-available/"
+          },
+          {
+            "label": "iOS27 공식 기능·조건 안내",
+            "kind": "primary",
+            "url": "https://www.apple.com/os/ios/"
+          }
+        ]
+      },
+      {
+        "heading": "운영체제 업데이트와 AI 제공을 나눈다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 운영체제의 배포 버전과 실제로 사용할 기능을 별도로 확인해야 한다고 본다. OS를 설치할 수 있어도 AI의 기기 조건과 지원 언어, 지역이 맞지 않을 수 있다. 발표 당시 Siri AI는 영어 베타부터 순차 제공하고 한국어 등을10월에 확대할 계획이었다. 일정이 지났다고 확인 없이 모든 언어에서 제공된 것으로 바꾸지 않는 이유다.",
+          "같은 기기 안에서도 앱 실행과 클라우드 모델 요청의 조건은 다르다. 원문은 서버 기반 AI 일부에 일일 이용 제한이 있으며 미래의 확대 제공에는 비용이 붙을 계획이라고 안내한다. 기본 OS 업데이트 소식을 모든 기능의 무제한 사용 계약으로 읽으면 조건을 놓칠 수 있다. 무엇이 기기에서 수행되고 어떤 기능에 추가 서비스가 필요한지 나눠 보는 편이 정확하다."
+        ],
+        "references": [
+          {
+            "label": "애플의9월14일 플랫폼 업데이트",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/major-updates-for-apples-software-platforms-are-now-available/"
+          },
+          {
+            "label": "iOS27 공식 기능·조건 안내",
+            "kind": "primary",
+            "url": "https://www.apple.com/os/ios/"
+          }
+        ]
+      },
+      {
+        "heading": "자신의 대표 작업에서 개선을 판단한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "파일 복사가 중요한 사람과 사진·메시지를 주로 쓰는 사람은 같은 최대 수치를 다른 비중으로 평가할 수 있다. 사용하는 자료의 크기와 저장장치, 상대 기기를 함께 기록하면 업데이트 전후의 차이를 구체적인 작업으로 비교할 수 있다. 제조사의 한 시험값을 업무 전체의 처리 시간에 그대로 곱하는 것보다 의미가 있는 판단이다.",
+          "표시 조절과 검색 역시 속도 수치만으로 평가하기 어렵다. 자신의 글자 크기와 배경에서 버튼이 잘 읽히는지, 중요한 메시지와 메일을 찾는 순서가 적절한지 함께 살필 수 있다. 이번 배포의 의미는 여러 기본 동작을 다듬은 변화이며, 특정 장치의 최대 성능과 사용자가 경험하는 전체 작업은 다른 결과다. 실제 조건에서 무엇이 바뀌었는지 확인하는 과정이 도입 판단에 남는다."
+        ],
+        "references": [
+          {
+            "label": "애플의9월14일 플랫폼 업데이트",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/major-updates-for-apples-software-platforms-are-now-available/"
+          },
+          {
+            "label": "iOS27 공식 기능·조건 안내",
+            "kind": "primary",
+            "url": "https://www.apple.com/os/ios/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "앱·사진·AirDrop·파일 처리 수치는 서로 다른 회사 시험이다.",
+      "검색 순위와 Liquid Glass의 표시 조절이 함께 바뀌었다.",
+      "OS 설치와 AI 지원·이용 제한은 별도로 확인한다."
+    ],
+    "tags": [
+      "iOS27",
+      "운영체제",
+      "성능",
+      "검색",
+      "LiquidGlass"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "애플의9월14일 플랫폼 업데이트",
+        "url": "https://www.apple.com/newsroom/2026/09/major-updates-for-apples-software-platforms-are-now-available/"
+      },
+      {
+        "label": "iOS27 공식 기능·조건 안내",
+        "url": "https://www.apple.com/os/ios/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.apple.com/newsroom/2026/09/major-updates-for-apples-software-platforms-are-now-available/",
+      "https://www.apple.com/os/ios/"
+    ],
+    "notes": "9/14발표와iOS현재페이지핵심·footnotes직접WEB읽음. 앱11ProMax8월/사진15/5만/AirDrop16Plus30MB·iPadM4USB4APFS1만JPG 조건정확. 의료/오디오 세부는다른기존기사와중복방지제외. Siri언어10월예고현재확정안함. 이기사는OS기본작업·성능시험단위로Siri/child구체기사와구분. snapshot후보전체(Figma/CreatorStudio/Copilot/Apple하드웨어등)와pending대조 같은OS27배포없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "6fa4c931-8672-4bfd-8bf3-1af3e90b9b44",
+    "de5a772c-3a06-4aea-9818-4ec1145b0505",
+    "e3da44fd-7643-48f9-a9fe-20448cd3d0ee",
+    "1d0ab475-cad9-40f6-a125-290917de796e",
+    "682b3e84-79ef-4664-8ca1-9b7365454803",
+    "7eea6836-5130-410a-bbe3-4ecab0607e44",
+    "88dd33b0-f0fb-48b6-8fd6-bc3df072a7a4",
+    "956d329a-104f-4538-8c27-53d22881ff0f"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:03:05.123Z",
+    "checks": [
+      "배포와 기능별지원 조건 구별",
+      "성능최대치별 기기·입력 조건 유지",
+      "별도 회사 시험·자체 측정 없음",
+      "UI검색/표시 변화 공식 안내 대조",
+      "Siri·자녀기사와 상세범위 분리"
+    ],
+    "relatedPendingIds": []
+  }
+}

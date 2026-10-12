@@ -1,0 +1,157 @@
+{
+  "id": "35d8eca3-d905-44a9-b2b8-7e24aea9f981",
+  "article": {
+    "url": "https://blog.google/products-and-platforms/products/education/science-teacher-gemini/",
+    "title": "미국 과학 교사의 Gemini 사례… 수업 기준을 검토하고 탐구를 함께",
+    "summary": "미국 중학교 과학 교사 Chanel Johnson이 시뮬레이션과 Gemini를 활용하는 수업 경험을 구글 블로그에 소개했다. 수업 계획의 기준 대조와 아이디어 구상, 학생 앞에서 도구를 사용하는 과정이 중심이다. 공식 Notebook 안내와 함께 탐구 활동에서 출처와 설명을 확인하는 의미를 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "자신이 배운 교실로 돌아온 교사",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 5일 미국 조지아주 Decatur의 Cedar Grove Middle School에서 8학년 물상 과학을 가르치는 Chanel Johnson의 경험을 공개했다. 작성자는 자신이 중학생 때 공부한 교실에서 학생을 가르친다는 배경과 교육 분야에서 보낸 17년을 소개한다. 글의 중심은 교사도 학생 옆에서 계속 배우는 태도다. Johnson은 정적인 강의만 듣는 방식 대신 학생이 과학적 패턴을 직접 찾도록 상호작용 시뮬레이션을 활용한다고 설명했다. 원문은 시뮬레이션의 구체적 과학 주제나 프로그램 이름을 제시하지 않으며 그것을 모두 Gemini가 만들었다고 밝히지도 않는다. 따라서 AI가 새 과학 실험 서비스를 출시했다는 기사로 바꾸기보다 여러 도구를 수업 목적에 연결한 한 교사의 사례로 읽어야 한다."
+        ],
+        "references": [
+          {
+            "label": "Chanel Johnson의 과학 교실 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/science-teacher-gemini/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "단원 계획 검토와 공개적인 도구 사용",
+        "kind": "reporting",
+        "paragraphs": [
+          "Johnson은 자신의 준비 과정에서 Gemini를 활용해 단원 계획을 교육 기준과 대조하고 새로운 접근을 구상한다고 밝혔다. 학생 앞에서 Gemini와 Gemini Notebook 같은 도구의 사용을 보여 주는 것도 디지털 활용 능력을 키우는 과정으로 설명했다. 작성자는 기술이 교실의 인간적인 관계를 대신하지 않고 학생과 연결할 여지를 준다고 평가한다. 이 주장은 교사 본인의 경험과 교육관이다. 학생들의 디지털 역량을 어떤 시험으로 측정했는지, 시뮬레이션 수업 전후 성취를 어떻게 비교했는지는 글에 나오지 않는다. 계획을 기준과 대조했다는 사용 방식도 자동으로 모든 기준을 충족한다는 보증과 다르다. 결과를 읽고 실제 수업에 적용할지 결정하는 교사의 역할이 경험담의 중심에 남아 있다."
+        ],
+        "references": [
+          {
+            "label": "Chanel Johnson의 과학 교실 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/science-teacher-gemini/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "공식 Notebook 안내가 설명하는 출처",
+        "kind": "reporting",
+        "paragraphs": [
+          "Gemini Notebook의 교육용 공식 안내는 이용자가 제공한 자료를 바탕으로 내용을 요약하고 질문에 답하며 원문 구절로 연결되는 인용을 제공하는 기능을 설명한다. 강의 노트와 교육 기준, 수업 자료 등을 넣어 학습 안내와 질문을 구성하는 활용도 소개한다. 이 안내는 제품의 일반 기능이며 Johnson이 어떤 파일을 넣고 어떤 결과물을 만들었는지 확인하는 별도 수업 기록은 아니다. 제품 페이지는 자격을 갖춘 교육기관의 무료 이용과 고급 기능을 위한 확대 한도를 구분한다. Gemini for Education 페이지도 계획 구상과 연습 자료 제작을 지원하는 도구로 설명한다. 사용자가 제공한 자료가 근거가 된다는 구조와 그 자료 자체가 정확하고 수업에 맞는다는 판단은 구별해야 한다. 인용은 확인 경로를 주지만 모든 출력의 오류가 없음을 뜻하지 않는다."
+        ],
+        "references": [
+          {
+            "label": "교육용 Gemini Notebook의 자료·인용·학습 기능 안내",
+            "url": "https://edu.google.com/intl/ALL_us/ai-gemini-notebook/?pt_ref=products",
+            "kind": "primary"
+          },
+          {
+            "label": "Gemini for Education의 수업 계획·교육기관 이용 안내",
+            "url": "https://edu.google.com/intl/ALL_us/ai/gemini-for-education/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "시뮬레이션의 관찰을 설명으로 바꾸기",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 상호작용 화면을 쓰는 것과 과학적으로 탐구하는 것을 분리해서 살핀다. 학생이 조건을 바꾸고 움직임을 보는 일은 출발점이 될 수 있지만 무엇을 관찰했고 어떤 관계를 예상했는지 설명하는 과정이 있어야 탐구 활동의 내용이 드러난다. 눈에 띄는 변화가 곧 과학적 원리를 이해했다는 증거는 아니기 때문이다. AI가 제안한 설명도 시뮬레이션에서 본 결과와 수업의 개념에 비춰 검토할 수 있다. 원문은 그런 평가지를 공개하지 않았으므로 특정 수업의 절차를 재구성하지는 않는다. 대신 작성자가 강조한 호기심과 함께 배우는 태도는 정답 문장을 빨리 얻는 것에서 더 나아가 질문의 이유와 관찰 근거를 학생이 말할 여지를 남기는 방향으로 해석할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "Chanel Johnson의 과학 교실 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/science-teacher-gemini/",
+            "kind": "primary"
+          },
+          {
+            "label": "교육용 Gemini Notebook의 자료·인용·학습 기능 안내",
+            "url": "https://edu.google.com/intl/ALL_us/ai-gemini-notebook/?pt_ref=products",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "교사가 보여 줄 수 있는 확인 과정",
+        "kind": "analysis",
+        "paragraphs": [
+          "학생 앞에서 도구를 사용한다는 선택은 결과뿐 아니라 판단 과정을 드러낼 기회를 준다. 생성된 계획이 교육 기준의 어느 부분과 연결되는지 설명하고 자료의 인용을 따라가 보는 행동은 도구를 믿는 이유를 구체화한다. 제안이 맞지 않을 때 수정하는 모습도 활용 능력의 일부다. 다만 공개 사용만으로 모든 학생이 비판적으로 검토하는 습관을 얻는다고 단정할 수는 없다. 학생의 설명이나 질문을 살펴 후속 지원을 결정해야 변화의 내용이 보인다. 이번 경험담의 의미는 교사가 기술을 감춘 완성품으로 전달하기보다 수업의 선택과 연결해 소개한다는 데 있다. 과학 교육에서 도구가 맡는 역할은 탐구할 선택지를 넓히는 것이며, 어떤 근거가 설명을 지지하는지 따지는 일은 여전히 배움의 핵심으로 남는다."
+        ],
+        "references": [
+          {
+            "label": "Chanel Johnson의 과학 교실 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/science-teacher-gemini/",
+            "kind": "primary"
+          },
+          {
+            "label": "교육용 Gemini Notebook의 자료·인용·학습 기능 안내",
+            "url": "https://edu.google.com/intl/ALL_us/ai-gemini-notebook/?pt_ref=products",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Johnson은 시뮬레이션과 단원 계획 검토, 학생 앞에서의 AI 도구 사용을 소개했다.",
+      "원문은 시뮬레이션의 제작 도구와 학생 성취 측정 결과를 밝히지 않았다.",
+      "Notebook의 자료 기반 인용은 확인 경로를 제공하며 입력 자료의 정확성까지 보증하지 않는다."
+    ],
+    "tags": [
+      "Gemini",
+      "과학교육",
+      "디지털리터러시",
+      "교사",
+      "출처확인"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "Chanel Johnson의 과학 교실 경험 원문",
+        "url": "https://blog.google/products-and-platforms/products/education/science-teacher-gemini/"
+      },
+      {
+        "label": "교육용 Gemini Notebook의 자료·인용·학습 기능 안내",
+        "url": "https://edu.google.com/intl/ALL_us/ai-gemini-notebook/?pt_ref=products"
+      },
+      {
+        "label": "Gemini for Education의 수업 계획·교육기관 이용 안내",
+        "url": "https://edu.google.com/intl/ALL_us/ai/gemini-for-education/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/products-and-platforms/products/education/science-teacher-gemini/",
+      "https://edu.google.com/intl/ALL_us/ai-gemini-notebook/?pt_ref=products",
+      "https://edu.google.com/intl/ALL_us/ai/gemini-for-education/"
+    ],
+    "notes": "교사원문·Notebook교육공식페이지·Gemini교육공식페이지웹확인.ChanelJohnson8physicalscienceCedarGroveDecatur/17years;interactiveSIMnotnecessarilyAIgenerated,standardsunitreviewbrainstorm/openlymodelGeminiNotebook.성과시험·대조군·소프트웨어실험주제미공개.공식자료기반인용을정확성보증으로확대안함.후보11(DezeenPlants포함)및전체pending교사9개구체내용·URL대조본인과학수업별개,TED기획공지분리.수업실습테스트없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "65af5e9e-d59b-4ce3-a44b-df5e0f2abcf7",
+    "1b26d953-c1ba-4eb9-baf3-6bba7f7bc9bb",
+    "3564e5a1-5821-49ef-bd96-912e5c73a483",
+    "3f96b1c3-6b91-42c6-a276-a72f4e691fe8",
+    "6a15a15c-65e2-411f-847a-f51c003cbab0",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "ec323858-ca4e-442e-96d0-a114cb836a2c",
+    "f902e8f3-2cfc-4931-9ea9-73956faaae60"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:41:25.188Z",
+    "checks": [
+      "원문교사·학교·학년확인",
+      "시뮬레이션을AI제작으로단정하지않음",
+      "역량·성취효과경험담귀속",
+      "Notebook공식자료기반인용과검토역할구분",
+      "후보11·전체pending동일과학사례없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

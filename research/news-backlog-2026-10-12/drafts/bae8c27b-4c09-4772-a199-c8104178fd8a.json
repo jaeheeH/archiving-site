@@ -1,0 +1,167 @@
+{
+  "id": "bae8c27b-4c09-4772-a199-c8104178fd8a",
+  "article": {
+    "url": "https://blog.developer.adobe.com/en/publish/2026/07/build-adobe-express-add-ons-faster-with-agent-skills",
+    "title": "Express 애드온 스킬 모음, AI에 런타임 경계와 작업별 개발 규칙 제공",
+    "summary": "어도비 개발자 블로그가 커뮤니티의 Adobe Express Skills Collection을 소개했다. 공식 MCP의 문서 정보와 작업별 스킬의 구현 지침을 결합하는 방식이며 어도비가 공식 유지하는 도구는 아니다.",
+    "paragraphs": [
+      {
+        "heading": "공식 문서와 개발 지침을 다른 역할로 묶는다",
+        "kind": "reporting",
+        "paragraphs": [
+          "어도비 개발자 블로그는 Adobe Express 애드온 제작을 위한 커뮤니티 스킬 모음을 소개했다. Edgi Design 창업자이자 어도비 개발자 챔피언이 공개한 오픈소스 프로젝트로, AI 코딩 도구에 작업별 구현 규칙을 제공한다. 원문의 편집자 주석은 이 저장소가 어도비의 공식 유지 도구가 아니라는 점을 명시한다.",
+          "제작자는 MCP 서버가 SDK 사실과 API 문서를 제공하더라도 애드온의 전체 구조와 업무 흐름까지 대신 정해 주지는 않는다고 설명한다. 스킬은 작업 순서와 경계를 담고 필요할 때 MCP로 구체적인 문서를 확인하도록 연결한다. 이 설명은 프로젝트의 설계 의도이며, 어떤 모델에서도 오류 없는 운영 코드를 만든다는 검증 결과로 받아들일 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/07/build-adobe-express-add-ons-faster-with-agent-skills"
+          },
+          {
+            "label": "Adobe Express Skills Collection 제작자 저장소",
+            "kind": "primary",
+            "url": "https://github.com/sandgrouse/adobe-express-dev-skill"
+          }
+        ]
+      },
+      {
+        "heading": "큰 프롬프트를 작업별 모듈로 나눴다",
+        "kind": "reporting",
+        "paragraphs": [
+          "모음은 기반 구조, Spectrum UI, 수익화, 문서 조작, CORS·백엔드와 OAuth 인증의 여섯 영역을 다룬다. 기반 스킬은 UI와 문서 편집 런타임을 구분하고, 다른 스킬은 상태·화면 구성이나 텍스트·도형·미디어 삽입 같은 작업에 필요한 지침을 제공한다. 하나의 긴 설명에 모든 규칙을 넣는 대신 작업 범위에 맞는 자료를 불러오려는 구성이다.",
+          "저장소의 설치 안내는 사용 환경과 설치 위치를 선택하거나 일부 스킬만 고르는 옵션을 제공하며, 파일 작업을 쓰기 전에 살피는 dry-run도 안내한다. 기사에 있는 설치 예시와 저장소의 현재 명령 형식은 같다고 가정할 수 없다. 설치 대상과 사용 중인 버전을 확인해야 어떤 작업에 어떤 규칙이 적용되는지 명확하게 관리할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "Adobe Express Skills Collection 제작자 저장소",
+            "kind": "primary",
+            "url": "https://github.com/sandgrouse/adobe-express-dev-skill"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/07/build-adobe-express-add-ons-faster-with-agent-skills"
+          }
+        ]
+      },
+      {
+        "heading": "런타임 경계는 공식 API 구조와 맞춰야 한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "어도비의 공식 아키텍처 문서는 애드온 UI가 실행되는 iframe과 문서 조작을 위한 document sandbox를 구분한다. 두 환경은 직접 같은 DOM을 다루는 방식이 아니라 노출한 함수와 프록시를 통해 통신한다. document sandbox는 일반 브라우저 환경 전체를 제공하지 않으므로 UI 코드와 문서 편집 코드의 실행 위치를 맞춰야 한다.",
+          "UI SDK로 이미지 가져오기나 결과 생성처럼 제공되는 기능만 사용하는 애드온은 모든 경우에 별도의 문서 샌드박스 통신이 필요한 것은 아니다. 반면 문서 요소를 직접 만들거나 수정하는 작업은 해당 API와 실행 경계가 필요하다. 스킬의 규칙도 자신이 만들 기능에 맞춰 공식 SDK의 역할을 대조해야 하며, 모든 애드온을 동일한 파일 구조로 강제하는 설명으로 읽을 필요는 없다."
+        ],
+        "references": [
+          {
+            "label": "어도비 Express 애드온 이중 런타임 공식 문서",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/express/add-ons/docs/guides/learn/platform-concepts/architecture"
+          }
+        ]
+      },
+      {
+        "heading": "경계를 명시하면 잘못된 생성 위치를 찾기 쉽다",
+        "kind": "analysis",
+        "paragraphs": [
+          "AI가 존재하는 API 이름을 사용해도 잘못된 런타임에 코드를 놓으면 동작하지 않을 수 있다. 이 문제는 문법 오류와 다르며 생성된 코드가 어떤 환경에서 실행될지 이해해야 찾을 수 있다. UI 입력, 문서 변경과 결과 표시를 연결하는 작은 작업부터 확인하면 스킬이 제공한 규칙을 실제 실행 흐름과 비교하기 쉽다.",
+          "작업별 모듈화는 필요한 설명을 좁혀 주지만 여러 스킬이 만나는 경계에는 팀의 결정이 남는다. 결제 상태가 UI와 문서 기능에 어떻게 반영되는지, 인증 실패 때 사용자가 어떤 흐름을 보는지는 API 서명만으로 정해지지 않는다. 스킬을 도입한 뒤에도 자신이 정한 제품 동작과 서버의 실제 규칙을 별도로 유지해야 지침의 가정을 구현 사실로 착각하지 않는다."
+        ],
+        "references": [
+          {
+            "label": "어도비 Express 애드온 이중 런타임 공식 문서",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/express/add-ons/docs/guides/learn/platform-concepts/architecture"
+          },
+          {
+            "label": "Adobe Express Skills Collection 제작자 저장소",
+            "kind": "primary",
+            "url": "https://github.com/sandgrouse/adobe-express-dev-skill"
+          }
+        ]
+      },
+      {
+        "heading": "검토 가능한 지침으로 운영한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "저장소가 공개돼 있다는 점은 생성 지침을 팀이 읽고 수정할 수 있다는 장점이다. 도입팀은 모든 내용을 한 번에 적용하기보다 런타임 기반과 현재 작업에 필요한 모듈을 검토해 선택할 수 있다. 어떤 지침과 문서 버전을 사용했는지 남기면 API가 바뀌었을 때 결과가 달라진 이유를 추적할 근거도 생긴다.",
+          "이번 소개에는 독립적인 오류 감소율이나 완성 시간의 비교 수치가 없다. 따라서 생산성이 반드시 향상된다고 단정하기보다 일반 코딩 도구에 제품별 구조를 전달하는 방법으로 평가하는 편이 타당하다. 실제 애드온의 문서 변경, 실패 처리와 메시지 흐름을 확인하는 과정이 있어야 스킬의 설명을 배포 가능한 동작으로 연결할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/07/build-adobe-express-add-ons-faster-with-agent-skills"
+          },
+          {
+            "label": "Adobe Express Skills Collection 제작자 저장소",
+            "kind": "primary",
+            "url": "https://github.com/sandgrouse/adobe-express-dev-skill"
+          },
+          {
+            "label": "어도비 Express 애드온 이중 런타임 공식 문서",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/express/add-ons/docs/guides/learn/platform-concepts/architecture"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "제작자 커뮤니티 스킬 모음으로 어도비 공식 유지 도구와 구분된다.",
+      "문서 사실을 제공하는 MCP와 작업별 구현 지침을 결합한다.",
+      "UI·문서 샌드박스 경계와 실제 기능별 SDK 역할을 확인해야 한다."
+    ],
+    "tags": [
+      "AdobeExpress",
+      "에이전트스킬",
+      "MCP",
+      "애드온"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.developer.adobe.com/en/publish/2026/07/build-adobe-express-add-ons-faster-with-agent-skills"
+      },
+      {
+        "label": "Adobe Express Skills Collection 제작자 저장소",
+        "url": "https://github.com/sandgrouse/adobe-express-dev-skill"
+      },
+      {
+        "label": "어도비 Express 애드온 이중 런타임 공식 문서",
+        "url": "https://developer.adobe.com/express/add-ons/docs/guides/learn/platform-concepts/architecture"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.developer.adobe.com/en/publish/2026/07/build-adobe-express-add-ons-faster-with-agent-skills",
+      "https://github.com/sandgrouse/adobe-express-dev-skill",
+      "https://developer.adobe.com/express/add-ons/docs/guides/learn/platform-concepts/architecture"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원문 WEB66줄및제작자GitHubREADME와Adobe공식architecture문서를WEB로확인했다. official-maintained아님편집주석을반영했다. 여섯모듈과installer target/destination/skills/dry-run만확인된범위로기술하고원문의폴더move주장·Node16요건을현재보편조건으로재전재하지않았다. repo현명령install subcommand와기사차이를일반주의로설명하고실제설치스크립트실행/외부AI호출은하지않았다. iframe SDK기능은이미지추가/렌디션등일부문서관련기능가능하므로모든문서작업이무조건샌드박스라는과장을피했다. candidates6개및snapshot.pending전체skills/MCP/Adobe관련요약과대조해번역커넥터·UXP도구·기업문서아키텍처와다른커뮤니티지침사건이다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "b28d7ab6-076e-4475-9d38-eb9b8cbcdbd0",
+    "e1462898-b538-4aeb-96dc-f22e5eed6df0",
+    "0e77cf34-091e-4f3c-88ed-f748eb87ea34",
+    "3f5e12eb-ac52-437e-b033-aa350546e94c",
+    "56e8b152-9631-4984-9719-438b302a1607",
+    "8a3c7e20-6fbb-44a0-a10f-a2e75490e8b8"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:50:58.887Z",
+    "checks": [
+      "커뮤니티프로젝트·공식어도비유지아님을원문편집주석과대조했다.",
+      "여섯스킬영역과저장소설치선택/dry-run을확인했다.",
+      "iframe UI와document sandbox의proxy통신·DOM경계를공식문서로확인했다.",
+      "일부UI SDK문서기능예외를포함하고생산성/무오류보장을창작하지않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

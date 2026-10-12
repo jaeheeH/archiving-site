@@ -1,0 +1,11 @@
+{
+  "status": "published",
+  "id": "a477464f-7eee-4c89-ae19-8475f35521e1",
+  "slug": "news-85052f9befba2c4e17fa",
+  "title": "LoRA 비동기GRPO, 분리된 작업 사이의 가중치 버전과 병목을 관리하다",
+  "is_published": true,
+  "published_at": "2026-10-12T02:11:20.727+00:00",
+  "characters": 1897,
+  "source": "Hugging Face",
+  "verifiedAt": "2026-10-12T02:11:20.727Z"
+}

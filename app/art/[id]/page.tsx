@@ -1,3 +1,4 @@
+import { SaveButton } from '@/app/components/SavedProvider';
 import { getPageMetadata } from '@/lib/site-settings';
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -16,7 +17,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: ArtworkPageProps): Promise<Metadata> {
   const artwork = await getArtwork((await params).id);
   if (!artwork) notFound();
-  return getPageMetadata({ path: `/art/${artwork.id}`, title: `${artwork.title_ko} · ${artwork.artist}`, description: `${artwork.artist}의 ${artwork.title}. ${artwork.date}, ${artwork.medium}. ${artwork.museum} 소장. 작품 정보와 원출처를 살펴봅니다.`, image: artwork.preview_url });
+  return getPageMetadata({ path: `/art/${artwork.id}`, title: `${artwork.title_ko} · ${artwork.artist}`, description: `${artwork.artist}의 ${artwork.title_ko}. ${artwork.date}, ${artwork.medium_ko || artwork.medium}. ${artwork.museum} 소장. 작품 정보와 원출처를 살펴봅니다.`, image: artwork.preview_url });
 }
 
 export default async function ArtworkPage({ params }: ArtworkPageProps) {
@@ -32,13 +33,13 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
     <main className="archb-archive archive-detail">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd([
         breadcrumb([{ name: '홈', path: '/' }, { name: '아트', path: '/art' }, { name: artwork.title_ko, path: `/art/${artwork.id}` }]),
-        { '@context': 'https://schema.org', '@type': 'VisualArtwork', '@id': sitePageUrl(`/art/${artwork.id}#artwork`), url: sitePageUrl(`/art/${artwork.id}`), name: artwork.title_ko, alternateName: artwork.title, image: artwork.preview_url, artMedium: artwork.medium, ...(artist ? { creator: { '@type': 'Person', name: artist.name_ko || artist.name, url: sitePageUrl(`/artists/${artist.id}`) } } : {}), isBasedOn: artwork.source_url },
+        { '@context': 'https://schema.org', '@type': 'VisualArtwork', '@id': sitePageUrl(`/art/${artwork.id}#artwork`), url: sitePageUrl(`/art/${artwork.id}`), name: artwork.title_ko, alternateName: artwork.title, image: artwork.preview_url, artMedium: artwork.medium_ko || artwork.medium, ...(artist ? { creator: { '@type': 'Person', name: artist.name_ko || artist.name, url: sitePageUrl(`/artists/${artist.id}`) } } : {}), isBasedOn: artwork.source_url },
       ]) }} />
       <nav className="archive-breadcrumb" aria-label="현재 위치">
         <Link href="/art" className="hover:text-foreground">아트</Link>
         <span aria-hidden="true">/</span>
         <span>{artwork.title_ko}</span>
-      </nav>
+      </nav><div className="mb-5 flex justify-end"><SaveButton type="artwork" id={artwork.id} title={artwork.title_ko} /></div>
 
       <article className="archive-artwork-layout">
         <div className="archive-artwork-media">
@@ -70,16 +71,18 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
           </div>
 
           <dl className="grid grid-cols-[88px_1fr] gap-x-4 gap-y-4 py-6 text-sm leading-6">
-            <dt className="text-muted-foreground">재료·기법</dt><dd>{artwork.medium || "미확인"}</dd>
-            <dt className="text-muted-foreground">크기</dt><dd>{artwork.dimensions || "미확인"}</dd>
+            <dt className="text-muted-foreground">재료·기법</dt><dd>{artwork.medium_ko || artwork.medium || "미확인"}</dd>
+            <dt className="text-muted-foreground">크기</dt><dd className="whitespace-pre-line">{artwork.dimensions_ko || artwork.dimensions || "미확인"}</dd>
             <dt className="text-muted-foreground">소장처</dt><dd>{artwork.museum}</dd>
             <dt className="text-muted-foreground">소장품 번호</dt><dd>{artwork.accession}</dd>
             <dt className="text-muted-foreground">이용 표시</dt><dd>{artwork.license}</dd>
             <dt className="text-muted-foreground">수집일</dt><dd>{artwork.collected_at.slice(0, 10)}</dd>
           </dl>
 
+          {(artwork.medium_ko || artwork.dimensions_ko) && <details className="mb-5 border-t border-border pt-4 text-sm leading-6"><summary className="cursor-pointer font-medium">재료·크기 원문 보기</summary><dl className="mt-3 space-y-2 text-muted-foreground"><dt>재료·기법</dt><dd>{artwork.medium || '미확인'}</dd><dt>크기</dt><dd>{artwork.dimensions || '미확인'}</dd></dl></details>}
+
           <p className="border-t border-border pt-5 text-xs leading-5 text-muted-foreground">
-            한국어 제목은 작업용 번역이며 원문 제목을 기준 정보로 보존합니다.
+            한국어 제목·재료·크기는 원출처를 바탕으로 정리했으며, 기준 정보인 원문을 함께 보존합니다.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <a href={artwork.source_url} target="_blank" rel="noopener noreferrer" className="archive-button">

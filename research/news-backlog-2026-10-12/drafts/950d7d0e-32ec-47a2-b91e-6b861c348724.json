@@ -1,0 +1,140 @@
+{
+  "id": "950d7d0e-32ec-47a2-b91e-6b861c348724",
+  "article": {
+    "url": "https://www.figma.com/blog/how-to-move-fast-toward-the-right-thing/",
+    "title": "피그마, AI 개발 속도를 의도·검증·실제 컴포넌트 맥락과 연결하라고 제안",
+    "summary": "피그마가 빠르게 만들어진 AI 결과의 완성도와 제품 판단을 구분하는 개발 관점을 제시했다. 테스트와 명세, 디자인 시스템을 먼저 제공하고 최종 방향은 팀이 판단해야 한다는 주장이다.",
+    "paragraphs": [
+      {
+        "heading": "보기 좋은 결과가 판단을 대신하지는 않는다",
+        "kind": "reporting",
+        "paragraphs": [
+          "피그마는 8월 13일 공개한 글에서 AI로 제품을 만드는 속도가 빨라져도 무엇을 만들지의 판단까지 선명해지는 것은 아니라고 주장했다. 정돈된 화면과 동작하는 시제품을 쉽게 얻으면서, 그 이면의 제약과 행동이 충분히 결정됐다고 오해할 수 있다는 논점이다. 신제품 발표나 생산성 실험의 보고라기보다 개발과 디자인 과정에 대한 제안이다.",
+          "글은 처음 나온 결과를 그대로 받아들이기 전에 문제와 의도를 정리하라고 권한다. 어떤 사용자 행동을 지원할지와 어떤 제약을 지킬지가 빠져 있으면 모델이 그 빈틈을 채우기 때문이다. 외관의 매끄러움은 이런 선택이 팀의 의도와 맞는지 보여 주지 않으므로, 빠른 실행과 결과의 타당성을 다른 질문으로 다루자는 주장이다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/how-to-move-fast-toward-the-right-thing/"
+          }
+        ]
+      },
+      {
+        "heading": "명세와 검증 계층을 앞에 둔다",
+        "kind": "reporting",
+        "paragraphs": [
+          "피그마는 테스트·타입 검사·검증처럼 같은 조건에서 반복 실행할 수 있는 계층, 명세와 문서화된 컴포넌트, 명확한 인터페이스를 주요 맥락으로 제시한다. 디자인 시스템에 이미 결정한 규칙을 담아 두면 에이전트가 화면만 보고 다시 추측하는 일을 줄일 수 있다는 설명이다. 준비 단계의 수고를 줄이지 않고 이후 유지에 필요한 정보를 먼저 제공하는 접근이다.",
+          "마지막 논점은 평균적인 결과와 제품의 차별성을 구분하는 일이다. 모델이 익숙한 패턴을 그럴듯하게 조합해도 그것이 팀이 원하는 관점이나 사용자에게 맞는 선택이라고 보장되지는 않는다. 글은 생성된 후보 중 덜 틀린 것을 고르는 데 머물지 말고 팀이 만들고 싶은 방향을 판단하라고 제안한다. 이는 모든 AI 출력이 같은 모습이라는 실증 결과로 읽을 내용은 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/how-to-move-fast-toward-the-right-thing/"
+          }
+        ]
+      },
+      {
+        "heading": "실제 코드 연결에는 구현과 지원 조건이 있다",
+        "kind": "reporting",
+        "paragraphs": [
+          "글에서 예로 든 Code Connect는 디자인 컴포넌트를 저장소의 실제 코드와 연결해 피그마 MCP 서버에 구현 정보를 제공한다. 공식 문서는 UI 경로의 파일·컴포넌트 연결과 CLI 템플릿의 속성 매핑·코드 예시를 구분한다. 픽셀에서 컴포넌트를 새로 추정하는 대신 이미 있는 구현을 참조하도록 만드는 장치다.",
+          "공식 안내에서 이 기능은 Organization·Enterprise 플랜과 Full 또는 Dev 좌석을 요구한다. 연결을 만든 뒤 개발자와 디자이너가 예시를 검토하는 절차도 제시한다. 따라서 디자인 파일이 있다고 자동으로 운영 코드의 정확한 맥락이 모두 전달되는 것은 아니다. 어떤 컴포넌트와 속성을 연결했고 그 연결이 최신인지가 별도의 관리 대상이 된다."
+        ],
+        "references": [
+          {
+            "label": "피그마 Code Connect 연결·플랜 공식 안내",
+            "kind": "primary",
+            "url": "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect"
+          }
+        ]
+      },
+      {
+        "heading": "팀은 결과 전에 실패 조건을 정할 수 있다",
+        "kind": "analysis",
+        "paragraphs": [
+          "의도를 먼저 정리한다는 제안은 추상적인 원칙보다 실패 조건으로 구체화할 때 유용하다. 예를 들어 요청 실패 때 남길 화면, 중복 입력의 처리와 기존 컴포넌트를 써야 할 위치를 적어 두면 결과를 비교할 기준이 생긴다. 생성된 화면이 보기 좋다는 감상과 실제 흐름을 충족했다는 확인을 구분할 수 있기 때문이다.",
+          "명세와 테스트도 모든 판단을 자동화하는 장치는 아니다. 무엇을 검증할지와 어떤 결과를 좋은 경험으로 볼지는 팀이 정해야 한다. 에이전트가 테스트를 통과하도록 구현하더라도 명세에 없는 중요한 행동은 빠질 수 있다. 따라서 실행 가능한 검증과 사람이 살피는 사용 흐름을 함께 두면, 변경이 반복될 때 의도가 어디에서 사라졌는지 알아보기 쉽다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/how-to-move-fast-toward-the-right-thing/"
+          },
+          {
+            "label": "피그마 Code Connect 연결·플랜 공식 안내",
+            "kind": "primary",
+            "url": "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect"
+          }
+        ]
+      },
+      {
+        "heading": "공통 규칙과 제품의 관점을 나눠 관리한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "디자인 시스템은 버튼과 색을 통일하는 데 그치지 않고 이미 합의한 선택을 재사용하게 한다. 다만 공통 규칙이 제품의 모든 차별성을 대신할 수는 없다. 반복되는 조작은 일관되게 유지하면서도 정보의 우선순위와 핵심 작업은 실제 사용자의 맥락에 맞춰 결정해야 한다. 시스템을 지켰다는 사실과 적절한 제품을 만들었다는 판단은 함께 필요하다.",
+          "이 글의 실무적 의미는 속도를 늦추자는 주장보다 빠르게 생성된 결과를 판단할 입력을 남기자는 데 있다. 대표 작업의 의도, 실제 컴포넌트와 검증 기준을 같은 변경에서 확인하면 다음 반복에도 결정의 이유를 유지할 수 있다. 공개 글만으로 특정 도구의 부채 감소율이나 팀의 생산성 향상 폭을 계산할 수는 없지만, 무엇을 먼저 정해야 할지는 구체적으로 점검할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/how-to-move-fast-toward-the-right-thing/"
+          },
+          {
+            "label": "피그마 Code Connect 연결·플랜 공식 안내",
+            "kind": "primary",
+            "url": "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "AI 결과의 매끄러운 외관과 팀이 정한 동작·제약의 충족은 구분해야 한다.",
+      "명세·검증·실제 컴포넌트 맥락을 먼저 제공하자는 개발 제안이다.",
+      "Code Connect도 매핑과 검토, 플랜·좌석 조건을 갖춘 기능이다."
+    ],
+    "tags": [
+      "피그마",
+      "AI개발",
+      "디자인시스템",
+      "CodeConnect"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://www.figma.com/blog/how-to-move-fast-toward-the-right-thing/"
+      },
+      {
+        "label": "피그마 Code Connect 연결·플랜 공식 안내",
+        "url": "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.figma.com/blog/how-to-move-fast-toward-the-right-thing/",
+      "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원문 WEB본문95~125줄 전체와 Code Connect 공식 도움말을 확인했다. 외부 인지 연구/Google whitepaper는 직접읽지 않아 연구주장이나 실증결과로 전재하지 않았고 피그마 필자의 의도/맥락/차별성 제안만 귀속했다. CodeConnect UI/CLI구분,OrganizationEnterprise및FullDev조건을 대조했다. candidates빈목록 및 snapshot.pending 전체 AI/제품/Sightlines 관련 요약을 대조했다. 9/24 What it takes to build great products now(4364...)와 주제가 비슷하지만 발표/출처/논점범위가 다른 논평이며 이번8/13글은 upfront명세·검증·코드맥락이라는 구체기준에 집중한다. Coinbase실험·Workflowlab구현 및 Sightlines리더거버넌스와도 같은 사건을 재보도하지 않는다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:40:36.288Z",
+    "checks": [
+      "원문은 제품/실험발표가 아닌 개발관점 제안임을 유지했다.",
+      "테스트·타입·명세·컴포넌트·명확한인터페이스의 원문맥락 항목을 확인했다.",
+      "실제CodeConnect의 UI/CLI·매핑검토·플랜조건을 공식문서와 대조했다.",
+      "검증하지 않은 논문/도구의 실증효과와 수치를 창작하지 않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

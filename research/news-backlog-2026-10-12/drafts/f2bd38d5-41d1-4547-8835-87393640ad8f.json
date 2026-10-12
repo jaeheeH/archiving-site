@@ -1,0 +1,167 @@
+{
+  "id": "f2bd38d5-41d1-4547-8835-87393640ad8f",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/08/how-baseline-can-help-ship-less-javascript/",
+    "title": "Baseline으로 의존성을 점검할 때, 브라우저 지원과 실제 기능 차이를 함께 본다",
+    "summary": "스매싱 매거진이 브라우저 기본 기능으로 JavaScript 의존성을 줄이는 점검 방법을 제시했다. Baseline의 지원 단계, 대체 코드와 폴리필 비용, 실제 사용하는 기능의 차이를 먼저 확인하는 접근이다.",
+    "paragraphs": [
+      {
+        "heading": "설치한 의존성을 다시 살펴보자는 제안",
+        "kind": "reporting",
+        "paragraphs": [
+          "스매싱 매거진은 8월 7일 웹 플랫폼의 발전에 맞춰 JavaScript 의존성을 점검하는 방법을 소개했다. 날짜와 숫자 표시, HTTP 요청, UI 요소와 데이터 유틸리티를 묶어 브라우저 기본 기능으로 대체할 여지를 살피자는 접근이다. 패키지를 설치할 때 필요했던 기능이 시간이 지난 뒤에도 같은 방식으로 필요한지 확인하는 유지보수 제안이다.",
+          "글은 제거 전에 세 가지를 묻도록 한다. 대상 사용자의 브라우저가 대체 기능을 지원하는지, 폴리필이나 추가 코드까지 포함한 비용이 얼마인지, 라이브러리에서 실제 사용하는 기능을 대체할 수 있는지다. 이름이 비슷한 API를 찾았다는 이유만으로 교체하면 호환성이나 기존 동작을 잃을 수 있다는 점을 함께 다룬다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/08/how-baseline-can-help-ship-less-javascript/"
+          }
+        ]
+      },
+      {
+        "heading": "Baseline은 지원의 공통 기준을 보여 준다",
+        "kind": "reporting",
+        "paragraphs": [
+          "웹닷데브의 공식 안내에서 Baseline은 핵심 브라우저 전체에서 기능이 상호 운용 가능한 시점을 Newly available로, 그 시점에서 30개월이 지난 상태를 Widely available로 구분한다. 핵심 브라우저 모두가 아직 지원하지 않으면 Limited availability다. 이는 브라우저 지원 상태의 기준이며 사이트의 모든 사용자 기기가 해당 기능을 갖췄다는 개별 보장은 아니다.",
+          "따라서 새로운 기능을 내부 업무 도구에 적용하는 판단과 오래된 기기로 접속하는 공개 사이트에 적용하는 판단은 다를 수 있다. 원문은 실제 사용자 정보와 프로젝트의 브라우저 지원 설정을 함께 비교하고 필요하면 기능 감지와 기존 경로를 유지하라고 제안한다. 개별 기능의 상태는 시간이 지나 바뀌므로 오래된 기사에 적힌 분류를 고정 사실로 사용할 수 없다."
+        ],
+        "references": [
+          {
+            "label": "웹닷데브의 Baseline 정의와 가용성 단계",
+            "kind": "primary",
+            "url": "https://web.dev/baseline"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/08/how-baseline-can-help-ship-less-javascript/"
+          }
+        ]
+      },
+      {
+        "heading": "HTTP 요청은 성공 조건부터 대조한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "원문이 든 HTTP 클라이언트 교체 사례는 기본 API와 라이브러리의 동작 차이를 보여 준다. MDN 공식 문서는 fetch가 HTTP 응답을 받아 Response 객체로 전달하며 404 같은 오류 상태만으로 Promise를 거절하지는 않는다고 설명한다. 호출자는 응답 상태나 ok를 확인하고 본문 읽기와 실패 처리를 정해야 한다.",
+          "요청을 보내는 기능을 대체해도 팀이 쓰던 인증 처리, 재시도와 공통 오류 규칙까지 자동으로 옮겨지는 것은 아니다. 원문도 사용하는 부가 기능을 먼저 확인하도록 한다. 번들에서 패키지가 사라졌더라도 같은 역할을 새 래퍼에서 다시 구현한다면 그 코드의 크기와 유지 비용을 함께 비교해야 실제 이득을 판단할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "MDN의 Fetch 응답·오류 처리 공식 안내",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/08/how-baseline-can-help-ship-less-javascript/"
+          }
+        ]
+      },
+      {
+        "heading": "패키지 크기보다 실제 배포 결과를 잰다",
+        "kind": "analysis",
+        "paragraphs": [
+          "의존성 정리에서 명목상의 패키지 크기와 사용자가 받는 번들 크기는 다를 수 있다. 필요한 일부만 포함되거나 다른 패키지와 코드가 공유될 수 있기 때문이다. 따라서 패키지 목록을 줄였다는 결과보다 실제 빌드에서 빠진 코드와 새로 추가된 코드의 차이를 확인하는 편이 구체적이다. 원문의 예상 절감량을 모든 프로젝트의 성과로 가져올 수는 없다.",
+          "폴리필은 이 비교에서 빠뜨리기 쉬운 비용이다. 브라우저가 제공하지 않는 기능을 추가하면서 작은 기존 라이브러리보다 더 큰 호환 코드를 보내면 초기 목표와 반대 결과가 생길 수 있다. 조건부 로딩도 지원 여부 확인과 다운로드 경로를 유지해야 한다. 구현 단순화와 전송량 절감이 항상 같은 방향으로 움직이지 않는다는 점을 고려할 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/08/how-baseline-can-help-ship-less-javascript/"
+          },
+          {
+            "label": "웹닷데브의 Baseline 정의와 가용성 단계",
+            "kind": "primary",
+            "url": "https://web.dev/baseline"
+          }
+        ]
+      },
+      {
+        "heading": "대체 검증은 기존 계약을 기준으로 한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "점검을 시작할 때는 패키지 이름별로 제거 가능 여부를 판단하기보다 실제 사용하는 함수를 모으는 편이 유용하다. 입력 형식, 실패 상태와 결과 형태를 적어 두면 기본 API로 대체한 뒤 같은 계약을 유지하는지 확인할 수 있다. 특히 비동기 요청은 성공 응답만 비교하면 오류 상태나 취소 동작의 차이를 놓칠 수 있다.",
+          "이 방식은 대규모 교체보다 작은 기능군을 하나씩 확인하는 작업으로 적용할 수 있다. 브라우저 지원과 폴리필 비용, 대표 동작을 기록해 두면 기능이 널리 제공되는 시점에 다시 검토할 근거도 남는다. Baseline은 그 판단에 필요한 공통 정보를 제공하지만 라이브러리를 지워도 된다는 자동 승인 표시는 아니다. 자신의 사용자와 구현 계약까지 함께 확인할 때 의존성 정리가 실제 유지보수 개선으로 이어진다."
+        ],
+        "references": [
+          {
+            "label": "웹닷데브의 Baseline 정의와 가용성 단계",
+            "kind": "primary",
+            "url": "https://web.dev/baseline"
+          },
+          {
+            "label": "MDN의 Fetch 응답·오류 처리 공식 안내",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/08/how-baseline-can-help-ship-less-javascript/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Baseline Newly available과 Widely available 사이에는30개월 기준이 있다.",
+      "사용 브라우저·대체 비용·실제 기능 계약을 함께 확인한다.",
+      "fetch의 HTTP오류 응답 처리처럼 비슷한 기능의 동작 차이가 교체 판단에 중요하다."
+    ],
+    "tags": [
+      "Baseline",
+      "JavaScript",
+      "의존성관리",
+      "웹성능"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 원출처 개발 사례",
+        "url": "https://smashingmagazine.com/2026/08/how-baseline-can-help-ship-less-javascript/"
+      },
+      {
+        "label": "웹닷데브의 Baseline 정의와 가용성 단계",
+        "url": "https://web.dev/baseline"
+      },
+      {
+        "label": "MDN의 Fetch 응답·오류 처리 공식 안내",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://web.dev/baseline",
+      "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원문 WEB전체 핵심26~324줄과 RSS를 대조했다. RSS12000자는중간에서잘려 WEB로보완했다. web.dev공식Baseline 정의/Newly30monthsWidely및 MDN FetchResponse/404reject안됨을 확인했다. 원문60~90KB 등 대략패키지합산은 독립실측이 없어 본문성과수치로 인용하지 않았다. 기사작성시점별Temporal/Safari지원·groupBy상태는 변할수있어 현재최신인것처럼 재전재하지 않았고개별날짜를쓰지 않았다. 기술설명은 공식Baseline/Fetch범위에 한정했다. candidates Wasm분할(4997...)은별도컴파일모듈분할,SMIL(349b...)은선언형모션으로이번의존성검토글과다르며snapshot.pending전체관련제목/요약에동일Baseline글없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "4997b7f4-003c-4ff2-b026-7fc43b02691b",
+    "56b16575-ca25-4ba2-9903-3311573548c4",
+    "580a0e30-a7c4-4fbb-a46e-41b554b43ebe",
+    "7d1abfe3-6bb8-44e6-9b5c-820b1556b3bb",
+    "bbf996b6-3d8d-49d5-abcd-de63fbbe38a7",
+    "349b938f-d930-4075-9098-43ac0a1cc904",
+    "f028c252-9b08-4977-8266-771002095d82"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:45:21.890Z",
+    "checks": [
+      "Baseline핵심브라우저상호운용시점과30개월 기준을 공식정의와 대조했다.",
+      "지원상태는 사용자기기별보장아님을명시했다.",
+      "fetch는404응답상태만으로reject하지않으므로ok검사가필요함을공식문서로확인했다.",
+      "명목패키지합산을실제프로젝트절감실적이나현재API지원현황으로포장하지않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

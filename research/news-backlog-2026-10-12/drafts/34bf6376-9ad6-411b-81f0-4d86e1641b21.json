@@ -1,0 +1,154 @@
+{
+  "id": "34bf6376-9ad6-411b-81f0-4d86e1641b21",
+  "article": {
+    "url": "https://blog.cloudflare.com/workers-kv-instant/",
+    "title": "Workers KV Instant 비공개 베타…빠른 설정 조회에 용량·쓰기 비용 조건",
+    "summary": "클라우드플레어가 Quicksilver 기반 Workers KV Instant를 비공개 베타로 공개했다. 회사는 p99 읽기 1.62ms와 빠른 글로벌 전파를 제시하지만 네임스페이스 총량 1MB, 초당 한 번 쓰기와 높은 저장·변경 비용이 적용된다. 기존 KV와의 API 차이와 적합한 사용 패턴을 정리한다.",
+    "paragraphs": [
+      {
+        "heading": "설정 데이터를 먼저 에지로 전파하는 KV 모드다",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어는 Workers KV의 새 모드인 Instant를 비공개 베타로 소개했다. 내부에서 글로벌 설정 배포에 사용해 온 Quicksilver를 기반으로 데이터를 에지에 미리 전파한다. 변경이 드물고 읽기가 많은 작은 앱 설정을 대상으로 하며, 기존 KV에서 캐시가 준비되지 않았을 때의 읽기 부담을 줄이는 방향이다.",
+          "회사 비교 표에서 Instant의 전체 p99 읽기는 1.62밀리초, 기존 Classic은 287밀리초로 제시됐다. Instant의 p99 쓰기 전파는 256밀리초다. 이 전파 값은 발표 시점 300곳 이상의 에지 위치 전체에 도달하는 시간을 뜻한다. 회사 자체 측정이며 모든 앱에서 같은 지연을 얻거나 쓰기 직후 모든 지역이 동시에 갱신된다는 보증으로 확대할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/workers-kv-instant/"
+          }
+        ]
+      },
+      {
+        "heading": "익숙한 API에도 메타데이터와 목록 차이가 있다",
+        "kind": "reporting",
+        "paragraphs": [
+          "Instant는 get, put, list, delete 같은 Workers KV의 API를 사용한다. 다만 네임스페이스를 생성할 때 instant 모드를 명시해야 한다. 메타데이터를 지원하지 않아 getWithMetadata의 메타데이터는 null이며 put에 메타데이터를 전달하는 방식도 지원되지 않는다. list는 페이지를 나누지 않고 일치하는 모든 키를 한 응답으로 반환한다.",
+          "공식 한도 문서는 Instant 네임스페이스의 전체 저장 용량을 1MB, 키·값 쌍을 최대 1만 개, 키 길이를 최대 300바이트로 정한다. 값 하나의 크기는 전체 용량을 넘지 않는 범위에서 결정된다. 쓰기는 키별 한도가 아니라 네임스페이스 전체에서 초당 한 번이다. 여러 설정을 독립적으로 자주 갱신하는 앱이라면 이 차이가 설계에 직접 영향을 준다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/workers-kv-instant/"
+          },
+          {
+            "label": "Workers KV Instant의 공식 한도 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/kv/platform/limits/"
+          }
+        ]
+      },
+      {
+        "heading": "읽기는 저렴하지만 저장과 변경은 비싸다",
+        "kind": "reporting",
+        "paragraphs": [
+          "원출처가 제시한 Instant 요금은 읽기 100만 키당 0.20달러, put·delete·list 같은 Class A 작업은 건당 0.10달러, 저장은 MB당 월 100달러다. 읽기 단가는 Classic의 0.50달러보다 60% 낮다. 그러나 Classic의 Class A 100만 건당 5달러와 GB당 월 0.50달러 저장 단가에 비하면 변경 작업과 저장 공간의 비용은 크게 높다.",
+          "여러 키를 한 번의 get으로 읽어도 요청한 키마다 읽기 사용량이 계산된다. list는 반환한 키 개수와 관계없이 요청 하나가 Class A 작업 하나로 계산된다. 따라서 호출 횟수만으로 비용을 추정하면 읽기와 목록의 차이를 놓칠 수 있다. 회사도 큰 데이터를 저장하거나 자주 변경한다면 기존 Workers KV가 더 적합하다고 설명한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/workers-kv-instant/"
+          }
+        ]
+      },
+      {
+        "heading": "전체 데이터보다 실행 경로의 작은 설정을 고른다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 Instant의 후보는 매 요청에서 확인하지만 자주 바꾸지 않는 출시 플래그나 라우팅 설정이다. 읽기 지연과 전파 속도가 중요하고 저장 총량은 작은 패턴이다. 반대로 사용자별 상태나 계속 갱신되는 기록을 한곳에 넣으면 용량과 네임스페이스 쓰기 한도에 부딪힐 수 있다. 같은 KV API를 쓴다는 이유로 기존 저장소 전체를 옮길 근거가 되지는 않는다.",
+          "비용도 읽기 절감률 하나로 판단할 수 없다. 팀은 저장할 실제 바이트 수, 월별 읽을 키 수, 설정 수정과 목록 요청 수를 따로 계산할 수 있다. 자주 읽는 아주 작은 자료의 조회 비용은 낮아져도 관리 도구가 반복해서 list를 호출하거나 설정을 계속 수정하면 다른 항목이 커진다. 데이터의 수명과 변경 빈도를 정하는 것이 요금표 비교만큼 중요하다."
+        ],
+        "references": [
+          {
+            "label": "Workers KV Instant의 공식 한도 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/kv/platform/limits/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/workers-kv-instant/"
+          }
+        ]
+      },
+      {
+        "heading": "빠른 전파와 무지연·강한 일관성은 구분한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "Instant라는 이름과 빠른 전파 수치는 앱이 기다릴 필요가 전혀 없다는 뜻이 아니다. 회사가 제시한 전파 시간 자체가 변경이 전 세계에 도달하는 과정을 보여 준다. 중요한 플래그를 바꿀 때는 어떤 지역이 먼저 새 값을 읽고 이전 값이 얼마나 남을 수 있는지 실제 흐름에서 확인해야 한다. 발표 표만으로 트랜잭션이나 모든 요청의 강한 일관성을 가정해서는 안 된다.",
+          "베타를 시험하는 팀은 설정을 작은 묶음으로 분리하고 메타데이터 의존과 목록 페이지 처리 코드를 살펴볼 수 있다. 자주 수정하는 제어 화면이 초당 한 번 쓰기 한도와 맞는지도 확인 대상이다. 이 제품은 읽기 성능과 빠른 설정 배포를 위해 다른 제약을 선택한 모드다. 자신이 가진 데이터의 특성이 그 선택과 맞는지 검증할 때 새 모드의 가치가 드러난다."
+        ],
+        "references": [
+          {
+            "label": "Workers KV Instant의 공식 한도 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/kv/platform/limits/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/workers-kv-instant/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Instant는 비공개 베타이며 작은 설정을 자주 읽고 드물게 갱신하는 패턴을 겨냥한다.",
+      "네임스페이스 전체 1MB·1만 키·초당 한 번 쓰기이며 메타데이터와 목록 페이지 분할이 없다.",
+      "읽기는 100만 키당 0.20달러지만 Class A 건당 0.10달러·저장 MB당 월 100달러가 적용된다."
+    ],
+    "tags": [
+      "Cloudflare",
+      "WorkersKV",
+      "분산설정",
+      "스토리지"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.cloudflare.com/workers-kv-instant/"
+      },
+      {
+        "label": "Workers KV Instant의 공식 한도 문서",
+        "url": "https://developers.cloudflare.com/kv/platform/limits/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.cloudflare.com/workers-kv-instant/",
+      "https://developers.cloudflare.com/kv/platform/limits/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 WEB·보존 RSS 전문, 공식 KV limits·pricing·namespace 생성 문서를 읽었다. p99 1.62ms/256ms는 자체 측정으로 귀속하고 global synchronous/strong consistency를 주장하지 않았다. Instant 가격은 원출처 표에 근거하며 Classic 가격은 별도 문서와 일치했다. 후보 9건은 다른 CF 발표이고 snapshot.pending의 KV Instant 항목은 본 ID 하나다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2019054a-a457-4356-9bc9-47b85aca06b5",
+    "2c1a4101-aae8-4295-b207-5ae567b4b4b6",
+    "4027d7c6-9b75-45ae-8b7f-1b6777e3bbbc",
+    "44c476d2-b8f8-4341-9694-f4e9b6e32222",
+    "64da50f0-d536-47bb-bd3e-dcc375b183f3",
+    "6fa4c931-8672-4bfd-8bf3-1af3e90b9b44",
+    "e1462898-b538-4aeb-96dc-f22e5eed6df0",
+    "ea15db4a-052c-4c9f-bca3-ed226cda42b8",
+    "faecfaa5-a532-492f-8d3a-bda52f50d1f7"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:47:12.143Z",
+    "checks": [
+      "private beta·namespace 1MB/10000개/300bytes·namespace당1write/sec를 공식 한도 문서에서 확인했다.",
+      "메타데이터 미지원·list 무페이지·요금 세 항목을 원문에서 확인했다.",
+      "1.62ms 읽기와256ms 전체 에지 전파의 측정 범위를 원문 주석에서 확인했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

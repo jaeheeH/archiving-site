@@ -1,0 +1,160 @@
+{
+  "id": "f6d959b1-7e82-4b87-a907-79ea24aae427",
+  "article": {
+    "url": "https://techblog.gccompany.co.kr/%EC%89%90%EB%8F%84%EC%9E%89-%EA%B2%80%EC%A6%9D-%EA%B0%9C%EC%84%A0%EA%B8%B0-cef1ddc8318d",
+    "title": "여기어때, 쉐도잉 검증을 일치율·오류·요청 재현 대시보드로 개선",
+    "summary": "여기어때가 상품 데이터 조회 경로를 바꾸며 기존·신규 결과를 비교하는 쉐도잉 검증을 공통화했다. 일치율의 분모, 비교 오류, 재현 가능한 요청과 처리시간을 함께 남겼다. 높은 일치율이 검증 누락이나 성능 차이를 가리지 않도록 설계한 사례다.",
+    "paragraphs": [
+      {
+        "heading": "데이터 출처 변경을 운영 요청으로 검증",
+        "kind": "reporting",
+        "paragraphs": [
+          "여기어때 전시개발팀은 Kafka 변경분을 MongoDB에 저장해 읽던 상품 정보를 원천 API에서 직접 조회하는 전환을 검증한 사례를 공개했다. 숙소와 객실, 날짜·인원·회원 등급·할인 조건이 얽혀 있어 내부 테스트만으로 운영 요청의 조합을 충분히 다루기 어려웠다고 설명한다. 팀은 기존 응답을 사용자에게 전달하고 별도 실행 경로에서 신규 결과를 비교하는 쉐도잉을 사용했다.",
+          "이전에는 불일치만 텍스트 로그로 남겨 전체 중 얼마나 다른지 계산할 분모가 없었다. API별 로그 형식도 달라 같은 문제의 반복을 구분하거나 요청을 다시 구성하는 데 사람이 개입해야 했다. 팀은 기존 Grafana·Prometheus·Loki를 사용하고, 실행과 기록은 공통 라이브러리로 묶되 도메인별 비교 기준은 애플리케이션에 남겼다고 밝혔다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%89%90%EB%8F%84%EC%9E%89-%EA%B2%80%EC%A6%9D-%EA%B0%9C%EC%84%A0%EA%B8%B0-cef1ddc8318d"
+          }
+        ]
+      },
+      {
+        "heading": "일치율과 비교 오류를 분리하다",
+        "kind": "reporting",
+        "paragraphs": [
+          "새 구성은 실행 수와 MATCH·DIFF·ERROR 판정을 기록한다. 한 요청 안의 여러 필드가 달라도 불일치는 요청 한 건으로 세고, 필드별 차이는 따로 보존한다. 기술블로그에 공개된 일치율은 MATCH를 MATCH와 DIFF의 합으로 나눈 값이며 비교에 실패한 ERROR는 별도 패널에서 보여준다. 비교 불가능한 요청을 숨기지 않으면서 일치율의 뜻을 유지한 설계다.",
+          "기술블로그의 캡처 시점에는 수십만 건 비교에서 99.98%의 일치율이 나타났다. 같은 글은 특정 구간의 신규 처리시간이 약 20ms, 기존은 약 13ms였다고 설명한다. 두 수치는 공개한 시점과 구간의 사례이며 전체 운영 기간의 품질이나 평균 성능을 보장하지 않는다. 측정하지 못한 기존 처리시간은 0ms로 기록하지 않고 그래프에서 제외했다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%89%90%EB%8F%84%EC%9E%89-%EA%B2%80%EC%A6%9D-%EA%B0%9C%EC%84%A0%EA%B8%B0-cef1ddc8318d"
+          }
+        ]
+      },
+      {
+        "heading": "상세 값은 로그에, 제한된 차원은 메트릭에",
+        "kind": "reporting",
+        "paragraphs": [
+          "팀은 숙소 ID와 실제 값을 메트릭 라벨에 넣지 않고, 필드 경로를 정규화하며 종류에 상한을 뒀다. 요청 조건과 차이는 SHADOW_EVENT라는 JSON 로그로 남겨 Loki에서 탐색한다. Prometheus 공식 지침도 고유한 라벨 조합마다 새 시계열이 생긴다며 사용자 ID 등 값의 종류가 끝없이 늘어나는 차원을 라벨에 저장하지 말라고 안내한다.",
+          "팀이 검토한 Diffy는 요청을 신규 서비스와 기존 서비스 두 벌에 복제하고, 기존끼리의 차이를 비결정적 노이즈로 판단하는 프록시 방식이다. 공식 문서도 이 세 인스턴스 구조를 설명한다. 이번 신규 로직은 같은 애플리케이션 내부의 다른 코드 경로여서 팀은 먼저 라이브러리와 대시보드를 구현했다. 프록시 오케스트레이션은 다음 단계의 준비 과제로 소개됐다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%89%90%EB%8F%84%EC%9E%89-%EA%B2%80%EC%A6%9D-%EA%B0%9C%EC%84%A0%EA%B8%B0-cef1ddc8318d"
+          },
+          {
+            "label": "프로메테우스 메트릭·라벨 공식 지침",
+            "kind": "primary",
+            "url": "https://prometheus.io/docs/practices/naming/"
+          },
+          {
+            "label": "디피의 요청 복제·노이즈 비교 공식 문서",
+            "kind": "primary",
+            "url": "https://github.com/opendiffy/diffy"
+          }
+        ]
+      },
+      {
+        "heading": "전환 판단에는 빠진 비교와 흡수한 차이도 포함",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 높은 일치율의 가치는 분모와 예외가 함께 보일 때 생긴다. ERROR가 많거나 특정 요청이 샘플링에 들어오지 않으면 관측된 일치율이 높아도 중요한 조건을 확인하지 못했을 수 있다. API별 결과와 기간을 나눠 보고 비교 불가능한 요청의 이유를 추적해야 전환 여부를 판단할 근거가 된다. 일치율 한 숫자는 통과 판정 그 자체가 아니다.",
+          "노이즈를 제거하는 기준도 운영 문서로 남길 필요가 있다. 기술블로그는 사용자 화면에 나가지 않거나 실행마다 달라지는 값만 제외하고 금액은 계속 비교했다고 설명한다. 제한된 반올림 차이를 흡수할 때도 별도 건수를 센다. 이런 기록이 없으면 비교기를 고친 뒤 일치율이 올라간 이유가 실제 오류 수정인지, 검사를 덜 하게 된 것인지 구분하기 어렵다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%89%90%EB%8F%84%EC%9E%89-%EA%B2%80%EC%A6%9D-%EA%B0%9C%EC%84%A0%EA%B8%B0-cef1ddc8318d"
+          },
+          {
+            "label": "디피의 요청 복제·노이즈 비교 공식 문서",
+            "kind": "primary",
+            "url": "https://github.com/opendiffy/diffy"
+          }
+        ]
+      },
+      {
+        "heading": "관측용 코드도 사용자 응답과 분리해 검토",
+        "kind": "analysis",
+        "paragraphs": [
+          "공개된 라이브러리는 이미 제공한 기존 결과를 재사용하고, 샘플링을 통과한 신규 로직을 별도 실행기에 넘긴다. 리포터별 오류도 분리해 검증 코드의 실패가 응답 처리에 번지지 않도록 했다. 다만 비동기로 실행하더라도 추가 API 호출과 자원 사용은 남는다. 도입 팀은 비교의 정확성과 함께 실행기의 처리량, 대기 상태, 보고 누락을 살펴야 한다.",
+          "요청 재현 정보는 문제를 다시 확인하는 데 유용하지만 저장 범위를 의식적으로 정해야 한다. 팀은 결과에 영향을 주는 헤더를 골라 남기고 사용자 ID 같은 민감 정보는 제외했다고 밝혔다. 아카이브에는 데이터 전환 이유와 최종 일치율만 적기보다 샘플링 조건, 제외 필드, 오류 집계와 미측정 처리 규칙을 함께 보존하는 편이 다음 검증에도 쓸 수 있는 기록이 된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%89%90%EB%8F%84%EC%9E%89-%EA%B2%80%EC%A6%9D-%EA%B0%9C%EC%84%A0%EA%B8%B0-cef1ddc8318d"
+          },
+          {
+            "label": "프로메테우스 메트릭·라벨 공식 지침",
+            "kind": "primary",
+            "url": "https://prometheus.io/docs/practices/naming/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "일치율의 분모는 MATCH+DIFF이며 비교 실패 ERROR는 별도로 공개한다.",
+      "실제 요청과 차이는 로그에, 정규화한 필드와 제한된 차원은 메트릭에 남긴다.",
+      "99.98% 및 약 20ms·13ms는 캡처 시점의 내부 결과이며 일반 성능 보장이 아니다."
+    ],
+    "tags": [
+      "여기어때",
+      "쉐도잉",
+      "API검증",
+      "관측가능성",
+      "그라파나"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 사례와 발표",
+        "url": "https://techblog.gccompany.co.kr/%EC%89%90%EB%8F%84%EC%9E%89-%EA%B2%80%EC%A6%9D-%EA%B0%9C%EC%84%A0%EA%B8%B0-cef1ddc8318d"
+      },
+      {
+        "label": "프로메테우스 메트릭·라벨 공식 지침",
+        "url": "https://prometheus.io/docs/practices/naming/"
+      },
+      {
+        "label": "디피의 요청 복제·노이즈 비교 공식 문서",
+        "url": "https://github.com/opendiffy/diffy"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://techblog.gccompany.co.kr/%EC%89%90%EB%8F%84%EC%9E%89-%EA%B2%80%EC%A6%9D-%EA%B0%9C%EC%84%A0%EA%B8%B0-cef1ddc8318d",
+      "https://prometheus.io/docs/practices/naming/",
+      "https://github.com/opendiffy/diffy"
+    ],
+    "notes": "Codex 직접 조사·집필, Gemini 및 외부 생성 API 호출 없음. WEB 원문 접근은 실패했고 공식 RSS는 WEB XML 미지원이었다. 보존 source_text가 12,000자에서 절단되어 직접 HTTP로 원출처 RSS를 추가 조회하고 쉐도잉 전문 후반의 라이브러리·오류 처리·후속 계획까지 읽었다. 연구 sources/development-live-rss-first6.json에 전문을 보존했다. Prometheus 라벨 지침과 Diffy 세 인스턴스/노이즈 비교는 WEB으로 대조했다. 99.98%·20ms·13ms는 캡처 구간의 내부 측정으로 한정하고 Phase2는 완료로 쓰지 않았다. 후보 없음. snapshot.pending 전체 제목 및 여기어때 관측 대시보드 편과 비교했다. 해당 편은 장애 원인 탐색 UX, 이 편은 데이터 전환 시 응답 동등성 검증이므로 별개 후속 사례다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:15:28.58Z",
+    "checks": [
+      "최신 RSS 전문이 기존 결과 재사용·비동기 candidate 실행과 리포터별 예외 분리를 설명한다.",
+      "일치율 공식이 MATCH/(MATCH+DIFF)이며 ERROR를 별도로 표시한다.",
+      "99.98%와 신규 20ms·기존 13ms는 캡처 시점 결과로만 주장했다.",
+      "Prometheus는 고카디널리티 라벨이 새 시계열을 증가시킨다고 설명하고 Diffy는 candidate/primary/secondary 비교를 사용한다.",
+      "실제 editorialSchema로 한국어·본문 1800~3000자·5섹션·서로 다른 HTTPS 원출처 포함 참조를 검증했다.",
+      "snapshot.pending 전체 원제 목록과 관련 제목·요약을 대조해 같은 사건의 중복이 없음을 검토했다.",
+      "최종 검수: 연결된 글은 다른 구체 사례·단계 또는 별도 실질 주제를 다루므로 중복 발표가 아님을 본문과 조사 메모로 확인했다."
+    ],
+    "relatedPendingIds": [
+      "1f6c9da1-6750-4eed-959e-9d5a014c5225"
+    ],
+    "distinctRelatedReviewed": true
+  }
+}

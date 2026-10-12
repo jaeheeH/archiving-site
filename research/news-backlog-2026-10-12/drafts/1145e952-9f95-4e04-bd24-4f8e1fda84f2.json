@@ -1,0 +1,155 @@
+{
+  "id": "1145e952-9f95-4e04-bd24-4f8e1fda84f2",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/07/kirki-wordpress-visual-builder-infinite-canvas/",
+    "title": "키르키, 워드프레스에 무한 캔버스 편집 제안… 반응형 작업과 요금제 범위 살펴보기",
+    "summary": "스매싱 매거진의 키르키 협찬 소개는 자유로운 캔버스와 내장 CMS를 강조한다. 공식 문서와 요금표를 대조하면 여러 화면 크기를 나란히 편집하는 방식과 무료판·유료판의 차이를 확인할 수 있으며, 성능과 접근성은 실제 사이트 조건에서 따로 검증해야 한다.",
+    "paragraphs": [
+      {
+        "heading": "페이지 구조를 고르는 대신 캔버스에서 구성하다",
+        "kind": "reporting",
+        "paragraphs": [
+          "스매싱 매거진은 키르키의 협찬을 받아 워드프레스용 시각적 사이트 제작기를 소개했다. 글의 중심은 정해진 행과 열 중심의 편집 방식에서 벗어나 넓은 캔버스 안에서 요소를 배치하고 화면 크기별 모습을 함께 살피는 경험이다. 제품의 성능 비교와 장점 소개는 이러한 협찬 맥락을 전제로 읽어야 한다.",
+          "키르키의 공식 캔버스 문서는 작업 공간을 이동하거나 확대해 구성 요소를 다루는 방법을 설명한다. 선택 도구 외에 화면 이동 도구와 컨테이너, 텍스트, 이미지 등을 추가하는 도구가 있다. 자유롭게 배치한다는 표현이 사이트의 구조가 사라진다는 의미는 아니며, 편집 과정에서 컨테이너와 섹션을 활용하도록 안내한다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/kirki-wordpress-visual-builder-infinite-canvas/"
+          },
+          {
+            "label": "키르키의 무한 캔버스 공식 사용 문서",
+            "kind": "primary",
+            "url": "https://kirki.com/docs/canvas/the-infinite-canvas/"
+          }
+        ]
+      },
+      {
+        "heading": "네 가지 화면을 함께 보는 반응형 편집",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 문서에는 데스크톱 1200픽셀, 태블릿 991픽셀, 모바일 가로 767픽셀, 모바일 세로 575픽셀의 네 분기점을 나란히 보여 주는 편집 화면이 소개된다. 각 분기점은 캔버스의 별도 열로 표시된다. 원출처는 큰 분기점에서 만든 스타일을 작은 분기점으로 이어 적용하고 필요한 곳에서 조정하는 방식을 설명했다.",
+          "이 작업 화면은 편집자가 여러 크기의 차이를 발견하도록 돕는 장치다. 네 가지 미리보기에서 보기 좋다고 모든 실제 기기나 콘텐츠 길이에서 문제가 없다는 뜻은 아니다. 디자인 시안의 기본 문구보다 제목이 길어지거나 이미지 비율이 달라졌을 때도 내용이 흐르는지 별도로 확인할 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "키르키의 무한 캔버스 공식 사용 문서",
+            "kind": "primary",
+            "url": "https://kirki.com/docs/canvas/the-infinite-canvas/"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/kirki-wordpress-visual-builder-infinite-canvas/"
+          }
+        ]
+      },
+      {
+        "heading": "내장 기능과 무료 제공은 구분해야 한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "확인한 공식 요금표에서 무료판에는 캔버스, 반응형 편집, 폼 제작, 사이트 내보내기와 가져오기, 피그마 가져오기 등이 포함된다. Pro는 연 59달러의 한 사이트 라이선스로 표시되며, 동적 콘텐츠용 키르키 CMS와 전체 인터랙션 타임라인, 팝업 제작, 실시간 협업과 캔버스 댓글을 추가로 제공한다고 안내한다.",
+          "따라서 내장 기능이 있다는 소개를 모든 요금제에서 같은 기능을 무료로 쓸 수 있다는 의미로 받아들여서는 안 된다. 동적 사이트를 만들거나 여러 사람이 동시에 작업하려는 팀은 해당 기능의 요금제 범위를 기준으로 검토해야 한다. 가격은 공식 페이지 확인 시점의 표시이며 향후 변경될 수 있다."
+        ],
+        "references": [
+          {
+            "label": "키르키 공식 요금제와 기능 구분",
+            "kind": "primary",
+            "url": "https://kirki.com/pricing/"
+          }
+        ]
+      },
+      {
+        "heading": "성능 우위를 판단할 때 필요한 자료",
+        "kind": "analysis",
+        "paragraphs": [
+          "원출처는 같은 테마와 유사한 레이아웃으로 다른 제작기와 비교해 키르키가 더 간결한 구조와 높은 점수를 냈다고 설명한다. 하지만 이번 확인에서 재현 가능한 전체 측정 설정과 결과를 별도로 확보하지 않았으므로 이를 독립적인 속도 우위로 확정할 수 없다. 특정 샘플의 결과가 이미지와 폼, 추적 도구가 많은 실제 사이트까지 보장하지도 않는다.",
+          "도입 후보를 평가하려면 자신이 운영할 페이지를 대표하는 샘플을 만들어 비교하는 방식이 유용하다. 같은 이미지와 글꼴, 동적 데이터 및 캐시 조건에서 초기 표시와 입력 반응을 확인하고, 관리자가 수정할 때의 편집 부담도 기록할 수 있다. 단순한 요소 수보다 운영 조건 전체를 함께 봐야 성능과 편의의 교환 관계가 드러난다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/kirki-wordpress-visual-builder-infinite-canvas/"
+          },
+          {
+            "label": "키르키의 무한 캔버스 공식 사용 문서",
+            "kind": "primary",
+            "url": "https://kirki.com/docs/canvas/the-infinite-canvas/"
+          }
+        ]
+      },
+      {
+        "heading": "자유로운 배치 이후에 남는 운영의 과제",
+        "kind": "analysis",
+        "paragraphs": [
+          "시각적 편집의 자유는 제작자가 화면의 관계를 빠르게 조정하게 하지만 읽기 순서와 의미를 대신 결정해 주지는 않는다. 겹친 요소가 작은 화면에서 내용을 가리는지, 버튼과 폼에 이해 가능한 이름이 있는지, 키보드로 작업할 수 있는지 등을 실제 출력에서 살펴야 한다. 편집기에서의 위치와 방문자가 사용하는 순서를 함께 보는 이유다.",
+          "내장 CMS와 협업 기능을 선택할 때는 사이트를 인계할 담당자가 어느 범위를 바꿀지도 정해야 한다. 콘텐츠 수정과 전체 스타일 변경을 구분하면 작은 업데이트가 넓은 화면에 영향을 주는 일을 줄일 수 있다. 새 제작기에서 작업이 쉬워지는지와 기존 운영 규칙을 어떻게 옮길지는 연결되어 있지만 서로 다른 확인 과제다.",
+          "키르키가 제안하는 차이는 하나의 캔버스에서 디자인과 콘텐츠 작업을 가깝게 묶는 방식에 있다. 채택 여부는 최초의 시안을 만드는 속도뿐 아니라 새 콘텐츠를 추가하고 화면 오류를 수정하며 다른 담당자에게 넘기는 과정까지 살펴 판단할 수 있다. 실제 프로젝트의 요구를 먼저 정리해야 어떤 내장 기능과 요금제가 필요한지도 분명해진다."
+        ],
+        "references": [
+          {
+            "label": "키르키의 무한 캔버스 공식 사용 문서",
+            "kind": "primary",
+            "url": "https://kirki.com/docs/canvas/the-infinite-canvas/"
+          },
+          {
+            "label": "키르키 공식 요금제와 기능 구분",
+            "kind": "primary",
+            "url": "https://kirki.com/pricing/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "원출처는 키르키 협찬 소개이며 성능 우위를 독립 검증 결과로 읽어서는 안 된다.",
+      "공식 문서는 네 화면 크기를 나란히 표시하는 캔버스 편집 방식을 설명한다.",
+      "무료판과 Pro의 CMS·협업 등 기능 범위가 다르므로 프로젝트 요구와 맞춰야 한다."
+    ],
+    "tags": [
+      "워드프레스",
+      "키르키",
+      "시각적편집",
+      "반응형디자인"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 원출처 개발 사례",
+        "url": "https://smashingmagazine.com/2026/07/kirki-wordpress-visual-builder-infinite-canvas/"
+      },
+      {
+        "label": "키르키의 무한 캔버스 공식 사용 문서",
+        "url": "https://kirki.com/docs/canvas/the-infinite-canvas/"
+      },
+      {
+        "label": "키르키 공식 요금제와 기능 구분",
+        "url": "https://kirki.com/pricing/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://kirki.com/docs/canvas/the-infinite-canvas/",
+      "https://kirki.com/pricing/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 비-www와www WEB 모두internalerror/unsafe redirect로 전문 접근 실패. 보존 RSS12000자는 뒤의 템플릿소개에서 잘렸지만 협찬표시,캔버스,반응형,가격,성능비교,주요기능 등 논점의 핵심까지 충분히 포함한다. 핵심사실은추가공식캔버스문서·요금표에서다시확인. 원문의 everyplan allfeatures 식 모호한 구절은 공식무료/Pro분류로정정하며 최초·영구무제한·모든테마완벽호환·엘리멘터보다무조건빠름 같은마케팅확정주장 제외. Pro연59USD1사이트는10월12일확인가격으로한정,일생가격/미확인비교점수안씀. post.candidates0건+snapshot.pending 전체제목·요약대조: 같은Kirki출시/소개사건없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:09:38.962Z",
+    "checks": [
+      "원출처 보존 RSS에서 협찬 표시와 핵심 제품 소개를 확인했다.",
+      "공식 캔버스 문서의 4분기점은1200/991/767/575픽셀이다.",
+      "공식 요금표에서 무료판과Pro의 CMS·협업기능이 구분된다.",
+      "Pro표시는연59달러1사이트이며원문의비교성능을독립실험으로포장하지않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

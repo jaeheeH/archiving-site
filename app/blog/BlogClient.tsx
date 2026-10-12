@@ -1,4 +1,5 @@
 'use client';
+import { saveLoginHref,notifySaved } from '@/lib/save-intent';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -212,8 +213,7 @@ export default function BlogClient({
 
     if (!userId) {
       addToast('로그인이 필요합니다', 'error');
-      const redirectTo = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
-      router.push(`/login?redirect=${redirectTo}`);
+      router.push(saveLoginHref('post', post.id));
       return;
     }
 
@@ -224,12 +224,11 @@ export default function BlogClient({
     });
 
     try {
-      const res = await fetch(`/api/posts/${post.id}/scrap`, { method: 'POST' });
+      const res = await fetch(`/api/posts/${post.id}/scrap`, { method: 'PUT', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({ scraped:!scrapedPostIds.has(post.id) }) });
 
       if (res.status === 401) {
         addToast('로그인이 필요합니다', 'error');
-        const redirectTo = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
-        router.push(`/login?redirect=${redirectTo}`);
+        router.push(saveLoginHref('post', post.id));
         return;
       }
 
@@ -240,7 +239,8 @@ export default function BlogClient({
         return;
       }
 
-      setScrapedPostIds((prev) => {
+notifySaved('post',post.id,data.scraped,userId,data.scrapCount);
+            setScrapedPostIds((prev) => {
         const next = new Set(prev);
         if (data.scraped) next.add(post.id);
         else next.delete(post.id);

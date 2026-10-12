@@ -1,0 +1,184 @@
+{
+  "id": "652f42d6-0ba7-4ee1-b47b-8e6c0c754c23",
+  "article": {
+    "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ed%94%8c%eb%9e%99%ed%8a%b8%ea%b7%b8%eb%a3%b9-hvac-%ec%83%9d%ec%82%b0%eb%9d%bc%ec%9d%b8-%ec%b0%a9%ea%b3%b5",
+    "title": "삼성전자, 광주 플랙트그룹 HVAC 생산라인 착공…2028년 초 가동 계획",
+    "summary": "삼성전자가 광주사업장 제3 캠퍼스에 약 2,400억원을 투자하는 HVAC 생산라인의 착공식을 열었다. 최신 착공 발표는 연면적 2만1,800㎡, 2028년 초 가동, 플랙트그룹의 15번째 글로벌 생산거점을 제시한다. 한국·동아시아를 중심으로 액체 냉각과 공기 처리 장비를 공급할 계획이며 제품별 생산능력·현장 효율 성과는 별도 정보다.",
+    "paragraphs": [
+      {
+        "heading": "착공한 생산라인은 2028년 초 가동을 목표로 한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "삼성전자는 9월 21일 광주사업장에서 플랙트그룹 냉난방공조 생산라인의 착공식을 진행했다고 밝혔다. 제3 캠퍼스에 약 2,400억원을 투자하고 연면적 2만1,800㎡ 규모로 구축해 2028년 초부터 본격 가동한다는 계획이다. 면적은 삼성전자 발표의 연면적이며 공장 부지 전체의 크기로 바꾸지 않았다. FläktGroup이 9월 23일 공개한 별도 착공 자료도 같은 면적과 2028년 초 생산 개시 계획을 제시한다. 두 날짜는 같은 착공을 전한 자료의 공개 시점이다. 현재 확인된 변화는 건설 단계의 시작이며 해당 라인이 이미 완공되거나 예정된 제품을 모두 양산하고 있다는 발표는 아니다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 광주 HVAC 생산라인 착공 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ed%94%8c%eb%9e%99%ed%8a%b8%ea%b7%b8%eb%a3%b9-hvac-%ec%83%9d%ec%82%b0%eb%9d%bc%ec%9d%b8-%ec%b0%a9%ea%b3%b5",
+            "kind": "primary"
+          },
+          {
+            "label": "FläktGroup의 최신 한국 생산시설 착공 발표",
+            "url": "https://www.flaktgroup.com/en/news/news-archive/2026/september/flaktgroup-breaks-ground-on-new-production-facility-in-south-korea/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "한국·동아시아 고객에 가까운 생산거점 구상",
+        "kind": "reporting",
+        "paragraphs": [
+          "FläktGroup은 새 시설을 전 세계의 15번째 생산시설로 설명하고 한국과 동아시아 고객을 지원하는 제조 기반을 강화한다고 밝혔다. 2025년 삼성전자 인수 이후 삼성의 제조 역량과 자사의 환기·공기 처리·냉각 기술을 연결하는 투자라는 설명이다. 수요 대상으로는 데이터센터 외에도 첨단 제조시설과 대형 상업 건물이 제시됐다. 국내 착공 발표는 반도체·배터리 제조시설을 구체적으로 포함한다. 생산거점의 순번은 공장 수에 관한 정보이며 국가 수나 특정 제품의 시장점유율과 다르다. 회사가 밝힌 지역 고객 대응 방향과 실제로 확보한 주문·출하 규모도 같은 지표로 세면 안 된다."
+        ],
+        "references": [
+          {
+            "label": "FläktGroup의 최신 한국 생산시설 착공 발표",
+            "url": "https://www.flaktgroup.com/en/news/news-archive/2026/september/flaktgroup-breaks-ground-on-new-production-facility-in-south-korea/",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성전자 광주 HVAC 생산라인 착공 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ed%94%8c%eb%9e%99%ed%8a%b8%ea%b7%b8%eb%a3%b9-hvac-%ec%83%9d%ec%82%b0%eb%9d%bc%ec%9d%b8-%ec%b0%a9%ea%b3%b5",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "액체 냉각과 공기 처리 장비를 함께 생산한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "생산 예정 장비에는 냉각수 분배장치인 CDU, 팬 월 유닛인 FWU, 컴퓨터룸 공기 처리 장치인 CRAH, 대형 건축물용 공기조화기인 AHU가 포함된다. FläktGroup의 제품 안내는 CDU를 데이터센터의 액체 냉각용 장비로 소개한다. CRAH는 서버실과 데이터센터, UPS 등 연중 공기 냉각이 필요한 공간에 적용하는 장비로 설명하며 팬 월 제품은 시설별 구성 요구에 맞추는 방식을 안내한다. 여러 종류의 장비를 계획한 것은 냉각과 공기 처리의 서로 다른 요구를 다룬다는 의미다. 현재 제품 안내의 특정 모델을 광주에서 모두 같은 사양으로 생산한다고 밝힌 것은 아니므로 계획된 장비 범주와 개별 모델의 확정 생산 목록을 구분했다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 광주 HVAC 생산라인 착공 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ed%94%8c%eb%9e%99%ed%8a%b8%ea%b7%b8%eb%a3%b9-hvac-%ec%83%9d%ec%82%b0%eb%9d%bc%ec%9d%b8-%ec%b0%a9%ea%b3%b5",
+            "kind": "primary"
+          },
+          {
+            "label": "FläktGroup 데이터센터 냉각 제품·적용 범위",
+            "url": "https://www.flaktgroup.com/en/solutions/data-centre-cooling-solutions/",
+            "kind": "primary"
+          },
+          {
+            "label": "FläktGroup 액체 냉각·CDU 공식 설명",
+            "url": "https://www.flaktgroup.com/en/solutions/liquid-cooling/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "설치할 시설의 요구가 제품 선택을 결정한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "FläktGroup의 데이터센터 설명은 냉각이 온도와 습도를 관리하고 IT 장비에서 생긴 열을 처리하는 역할이라고 안내한다. 회사는 공기·액체·증발·혼합 방식의 솔루션과 기존 공기 냉각 시설에 액체 냉각을 추가하는 단계적 접근도 제시한다. 이 설명에 비춰보면 새 생산라인의 의미는 한 가지 냉각 방식으로 모든 시설을 바꾸는 데 있지 않다. 다양한 현장의 구성을 지원할 장비를 가까운 지역에서 생산하려는 방향으로 읽힌다. 액체 냉각 제품이 포함됐다는 사실만으로 모든 데이터센터의 전력 사용이나 운영비가 같은 비율로 줄어드는 것은 아니다. 실제 비교에는 시설 구성과 장비 선택, 운전 조건에 맞춘 측정이 필요하다."
+        ],
+        "references": [
+          {
+            "label": "FläktGroup 데이터센터 냉각 제품·적용 범위",
+            "url": "https://www.flaktgroup.com/en/solutions/data-centre-cooling-solutions/",
+            "kind": "primary"
+          },
+          {
+            "label": "FläktGroup 액체 냉각·CDU 공식 설명",
+            "url": "https://www.flaktgroup.com/en/solutions/liquid-cooling/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "개발부터 유지보수까지 연결하겠다는 사업 계획",
+        "kind": "reporting",
+        "paragraphs": [
+          "삼성전자는 제품 개발·생산·설치·유지보수를 긴밀하게 연결하는 HVAC 사업 체계를 구축해 고객 요구에 대응하겠다고 설명했다. 착공부터 완공과 양산 안정화까지 안전 관리를 추진하고 지역 인재의 채용·육성, 협력회사와의 동반성장에도 나설 계획이라고 밝혔다. 광주사업장을 AI 가전과 차세대 HVAC 솔루션을 함께 생산하는 제조거점으로 육성한다는 방향도 제시했다. 이러한 설명은 건물을 짓는 일뿐 아니라 생산과 현장 지원을 연결하려는 목표를 보여준다. 다만 발표는 확정 고용 인원이나 제품별 연간 생산량을 제시하지 않았다. 지역 채용 계획을 이미 창출한 일자리 수로 계산하거나 사업 목표를 현재의 생산능력으로 옮기지 않았다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 광주 HVAC 생산라인 착공 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ed%94%8c%eb%9e%99%ed%8a%b8%ea%b7%b8%eb%a3%b9-hvac-%ec%83%9d%ec%82%b0%eb%9d%bc%ec%9d%b8-%ec%b0%a9%ea%b3%b5",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "AI 인프라 확대를 제조·서비스로 연결하는 단계",
+        "kind": "analysis",
+        "paragraphs": [
+          "이번 착공은 AI 데이터센터 수요를 냉각 장비의 지역 생산과 연결하는 산업 투자다. 연산 장치를 공급하는 사업과 그 장치가 운전할 시설의 냉각·공조를 지원하는 사업은 서로 맞물리지만 역할은 다르다. 새 라인의 투자가 어느 데이터센터의 GPU 성능이나 서비스 가격을 직접 바꿨다는 결과는 발표에 없다. 현지 제조거점의 가치를 판단할 다음 정보는 계획대로 생산을 시작하는지, 어떤 제품과 물량을 공급하는지, 설치·유지보수 체계를 어떻게 운영하는지다. 따라서 최신 착공 자료의 면적과 가동 목표를 기준으로 사업 단계를 파악하고 실제 공급 능력·현장 성과는 후속 자료에서 확인하는 것이 이번 투자의 범위를 이해하는 데 맞다."
+        ],
+        "references": [
+          {
+            "label": "FläktGroup의 최신 한국 생산시설 착공 발표",
+            "url": "https://www.flaktgroup.com/en/news/news-archive/2026/september/flaktgroup-breaks-ground-on-new-production-facility-in-south-korea/",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성전자 광주 HVAC 생산라인 착공 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ed%94%8c%eb%9e%99%ed%8a%b8%ea%b7%b8%eb%a3%b9-hvac-%ec%83%9d%ec%82%b0%eb%9d%bc%ec%9d%b8-%ec%b0%a9%ea%b3%b5",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "약 2,400억원 투자·연면적 2만1,800㎡·2028년 초 가동이라는 최신 착공 조건을 확인했다.",
+      "15번째 글로벌 생산시설과 한국·동아시아 고객 대응 방향을 구분했다.",
+      "CDU·FWU·CRAH·AHU의 장비 범주를 개별 모델 확정 목록으로 확대하지 않았다.",
+      "공장 건설·채용·사업 체계 목표를 현재 생산량이나 일자리·전력 절감 성과로 전용하지 않았다."
+    ],
+    "tags": [
+      "삼성전자",
+      "플랙트그룹",
+      "HVAC",
+      "데이터센터"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "삼성전자 광주 HVAC 생산라인 착공 원문",
+        "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ed%94%8c%eb%9e%99%ed%8a%b8%ea%b7%b8%eb%a3%b9-hvac-%ec%83%9d%ec%82%b0%eb%9d%bc%ec%9d%b8-%ec%b0%a9%ea%b3%b5"
+      },
+      {
+        "label": "FläktGroup의 최신 한국 생산시설 착공 발표",
+        "url": "https://www.flaktgroup.com/en/news/news-archive/2026/september/flaktgroup-breaks-ground-on-new-production-facility-in-south-korea/"
+      },
+      {
+        "label": "FläktGroup 데이터센터 냉각 제품·적용 범위",
+        "url": "https://www.flaktgroup.com/en/solutions/data-centre-cooling-solutions/"
+      },
+      {
+        "label": "FläktGroup 액체 냉각·CDU 공식 설명",
+        "url": "https://www.flaktgroup.com/en/solutions/liquid-cooling/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ed%94%8c%eb%9e%99%ed%8a%b8%ea%b7%b8%eb%a3%b9-hvac-%ec%83%9d%ec%82%b0%eb%9d%bc%ec%9d%b8-%ec%b0%a9%ea%b3%b5",
+      "https://www.flaktgroup.com/en/news/news-archive/2026/september/flaktgroup-breaks-ground-on-new-production-facility-in-south-korea/",
+      "https://www.flaktgroup.com/en/solutions/data-centre-cooling-solutions/",
+      "https://www.flaktgroup.com/en/solutions/liquid-cooling/"
+    ],
+    "notes": "삼성KR9/21 착공 원문+Fläkt9/23 최신 착공 발표 대조, 양쪽21,800㎡·early2028·15th 일치. Fläkt 페이지 web extraction은 탐색 메뉴 위주여서 공개 HTTP200 본문 직접 열람으로 수치/예정 범주 확인. 이전8/19·9/2투자계획21,500㎡·2028말 표현을 최신자료에 섞지 않음. 연면적≠부지;2400억원예정투자≠이미집행완료. 출하/연생산/채용인원 미공개 수치 생성안함. 공식data-centre와liquid-cooling 제품자료에서 CRAH 연중공기냉각·CDU액체·FWU맞춤구성 확인, 제품페이지 특정모델은 광주확정생산목록 아님. efficiency/cost/uptime 일반홍보·모든현장절감보장 제외. 후보 갈라/무선이어폰 다른 사건; 전체 pending 인도공장/상업공조/DSX CDU제품적합성과 장소·사업단계·구체발표가 다름, 광주투자계획이 있었다면 착공 후속의 실질단계 변화로 별개. 이번pending 동일광주착공 없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "a55ebad0-e03d-418e-8ffd-43af660e7f38",
+    "f1c6270a-4dac-4b5a-b155-3bfd66b56f9d"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:46:05.271Z",
+    "checks": [
+      "삼성KR 원문의 착공일·예정 투자·연면적 확인",
+      "Fläkt 최신9/23 원문과 면적·2028초·15번째 대조",
+      "이전 투자 계획의 다른 면적·연말 일정을 섞지 않음",
+      "공식 제품자료로 공기 냉각·액체 냉각 역할 확인",
+      "계획 장비 범주와 특정 모델 확정 생산 목록 구분",
+      "고용·양산량·효율·GPU성능 수치 생성하지 않음",
+      "후보 전체 및 pending의 다른 시설·제품적합성 발표와 구체 사건 대조"
+    ],
+    "relatedPendingIds": []
+  }
+}

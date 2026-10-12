@@ -8,7 +8,6 @@ import { checkPostOwnershipOrAdmin } from "./supabase/post-utils";
 import { NEWS_FORMAT, newsSlug, completedNewsWriting, type NewsArticle } from "./news-record";
 export type { NewsArticle } from "./news-record";
 import type { NewsSummary } from './news-list';
-import { cache } from 'react';
 export const NEWS_CACHE_TAG = "archb-news";
 const columns = "id,type,slug,title,subtitle,summary,tags,title_image_url,published_at,content,author_id,category_id";
 
@@ -36,10 +35,21 @@ export const readNews = unstable_cache(async () => {
   articles.sort((a, b) => Date.parse(b.published_at) - Date.parse(a.published_at) || a.id.localeCompare(b.id));
   return { articles, sources: [...FEEDS, { id: "archb-editorial", name: "ARCH.B", category: "editorial" as const, url: "/" }].map(feed => ({ ...feed, count: articles.filter(a => a.source === feed.name).length })) };
 }, ["archb-published-news-and-editorials-v3", JSON.stringify(FEEDS)], { revalidate: 600, tags: [NEWS_CACHE_TAG, "public-posts"] });
-export const readNewsSummaries = cache(async (): Promise<{ articles: NewsSummary[] }> => {
-  const { articles } = await readNews();
-  return { articles: articles.map(article => ({ id: article.id, slug: article.slug, kind: article.kind, collection: article.collection, url: article.url, original_title: article.original_title, title: article.title, summary: article.summary, description: article.description, tags: article.tags, image: article.image, published_at: article.published_at, source: article.source, category: article.category })) };
-});
+export const readNewsSummaries = unstable_cache(async (): Promise<{ articles: NewsSummary[] }> => {
+  const articles: NewsSummary[] = [];
+  for (let offset = 0; ; offset += 500) {
+    const { data, error } = await createPublicClient().from('published_post_summaries').select('*').order('published_at', { ascending: false }).order('id').range(offset, offset + 499);
+    if (error) throw error;
+    for (const row of data || []) {
+      const editorial = row.type === 'blog';
+      if (!editorial && !Object.hasOwn(CATEGORIES, row.news_category)) continue;
+      articles.push({ id: row.id, slug: row.slug, kind: editorial ? 'editorial' : 'news', collection: editorial ? row.category_id : undefined, url: editorial ? `/news/read/${row.slug}` : row.source_url, original_title: editorial ? row.title : row.original_title, title: row.title, summary: row.summary || row.subtitle || '', description: row.summary || row.subtitle || '', tags: row.tags || [], image: row.title_image_url, published_at: editorial ? row.published_at : row.source_published_at || row.published_at, source: editorial ? 'ARCH.B' : row.source, category: editorial ? 'editorial' : row.news_category });
+    }
+    if (!data || data.length < 500) break;
+  }
+  articles.sort((a,b) => Date.parse(b.published_at) - Date.parse(a.published_at) || a.id.localeCompare(b.id));
+  return { articles };
+}, ['published-post-summaries-v1'], { revalidate:600, tags:[NEWS_CACHE_TAG,'public-posts'] });
 export const readNewsArticle = unstable_cache(async (slug: string) => {
   const { data, error } = await createPublicClient().from("posts").select(columns).eq("slug", slug).in("type", ["news", "blog"]).eq("is_published", true).not("published_at", "is", null).maybeSingle();
   if (error) throw error;

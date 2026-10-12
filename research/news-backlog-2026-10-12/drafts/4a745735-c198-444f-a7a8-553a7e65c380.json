@@ -1,0 +1,156 @@
+{
+  "id": "4a745735-c198-444f-a7a8-553a7e65c380",
+  "article": {
+    "url": "https://blog.google/products-and-platforms/products/education/gemini-student-newscast/",
+    "title": "8학년 학생들의 학교 방송 제작… Gemini로 로고 초안·촬영 계획을 다듬다",
+    "summary": "미국 Carriel Junior High의 8학년 학생들이 Gemini와 Docs·Slides로 첫 학교 방송 The Cougar Rumble을 기획한 경험이 공개됐다. 로고 스케치의 공통 주제와 브랜드 자료를 정리하고 주간 방송의 대본·촬영 목록을 다듬는 방식이다. 기획 지원과 실제 촬영·편집의 역할을 구분한다.",
+    "paragraphs": [
+      {
+        "heading": "이름과 로고 없이 시작한 방송",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 5일 미국 일리노이주 O’Fallon의 Carriel Junior High에서 컴퓨터 과학과 기술을 가르치는 Tori Engel의 경험을 공개했다. 작성자는 8학년 학생들이 학교의 첫 뉴스 방송을 만들기로 했을 때 이름과 로고, 확립된 브랜드가 없는 상태에서 출발했다고 설명한다. 학생들은 Gemini를 창작 파트너로 활용하고 Google Docs와 Slides를 함께 써 The Cougar Rumble이라는 프로그램을 구성했다. 이 글은 학생이 주도한 기획 경험을 소개하며 구글이 학교 방송을 대신 운영하는 새 서비스를 출시했다는 발표는 아니다. 공개 내용에는 방송의 분량이나 시청자 수, 참여 학생 전체의 수가 없다. 따라서 학교의 규모나 프로그램의 인기, 제작 효율을 임의의 숫자로 설명할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "Tori Engel의 학교 방송 제작 수업 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/gemini-student-newscast/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "스케치의 공통점을 찾아 주간 제작으로",
+        "kind": "reporting",
+        "paragraphs": [
+          "Engel에 따르면 학생들은 처음 아이디어를 함께 구상한 뒤 Gemini로 여러 로고 스케치에 나타난 공통 주제를 찾고, 브랜드 자료를 다듬을 프롬프트를 만들었다. 원문은 학생의 초안이 먼저 있고 그 관계를 읽는 데 도구를 썼다는 흐름을 설명한다. 이 과정은 이후 주간 방송에도 활용돼 팀이 촬영 전에 대본을 다듬고 촬영 장면 목록을 정리하는 데 이어졌다고 밝혔다. 생성형 도구가 아이디어를 구상하고 수정할 기회를 늘린다는 것은 교사의 평가다. 모든 로고가 자동으로 완성됐거나 실제 촬영과 영상 편집까지 AI가 수행했다는 내용은 원문에 없다. 어떤 제안을 채택하고 버렸는지, 방송 자료가 누구에게 공개됐는지에 대한 상세 기록도 제시되지 않았다. 기획을 지원한 사용과 제작 전체의 자동화를 구분해야 한다."
+        ],
+        "references": [
+          {
+            "label": "Tori Engel의 학교 방송 제작 수업 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/gemini-student-newscast/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "공유하는 자료와 확인할 정보",
+        "kind": "reporting",
+        "paragraphs": [
+          "관련 공식 도움말은 Drive와 Docs, Slides의 파일을 공유할 때 보기·댓글·편집 권한을 선택할 수 있다고 설명한다. 학교 계정은 조직 밖 공유가 제한될 수 있다는 조건도 안내한다. 이는 학생들이 초안과 제작 자료를 함께 다루는 제품의 역할을 이해하는 근거이며 해당 학교가 어느 권한을 실제로 설정했는지는 원문에서 확정할 수 없다. Gemini의 출처 도움말은 일부 응답에 관련 자료와 링크가 표시될 수 있지만 모든 응답이 출처를 포함하는 것은 아니라고 적었다. 대본에 사실 정보를 넣는다면 창작 제안과 근거 자료를 같은 것으로 볼 수 없다는 점을 설명하는 관련 안내다. 도구가 문장을 정리하는 기능은 방송 내용의 사실성을 자동으로 인증하지 않는다. 이 사례가 보여 주는 것은 초안의 협업 과정이며 실제 뉴스의 검증 절차가 모두 공개된 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "Drive·Docs·Slides 공유와 협업 권한 공식 안내",
+            "url": "https://support.google.com/drive/answer/2494822?hl=en",
+            "kind": "primary"
+          },
+          {
+            "label": "Gemini 응답의 관련 자료·출처 표시 공식 안내",
+            "url": "https://support.google.com/gemini/answer/14143489?hl=en",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "브랜드는 여러 선택을 연결하는 약속",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 학생들의 스케치에서 공통 주제를 찾은 단계를 디자인 판단의 사례로 읽는다. 여러 사람이 낸 이미지를 하나의 방송 이름 아래 모으려면 각각의 표현 중 무엇을 유지할지 결정해야 한다. AI의 제안은 그 비교를 말로 정리할 수 있지만 공통점이 많다는 사실만으로 방송의 성격에 맞는 로고가 되는 것은 아니다. 학생이 로고와 이름, 대본의 말투가 같은 방향을 가리키는지 설명할 때 브랜드 자료의 의미가 생긴다. 원문에 최종 자료의 전체 내용이 없으므로 특정 시각 스타일이나 의도를 추정하지는 않는다. 대신 자기 초안을 팀의 선택으로 옮기는 과정이 개인적인 생성 활동과 다른 학습 기회를 줄 수 있다는 점에 주목할 수 있다. 선택의 이유를 공유하는 일이 공동 제작의 일관성을 이해하는 기반이 된다."
+        ],
+        "references": [
+          {
+            "label": "Tori Engel의 학교 방송 제작 수업 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/gemini-student-newscast/",
+            "kind": "primary"
+          },
+          {
+            "label": "Drive·Docs·Slides 공유와 협업 권한 공식 안내",
+            "url": "https://support.google.com/drive/answer/2494822?hl=en",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "촬영 전에 생기는 편집의 판단",
+        "kind": "analysis",
+        "paragraphs": [
+          "촬영 목록은 화면에 무엇이 필요할지 미리 결정하는 자료다. 대본에서 말한 내용을 어떤 장면이 보여 주는지 연결하면 제작 단계의 빈틈을 찾을 수 있다. AI가 목록을 정리해도 학교에서 실제로 찍을 수 있는 장면과 시간, 학생의 역할을 판단하는 일은 남는다. 주간 방송에 같은 흐름을 반복한다는 점은 한 번의 인상적인 결과보다 팀이 계속 작업을 이어 가는 구조를 관찰하게 한다. 다만 반복 사용을 곧 검증된 시간 절감으로 바꿀 수는 없다. 학생들이 처음 초안과 최종 방송을 비교하며 어떤 수정이 필요했는지 설명하는 기록이 있어야 제작 능력의 변화가 드러난다. 이번 경험담은 Gemini의 문장 생성보다 스케치 비교에서 촬영 계획으로 이어진 구체적인 작업을 보여준다. 그 연결을 보존할 때 다른 수업도 도구가 맡을 역할을 더 명확히 검토할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "Tori Engel의 학교 방송 제작 수업 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/gemini-student-newscast/",
+            "kind": "primary"
+          },
+          {
+            "label": "Gemini 응답의 관련 자료·출처 표시 공식 안내",
+            "url": "https://support.google.com/gemini/answer/14143489?hl=en",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "학생의 로고 스케치에서 공통 주제를 찾고 브랜드 자료를 다듬는 데 Gemini를 활용했다.",
+      "주간 방송의 대본과 촬영 목록 지원이며 촬영·편집 전체 자동화는 발표되지 않았다.",
+      "협업 권한과 응답 출처의 일반 기능은 원문의 실제 학교 설정·검증 절차와 구분된다."
+    ],
+    "tags": [
+      "Gemini",
+      "학교방송",
+      "브랜드기획",
+      "학생창작",
+      "미디어교육"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "Tori Engel의 학교 방송 제작 수업 경험 원문",
+        "url": "https://blog.google/products-and-platforms/products/education/gemini-student-newscast/"
+      },
+      {
+        "label": "Drive·Docs·Slides 공유와 협업 권한 공식 안내",
+        "url": "https://support.google.com/drive/answer/2494822?hl=en"
+      },
+      {
+        "label": "Gemini 응답의 관련 자료·출처 표시 공식 안내",
+        "url": "https://support.google.com/gemini/answer/14143489?hl=en"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/products-and-platforms/products/education/gemini-student-newscast/",
+      "https://support.google.com/drive/answer/2494822?hl=en",
+      "https://support.google.com/gemini/answer/14143489?hl=en"
+    ],
+    "notes": "원문·Drive공유·Gemini출처공식도움말웹확인.ToriEngelCarrielJuniorHighO’Fallon8/TheCougarRumblefirstnewscast/sketchthemesbrandkitprompts/weeklyscripts-shotlistsbeforefilming.이전mediaBruno는고교영상교지일정,본건초기브랜딩·8학년방송별사건.후보10·전체pending교사10및newscast단일URL대조.실제촬영/편집AI완전자동·시청수·효율수치없음.출처일부만있음정확히확인.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "3f96b1c3-6b91-42c6-a276-a72f4e691fe8",
+    "1b26d953-c1ba-4eb9-baf3-6bba7f7bc9bb",
+    "3564e5a1-5821-49ef-bd96-912e5c73a483",
+    "6a15a15c-65e2-411f-847a-f51c003cbab0",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "ec323858-ca4e-442e-96d0-a114cb836a2c",
+    "f902e8f3-2cfc-4931-9ea9-73956faaae60"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:46:42.373Z",
+    "checks": [
+      "교사·학교·8학년·프로그램명원문확인",
+      "학생스케치와공통주제탐색순서유지",
+      "주간대본·촬영전장면목록구분",
+      "공식협업권한·모든응답출처아님확인",
+      "후보10·전체pending동일방송기획없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

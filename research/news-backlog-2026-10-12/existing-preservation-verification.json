@@ -1,0 +1,9 @@
+{
+  "checkedAt": "2026-10-12T02:47:34.483Z",
+  "verified": 227,
+  "checks": [
+    "Existing title, summary, slug and publication state unchanged",
+    "Existing original source identity and original publication date unchanged"
+  ],
+  "limit": "Snapshot did not capture existing full bodies; writer and publisher target only captured pending IDs."
+}

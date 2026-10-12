@@ -1,0 +1,180 @@
+{
+  "id": "35b22796-78df-4e86-aea1-92b4f5aeb3f2",
+  "article": {
+    "url": "https://openai.com/index/lenfest-ai-collaborative-expansion",
+    "title": "렌페스트, 지역 언론 AI 펠로십 확대…OpenAI 지원과 재사용 도구 구축",
+    "summary": "렌페스트 연구소와 OpenAI가 지역 언론의 AI 기술 인력 지원을 확대한다. 신규 500만달러 약정과 최대 500만달러의 소프트웨어 크레딧·엔지니어링 지원을 발표했다. 두 해의 참여 사례를 바탕으로 도구와 지침을 공유할 계획이며, 수백 언론사의 실제 도입 완료나 수익 개선을 입증한 결과는 아니다.",
+    "paragraphs": [
+      {
+        "heading": "추가 자금과 크레딧을 구분한 지원 확대",
+        "kind": "reporting",
+        "paragraphs": [
+          "렌페스트 저널리즘 연구소와 OpenAI는 9월 28일 AI 협력·펠로십 프로그램의 다음 단계를 공동 발표했다. OpenAI의 신규 500만달러 약정과 최대 500만달러 규모의 소프트웨어 크레딧 및 엔지니어링 지원이 포함된다. 두 항목을 모두 현금 지원으로 합산하거나 이미 전액 지급된 금액으로 설명할 수는 없다. 연구소는 현지에서 채용한 전임 AI 기술자를 언론사 안에 배치하고 기자·제품·사업 조직과 함께 일하는 방식을 유지한다고 밝혔다. 신규 참여사를 초청하고 지원 범위를 넓히는 계획이며 다음 기수의 모든 언론사와 배치 인원을 확정한 명단은 이번 발표에 제시되지 않았다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI·렌페스트 공동 확대 발표",
+            "url": "https://openai.com/index/lenfest-ai-collaborative-expansion",
+            "kind": "primary"
+          },
+          {
+            "label": "렌페스트 연구소의 확대 계획 원문",
+            "url": "https://www.lenfestinstitute.org/institute-news/lenfest-institute-openai-ai-fellowship-expansion/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "2024년 시작과 현재 참여 규모의 차이",
+        "kind": "reporting",
+        "paragraphs": [
+          "프로그램은 2024년 OpenAI와 마이크로소프트의 지원으로 시작됐다. 당시 발표는 첫 지원 대상으로 시카고 퍼블릭 미디어, 뉴스데이, 미네소타 스타 트리뷴, 필라델피아 인콰이어러와 시애틀 타임스 등 다섯 기관을 소개하고 이후 참여를 예고했다. 두 회사는 각각 직접 자금 250만달러와 크레딧 250만달러를 제공하는 초기 계획을 제시했다. 이번 확대 발표가 설명한 지난 두 해의 참여 기관은 11곳이다. 시작 때의 첫 명단과 프로그램이 성장한 뒤의 참여 범위를 같은 시점의 수치로 읽지 않는 것이 정확하다. 또한 과거 두 회사의 공동 지원과 이번 OpenAI의 신규 지원을 서로 다른 약정으로 구분해야 한다."
+        ],
+        "references": [
+          {
+            "label": "2024년 펠로십 최초 지원·참여 계획",
+            "url": "https://openai.com/index/lenfest-institute/",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI·렌페스트 공동 확대 발표",
+            "url": "https://openai.com/index/lenfest-ai-collaborative-expansion",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "아카이브 검색과 지역 취재 단서의 활용",
+        "kind": "analysis",
+        "paragraphs": [
+          "공동 발표는 필라델피아 인콰이어러의 Dewey를 오래된 보도 아카이브 검색 도구로, Scrape를 지역 취재 단서를 정리하는 감시 도구로 소개했다. Scrape 사례는 주당 약 15시간이 들던 업무를 매일 단서 목록을 받는 방식으로 바꿨다는 설명이다. 이를 모든 기자가 주당 15시간씩 절약하거나 후속 확인에 시간이 전혀 들지 않는다는 측정으로 바꿀 수 없다. 검색 결과와 취재 단서는 기사 완성본이 아니며 출처의 시점과 맥락, 새로 확인할 사실이 남는다. 도구의 역할을 자료 탐색 단계에 두면 기사 생산의 어디가 바뀌고 어떤 판단을 기자가 계속 맡는지가 더 분명해진다."
+        ],
+        "references": [
+          {
+            "label": "렌페스트 연구소의 확대 계획 원문",
+            "url": "https://www.lenfestinstitute.org/institute-news/lenfest-institute-openai-ai-fellowship-expansion/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "언어 확장도 편집 과정 안에서 평가",
+        "kind": "reporting",
+        "paragraphs": [
+          "시카고 퍼블릭 미디어 사례는 스페인어 시의성 보도를 위한 AI 보조 번역과 오래된 오디오 아카이브의 전사를 다룬다. 연구소는 기존보다 빠르게 번역을 공개할 수 있었다고 설명하지만 정확한 시간 비교의 분모와 전체 기사 수, 번역 오류율은 이번 발표에 공개하지 않았다. 다른 프로젝트는 광고 잠재 고객 탐색과 독자 수익, 공공 회의 감시 등 사업·편집의 여러 기능을 다뤘다. 이것은 참여 조직의 활용 범위를 보여주는 사례다. 모든 언어와 뉴스 유형에서 같은 정확도나 속도가 나타난다는 검증 결과, 또는 언론사의 수익성이 일괄 개선됐다는 비교 연구로 제시할 근거는 없다."
+        ],
+        "references": [
+          {
+            "label": "렌페스트 연구소의 확대 계획 원문",
+            "url": "https://www.lenfestinstitute.org/institute-news/lenfest-institute-openai-ai-fellowship-expansion/",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI·렌페스트 공동 확대 발표",
+            "url": "https://openai.com/index/lenfest-ai-collaborative-expansion",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "상주 기술 인력이 조직의 문제를 배우는 방식",
+        "kind": "analysis",
+        "paragraphs": [
+          "연구소가 강조한 변화는 기술자를 외부 공급자로만 두지 않고 실제 조직의 동료로 함께 일하게 한 구조다. 기자가 반복하는 자료 확인과 제품 팀의 배포 과정, 사업 조직의 독자 접점은 서로 다른 요구를 갖는다. 같은 모델을 사용하는 것만으로 이런 차이가 해소되지는 않는다. 발표는 현장 직원의 의견을 듣고 작게 실험하며 실제 업무 개선 여부를 평가하는 과정을 교훈으로 제시했다. 따라서 프로그램의 결과를 특정 모델의 단독 성능 향상으로 설명하기보다 인력과 공동 설계, 도구를 적용한 과정의 결합으로 보는 편이 타당하다. 기술 지원을 받은 범위와 뉴스 판단의 책임이 어디에 남는지도 이 구조에서 살펴볼 수 있다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI·렌페스트 공동 확대 발표",
+            "url": "https://openai.com/index/lenfest-ai-collaborative-expansion",
+            "kind": "primary"
+          },
+          {
+            "label": "렌페스트 연구소의 확대 계획 원문",
+            "url": "https://www.lenfestinstitute.org/institute-news/lenfest-institute-openai-ai-fellowship-expansion/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "개별 도구를 공유 기반으로 옮기는 다음 단계",
+        "kind": "analysis",
+        "paragraphs": [
+          "다음 단계는 유망한 프로젝트를 재사용 도구·플러그인·구현 지침과 기술 자료로 바꿔 더 많은 언론사가 활용하도록 지원하는 것이다. 발표의 수백 언론사라는 표현은 확산 목표이며 이미 그 수만큼 실제 도입했다는 결과가 아니다. 한 조직의 도구를 옮길 때에는 다른 아카이브 형식과 지역 자료, 편집 정책에 맞추는 작업이 필요하다. 코드 공유는 출발점을 제공하지만 그 조직에 맞는 확인 과정까지 자동으로 만들어 주지는 않는다. 이번 확대의 의미는 AI 이용권을 나누는 데서 현장 인력과 공유 도구를 함께 지원하는 방향으로 이어지는 데 있다. 향후 평가에는 실제 참여와 도구 재사용, 편집 품질 및 유지 비용의 자료가 필요하다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI·렌페스트 공동 확대 발표",
+            "url": "https://openai.com/index/lenfest-ai-collaborative-expansion",
+            "kind": "primary"
+          },
+          {
+            "label": "렌페스트 연구소의 확대 계획 원문",
+            "url": "https://www.lenfestinstitute.org/institute-news/lenfest-institute-openai-ai-fellowship-expansion/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "신규 500만달러 약정과 최대 500만달러 크레딧·기술 지원을 현금으로 합산하지 않았다.",
+      "2024년 첫 다섯 기관 명단과 지난 두 해의 참여11곳을 시점별로 구분했다.",
+      "개별 업무 사례를 전사 시간 절감·번역 정확도·수익 개선으로 확대하지 않았다.",
+      "수백 언론사 확산은 목표이며 실제 도입 완료 수치가 아니다."
+    ],
+    "tags": [
+      "OpenAI",
+      "렌페스트",
+      "지역언론",
+      "AI펠로십"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "OpenAI·렌페스트 공동 확대 발표",
+        "url": "https://openai.com/index/lenfest-ai-collaborative-expansion"
+      },
+      {
+        "label": "렌페스트 연구소의 확대 계획 원문",
+        "url": "https://www.lenfestinstitute.org/institute-news/lenfest-institute-openai-ai-fellowship-expansion/"
+      },
+      {
+        "label": "2024년 펠로십 최초 지원·참여 계획",
+        "url": "https://openai.com/index/lenfest-institute/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://openai.com/index/lenfest-ai-collaborative-expansion",
+      "https://www.lenfestinstitute.org/institute-news/lenfest-institute-openai-ai-fellowship-expansion/",
+      "https://openai.com/index/lenfest-institute/"
+    ],
+    "notes": "9/28공동발표·Lenfest기관원문·2024최초발표 대조.신규5Mcommitment+upto5Mcredits/engineering,과거각2.5Mcash+2.5Mcredits 구분.최초5사와현재11사 시점구분.인콰이어러15h→daily digest는단일과거업무설명,절감시간전사/모델단독효과 아님.시카고번역정량분모/오류율없음.수백기관은재사용자료 확산목표.후보/전체pending 동일확대발표없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2142abfa-1989-4097-b707-0373bbfa5385",
+    "359f8d3f-6531-4c22-8656-0398180f9250",
+    "3d4c214d-6e7b-4d16-9699-89052de96b77",
+    "42859509-04cf-4701-a4d0-38da66580b37",
+    "586ea001-9896-4223-ab06-06b8c3fc2941",
+    "66810653-081c-450b-b88b-962f93246dc6",
+    "7c9afd54-b7cf-4d95-a41f-67c2b4ba8d0f",
+    "b944ff1a-3e60-4ec5-a522-1ae00690be40",
+    "e2c21871-59fd-4490-b612-afa83b96d0ef"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:45:04.057Z",
+    "checks": [
+      "기관과OpenAI의동일공동발표 확인",
+      "현금약정과크레딧·엔지니어링지원 구분",
+      "2024초기5사와현재11사 구분",
+      "15시간사례를개별취재단서업무로한정",
+      "번역속도/수익보장 지표를만들지않음",
+      "신규기수와수백기관확산은계획"
+    ],
+    "relatedPendingIds": []
+  }
+}

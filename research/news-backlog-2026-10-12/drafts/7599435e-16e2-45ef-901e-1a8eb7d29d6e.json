@@ -1,0 +1,154 @@
+{
+  "id": "7599435e-16e2-45ef-901e-1a8eb7d29d6e",
+  "article": {
+    "url": "https://blog.developer.adobe.com/en/publish/2026/06/dark-mode-is-coming-to-adobe-express-what-add-on-developers-need-to-know",
+    "title": "어도비 Express 다크 모드, 애드온의 테마 감지와 제출 기준 확인 필요",
+    "summary": "어도비 Express가 밝고 어두운 테마를 제공하면서 애드온 개발자에게 화면 점검을 안내했다. 다크 스타일 자체는 의무가 아니지만 8월 31일 이후 제출물은 어두운 테마에서도 읽고 조작할 수 있어야 한다.",
+    "paragraphs": [
+      {
+        "heading": "출시 예고 제목과 현재 지원 상태를 구분한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "어도비 개발자 블로그는 Adobe Express의 다크 모드 도입에 맞춰 애드온 개발자가 확인할 사항을 안내했다. 원문 제목에는 도입 예정이라는 표현이 남아 있지만 현재 본문은 모든 사용자에게 다크 모드가 제공된다고 설명한다. 공식 개발 문서도 밝은 테마와 어두운 테마를 모두 지원한다고 명시한다. 따라서 이 안내를 아직 출시되지 않은 기능의 예고로만 읽기는 어렵다.",
+          "변경의 목적은 애드온이 사용자가 선택한 작업 환경과 자연스럽게 이어지도록 하는 것이다. 기존에 밝은 화면만 제공하던 애드온은 어두운 주변 화면에서 다른 인상을 줄 수 있다. 어도비는 대비와 가독성, 컴포넌트의 동작을 두 테마에서 확인하고 필요하면 수정해 제출하라고 안내했다. 이는 문서 안의 디자인을 자동으로 어둡게 바꾸는 기능과는 다른 애드온 UI의 문제다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/06/dark-mode-is-coming-to-adobe-express-what-add-on-developers-need-to-know"
+          },
+          {
+            "label": "어도비 Express 테마·변경 이벤트 공식 가이드",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/express/add-ons/docs/guides/learn/how-to/theme-locale"
+          }
+        ]
+      },
+      {
+        "heading": "현재 테마와 변경 이벤트를 함께 처리한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 문서에서 현재 테마는 addOnUISdk.app.ui.theme으로 확인하고 사용 중 변경은 app 객체의 themechange 이벤트로 받는다. 이벤트의 data.theme에는 light 또는 dark 값이 전달된다. 초기 화면의 값을 읽는 것뿐 아니라 사용자가 작업 도중 테마를 바꿀 때도 스타일을 갱신할 수 있는 인터페이스다.",
+          "어도비는 고정 색상을 곳곳에 두기보다 보고된 테마 값에 맞춰 스타일을 적용하고 Spectrum Web Components를 활용하는 방법을 제시한다. 이 컴포넌트는 어도비의 테마 체계를 사용하며 수동 스타일 조정을 줄일 수 있다. 다만 자체 배경과 아이콘, 이미지 미리보기처럼 개발자가 별도로 만든 요소까지 자동으로 올바르게 바뀐다고 보장하는 설명은 아니다."
+        ],
+        "references": [
+          {
+            "label": "어도비 Express 테마·변경 이벤트 공식 가이드",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/express/add-ons/docs/guides/learn/how-to/theme-locale"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/06/dark-mode-is-coming-to-adobe-express-what-add-on-developers-need-to-know"
+          }
+        ]
+      },
+      {
+        "heading": "어두운 스타일과 기능적인 사용 가능성은 다르다",
+        "kind": "reporting",
+        "paragraphs": [
+          "문서는 완성도 높은 다크 스타일의 제공을 의무로 두지는 않는다. 대신 두 테마에서 글자를 읽고 컨트롤을 볼 수 있으며 조작할 수 있어야 한다고 설명한다. 2026년 8월 31일 이후 마켓플레이스에 제출하는 애드온은 다크 테마에서 기능적으로 깨진 UI일 경우 거절된다. 모든 애드온이 특정한 어두운 색상을 써야 한다는 요구와는 구분되는 기준이다.",
+          "공식 가이드는 다크 테마 출시일인 7월 31일 이전에 이미 공개된 애드온은 영향을 받지 않고 밝은 테마로 계속 표시된다고 안내한다. 다크 모드를 추가로 지원하려면 업데이트와 재제출이 필요하며, 원문은 호환성을 갖춘 뒤 8월 31일 이후 다시 제출하도록 안내했다. 기존 공개 상태와 새 제출물의 조건을 나눠 이해해야 한다."
+        ],
+        "references": [
+          {
+            "label": "어도비 Express 테마·변경 이벤트 공식 가이드",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/express/add-ons/docs/guides/learn/how-to/theme-locale"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/06/dark-mode-is-coming-to-adobe-express-what-add-on-developers-need-to-know"
+          }
+        ]
+      },
+      {
+        "heading": "테마 변경은 화면 상태의 일부다",
+        "kind": "analysis",
+        "paragraphs": [
+          "테마를 시작 시점의 설정으로만 처리하면 애드온이 열린 상태에서 주변 앱이 바뀔 때 불일치가 남을 수 있다. 이벤트에 따라 화면을 갱신하는 것은 배경 색만 바꾸는 일보다 넓다. 선택된 항목, 오류 메시지와 비활성 컨트롤도 같은 상태에서 읽혀야 하므로 기본 화면과 진행 중인 작업 화면을 함께 확인하는 편이 유용하다.",
+          "직접 만든 색상이 많다면 의미별로 역할을 정리하는 과정이 도움이 된다. 본문, 경계, 강조와 오류 색을 각각 테마에 연결하면 개별 요소를 찾아 바꾸는 수고를 줄일 수 있다. 이때 문서나 이미지 미리보기의 색은 사용자가 만드는 콘텐츠와 애드온의 조작 UI가 다루는 색이라는 차이도 고려해야 작업 결과를 오해하지 않게 된다."
+        ],
+        "references": [
+          {
+            "label": "어도비 Express 테마·변경 이벤트 공식 가이드",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/express/add-ons/docs/guides/learn/how-to/theme-locale"
+          }
+        ]
+      },
+      {
+        "heading": "제출 전에는 대표 흐름을 양쪽에서 확인한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "기능적 사용 가능성은 첫 화면이 보기 좋다는 사실만으로 확인되지 않는다. 입력, 선택, 결과 확인과 실패 안내까지 같은 작업을 밝고 어두운 환경에서 수행해 봐야 한다. 작은 아이콘이나 흐린 보조 문구, 선택 표시가 사라지는 문제는 색을 바꾸는 단계에서 놓치기 쉽다. 공통 컴포넌트를 사용하더라도 사용자 정의 부분을 함께 살피는 이유다.",
+          "이번 안내에서 개발팀이 가져갈 수 있는 기준은 화면 전체를 다시 디자인해야 한다는 부담보다 지원 상태와 제출 조건을 정확히 나누는 것이다. 이미 공개된 애드온의 동작, 업데이트에서 받을 테마 값과 새 제출물의 가독성을 별도로 확인하면 필요한 수정 범위를 정할 수 있다. 두 테마의 작업 흐름이 같게 유지되는지가 실제 사용자에게 더 직접적인 판단 기준이 된다."
+        ],
+        "references": [
+          {
+            "label": "어도비 Express 테마·변경 이벤트 공식 가이드",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/express/add-ons/docs/guides/learn/how-to/theme-locale"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/06/dark-mode-is-coming-to-adobe-express-what-add-on-developers-need-to-know"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "현재 공식 문서는 light·dark 테마와 themechange 이벤트를 지원한다.",
+      "다크 스타일은 권장이고 8월31일 이후 제출물의 기능적 가독성·조작성은 심사 조건이다.",
+      "7월31일 이전 공개 애드온의 밝은 테마 유지와 업데이트 재제출을 구분한다."
+    ],
+    "tags": [
+      "AdobeExpress",
+      "다크모드",
+      "애드온",
+      "테마"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.developer.adobe.com/en/publish/2026/06/dark-mode-is-coming-to-adobe-express-what-add-on-developers-need-to-know"
+      },
+      {
+        "label": "어도비 Express 테마·변경 이벤트 공식 가이드",
+        "url": "https://developer.adobe.com/express/add-ons/docs/guides/learn/how-to/theme-locale"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.developer.adobe.com/en/publish/2026/06/dark-mode-is-coming-to-adobe-express-what-add-on-developers-need-to-know",
+      "https://developer.adobe.com/express/add-ons/docs/guides/learn/how-to/theme-locale"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원문 WEB26줄 및 공식 theme-locale 문서 전체를 대조했다. 제목coming과 달리 업데이트된 본문은 all users이며 공식문서는 launch2026-07-31과 postAug31submission UI불능거절을 명시한다. 출시예정으로 쓰지 않고 현재문서상 지원으로 정정했다. polished dark styling선택과 functional legible UI조건을 구분했고 prelaunch기존애드온 unaffected/light표시 조건을 포함했다. 후보대규모문서·번역커넥터·FabricIQ및 snapshot.pending 전체 theme/dark/Adobe제목요약과 비교해 동일테마 사건 중복 없음. OS dark preference자동일치나 문서콘텐츠 자동변경은 주장하지 않았다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "b28d7ab6-076e-4475-9d38-eb9b8cbcdbd0",
+    "3f5e12eb-ac52-437e-b033-aa350546e94c",
+    "988776dd-0389-4549-933f-5f93f24b18ac"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:38:56.830Z",
+    "checks": [
+      "theme getter·themechange data.theme의 light/dark 값을 공식문서로 확인했다.",
+      "다크스타일 비의무와 제출물 기능적사용가능조건을 구분했다.",
+      "출시7/31 이전 기존공개물 예외와 8/31 이후 제출 기준을 확인했다.",
+      "현재본문 all users여서 coming제목만으로 예고상태라고 쓰지 않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

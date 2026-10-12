@@ -1,0 +1,158 @@
+{
+  "id": "1074319c-5e9a-46d2-834b-432d28c195c5",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/08/building-tactile-ux-honoring-intentional-design-lottie/",
+    "title": "로티로 만든 촉각적 웹 게임, 물리 시뮬레이션보다 연출한 반응을 선택하다",
+    "summary": "이사도라 에이전시가 Stress Release 웹 경험에서 물리 엔진 대신 로티 구간 재생과 DOM을 사용한 사례를 소개했다. 정해진 반응을 유지하는 선택으로, 자산 로딩과 품질 API의 의미도 함께 검토해야 한다.",
+    "paragraphs": [
+      {
+        "heading": "의도한 움직임을 보존하려는 기술 선택",
+        "kind": "reporting",
+        "paragraphs": [
+          "스매싱 매거진은 이사도라 에이전시가 후원한 개발 사례에서 Stress Release라는 웹 경험의 구현을 소개했다. 캐릭터를 누르고 변형하는 디지털 장난감에 물리 엔진을 검토했지만, 팀은 애니메이터가 만든 특정 반응을 정확한 순서로 재생하는 쪽을 선택했다고 설명했다. 스트레스 해소를 목표로 한 경험이지 치료 효과를 입증한 서비스의 보고는 아니다.",
+          "구현은 로티의 JSON 애니메이션을 SVG로 재생하고 DOM 위치와 클릭 좌표를 사용한다. 입력 위치를 캐릭터 중심 기준으로 바꾼 뒤 거리에 따라 점수와 반응을 정하고 같은 위치에 효과를 놓는다. 화면의 복잡한 그림을 정밀한 충돌 형상으로 사용하는 대신 중심 주위의 단순한 영역으로 판정한 사례다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/08/building-tactile-ux-honoring-intentional-design-lottie/"
+          }
+        ]
+      },
+      {
+        "heading": "입력과 애니메이션을 상태로 연결했다",
+        "kind": "reporting",
+        "paragraphs": [
+          "팀은 대기·눌림 반응·종료를 프레임 구간으로 나누고 클릭 때 해당 구간을 재생한다. 반응 중에는 추가 입력을 잠그고 구간이 끝나면 다시 대기 상태로 돌아오게 했다. 크기 변경은 CSS 변수와 컨테이너를 통해 반영했다. 이는 예측 불가능한 충돌 결과보다 이미 연출한 애니메이션의 타이밍을 유지하려는 구조다.",
+          "원문은 21개 캐릭터와 여러 효과의 자산 비용도 설명한다. 초기 로딩을 관찰하고 캐릭터를 한꺼번에 모두 초기화하지 않고 묶음으로 로딩했으며, 큰 효과는 필요할 때 만들고 정리했다. 재생 속도와 품질 설정을 조정하는 예시도 제시했지만 실제 기기별 프레임 속도나 메모리 절감의 비교 결과를 공개한 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/08/building-tactile-ux-honoring-intentional-design-lottie/"
+          }
+        ]
+      },
+      {
+        "heading": "구간 재생과 품질 값의 의미를 대조한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "Lottie Web 공식 문서에서 playSegments는 시작·끝 프레임 또는 여러 구간을 받고, 강제 적용 여부에 따라 현재 구간을 기다리거나 즉시 전환한다. setSpeed의 1은 정상 재생 속도다. 따라서 구간을 정해 상태를 표현하는 접근은 플레이어의 제공 기능에 맞지만 재생 속도 값만으로 연산량이 같은 비율로 감소한다고 계산할 수는 없다.",
+          "품질 설정은 특히 주의해서 읽을 부분이다. 공식 문서는 setQuality의 high·medium·low 또는 1보다 큰 숫자를 설명하며 전체 애니메이션에 영향을 주는 전역 함수로 분류한다. 원문 예시의 0.5와 1을 각각 50%와 100% 품질이라고 해석하는 설명은 이 API 계약으로 뒷받침되지 않는다. 실제 적용에서는 사용 버전의 동작과 여러 인스턴스에 미치는 범위를 확인해야 한다."
+        ],
+        "references": [
+          {
+            "label": "Lottie Web 공식 플레이어 API 안내",
+            "kind": "primary",
+            "url": "https://github.com/airbnb/lottie-web"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/08/building-tactile-ux-honoring-intentional-design-lottie/"
+          }
+        ]
+      },
+      {
+        "heading": "연출 통제에는 상태 전환의 비용이 따른다",
+        "kind": "analysis",
+        "paragraphs": [
+          "정해진 애니메이션은 원하는 표정과 반응을 유지하기 쉽지만 사용자의 연속 입력을 어떻게 처리할지 결정해야 한다. 반응이 끝날 때까지 입력을 잠그면 연출은 선명해져도 빠르게 반복하는 사용자는 입력이 사라졌다고 느낄 수 있다. 잠금·대기·새 입력으로 전환하는 선택을 화면의 피드백과 함께 설계해야 조작의 의미가 일관되게 전달된다.",
+          "효과를 필요할 때 생성하고 정리하는 방식도 메모리와 생성 지연 사이의 절충이다. 큰 자산을 상시 유지하지 않는 이점은 실제 사용 빈도와 기기 성능에 따라 달라진다. 파일 다운로드, JSON 처리와 여러 SVG의 재생을 따로 관찰하면 어디에 부담이 있는지 구분할 수 있다. 특정 엔진을 쓰지 않았다는 사실만으로 더 빠르거나 가볍다는 결론을 낼 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/08/building-tactile-ux-honoring-intentional-design-lottie/"
+          },
+          {
+            "label": "Lottie Web 공식 플레이어 API 안내",
+            "kind": "primary",
+            "url": "https://github.com/airbnb/lottie-web"
+          }
+        ]
+      },
+      {
+        "heading": "움직임의 의도에는 사용자 선택도 포함된다",
+        "kind": "analysis",
+        "paragraphs": [
+          "촉각적 반응을 시각적으로 전달하는 경험에서는 크게 늘어나거나 움직이는 화면이 필수인지도 살펴볼 수 있다. MDN은 prefers-reduced-motion을 사용자가 비필수 움직임을 줄이도록 요청했는지 감지하는 기능으로 설명한다. 이 설정을 반영해 짧은 변화나 정적인 피드백으로 대체하는 것은 별도로 검토할 선택이며, 원문 사례가 이미 구현했다고 확인된 기능은 아니다.",
+          "이 개발 기록의 가치는 모든 게임에 물리 엔진이 필요 없다는 결론보다 어떤 반응을 구현하려는지 먼저 정한 데 있다. 물체의 자유로운 충돌이 핵심이면 다른 기술이 필요할 수 있고, 연출한 구간의 정확한 반응이 핵심이면 타임라인 제어가 맞을 수 있다. 도입팀은 입력 계약, 자산 비용과 사용자 설정을 함께 점검해 자신이 유지하려는 경험에 맞는 도구를 고를 수 있다."
+        ],
+        "references": [
+          {
+            "label": "MDN의 동작 줄이기 사용자 설정 설명",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+          },
+          {
+            "label": "Lottie Web 공식 플레이어 API 안내",
+            "kind": "primary",
+            "url": "https://github.com/airbnb/lottie-web"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/08/building-tactile-ux-honoring-intentional-design-lottie/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "후원 개발 사례는 정해진 프레임 반응을 보존하기 위해 물리 엔진을 배제했다.",
+      "playSegments의 전환 조건과 입력 잠금을 하나의 상태 계약으로 다룬다.",
+      "setQuality 수치를 품질 퍼센트나 인스턴스별 보장으로 해석하면 안 된다."
+    ],
+    "tags": [
+      "로티",
+      "인터랙션",
+      "웹애니메이션",
+      "UX"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 원출처 개발 사례",
+        "url": "https://smashingmagazine.com/2026/08/building-tactile-ux-honoring-intentional-design-lottie/"
+      },
+      {
+        "label": "Lottie Web 공식 플레이어 API 안내",
+        "url": "https://github.com/airbnb/lottie-web"
+      },
+      {
+        "label": "MDN의 동작 줄이기 사용자 설정 설명",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://github.com/airbnb/lottie-web",
+      "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원문 WEB는 not accessible 실패하여 보존 RSS 전문11220자를 모두 읽었다. sponsored by Isadora Agency 사실을 명시했다. 공식airbnb/lottie-web README의 segment forceFlag,setSpeed,setQuality와 MDN reducedmotion을 WEB로 읽었다. 원문setQuality(0.5)50%/setQuality(1)full과 역할별품질 주장은 공식API(global/highmediumlow/number>1)로 뒷받침되지 않으므로 정확한 기술적 한계로 수정했다. 재생속도0.6이CPU40%감소를 뜻하지 않으며 성능/치료효과를 창작하지 않았다. reducedmotion은 분석제안이고 사례기구현으로 쓰지 않았다. candidates의SMIL(349b...)은 스크립트없는 타이밍 설계,agent위임(74aa...)및AI라벨(f028...)은 다른사건; snapshot.pending전체모션제목요약과 대조해 동일StressRelease중복 없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "349b938f-d930-4075-9098-43ac0a1cc904",
+    "74aa8797-63a5-4758-a1dc-1616a40f6d63",
+    "f028c252-9b08-4977-8266-771002095d82"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:43:56.356Z",
+    "checks": [
+      "후원여부·의도한모션·DOM거리판정·상태별구간재생을 RSS전문에서 확인했다.",
+      "공식 playSegments구간/강제전환과 setQuality전역·숫자계약을 대조했다.",
+      "품질퍼센트·CPU비례절감·물리엔진대비성능을 원문홍보만으로 확정하지 않았다.",
+      "모션줄이기는 별도검토제안이며 구현여부를 창작하지 않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

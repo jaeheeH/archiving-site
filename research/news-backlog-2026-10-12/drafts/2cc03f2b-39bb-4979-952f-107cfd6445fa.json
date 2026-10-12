@@ -1,0 +1,151 @@
+{
+  "id": "2cc03f2b-39bb-4979-952f-107cfd6445fa",
+  "article": {
+    "url": "https://github.blog/changelog/2026-10-08-draft-pull-requests-count-toward-pull-request-limits",
+    "title": "깃허브, 동시 PR 제한에 초안도 포함하는 설정 추가",
+    "summary": "깃허브가 사용자별 동시 풀 리퀘스트 제한에 초안을 포함하는 설정을 추가했다. 초안 상태로 요청을 계속 생성하던 우회 경로를 줄이려는 변경이다. 공개 저장소의 외부 기여자에게 적용되는 기존 제한과 예외 목록을 바탕으로 운영상 의미를 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "초안 상태도 동시 요청 수에 포함할 수 있다",
+        "kind": "reporting",
+        "paragraphs": [
+          "깃허브는 10월 8일 풀 리퀘스트 제한을 설정할 때 초안도 사용자별 한도에 포함할 수 있게 됐다고 발표했다. 기존에는 초안 PR이 계산에서 빠져 다른 PR에 한도를 두더라도 초안을 계속 만들 수 있었다. 새 설정은 요청을 초안으로 유지하는 방식으로 제한을 우회하는 경로를 줄이려는 변경이다.",
+          "발표는 보관함의 혼잡, 알림, 저장소 스팸에 따른 CI 실행을 줄이는 데 도움이 된다고 설명한다. 다만 감소량이나 효과를 측정한 수치는 제공하지 않았다. 또 초안이 모든 저장소에서 자동으로 한도에 포함되도록 기본값을 변경했다고 명시하지 않았다. 관리자가 제한에 초안을 포함하도록 구성할 수 있다는 범위로 읽어야 한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-08-draft-pull-requests-count-toward-pull-request-limits"
+          }
+        ]
+      },
+      {
+        "heading": "기존 제한은 쓰기 권한 없는 외부 기여자를 대상으로 한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "깃허브의 동시 PR 제한은 공개 저장소에서 쓰기 권한 없는 사용자가 동시에 열 수 있는 요청 수를 정하는 기능이다. 해당 사용자가 한도에 도달하면 기존 요청을 닫거나 병합한 뒤 새 요청을 열어야 한다. 쓰기 권한 이상 사용자는 이 제한의 대상이 아니다. 이번 초안 포함 옵션은 이러한 기여량 관리 기능의 계산 범위를 확장한다.",
+          "공식 저장소 문서는 Moderation options 아래 Interaction limits에서 PR 한도를 설정하고, 신뢰하는 외부 기여자를 우회 목록에 넣을 수 있다고 안내한다. 우회 목록은 최대 100명이며 이 예외를 주는 것만으로 전체 협업자 권한을 부여하지 않는다. 한도와 예외를 함께 구성해 기여량을 조절하되 코드 변경 권한은 별도 관리할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "깃허브 저장소의 동시 PR 제한 문서",
+            "kind": "primary",
+            "url": "https://docs.github.com/en/communities/moderating-comments-and-conversations/limiting-interactions-in-your-repository"
+          }
+        ]
+      },
+      {
+        "heading": "최신 변경과 기존 문서의 시점을 구분한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "확인 시점의 저장소 문서는 아직 초안이 계산에 포함되지 않는 기존 설명을 유지하고 있었다. 6월에 공개된 최초 제한 발표도 초안 제외를 명시했다. 이번 10월 변경 기록은 그 조건을 보완하는 새 설정을 소개한다. 따라서 과거 문서의 초안 제외 문구만 보고 새 옵션을 놓치거나, 새 옵션을 모든 사용자의 일괄 제한으로 확대 해석해서는 안 된다.",
+          "이번 발표는 초안이라는 작성 상태를 없애거나 초안의 검토 절차를 변경하는 내용이 아니다. 사용자가 동시에 보유할 수 있는 요청 수를 관리하는 기준에 초안을 포함하도록 선택할 수 있다는 소식이다. PR 보관 권한 확대나 스택형 PR의 병합 기능과도 목적이 다르다. 유지보수자는 요청의 생성량, 공개 상태, 검토 단계를 각각 다른 설정으로 다룬다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-08-draft-pull-requests-count-toward-pull-request-limits"
+          },
+          {
+            "label": "깃허브 저장소의 동시 PR 제한 문서",
+            "kind": "primary",
+            "url": "https://docs.github.com/en/communities/moderating-comments-and-conversations/limiting-interactions-in-your-repository"
+          }
+        ]
+      },
+      {
+        "heading": "검토 준비 전에도 관리 비용은 발생한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 초안은 검토 준비 여부를 나타내지만 운영 비용이 없다는 뜻은 아니다. 프로젝트의 워크플로 설정에 따라 요청 생성 시 알림이나 자동화가 이어질 수 있고, 유지보수자는 초안에서도 요청의 맥락을 확인한다. 준비되지 않았다는 이유로 무제한 요청을 허용하면 제출 상태와 실제 처리 부담 사이에 간격이 생길 수 있다.",
+          "그 간격을 한도 계산에 반영하는 선택지가 추가됐다는 점이 이번 변경의 의미다. 그러나 초안을 많이 사용하는 정상 기여 흐름도 고려해야 한다. 한 기능을 여러 작은 요청으로 나누는 외부 기여자는 초기 작업 단계에서 한도에 먼저 도달할 수 있다. 제한을 켜기 전에 프로젝트가 권장하는 PR 크기와 병렬 작업 방식을 살피면 기여 안내와 관리 설정의 충돌을 줄일 수 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-08-draft-pull-requests-count-toward-pull-request-limits"
+          }
+        ]
+      },
+      {
+        "heading": "한도는 품질 판단을 대신하지 않는다",
+        "kind": "analysis",
+        "paragraphs": [
+          "동시 개수 제한은 요청이 쌓이는 속도를 조절하지만 코드의 유용성이나 안전성을 평가하지 않는다. 한도 안에 있는 요청도 검토가 필요하며, 한도에 도달한 기여자가 반드시 악성 사용자라는 결론도 나오지 않는다. 팀은 기여자에게 왜 요청 생성이 막혔는지와 기존 요청을 정리하거나 예외를 요청할 경로를 설명할 필요가 있다.",
+          "신뢰 기여자 우회 목록은 이런 조절에 사용할 수 있지만 목록 유지 자체에도 관리가 필요하다. 권한을 크게 올리지 않고 예외를 부여한다는 장점을 살리려면 선정 기준과 정기 검토 주체가 분명해야 한다. 새 설정을 적용한 뒤에는 알림이나 자동 실행의 변화뿐 아니라 정상 기여자가 겪는 대기까지 살펴봐야 한다. 운영의 목표는 요청 수를 줄이는 숫자 하나로 끝나지 않는다."
+        ],
+        "references": [
+          {
+            "label": "깃허브 저장소의 동시 PR 제한 문서",
+            "kind": "primary",
+            "url": "https://docs.github.com/en/communities/moderating-comments-and-conversations/limiting-interactions-in-your-repository"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "초안 PR을 사용자별 동시 요청 한도에 포함하도록 설정할 수 있다.",
+      "기존 제한은 공개 저장소의 쓰기 권한 없는 사용자에게 적용되며 신뢰 기여자 예외 목록을 제공한다.",
+      "기본값의 자동 전환이나 스팸 감소 수치는 발표되지 않았다."
+    ],
+    "tags": [
+      "GitHub",
+      "풀리퀘스트",
+      "오픈소스",
+      "개발운영"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://github.blog/changelog/2026-10-08-draft-pull-requests-count-toward-pull-request-limits"
+      },
+      {
+        "label": "깃허브 저장소의 동시 PR 제한 문서",
+        "url": "https://docs.github.com/en/communities/moderating-comments-and-conversations/limiting-interactions-in-your-repository"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://github.blog/changelog/2026-10-08-draft-pull-requests-count-toward-pull-request-limits",
+      "https://docs.github.com/en/communities/moderating-comments-and-conversations/limiting-interactions-in-your-repository"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처와 공식 Interaction limits 문서, 6월 17일 최초 제한 발표를 WEB으로 확인했다. 공식 문서에는 과거 초안 제외 설명이 남아 있어 최신 10월 Changelog의 구성 가능 옵션을 우선 적용했다. 기본값 전환은 발표되지 않아 단정하지 않았다. 후보의 stacked PR은 검토·병합 구조로 별도 사건이다. snapshot.pending의 PR 보관 권한 변경과도 생성량 제한이라는 점에서 구분된다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "59fa6b92-df55-4f94-b5cf-ed93860a0810",
+    "64da50f0-d536-47bb-bd3e-dcc375b183f3",
+    "3348a0be-409f-4198-be4e-9e396a98cec8",
+    "44061c78-7fe5-44c2-818b-920797d7ac53",
+    "5c1b6eb0-d4f3-4f54-a2d0-73f859848823",
+    "7da83f89-b5d3-4c7e-8158-cbf596e83859",
+    "7fbdcec8-0647-465f-a548-c50364470c17",
+    "8c6c9d95-ad5a-4c5c-aeb2-88d45f0b8e5c",
+    "a6f538ec-b033-4d9a-888c-53376fe2123c",
+    "ac49a872-6b09-4994-b96b-e1dd8386ee25",
+    "b208daae-7946-4310-b441-0ee0e1ebbfab",
+    "b6eba5af-010a-42d0-8578-82782a6000ae"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:34:35.539Z",
+    "checks": [
+      "최신 발표가 초안 포함을 구성 가능 옵션으로 설명함을 확인했다.",
+      "공개 저장소·쓰기 권한 없는 사용자 범위와 우회 목록 최대 100명을 공식 문서에서 확인했다.",
+      "과거 문서와 최신 발표의 초안 계산 조건 차이를 표시했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다.",
+      "사용자별 PR 생성량에 초안을 포함하는 옵션은 보관 권한 변경과 별도 운영 기능이다."
+    ],
+    "relatedPendingIds": [
+      "ae50e688-f98d-4b89-bf64-d83b4a3544d7"
+    ],
+    "distinctRelatedReviewed": true
+  }
+}

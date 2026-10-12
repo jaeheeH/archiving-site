@@ -1,0 +1,152 @@
+{
+  "id": "d8577f21-cd0d-44c7-8a0d-6ea5472ba2ff",
+  "article": {
+    "url": "https://techblog.gccompany.co.kr/ai-%EC%8B%9C%EB%8C%80-%EB%8B%B9%EC%8B%A0%EC%9D%98-%ED%8C%80-%EC%A1%B0%EC%A7%81%EC%9D%80-%EC%95%88%EB%85%95%ED%95%98%EC%8B%A0%EA%B0%80%EC%9A%94-c59f982d5add",
+    "title": "여기어때, AI 개발의 결정 과정을 공동 워크스페이스로 기록",
+    "summary": "여기어때 유저혜택개발팀이 AI 개발의 입력과 가이드, 판단·수정 이력을 한 저장소에 모아 리뷰하는 방식을 공개했다. 코드 생성 속도보다 왜 그 구조가 만들어졌는지 공유하는 데 초점을 둔다. 스킬과 검사만으로 해결되지 않는 팀의 판단 과정을 드러낸 사례다.",
+    "paragraphs": [
+      {
+        "heading": "결과 코드만으로 설명되지 않는 선택",
+        "kind": "reporting",
+        "paragraphs": [
+          "여기어때 유저혜택개발팀은 AI 워크스페이스를 공동으로 구성하며 겪은 협업 문제를 기술블로그에 공개했다. 글의 작성자는 같은 가이드와 스킬을 사용해도 팀원별 결과가 달라지고, 설계의 전제와 버린 선택지가 개인의 대화에만 남는 문제를 지적한다. 이는 새로운 제품의 출시나 생산성 실험 결과가 아니라 팀이 일하는 방식을 돌아본 경험과 의견이다.",
+          "팀은 스킬과 서브에이전트, 가이드, 작업 히스토리를 한 저장소에 모았다. 개발과 운영, 모니터링·PR 작업을 이 환경에서 시작하고 필요한 문맥을 불러오며, 입력과 사용한 스킬, 작업 내용과 결정 사항을 기록했다고 설명한다. 사람이 중간에 선택하거나 AI를 멈추고 수정한 지점도 남겨 결과와 과정이 연결되도록 했다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/ai-%EC%8B%9C%EB%8C%80-%EB%8B%B9%EC%8B%A0%EC%9D%98-%ED%8C%80-%EC%A1%B0%EC%A7%81%EC%9D%80-%EC%95%88%EB%85%95%ED%95%98%EC%8B%A0%EA%B0%80%EC%9A%94-c59f982d5add"
+          }
+        ]
+      },
+      {
+        "heading": "작업 기록을 리뷰하고 합의된 규칙으로 올리다",
+        "kind": "reporting",
+        "paragraphs": [
+          "기술블로그는 올해 4월부터 다섯 달간 공유 저장소에 올라온 히스토리의 44%에 사람의 선택이나 수정 지점이 표시됐다고 밝혔다. 아직 공유하지 않은 기록은 포함되지 않았다는 조건도 덧붙였다. 이 비율은 공개된 작업 기록의 특성에 대한 값으로, 코드 오류율이나 AI가 사람을 대체한 비율로 해석할 수 없다.",
+          "코드 리뷰에서는 히스토리 링크를 함께 보고 왜 결과가 달라졌는지 살핀다. 개인 작업 중 판단은 잠정 기록으로 남기고, 팀 검토를 거친 내용을 가이드와 스킬에 반영한다. 작성자는 가이드를 읽어도 규칙이 생략되는 사례가 있어 기계로 검사할 조건과 단계별 통과 요건을 따로 마련해야 한다고 설명한다. 글을 잘 적는 일과 실제 준수 여부를 확인하는 일을 나눈 것이다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/ai-%EC%8B%9C%EB%8C%80-%EB%8B%B9%EC%8B%A0%EC%9D%98-%ED%8C%80-%EC%A1%B0%EC%A7%81%EC%9D%80-%EC%95%88%EB%85%95%ED%95%98%EC%8B%A0%EA%B0%80%EC%9A%94-c59f982d5add"
+          }
+        ]
+      },
+      {
+        "heading": "작은 절차와 필요한 문맥을 연결하다",
+        "kind": "reporting",
+        "paragraphs": [
+          "팀은 작업 목적별로 스킬을 나누고 해당 단계에 필요한 가이드만 읽게 했다. 스펙 작성과 개발, 검사·커밋·PR이 이어지고 수정이 필요하면 해당 단계로 돌아가는 구조다. 별도 문맥에서 수행할 평가와 많은 코드 열람은 서브에이전트에 맡기되, 사람이 중간에 판단해야 할 절차는 대화 안에 두었다고 설명한다.",
+          "앤트로픽의 문맥 관리 해설도 에이전트에 들어가는 정보를 지시문뿐 아니라 도구와 외부 자료, 대화 이력 전체로 본다. 필요한 정보를 실행 중에 불러오는 방식과 구조화된 기록, 문맥 압축 등을 설명하면서 최소 정보가 무조건 짧은 정보를 뜻하지는 않는다고 강조한다. 이 문서는 팀의 성과를 검증한 자료가 아니라 해당 구성의 기술적 배경을 이해하는 근거다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/ai-%EC%8B%9C%EB%8C%80-%EB%8B%B9%EC%8B%A0%EC%9D%98-%ED%8C%80-%EC%A1%B0%EC%A7%81%EC%9D%80-%EC%95%88%EB%85%95%ED%95%98%EC%8B%A0%EA%B0%80%EC%9A%94-c59f982d5add"
+          },
+          {
+            "label": "앤트로픽의 에이전트 문맥 관리 해설",
+            "kind": "primary",
+            "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+          }
+        ]
+      },
+      {
+        "heading": "기록에는 판단의 이유와 적용 조건이 필요하다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 공동 히스토리의 가치는 대화를 많이 보관하는 데 있지 않다. 어떤 요구를 만족해야 했고 어떤 제약 때문에 선택을 바꿨는지 다른 사람이 읽을 수 있어야 한다. 로그가 길어도 핵심 결정이 묻혀 있다면 리뷰어는 같은 질문을 다시 해야 한다. 작업의 범위와 중요한 선택, 남은 불확실성을 짧게 연결한 기록이 검토의 출발점이 될 수 있다.",
+          "잠정 판단과 합의된 규칙을 구분하는 방식도 실용적이다. 한 문제에서 효과가 있던 설정을 곧바로 전 팀의 규칙으로 만들면 당시의 예외 조건이 사라질 수 있다. 가이드에 변경 이유와 적용 범위를 함께 적고 다른 작업에서 어떻게 작동했는지 확인하면, 규칙을 추가하는 과정 자체가 검증된다. 기록은 규칙을 늘리는 장치만이 아니라 불필요해진 규칙을 지울 근거도 된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/ai-%EC%8B%9C%EB%8C%80-%EB%8B%B9%EC%8B%A0%EC%9D%98-%ED%8C%80-%EC%A1%B0%EC%A7%81%EC%9D%80-%EC%95%88%EB%85%95%ED%95%98%EC%8B%A0%EA%B0%80%EC%9A%94-c59f982d5add"
+          },
+          {
+            "label": "앤트로픽의 에이전트 문맥 관리 해설",
+            "kind": "primary",
+            "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+          }
+        ]
+      },
+      {
+        "heading": "검사의 통과와 제품 판단의 소유권을 나누기",
+        "kind": "analysis",
+        "paragraphs": [
+          "기술블로그는 사람이 도메인 규칙과 만족해야 할 조건을 확정하고 AI가 이를 바탕으로 테스트 코드를 만들게 하는 접근을 제시한다. 구현과 테스트를 같은 도구가 작성할 때 놓칠 수 있는 전제를 검토하기 위한 선택이다. 팀이 이 방식을 적용한다면 검사 결과와 별개로 누락된 업무 조건, 외부 시스템의 계약, 실패 시 처리에 대한 판단이 어디서 이뤄졌는지 남길 필요가 있다.",
+          "서브에이전트의 재검토 역시 합의나 책임을 대신하지 않는다. 분리된 문맥은 다른 관점의 검토를 돕지만 원래의 요구가 잘못됐거나 자료가 빠졌다면 같은 오류를 반복할 수 있다. 결과 코드와 근거 기록, 팀에서 수정한 조건을 함께 보존해야 이후 유지보수자가 결정을 이해할 수 있다. 이번 사례가 제시하는 협업 자산은 재사용할 프롬프트뿐 아니라 사람이 결론을 내린 과정이다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/ai-%EC%8B%9C%EB%8C%80-%EB%8B%B9%EC%8B%A0%EC%9D%98-%ED%8C%80-%EC%A1%B0%EC%A7%81%EC%9D%80-%EC%95%88%EB%85%95%ED%95%98%EC%8B%A0%EA%B0%80%EC%9A%94-c59f982d5add"
+          },
+          {
+            "label": "앤트로픽의 에이전트 문맥 관리 해설",
+            "kind": "primary",
+            "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "입력·스킬·결정과 사람의 수정 지점을 공유 저장소에 남겨 코드 리뷰에서 함께 확인한다.",
+      "44%는 공유된 히스토리에서 사람 개입이 표시된 비율이며 오류율이나 대체율이 아니다.",
+      "개인 판단은 잠정 기록으로 두고 팀 검토 뒤 가이드와 스킬에 반영한다."
+    ],
+    "tags": [
+      "여기어때",
+      "AI개발",
+      "코드리뷰",
+      "문맥관리",
+      "팀협업"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://techblog.gccompany.co.kr/ai-%EC%8B%9C%EB%8C%80-%EB%8B%B9%EC%8B%A0%EC%9D%98-%ED%8C%80-%EC%A1%B0%EC%A7%81%EC%9D%80-%EC%95%88%EB%85%95%ED%95%98%EC%8B%A0%EA%B0%80%EC%9A%94-c59f982d5add"
+      },
+      {
+        "label": "앤트로픽의 에이전트 문맥 관리 해설",
+        "url": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://techblog.gccompany.co.kr/ai-%EC%8B%9C%EB%8C%80-%EB%8B%B9%EC%8B%A0%EC%9D%98-%ED%8C%80-%EC%A1%B0%EC%A7%81%EC%9D%80-%EC%95%88%EB%85%95%ED%95%98%EC%8B%A0%EA%B0%80%EC%9A%94-c59f982d5add",
+      "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. WEB 원문은 접근 오류였다. source_text 12000자 절단을 확인해 원출처 공식 RSS를 직접 HTTP로 조회해 전문을 보완하고 sources/development-live-rss-second6.json에 저장했다. 앤트로픽 문맥 관리 공식 글은 WEB으로 확인했다. 44%의 분모와 공유되지 않은 기록 제외 조건을 원문과 대조했다. 저자의 LLM 코드 오류에 대한 일반화, 모델별 프롬프트 제거 주장, 외부 생산성 수치는 검증 범위를 벗어나 기사에 넣지 않았다. 후보는 없다. snapshot.pending의 피그마 팀 습관과 여기어때 RAG/ERD 글은 주제가 가깝지만 본 편은 유저혜택팀의 공동 작업 기록·리뷰 절차여서 별개 사례다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:19:51.383Z",
+    "checks": [
+      "원출처 RSS 전문에서 단일 저장소의 스킬·가이드·히스토리 관리와 코드 리뷰 링크를 확인했다.",
+      "44%는 4월부터 다섯 달간 공유된 히스토리이며 미공유 기록은 제외됐다.",
+      "개별 판단은 잠정 히스토리, 팀 검토 뒤 가이드/스킬 반영이라는 절차를 확인했다.",
+      "앤트로픽 글은 도구·외부 데이터·대화 이력 관리 및 필요한 최소 정보의 구성법을 설명한다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다.",
+      "피그마 팀 습관·RAG 평가·ERD 도구와 다른 유저혜택팀의 공동 히스토리 및 리뷰 절차 사례로 확인했다."
+    ],
+    "relatedPendingIds": [
+      "852e34f1-0486-4cf1-8c3c-ec806e9392d1",
+      "55245698-bd28-4959-bee7-b77cce5c033a",
+      "9b2b2836-0ff1-4399-8dba-ea4fd5302aed"
+    ],
+    "distinctRelatedReviewed": true
+  }
+}

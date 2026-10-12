@@ -1,6 +1,8 @@
 // app/references/ReferenceContent.tsx
 
 'use client';
+import { matchesSearch } from '@/lib/search-text';
+import { saveLoginHref,notifySaved } from '@/lib/save-intent';
 
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
@@ -177,8 +179,7 @@ export default function ReferenceContent({
     // 로그인 확인
     if (!user) {
       addToast('로그인이 필요합니다', 'error');
-      const redirectTo = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
-      router.push(`/login?redirect=${redirectTo}`);
+      router.push(saveLoginHref('reference', String(referenceId)));
       return;
     }
 
@@ -189,15 +190,15 @@ export default function ReferenceContent({
       setScrappingIds(prev => new Set([...prev, referenceId]));
 
       const res = await fetch(`/api/references/${referenceId}/scrap`, {
-        method: 'POST',
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scraped: !scrapedIds.has(referenceId) }),
       });
 
       if (!res.ok) {
         if (res.status === 401) {
           addToast('로그인이 필요합니다', 'error');
-          const redirectTo = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
-          router.push(`/login?redirect=${redirectTo}`);
+          router.push(saveLoginHref('reference', String(referenceId)));
         } else {
           const error = await res.json();
           addToast(error.error || '스크랩 처리 실패', 'error');
@@ -207,7 +208,8 @@ export default function ReferenceContent({
 
       const data = await res.json();
 
-      // 상태 업데이트
+notifySaved('reference',String(referenceId),data.scraped,user.id,data.scrapCount);
+            // 상태 업데이트
       if (data.scraped) {
         setScrapedIds(prev => new Set([...prev, referenceId]));
         addToast('✨ 스크랩되었습니다!', 'success');
@@ -234,7 +236,7 @@ export default function ReferenceContent({
   const filteredReferences = useMemo(() => {
     return references.filter(ref =>
       (selectedCategory === 'all' || ref.category === selectedCategory || ref.range?.includes(selectedCategory)) &&
-      `${ref.title} ${ref.description || ''} ${ref.category || ''} ${(ref.range || []).join(' ')} ${ref.url}`.toLocaleLowerCase('ko').includes(query.toLocaleLowerCase('ko'))
+      matchesSearch(query, [ref.title, ref.description, ref.category, ...(ref.range || []), ref.url])
     );
   }, [references, selectedCategory, query]);
 
@@ -242,11 +244,13 @@ export default function ReferenceContent({
 
   return (
     <main className="archb-archive archive-references-page">
+
       <header className="archive-heading">
         <span className="archive-kicker">{SITE_COPY.references.eyebrow}</span>
         <h1>{SITE_COPY.references.title}</h1>
         <p>{SITE_COPY.references.description}</p>
       </header>
+      <form action="/references" className="resource-search-form"><label className="sr-only" htmlFor="reference-query">참고사이트 검색</label><input id="reference-query" name="q" type="search" defaultValue={query} maxLength={100} placeholder="이름·분야 검색" /><input type="hidden" name="category" value={selectedCategory} /><button className="archive-button">검색</button></form>
           <nav aria-label="참고사이트 분야" className="archive-tabs">
             <button
               onClick={() => handleCategoryChange('all')}

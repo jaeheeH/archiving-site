@@ -1,0 +1,155 @@
+{
+  "id": "442ab2d9-56c2-4cc5-b80f-f235a628891c",
+  "article": {
+    "url": "https://toss.tech/article/52631",
+    "title": "토스뱅크 Stylepack 사례…코딩 에이전트의 팀 규칙을 작성 직후 되짚는다",
+    "summary": "토스뱅크가 코딩 에이전트에 팀 규칙을 필요한 순간에 전달하는 Stylepack을 소개했다. 파일 작성 직후와 작업 종료 직전에 다른 범위로 피드백하고 적용 기록으로 규칙을 개선한다. 지시 문서의 양을 늘리는 대신 전달 시점과 적용 범위를 설계한 사례다.",
+    "paragraphs": [
+      {
+        "heading": "처음 읽은 지침을 작업 중에 다시 연결한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "토스뱅크 ML 엔지니어 김경윤은 팀의 코드 관례를 코딩 에이전트가 지키도록 만든 pfmls-stylepack 사례를 공개했다. 원출처는 루트의 지시 문서를 읽어도 세션이 길어지면 규칙을 놓치는 경험이 있었다고 설명한다. 전역 지침에 세부 규칙을 모두 넣기보다 에이전트가 코드와 도구 결과를 주고받는 반복 과정 안에서 관련 규칙을 다시 전달하는 방식을 택했다.",
+          "Stylepack은 규칙 하나마다 발동 조건과 전달할 문장을 함께 저장한다. 파일을 작성한 직후 코드 본문과 파일명 패턴을 보고 후보 규칙을 고른다. 팀은 매번 AI로 관련성을 판단했을 때 요청마다 약 10초가 추가됐다고 설명하며 정규식 등 간단한 선택 방식으로 바꿨다. 이 시간은 해당 팀의 관측이며 다른 환경의 성능이나 모든 모델의 행동을 증명한 수치는 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/52631"
+          }
+        ]
+      },
+      {
+        "heading": "파일 하나의 피드백과 변경 전체의 검토를 나눈다",
+        "kind": "reporting",
+        "paragraphs": [
+          "작성 직후에는 최대 두 규칙을 전달하고 같은 규칙은 세션당 한 번으로 제한했다. 예시에서는 새 열거형 값의 분기가 빠진 알림 코드를 보고 완전한 분기 처리를 안내했다. 작업 종료 직전에는 전체 git diff를 검토해 최대 네 규칙을 전달한다. 인터페이스와 구현이 각 파일에서는 정상이어도 서비스가 구현체 타입에 묶이는 문제처럼 파일 간 관계를 보기 위한 단계다.",
+          "세션 시작에는 pyproject.toml이나 build.gradle을 보고 Python과 Spring에 맞는 공통 지침을 제공한다. 규칙은 서비스 템플릿에 복사해 두지 않고 중앙 저장소에서 받아 갱신하도록 했다. 공식 Claude Code 문서도 도구 실행 후 맥락을 추가하거나 종료 시 피드백으로 작업을 이어가는 훅을 설명한다. 공식 기능은 이런 연결 방식의 근거이며 사내 플러그인의 효과를 독립적으로 검증하는 자료는 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/52631"
+          },
+          {
+            "label": "Claude Code 훅 실행·피드백 공식 문서",
+            "kind": "primary",
+            "url": "https://code.claude.com/docs/en/hooks"
+          }
+        ]
+      },
+      {
+        "heading": "잘못 뜬 규칙과 빠진 규칙도 기록으로 고친다",
+        "kind": "reporting",
+        "paragraphs": [
+          "팀은 규칙이 언제 어떤 조건으로 발동했는지 파일에 남겼다. 열거형을 딕셔너리 키로 쓰는 형태를 찾던 조건이 다른 코드에도 뜬 사례에서는 21개 세션에서 코드 변경이 없었다고 설명한다. 발동 조건을 다듬어 불필요한 안내를 줄였다. 반대로 반복문 표현을 일부만 찾는 조건은 실제 리뷰에서 발견한 N+1 문제를 놓쳐 공통 지침으로 옮겼다.",
+          "반복된 PR 리뷰 의견도 새 규칙의 입력으로 사용했다. 동작과 상태를 가진 클래스를 dataclass로 표현한 지적에서 이름 접미사까지 조건에 넣어 정상적인 값 객체에 과도하게 뜨지 않도록 했다. 규칙 목록을 늘리는 데서 멈추지 않고 발동의 적절성을 다시 살피는 구조다. 원출처는 사례와 개선 과정을 소개했으며 팀 전체의 결함 감소율이나 일반화된 정확도를 발표하지는 않았다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/52631"
+          }
+        ]
+      },
+      {
+        "heading": "선택된 지침과 검증된 위반을 구분한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "이 설계에서 정규식은 최종 판정기가 아니라 관련 지침을 전달할 후보를 좁히는 장치다. 그래서 안내가 떴다는 사실만으로 위반이 있다고 볼 수 없고, 코드가 바뀌지 않았다고 곧바로 규칙이 무효라고 볼 수도 없다. 사례를 검토해 발동 이유와 실제 코드의 관계를 확인해야 한다. 적용 기록은 무엇이 자주 보이는지보다 무엇이 도움이 되는지 판단할 자료로 사용할 수 있다.",
+          "규칙의 근거가 표준 동작인지 팀 관례인지도 나눌 필요가 있다. 예를 들어 Python 공식 문서는 TaskGroup에서 한 작업이 일반 예외로 실패하면 나머지를 취소하지만 기본 gather는 다른 작업을 계속 실행한다고 설명한다. 어떤 동작이 업무에 맞는지를 팀이 정한 뒤 그 이유를 지침에 담을 수 있다. 특정 API를 항상 바꾸라는 형태보다 필요한 실패 처리 의미를 전달해야 잘못된 적용을 줄인다."
+        ],
+        "references": [
+          {
+            "label": "파이썬 태스크 그룹과 gather 공식 설명",
+            "kind": "primary",
+            "url": "https://docs.python.org/3/library/asyncio-task.html"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/52631"
+          }
+        ]
+      },
+      {
+        "heading": "훅이 실제로 관측하는 변경 범위를 확인한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "작성 직후의 빠른 안내와 종료 전 전체 검토는 서로 다른 누락을 다룬다. 다만 훅이 어떤 작업에서 실행되는지도 검토 대상이다. Claude Code 공식 문서는 Edit·Write에 맞춘 PostToolUse 훅이 Bash나 외부 프로세스의 파일 변경에서는 실행되지 않는다고 명시한다. 이를 사내 구현의 결함으로 단정할 수는 없지만, 같은 설계를 도입하는 팀이 확인해야 할 실행 경계다.",
+          "중앙 규칙의 갱신도 이미 진행 중인 작업과 새 세션에서 일관되게 보이는지 살펴볼 수 있다. 규칙의 최대 개수는 문맥 부담을 제한하는 선택이며 두 개와 네 개가 모든 팀의 최적값이라는 증거는 아니다. 이 사례의 재사용 가능한 부분은 규칙을 정의하고 필요한 순간에 전달한 뒤 기록으로 개선하는 흐름이다. 실제 적용 범위와 효과는 해당 코드베이스의 리뷰와 검증 결과로 판단해야 한다."
+        ],
+        "references": [
+          {
+            "label": "Claude Code 훅 실행·피드백 공식 문서",
+            "kind": "primary",
+            "url": "https://code.claude.com/docs/en/hooks"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/52631"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Stylepack은 파일명·코드 패턴으로 관련 팀 규칙을 골라 작성 직후 전달한다.",
+      "파일 직후 최대2개·세션당1회, 종료 전 변경 전체에 최대4개를 전달하는 방식이다.",
+      "발동 기록과 반복 PR 리뷰를 활용해 오탐·누락과 규칙 자체를 개선했다."
+    ],
+    "tags": [
+      "토스뱅크",
+      "코딩에이전트",
+      "훅",
+      "개발규칙"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://toss.tech/article/52631"
+      },
+      {
+        "label": "Claude Code 훅 실행·피드백 공식 문서",
+        "url": "https://code.claude.com/docs/en/hooks"
+      },
+      {
+        "label": "파이썬 태스크 그룹과 gather 공식 설명",
+        "url": "https://docs.python.org/3/library/asyncio-task.html"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://toss.tech/article/52631",
+      "https://code.claude.com/docs/en/hooks",
+      "https://docs.python.org/3/library/asyncio-task.html"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 WEB·보존 전문을 읽었고 Claude Code 공식 hooks(PostToolUse/Stop/additionalContext) 및 Python asyncio 공식 TaskGroup/gather를 WEB 대조했다. Stylepack 구현/10초/21세션은 토스뱅크 설명으로 귀속했다. lost-in-middle는 특정모델실험으로 단정하지 않았다. Write/Edit 훅의Bash변경 미발동은 일반도입경계로 설명하며 사내구현결함 단정 아님. 후보 Toss Benchmark는 모델평가체계로Stylepack규칙전달과 별개이며 snapshot.pending 팀규칙사건은본ID만있다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "01f3c059-d9c5-41f6-a1ba-a12ad17e7ed3",
+    "1194d285-301c-4c1b-898b-7df3f7f6a725",
+    "1af6973b-8c8e-4aee-b8d1-5cc639c333d2",
+    "8571f5fb-313c-4364-988b-b5e106978ff5",
+    "dbbb2be6-baab-45eb-87fa-d49b4df1d375"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:01:00.396Z",
+    "checks": [
+      "규칙당조건/문장·정규식선택·작성직후2개/세션1회·마지막diff4개를 원문에서 확인했다.",
+      "중앙규칙갱신·21세션오탐·N+1공통지침·PR반복의견을 원문에서 확인했다.",
+      "공식 훅 맥락추가와Edit/Write실행범위, TaskGroup/gather실패취소 차이를 문서에서 확인했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

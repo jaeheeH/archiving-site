@@ -1,0 +1,190 @@
+{
+  "id": "ef919d30-805c-4481-90f3-4b3c535e8d66",
+  "article": {
+    "url": "https://about.fb.com/news/2026/09/the-biggest-news-from-connect-2026/",
+    "title": "메타 Connect, Muse의 안경 연동과 커넥터 확대…제품별 출시 단계는 별도",
+    "summary": "메타가 Connect 2026에서 개인 에이전트 Muse를 AI 안경으로 확장하고 쇼핑·업무 연결 서비스를 늘리는 방향을 공개했다. Muse의 미국 서비스와 향후 안경 연동, 오디오 안경 예약 판매와 2027년 VR 기기 출시는 각각 다른 단계다. 연결 파트너 확대를 모든 기능의 즉시 제공이나 무제한 실행으로 볼 수는 없다.",
+    "paragraphs": [
+      {
+        "heading": "개인 에이전트와 기기를 함께 연결하는 방향",
+        "kind": "reporting",
+        "paragraphs": [
+          "메타는 9월 24일 전날 열린 Connect 2026의 주요 발표를 정리하며 개인 AI 에이전트와 여러 기기를 함께 확대하는 방향을 제시했다. 중심에는 앞서 공개한 Muse를 AI 안경에서 사용할 수 있도록 하는 계획이 있다. 회사는 향후 몇 달 안에 안경으로 자신의 에이전트를 부르고 눈앞의 물건이나 목록을 작업의 맥락으로 활용하는 경험을 소개했다. 발표 시점에 모든 AI 안경에서 Muse 연동이 완성됐다고 설명한 것은 아니다. 기존 Muse 출시는 미국의 iOS·안드로이드와 웹에 순차 제공하는 범위로 안내됐다. 모바일 서비스와 앞으로 추가할 착용 기기 접점을 나눠 보아야 전체 계획의 진행 상태가 드러난다."
+        ],
+        "references": [
+          {
+            "label": "메타 Connect2026 전체 발표 정리",
+            "url": "https://about.fb.com/news/2026/09/the-biggest-news-from-connect-2026/",
+            "kind": "primary"
+          },
+          {
+            "label": "Muse 공식 출시와 권한 설명",
+            "url": "https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "쇼핑과 업무의 연결 파트너 확대",
+        "kind": "reporting",
+        "paragraphs": [
+          "Connect 정리에는 월마트·베스트바이 등 쇼핑 파트너와 Shop Pay·페이팔 결제, 노션·그라놀라·깃허브·박스 같은 업무 연결이 등장한다. 여행 서비스 익스피디아는 곧 추가할 계획으로 별도 표현됐다. Muse가 자체 이메일 주소로 작업하거나 사용자와 소통하는 기능도 앞으로의 변화로 소개됐다. 따라서 파트너의 이름을 확인하는 일과 각 계정에서 실제 접근할 수 있는 데이터·행동을 확인하는 일은 다르다. 새 파트너와 기존 연결, 앞으로 제공할 기능을 모두 같은 시점의 확정 이용 목록으로 합칠 수 없다. 이 발표의 구체적인 변화는 에이전트가 일을 수행할 외부 접점을 넓히려는 데 있다."
+        ],
+        "references": [
+          {
+            "label": "메타 Connect2026 전체 발표 정리",
+            "url": "https://about.fb.com/news/2026/09/the-biggest-news-from-connect-2026/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "연결 목록과 사용자 권한은 다른 정보",
+        "kind": "analysis",
+        "paragraphs": [
+          "Muse의 공식 출시 설명은 사용자가 연결 앱과 접근 범위를 선택하고 이메일 발송이나 구매 같은 민감한 행동 전에 확인한다고 안내한다. 활동 내역과 예정 작업을 보여주며 서비스 연결을 끊거나 접근을 바꿀 수 있다는 설명도 있다. 이는 회사가 제시한 제품 제어 방식이지 모든 실행에서 오류가 사라진다는 시험 결과는 아니다. 안경에서 바라본 물건을 요청으로 연결하더라도 상품 후보를 고르는 일과 구매를 완료하는 일의 책임은 달라진다. 커넥터가 많아지는 변화는 도구의 범위를 넓히지만 그만큼 어떤 계정으로 무엇을 할 수 있는지 설명하는 과정도 중요해진다. 앱 연결을 허용한 범위와 개별 행동 확인을 함께 보는 것이 지속 작업을 이해하는 기준이다."
+        ],
+        "references": [
+          {
+            "label": "Muse 공식 출시와 권한 설명",
+            "url": "https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/",
+            "kind": "primary"
+          },
+          {
+            "label": "메타 Connect2026 전체 발표 정리",
+            "url": "https://about.fb.com/news/2026/09/the-biggest-news-from-connect-2026/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "안경 종류마다 기능과 제공 단계가 다르다",
+        "kind": "reporting",
+        "paragraphs": [
+          "같은 행사에서 공개된 레이밴 메타 오디오 안경은 349달러부터 예약을 받고 10월 13일 배송할 계획으로 안내됐다. 레이밴 메타 3세대는 449달러부터 제공한다고 회사가 밝혔다. 별도 VR 안경은 2027년 봄 1,299.99달러에 판매할 예정이며 디스플레이·센서를 맡는 안경과 연산·배터리·저장을 맡는 외부 장치를 연결한 구성이다. 약 100그램이라는 수치는 얼굴에 쓰는 안경 부분을 설명하므로 전체 시스템 무게와 동일하게 읽지 않았다. 이 가격은 달러로 제시한 발표 기준이며 모든 국가의 최종 판매가나 세금 포함 가격으로 바꾸지 않았다. 행사에서 함께 등장했다는 이유로 같은 출시일과 기능을 갖는 제품군으로 합칠 수 없다."
+        ],
+        "references": [
+          {
+            "label": "메타 오디오 안경과 지역별 확대 계획",
+            "url": "https://about.fb.com/news/2026/09/introducing-ray-ban-meta-audio-glasses-new-styles-plus-muse/",
+            "kind": "primary"
+          },
+          {
+            "label": "메타 VR 안경의 구성과 출시 계획",
+            "url": "https://about.fb.com/news/2026/09/introducing-meta-vr-glasses-3d-movies-immersive-live-sports-100-grams/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "휴대용 상호작용과 몰입형 화면의 차이",
+        "kind": "analysis",
+        "paragraphs": [
+          "에이전트를 부르는 안경과 영상을 크게 감상하는 VR 기기는 모두 안경 형태지만 사용 목적이 다르다. Muse 연동은 일상에서 요청과 주변 맥락을 전달하는 경로를 늘리는 방향이고, VR 기기는 몰입형 감상과 개인 작업 화면을 제공하는 쪽이다. 회사가 주머니에 넣는 Muse Charm도 소개했지만 상세 내용은 올해 뒤에 더 공개한다고 밝혔다. 기기의 형태나 데모만으로 배터리와 지역 조건, 실제 작업 성공을 모두 평가할 수는 없다. 발표를 이해할 때에는 시연한 상호작용과 공개한 사양, 앞으로 제공할 기능을 구분해야 여러 제품의 관계를 과장 없이 볼 수 있다."
+        ],
+        "references": [
+          {
+            "label": "메타 Connect2026 전체 발표 정리",
+            "url": "https://about.fb.com/news/2026/09/the-biggest-news-from-connect-2026/",
+            "kind": "primary"
+          },
+          {
+            "label": "메타 VR 안경의 구성과 출시 계획",
+            "url": "https://about.fb.com/news/2026/09/introducing-meta-vr-glasses-3d-movies-immersive-live-sports-100-grams/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "선택지의 수보다 실제 연결의 완성도",
+        "kind": "analysis",
+        "paragraphs": [
+          "메타는 연말까지 레이밴·오클리·메타 글래시스에 걸쳐 100개 이상의 선택지를 제공하겠다고 밝혔다. 이 수치는 스타일과 조합을 포함한 선택지에 관한 전망이며 100개의 독립 AI 모델이나 모든 국가에서 동시에 판매하는 제품 수는 아니다. Connect의 방향은 다양한 기기와 외부 서비스를 한 개인 에이전트 경험에 연결하는 데 있다. 그 가치가 드러나려면 실제 계정 접근, 사용자의 확인과 완료 결과가 이어져야 한다. 제품 종류와 파트너 수의 확대는 그 기반을 설명하지만 모든 지역에서 같은 작업을 수행하거나 자동으로 구매·업무가 끝난다는 증거는 아니다. 앞으로의 제공 범위와 구체적인 사용 결과가 전략을 평가할 자료가 된다."
+        ],
+        "references": [
+          {
+            "label": "메타 Connect2026 전체 발표 정리",
+            "url": "https://about.fb.com/news/2026/09/the-biggest-news-from-connect-2026/",
+            "kind": "primary"
+          },
+          {
+            "label": "Muse 공식 출시와 권한 설명",
+            "url": "https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/",
+            "kind": "primary"
+          },
+          {
+            "label": "메타 오디오 안경과 지역별 확대 계획",
+            "url": "https://about.fb.com/news/2026/09/introducing-ray-ban-meta-audio-glasses-new-styles-plus-muse/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Muse의 미국 제공과 향후 몇 달 안경 연동을 서로 다른 단계로 정리했다.",
+      "커넥터 이름·예고 기능과 사용자가 실제 허용한 접근 및 행동 확인을 구분했다.",
+      "오디오 배송·3세대 제공·2027년 VR 출시는 날짜와 제품별 범위가 다르다.",
+      "VR 약100그램은 안경 부분이며 전체 시스템 무게로 전용하지 않았다."
+    ],
+    "tags": [
+      "메타",
+      "Connect2026",
+      "Muse",
+      "AI안경"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "메타 Connect2026 전체 발표 정리",
+        "url": "https://about.fb.com/news/2026/09/the-biggest-news-from-connect-2026/"
+      },
+      {
+        "label": "Muse 공식 출시와 권한 설명",
+        "url": "https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/"
+      },
+      {
+        "label": "메타 VR 안경의 구성과 출시 계획",
+        "url": "https://about.fb.com/news/2026/09/introducing-meta-vr-glasses-3d-movies-immersive-live-sports-100-grams/"
+      },
+      {
+        "label": "메타 오디오 안경과 지역별 확대 계획",
+        "url": "https://about.fb.com/news/2026/09/introducing-ray-ban-meta-audio-glasses-new-styles-plus-muse/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://about.fb.com/news/2026/09/the-biggest-news-from-connect-2026/",
+      "https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/",
+      "https://about.fb.com/news/2026/09/introducing-meta-vr-glasses-3d-movies-immersive-live-sports-100-grams/",
+      "https://about.fb.com/news/2026/09/introducing-ray-ban-meta-audio-glasses-new-styles-plus-muse/"
+    ],
+    "notes": "9/24총괄 및연결Muse/VR/Audio공식원문대조.Connect9/23,미국Muse순차제공vs몇달후안경연동.Connector파트너와향후Expedia/email/Charm 구분.Sentinel/사용자민감행동확인 회사설명으로귀속,절대보안보장없음.Audio10/13배송349USD,Gen3현재449USD,VRspring2027/1299.99USD·외부puck100g안경한정.의료hearingenhancement인허가세부본기사제외.후보Muse소기업/Enterprise는별도확대.전체pending09f24aab·52330d9e하드웨어·799Display·cafCharm은동일행사별도제품세부;본건Muse커넥터/안경연동전략과일정중심으로구분해root에교차검수알림.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "068917f0-0273-40a6-8765-bf94c6b81f68",
+    "1325962c-b29b-4e2f-a93c-a38de8cfb12c",
+    "157ccefd-9f15-4888-8c85-e2c803c3b52d",
+    "364f0bfa-7c39-45a2-8d9d-a14cc6871adc",
+    "62698afb-9ac9-43b4-8c88-ac0b95ed1e71",
+    "bbf996b6-3d8d-49d5-abcd-de63fbbe38a7",
+    "d8192f83-6ac4-4483-8ed2-9926452ba612",
+    "effba7f2-0038-48db-ba90-76d469a35f4e",
+    "fc24425a-bbd8-4906-aaae-2ab545fe4d7f"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:52:32.363Z",
+    "checks": [
+      "Connect행사일과9/24정리문 확인",
+      "Muse미국서비스/안경연동계획 구분",
+      "외부연결과사용자민감행동확인 확인",
+      "Audio/Gen3/VR각제공단계·달러가격 구분",
+      "VR100g안경부분과외부puck 포함전체시스템분리",
+      "전체pending연관제품과차별범위root전달"
+    ],
+    "relatedPendingIds": []
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "id": "9bf53618-215c-418c-b7a4-f3609868dbeb",
+  "article": {
+    "url": "https://www.apple.com/newsroom/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/",
+    "title": "기본형에도 ANC를 넣은 에어팟 5…두 모델의 조작·배터리 조건은 다르다",
+    "summary": "애플은 에어팟 5의 두 오픈형 모델에 능동형 소음 제거를 제공한다고 발표했다. 무선 충전 케이스 모델은 볼륨 스와이프와 더 긴 배터리 시간을 갖는다. 소음 감소 비교와 번역·Siri AI의 지원 조건을 실제 사양과 나눠 살폈다.",
+    "paragraphs": [
+      {
+        "heading": "오픈형 두 모델이 공유하는 소음 제거",
+        "kind": "reporting",
+        "paragraphs": [
+          "애플은 9월 9일 에어팟 5를 발표하며 기본형에도 능동형 소음 제거인 ANC를 제공한다고 밝혔다. 귀를 밀폐하는 팁을 쓰는 프로 제품과 달리 오픈형의 형태를 유지한 구성이다. 미국 발표 가격은 기본형 129달러, 무선 충전 케이스 모델 149달러였고 9월 18일 매장 판매를 예고했다. 이 가격은 미국 발표 기준이다.",
+          "회사에 따르면 새 음향 구조와 계산 알고리즘을 통해 ANC가 있는 에어팟 4보다 외부 소음을 최대 50% 더 줄인다. 각주는 2026년 7월 사전 출시 소프트웨어와 기기로 수행한 회사 시험이며 설정과 환경 등에 따라 달라진다고 설명한다. 전체 소리가 반으로 줄어든다는 체감 보장이나 모든 이어폰과의 독립 비교 결과로 읽을 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "애플의 에어팟 5 공개 발표",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/"
+          }
+        ]
+      },
+      {
+        "heading": "충전 방식뿐 아니라 본체 조작도 다르다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 사양은 두 제품 모두 ANC, 적응형 오디오와 주변음 허용을 지원한다고 안내한다. 무선 충전 케이스 모델에는 줄기를 위아래로 쓸어 볼륨을 조절하는 센서가 추가된다. 기본형의 줄기도 재생과 통화, 듣기 모드를 제어하지만 볼륨 스와이프가 모든 에어팟 5에 제공되는 것은 아니다. 이름의 차이가 케이스에만 적용된다고 보면 본체 기능을 놓칠 수 있다.",
+          "기본 케이스는 USB-C로 충전하며 무선 케이스는 USB-C에 더해 애플워치 충전기와 Qi 충전기를 지원한다. 무선 케이스에는 나의 찾기에서 사용하는 스피커도 안내돼 있다. 공식 목록의 부품과 지원 조건을 구분하면 휴대하는 케이스와 귀에 착용하는 본체가 어떤 역할을 맡는지 비교할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "에어팟 5 공식 모델별 기술 사양",
+            "kind": "primary",
+            "url": "https://www.apple.com/airpods-5/specs/"
+          }
+        ]
+      },
+      {
+        "heading": "배터리 시간은 ANC와 케이스를 나눠 비교",
+        "kind": "reporting",
+        "paragraphs": [
+          "기술 사양은 ANC를 켠 상태에서 기본형은 한 번 충전으로 최대 4시간, 케이스를 포함하면 최대 20시간이라고 안내한다. 무선 충전 케이스 모델은 같은 기준으로 최대 5시간과 22시간이다. 소음 제어를 끈 상태의 최대 재생 시간은 각각 6시간과 7시간으로 별도 표기된다. 서로 다른 조건의 큰 숫자만 이어서 비교하지 않는 것이 중요하다.",
+          "번역과 Siri AI는 지원 아이폰과 최신 소프트웨어, 언어와 지역 조건에 연결된다. 발표 당시 Siri AI는 영어부터 베타로 순차 제공하고 일부 언어의 확대를 예고했다. 이어폰이 블루투스 오디오로 연결된다는 사실과 AI 기능 전체를 사용할 수 있다는 의미는 다르다. 사양도 오래된 소프트웨어나 다른 회사의 기기에서는 기능이 제한될 수 있다고 명시한다."
+        ],
+        "references": [
+          {
+            "label": "에어팟 5 공식 모델별 기술 사양",
+            "kind": "primary",
+            "url": "https://www.apple.com/airpods-5/specs/"
+          },
+          {
+            "label": "애플의 에어팟 5 공개 발표",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/"
+          }
+        ]
+      },
+      {
+        "heading": "개방된 형태와 환경 제어의 관계",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 오픈형에서도 소음 제거를 제공하는 변화를 형태의 선택과 소리 환경의 제어를 분리하려는 접근으로 읽는다. 사용자는 착용감과 밀폐 정도를 고르면서 주변 소리를 줄이거나 듣는 모드를 선택한다. 그러나 어느 방식이 편한지는 귀의 형태와 사용 장소에 따라 달라질 수 있어 제품 발표의 비교 수치가 착용자의 경험까지 대신하지 않는다.",
+          "대화를 시작할 때 음악을 줄이는 기능이나 주변 상황에 따라 모드를 섞는 기능도 사용자가 귀 기기를 언제 조작하는지와 관련된다. 같은 ANC가 있어도 줄기에서 볼륨을 바꿀 수 있는지는 모델 선택의 다른 질문이다. 기능 목록을 가격 하나에 묶기보다 실제 반복하는 행동과 비교하는 편이 두 제품의 차이를 이해하기 쉽다."
+        ],
+        "references": [
+          {
+            "label": "애플의 에어팟 5 공개 발표",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/"
+          },
+          {
+            "label": "에어팟 5 공식 모델별 기술 사양",
+            "kind": "primary",
+            "url": "https://www.apple.com/airpods-5/specs/"
+          }
+        ]
+      },
+      {
+        "heading": "AI 기능은 이어폰 밖의 의존까지 확인",
+        "kind": "analysis",
+        "paragraphs": [
+          "손을 쓰지 않고 개인 메시지나 예약 정보를 찾는 경험은 이어폰만의 처리 능력으로 완성되지 않는다. 어떤 아이폰과 연결했는지, 지원 언어가 무엇인지와 해당 기능을 켰는지가 함께 작동한다. 일상적인 통화·음악 이용과 번역·개인 맥락 AI를 별도의 사용 조건으로 적으면 하드웨어 구매를 모든 소프트웨어 기능의 즉시 제공으로 오해하기 어렵다.",
+          "실제 이용을 평가할 때에도 소음 감소, 착용과 조작의 편의, 배터리와 번역 결과를 나눠 살펴볼 수 있다. 새로운 음향 구조라는 설명만으로 통화의 모든 상황이 선명해지거나 번역이 항상 정확하다고 결론 내릴 수는 없다. 환경과 언어, 케이스 충전 습관처럼 서로 다른 조건을 확인해야 자신에게 중요한 개선이 무엇인지 판단할 수 있다.",
+          "이 기사는 초기 매장 판매를 소개한 기존 소식과 달리 기본형·무선 케이스 모델의 기능 계약을 중심으로 읽었다. 공식 발표와 사양을 대조했으며 이어폰을 직접 착용하거나 배터리·소음 시험을 수행한 결과는 아니다. 최대 수치와 제공 범위를 남겨 두는 것이 모델의 차이를 정확하게 설명하는 기준이다."
+        ],
+        "references": [
+          {
+            "label": "애플의 에어팟 5 공개 발표",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/"
+          },
+          {
+            "label": "에어팟 5 공식 모델별 기술 사양",
+            "kind": "primary",
+            "url": "https://www.apple.com/airpods-5/specs/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "기본형과 무선 케이스형 모두 ANC를 지원한다.",
+      "볼륨 스와이프·충전 방식·배터리 시간은 모델별로 다르다.",
+      "AI 기능은 아이폰·소프트웨어·언어·지역 조건을 함께 확인한다."
+    ],
+    "tags": [
+      "에어팟5",
+      "오픈형이어폰",
+      "ANC",
+      "제품디자인"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "애플의 에어팟 5 공개 발표",
+        "url": "https://www.apple.com/newsroom/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/"
+      },
+      {
+        "label": "에어팟 5 공식 모델별 기술 사양",
+        "url": "https://www.apple.com/airpods-5/specs/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.apple.com/newsroom/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/",
+      "https://www.apple.com/airpods-5/specs/"
+    ],
+    "notes": "9/9공식원문전체·현재기술사양직접열람. 7월회사ANCtest prerelease환경/IEC60268-24,최대50%는기존ANC모델비교이지체감/모든closedear최고아님. basic4/20vsWireless5/22ANC,off6/7구분. VolumeswipeWireless만. APPLEAI개별조건/9월예고현재제공단정없음. 956d...9/18매장전체론기사및rootApple다른모델/사진전은별도;본문모델간계약·제어·공식사양초점,모든candidates·pending관련원제/요약확인.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "7eea6836-5130-410a-bbe3-4ecab0607e44",
+    "956d329a-104f-4538-8c27-53d22881ff0f",
+    "2142abfa-1989-4097-b707-0373bbfa5385",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "1d0ab475-cad9-40f6-a125-290917de796e",
+    "682b3e84-79ef-4664-8ca1-9b7365454803",
+    "88dd33b0-f0fb-48b6-8fd6-bc3df072a7a4"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:42:31.388Z",
+    "checks": [
+      "기본형 ANC와 무선형 전용 볼륨 스와이프 구분",
+      "ANC on/off 및 케이스 포함 배터리 단위 구분",
+      "소음 감소는 회사 시험·설정과 환경 조건으로 한정",
+      "블루투스 연결과 AI 기능 지원 분리",
+      "9/18전체 매장기사와 모델별 사양 분석 범위 구분"
+    ],
+    "relatedPendingIds": []
+  }
+}

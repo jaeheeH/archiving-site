@@ -1,0 +1,140 @@
+{
+  "id": "80efbc9c-e082-472c-88e5-1f5bca372dc8",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/07/matching-ai-modality-user-intent-designing-right-interface/",
+    "title": "AI 인터페이스를 채팅창에 고정하지 않기… 사용자 의도에 맞춰 입력과 출력을 따로 고르다",
+    "summary": "빅터 요코는 AI 기능의 입력과 출력 방식을 실제 작업 환경에 맞춰 선택하는 과업 조사 틀을 소개했다. 손과 시선의 여유, 소음, 판단에 필요한 정보 밀도를 따로 살피고, 같은 작업이 장소를 옮길 때도 맥락과 확인 경로가 이어지는지 검토해야 한다.",
+    "paragraphs": [
+      {
+        "heading": "영리한 답변도 입력과 출력이 맞지 않으면 어렵다",
+        "kind": "reporting",
+        "paragraphs": [
+          "UX 연구자 빅터 요코는 스매싱 매거진 기고에서 AI 기능을 기본적으로 채팅창에 담는 관행을 재검토하자고 제안했다. 모달리티는 사람이 보고 듣고 말하거나 누르고 입력하는 상호작용 방식이다. 글은 기능의 지능뿐 아니라 사용자가 어떤 방식으로 요청하고 어떤 형태로 결과를 받아들일 수 있는지 따로 선택해야 한다고 설명한다.",
+          "공항에서 손에 짐과 커피를 든 사람이 게이트를 찾는 상황은 설명용 예시다. 긴 예약번호를 입력한 뒤 장문의 답변에서 게이트 번호를 찾아야 한다면 좋은 정보도 부담이 된다. 이 장면이 실제 항공사에서 측정한 실패 사례는 아니지만, 답변의 정확성과 현재 환경에서의 사용 가능성이 다른 문제라는 점을 보여 준다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/matching-ai-modality-user-intent-designing-right-interface/"
+          }
+        ]
+      },
+      {
+        "heading": "과업을 조사하고 입력과 결과 형식을 연결하다",
+        "kind": "reporting",
+        "paragraphs": [
+          "요코가 제시한 과업 조사는 입력 제약과 출력 제약, 사회적 환경, 인지 부담을 살피는 방식이다. 손을 쓸 수 있는지와 화면을 볼 수 있는지는 별개의 질문이며, 말할 수 있어도 주변 소음이나 사생활 때문에 음성이 적합하지 않을 수 있다. 이렇게 얻은 조건을 입력·출력 조합표에 연결한다.",
+          "조합표는 단순 상태 확인, 세부 질문, 복잡한 분석, 창작, 모니터링, 단계별 완료 같은 의도에 따라 후보를 나눈다. 버튼과 짧은 알림, 필터와 대시보드, 이미지 입력과 편집 캔버스 등이다. 이는 기능을 모든 상황에 똑같이 배치하는 규칙이 아니라 사용자 의도와 환경을 바탕으로 검토할 설계 선택지다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/matching-ai-modality-user-intent-designing-right-interface/"
+          }
+        ]
+      },
+      {
+        "heading": "현장 관찰은 익숙해진 불편까지 드러낸다",
+        "kind": "reporting",
+        "paragraphs": [
+          "영국 정부의 서비스 매뉴얼도 사용자의 일상 환경에서 익숙한 장비와 방해 요소 속에 과업을 수행하는 모습을 관찰하도록 안내한다. 실제 자료와 문서, 기기를 쓰는 상황을 보면 인터뷰에서 빠지기 쉬운 장애물과 우회 방법을 이해할 수 있다는 이유다. 연구 대상과 질문을 정하고 장애가 있는 사람 등을 배제하지 않도록 방문을 계획하라고 권한다.",
+          "매뉴얼은 조용히 관찰하거나 중간에 질문하거나 각 단계를 설명하게 하는 방법이 자연스러운 행동과 이해의 깊이에 서로 다른 영향을 준다고 설명한다. 단순히 현장을 방문했다는 사실보다 어떤 방식으로 자료를 얻었는지 기록해야 한다. 이러한 공식 연구 절차가 원문의 환경 중심 인터페이스 선택을 구체화하는 근거가 된다."
+        ],
+        "references": [
+          {
+            "label": "영국 정부 서비스 매뉴얼의 현장 관찰 연구 안내",
+            "kind": "primary",
+            "url": "https://www.gov.uk/service-manual/user-research/contextual-research-and-observation"
+          }
+        ]
+      },
+      {
+        "heading": "입력의 편리함과 출력의 판단 부담을 나누다",
+        "kind": "analysis",
+        "paragraphs": [
+          "예를 들어 필터를 몇 번 누르는 요청은 쉽게 입력되더라도 결과가 긴 설명뿐이면 비교가 어려울 수 있다. 반대로 음성으로 간단히 물어볼 수 있어도 복잡한 수치를 모두 듣고 기억해야 한다면 출력이 과업과 맞지 않는다. 입력을 줄인 이익이 결과 해석 단계로 부담을 옮기지 않았는지 평가할 필요가 있다.",
+          "같은 정보에 여러 경로를 제공할 때는 핵심 의미가 일치하는지도 살펴야 한다. 차트의 색상만으로 상태를 표시하면 그 색을 구별하기 어렵거나 화면을 볼 수 없는 사용자는 판단 근거를 잃을 수 있다. 수치와 상태 이름, 읽을 수 있는 구조를 함께 제공하는 설계가 형식의 선택을 실제 정보 접근으로 연결한다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/matching-ai-modality-user-intent-designing-right-interface/"
+          },
+          {
+            "label": "영국 정부 서비스 매뉴얼의 현장 관찰 연구 안내",
+            "kind": "primary",
+            "url": "https://www.gov.uk/service-manual/user-research/contextual-research-and-observation"
+          }
+        ]
+      },
+      {
+        "heading": "장소가 바뀌어도 작업과 확인은 이어져야 한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "작업자가 현장에서 짧은 답을 듣고 사무실에서 상세 자료를 검토한다면 두 화면의 역할이 달라진다. 이때 질문의 대상과 시간, 이미 확인한 조건을 이어받아야 같은 일을 다시 설명하는 비용을 줄일 수 있다. 간략한 답변을 상세 결과와 연결하면 사용자가 요약 뒤의 근거를 확인하는 경로도 생긴다.",
+          "전환 자체가 항상 자동이어야 하는 것은 아니다. 주변 기기를 잘못 선택하거나 민감한 결과가 공용 화면에 나타날 수 있다면 사용자가 목적지를 확인할 필요가 있다. 편리한 전달과 예상 가능한 표시를 함께 고려해야 모달리티 전환이 새 불안 요소가 되지 않는다. 이는 모델의 출력 품질과 별개로 제품이 결정할 동작이다.",
+          "팀은 대표 과업을 실제 장비와 환경에서 수행하게 한 뒤 요청을 시작할 수 있는지, 핵심 답을 찾는지, 다음 행동을 확인하는지 살펴볼 수 있다. 원문에 나온 조합을 그대로 복제하기보다 자신의 관찰 자료에 맞춰 선택해야 한다. 채팅과 음성, 시각적 조작은 각각 잘 맞는 순간이 있으며 과업 전체를 하나의 형식에 묶을 필요는 없다."
+        ],
+        "references": [
+          {
+            "label": "영국 정부 서비스 매뉴얼의 현장 관찰 연구 안내",
+            "kind": "primary",
+            "url": "https://www.gov.uk/service-manual/user-research/contextual-research-and-observation"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/matching-ai-modality-user-intent-designing-right-interface/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "AI 입력 방식과 결과 형식은 사용자의 현재 제약을 기준으로 따로 평가해야 한다.",
+      "과업 조사와 입력·출력 조합표는 환경에 맞는 후보를 고르는 도구다.",
+      "현장과 사무실 사이의 전환에서도 작업 맥락과 근거 확인 경로가 이어져야 한다."
+    ],
+    "tags": [
+      "AI인터페이스",
+      "사용자연구",
+      "모달리티",
+      "접근성"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 원출처 개발 사례",
+        "url": "https://smashingmagazine.com/2026/07/matching-ai-modality-user-intent-designing-right-interface/"
+      },
+      {
+        "label": "영국 정부 서비스 매뉴얼의 현장 관찰 연구 안내",
+        "url": "https://www.gov.uk/service-manual/user-research/contextual-research-and-observation"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.gov.uk/service-manual/user-research/contextual-research-and-observation"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처비-www WEB접근실패뒤www전문26~240행확인(RSS12000자잘린후반보충). 작성자는Victor Yocco(빅터요코),공항은설명용시나리오. 전국전력사명·독립측정설정이없는진단20%개선수치와의료/안전성단정은인용하지않았다. GUI/음성항상우위·독해1초같은보편수치도제외. 원문이링크한GOV.UK정부맥락관찰공식매뉴얼정확URL읽고관찰법별영향확인. post.candidates0건및snapshot.pending전체대조:e3ce가치비판/ff56폴더통합과달리이글은입력출력별제약과현장조사매트릭스방법으로별도논점.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:13:01.103Z",
+    "checks": [
+      "원문 작성자는 Victor Yocco이며 과업 조사와 입력출력 정렬 매트릭스를 제안한다.",
+      "공항 예시를 실제 조사 사례로 주장하지 않았다.",
+      "정부 매뉴얼은 실제 환경·장비·방해 요소에서의 관찰과 장애인 배제 방지를 안내한다.",
+      "방법론의 성능·안전 효과를 새 벤치마크로 주장하지 않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

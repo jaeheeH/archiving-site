@@ -1,0 +1,160 @@
+{
+  "id": "55245698-bd28-4959-bee7-b77cce5c033a",
+  "article": {
+    "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-3-3-%EA%B4%80%EC%B8%A1-%EA%B0%80%EB%8A%A5%ED%95%9C-rag-%EC%9A%B4%EC%98%81%EB%90%98%EB%8A%94-%EB%8F%84%EA%B5%AC%EB%A1%9C-dbac813832db",
+    "title": "여기어때, 사내 RAG에 검색·답변 평가와 MCP 운영 체계 구축",
+    "summary": "여기어때가 사내 문서 검색을 랭퓨즈로 관측하고 검색 지표와 LLM 채점을 나눠 평가한 사례를 공개했다. MCP 명세와 문서 식별 방식도 개선했다. 내부 평가 결과를 일반 성능으로 확대하지 않고, 변경을 판단할 근거를 만드는 과정에 주목할 만하다.",
+    "paragraphs": [
+      {
+        "heading": "답변이 돌아온 뒤에 필요한 검증",
+        "kind": "reporting",
+        "paragraphs": [
+          "여기어때 공통플랫폼개발팀은 사내 지식 검색 프로젝트의 세 번째 글에서 관측과 평가, MCP 서빙 과정을 공개했다. 기술블로그는 랭퓨즈(Langfuse)를 사용해 검색부터 프롬프트 구성, 생성까지 요청 흐름을 추적했다고 설명했다. 프롬프트와 응답, 토큰·비용·지연시간을 함께 기록해 어느 단계가 자원을 사용하는지 확인하는 방식이다.",
+          "요청 기록이 보인다고 답이 옳다는 사실까지 확인되는 것은 아니다. 팀은 사내 지식 질문을 일곱 유형으로 나눠 정답과 정답 문서를 준비했다. 랭퓨즈 공식 문서도 데이터셋을 입력과 기대 출력의 모음으로 설명하고, 운영 트레이스에서 테스트 사례를 만들 수 있다고 안내한다. 제품의 관측 기능과 팀이 만든 평가 기준을 구분할 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-3-3-%EA%B4%80%EC%B8%A1-%EA%B0%80%EB%8A%A5%ED%95%9C-rag-%EC%9A%B4%EC%98%81%EB%90%98%EB%8A%94-%EB%8F%84%EA%B5%AC%EB%A1%9C-dbac813832db"
+          },
+          {
+            "label": "랭퓨즈 평가 데이터셋 공식 문서",
+            "kind": "primary",
+            "url": "https://langfuse.com/docs/evaluation/experiments/datasets"
+          }
+        ]
+      },
+      {
+        "heading": "검색 성공과 최종 답변을 두 층으로 평가",
+        "kind": "reporting",
+        "paragraphs": [
+          "팀은 정답 문서가 상위 결과에 들어왔는지 보는 Recall@5와 Hit Rate, 정답의 순위를 보는 MRR을 계산했다. 이어 MCP를 연결한 에이전트가 실제 답을 만들게 하고, 생성 모델과 분리한 LLM에 정답과 응답을 전달해 0~1 범위의 정확도 점수를 매겼다고 밝혔다. 문서를 찾는 단계와 문서를 읽어 답하는 단계를 나누어 실패 원인을 살핀 것이다.",
+          "기술블로그에 따르면 프롬프트나 도구 매개변수를 바꿀 때도 평가를 돌려 적용 여부를 정했다. 보통 세 번 이상 반복해 평균을 내고 정확도와 함께 시간·토큰·비용을 남겼다. 이는 해당 사내 문서와 평가셋에서 사용하는 운영 절차다. 점수가 좋아졌다는 이유만으로 다른 조직의 문서나 모든 질문에서 같은 품질이 나온다고 보장하지는 않는다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-3-3-%EA%B4%80%EC%B8%A1-%EA%B0%80%EB%8A%A5%ED%95%9C-rag-%EC%9A%B4%EC%98%81%EB%90%98%EB%8A%94-%EB%8F%84%EA%B5%AC%EB%A1%9C-dbac813832db"
+          }
+        ]
+      },
+      {
+        "heading": "MCP 명세를 실제 사용 흐름에 맞추다",
+        "kind": "reporting",
+        "paragraphs": [
+          "서빙에는 FastMCP와 Streamable HTTP를 선택했다. 팀은 LLM 호출과 검색 접근 권한을 서버에 두고 여러 사내 클라이언트가 원격으로 연결하게 했다고 설명했다. 에이전트가 청크를 한 번 찾고 바로 답하던 문제에는 서버 instructions로 의미 검색, 주변 계층 조회, 필요한 원문 읽기의 흐름을 안내했다. 공식 MCP 초기화 명세에는 서버가 선택적 instructions를 반환하는 형식이 있다.",
+          "팀은 문서 읽기 도구를 여러 문서의 목록 대신 한 문서씩 받도록 바꾸고, 제목이 포함된 경로 대신 고유 ID로 문서를 식별하게 했다. 기술블로그는 이 명세 변경으로 모델에 따라 정확도가 3~9%포인트 움직였다고 밝혔다. 이 수치는 내부 평가의 결과이며, 공식 프로토콜이 그 개선 폭이나 도구 사용 순서의 준수를 보장하는 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-3-3-%EA%B4%80%EC%B8%A1-%EA%B0%80%EB%8A%A5%ED%95%9C-rag-%EC%9A%B4%EC%98%81%EB%90%98%EB%8A%94-%EB%8F%84%EA%B5%AC%EB%A1%9C-dbac813832db"
+          },
+          {
+            "label": "MCP 초기화와 instructions 공식 명세",
+            "kind": "primary",
+            "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle"
+          }
+        ]
+      },
+      {
+        "heading": "평가 점수에는 정답과 실패 유형을 함께 남기기",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 이 사례의 실용적인 부분은 검색이 틀린 경우와 답변이 틀린 경우를 나란히 비교할 수 있다는 데 있다. 정답 문서는 찾았는데 답이 틀렸다면 문맥 구성이나 읽기 과정을 살필 수 있고, 문서 자체가 빠졌다면 적재와 검색을 먼저 확인할 수 있다. 단일 총점만 보면 서로 다른 원인의 변경을 한꺼번에 처리하기 쉽다.",
+          "LLM 채점도 검토 가능한 평가 절차여야 한다. 정답의 작성 시점, 심판 모델과 채점 지침을 기록하고 대표적인 오답을 사람이 확인하면 점수 변화의 뜻을 설명하기 쉬워진다. 특히 문서가 갱신되면 기존 정답이 낡을 수 있으므로, 같은 데이터셋에서의 개선과 새 문서에서의 대응력을 따로 살펴야 한다. 반복 평균은 편차를 보는 데 도움이 되지만 평가셋의 편향까지 없애지는 않는다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-3-3-%EA%B4%80%EC%B8%A1-%EA%B0%80%EB%8A%A5%ED%95%9C-rag-%EC%9A%B4%EC%98%81%EB%90%98%EB%8A%94-%EB%8F%84%EA%B5%AC%EB%A1%9C-dbac813832db"
+          },
+          {
+            "label": "랭퓨즈 평가 데이터셋 공식 문서",
+            "kind": "primary",
+            "url": "https://langfuse.com/docs/evaluation/experiments/datasets"
+          }
+        ]
+      },
+      {
+        "heading": "도구 설명과 관측 기록도 운영 자산이다",
+        "kind": "analysis",
+        "paragraphs": [
+          "문서 ID 변경은 검색 모델을 교체하지 않고도 오류를 줄일 수 있는 지점을 보여준다. 사람이 읽기 편한 경로에는 슬래시와 표기 규칙이 섞이지만, 도구가 기대하는 식별자는 정확히 일치해야 한다. 모델이 이름을 정리해도 괜찮은 설명 영역과 한 글자도 바꾸면 안 되는 호출 값을 구분해 설계하면 문제를 더 좁은 범위에서 고칠 수 있다.",
+          "또한 서버 instructions는 실행을 안내하는 문맥이지 권한이나 강제 절차를 대신하는 장치가 아니다. 중요한 접근 통제는 서버에서 확인하고, 실제 에이전트가 어떤 도구를 호출했는지는 트레이스로 확인해야 한다. 이번 글을 아카이빙할 때도 최종 구성도와 함께 평가셋 버전, 실패 사례, 명세 변경 이유를 남기면 다음 모델이나 문서 범위로 확장할 때 비교할 출발점이 된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-3-3-%EA%B4%80%EC%B8%A1-%EA%B0%80%EB%8A%A5%ED%95%9C-rag-%EC%9A%B4%EC%98%81%EB%90%98%EB%8A%94-%EB%8F%84%EA%B5%AC%EB%A1%9C-dbac813832db"
+          },
+          {
+            "label": "MCP 초기화와 instructions 공식 명세",
+            "kind": "primary",
+            "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "검색 지표와 LLM 기반 최종 답변 평가를 분리하고 보통 세 번 이상 반복했다.",
+      "문서 읽기 단위와 식별자를 바꾸는 MCP 명세 개선도 내부 평가 대상으로 삼았다.",
+      "3~9%포인트 변화는 사내 평가 결과로, 다른 문서나 모델의 일반 성능 보장은 아니다."
+    ],
+    "tags": [
+      "여기어때",
+      "RAG",
+      "랭퓨즈",
+      "MCP",
+      "AI평가"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 사례와 발표",
+        "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-3-3-%EA%B4%80%EC%B8%A1-%EA%B0%80%EB%8A%A5%ED%95%9C-rag-%EC%9A%B4%EC%98%81%EB%90%98%EB%8A%94-%EB%8F%84%EA%B5%AC%EB%A1%9C-dbac813832db"
+      },
+      {
+        "label": "랭퓨즈 평가 데이터셋 공식 문서",
+        "url": "https://langfuse.com/docs/evaluation/experiments/datasets"
+      },
+      {
+        "label": "MCP 초기화와 instructions 공식 명세",
+        "url": "https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-3-3-%EA%B4%80%EC%B8%A1-%EA%B0%80%EB%8A%A5%ED%95%9C-rag-%EC%9A%B4%EC%98%81%EB%90%98%EB%8A%94-%EB%8F%84%EA%B5%AC%EB%A1%9C-dbac813832db",
+      "https://langfuse.com/docs/evaluation/experiments/datasets",
+      "https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle"
+    ],
+    "notes": "Codex 직접 조사·집필, Gemini 및 외부 생성 API 호출 없음. 원문 URL과 ID·medium.com/p 대체 주소는 WEB 접근 오류였다. 원출처 RSS https://techblog.gccompany.co.kr/feed 의 보존 전문을 읽었고 직접 HTTP로 최신 RSS 전문을 추가 조회·보존했다. WEB은 해당 피드의 XML 형식을 지원하지 않는다. 랭퓨즈 데이터셋과 MCP 초기화 명세는 WEB으로 확인했다. 일곱 질문 유형·이중 평가·3회 이상 반복·ID 변경·3~9%p 수치는 원출처 내부 사례로 한정했다. candidates는 없다. snapshot.pending 전체 원제 목록과 여기어때·RAG 제목/요약을 비교했다. 2편은 LightRAG와 Navigator의 검색 구조·적재이고 3편은 관측·평가·서빙의 후속 사례이므로 중복이 아니다. 직접 실행·독립 성능 검증은 하지 않았다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:15:28.578Z",
+    "checks": [
+      "RSS 전문에 일곱 질문 유형과 Recall@5·Hit Rate·MRR 및 별도 모델 채점이 기재됐다.",
+      "보통 3회 이상 반복 평가와 정확도·지연시간·토큰·비용 기록을 원출처가 설명한다.",
+      "도구는 한 문서씩 받도록 바꾸고 경로에서 고유 ID로 전환했다.",
+      "MCP 초기화 명세에 선택적 instructions 필드가 있으며 도구 순서 강제 보장은 명시되지 않는다.",
+      "실제 editorialSchema로 한국어·본문 1800~3000자·5섹션·서로 다른 HTTPS 원출처 포함 참조를 검증했다.",
+      "snapshot.pending 전체 원제 목록과 관련 제목·요약을 대조해 같은 사건의 중복이 없음을 검토했다.",
+      "최종 검수: 연결된 글은 다른 구체 사례·단계 또는 별도 실질 주제를 다루므로 중복 발표가 아님을 본문과 조사 메모로 확인했다."
+    ],
+    "relatedPendingIds": [
+      "7395f4cb-67ab-4eaa-a46f-7b02586a1b5e"
+    ],
+    "distinctRelatedReviewed": true
+  }
+}

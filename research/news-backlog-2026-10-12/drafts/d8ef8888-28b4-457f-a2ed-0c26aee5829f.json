@@ -1,0 +1,181 @@
+{
+  "id": "d8ef8888-28b4-457f-a2ed-0c26aee5829f",
+  "article": {
+    "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ed%83%ad-s12-%ec%8b%9c%eb%a6%ac%ec%a6%88-%ea%b3%b5%ea%b0%9c",
+    "title": "갤럭시 탭 S12 공개, 디멘시티9500 성능 수치와 AI·배터리 조건 읽기",
+    "summary": "갤럭시 탭 S12 울트라·플러스가 디멘시티9500과 대화면 AI 기능을 채택했다. 칩 공급사 자료를 대조하면 성능 비교의 전작이 모델마다 다르고, 최대 배터리 시간과 노트 요약에도 구체적 조건이 있다. 무료 앱 혜택은 기간제 체험·할인의 합산이다.",
+    "paragraphs": [
+      {
+        "heading": "울트라와 플러스에 같은 새 프로세서",
+        "kind": "reporting",
+        "paragraphs": [
+          "삼성전자는 10월 1일 갤럭시 탭 S12 울트라와 탭 S12+를 공개했다. 울트라는 14.6형 화면과 5.1mm 두께, 플러스는 12.6형 화면과 5.3mm 두께를 갖추며 두 모델에 S펜을 기본 제공한다. 안드로이드17 기반 One UI9와 다이나믹 아몰레드 2X 화면을 적용했다. 미디어텍도 두 제품에 디멘시티9500을 공급한다고 발표하며 3nm 공정, 올 빅 코어 CPU와 NPU990, 12코어 GPU의 구성을 설명했다. 이는 구성 요소와 지원 기술에 관한 공급사의 발표다. 특정 앱에서 실제로 얼마나 작업이 빨라졌는지와는 구분해야 한다. 이번 기사는 판매 혜택을 중심으로 한 국내 출시 소식에 앞선 사양 공개를 다룬다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 탭 S12 최초 공개 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ed%83%ad-s12-%ec%8b%9c%eb%a6%ac%ec%a6%88-%ea%b3%b5%ea%b0%9c",
+            "kind": "primary"
+          },
+          {
+            "label": "미디어텍 디멘시티9500 탑재 발표",
+            "url": "https://www.mediatek.com/press-room/mediatek-dimensity-9500-powers-samsung-galaxy-tab-s12-series-advancing-ai-driven-tablets",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "모델마다 다른 전작을 기준으로 한 성능",
+        "kind": "analysis",
+        "paragraphs": [
+          "삼성은 울트라의 NPU·CPU·GPU 성능이 탭 S11 울트라보다 각각 약 61%·19%·17% 높다고 밝혔다. 미디어텍의 제품 안내는 같은 수치를 싣고, 플러스는 탭 S10+ 대비 각각 141%·48%·67%라고 표시한다. 비교 대상 세대가 서로 다르므로 상승률만으로 플러스가 울트라보다 높은 절대 성능을 낸다고 판단할 수 없다. 이 수치에는 실제 사용 앱별 상세 시험 조건이 모두 제공되지는 않는다. 발표가 강조하는 동시에 영상을 보고 필기하며 AI에 질문하는 상황도 제품의 활용 예시이며 모든 작업의 응답 시간이 같은 비율로 줄어든다는 보장은 아니다. 필요한 앱과 자료 크기에서 체감 성능을 따로 살펴야 하는 이유다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 탭 S12 최초 공개 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ed%83%ad-s12-%ec%8b%9c%eb%a6%ac%ec%a6%88-%ea%b3%b5%ea%b0%9c",
+            "kind": "primary"
+          },
+          {
+            "label": "미디어텍 탭 S12 성능 및 조건 안내",
+            "url": "https://www.mediatek.com/samsung-galaxy-tab-s12-series",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "영상 재생 상한과 연결을 끈 시험",
+        "kind": "reporting",
+        "paragraphs": [
+          "삼성의 배터리 설명은 울트라 최대 23시간, 플러스 최대 21시간으로, 동영상 재생 기준이다. 미디어텍의 탭 S12 안내 각주는 로컬 720p 영상, 기본 플레이어의 전체 화면, 162니트 밝기와 이어폰 음량7, 와이파이·모바일 네트워크를 끈 시험 조건을 명시한다. 따라서 높은 화면 밝기에서 온라인 강의를 재생하고 AI 기능까지 함께 쓰는 시간을 같은 상한으로 표현해서는 안 된다. 삼성은 두 모델이 45W 충전을 지원하고 완전 충전에 약 95분이 걸린다고 설명했다. 미디어텍 안내에서 해당 충전기는 별도 판매이며 속도는 잔량과 다른 조건에 따라 달라진다. 용량이나 최대 시간 하나보다 실제 연결·화면 설정을 함께 보는 것이 중요하다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 탭 S12 최초 공개 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ed%83%ad-s12-%ec%8b%9c%eb%a6%ac%ec%a6%88-%ea%b3%b5%ea%b0%9c",
+            "kind": "primary"
+          },
+          {
+            "label": "미디어텍 탭 S12 성능 및 조건 안내",
+            "url": "https://www.mediatek.com/samsung-galaxy-tab-s12-series",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "AI 연산 장치와 인터넷을 쓰는 기능",
+        "kind": "analysis",
+        "paragraphs": [
+          "삼성은 화면을 최대 세 영역으로 나누는 멀티 윈도우와 삼성 노트의 필기 요약, 여러 자료를 모으는 제미나이 노트북 등을 소개했다. NPU가 탑재됐다는 사실이 모든 AI 기능의 완전한 오프라인 실행을 뜻하지는 않는다. 미디어텍 안내에서 노트 어시스트는 삼성 노트의 200~4,000자 텍스트를 대상으로 하며 삼성 계정 로그인과 인터넷 연결이 필요하다고 명시한다. 기기에서 수행하는 추론 연산과 서비스를 이용하기 위한 연결 조건이 함께 존재하는 것이다. 요약을 활용할 때에도 원문 필기와 생성된 내용을 비교하는 단계가 남는다. 칩의 성능 개선과 자료를 정확하게 이해하는 결과는 같은 지표로 평가할 수 없다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 탭 S12 최초 공개 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ed%83%ad-s12-%ec%8b%9c%eb%a6%ac%ec%a6%88-%ea%b3%b5%ea%b0%9c",
+            "kind": "primary"
+          },
+          {
+            "label": "미디어텍 탭 S12 성능 및 조건 안내",
+            "url": "https://www.mediatek.com/samsung-galaxy-tab-s12-series",
+            "kind": "primary"
+          },
+          {
+            "label": "미디어텍 디멘시티9500 탑재 발표",
+            "url": "https://www.mediatek.com/press-room/mediatek-dimensity-9500-powers-samsung-galaxy-tab-s12-series-advancing-ai-driven-tablets",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "앱 기본 탑재와 무료 이용 기간의 차이",
+        "kind": "reporting",
+        "paragraphs": [
+          "삼성은 안드로이드 태블릿 최초라는 표현과 함께 어도비 포토샵의 기본 탑재를 발표했고, 모바일 프리미엄은 4개월 무료 체험으로 설명했다. 노타빌리티는 6개월 무료 이용과 첫 구독 20% 할인, 구글 AI 프로는 6개월 체험을 제시했다. 약 80만원 상당이라는 혜택은 여러 앱의 무료 기간과 첫 구독 할인, 구글 AI 프로 체험을 합한 금액으로 앱마다 기간이 다르고 통화에 따라 달라질 수 있다는 각주가 있다. 현금 지급이나 모든 앱의 영구 라이선스로 해석할 수 없다. 기본 제공 S펜과 별도 판매 프로 키보드도 구분된다. 필요한 앱과 액세서리를 기준으로 구매 비용과 체험 종료 뒤 이용 조건을 따로 계산할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 탭 S12 최초 공개 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ed%83%ad-s12-%ec%8b%9c%eb%a6%ac%ec%a6%88-%ea%b3%b5%ea%b0%9c",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "작업 흐름에 맞춰 확인할 사양",
+        "kind": "analysis",
+        "paragraphs": [
+          "발표 당시 국내 출시일은 10월 7일이며, 가격 범위는 울트라 189만9,700~301만8,400원, 플러스 154만9,900~206만9,100원이다. 저장공간과 메모리, 통신 방식에 따라 달라진다. 화면에 자료를 나란히 띄우는 사용자는 크기와 무게를, 필기 요약을 쓰는 사용자는 연결과 텍스트 조건을, 창작 앱 사용자는 체험 이후 요금과 필요한 기능을 확인할 수 있다. 최대 배터리와 성능 상승률은 이 선택을 돕는 자료지만 작업 흐름 전체의 결과를 대표하지 않는다. 이번 공개는 태블릿의 연산 장치와 소프트웨어를 함께 강화하는 방향을 보여주며, 실제 효용은 사용하는 앱·연결 환경·구독 조건에서 더 구체적으로 드러날 것이다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 탭 S12 최초 공개 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ed%83%ad-s12-%ec%8b%9c%eb%a6%ac%ec%a6%88-%ea%b3%b5%ea%b0%9c",
+            "kind": "primary"
+          },
+          {
+            "label": "미디어텍 탭 S12 성능 및 조건 안내",
+            "url": "https://www.mediatek.com/samsung-galaxy-tab-s12-series",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "울트라 성능은 S11 울트라, 플러스 성능은 S10+와 비교한 공급사 수치다.",
+      "23·21시간은 영상 재생 상한이며 연결·밝기·실제 사용에 따라 달라진다.",
+      "노트 어시스트의 계정·인터넷·텍스트 조건과 기간제 앱 혜택을 구분했다."
+    ],
+    "tags": [
+      "삼성전자",
+      "갤럭시탭S12",
+      "미디어텍",
+      "태블릿"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "삼성전자 탭 S12 최초 공개 원문",
+        "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ed%83%ad-s12-%ec%8b%9c%eb%a6%ac%ec%a6%88-%ea%b3%b5%ea%b0%9c"
+      },
+      {
+        "label": "미디어텍 탭 S12 성능 및 조건 안내",
+        "url": "https://www.mediatek.com/samsung-galaxy-tab-s12-series"
+      },
+      {
+        "label": "미디어텍 디멘시티9500 탑재 발표",
+        "url": "https://www.mediatek.com/press-room/mediatek-dimensity-9500-powers-samsung-galaxy-tab-s12-series-advancing-ai-driven-tablets"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ed%83%ad-s12-%ec%8b%9c%eb%a6%ac%ec%a6%88-%ea%b3%b5%ea%b0%9c",
+      "https://www.mediatek.com/samsung-galaxy-tab-s12-series",
+      "https://www.mediatek.com/press-room/mediatek-dimensity-9500-powers-samsung-galaxy-tab-s12-series-advancing-ai-driven-tablets"
+    ],
+    "notes": "10/1 삼성 공개와 미디어텍 보도자료·제품 안내를 대조. 울트라/플러스 서로 다른 전작 비교를 명시, NPU 상승률을 전체 작업 속도로 확대하지 않음. 미디어텍 현재 각주의 720p/162nit/음량7/무선통신off, 200~4000자·로그인·인터넷 조건을 확인. Photoshop 최초 주장은 삼성에 귀속했고 데스크톱 동일 기능이나 Adobe 확정 배포 범위는 추정하지 않음. f4019e8c는 국내 판매 및 프로모션 후속 기사이며 본 원고는 첫 공개의 칩·AI 조건 중심. 전체 pending에 동일 공개 사건은 본 ID뿐.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "f4019e8c-959b-4367-abaf-985d452c901a",
+    "f1c6270a-4dac-4b5a-b155-3bfd66b56f9d",
+    "259b1bc3-7c03-4bfc-9653-0a3452a297e6",
+    "a55ebad0-e03d-418e-8ffd-43af660e7f38",
+    "a6e9c97c-1e29-4eb1-b357-a081becc7813",
+    "d9dfde0c-a88d-47c1-863b-486eaefc9474"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:09:27.269Z",
+    "checks": [
+      "삼성 공개 원문 AP와 미디어텍 탑재 발표 일치",
+      "울트라 S11/플러스 S10 비교 기준과 회사 수치 명시",
+      "배터리 로컬 영상·무선통신off 시험 조건 확인",
+      "노트 어시스트 200~4000자·삼성 계정·인터넷 조건 확인",
+      "80만원은 기간제 체험·첫 구독 할인 합산으로 한정",
+      "최초 공개와 국내 판매 후속의 사건 차이 검토"
+    ],
+    "relatedPendingIds": []
+  }
+}

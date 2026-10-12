@@ -1,0 +1,160 @@
+{
+  "id": "fb58a428-8ffa-4446-ab88-5fb12310f533",
+  "article": {
+    "url": "https://blog.developer.adobe.com/en/publish/2026/08/building-plugins-faster-with-bolt-uxp-and-bolt-express",
+    "title": "Bolt UXP 1.3·Express 1.2, 디버깅과 애드온 반복 개발 도구 확장",
+    "summary": "하이퍼브루의 오픈소스 Bolt 도구가 UXP 디버깅·비동기 명령 실행과 Express 샌드박스 재로딩을 보강했다. 공통 빌드 구성을 제공하지만 호스트 API의 출시와 지원 조건을 대신하지는 않는다.",
+    "paragraphs": [
+      {
+        "heading": "어도비 플랫폼 위의 커뮤니티 개발 도구",
+        "kind": "reporting",
+        "paragraphs": [
+          "어도비 개발자 블로그는 하이퍼브루가 만드는 Bolt UXP 1.3과 Bolt Express 1.2의 변경 사항을 소개했다. Bolt는 플러그인과 애드온의 프로젝트 설정·개발·패키징을 돕는 오픈소스 도구다. 어도비의 호스트 런타임을 새로 출시한 것이 아니라 그 위에서 반복 작업을 줄이는 개발 구성을 보강한 발표다.",
+          "Bolt 프로젝트는 Vite 기반 구성을 사용하며 React·Svelte·Vue와 TypeScript를 조합할 수 있다. 앱별 설정을 간단한 파일로 다루면서 기본 API와 빌드 설정에도 접근할 수 있다고 설명한다. UXP 플러그인용 Bolt UXP와 Adobe Express 애드온용 Bolt Express는 대상이 다른 도구이므로 이름이 비슷해도 같은 실행 환경으로 취급할 수 없다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/08/building-plugins-faster-with-bolt-uxp-and-bolt-express"
+          },
+          {
+            "label": "하이퍼브루의 Bolt UXP 공식 프로젝트 안내",
+            "kind": "primary",
+            "url": "https://hyperbrew.co/bolt-uxp"
+          }
+        ]
+      },
+      {
+        "heading": "UXP는 명령 실행과 소스 디버깅을 보강했다",
+        "kind": "reporting",
+        "paragraphs": [
+          "Bolt UXP 1.3은 기존 동기 명령 함수와 함께 비동기 exec를 제공해 오래 걸리는 외부 명령이 UI를 붙잡는 문제를 줄이도록 했다. VS Code용 UXP 디버거와 UXP Developer Tool을 통한 TypeScript 소스 디버깅, Premiere용 30개 이상의 보조 함수도 소개했다. 보조 함수는 별도 bolt-uxp-utils 모듈로 제공해 전체 Bolt 구성을 쓰지 않아도 활용할 수 있다.",
+          "발표에는 전역 오류를 수집하는 도구, CCX 설치·제거 스크립트와 UI 테마 색상 개선도 포함됐다. Media Encoder와 After Effects에 대한 준비는 당시 어도비가 관련 UXP API를 공개하는 조건에 연결돼 있었다. 프레임워크가 준비됐다는 표현을 해당 앱의 모든 기능을 이미 사용할 수 있다는 보장이나 API 공개 일정으로 넓혀 해석할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/08/building-plugins-faster-with-bolt-uxp-and-bolt-express"
+          }
+        ]
+      },
+      {
+        "heading": "Express는 샌드박스 왕복 흐름을 다듬었다",
+        "kind": "reporting",
+        "paragraphs": [
+          "Bolt Express 1.2는 자체 커넥터를 통해 샌드박스 코드와 프론트엔드 변경을 더 빠르게 반영하는 개발 흐름을 소개했다. 기존에는 반영까지 수 초가 걸렸다고 설명하지만 통제된 벤치마크 수치를 제시한 것은 아니다. 개발 모드의 Chromium 계열 브라우저 지원과 자체 SSL 체계도 변경 항목으로 안내했다.",
+          "타입 기반 이벤트 전달은 프론트엔드에서 샌드박스로 보내는 방향에 더해 반대 방향까지 확장됐다. 이는 두 문맥 사이의 메시지를 같은 타입 계약으로 다루도록 돕는 변경이다. 개발 화면이 빨리 갱신되는 것과 실제 사용자 환경에서 애드온이 올바르게 동작하는 것은 구분해서 확인해야 한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/08/building-plugins-faster-with-bolt-uxp-and-bolt-express"
+          }
+        ]
+      },
+      {
+        "heading": "반복 속도의 이점은 경계를 알 때 커진다",
+        "kind": "analysis",
+        "paragraphs": [
+          "플러그인 개발은 코드 수정 뒤 빌드, 호스트 로딩과 작업 재현이 반복된다. 디버거와 재로딩 도구는 이 왕복을 짧게 하고 문제가 발생한 소스를 찾는 데 도움이 될 수 있다. 특히 UI와 실행 문맥이 나뉜 애드온은 양방향 메시지의 타입을 맞추면 개발 과정에서 발견할 수 있는 불일치를 늘릴 수 있다. 다만 타입 검사는 모든 실행 결과의 정확성을 보증하지 않는다.",
+          "공식 UXP 안내는 공통 API와 호스트별 DOM을 구분하고, 일반 브라우저의 요소·웹 API가 모두 제공되는 환경은 아니라고 설명한다. 따라서 현대적인 프론트엔드 도구를 쓴다고 호스트의 지원 범위가 넓어지는 것은 아니다. 템플릿이 빌드 문제를 해결한 뒤에도 실제 문서와 시퀀스를 다루는 코드는 지원 앱에서 확인할 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "어도비 UXP 공식 플랫폼 안내",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/uxp/"
+          },
+          {
+            "label": "하이퍼브루의 Bolt UXP 공식 프로젝트 안내",
+            "kind": "primary",
+            "url": "https://hyperbrew.co/bolt-uxp"
+          }
+        ]
+      },
+      {
+        "heading": "기존 프로젝트는 가장 긴 개발 루프부터 본다",
+        "kind": "analysis",
+        "paragraphs": [
+          "도입팀은 새 프로젝트 전체를 다시 만들기보다 현재 가장 오래 걸리는 작업부터 비교할 수 있다. 소스 위치를 찾는 데 시간이 든다면 디버깅, 샌드박스 변경 반영이 느리다면 커넥터, 설치 반복이 번거롭다면 패키지 스크립트가 먼저 검토할 대상이다. 별도 보조 함수 모듈이 있다는 점은 기존 구성에 필요한 부분만 가져오는 선택도 가능하게 한다.",
+          "업데이트 뒤에는 개발 모드와 패키징한 결과의 동작을 함께 확인하는 편이 유용하다. 지원 브라우저에서 빠르게 갱신된 화면이 호스트 내부에서도 같은 상태와 메시지를 처리하는지 살펴야 하기 때문이다. 이 발표의 실질적인 변화는 새로운 호스트 기능 자체보다 작업 준비와 반복 확인에 드는 수고를 줄이는 도구에 있으며, 앱 API 공개에 의존하는 기능은 조건을 남겨 계획해야 한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/08/building-plugins-faster-with-bolt-uxp-and-bolt-express"
+          },
+          {
+            "label": "하이퍼브루의 Bolt UXP 공식 프로젝트 안내",
+            "kind": "primary",
+            "url": "https://hyperbrew.co/bolt-uxp"
+          },
+          {
+            "label": "어도비 UXP 공식 플랫폼 안내",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/uxp/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Bolt는 하이퍼브루의 오픈소스 개발 도구로 어도비 호스트 런타임과 구분된다.",
+      "UXP 디버깅·비동기 명령과 Express 재로딩·양방향 타입 이벤트가 주요 변경이다.",
+      "발표 당시 미래 앱 지원 준비는 어도비의 관련 API 공개에 달려 있었다."
+    ],
+    "tags": [
+      "Bolt",
+      "UXP",
+      "AdobeExpress",
+      "개발도구"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.developer.adobe.com/en/publish/2026/08/building-plugins-faster-with-bolt-uxp-and-bolt-express"
+      },
+      {
+        "label": "하이퍼브루의 Bolt UXP 공식 프로젝트 안내",
+        "url": "https://hyperbrew.co/bolt-uxp"
+      },
+      {
+        "label": "어도비 UXP 공식 플랫폼 안내",
+        "url": "https://developer.adobe.com/uxp/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.developer.adobe.com/en/publish/2026/08/building-plugins-faster-with-bolt-uxp-and-bolt-express",
+      "https://hyperbrew.co/bolt-uxp",
+      "https://developer.adobe.com/uxp/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 어도비 원문 WEB83줄을 전체 읽고 Hyper Brew 공식 Bolt UXP 안내의 Vite/TS/프레임워크·hotreload·패키징을 추가 확인했다. 같은 배치 UXP Hub 공식문서에서 브라우저 차이와 hostDOM 조건을 확인했다. MediaEncoder/AfterEffects readiness는 원문 발표 당시 pending public API 조건으로 썼으며 공개일을 창작하지 않았다. 원문 내 편집메모[GAP]는 지시가 아닌 출처 진단자료로 취급해 전재하지 않았다. Express 브라우저는 핵심항목의 Chromium범위로 한정하고 all browsers를 무제한 호환으로 확대하지 않았다. candidates의 번역커넥터·ID개편·UXPHub·대규모문서 지원 및 snapshot.pending 전체를 대조해 Bolt 두 버전의 업데이트 사건 중복 없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "3f5e12eb-ac52-437e-b033-aa350546e94c",
+    "580a0e30-a7c4-4fbb-a46e-41b554b43ebe",
+    "7a3a054b-e63e-4d2a-b5bb-94ea26d43cec",
+    "b28d7ab6-076e-4475-9d38-eb9b8cbcdbd0"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:36:54.296Z",
+    "checks": [
+      "Hyper Brew 소유 오픈소스 프레임워크와 Adobe 호스트를 구분했다.",
+      "UXP1.3 비동기exec·소스디버거·별도utils와 Express1.2 양방향 타입 이벤트를 확인했다.",
+      "신규 앱 readiness는 API공개 조건이고 현재 모든 기능지원으로 쓰지 않았다.",
+      "near instant는 발표 설명이며 독립 성능시험 수치를 창작하지 않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

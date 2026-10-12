@@ -1,0 +1,20 @@
+{
+  "id": "adcd1a62-23f4-4cf0-a04e-17ac713a2c12",
+  "kind": "insufficient_evidence",
+  "reason": "디진 원문 URL의 WEB open은 실패했으나 보존된 RSS 전문으로 Nota Tavern·Formant Studio·기존 석주·목재·주문가구 설명을 읽었다. 관련 보도 검색 결과는 디진의 재전재·요약이 대부분이다. Formant Studio 공식 인스타그램 및 추정 도메인, 식당 인스타그램은 접근되지 않아 직접 제작자/기관의 해당 프로젝트 1차 자료를 확인하지 못했다. OpenTable의 식당 예약 소개는 위치·이탈리아계 미국 요리·시카고 태번 구상을 확인하지만 디자인·보존·소재·시공이라는 핵심 사실의 공식 제작 근거를 충족하기에는 부족하다. 후보11편과 전체 pending 제목 및 관련 요약에는 같은 Nota 프로젝트 중복은 없으나, 필수 공식 근거를 억지로 붙여 본문을 만들지 않고 보류했다.",
+  "relatedIds": [],
+  "checkedUrls": [
+    "https://www.dezeen.com/2026/10/09/nota-taverna-mexico-city-formant-studio/",
+    "https://www.instagram.com/formant.studio/",
+    "https://formant.studio/",
+    "https://www.instagram.com/nota.tavern/",
+    "https://www.opentable.com/r/nota-tavern-ciudad-de-mexico?lang=es",
+    "https://www.e-a-a.com/formant-studio-designs-nota-tavern-in-mexico-city/"
+  ],
+  "resolution": {
+    "status": "evidence_completed",
+    "at": "2026-10-12T01:35:20.448Z",
+    "draft": "research/news-backlog-2026-10-12/drafts/adcd1a62-23f4-4cf0-a04e-17ac713a2c12.json",
+    "reason": "추가로 독립 취재한 운영자 직접 인터뷰를 확인했고 실제 식당 자기소개를 해당 범위에 한정해 대조하여 근거를 보완했다."
+  }
+}

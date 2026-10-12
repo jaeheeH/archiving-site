@@ -1,0 +1,156 @@
+{
+  "id": "c6ed54ba-15ba-445d-9c3e-c38d0acc35e4",
+  "article": {
+    "url": "https://blog.google/products-and-platforms/products/education/making-ai-training-available-to-uk-and-ireland-educators/",
+    "title": "구글 AI 교육자 연수, 영국·아일랜드로 확대… 교실 활용과 운영 정책 함께",
+    "summary": "구글이 무료 AI Educator Series를 영국·아일랜드의 교육자 65만 명에게 확대한다고 밝혔다. 짧은 모듈과 교사 주도 행사로 수업·행정 활용을 다루고 이수 배지를 제공한다. NGA의 학교 운영 정책 도구도 함께 소개하며 제공 대상과 수료 실적, 개인 역량과 기관 운영을 구분한다.",
+    "paragraphs": [
+      {
+        "heading": "영국과 아일랜드 교육자로 확대",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 5일 무료 Google AI Educator Series의 제공 범위를 영국과 아일랜드로 확대한다고 발표했다. 공지에 나온 65만 명은 해당 지역 교육자에게 열겠다는 범위이며 이미 연수를 마친 인원의 집계가 아니다. 회사는 미국에서 먼저 시작하고 인도와 한국으로 확대한 프로그램의 다음 지역 소식으로 소개했다. 교육자가 수업 계획과 행정 업무, 다양한 학습 필요에 맞춘 활동에서 AI를 책임 있게 활용하도록 돕는 목적이라고 설명한다. 짧은 경험담을 나열한 세계 교사의 날 기획과 달리 이번 소식의 구체적인 변화는 연수 제공 지역의 확대다. 학생 학습 성과나 참가자의 시간 절감을 별도 비교 시험으로 검증한 결과를 발표한 것은 아니며 실제 지역별 수료 수와 참여율은 이 글에 제시되지 않았다."
+        ],
+        "references": [
+          {
+            "label": "구글의 영국·아일랜드 교육자 연수 확대 공지",
+            "url": "https://blog.google/products-and-platforms/products/education/making-ai-training-available-to-uk-and-ireland-educators/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "짧은 모듈과 이수 배지",
+        "kind": "reporting",
+        "paragraphs": [
+          "원문은 교사가 이끄는 온라인·대면 행사로 실용적인 내용을 전달하고 모듈을 마치면 마이크로 자격과 배지를 얻는다고 설명한다. 프로그램의 공식 페이지는 Google과 ISTE+ASCD가 제공하는 무료 학습을 기초 이해, 교육 적용, 행정 적용의 범주로 소개한다. 초·중등 과정의 짧은 모듈과 고등교육 과정은 길이와 대상이 다르며 자기 속도로 순서를 선택해 학습할 수 있다고 안내한다. 배지는 이런 모듈의 이수를 보여 주는 자료다. 해당 국가의 교원 면허나 학위, 학교 전체의 AI 운영이 검증됐음을 뜻한다고 볼 수는 없다. 공지는 다음 행사 확인을 위한 Gemini Roadshow 경로도 연결하지만 모든 교육자에게 정해진 대면 좌석과 일정을 제공한다고 밝히지는 않는다. 이용하려는 사람에게는 지역 행사 안내와 자신에게 맞는 과정의 조건을 따로 살피는 일이 남는다."
+        ],
+        "references": [
+          {
+            "label": "구글의 영국·아일랜드 교육자 연수 확대 공지",
+            "url": "https://blog.google/products-and-platforms/products/education/making-ai-training-available-to-uk-and-ireland-educators/",
+            "kind": "primary"
+          },
+          {
+            "label": "Google AI Educator Series 과정·모듈 공식 안내",
+            "url": "https://edu.google.com/learning-center/google-ai-educator-series/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "학교 운영진을 위한 정책 자료",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 National Governance Association(NGA)와 AI Policy Toolkit을 만들었다고 함께 소개했다. NGA의 원문 페이지는 학교 운영위원과 이사, 학교·교육 신탁의 리더가 AI를 이해하고 감독할 자료를 제공한다고 설명한다. 도구의 구성에는 개념과 위험·이익, 도구 선택의 질문을 담은 안내, 학교별 접근을 논의할 정책 작성 자료, 회의용 슬라이드가 포함된다. 교사 개인의 수업 활용을 익히는 과정과 학교 운영의 기준을 세우는 자료가 서로 다른 역할을 맡는다. 이 도구가 법률 준수나 모든 제품의 적합성을 자동으로 승인하는 인증서라고 제시되지는 않는다. 구글 공지도 교사 연수를 영국 정부의 디지털 기술 교육 목표에 기여할 계획으로 설명하며 그 목표가 이미 달성됐다는 성과로 쓰지 않는다. 제공과 향후 기대를 나누어 읽어야 하는 소식이다."
+        ],
+        "references": [
+          {
+            "label": "구글의 영국·아일랜드 교육자 연수 확대 공지",
+            "url": "https://blog.google/products-and-platforms/products/education/making-ai-training-available-to-uk-and-ireland-educators/",
+            "kind": "primary"
+          },
+          {
+            "label": "NGA의 학교 운영위원회 AI 정책 도구 원문",
+            "url": "https://www.nga.org.uk/knowledge-centre/ai-toolkit/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "짧은 학습 이후의 적용이 중요하다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 짧은 모듈이 교사의 일정에 맞춰 시작하기 쉬운 구성을 제공한다고 읽는다. 그러나 한 기능의 입력 방법을 익히는 것과 수업 목표에 맞는 결과를 선택하는 것은 다르다. 실제 수업 자료에 적용한 뒤 무엇을 수정했는지 확인하는 과정이 있어야 배운 내용이 현장으로 이어진다. 배지 수는 참여의 흔적을 남길 수 있지만 그 자체가 모든 교실의 변화를 측정하지는 않는다. 프로그램이 교육 적용과 행정 적용을 나누어 소개한 점도 하나의 사용법이 모든 업무에 맞지 않는다는 사실과 연결된다. 참가자가 자신이 맡는 작업을 기준으로 필요한 모듈을 고르고 결과를 검토할 때 짧은 학습의 목적이 분명해질 수 있다. 이 분석은 발표된 형식을 해석한 것이며 현재 영국·아일랜드 참가자의 실제 성취를 조사한 결론은 아니다."
+        ],
+        "references": [
+          {
+            "label": "Google AI Educator Series 과정·모듈 공식 안내",
+            "url": "https://edu.google.com/learning-center/google-ai-educator-series/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "개인의 사용과 학교의 결정 사이",
+        "kind": "analysis",
+        "paragraphs": [
+          "교육자가 AI 도구를 이해해도 학교가 어떤 제품을 허용하고 자료를 어떻게 공유할지는 함께 결정해야 한다. 수업에서 유용한 제안을 얻는 일과 기관이 공통 기준을 세우는 일은 책임의 범위가 다르다. 정책 작성 자료가 토론 질문과 예시를 제공한다는 구성은 그 차이를 드러낸다. 완성된 규정을 복사하는 것보다 자신의 교육 환경에서 누가 어떤 결정을 할지 논의할 필요를 보여주는 것이다. 이번 확대 공지는 연수와 운영진 자료를 연결했지만 모든 학교의 도입 방식이 같아졌다는 뜻은 아니다. 아카이브에는 대상 지역과 무료 제공, 이수 자료의 의미, 정책 자료의 역할이 함께 남아야 한다. 이후 실제 참가와 학교 활용이 보고되면 제공 계획과 확인된 결과를 구분해 이어 볼 수 있다."
+        ],
+        "references": [
+          {
+            "label": "구글의 영국·아일랜드 교육자 연수 확대 공지",
+            "url": "https://blog.google/products-and-platforms/products/education/making-ai-training-available-to-uk-and-ireland-educators/",
+            "kind": "primary"
+          },
+          {
+            "label": "NGA의 학교 운영위원회 AI 정책 도구 원문",
+            "url": "https://www.nga.org.uk/knowledge-centre/ai-toolkit/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "65만 명은 영국·아일랜드의 연수 제공 대상이며 수료 인원은 미공개다.",
+      "무료 모듈의 이수 배지는 교원 면허나 학교 AI 운영 인증과 다르다.",
+      "NGA 자료는 도구 선택·정책 논의를 돕는 안내로 자동 승인 절차가 아니다."
+    ],
+    "tags": [
+      "구글교육",
+      "교사연수",
+      "AI리터러시",
+      "영국",
+      "아일랜드"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "구글의 영국·아일랜드 교육자 연수 확대 공지",
+        "url": "https://blog.google/products-and-platforms/products/education/making-ai-training-available-to-uk-and-ireland-educators/"
+      },
+      {
+        "label": "Google AI Educator Series 과정·모듈 공식 안내",
+        "url": "https://edu.google.com/learning-center/google-ai-educator-series/"
+      },
+      {
+        "label": "NGA의 학교 운영위원회 AI 정책 도구 원문",
+        "url": "https://www.nga.org.uk/knowledge-centre/ai-toolkit/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/products-and-platforms/products/education/making-ai-training-available-to-uk-and-ireland-educators/",
+      "https://edu.google.com/learning-center/google-ai-educator-series/",
+      "https://www.nga.org.uk/knowledge-centre/ai-toolkit/"
+    ],
+    "notes": "원문·공식Series·NGA원문웹확인.650000availabilitynotcompletion/freevirtual-inpersonevents/microcredentialsbadges.공식foundationpedagogicaladministrative/selfpacedK12/HE길이다름,페이지첫/둘째수요일갱신불일치라특정갱신일제외.74%교육직potential및15%UKsaving단독효과통계제외필요없음.2030정부goal계획vs달성구분.NGA툴개념선택질문policybuilderboardslides확인.후보10·전체pending교사시리즈와구체지역연수확대별개.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "1b26d953-c1ba-4eb9-baf3-6bba7f7bc9bb",
+    "3564e5a1-5821-49ef-bd96-912e5c73a483",
+    "3f96b1c3-6b91-42c6-a276-a72f4e691fe8",
+    "6a15a15c-65e2-411f-847a-f51c003cbab0",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "ec323858-ca4e-442e-96d0-a114cb836a2c",
+    "f902e8f3-2cfc-4931-9ea9-73956faaae60"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:55:21.063Z",
+    "checks": [
+      "650000대상·무료·지역확대확인",
+      "수료인원·효과측정발명없음",
+      "모듈·배지를교원면허인증과구분",
+      "NGA정책도구3구성원문대조",
+      "후보10·전체pending동일지역연수공지없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

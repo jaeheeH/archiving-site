@@ -6,6 +6,7 @@ import { useToast } from "@/components/ToastProvider";
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
 import ContentPagination from "@/app/(dashboard)/components/ContentPagination";
 import Link from "next/link";
+import CurationControls from "./CurationControls";
 
 type Post = {
   id: string;
@@ -388,7 +389,7 @@ function BlogContent() {
       {/* 헤더 */}
       <header className="dashboard-Header">
         <DashboardTitle title="에디토리얼 관리" />
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center"><CurationControls onComplete={() => { void fetchPosts(page); void fetchCategories(); }} />
           {selectedIds.length > 0 && (
             <button
               onClick={handleBulkDelete}

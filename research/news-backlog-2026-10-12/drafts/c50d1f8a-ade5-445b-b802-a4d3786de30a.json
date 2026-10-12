@@ -1,0 +1,176 @@
+{
+  "id": "c50d1f8a-ade5-445b-b802-a4d3786de30a",
+  "article": {
+    "url": "https://blogs.nvidia.com/blog/dsx-ready-ai-factories-power-cooling/",
+    "title": "엔비디아 DSX Ready, 전력·냉각 제품 적합성 절차 공개…현장 전체 인증과 구분",
+    "summary": "엔비디아가 AI 팩토리의 전력·냉각 제품을 DSX 요구 사항에 맞춰 평가하는 DSX Ready를 발표했다. 출시 때의 대상은 배터리 에너지 저장 시스템과 냉각 분배 장치다. 특정 제품의 적합성 평가이며 업체 전체나 설치 현장의 안정성·안전 인증을 대신하지 않는다. 현재 안내의 냉각액 범주와 초기 발표도 구분했다.",
+    "paragraphs": [
+      {
+        "heading": "초기 두 범주의 제품을 요구 사항에 연결",
+        "kind": "reporting",
+        "paragraphs": [
+          "엔비디아는 9월 21일 DSX Ready를 발표하며 AI 팩토리 설계에서 전력·냉각 제품을 선택할 수 있는 적합성 평가 프로그램이라고 설명했다. 당시의 초기 범주는 배터리 에너지 저장 시스템인 BESS와 냉각 분배 장치인 CDU다. 원문은 BESS의 히타치 에너지·LG에너지솔루션·테슬라, CDU의 LG전자·LiquidStack·Vertiv 관련 솔루션을 소개했다. 이 이름들은 회사가 발표한 초기 제품·솔루션 제공 업체이며 각 회사의 모든 제품이 같은 평가를 통과했다는 뜻은 아니다. 공식 FAQ도 특정 적합 제품이나 솔루션에 해당하며 업체 전체나 전체 포트폴리오에는 적용하지 않는다고 명시했다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 DSX Ready 출시 원문",
+            "url": "https://blogs.nvidia.com/blog/dsx-ready-ai-factories-power-cooling/",
+            "kind": "primary"
+          },
+          {
+            "label": "DSX Ready 공식 대상·자격 FAQ",
+            "url": "https://www.nvidia.com/en-us/data-center/products/dsx/dsx-ready/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "전력과 냉각이 계산 시스템에 맞아야 하는 이유",
+        "kind": "analysis",
+        "paragraphs": [
+          "원문은 한 부분을 최적화하면 다른 부분으로 병목이 옮겨갈 수 있어 계산·네트워크·전력·냉각·시설을 함께 보아야 한다고 설명한다. GPU를 늘릴 수 있는지뿐 아니라 사용 중 전력 변화와 열을 처리할 수 있는지가 운영 구성의 일부가 되는 것이다. 공식 FAQ에서 BESS는 에너지를 저장·공급해 빠른 부하 변화와 전력 계통의 변동을 다루는 장치로, CDU는 액체 냉각의 온도·압력·유량을 관리하는 장치로 설명된다. 두 범주는 서로 다른 물리적 문제를 처리한다. 같은 배지를 쓴다고 동일한 시험과 기준을 적용하는 것이 아니라 각 기술의 요구 사항에 맞춘 경로가 필요하다는 의미다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 DSX Ready 출시 원문",
+            "url": "https://blogs.nvidia.com/blog/dsx-ready-ai-factories-power-cooling/",
+            "kind": "primary"
+          },
+          {
+            "label": "DSX Ready 공식 대상·자격 FAQ",
+            "url": "https://www.nvidia.com/en-us/data-center/products/dsx/dsx-ready/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "BESS는 파트너의 시험과 데이터 검토를 거친다",
+        "kind": "reporting",
+        "paragraphs": [
+          "BESS 공식 지침은 파트너가 정해진 시험을 실행하고 증거와 제출 자료를 준비해 엔비디아의 검토·승인을 받는 경로를 설명한다. 동적 전력 반응과 전류 제한, 전압 변동 대응, 전력원 전환 등을 평가하고 상태 정보와 제어의 투명성을 확인할 자료를 요구한다. 시험 결과를 제출했다는 일과 엔비디아 검토를 완료한 일은 같은 단계가 아니다. 출시 원문은 CDU에는 자체 평가 시험 도구를 쓰는 별도 경로가 있다고 설명한다. 기능을 평가하는 방법과 검토 범위가 범주별로 달라지므로 한 범주의 시험을 모든 제품에 공통으로 적용했다고 표현하지 않았다. 프로그램의 표시는 해당 범위의 평가가 완료된 제품을 선택하는 근거다."
+        ],
+        "references": [
+          {
+            "label": "BESS 자체 평가 공식 지침과 적용 경계",
+            "url": "https://docs.nvidia.com/dsx/facilities-infra/bess/overview",
+            "kind": "primary"
+          },
+          {
+            "label": "엔비디아 DSX Ready 출시 원문",
+            "url": "https://blogs.nvidia.com/blog/dsx-ready-ai-factories-power-cooling/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "평가 경계 밖의 현장 설계가 남는다",
+        "kind": "reporting",
+        "paragraphs": [
+          "BESS 지침은 전력 변환 장치를 포함한 AC 단자에서 적용 경계를 정하고 현장 변압기·개폐기·발전기·캠퍼스 제어 시스템은 범위 밖이라고 명시했다. 평가를 통과해도 현장 전체의 안정성을 뜻하지 않는다는 문장도 있다. 배터리 용량·셀 화학과 현장의 안전 요건을 같은 적합성 평가가 모두 인증하는 것은 아니다. 지침은 엔비디아가 안전 인증 기관이 아니라고 설명하며 관련 책임과 규제 체계를 별도로 다룬다. 이 프로그램의 적용 범위를 설명한 회사 문서와 각 현장의 최종 설계·승인 조건을 구분해야 한다. 큰 배터리를 고르거나 적합 제품을 붙였다는 사실만으로 나머지 현장 조건을 충족했다고 판단할 수 없다."
+        ],
+        "references": [
+          {
+            "label": "BESS 자체 평가 공식 지침과 적용 경계",
+            "url": "https://docs.nvidia.com/dsx/facilities-infra/bess/overview",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "초기 출시와 현재 안내의 대상 범주 구분",
+        "kind": "reporting",
+        "paragraphs": [
+          "현재 프로그램 안내는 BESS·CDU와 함께 단상 콜드플레이트 냉각의 보조 회로에 쓰는 PG25 냉각액도 표시한다. 초기 원문의 두 범주와 현재 안내의 추가 범위를 같은 출시 목록으로 합치지 않았다. 제품을 자격 목록에 올리는 과정도 요구 사항 확인, 담당자 연락, 자료 수집·검토, 완료 제품의 마켓플레이스 등록으로 안내한다. 소요 시간은 범주와 제품의 준비 상태·평가 범위에 따라 달라진다. 하나의 공통 기간에 모든 제품이 승인되는 방식으로 설명할 수 없다. 실제 선택에서는 최신 목록의 특정 제품과 그것에 적용된 요구 사항을 함께 읽어야 프로그램의 표시가 무엇을 확인하는지 드러난다."
+        ],
+        "references": [
+          {
+            "label": "DSX Ready 공식 대상·자격 FAQ",
+            "url": "https://www.nvidia.com/en-us/data-center/products/dsx/dsx-ready/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "제품 선택의 근거와 운영 성과를 분리",
+        "kind": "analysis",
+        "paragraphs": [
+          "DSX Ready는 참조 설계를 실제 구매 가능한 제품·솔루션에 연결하려는 회사의 절차다. 제품 범주와 제출 증거를 공통으로 정하면 설계자가 무엇을 검토했는지 확인할 접점이 생긴다. 그러나 발표에는 프로그램을 쓴 시설과 다른 시설의 전력 비용이나 장애율을 대조한 결과가 없다. 통합 위험을 줄이고 운영 효율을 돕겠다는 회사의 목적을 확인된 절감·무장애 성과로 바꿀 수는 없다. 적합 제품의 기능 범위를 살피고 그것이 계획한 장소·구성·운영 조건에 맞는지 검토하는 일이 이어져야 한다. 프로그램의 구체적인 변화는 선택 근거를 제공하는 데 있으며 현장 전체의 결과를 대신 확정하는 데 있지 않다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 DSX Ready 출시 원문",
+            "url": "https://blogs.nvidia.com/blog/dsx-ready-ai-factories-power-cooling/",
+            "kind": "primary"
+          },
+          {
+            "label": "DSX Ready 공식 대상·자격 FAQ",
+            "url": "https://www.nvidia.com/en-us/data-center/products/dsx/dsx-ready/",
+            "kind": "primary"
+          },
+          {
+            "label": "BESS 자체 평가 공식 지침과 적용 경계",
+            "url": "https://docs.nvidia.com/dsx/facilities-infra/bess/overview",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "초기 BESS·CDU와 현재 안내의 냉각액 범주를 서로 다른 시점으로 정리했다.",
+      "적합성은 특정 제품·솔루션에 해당하며 업체 전체 포트폴리오가 아니다.",
+      "BESS의 파트너 시험·제출·검토와 AC 단자 적용 경계를 확인했다.",
+      "프로그램 통과와 현장 전체 안정성·안전 인증·운영 성과를 구분했다."
+    ],
+    "tags": [
+      "엔비디아",
+      "DSXReady",
+      "AI팩토리",
+      "전력냉각"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "엔비디아 DSX Ready 출시 원문",
+        "url": "https://blogs.nvidia.com/blog/dsx-ready-ai-factories-power-cooling/"
+      },
+      {
+        "label": "DSX Ready 공식 대상·자격 FAQ",
+        "url": "https://www.nvidia.com/en-us/data-center/products/dsx/dsx-ready/"
+      },
+      {
+        "label": "BESS 자체 평가 공식 지침과 적용 경계",
+        "url": "https://docs.nvidia.com/dsx/facilities-infra/bess/overview"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blogs.nvidia.com/blog/dsx-ready-ai-factories-power-cooling/",
+      "https://www.nvidia.com/en-us/data-center/products/dsx/dsx-ready/",
+      "https://docs.nvidia.com/dsx/facilities-infra/bess/overview"
+    ],
+    "notes": "9/21원문·현재programFAQ·BESSv1공식지침대조.초기2범주/현재3coolant구분,명시업체전체가아닌specificoffering.파트너자체test/evidenceNVIDIAreview,CDU별도selfsuite.BESSPCS inclusiveACterminals/site전력자산outsideboundary,pass≠sitestability/안전인증,문서NVIDIA notsafetycertbody.해당지침의역할설명이지법률해석/특정시설규정승인조언아님.물리시설단독절감/업타임성과수치창작없음.후보AI팩토리ROI일반논점다른사건,전체pending동일DSXReadylaunch없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "88909f47-c322-4252-aca4-51e619d16b9d",
+    "316c5a18-02ff-4735-943e-0c393784bea5",
+    "56b16575-ca25-4ba2-9903-3311573548c4",
+    "b58159c9-4b8b-4a2d-8910-3d9314f9020c",
+    "ca37e48d-c53f-4017-9aad-4b208f6a6a83"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:29:13.435Z",
+    "checks": [
+      "원문과현재FAQ·공식BESS지침 확인",
+      "초기/현행범주 구분",
+      "특정제품과업체전체자격 분리",
+      "각범주평가경로·제출검토단계 확인",
+      "AC단자범위및site stability/안전인증한계 반영",
+      "목표효율/통합위험과실측성과 분리"
+    ],
+    "relatedPendingIds": []
+  }
+}

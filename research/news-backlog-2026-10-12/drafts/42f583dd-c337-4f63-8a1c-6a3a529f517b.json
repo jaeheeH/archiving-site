@@ -1,0 +1,144 @@
+{
+  "id": "42f583dd-c337-4f63-8a1c-6a3a529f517b",
+  "article": {
+    "url": "https://blog.developer.adobe.com/en/publish/2026/08/adobe-developers-live-2026-free-sessions-sept-29-30",
+    "title": "어도비 개발 행사, 플러그인 개발과 기업 콘텐츠 제작을 나눠 로드맵 안내",
+    "summary": "어도비가 Developers Live 2026을 9월 29~30일 무료 온라인 행사로 안내했다. 첫날은 UXP 플러그인·애드온 개발, 둘째 날은 Firefly와 Express를 활용한 기업 제작 흐름을 다루는 구성이었다.",
+    "paragraphs": [
+      {
+        "heading": "개발자와 제작 운영팀을 구분한 일정",
+        "kind": "reporting",
+        "paragraphs": [
+          "어도비는 개발자 행사 Developers Live 2026의 일정을 9월 29일과 30일로 발표하며 두 날의 대상을 구분했다. 첫날은 플러그인과 애드온을 만드는 개발자, 둘째 날은 창작 콘텐츠를 대규모로 제작하는 팀을 위한 프로그램으로 안내했다. 양일 모두 온라인 무료 행사이며 제품 담당팀에 직접 질문할 수 있는 구성을 제시했다.",
+          "행사 안내에 따르면 첫날은 UXP로 가는 개발 경로, 최신 API와 커뮤니티 개발자의 실무 경험을 다루도록 계획됐다. 둘째 날에는 파트너와 고객의 업무 사례, 기업 워크플로우에서 Firefly와 Express의 역할, 개별 과제를 다루는 세션을 예고했다. 이 내용은 사전 프로그램 설명이며 발표된 모든 기능이 출시됐거나 사례의 성과가 검증됐다는 의미는 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/08/adobe-developers-live-2026-free-sessions-sept-29-30"
+          }
+        ]
+      },
+      {
+        "heading": "발표와 질문을 연결하는 행사 구조",
+        "kind": "reporting",
+        "paragraphs": [
+          "각 날짜는 미국 태평양 시간 오전 8시 30분에 시작해 기조 발표와 공개 원탁 대화를 포함하는 구조로 안내됐다. 하루 또는 양일 등록을 선택할 수 있고, 실시간 참석이 어려워도 등록하면 이후 녹화에 접근할 수 있다는 설명도 있었다. 확인된 원문은 이 일정과 참여 방식을 알리는 자료이므로 실제 진행 결과나 녹화의 현재 공개 범위를 별도로 단정하지 않는다.",
+          "개발 로드맵은 기능 목록뿐 아니라 기존 확장의 이전 경로를 묻는 계기가 된다. 행사에서 제품팀과 질문을 주고받도록 한 구성은 이 지점을 겨냥한다. 예고된 API가 무엇인지 듣는 것과 자신의 플러그인이 어떤 앱·버전에서 동작하는지 확인하는 일은 다른 단계이므로, 발표 내용을 개발 문서와 대조하는 과정이 뒤따라야 한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/08/adobe-developers-live-2026-free-sessions-sept-29-30"
+          }
+        ]
+      },
+      {
+        "heading": "공통 UXP와 앱별 API를 함께 봐야 한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "어도비의 공식 UXP 안내는 HTML·CSS·JavaScript로 플러그인과 스크립트를 만드는 공통 플랫폼과 앱별 DOM API를 구분한다. 메뉴에서 한 작업을 실행하는 명령과 앱 옆에 계속 표시되는 패널을 조합할 수 있으며, 문서·레이어·시퀀스처럼 다루는 대상은 호스트 앱에 따라 달라진다. 공통 구조가 있다고 해서 앱별 작업 코드가 모두 동일한 것은 아니다.",
+          "공식 문서는 UXP가 일반 브라우저와 같지 않다는 점도 설명한다. HTML과 CSS를 쓰더라도 플랫폼이 구현한 요소·속성·웹 API만 지원한다. 따라서 웹 프로젝트를 그대로 넣거나 기존 확장의 코드를 옮길 때는 렌더링과 API 지원을 확인해야 한다. 이 구분은 행사에서 다루는 이전 경로를 평가할 때 필요한 기술적 배경이다."
+        ],
+        "references": [
+          {
+            "label": "어도비 UXP 공식 플랫폼 안내",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/uxp/"
+          }
+        ]
+      },
+      {
+        "heading": "팀의 질문은 작업 단위로 준비할 수 있다",
+        "kind": "analysis",
+        "paragraphs": [
+          "플러그인 개발팀이 로드맵에서 얻을 실질적인 정보는 자신이 자동화하는 작업에 필요한 API와 제약이다. 예를 들어 반복 편집, 내보내기와 문서 탐색을 각각 적어 두면 공통 기능과 앱별 의존을 나눠 확인할 수 있다. 기존 확장의 가장 중요한 작업부터 작은 검증 프로젝트로 옮기면 지원되는 화면과 동작을 더 구체적으로 비교할 수 있다.",
+          "기업 제작팀의 관심사는 조금 다르다. 콘텐츠 생성 속도뿐 아니라 결과를 검토하는 사람, 자산의 전달 경로와 수정 절차를 알아야 운영에 연결할 수 있다. 둘째 날 프로그램이 파트너·고객의 실제 업무와 개별 과제를 강조한 점은 이러한 관심을 반영한다. 다만 행사 사례만으로 자신의 조직에 같은 생산성 효과가 날 것이라고 추정하기는 어렵다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/08/adobe-developers-live-2026-free-sessions-sept-29-30"
+          },
+          {
+            "label": "어도비 UXP 공식 플랫폼 안내",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/uxp/"
+          }
+        ]
+      },
+      {
+        "heading": "로드맵을 구현 계획으로 옮기는 기준",
+        "kind": "analysis",
+        "paragraphs": [
+          "프로그램을 두 대상으로 나눈 것은 API를 만드는 사람과 제작 흐름을 운영하는 사람이 같은 발표에서 서로 다른 결정을 내린다는 점을 드러낸다. 개발자는 지원 조건과 이전 비용을, 운영팀은 반복 작업의 연결과 검수 부담을 중심으로 검토할 수 있다. 이 두 관점이 만나야 새 도구의 시연을 실제 배포 가능한 확장과 업무 절차로 옮길 수 있다.",
+          "도입 계획에는 발표된 기능, 공식 문서에서 확인한 지원 범위와 팀이 직접 시험한 결과를 구분해 남기는 편이 유용하다. 아직 예고 단계인 항목은 의존 일정으로 기록하고, 이미 제공되는 기능은 대표 문서와 실제 호스트에서 확인할 수 있다. 행사 안내가 제공하는 것은 대화의 출발점이며, 제품 로드맵을 그대로 자신의 출시 일정으로 사용하는 데는 추가 확인이 필요하다."
+        ],
+        "references": [
+          {
+            "label": "어도비 UXP 공식 플랫폼 안내",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/uxp/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/08/adobe-developers-live-2026-free-sessions-sept-29-30"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "행사 안내는 9월 29일 개발자, 30일 제작 운영팀으로 대상을 구분했다.",
+      "UXP 공통 플랫폼과 호스트 앱별 DOM 지원을 함께 확인해야 한다.",
+      "사전 프로그램과 제품 기능의 실제 출시·지원 상태는 별도로 검토할 정보다."
+    ],
+    "tags": [
+      "어도비",
+      "개발자행사",
+      "UXP",
+      "크리에이티브자동화"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.developer.adobe.com/en/publish/2026/08/adobe-developers-live-2026-free-sessions-sept-29-30"
+      },
+      {
+        "label": "어도비 UXP 공식 플랫폼 안내",
+        "url": "https://developer.adobe.com/uxp/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.developer.adobe.com/en/publish/2026/08/adobe-developers-live-2026-free-sessions-sept-29-30",
+      "https://developer.adobe.com/uxp/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 행사 원문 WEB 전체31줄을 확인했다. 등록 링크는 열렸지만 본문0줄이라 추가 실질 근거로 계산하지 않고 UXP 공식 플랫폼 안내를 두 번째 검증 자료로 사용했다. 2026-10-12 기준 지난 일정이므로 현재 참석을 권하는 미래 행사 표현을 제거했고 실제 개최 결과/녹화 공개 현황을 창작하지 않았다. original의 Sept29/30·free/virtual·PT8:30·registration 후 recording 안내를 역사적 공지로 한정했다. candidates 전체와 snapshot.pending 전체 행사/Adobe 관련 제목요약을 대조했으며 UXP Hub 공개 및 개별 Bolt/ESLint 도구 발표와 별도 행사 사건이다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "316c5a18-02ff-4735-943e-0c393784bea5",
+    "4364b4fb-57c9-4dde-bffb-f99dd86bab61",
+    "6f0ed5b5-69d3-4390-beba-442e71a346fd",
+    "8a3c7e20-6fbb-44a0-a10f-a2e75490e8b8"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:30:53.242Z",
+    "checks": [
+      "행사 일정·대상·무료 온라인 조건을 원문과 대조했다.",
+      "일정은 사전 공지이고 실제 행사 결과를 확인한 것으로 쓰지 않았다.",
+      "UXP 공통API/호스트DOM,패널/명령 및 일반 브라우저와의 차이를 공식 문서로 확인했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

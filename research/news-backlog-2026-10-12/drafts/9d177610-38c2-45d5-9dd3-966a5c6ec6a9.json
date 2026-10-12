@@ -1,0 +1,166 @@
+{
+  "id": "9d177610-38c2-45d5-9dd3-966a5c6ec6a9",
+  "article": {
+    "url": "https://blog.cloudflare.com/ai-search-ga/",
+    "title": "클라우드플레어 AI Search 정식 제공…이미지 검색·OCR과 11월 과금 예고",
+    "summary": "클라우드플레어가 AI Search를 정식 제공하고 이미지 직접 임베딩, 스캔 PDF OCR과 파일 한도를 확대했다. 과금은 2026년 11월 1일 시작하며 월별 무료량이 유지된다. 임베딩 모델별 이미지 처리 방식, PDF 조건과 검색·생성 비용의 차이를 정리한다.",
+    "paragraphs": [
+      {
+        "heading": "관리형 검색 파이프라인이 정식 제공으로 전환한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어는 AI Search의 일반 제공을 발표했다. 인덱싱과 검색을 관리하는 서비스로 문서 검색이나 웹사이트 검색에 사용할 수 있으며, 이번 전환에서 이미지 검색과 스캔 문서 처리를 확장했다. 과금은 2026년 11월 1일부터 시작한다. 모든 Workers 요금제에 월별 포함 사용량을 제공하므로 정식 제공 시작과 유료 사용량 청구 시작은 다른 시점이다.",
+          "새 이미지 검색은 설명 문장을 만든 뒤 텍스트만 임베딩하던 방식에 픽셀 직접 임베딩을 더한다. 이미지 지원 모델을 선택하면 질의 이미지도 같은 벡터 공간에 들어간다. 텍스트 전용 모델을 쓰면 이미지를 ToMarkdown으로 설명문으로 바꿔 검색한다. 따라서 이미지를 입력할 수 있다는 사실과 시각 정보가 직접 검색에 쓰인다는 사실은 모델 선택에 따라 달라진다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/ai-search-ga/"
+          },
+          {
+            "label": "AI Search의 공식 임베딩·생성 모델 지원",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/ai-search/configuration/models/supported-models/"
+          }
+        ]
+      },
+      {
+        "heading": "10MiB 파일 지원에도 형식과 OCR 조건이 있다",
+        "kind": "reporting",
+        "paragraphs": [
+          "원출처는 텍스트 파일과 PDF의 지원 확대를 소개하지만 공식 한도 문서는 조건을 더 구체적으로 나눈다. 일반 텍스트·코드 파일과 OCR을 켠 PDF는 최대 10MiB이고, OCR 없는 PDF 및 다른 형식은 최대 4MiB다. 스캔 PDF의 내용을 텍스트로 추출하려면 OCR을 켜야 한다. 모든 파일 형식의 한도가 일괄 10MiB로 바뀐 것으로 표현하면 정확하지 않다.",
+          "검색 흐름에서는 필요에 따라 질의를 다시 쓰고 임베딩한 뒤 벡터·키워드 검색을 병렬 수행한다. 결과를 합쳐 선택적으로 순위를 다시 정하고 관련 자료 조각을 반환하거나 생성 모델에 전달할 수 있다. 회사가 소개한 Qwen3-VL-Embedding은 직접 이미지 임베딩을 지원한다. 전체 영상·음성 처리 파이프라인은 향후 개발 방향으로 발표돼 현재 기능과 구분된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/ai-search-ga/"
+          },
+          {
+            "label": "AI Search 공식 파일 한도와 과금 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/ai-search/platform/limits-pricing/"
+          },
+          {
+            "label": "AI Search의 공식 임베딩·생성 모델 지원",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/ai-search/configuration/models/supported-models/"
+          }
+        ]
+      },
+      {
+        "heading": "수집·저장·질의에 과금하고 생성은 따로 본다",
+        "kind": "reporting",
+        "paragraphs": [
+          "월별 포함량은 수집 토큰 500만 개, 저장 10GB-month, 의미 검색 1,000회와 전문 검색 1,000회다. 질의의 무료량은 두 종류가 공유하는 2,000회 풀이 아니라 각각 나뉜다. 초과 수집은 100만 토큰당 0.75달러, 이미지 처리는 추가 0.50달러이며 OCR도 이미지 처리로 계산된다. 이미지 토큰은 기본 수집과 같은 500만 토큰 포함량을 공유한다.",
+          "저장은 GB-month당 2달러, 의미·벡터·혼합 검색은 1,000회당 0.75달러, 전문 검색은 1,000회당 0.10달러다. 공식 문서는 Workers AI 임베딩과 재순위화, 벡터 인덱싱과 사이트 수집용 Browser Run을 포함한다고 설명한다. 답변 생성, 질의 재작성과 외부 모델은 해당 서비스에서 따로 청구·기록되므로 검색 요금이 모든 AI 호출 비용을 포함하는 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "AI Search 공식 파일 한도와 과금 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/ai-search/platform/limits-pricing/"
+          }
+        ]
+      },
+      {
+        "heading": "그림의 특징을 찾는 질의를 따로 검증한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 직접 이미지 임베딩의 의미는 설명문에 생략된 색이나 배치, 질감 같은 단서를 찾을 선택지가 생긴다는 데 있다. 스크린샷이나 상품 이미지가 많은 자료에서 텍스트 검색만으로 찾기 어려운 관계를 시험할 수 있다. 그러나 입력 이미지를 받는 UI만 보고 검색 품질이 좋아졌다고 판단할 수는 없다. 실제 인덱스가 어떤 모델로 만들어졌는지를 확인해야 한다.",
+          "팀은 같은 이미지 집합에서 텍스트 설명 기반 질의와 이미지 질의를 비교하고 원하는 결과가 상위에 나타나는지 평가할 수 있다. 문서 검색에는 OCR로 얻은 텍스트가 숫자나 표를 제대로 읽는지도 확인 대상이다. 파일 한도 확대는 더 큰 자료를 받아들이는 조건이며 추출이나 검색 정확도를 보장하는 수치가 아니다. 정식 제공이라는 상태와 자기 자료의 품질 검증은 별개의 판단이다."
+        ],
+        "references": [
+          {
+            "label": "AI Search의 공식 임베딩·생성 모델 지원",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/ai-search/configuration/models/supported-models/"
+          },
+          {
+            "label": "AI Search 공식 파일 한도와 과금 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/ai-search/platform/limits-pricing/"
+          }
+        ]
+      },
+      {
+        "heading": "인덱스의 크기보다 처리된 조각이 비용을 만든다",
+        "kind": "analysis",
+        "paragraphs": [
+          "과금 계획에서는 원본 파일 크기뿐 아니라 실제 인덱싱한 자료를 고려해야 한다. 공식 문서는 파싱과 분할 뒤의 최종 조각에서 토큰을 계산하고, 겹쳐 넣은 텍스트는 각 조각에서 다시 계산한다고 명시한다. 같은 문서를 더 촘촘하게 분할하면 검색 맥락이 달라지는 동시에 수집 사용량도 달라질 수 있다. 스캔 문서에는 이미지 처리 항목도 더해진다.",
+          "그래서 도입팀은 초기 전체 수집과 이후 변경분 수집, 월별 질의 종류를 나눠 예상할 수 있다. 생성 모델까지 붙이면 답변 길이와 재작성 호출의 비용도 따로 확인해야 한다. 포함량이 있어도 실제 사용 패턴이 두 질의 종류에 균등하게 나뉘는 것은 아니다. 작은 자료로 검색 결과와 사용량을 함께 관측하면 11월 청구 전 구성을 판단할 근거가 생긴다."
+        ],
+        "references": [
+          {
+            "label": "AI Search 공식 파일 한도와 과금 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/ai-search/platform/limits-pricing/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "AI Search는 정식 제공이며 사용량 청구는 2026년 11월 1일 시작한다.",
+      "10MiB 한도는 텍스트·코드와 OCR을 켠 PDF에 적용하고 OCR 없는 PDF는 4MiB다.",
+      "이미지 처리 방식은 임베딩 모델에 따라 다르며 생성·질의 재작성 비용은 따로 계산된다."
+    ],
+    "tags": [
+      "Cloudflare",
+      "AISearch",
+      "멀티모달검색",
+      "RAG"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.cloudflare.com/ai-search-ga/"
+      },
+      {
+        "label": "AI Search 공식 파일 한도와 과금 문서",
+        "url": "https://developers.cloudflare.com/ai-search/platform/limits-pricing/"
+      },
+      {
+        "label": "AI Search의 공식 임베딩·생성 모델 지원",
+        "url": "https://developers.cloudflare.com/ai-search/configuration/models/supported-models/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.cloudflare.com/ai-search-ga/",
+      "https://developers.cloudflare.com/ai-search/platform/limits-pricing/",
+      "https://developers.cloudflare.com/ai-search/configuration/models/supported-models/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 WEB·보존 RSS 전문과 공식 limits-pricing/supported-models 문서를 읽었다. 블로그의 포괄적 PDF10MiB 표현은 문서의 OCR enabled10MiB/disabled4MiB 조건으로 구체화했다. 무료 수집 토큰 풀 공유, semantic/fulltext 각각1000, generation/rewrite 별도 청구를 대조했다. 후보 AI Gateway 웹검색은 외부 웹검색 API이며 AI Search 관리형 인덱스/RAG와 별개다. snapshot.pending의 AI Search GA는 본 ID 하나다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "e3da44fd-7643-48f9-a9fe-20448cd3d0ee",
+    "59fa6b92-df55-4f94-b5cf-ed93860a0810",
+    "2019054a-a457-4356-9bc9-47b85aca06b5",
+    "2c1a4101-aae8-4295-b207-5ae567b4b4b6",
+    "4027d7c6-9b75-45ae-8b7f-1b6777e3bbbc",
+    "44c476d2-b8f8-4341-9694-f4e9b6e32222",
+    "64da50f0-d536-47bb-bd3e-dcc375b183f3",
+    "6fa4c931-8672-4bfd-8bf3-1af3e90b9b44",
+    "e1462898-b538-4aeb-96dc-f22e5eed6df0",
+    "ea15db4a-052c-4c9f-bca3-ed226cda42b8",
+    "faecfaa5-a532-492f-8d3a-bda52f50d1f7"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:48:22.733Z",
+    "checks": [
+      "GA와2026-11-01 청구 일정, 무료량·단가를 공식 문서에서 확인했다.",
+      "OCR 조건별 PDF 한도와 이미지 처리 토큰 계산을 확인했다.",
+      "Workers AI embedding/rerank 포함과 generation/rewrite/external 별도 청구를 공식 문서에서 확인했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

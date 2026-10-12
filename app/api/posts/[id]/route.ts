@@ -257,25 +257,43 @@ export async function DELETE(
     const permCheck = await checkPostOwnershipOrAdmin(id);
     if (!permCheck.authorized) return permCheck.error;
 
+    const origin = request.headers.get('origin');
+    if (origin && origin !== new URL(request.url).origin) {
+      return NextResponse.json({ error: '허용되지 않은 요청입니다.' }, { status: 403 });
+    }
+
     const supabase = createAdminClient();
 
-    const { data: existingPost } = await supabase
+    const { data: existingPost, error: readError } = await supabase
       .from('posts')
-      .select('slug, type')
+      .select('slug, type, updated_at, automation_status:content->automation->>status')
       .eq('id', id)
-      .single();
+      .maybeSingle();
+
+    if (readError) return NextResponse.json({ error: '포스트를 확인하지 못했습니다.' }, { status: 503 });
+    if (!existingPost) return NextResponse.json({ error: '포스트를 찾을 수 없습니다' }, { status: 404 });
+    if (existingPost.type === 'news' && existingPost.automation_status === 'writing') {
+      return NextResponse.json({ error: '조사·작성 중인 뉴스는 작업이 끝난 뒤 삭제해주세요.' }, { status: 409 });
+    }
 
     // 포스트 삭제 (cascade로 인해 post_slug_history도 함께 삭제됨)
-    const { error } = await supabase
+    const { data: deletedPost, error } = await supabase
       .from('posts')
       .delete()
-      .eq('id', id);
+      .eq('id', id)
+      .eq('updated_at', existingPost.updated_at)
+      .select('id')
+      .maybeSingle();
 
     if (error) {
       return NextResponse.json(
         { error: error.message },
         { status: 400 }
       );
+    }
+
+    if (!deletedPost) {
+      return NextResponse.json({ error: '포스트가 변경되었습니다. 목록을 새로고침한 뒤 다시 삭제해주세요.' }, { status: 409 });
     }
 
     revalidateTag(CACHE_TAGS.posts, { expire: 0 });

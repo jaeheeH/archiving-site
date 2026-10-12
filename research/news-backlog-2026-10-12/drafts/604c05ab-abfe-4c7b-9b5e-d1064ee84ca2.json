@@ -1,0 +1,150 @@
+{
+  "id": "604c05ab-abfe-4c7b-9b5e-d1064ee84ca2",
+  "article": {
+    "url": "https://huggingface.co/blog/gradio-workflow-1111",
+    "title": "Gradio Workflow1111, 이미지 도구를 연결한 캔버스와 실행 조건 읽기",
+    "summary": "허깅페이스가 AUTOMATIC1111의 여러 작업을 Gradio의 한 캔버스로 다시 구성한 사례를 공개했다. 함수·모델·Space·데이터셋을 연결하지만 모든 작업이 무료나 로컬에서 수행되는 것은 아니다. 화면의 연결과 실제 API 단위·권한·이용량을 함께 볼 필요가 있다.",
+    "paragraphs": [
+      {
+        "heading": "복잡한 이미지 도구를 하나의 연결도로 만든 사례",
+        "kind": "reporting",
+        "paragraphs": [
+          "허깅페이스는9월10일 Gradio Workflow로 AUTOMATIC1111의 많은 기능을 다시 구성한 Workflow1111을 소개했다. 원문은73개의 노드가11개 미디어 파이프라인을 이루며 텍스트의 이미지화와 편집, 마스크와 배경 제거, PNG 정보와 영상 생성 등을 묶었다고 설명한다. 모든 기존 기능을 완전히 같은 알고리즘으로 복제했다는 발표는 아니다.",
+          "구성 요소는 파이썬 함수, InferenceClient를 거치는 모델 호출, 다른 Gradio Space, Hub 데이터셋의 행이라는 네 종류다. 각 작업의 입력과 출력을 포트로 만들고 선으로 잇는다. 로그인하거나 토큰을 제공해 실행하는 모델 요청은 호출자의 이용량을 쓴다고 원문은 명시한다. 공개 캔버스가 있다는 사실과 제한 없는 무료 실행은 다른 조건이다."
+        ],
+        "references": [
+          {
+            "label": "허깅페이스의 Workflow1111 제작 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/gradio-workflow-1111"
+          },
+          {
+            "label": "Gradio Workflow 공식 구성·API 안내",
+            "kind": "primary",
+            "url": "https://gradio.app/guides/workflows"
+          }
+        ]
+      },
+      {
+        "heading": "비슷한 기능 이름 아래 달라질 수 있는 처리",
+        "kind": "reporting",
+        "paragraphs": [
+          "원문은 고해상도 보정의 차이를 설명한다. 기존 AUTOMATIC1111은 확대 뒤 두 번째 노이즈 제거를 수행하지만 이 사례는 생성 이미지를 FLUX.1-Kontext의 개선 지시에 전달한다. 비슷한 목적을 새 연결로 구성한 것이며 출력의 품질이나 원래 알고리즘과의 동일성을 독립적으로 측정한 결과는 아니다.",
+          "객체 감지의 결과를 편집 마스크로 바꾸는 파이프라인은 감지와 이미지 처리를 잇고, PNG 정보 기능은 생성 매개변수를 파일에 저장해 다시 읽는다. 이런 기록이 있으면 설정을 살피는 데 도움이 되지만 파일의 모든 제작 이력이나 진위를 보증하는 인증과 같지는 않다. 원문은 모델 연산과 로컬 파이썬 처리도 구별한다."
+        ],
+        "references": [
+          {
+            "label": "허깅페이스의 Workflow1111 제작 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/gradio-workflow-1111"
+          },
+          {
+            "label": "Gradio Workflow 공식 구성·API 안내",
+            "kind": "primary",
+            "url": "https://gradio.app/guides/workflows"
+          }
+        ]
+      },
+      {
+        "heading": "캔버스와 앱, API는 연결된 다른 진입점",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 가이드는 같은 Workflow를 일반 Gradio 앱 화면으로도 보여주며 편집 내용을 저장하면 화면과 API가 함께 재구성된다고 설명한다. 쓰기 권한이 있는 사용자는 캔버스를 편집할 수 있지만 그 외 이용자는 읽기 전용 연결도를 볼 수 있다. 보이는 구조와 구조를 바꾸는 권한은 별개의 선택이다.",
+          "API는 출력 노드가 있는 독립된 파이프라인마다 엔드포인트를 만든다. 한 파이프라인의 출력이 여러 개이면 선언한 순서로 함께 반환하며 모든 출력 노드마다 별도의 API를 만드는 것은 아니다. 실제 이름과 입력·출력은 client.view_api로 확인하도록 안내한다. 화면의 선만 보고 호출의 단위를 추측하기보다 공개된 인터페이스를 확인해야 한다."
+        ],
+        "references": [
+          {
+            "label": "Gradio Workflow 공식 구성·API 안내",
+            "kind": "primary",
+            "url": "https://gradio.app/guides/workflows"
+          }
+        ]
+      },
+      {
+        "heading": "어디서 실행되는지 드러내야 재사용할 수 있다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 작업을 시각적으로 연결하는 도구의 장점이 계산의 복잡함을 없애는 데 있다고 보지 않는다. 어떤 입력이 다음 단계에 전달되고 어느 결과를 다른 기능이 받는지 드러내는 데 가치가 있다. 오류가 생겼을 때 원인을 한 화면의 실패로 뭉뚱그리지 않고 입력·모델 호출·변환·출력 중 어느 단계인지 확인하는 출발점이 된다.",
+          "서로 다른 실행 장소를 같은 노드 모양으로 표현하면 사용자가 모두 자신의 컴퓨터에서 처리된다고 오해할 수 있다. 연결은 같은 방식이어도 모델 제공자와 Space, 직접 묶은 GPU 함수는 실행의 장소와 이용량, 파일의 이동이 다르다. 민감한 이미지나 반복 실행을 다룰 때에는 처리 경로와 권한을 확인한 뒤 공유 범위를 정해야 한다. 캔버스의 단순함은 이 조건을 생략할 이유가 아니다."
+        ],
+        "references": [
+          {
+            "label": "허깅페이스의 Workflow1111 제작 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/gradio-workflow-1111"
+          },
+          {
+            "label": "Gradio Workflow 공식 구성·API 안내",
+            "kind": "primary",
+            "url": "https://gradio.app/guides/workflows"
+          }
+        ]
+      },
+      {
+        "heading": "연결의 공유와 결과의 재현은 다른 목표",
+        "kind": "analysis",
+        "paragraphs": [
+          "워크플로를 복제해 선을 다시 잇는 방식은 제작 과정을 설명할 공통 자료를 만든다. 다만 연결이 같아도 모델이나 제공자의 설정, 입력 파일과 실행 환경이 달라지면 결과는 같다고 보장할 수 없다. 무엇을 고정하고 무엇을 바꾸려는지 적어 두는 것이 필요한 이유다. 이미지의 파일 기록도 그중 일부의 설정을 남기는 도구로 볼 수 있다.",
+          "이번 공개는 여러 이미지 기능을 한 구조로 조합한 실제 제작 예시다. 그 구조를 이용해 새 흐름을 만들 수 있다는 가능성과 원하는 기능의 정확도·비용을 검증했다는 결론은 다르다. 이 기사에서는 도구를 설치해 실행하거나 성능 시험을 수행하지 않았다. 화면의 구성과 공식 실행 계약을 함께 읽으면 복제할 대상이 단지 완성 이미지가 아니라 입력과 처리의 관계라는 점이 분명해진다."
+        ],
+        "references": [
+          {
+            "label": "허깅페이스의 Workflow1111 제작 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/gradio-workflow-1111"
+          },
+          {
+            "label": "Gradio Workflow 공식 구성·API 안내",
+            "kind": "primary",
+            "url": "https://gradio.app/guides/workflows"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "73노드·11파이프라인의 실제 조합 사례다.",
+      "모델호출은호출자의이용량을쓰며 실행장소가각각다르다.",
+      "API는출력노드가아닌독립파이프라인단위로구성된다."
+    ],
+    "tags": [
+      "Gradio",
+      "Workflow1111",
+      "이미지생성",
+      "시각적워크플로",
+      "API"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "허깅페이스의 Workflow1111 제작 공개",
+        "url": "https://huggingface.co/blog/gradio-workflow-1111"
+      },
+      {
+        "label": "Gradio Workflow 공식 구성·API 안내",
+        "url": "https://gradio.app/guides/workflows"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://huggingface.co/blog/gradio-workflow-1111",
+      "https://gradio.app/guides/workflows"
+    ],
+    "notes": "정확9/10원문핵심69–183+공식guide구성/앱/API384–397읽음. 73nodes총계와본문36operators/32fn등다른단위는합산안함. FLUXKontextrefine와원래upscale+denoise차이명시. 모든출력마다API라는headline의축약을공식pipeline계약으로교정. OAuth권한과호출자quota유지,alllocal/allfree노. 서버branch실행순서확정근거부족해병렬성능주장제외. 실제설치/실행없음. 기존Aug25WireRunDeploy는일반Workflow입문,본건9/10Workflow1111구체재구현사례다. 후보/pending정확제목URL검토동일신작없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:10:25.767Z",
+    "checks": [
+      "총노드와파이프라인단위 확인",
+      "원래동작과재구현알고리즘 구분",
+      "권한·실행장소·호출자이용량 유지",
+      "다중출력API의단위 공식계약 확인",
+      "PNG설정기록을진위보증으로확대하지않음"
+    ],
+    "relatedPendingIds": []
+  }
+}

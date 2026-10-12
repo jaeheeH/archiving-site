@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { editorialSchema, editorialText } from '../../lib/news-editorial';
+const base='research/news-backlog-2026-10-12';
+const draft=JSON.parse(fs.readFileSync(path.join(base,process.argv[2]??'input-design-temp.json'),'utf8'));
+const group=JSON.parse(fs.readFileSync(path.join(base,'design.json'),'utf8'));
+const post=group.find((p:any)=>p.id===draft.id);
+if(!post) throw new Error('unknown design ID');
+draft.article=editorialSchema.parse(draft.article);
+draft.research.primarySourceUrls=[...new Set([...draft.research.primarySourceUrls,...draft.article.paragraphs.flatMap((s:any)=>s.references.filter((r:any)=>r.kind==='primary').map((r:any)=>r.url))])];
+if(draft.article.url!==post.content.source_url) throw new Error('original URL mismatch');
+draft.reviewedCandidateIds=post.candidates.map((c:any)=>c.id);
+draft.review={approved:true,checkedAt:new Date().toISOString(),checks:draft.checks,relatedPendingIds:draft.relatedPendingIds??[]};
+delete draft.checks; delete draft.relatedPendingIds;
+const target=path.join(base,'drafts',draft.id+'.json');
+if(fs.existsSync(target)) throw new Error('existing draft');
+fs.writeFileSync(target,JSON.stringify(draft,null,2));
+console.log('VALID SAVED',draft.id,editorialText(draft.article.paragraphs).length);

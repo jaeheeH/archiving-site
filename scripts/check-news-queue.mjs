@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createHash, randomUUID } from 'node:crypto';
 import { createClient } from '@supabase/supabase-js';
-import { createNewsJob, getNewsJob, runNextNewsJob, authorizeNewsWorker } from '../lib/news-jobs.ts';
+import { createNewsJob, createCurationJob, getNewsJob, runNextNewsJob, authorizeNewsWorker } from '../lib/news-jobs.ts';
 import { NEWS_FORMAT } from '../lib/news-record.ts';
 import { DuplicateNewsError } from '../lib/news-duplicates.ts';
 
@@ -18,6 +18,8 @@ const writer = async () => { calls++; return structuredClone(prepared); };
 const token = 'a'.repeat(64);
 const matches = (row, params) => [...params].every(([key, value]) => {
   if (['select','order','limit','offset'].includes(key)) return true;
+  if (key === 'state->>kind') return row.state?.kind === value.slice(3);
+  if (key === 'or' && value.includes('state->>kind')) return row.state?.kind !== 'curation';
   if (key === 'content->paragraphs') return value === 'not.is.null' ? row.content?.paragraphs !== undefined : row.content?.paragraphs === undefined;
   if (key === 'content->>collection_job_id') return row.content?.collection_job_id === value.slice(3);
   if (key === 'content->automation->>started_at') return !!row.content?.automation?.started_at;
@@ -34,12 +36,13 @@ const client = () => createClient('https://test.supabase.co', 'test-key', { auth
     const row = jobs.find(job => active(job) && (!body.p_job_id || job.id === body.p_job_id) && (!job.lease_until || Date.parse(job.lease_until) < Date.now()));
     if (row) { Object.assign(row, { lease_token: randomUUID(), lease_until: new Date(Date.now()+600000).toISOString() }); data = [structuredClone(row)]; }
   } else if (url.pathname.endsWith('/users')) data = url.searchParams.get('role') === 'eq.admin' ? [{ id:'admin' }] : [{ role }];
+  else if (url.pathname.endsWith('/categories')) data=[{id:'curation-category'}];
   else if (url.pathname.endsWith('/news_worker_config')) data = [{ token_sha256: createHash('sha256').update(token).digest('hex') }];
   else {
     const table = url.pathname.endsWith('/news_jobs') ? jobs : posts;
     const selected = table.filter(row => matches(row,url.searchParams));
     if (options.method === 'POST' && table === posts) {
-      data = body.filter(post => !posts.some(existing => existing.slug === post.slug)).map(post => ({ ...post, id: randomUUID(), updated_at: new Date().toISOString() }));
+      data = (Array.isArray(body) ? body : [body]).filter(post => !posts.some(existing => existing.slug === post.slug)).map(post => ({ ...post, id: post.id || randomUUID(), updated_at: new Date().toISOString() }));
       posts.push(...structuredClone(data));
     } else if (options.method === 'POST') {
       if (jobs.some(job => job.author_id === body.author_id && active(job))) { status = 409; data = { code:'23505', message:'Duplicate batch' }; }
@@ -248,4 +251,33 @@ if (base && process.argv.includes('--live-api')) {
     if(account) assert.equal((await live.auth.admin.deleteUser(account)).error,null);
   }
 }
+
+// Curation shares the same persisted worker, with a separate status and one draft ID.
+const previousGeminiKey=process.env.GEMINI_API_KEY;
+process.env.GEMINI_API_KEY='fake-key-for-injected-writer';
+jobs=[];posts=[];calls=0;role='admin';db=client();
+let curate=(await createCurationJob(db,viewer,'빛과 공간')).job;
+assert.equal((await createCurationJob(client(),viewer,'빛과 공간')).created,false,'Repeated requests reuse the active job');
+assert.equal(await getNewsJob(db,viewer.userId),null,'News status hides curation jobs');
+await assert.rejects(createNewsJob(db,viewer,{limit:1,writer}),error=>error.cause===409);
+const curationWriter=async()=>{calls++;return {title:'빛과 공간을 읽는 자료',summary:'검증된 소개',tags:[],title_image_url:null,content:{type:'doc',content:[]}};};
+failCheckpoint=true;
+await assert.rejects(runNextNewsJob(db,{jobId:curate.id,curationWriter}),/진행 상태/);
+assert.equal(posts.length,1);assert.equal(posts[0].id,curate.draftId);assert.equal(posts[0].is_published,false);
+posts[0].title='Human curator edit';jobs[0].lease_until='2020-01-01';
+await runNextNewsJob(client(),{jobId:curate.id,curationWriter});
+assert.equal(calls,1,'A committed draft is not generated again after checkpoint failure');
+assert.equal(posts[0].title,'Human curator edit','Recovery preserves manual edits');
+assert.equal((await getNewsJob(db,viewer.userId,undefined,'curation')).status,'completed');
+assert.equal(await getNewsJob(db,'different-user',undefined,'curation'),null);
+jobs=[];posts=[];calls=0;
+curate=(await createCurationJob(db,viewer,'만드는 사람의 AI 도구')).job;
+await runNextNewsJob(db,{jobId:curate.id,curationWriter:async()=>{throw Error('Gemini (500)');}});
+assert.equal((await getNewsJob(db,viewer.userId,undefined,'curation')).status,'failed');
+const retryCurate=(await createCurationJob(db,viewer,'',curate.id)).job;
+assert.equal(retryCurate.draftId,curate.draftId);
+await runNextNewsJob(client(),{jobId:retryCurate.id,curationWriter});
+assert.equal(posts.length,1);assert.equal(calls,1);assert.equal(posts[0].is_published,false);
+if (previousGeminiKey===undefined) delete process.env.GEMINI_API_KEY; else process.env.GEMINI_API_KEY=previousGeminiKey;
+console.log('Curation job checks passed: duplicate requests, separate news status, bounded steps, failure/retry, checkpoint recovery, private accounts and preserved edits.');
 console.log('Durable news job checks passed: duplicate submissions, one-article steps, browser abort, process-independent progress, leases, checkpoint recovery, provider errors, private accounts and worker authentication.');

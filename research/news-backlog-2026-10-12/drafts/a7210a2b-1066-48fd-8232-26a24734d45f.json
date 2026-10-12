@@ -1,0 +1,157 @@
+{
+  "id": "a7210a2b-1066-48fd-8232-26a24734d45f",
+  "article": {
+    "url": "https://github.blog/changelog/2026-10-08-screen-readers-can-navigate-timelines-as-lists",
+    "title": "깃허브 타임라인, 화면 읽기 프로그램에 목록 구조와 로드 결과 전달",
+    "summary": "깃허브가 이슈·PR 등의 활동 타임라인을 화면 읽기 프로그램이 목록으로 탐색하도록 개선했다. 항목 수와 현재 위치를 알리고 추가 로드된 이벤트 수를 안내한다. GitHub.com과 Enterprise Server 3.23에 적용되며, 긴 협업 기록을 탐색하는 데 어떤 의미가 있는지 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "긴 활동 기록에 개수와 현재 위치를 제공한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "깃허브는 10월 8일 화면 읽기 프로그램이 활동 타임라인을 목록으로 탐색할 수 있게 됐다고 발표했다. 보조 기술은 목록 구조와 전체 항목 수, 현재 위치, 이벤트 사이를 이동하는 방법을 전달한다. 시각적으로 화면을 훑지 않고도 긴 이슈나 풀 리퀘스트의 기록에서 자신이 읽는 지점을 파악할 수 있도록 의미 구조를 보강한 변화다.",
+          "Load more 또는 Load all을 실행할 때는 추가로 불러온 이벤트 수를 안내한다. 변경 기록은 포커스가 최신 이벤트로 이동한 뒤 새로 로드된 개수를 알린다고 설명한다. 이전에는 새 이벤트가 표시돼도 이를 별도로 안내하지 않았다. 목록의 범위가 늘었다는 사실과 이어서 읽어야 할 위치가 사용자에게 함께 전달된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-08-screen-readers-can-navigate-timelines-as-lists"
+          }
+        ]
+      },
+      {
+        "heading": "이슈뿐 아니라 검토와 보안 경보에도 적용한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "지원 대상에는 이슈와 풀 리퀘스트 외에 커밋, 시크릿 스캐닝 경보, 라이선스 준수 경보의 타임라인이 포함된다. GitHub.com과 GitHub Enterprise Server 3.23에서 제공된다. 발표는 화면의 외형이나 기존 동작을 바꾸는 업데이트가 아니라고 명시하며, 보조 기술과 함께 사용할 때 기록을 이해하고 이동하는 방식을 개선했다고 설명한다.",
+          "깃허브의 화면 읽기 프로그램용 이슈 가이드도 활동 기록이 하나의 목록이며 Activity 제목이 그 이름을 지정한다고 설명한다. 탐색 모드에서는 L로 목록에 접근하고 I와 Shift+I로 다음·이전 이벤트를 이동할 수 있다. 댓글 하나가 목록 항목 하나가 되므로 제목 단위 탐색과 댓글 단위 탐색을 작업에 맞게 함께 사용할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-08-screen-readers-can-navigate-timelines-as-lists"
+          },
+          {
+            "label": "깃허브의 화면 읽기 프로그램용 이슈 가이드",
+            "kind": "primary",
+            "url": "https://accessibility.github.com/documentation/guide/issues/"
+          }
+        ]
+      },
+      {
+        "heading": "추가 로드와 이슈 목록 페이지 이동은 구분한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 가이드는 활동 목록의 추가 로드 버튼 자체도 목록 항목이므로 목록 탐색이나 Tab 키로 도달할 수 있다고 안내한다. 이 동작은 여러 이슈가 나열된 검색 결과에서 다음 묶음을 불러오는 페이지 이동과 다르다. 전자는 한 이슈 안의 대화 기록을 확장하고, 후자는 서로 다른 이슈의 목록을 넘기는 일이다.",
+          "릴리스 안내는 VoiceOver, NVDA, JAWS 같은 화면 읽기 프로그램으로 기록이 긴 이슈나 PR을 열어 확인하는 방법을 제안한다. 다만 모든 프로그램·브라우저 조합에서 같은 안내 문구가 나온다는 보증이나 접근성 표준 전체 충족을 선언한 것은 아니다. 사용자는 자신이 쓰는 보조 기술에서 목록 개수·위치와 로드 안내가 어떻게 전달되는지 확인할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "깃허브의 화면 읽기 프로그램용 이슈 가이드",
+            "kind": "primary",
+            "url": "https://accessibility.github.com/documentation/guide/issues/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-08-screen-readers-can-navigate-timelines-as-lists"
+          }
+        ]
+      },
+      {
+        "heading": "보이는 변화가 작아도 협업의 맥락은 커진다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 이번 개선은 협업 기록의 내용을 바꾸기보다 기록을 읽는 좌표를 제공한다. 긴 논의에서는 댓글의 문장만 알아도 전체 흐름에서 위치를 잃기 쉽다. 목록의 개수와 현재 항목 위치는 얼마를 읽었고 무엇이 남았는지 판단하는 단서가 된다. 대화를 다시 찾거나 필요한 사건으로 건너갈 때 반복해서 처음부터 듣는 부담을 줄일 가능성이 있다.",
+          "특히 리뷰 요청과 커밋, 상태 변경이 섞인 PR에서는 이벤트 단위 이동이 작업과 잘 맞는다. 보안 경보에서도 같은 구조를 쓰면 사용자에게 익숙한 탐색 방식이 여러 업무로 이어진다. 이는 깃허브가 발표한 적용 범위에서 도출되는 설계상의 의미다. 실제 검토 시간 단축이나 사용자의 만족도 개선 수치는 발표에 없으므로 성과를 수치로 단정하지 않았다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-08-screen-readers-can-navigate-timelines-as-lists"
+          },
+          {
+            "label": "깃허브의 화면 읽기 프로그램용 이슈 가이드",
+            "kind": "primary",
+            "url": "https://accessibility.github.com/documentation/guide/issues/"
+          }
+        ]
+      },
+      {
+        "heading": "새 정보가 생긴 사실을 알려야 다음 행동이 가능하다",
+        "kind": "analysis",
+        "paragraphs": [
+          "동적 목록에서는 버튼을 눌렀다는 사실만으로 작업 결과를 이해하기 어렵다. 항목이 늘었는지와 포커스가 어디에 있는지 전달해야 사용자가 다음 행동을 선택할 수 있다. 이번 로드 안내는 화면에 추가 정보가 나타나는 것과 그 변화를 비시각적 경로로 알리는 것이 별개의 설계 과제임을 보여준다. 데이터가 많을수록 두 경로를 함께 검토할 이유가 커진다.",
+          "자체 협업 도구를 만드는 팀에도 적용할 관점이 있다. 긴 기록을 묶는 구조, 각 사건 사이의 이동, 더 불러오기 뒤의 안내를 하나의 흐름으로 살펴볼 수 있다. 제품 화면이 그대로라는 이유로 변화의 영향까지 작다고 판단해서는 안 된다. 다만 이번 소식은 특정 기능의 개선이며, 개발팀이 자기 서비스에서 같은 효과를 얻으려면 실제 보조 기술로 별도 검증해야 한다."
+        ],
+        "references": [
+          {
+            "label": "깃허브의 화면 읽기 프로그램용 이슈 가이드",
+            "kind": "primary",
+            "url": "https://accessibility.github.com/documentation/guide/issues/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "타임라인의 목록 구조·항목 수·현재 위치를 화면 읽기 프로그램에 전달한다.",
+      "추가 로드 뒤 새 이벤트 수를 안내하며 이슈·PR·커밋·일부 보안 경보에 적용된다.",
+      "GitHub.com과 GitHub Enterprise Server 3.23이 지원 범위다."
+    ],
+    "tags": [
+      "GitHub",
+      "접근성",
+      "스크린리더",
+      "협업"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://github.blog/changelog/2026-10-08-screen-readers-can-navigate-timelines-as-lists"
+      },
+      {
+        "label": "깃허브의 화면 읽기 프로그램용 이슈 가이드",
+        "url": "https://accessibility.github.com/documentation/guide/issues/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://github.blog/changelog/2026-10-08-screen-readers-can-navigate-timelines-as-lists",
+      "https://accessibility.github.com/documentation/guide/issues/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 및 연결된 GitHub Accessibility 이슈 가이드를 WEB으로 읽었다. Activity 목록 탐색과 Load more 동작을 대조했고, 이슈 검색 목록의 페이지 이동과 구분했다. 가이드의 과거 New Issues preview 활성화 부분을 이번 기능의 전제 조건으로 옮기지 않았다. 후보의 코드 스캐닝·stacked PR·보안 API는 별도 사건이며 snapshot.pending에도 같은 타임라인 접근성 발표는 본 ID 하나다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "3348a0be-409f-4198-be4e-9e396a98cec8",
+    "44061c78-7fe5-44c2-818b-920797d7ac53",
+    "59fa6b92-df55-4f94-b5cf-ed93860a0810",
+    "5c1b6eb0-d4f3-4f54-a2d0-73f859848823",
+    "7da83f89-b5d3-4c7e-8158-cbf596e83859",
+    "7fbdcec8-0647-465f-a548-c50364470c17",
+    "8c6c9d95-ad5a-4c5c-aeb2-88d45f0b8e5c",
+    "a6f538ec-b033-4d9a-888c-53376fe2123c",
+    "ac49a872-6b09-4994-b96b-e1dd8386ee25",
+    "b208daae-7946-4310-b441-0ee0e1ebbfab",
+    "b6eba5af-010a-42d0-8578-82782a6000ae",
+    "e0c53a53-802f-4b66-9273-bb5d2a3aca01"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:33:39.926Z",
+    "checks": [
+      "GitHub.com·GHES 3.23 지원과 다섯 타임라인 종류를 원문에서 확인했다.",
+      "활동 목록 이름·항목 이동 키·추가 로드 안내를 공식 접근성 가이드에서 확인했다.",
+      "모든 조합 지원 보증이나 접근성 표준 전체 인증을 주장하지 않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

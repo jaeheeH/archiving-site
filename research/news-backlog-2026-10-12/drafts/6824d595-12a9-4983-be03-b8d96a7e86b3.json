@@ -1,0 +1,184 @@
+{
+  "id": "6824d595-12a9-4983-be03-b8d96a7e86b3",
+  "article": {
+    "url": "https://openai.com/index/introducing-dots",
+    "title": "OpenAI Dots 공개, 대화 사이에도 이어가는 업무와 권한·기억의 경계",
+    "summary": "OpenAI가 클라우드 컴퓨터를 가진 상시 에이전트 Dots를 공개했다. 연결 앱과 기억으로 업무를 이어가지만 접근 권한·행동 규칙·검토는 별도 조건이다. Pro의 지역 제한, Business Premium 제공과 Enterprise 관리자 활성화 베타, 작업량 한도도 구분된다.",
+    "paragraphs": [
+      {
+        "heading": "대화가 끝난 뒤에도 목표를 이어가는 에이전트",
+        "kind": "reporting",
+        "paragraphs": [
+          "OpenAI는9월29일 GPT-6 Astra 기반의 Dots를 공개했다. 자체 클라우드 컴퓨터와 사용자가 연결한 앱을 통해 조사·문서·코드 등의 일을 이어가는 상시 에이전트다. 회사는 플러그인 생태계에서4,000개 이상의 앱에 연결할 수 있다고 설명했지만, 모든 앱이 사용자의 계정에 이미 연결됐거나 모든 데이터에 접근한다는 뜻은 아니다. 사용자는 우선 자신의 dot에 이름과 목표를 주고 진행을 살펴볼 수 있다. 여러 dots가 함께 일하는 팀과 조직의 고유 신원·하드웨어를 갖는 specialist dots는 향후 구상 또는 프리뷰로 소개됐다. 개인용 dot의 현재 제공과 조직 전문 에이전트의 확장 계획은 별도 범위다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI Dots 출시 발표",
+            "url": "https://openai.com/index/introducing-dots",
+            "kind": "primary"
+          },
+          {
+            "label": "Dots 공식 시작·제어 안내",
+            "url": "https://help.openai.com/en/articles/20001530-getting-started-with-your-dot",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "기억을 활용하되 연결 해제와 삭제는 다르다",
+        "kind": "analysis",
+        "paragraphs": [
+          "공식 도움말은 dot이 ChatGPT의 기억을 바탕으로 시작하고 연결 앱에서도 자체 기억을 만들 수 있다고 설명한다. 질문이 새로 들어오지 않아도 연결 정보를 검토할 수 있어 반복 업무의 배경을 유지하는 데 쓰인다. 이것은 사용 맥락을 기억하는 제품 동작이며 대화 때마다 기반 모델의 가중치를 다시 학습한다는 설명은 아니다. 앱의 연결을 끊어도 이미 얻은 정보가 자동으로 삭제되지는 않는다는 점도 안내돼 있다. dot 자체의 저장된 기억을 지우는 Reset은 대화와 예정 작업을 포함해 dot을 삭제하는 기능이다. 연결 권한의 중지와 과거 자료의 보관 상태를 각각 살펴야 지속 작업과 개인정보 제어의 관계를 정확히 이해할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "Dots 공식 시작·제어 안내",
+            "url": "https://help.openai.com/en/articles/20001530-getting-started-with-your-dot",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "작업 규칙과 자동 검토의 역할",
+        "kind": "reporting",
+        "paragraphs": [
+          "Dots는 사용자의 지시와 맞춤 규칙, 안전 요구에 따라 계정에 영향을 주거나 정보를 공유하는 행동을 자동 검토한다고 회사는 설명한다. 규칙은 특정 행동을 독립적으로 수행하거나 승인을 요청하고 사용자에게 넘기는 방식을 정하도록 한다. 그러나 규칙을 작성하는 것만으로 앱이나 컴퓨터 접근 권한이 생기는 것은 아니다. 비밀번호 변경 등 일부 민감한 작업은 사용자가 직접 처리하는 범위로 명시돼 있다. 출시문에 등장하는 초기 사용자의 미발행 청구서 사례도 준비한 뒤 승인을 받아 발송한 경우다. 상시 에이전트라는 이름을 모든 행동이 확인 없이 실행된다는 뜻으로 받아들이기보다 접근과 행동의 서로 다른 제어를 나눠 볼 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI Dots 출시 발표",
+            "url": "https://openai.com/index/introducing-dots",
+            "kind": "primary"
+          },
+          {
+            "label": "Dots 공식 시작·제어 안내",
+            "url": "https://help.openai.com/en/articles/20001530-getting-started-with-your-dot",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "제공 지역과 작업량 한도의 구분",
+        "kind": "reporting",
+        "paragraphs": [
+          "현재 도움말 기준 Pro는18세 초과 이용자에게 유럽경제지역·스위스·영국을 제외한 시장에서 순차 제공된다. Business Premium은 지원되는 ChatGPT 지역 전반에서 이용할 수 있고, Enterprise는Edu·Healthcare를 포함해 관리자가 켜야 하는 베타로 기본값은 꺼짐이다. 첫 dot은Pro 또는Business Premium 요금제에 추가 비용 없이 포함되지만 심층 작업에는 별도 사용량 한도가 있다. 상시 대화 가능성을 무제한의 계산·실행량과 같은 것으로 읽을 수는 없다. 데스크톱 앱과 웹에서 생성하며 모바일 생성과 모바일 웹 지원은 현재 제공되지 않는다고 안내한다. 발표의 적격 시장이라는 표현을 실제 이용 조건과 함께 확인한 범위다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI Dots 출시 발표",
+            "url": "https://openai.com/index/introducing-dots",
+            "kind": "primary"
+          },
+          {
+            "label": "Dots 공식 시작·제어 안내",
+            "url": "https://help.openai.com/en/articles/20001530-getting-started-with-your-dot",
+            "kind": "primary"
+          },
+          {
+            "label": "Dots Enterprise 권한 관리 안내",
+            "url": "https://help.openai.com/en/articles/20001554-manage-dots-in-chatgpt-workspaces",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "기업 도입에는 접근과 통신 권한이 따로 있다",
+        "kind": "analysis",
+        "paragraphs": [
+          "Enterprise 관리 문서는 dot 이용, 로컬 컴퓨터 접근, Slack·Teams 연결과 맞춤 규칙을 별도 권한으로 설명한다. dot을 켜는 것만으로 모든 외부 앱이 연결되지 않고, 서비스 자체의 인증도 접근 범위를 제한한다. 로컬 컴퓨터 사용은 사용자가 연결한 컴퓨터가 온라인이고 앱이 열려 있어야 하며 클라우드 컴퓨터가 개인의VPN이나 브라우저 로그인 상태를 자동으로 이어받지는 않는다. Slack에서 다른 사람의 언급이나 직접 메시지가 그 사람 소유가 아닌 dot의 새 작업을 시작하지 않는다는 제어도 명시돼 있다. 조직용 에이전트가 업무를 지속하려면 모델의 능력만큼 누구의 권한으로 어떤 요청을 실행하는지가 중요하다는 점을 보여준다."
+        ],
+        "references": [
+          {
+            "label": "Dots Enterprise 권한 관리 안내",
+            "url": "https://help.openai.com/en/articles/20001554-manage-dots-in-chatgpt-workspaces",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "완료 결과와 지속 작업의 책임을 함께 보기",
+        "kind": "analysis",
+        "paragraphs": [
+          "Dots가 겨냥하는 변화는 새 질문마다 배경을 다시 설명하는 과정을 줄이고, 결과를 받은 뒤에도 후속 작업을 이어가는 데 있다. 회사의 활용 예시는 이런 가능성을 보여주지만 모든 도구 연결과 업무 성공을 보장하는 실험 결과는 아니다. 공식 도움말도 규칙을 따르는 과정에 오류가 생길 수 있으며 작업의 진행과 결과를 검토하도록 설명한다. 이용자는 활동 내역과 예정 작업을 보고 방향을 바꾸거나 dot을 일시 중지할 수 있다. 반복 업무를 맡길 때에는 목표와 결과물, 어떤 결정을 직접 할지 명확히 정하는 과정이 필요하다. 지속성을 제공하는 에이전트의 가치는 그 흐름에서 드러나며,24시간이라는 표현만으로 검토와 판단이 사라지는 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI Dots 출시 발표",
+            "url": "https://openai.com/index/introducing-dots",
+            "kind": "primary"
+          },
+          {
+            "label": "Dots 공식 시작·제어 안내",
+            "url": "https://help.openai.com/en/articles/20001530-getting-started-with-your-dot",
+            "kind": "primary"
+          },
+          {
+            "label": "Dots Enterprise 권한 관리 안내",
+            "url": "https://help.openai.com/en/articles/20001554-manage-dots-in-chatgpt-workspaces",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Dots는 자체 클라우드 컴퓨터와 연결 앱을 활용하며 앱 접근·행동 규칙은 별도 조건이다.",
+      "Pro 지역 제한과 Business Premium 제공, Enterprise 기본 꺼짐 베타를 구분했다.",
+      "첫 dot 포함과 심층 작업 한도, 연결 해제와 저장된 기억 삭제의 차이를 명시했다."
+    ],
+    "tags": [
+      "OpenAI",
+      "Dots",
+      "AI에이전트",
+      "업무자동화"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "OpenAI Dots 출시 발표",
+        "url": "https://openai.com/index/introducing-dots"
+      },
+      {
+        "label": "Dots 공식 시작·제어 안내",
+        "url": "https://help.openai.com/en/articles/20001530-getting-started-with-your-dot"
+      },
+      {
+        "label": "Dots Enterprise 권한 관리 안내",
+        "url": "https://help.openai.com/en/articles/20001554-manage-dots-in-chatgpt-workspaces"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://openai.com/index/introducing-dots",
+      "https://help.openai.com/en/articles/20001530-getting-started-with-your-dot",
+      "https://help.openai.com/en/articles/20001554-manage-dots-in-chatgpt-workspaces"
+    ],
+    "notes": "9/29원문과현재help시작/Enterprise관리문서대조.GPT6Astra·자체cloud·4k앱생태계,사용자연결선택및auto-review확인.Pro18세초과/EEA·Swiss·UK제외,BizPremium지원지역,EnterpriseEduHealthcareadminbetaoff,순차제공명시.Firstdot포함=무제한계산아님.Local옵션off·온라인앱open,클라우드VPN/로그인자동상속아님.앱disconnect정보삭제아님,Reset기억/대화/예정작업삭제.Specialist는preview구상.전체pendingDevDayrecap은전체행사/API정리로별도,Dots구체출시는본ID뿐.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2142abfa-1989-4097-b707-0373bbfa5385",
+    "359f8d3f-6531-4c22-8656-0398180f9250",
+    "3d4c214d-6e7b-4d16-9699-89052de96b77",
+    "42859509-04cf-4701-a4d0-38da66580b37",
+    "586ea001-9896-4223-ab06-06b8c3fc2941",
+    "66810653-081c-450b-b88b-962f93246dc6",
+    "7c9afd54-b7cf-4d95-a41f-67c2b4ba8d0f",
+    "b944ff1a-3e60-4ec5-a522-1ae00690be40",
+    "e2c21871-59fd-4490-b612-afa83b96d0ef"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:32:54.469Z",
+    "checks": [
+      "Pro지역·연령과Enterpriseadmin기본꺼짐베타확인",
+      "24/7대화가능과심층작업량한도구분",
+      "맞춤규칙이앱접근권한/안전요구를우회하지않음확인",
+      "앱연결해제와dot기억삭제의차이확인",
+      "클라우드와로컬의인증·접근조건분리",
+      "청구서발송사례는사용자승인후라는조건명시"
+    ],
+    "relatedPendingIds": []
+  }
+}

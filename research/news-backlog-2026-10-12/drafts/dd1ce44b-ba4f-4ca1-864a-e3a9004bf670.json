@@ -1,0 +1,153 @@
+{
+  "id": "dd1ce44b-ba4f-4ca1-864a-e3a9004bf670",
+  "article": {
+    "url": "https://www.figma.com/blog/sightlines-issue-no2/",
+    "title": "피그마, 에이전트 설계에서 출처·실행 경계·책임자를 먼저 정하라고 제안",
+    "summary": "피그마의 Sightlines 2호는 에이전트 제품의 신뢰와 출시 기준을 리더들의 대화로 정리했다. 일의 근거를 보여 주고 자동 실행과 사람 확인의 경계를 정한 뒤 실제 사용에서 개선하자는 제안이다.",
+    "paragraphs": [
+      {
+        "heading": "에이전트의 능력보다 신뢰 조건을 묻다",
+        "kind": "reporting",
+        "paragraphs": [
+          "피그마는 8월 20일 발행한 리더십 뉴스레터 Sightlines 2호에서 에이전트 제품을 설계할 때의 신뢰와 통제 문제를 다뤘다. 시카고의 리더십 대화와 Config에서 나온 의견을 묶어, 에이전트가 유능한 협업 상대가 되면서도 사용자가 행동을 이해할 수 있는 조건을 정리했다. 새로운 에이전트 제품이나 안전성 인증을 발표한 글은 아니다.",
+          "뉴스레터는 작업 과정과 출처를 보여 주는 투명성을 먼저 설계하고, 에이전트가 일상 업무를 혼자 수행할 범위와 사람이 계속 확인할 범위를 초기에 합의하라고 제안했다. 민감한 건강 정보는 사람의 관여가 필요한 예로 제시됐다. 신뢰 기준을 통과하면 완벽한 첫 버전을 기다리기보다 실제 사용에서 배우고 개선하라는 방향도 함께 담겼다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/sightlines-issue-no2/"
+          }
+        ]
+      },
+      {
+        "heading": "일관된 행동과 사람의 책임을 강조했다",
+        "kind": "reporting",
+        "paragraphs": [
+          "피그마가 인용한 리더들은 에이전트가 무엇을 할 수 있는지보다 시스템이 일관되게 행동할 조건과 규칙을 설계하는 데 주목했다. 실제 실행에서 배워야 한다는 의견에는 테스트와 출시의 엄격함이 함께 따라왔다. 자율성이 높아져도 에이전트가 한 일에 책임지는 사람이 남아 있어야 한다는 논점도 제시됐다.",
+          "같은 대화의 배경을 설명한 Config 공식 글은 작은 작업과 확인 단계를 먼저 제공해 신뢰를 쌓고, 익숙한 인터페이스를 유지하는 접근을 소개한다. 사용자가 에이전트의 행동을 보고 승인한 경험을 축적한 뒤 자율성을 넓히는 방식이다. 이는 피그마의 보편적 제품 정책이나 모든 팀에 적용되는 고정 승인 횟수라기보다 행사에서 공유된 설계 경험이다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/sightlines-issue-no2/"
+          },
+          {
+            "label": "피그마 Config 리더십 대화의 에이전트 신뢰 원칙",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/7-questions-from-lc/"
+          }
+        ]
+      },
+      {
+        "heading": "근거를 보여 주는 위치가 중요하다",
+        "kind": "analysis",
+        "paragraphs": [
+          "출처를 붙이는 기능은 답변 맨 아래 링크를 모아 두는 것만으로 완성되지 않는다. 사용자가 어떤 판단에 어떤 자료가 쓰였는지 연결해서 볼 수 있어야 잘못된 정보나 오래된 근거를 알아낼 수 있다. 특히 검색 결과를 요약한 뒤 파일이나 업무 상태를 바꾸는 에이전트라면 정보의 근거와 실제 변경 내용을 서로 구분해 보여 주는 것이 도움이 된다.",
+          "투명성은 모든 내부 단계를 길게 노출하는 일과도 다르다. 사용자가 결정을 내려야 하는 시점에 필요한 설명을 제공하는 편이 유용하다. 예를 들어 실행 전에 대상과 예상 변경을 확인할 수 있고, 실행 뒤에는 결과와 남은 오류를 볼 수 있다면 사용자는 작업이 진행 중인지 완료됐는지 판단하기 쉽다. 이런 화면은 자동화의 속도만으로 평가하기 어려운 사용 경험이다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/sightlines-issue-no2/"
+          },
+          {
+            "label": "피그마 Config 리더십 대화의 에이전트 신뢰 원칙",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/7-questions-from-lc/"
+          }
+        ]
+      },
+      {
+        "heading": "확인 단계는 업무의 결과에 맞춰 정한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "에이전트에 맡길 업무를 정할 때는 기능 이름보다 잘못 실행됐을 때의 결과를 살피는 편이 구체적이다. 같은 문서 작업이라도 내부 초안 작성과 외부에 전달되는 내용의 확정은 사용자가 기대하는 확인 절차가 다를 수 있다. 팀이 이 경계를 미리 정하면 사용자는 어느 단계에 개입할 수 있는지 알고, 개발자는 일관된 흐름을 구현할 수 있다.",
+          "단계적으로 신뢰를 넓힌다는 제안도 모든 작업의 확인을 결국 없애야 한다는 뜻으로 읽을 필요는 없다. 반복해 잘 수행하는 작업과 정보가 달라질 때마다 판단이 필요한 작업은 구분된다. 실제 사용에서 어떤 변경을 되돌렸고 어떤 요청이 모호했는지 기록하면, 자동 실행 범위를 넓힐지 설명이나 확인을 보강할지 결정할 근거가 생긴다."
+        ],
+        "references": [
+          {
+            "label": "피그마 Config 리더십 대화의 에이전트 신뢰 원칙",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/7-questions-from-lc/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/sightlines-issue-no2/"
+          }
+        ]
+      },
+      {
+        "heading": "출시 기준과 개선 기준을 함께 남긴다",
+        "kind": "analysis",
+        "paragraphs": [
+          "완벽을 기다리지 말라는 조언의 전제는 신뢰 기준을 먼저 세운다는 것이다. 에이전트가 실패했을 때 사용자가 상태를 이해하고 필요한 조치를 할 수 있는지, 변경의 책임자가 누구인지가 출시 판단에 포함돼야 한다. 기능 성공률만 보고 출시하면 실패한 요청에서의 혼란과 반복적인 수정 비용을 놓칠 수 있다.",
+          "이 뉴스레터는 통계 실험으로 특정 설계의 효과를 증명한 자료가 아니라 제품 리더들이 공통으로 제기한 질문을 정리한 글이다. 독자가 가져갈 실무적인 가치는 출처 표시, 실행 경계와 책임을 하나의 제품 흐름에서 점검하는 데 있다. 팀은 대표 작업의 성공·실패·중단 화면을 나란히 검토하고 실제 사용 결과로 기준을 수정하는 방식으로 이 제안을 구체화할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/sightlines-issue-no2/"
+          },
+          {
+            "label": "피그마 Config 리더십 대화의 에이전트 신뢰 원칙",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/7-questions-from-lc/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "에이전트가 쓴 근거와 수행한 변경을 사용자가 연결해 볼 수 있어야 한다.",
+      "작은 작업의 확인 경험을 쌓고 업무별 자동 실행 경계를 정하자는 설계 조언이다.",
+      "출시 속도와 함께 실패 상태·책임자·실제 사용의 개선 기준을 정의한다."
+    ],
+    "tags": [
+      "피그마",
+      "에이전트",
+      "제품디자인",
+      "신뢰"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://www.figma.com/blog/sightlines-issue-no2/"
+      },
+      {
+        "label": "피그마 Config 리더십 대화의 에이전트 신뢰 원칙",
+        "url": "https://www.figma.com/blog/7-questions-from-lc/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.figma.com/blog/sightlines-issue-no2/",
+      "https://www.figma.com/blog/7-questions-from-lc/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. Sightlines2 WEB 전체의 세 원칙·리더 발언을 확인했고 관련 공식 Config 7-questions 글의 점진적 승인과 익숙한 인터페이스 사례를 추가 확인했다. 링크된 lessons-from-leaders 보고서는 restricted URL로 WEB 실패해 읽었다고 주장하거나 참고자료로 추가하지 않았다. 발언은 한국어 직접 인용 번역 없이 재서술했고 개별 발언자의 직함 차이는 불필요하게 확정하지 않았다. candidates의 FabricIQ·Bitreel 및 snapshot.pending 전체 agent/leadership/Sightlines 제목요약을 대조했다. Sightlines3은 조직 AI활용 기준, Workflow lab은 가상 앱 구현 흐름으로 내용이 달라 별도 기사다. 리더 조언을 실증 연구·인증·제품정책으로 포장하지 않았다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "988776dd-0389-4549-933f-5f93f24b18ac",
+    "a643e28e-ecc7-441d-8b19-d816a71ac7d4"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:32:02.151Z",
+    "checks": [
+      "작업/출처 표시, 신뢰 기준 후 출시, 초기 거버넌스 경계의 원문3원칙을 확인했다.",
+      "건강정보는 원문 사람 관여의 예시로만 기술했다.",
+      "작은 작업과 승인 후 자율성 확대는 공식 Config 대화에 있다.",
+      "실제 성과 수치나 보편 정책·안전 인증을 창작하지 않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

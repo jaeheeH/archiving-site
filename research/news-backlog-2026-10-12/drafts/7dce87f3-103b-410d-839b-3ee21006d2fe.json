@@ -1,0 +1,154 @@
+{
+  "id": "7dce87f3-103b-410d-839b-3ee21006d2fe",
+  "article": {
+    "url": "https://blog.cloudflare.com/deno-joins-cloudflare/",
+    "title": "Deno 팀, 클라우드플레어 합류…런타임 지원 1년·Deploy 종료 6개월 예고",
+    "summary": "Deno 팀 전체가 클라우드플레어에 합류해 Workers와 Durable Objects의 자체 운영을 단순화한다. Deno 런타임은 1년간 수정·보안 업데이트를 제공하고 Deploy는 6개월 뒤 종료할 예정이다. 기존 사용자에게 필요한 이전 판단과 공개 런타임 통합의 의미를 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "서버 개발의 중심을 공동 플랫폼으로 옮긴다",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어와 Deno는 10월 9일 Deno 팀 전체의 합류를 발표했다. 라이언 달과 켄턴 바다는 Workers와 Durable Objects를 클라우드플레어 네트워크뿐 아니라 개발자 자신의 인프라에서도 쉽게 운영하도록 만드는 것이 목표라고 설명했다. 조직 합류와 함께 개발 역량의 중심을 공동 서버 플랫폼으로 옮기겠다는 결정이다.",
+          "Deno가 공개한 제품별 일정은 기존 사용자에게 직접적인 영향을 준다. 런타임은 앞으로 1년간 월간 릴리스로 버그 수정과 보안 업데이트를 제공한 뒤 팀의 개발을 끝낸다. Deno Deploy는 6개월간 운영 후 종료하며 유료 고객의 Workers 이전을 지원한다. JSR은 계속 운영하면서 인프라를 클라우드플레어로 옮기고, rusty_v8 지원도 이어간다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/deno-joins-cloudflare/"
+          },
+          {
+            "label": "데노의 합류와 제품 지원 일정 발표",
+            "kind": "primary",
+            "url": "https://deno.com/blog/cloudflare"
+          }
+        ]
+      },
+      {
+        "heading": "공개 코드와 운영 가능한 분산 시스템 사이",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어의 workerd는 Workers의 공개 런타임이지만, 회사는 코드 공개만으로 자체 운영의 어려움이 해결되지는 않았다고 인정했다. 기존 Durable Objects의 자체 실행은 단일 인스턴스에서 로컬 테스트에 유용했으나 여러 서버로 확장하는 용도로 충분하지 않았다. 생산 환경의 분산 객체 배치와 라우팅은 별도의 운영 문제로 남았다.",
+          "라이언 달이 개발한 celld는 이 간극을 줄이려는 시도다. 회사 발표에 따르면 Rust로 만든 단일 바이너리에 분산 실행 구조를 담고 외부 의존성을 객체 저장소로 좁혔다. 합류 뒤에는 달과 버트 벨더가 celld의 코드와 아이디어를 workerd에 통합하는 작업을 이끈다. 통합된 자체 운영 체계의 완성을 선언한 것은 아니며 추가 발표를 예고한 단계다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/deno-joins-cloudflare/"
+          }
+        ]
+      },
+      {
+        "heading": "상태를 가진 앱을 같은 모델로 개발한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "두 회사가 주목하는 Durable Objects는 실행 코드와 지속 상태, 통신을 하나의 객체 단위로 다루는 모델이다. 클라우드플레어 발표는 채팅 채널마다 객체를 두고 데이터와 WebSocket 연결을 묶는 예를 들었다. 애플리케이션이 매번 별도 저장소와 메시지 전달 구조를 조립하기보다 분산 실행에 맞는 단위를 처음부터 갖게 하려는 접근이다.",
+          "Deno의 발표 역시 AI 에이전트 실행 환경에서 지속 상태와 WebSocket, 자바스크립트 인터페이스가 유용하다는 판단을 제시한다. 다만 합류 발표는 기존 Deno 애플리케이션이 그대로 Workers에서 동작한다는 호환성 보증을 담고 있지 않다. 같은 프로그래밍 모델을 더 많은 장소에 제공하려는 방향과 현재 제품을 이전하는 절차는 구분해서 읽어야 한다."
+        ],
+        "references": [
+          {
+            "label": "데노의 합류와 제품 지원 일정 발표",
+            "kind": "primary",
+            "url": "https://deno.com/blog/cloudflare"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/deno-joins-cloudflare/"
+          }
+        ]
+      },
+      {
+        "heading": "사용자에게는 서로 다른 두 개의 시계가 생긴다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B가 보는 우선 과제는 런타임 의존과 호스팅 의존을 따로 파악하는 일이다. Deploy 위에서 운영 중인 서비스에는 6개월이라는 인프라 이전 기간이 주어지지만, 자체 서버에서 런타임을 사용하는 프로젝트는 1년의 유지보수 기간을 기준으로 판단해야 한다. 하나의 전환 일정으로 묶으면 더 먼저 끝나는 서비스의 준비가 늦어질 수 있다.",
+          "팀은 배포 설정뿐 아니라 데이터 보관 위치, 환경 변수, 예약 실행, 네트워크 연결과 런타임별 API 사용을 목록으로 만들 필요가 있다. Workers로 옮기겠다는 선택만으로 이 항목들이 자동 해결되지는 않는다. 작은 기능을 실제로 이식해 보고 실행·저장·통신의 차이를 확인하는 편이, 지원 종료 직전에 전체 서비스를 옮기는 것보다 판단 근거를 남긴다."
+        ],
+        "references": [
+          {
+            "label": "데노의 합류와 제품 지원 일정 발표",
+            "kind": "primary",
+            "url": "https://deno.com/blog/cloudflare"
+          }
+        ]
+      },
+      {
+        "heading": "이동 가능성의 가치는 운영 경험으로 판가름 난다",
+        "kind": "analysis",
+        "paragraphs": [
+          "공개 런타임은 특정 사업자의 서비스 밖에서도 코드를 실행할 선택지를 제공한다. 그러나 팀이 기대하는 이동 가능성은 장애 복구, 상태 보존, 업데이트와 확장까지 포함한다. celld와 workerd의 통합이 의미를 가지려면 개발자가 이해할 수 있는 설치·운영 경계가 생겨야 한다. 이번 발표의 핵심은 그 경계를 단순화하겠다는 개발 방향에 있다.",
+          "Deno가 계속 오픈소스로 남는다는 사실과 원래 팀이 장기 개발을 계속한다는 약속은 다르다. 커뮤니티의 후속 유지보수 가능성은 열려 있지만 구체적인 운영 주체와 지원 수준은 별도로 확인해야 한다. 기존 사용자는 새로운 서버 모델의 잠재력을 평가하면서도, 이미 발표된 제품별 지원 일정에 맞춰 자신이 책임질 유지보수 범위를 결정할 시점이다."
+        ],
+        "references": [
+          {
+            "label": "데노의 합류와 제품 지원 일정 발표",
+            "kind": "primary",
+            "url": "https://deno.com/blog/cloudflare"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/deno-joins-cloudflare/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Deno 런타임은 1년간 수정·보안 업데이트를 제공한 뒤 원래 팀의 개발을 종료한다.",
+      "Deno Deploy는 6개월 뒤 종료 예정이며 유료 고객의 Workers 이전을 지원한다.",
+      "celld와 workerd 통합은 향후 개발 계획으로, 완성된 자체 운영 플랫폼의 출시 발표와 구분해야 한다."
+    ],
+    "tags": [
+      "Deno",
+      "Cloudflare",
+      "Workers",
+      "오픈소스"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.cloudflare.com/deno-joins-cloudflare/"
+      },
+      {
+        "label": "데노의 합류와 제품 지원 일정 발표",
+        "url": "https://deno.com/blog/cloudflare"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.cloudflare.com/deno-joins-cloudflare/",
+      "https://deno.com/blog/cloudflare"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처와 Deno 자체 발표를 WEB으로 확인했다. Deno 제품별 지원 기간, JSR 지속 운영, rusty_v8 지원을 직접 대조했다. 통합 작업은 향후 계획이며 Deno 코드 무수정 호환을 주장하지 않았다. 후보 9건은 관측성·보안·인턴십 등 별개 사건이다. snapshot.pending의 Deno 합류 항목은 본 ID 하나이며 다른 Workers 소식과 사건이 다르다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2019054a-a457-4356-9bc9-47b85aca06b5",
+    "2c1a4101-aae8-4295-b207-5ae567b4b4b6",
+    "4027d7c6-9b75-45ae-8b7f-1b6777e3bbbc",
+    "44c476d2-b8f8-4341-9694-f4e9b6e32222",
+    "64da50f0-d536-47bb-bd3e-dcc375b183f3",
+    "6fa4c931-8672-4bfd-8bf3-1af3e90b9b44",
+    "e1462898-b538-4aeb-96dc-f22e5eed6df0",
+    "ea15db4a-052c-4c9f-bca3-ed226cda42b8",
+    "faecfaa5-a532-492f-8d3a-bda52f50d1f7"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:30:57.707Z",
+    "checks": [
+      "Deno 팀 전체 합류와 runtime 1년·Deploy 6개월 지원 일정을 Deno 공식 발표에서 확인했다.",
+      "workerd 단일 인스턴스 한계 및 celld 아이디어 통합 계획을 Cloudflare 원문에서 확인했다.",
+      "기존 Deno 코드의 자동 호환 및 통합 완료를 주장하지 않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

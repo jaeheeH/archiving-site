@@ -1,0 +1,164 @@
+{
+  "id": "ebbcef9c-ce94-4d4b-81cc-1937fac7e7fb",
+  "article": {
+    "url": "https://openai.com/form/codex-originals",
+    "title": "OpenAI, Codex Originals 활용 이야기 모집…완성품과 제작 과정을 함께 소개",
+    "summary": "OpenAI가 Codex Originals 프로그램에 소개할 실제 프로젝트와 제작자의 이야기를 받는다. 신청 화면은 개인 배경과 프로젝트 설명을 각각 최대1,000자로 요청하고 관련 링크도 받는다. 기존 소개는 창업·프로토타입·오픈소스 활동을 다루며, 모집 자체가 상금·투자나 성능 인증을 약속한 것은 아니다.",
+    "paragraphs": [
+      {
+        "heading": "제품 평가 대신 사용자의 실제 이야기를 받기",
+        "kind": "reporting",
+        "paragraphs": [
+          "OpenAI는 Codex Originals의 다음 참여 이야기를 받는 신청 페이지를 공개했다. Codex로 만들거나 조사하고 창작하는 사람의 실제 배경과 프로젝트를 소개해 달라는 내용이다. 개인 프로젝트와 직업상의 작업 등 여러 유형을 설명할 수 있도록 구성돼 있다. 페이지는 일반적인 제품 후기 점수를 받는 설문보다 제작자가 무엇을 하며 도구를 어디에 썼는지를 묻는다. 공개 화면에는 선발 인원과 마감일, 상금이나 투자금에 관한 약속이 제시돼 있지 않다. 따라서 신청을 지원금 공모나 확정된 프로그램 혜택으로 설명하지 않았다. 현재 확인되는 소식은 제작자의 활용 사례를 접수할 공개 통로가 마련돼 있다는 점이다."
+        ],
+        "references": [
+          {
+            "label": "Codex Originals 프로젝트 이야기 모집 화면",
+            "url": "https://openai.com/form/codex-originals",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "배경과 프로젝트를 각각 짧게 설명하는 형식",
+        "kind": "reporting",
+        "paragraphs": [
+          "신청 화면은 이름·이메일과 국가·도시·주 또는 지역 등의 정보를 요구한다. 전화번호에는 필수 표시가 없으며, 개인의 배경과 어떤 Codex 사용자인지에 대한 설명, 프로젝트에서 무엇을 만들거나 연구하는지에 대한 설명은 각각 최대 1,000자로 구분된다. 작업이나 온라인 활동을 보여주는 관련 링크도 넣을 수 있다. 제출 시 OpenAI의 연락을 받는 데 동의하고 개인정보 처리방침에 따라 제출 내용을 사용한다는 안내가 있다. 이 동의는 신청 화면에 적힌 범위로 이해해야 하며 제출 즉시 선정·공개가 확정된다는 의미는 아니다. 입력 항목과 한도를 확인하면 제품 자체보다 사람과 프로젝트의 관계를 설명하도록 설계된 모집임을 알 수 있다."
+        ],
+        "references": [
+          {
+            "label": "Codex Originals 프로젝트 이야기 모집 화면",
+            "url": "https://openai.com/form/codex-originals",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "기존 소개는 서로 다른 제작 규모를 보여준다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 Codex Originals 페이지에는 오픈클로 창업자 피터 스타인버거, 장학금 탐색 서비스 Finnie를 만든 파티마 후세인과 클로이 휴스, 쇼피파이의 미하일 파라힌 등이 등장한다. 오픈소스 개인 소프트웨어에서 학생의 교육 접근을 돕는 프로젝트, 기업 규모의 엔지니어링 활용까지 회사가 선택해 소개한 사례다. 매직패스 창업자 피에트로 스키라노는 아이디어를 작동하는 인터페이스와 프로토타입으로 옮기는 작업을 설명한다. 이 사례들은 활용 영역의 차이를 보여주지만 모집의 공식 자격 요건이나 선정 점수표는 아니다. 유명 기업이나 이미 상용화한 제품만 지원할 수 있다고 단정할 조건은 신청 화면에서 확인되지 않는다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI Codex Originals 공식 사례 소개",
+            "url": "https://openai.com/codex-originals/",
+            "kind": "primary"
+          },
+          {
+            "label": "Codex Originals 프로젝트 이야기 모집 화면",
+            "url": "https://openai.com/form/codex-originals",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "성과만큼 작업에서 맡긴 역할이 중요",
+        "kind": "analysis",
+        "paragraphs": [
+          "프로젝트를 설명할 때 결과물의 이름과 도구를 썼다는 사실만으로는 작업의 변화를 이해하기 어렵다. 같은 프로토타입이라도 처음 구상에서 화면을 만드는 데 썼는지, 기존 코드를 고치거나 반복 작업을 줄이는 데 썼는지에 따라 활용의 의미가 달라진다. 신청 화면이 제작자 배경과 프로젝트를 두 항목으로 나누는 방식은 이러한 맥락을 함께 드러낼 수 있다. 기존 소개에서 회사 엔지니어와 개인 창업자가 함께 등장하는 것도 서로 다른 업무 조건을 보는 출발점이다. 실제 사례를 읽는 사람에게는 작업의 범위와 사람이 결정·검토한 부분, 이후 사용 상태가 있어야 다른 상황에 적용할 수 있는지 판단할 정보가 생긴다."
+        ],
+        "references": [
+          {
+            "label": "Codex Originals 프로젝트 이야기 모집 화면",
+            "url": "https://openai.com/form/codex-originals",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI Codex Originals 공식 사례 소개",
+            "url": "https://openai.com/codex-originals/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "선택된 사례를 일반적인 성능으로 확대하지 않기",
+        "kind": "analysis",
+        "paragraphs": [
+          "공식 소개에 실린 제작자의 설명은 특정 작업의 경험이며 같은 조건에서 여러 도구를 비교한 성능 시험은 아니다. 예를 들어 짧은 시간에 프로토타입을 만들었다는 경험담은 제품의 유지보수나 전체 배포 과정까지 같은 시간에 끝난다는 보장이 될 수 없다. 이미 준비한 자료와 제작자의 경험, 프로젝트 규모가 결과에 영향을 줄 수 있기 때문이다. 모집 페이지도 검증된 평균 생산성 수치를 제공하지 않는다. 이 캠페인의 사례는 가능한 활용을 발견하는 데 쓰이지만 다른 사람의 업무에서 같은 속도와 결과가 반복되는지 확인하는 근거와는 구분해야 한다. 이는 활용 사례의 의미를 낮추기보다 그 사례가 실제로 설명하는 범위를 유지하는 해석이다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI Codex Originals 공식 사례 소개",
+            "url": "https://openai.com/codex-originals/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "공개 링크가 제작 이야기에 더하는 정보",
+        "kind": "analysis",
+        "paragraphs": [
+          "관련 링크를 받는 항목은 짧은 설명을 넘어 실제 작업의 형태를 살펴보는 통로가 될 수 있다. 작동 화면과 공개 코드, 프로젝트 소개가 있으면 어떤 문제를 다뤘는지 더 구체적으로 이해할 수 있다. 다만 링크가 존재한다는 사실만으로 모든 구현이 도구의 단독 결과이거나 프로그램이 품질을 보증한다고 볼 수는 없다. 제출하는 자료와 선정 후 소개하는 범위 역시 별도 단계다. 이번 모집은 사용자가 무엇을 만들고 어떤 배경에서 만들었는지 듣는 프로그램의 확장으로 읽을 수 있다. 평가할 때에는 홍보 문구와 제작자의 실제 설명, 확인 가능한 결과물을 함께 놓고 각 사례의 조건을 살피는 것이 중요하다."
+        ],
+        "references": [
+          {
+            "label": "Codex Originals 프로젝트 이야기 모집 화면",
+            "url": "https://openai.com/form/codex-originals",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI Codex Originals 공식 사례 소개",
+            "url": "https://openai.com/codex-originals/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "제작자 배경과 프로젝트 설명은 각각 최대 1,000자이며 관련 링크를 함께 받는다.",
+      "모집 화면에 없는 선발 인원·마감·상금·투자 약속을 추가하지 않았다.",
+      "기존 사례를 공식 지원 자격이나 일반적인 성능 보증으로 해석하지 않았다."
+    ],
+    "tags": [
+      "OpenAI",
+      "Codex",
+      "CodexOriginals",
+      "개발자"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "Codex Originals 프로젝트 이야기 모집 화면",
+        "url": "https://openai.com/form/codex-originals"
+      },
+      {
+        "label": "OpenAI Codex Originals 공식 사례 소개",
+        "url": "https://openai.com/codex-originals/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://openai.com/form/codex-originals",
+      "https://openai.com/codex-originals/"
+    ],
+    "notes": "정확한form원문과연결된프로그램사례페이지 확인.form본문공개일없으므로RSS9/28을프로그램최초출시일로단정하지않음.자기소개/프로젝트각1000자,개인/직업프로젝트,링크,전화선택·연락동의 확인.마감/선발인원/금전혜택 미공개.공식선택사례만회사설명으로소개하며개발성과벤치마크로확대하지않음.의료연구사례는임상범위추가검증불필요하도록본문제외.후보/pending 개별TheDen사례와모집은별도사건.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2142abfa-1989-4097-b707-0373bbfa5385",
+    "359f8d3f-6531-4c22-8656-0398180f9250",
+    "3d4c214d-6e7b-4d16-9699-89052de96b77",
+    "42859509-04cf-4701-a4d0-38da66580b37",
+    "586ea001-9896-4223-ab06-06b8c3fc2941",
+    "66810653-081c-450b-b88b-962f93246dc6",
+    "7c9afd54-b7cf-4d95-a41f-67c2b4ba8d0f",
+    "b944ff1a-3e60-4ec5-a522-1ae00690be40",
+    "e2c21871-59fd-4490-b612-afa83b96d0ef"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:47:58.470Z",
+    "checks": [
+      "신청페이지와공식프로그램사례 링크검증",
+      "설명2항목 각1000자와개인·직업범위 확인",
+      "연락동의 및전화선택 항목확인",
+      "본문없는모집일정/상금/투자혜택 추가안함",
+      "기존사례≠모집자격/성능인증 구분",
+      "개별고객사례와프로그램모집 중복없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "id": "5a76b6b0-6fef-4caf-8929-a8a25a86c4a7",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/05/prototype-users-fix-protopie/",
+    "title": "로그인 시제품의 실패 경로까지 만들기…프로토파이 사례가 보여주는 검증의 범위",
+    "summary": "프로토파이가 입력값과 조건, 오류 표시를 가진 금융 앱 시제품을 소개했다. 고정된 값의 비교와 Face ID 애니메이션은 상호작용을 시험하는 장치이며 실제 계정 인증·생체 인식 보안을 구현한 것은 아니다.",
+    "paragraphs": [
+      {
+        "heading": "입력과 실패 반응을 실제로 시험하는 시제품",
+        "kind": "reporting",
+        "paragraphs": [
+          "5월 25일 스매싱 매거진은 프로토파이의 Pie Bank 로그인 시제품 제작 사례를 소개했다. 프로토파이의 후원을 받은 글이며 필자도 회사의 크리에이티브 테크놀로지스트다. 입력을 생략한 시연 화면에서는 이용자가 실패 메시지를 이해하고 다시 시도하는 과정을 관찰하기 어렵다는 문제를 다룬다. 후원사의 설계 제안과 독립적인 연구 성과를 구분해 읽을 자료다.",
+          "사례의 중심은 계정명과 비밀번호를 직접 입력하고 정해진 조건에 맞을 때만 다음 화면으로 이동하는 흐름이다. 일치하지 않으면 오류가 보이고 사용자가 다시 선택한다. 회사는 이를 제품과 비슷한 행동을 가진 시제품으로 설명하지만, 실제 은행 시스템에 접속하거나 사용자의 계정을 검증한 내용은 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 후원 로그인 프로토타입 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/05/prototype-users-fix-protopie/"
+          },
+          {
+            "label": "프로토파이 공식 로그인 흐름 튜토리얼",
+            "kind": "primary",
+            "url": "https://www.protopie.io/blog/fintech-prototyping-protopie-login-flow-tutorial"
+          }
+        ]
+      },
+      {
+        "heading": "변수와 조건이 만드는 두 가지 결과",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 튜토리얼은 입력 레이어의 텍스트를 변수에 연결하고, 두 값이 사전에 정한 문자열과 일치하는 경우에 화면 이동을 실행하는 구조를 안내한다. 비밀번호 필드의 점 표시는 입력을 화면에서 가리는 기능이다. 그것만으로 저장된 값의 암호화나 서버 인증이 구현되는 것은 아니다. 실제 보안 계층과 시제품의 시각적 반응은 역할이 다르다.",
+          "오류 경로는 성공 조건을 만족하지 못한 입력에서 메시지를 드러내는 방식이다. 성공을 위해 두 값이 모두 맞아야 한다면 실패는 어느 하나라도 틀린 경우를 포함한다. 두 값이 모두 틀렸을 때만 오류를 내는 조건과 같지 않으므로 대표 입력을 나눠 점검할 필요가 있다. 원문의 화면 제작 순서보다 조건이 실제로 어떤 결과를 만드는지가 검토의 기준이 된다."
+        ],
+        "references": [
+          {
+            "label": "프로토파이 공식 로그인 흐름 튜토리얼",
+            "kind": "primary",
+            "url": "https://www.protopie.io/blog/fintech-prototyping-protopie-login-flow-tutorial"
+          }
+        ]
+      },
+      {
+        "heading": "생체 인식 애니메이션과 인증을 나누기",
+        "kind": "reporting",
+        "paragraphs": [
+          "사례는 Lottie 애니메이션을 화면으로 이동시키고 처음부터 재생한 뒤 다음 장면으로 넘어간다. 공식 안내의 이동·재생·장면 전환에는 지연을 두고, 되돌아왔을 때 상태를 초기화한다. 이 과정은 Face ID처럼 보이는 반응과 시간 흐름을 만드는 것으로 실제 얼굴을 인식해 일치 여부를 검증하는 구현은 제시하지 않는다.",
+          "이런 구별은 시험 참여자가 무엇을 경험했는지 설명할 때도 필요하다. 잠시 기다린 뒤 화면이 열렸다는 관찰은 기다림과 안내에 관한 정보이며 생체 인증의 정확도·속도 시험은 아니다. 후원 글의 제품 같은 인상이라는 설명을 모든 참여자의 신뢰가 높아졌다는 비교 연구 결과로 확대할 근거도 없다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 후원 로그인 프로토타입 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/05/prototype-users-fix-protopie/"
+          },
+          {
+            "label": "프로토파이 공식 로그인 흐름 튜토리얼",
+            "kind": "primary",
+            "url": "https://www.protopie.io/blog/fintech-prototyping-protopie-login-flow-tutorial"
+          }
+        ]
+      },
+      {
+        "heading": "충실도는 연구 질문에 맞춰 높인다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 시제품의 정교함을 모든 기능을 실제 서비스처럼 만드는 목표보다 확인하려는 질문과 연결할 필요가 있다고 본다. 오류 메시지 뒤에 무엇을 하는지 알아보려면 실패 상태가 있어야 하고, 다음 화면의 정보 구조만 확인한다면 실제 보안 시스템까지 연결하는 것이 필수는 아닐 수 있다. 어떤 단계가 구현됐는지 연구 범위를 설명하면 관찰의 의미도 더 명확해진다.",
+          "특히 금융 화면에는 실제 계정 정보를 입력하고 싶게 하는 외형이 있을 수 있다. 시험용 값과 구현 범위를 미리 알리는 방식은 높은 시각적 충실도와 참여자의 이해를 함께 유지하는 방법이다. 현실처럼 보이는 흐름을 만들면서 무엇을 모사하는지 숨기면, 시제품을 서비스로 오해한 행동을 제품의 자연스러운 사용으로 해석할 위험이 생긴다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 후원 로그인 프로토타입 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/05/prototype-users-fix-protopie/"
+          },
+          {
+            "label": "프로토파이 공식 로그인 흐름 튜토리얼",
+            "kind": "primary",
+            "url": "https://www.protopie.io/blog/fintech-prototyping-protopie-login-flow-tutorial"
+          }
+        ]
+      },
+      {
+        "heading": "성공만이 아니라 복귀와 오류를 기록한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "두 입력 중 하나만 틀린 경우, 빈 입력과 재시도, 다른 로그인 방식으로 바꾸는 경우를 나눠 보면 화면이 예상한 계약을 유지하는지 확인할 수 있다. 장면을 되돌아갔을 때 애니메이션과 오류가 어떤 상태인지도 사용자가 반복하는 과정의 일부다. 시연의 한 번 성공보다 재시도에서 같은 규칙이 작동하는지가 유용한 검토 질문이다.",
+          "결과를 개발팀에 넘길 때에는 입력 조건과 오류 메시지, 이동 순서와 초기화 범위를 함께 남길 수 있다. 이는 상호작용의 의도를 전달하지만 실제 배포 제품의 보안 검토나 서버 통합을 대신하지 않는다. 이번 사례는 로그인 시제품에서 선택의 결과를 관찰하게 하는 설계 설명이며, 연구의 신뢰도 향상이나 개발 기간 감소를 독립적으로 측정한 실험은 아니다."
+        ],
+        "references": [
+          {
+            "label": "프로토파이 공식 로그인 흐름 튜토리얼",
+            "kind": "primary",
+            "url": "https://www.protopie.io/blog/fintech-prototyping-protopie-login-flow-tutorial"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "고정된 입력값 비교를 실제 계정 인증으로 설명하지 않는다.",
+      "Face ID 연출과 생체 인식 검증은 다른 역할이다.",
+      "성공·부분 실패·복귀 상태를 연구 질문과 함께 점검한다."
+    ],
+    "tags": [
+      "프로토타입",
+      "로그인",
+      "사용자연구",
+      "ProtoPie",
+      "상호작용"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 후원 로그인 프로토타입 사례",
+        "url": "https://smashingmagazine.com/2026/05/prototype-users-fix-protopie/"
+      },
+      {
+        "label": "프로토파이 공식 로그인 흐름 튜토리얼",
+        "url": "https://www.protopie.io/blog/fintech-prototyping-protopie-login-flow-tutorial"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.protopie.io/blog/fintech-prototyping-protopie-login-flow-tutorial"
+    ],
+    "notes": "원문 www동일경로 전체 및 프로토파이 실제 공식 로그인 tutorial 조건/변수/Lottie 딜레이 확인. sponsored/필자 소속 공개. 공식 Step8의 not-equal 2조건 표기를 성공AND의 반대인OR와 혼동할 수 있어 복붙하지 않고 논리 검토로 설명. 고정 문자열 체크≠서버 인증, FaceID Lottie≠생체인식 정확도, 마스킹≠암호화. 가격/무료계획 현재조건 주장은 제외. pending/candidates에 동일 PieBank로그인 사건 없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:53:43.045Z",
+    "checks": [
+      "후원·필자 소속 공개",
+      "고정값 비교와 실제 인증 분리",
+      "성공AND·실패OR 검토",
+      "생체 연출과 실제인식 분리",
+      "독립 사용자효과·보안시험을 주장하지 않음"
+    ],
+    "relatedPendingIds": []
+  }
+}

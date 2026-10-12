@@ -1,0 +1,174 @@
+{
+  "id": "b02e3894-bfa1-4769-959d-a40ab72e4afb",
+  "article": {
+    "url": "https://blog.cloudflare.com/cloudflare-k2-streams/",
+    "title": "클라우드플레어 K2 공개 베타…배치로 읽는 서버리스 이벤트 스트림",
+    "summary": "클라우드플레어가 R2에 이벤트를 보관하는 서버리스 스트림 K2를 공개 베타로 선보였다. 생산자와 소비자를 분리하고 여러 구독이 같은 자료를 각각 읽는 구조다. 배치 단위 재전달, 보관 기간과 소비 비용을 중심으로 기존 작업 큐와의 차이를 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "R2의 객체 저장소에 이벤트 로그를 쌓는다",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어는 Workers Paid 계정에서 사용할 수 있는 K2 공개 베타를 발표했다. K2는 이벤트를 R2에 보관하는 분할된 로그로, 기록하는 생산자와 읽는 소비자를 분리한다. 이벤트의 바이트 내용은 특정 형식에 한정하지 않는다. 로그 수집, 분석 자료 이동처럼 연속된 데이터를 여러 처리 흐름으로 전달하는 용도를 제시했다.",
+          "원출처는 메모리에서 자료를 배치로 모은 뒤 R2의 구간 객체에 저장하는 구조를 설명한다. 객체 저장소의 기존 객체에 계속 덧붙이는 방식은 아니다. 회사는 현재 발표 시점의 생산 지연 p99가 약 1초라고 설명했으며 이는 자체 시스템 설명에 따른 수치다. Kafka 클라이언트 호환, 키 기준 순서와 더 낮은 지연 모드는 향후 계획으로 제시했다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/cloudflare-k2-streams/"
+          },
+          {
+            "label": "K2 전달 보장과 재전달 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/k2/reference/delivery-guarantees/"
+          }
+        ]
+      },
+      {
+        "heading": "구독은 독립적으로 읽고 배치 단위로 확인한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "각 구독은 스트림의 모든 기록을 독립적으로 소비하며 자기 읽기 위치를 관리한다. 하나의 구독을 여러 작업자가 공유하면 읽을 배치를 나누어 맡는다. 공식 문서는 같은 기록을 두 작업자에게 동시에 임대하지 않는다고 설명하지만, 공유 구독에서 작업자들의 처리 순서까지 보장하지는 않는다. 로그의 순서와 병렬 처리의 완료 순서는 구분해야 한다.",
+          "소비자는 기본 5분 임대 안에 배치 처리를 확인하거나 임대를 연장하고, 실패하면 배치 전체를 다시 받도록 요청할 수 있다. 확인은 개별 기록이 아니라 배치에 적용된다. 전달 보장은 구독별 최소 한 번이며 중복 제거와 정확히 한 번 처리를 제공하지 않는다. 생산 결과를 알 수 없는 상황에서 재시도하는 경우에도 중복 기록이 생길 수 있다."
+        ],
+        "references": [
+          {
+            "label": "K2 전달 보장과 재전달 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/k2/reference/delivery-guarantees/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/cloudflare-k2-streams/"
+          }
+        ]
+      },
+      {
+        "heading": "베타 용량과 보관 기간을 정해 두었다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공개 베타의 기본 저장 한도는 계정의 모든 스트림을 합쳐 10GB이고 스트림 수는 20개다. 보관 기간은 기본 7일이며 최소 1시간부터 최대 30일까지 설정할 수 있다. 더 긴 기간은 요청 대상이다. 스트림 하나의 전체 생산자는 합계 초당 30MB까지 기록하며, 생산 요청 하나는 5MB, 기록 하나는 약 1MB의 제한을 받는다.",
+          "현재 베타에서는 청구하지 않으며 과금 시작 최소 30일 전에 알리겠다고 밝혔다. 예정 단가는 기록과 소비 각각 GB당 0.04달러, 보관은 GB-month당 0.02달러지만 변경될 수 있다. 압축 전 바이트로 계산하고 구독마다 읽은 양을 따로 센다. 여러 구독이 같은 자료를 모두 읽는 구성에서는 각각의 소비량이 비용에 반영된다."
+        ],
+        "references": [
+          {
+            "label": "K2 공개 베타의 한도 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/k2/platform/limits/"
+          },
+          {
+            "label": "K2 베타 과금 계획 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/k2/platform/pricing/"
+          }
+        ]
+      },
+      {
+        "heading": "개별 작업 큐와 데이터 이동의 단위가 다르다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 선택의 기준은 메시지를 저장할 수 있는가보다 실패를 어떤 단위로 다루는가에 있다. 개별 작업의 지연 실행, 재시도와 실패 보관이 핵심이면 회사가 제시한 Queues의 작업 처리 모델을 검토할 수 있다. K2의 배치 소비는 많은 이벤트를 함께 옮기는 흐름에 적합한 방향이며, 배치 안의 일부만 실패했을 때의 복구를 애플리케이션이 설계해야 한다.",
+          "이미 성공한 기록도 재전달될 수 있으므로 이벤트 식별자와 저장 대상의 키를 이용해 반복 실행의 영향을 줄일 수 있다. 결제처럼 같은 처리가 두 번 실행되면 결과가 달라지는 작업은 특히 전달 보장만으로 완료 조건을 판단하기 어렵다. 배치 크기는 처리 효율뿐 아니라 실패 시 다시 실행할 범위와도 연결된다. 정확히 한 번이라는 가정을 코드에 넣지 않는 것이 이 베타의 실제 조건이다."
+        ],
+        "references": [
+          {
+            "label": "K2 전달 보장과 재전달 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/k2/reference/delivery-guarantees/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/cloudflare-k2-streams/"
+          }
+        ]
+      },
+      {
+        "heading": "소비 속도와 보관 만료를 함께 관측한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "이벤트를 읽는다고 기록이 지워지지는 않지만 보관 기간이 끝나면 아직 읽지 않은 기록도 만료된다. 소비자가 장기간 멈추어도 항상 복구할 수 있다는 뜻은 아니다. 팀은 소비 위치와 유입량을 비교해 밀린 양을 관측하고, 보관 만료 전에 따라잡을 수 있는지 확인할 수 있다. 10GB 계정 한도 역시 여러 스트림의 유입량을 합쳐 판단해야 한다.",
+          "독립 구독은 분석과 다른 업무가 서로의 읽기 위치를 방해하지 않게 해 주지만 소비량을 늘리는 선택이기도 하다. 도입 시에는 필요한 구독 수, 보관 기간과 생산량을 함께 기록하면 예정 과금의 영향을 평가할 근거가 생긴다. Kafka 호환이나 키 기반 순서가 필요한 팀은 로드맵을 현재 지원으로 가정하기보다 해당 기능의 실제 제공을 확인한 뒤 연동을 결정할 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "K2 전달 보장과 재전달 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/k2/reference/delivery-guarantees/"
+          },
+          {
+            "label": "K2 베타 과금 계획 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/k2/platform/pricing/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "K2는 Workers Paid 대상 공개 베타이며 현재 베타 중에는 사용량을 청구하지 않는다.",
+      "배치 확인과 최소 한 번 전달을 제공하고 중복 제거·정확히 한 번 처리는 제공하지 않는다.",
+      "계정 전체 저장은 10GB, 기본 보관은 7일이며 현재 최대 보관은 30일이다."
+    ],
+    "tags": [
+      "Cloudflare",
+      "K2",
+      "이벤트스트림",
+      "서버리스"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.cloudflare.com/cloudflare-k2-streams/"
+      },
+      {
+        "label": "K2 전달 보장과 재전달 공식 문서",
+        "url": "https://developers.cloudflare.com/k2/reference/delivery-guarantees/"
+      },
+      {
+        "label": "K2 공개 베타의 한도 공식 문서",
+        "url": "https://developers.cloudflare.com/k2/platform/limits/"
+      },
+      {
+        "label": "K2 베타 과금 계획 공식 문서",
+        "url": "https://developers.cloudflare.com/k2/platform/pricing/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.cloudflare.com/cloudflare-k2-streams/",
+      "https://developers.cloudflare.com/k2/reference/delivery-guarantees/",
+      "https://developers.cloudflare.com/k2/platform/limits/",
+      "https://developers.cloudflare.com/k2/platform/pricing/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 WEB와 보존 RSS 전문, 공식 delivery-guarantees/limits/pricing을 읽었다. p99약1초는 회사 설명으로 귀속했다. ordered log와 shared-subscription processing order를 구분하고 at-least-once/no dedup/retention unread deletion을 확인했다. Kafka drop-in/key-order/Express는 roadmap이며 현재 기능으로 쓰지 않았다. 후보 Traces/Observability는 관측 도구 발표이고 K2의 영속 스트림과 별개다. snapshot.pending에서 K2 발표는 본 ID만 확인했다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2019054a-a457-4356-9bc9-47b85aca06b5",
+    "2c1a4101-aae8-4295-b207-5ae567b4b4b6",
+    "4027d7c6-9b75-45ae-8b7f-1b6777e3bbbc",
+    "44c476d2-b8f8-4341-9694-f4e9b6e32222",
+    "64da50f0-d536-47bb-bd3e-dcc375b183f3",
+    "6fa4c931-8672-4bfd-8bf3-1af3e90b9b44",
+    "e1462898-b538-4aeb-96dc-f22e5eed6df0",
+    "ea15db4a-052c-4c9f-bca3-ed226cda42b8",
+    "faecfaa5-a532-492f-8d3a-bda52f50d1f7"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:53:02.772Z",
+    "checks": [
+      "공개 베타·Workers Paid·베타 무료와 예정 단가 변경 가능성·30일 사전 안내를 확인했다.",
+      "배치 임대/확인·중복 가능성과 소비 순서 조건·읽지 않은 기록의 만료를 문서에서 확인했다.",
+      "계정10GB·스트림20개·보관 기본7일/최대30일·생산량 한도를 대조했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

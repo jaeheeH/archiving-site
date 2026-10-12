@@ -1,0 +1,153 @@
+{
+  "id": "fdc2c2b4-2ddd-4156-9370-a3dada88f877",
+  "article": {
+    "url": "https://blog.google/products-and-platforms/products/maps/google-maps-restaurant-tips-tricks/",
+    "title": "구글 지도 음식점 탐색 안내, 대화·주간 목록·방문 팁을 연결하다",
+    "summary": "구글이 음식점을 찾는 지도 기능 세 가지를 소개했다. Ask Maps의 자연어 탐색, 매주 갱신되는 장소 목록, 커뮤니티 방문 팁을 연결하는 안내다. 음식 주문의 지역과 파트너 조건을 함께 읽고, 인기 탐색에서 실제 주문·방문으로 넘어가는 판단을 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "세 기능을 활용하는 탐색 안내",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 8일 음식점을 찾는 Google Maps 기능 세 가지를 소개했다. 대화형 Ask Maps, Explore의 음식점 목록, 장소 정보에 붙는 커뮤니티 방문 팁이다. 원문은 야외 좌석이 있는 디저트 가게나 밀크셰이크와 함께 먹을 버거처럼 원하는 조건을 말하거나 입력하는 예를 제시한다. 회사는 사진과 리뷰, 메뉴를 분석해 조건에 맞는 장소를 찾는다고 설명한다. 이번 글은 세 기능을 이용하는 방법을 묶은 안내이며 각각이 모두 이날 처음 출시됐다는 발표는 아니다. 원하는 음식만으로 검색하는 것에서 장소의 조건까지 요청에 포함하는 흐름을 보여준다. 다만 회사의 기능 소개만으로 모든 식당 메뉴와 좌석 정보가 현재 상태와 일치한다고 보장되는 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "구글의 음식점 탐색 기능 3가지 안내",
+            "url": "https://blog.google/products-and-platforms/products/maps/google-maps-restaurant-tips-tricks/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "인기 상승·지역의 발견·꾸준한 장소",
+        "kind": "reporting",
+        "paragraphs": [
+          "Explore의 음식점 목록은 매주 갱신되는 방식으로 소개됐다. 원문은 최근 인기가 높아진 Trending, 동네에서 새롭게 발견하는 Gems, 꾸준히 알려진 Top을 구분하고 한 번 눌러 저장할 수 있다고 설명한다. 세 범주는 모두 같은 최고 점수 순위를 뜻하지 않으며 인기의 변화와 탐색 목적이 다르다. 장소 페이지의 방문 팁에는 예약을 얻는 방법, 주차 위치, 주문할 메뉴 같은 커뮤니티 정보가 포함된다고 안내한다. 따라서 목록으로 후보를 찾은 뒤 개별 장소의 조건을 살피는 흐름이 연결된다. 이런 팁은 사용자 경험에서 나온 정보라는 점에서 식당의 공식 영업·예약 공지와 구분해 읽어야 한다. 원문은 팁별 최신성이나 정확도를 수치로 검증한 결과를 제시하지 않는다."
+        ],
+        "references": [
+          {
+            "label": "구글의 음식점 탐색 기능 3가지 안내",
+            "url": "https://blog.google/products-and-platforms/products/maps/google-maps-restaurant-tips-tricks/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "음식 주문은 확인 단계와 지역이 있다",
+        "kind": "reporting",
+        "paragraphs": [
+          "10월 안내는 Ask Maps에서 파트너를 통해 음식을 주문할 수도 있다고 소개하며 Uber Eats, Toast, Square를 예로 든다. 연결된 8월 6일 공식 발표는 이용자가 식당을 고르면 요청한 메뉴를 장바구니에 넣고 사용자가 검토한 뒤 주문을 완료하는 흐름을 설명한다. 당시 배포 지역은 미국으로 안내됐고 Square와 Toast, 향후 Uber Eats 연결을 구분했다. 10월의 짧은 글은 지역별 현황과 파트너별 적용 범위를 자세히 다시 정리하지 않았다. 한국의 모든 계정이나 식당에서 같은 주문 기능을 사용할 수 있다고 확대하기 어려운 이유다. 식당을 제안받는 일과 실제 주문을 확정하는 일도 같은 단계가 아니다. 기존 상세 발표의 사용자가 검토하는 절차를 읽으면 추천 결과와 결제 결정을 나눠 이해할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "구글의 음식점 탐색 기능 3가지 안내",
+            "url": "https://blog.google/products-and-platforms/products/maps/google-maps-restaurant-tips-tricks/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글의 Ask Maps 음식 주문·지역별 배포 설명",
+            "url": "https://blog.google/products-and-platforms/products/maps/order-food-in-ask-maps/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "취향을 말하는 요청과 실무 조건",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 대화형 장소 탐색이 취향을 구체적인 조건으로 바꾸는 경험이라고 본다. 분위기가 좋은 장소라는 말만으로는 사람마다 다른 결과를 기대할 수 있지만 야외 좌석이나 대화하기 조용한 공간처럼 확인할 항목을 더하면 판단 근거가 생긴다. 화면이 간단한 답을 제공할수록 그 추천이 어떤 메뉴와 리뷰, 장소 정보를 참조했는지 되짚을 경로도 중요하다. 이는 실제 Ask Maps 화면을 시험해 문제를 발견했다는 평가가 아니라 공개된 기능의 정보 흐름에 관한 해석이다. 자연어 요청이 편하더라도 여러 조건을 충족한 정도는 따로 살펴야 한다. 한 조건에 잘 맞는 인기 장소가 이동 거리나 영업 시간에는 맞지 않을 수 있다. 지도와 장소 목록, 상세 정보가 연결되면 취향의 제안과 실제 방문 가능성을 함께 판단하기 쉽다."
+        ],
+        "references": [
+          {
+            "label": "구글의 음식점 탐색 기능 3가지 안내",
+            "url": "https://blog.google/products-and-platforms/products/maps/google-maps-restaurant-tips-tricks/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글의 Ask Maps 음식 주문·지역별 배포 설명",
+            "url": "https://blog.google/products-and-platforms/products/maps/order-food-in-ask-maps/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "추천에서 행동으로 넘어가는 순간",
+        "kind": "analysis",
+        "paragraphs": [
+          "장소를 저장하는 행동은 후보를 기억해 두는 것이고 주문을 완료하는 행동은 실제 거래를 선택하는 것이다. 두 버튼이 같은 탐색 과정 안에 있어도 사용자에게 필요한 확인 정보는 다르다. 주문에서는 품목과 수량, 배달이나 수령 조건을 다시 볼 수 있어야 하며 방문에서는 현재 영업과 예약 가능 여부가 중요하다. 커뮤니티 팁은 그 판단을 돕는 경험 자료로 사용할 수 있지만 당시 상황과 현재 조건이 바뀔 수 있다. 주간 목록의 갱신과 개별 식당 정보의 갱신도 같은 속도로 이뤄진다고 가정할 수 없다. 이번 안내를 읽는 독자에게 유용한 것은 세 기능을 한 번에 외우는 것보다 발견·후보 저장·조건 확인·최종 행동이 이어지는 구조를 이해하는 일이다. 대화가 시작을 쉽게 만들어도 행동을 확정하는 단계에서 무엇을 확인하는지는 여전히 사용자의 판단으로 남는다."
+        ],
+        "references": [
+          {
+            "label": "구글의 음식점 탐색 기능 3가지 안내",
+            "url": "https://blog.google/products-and-platforms/products/maps/google-maps-restaurant-tips-tricks/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글의 Ask Maps 음식 주문·지역별 배포 설명",
+            "url": "https://blog.google/products-and-platforms/products/maps/order-food-in-ask-maps/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "10월 소식은 Ask Maps·주간 목록·커뮤니티 팁의 이용 안내이며 세 기능의 최초 출시 발표가 아니다.",
+      "Trending·Gems·Top은 탐색 목적이 다른 목록으로 소개된다.",
+      "연결된 음식 주문 발표는 미국 배포와 사용자 장바구니 검토를 안내하며 한국 전면 지원을 확인하지 않는다."
+    ],
+    "tags": [
+      "구글지도",
+      "AskMaps",
+      "장소탐색",
+      "음식주문",
+      "사용자경험"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "구글의 음식점 탐색 기능 3가지 안내",
+        "url": "https://blog.google/products-and-platforms/products/maps/google-maps-restaurant-tips-tricks/"
+      },
+      {
+        "label": "구글의 Ask Maps 음식 주문·지역별 배포 설명",
+        "url": "https://blog.google/products-and-platforms/products/maps/order-food-in-ask-maps/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/products-and-platforms/products/maps/google-maps-restaurant-tips-tricks/",
+      "https://blog.google/products-and-platforms/products/maps/order-food-in-ask-maps/"
+    ],
+    "notes": "원문·연결된8/6AskMaps상세발표를웹확인. 자연어/Explore주간TrendingGemsTop/knowbeforecommunitytips3개기능;새출시단정없음. 8/6장바구니add후사용자review/complete·미국배포·SquareToast/ Ubercomingsoon,10/8tips파트너3예시로지역·partner상태차이보존. 한국전면지원·자동결제발명없음. 후보12건과snapshot.pending전체제목·원제·URL/AskMaps·restaurants관련내용대조. 691cf585-915d-49ac-bae4-184164c8732e는10도시연간트렌드목록으로실질주제다르며본기사는기능이용과행동조건만집중. 식당영업/서비스실사용테스트없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "3f5e12eb-ac52-437e-b033-aa350546e94c",
+    "4997b7f4-003c-4ff2-b026-7fc43b02691b",
+    "56b16575-ca25-4ba2-9903-3311573548c4",
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "988776dd-0389-4549-933f-5f93f24b18ac",
+    "d8192f83-6ac4-4483-8ed2-9926452ba612",
+    "fde64d1f-6184-4233-b2a4-b8abe804523d",
+    "2aff0061-4a82-4979-a193-e136f1c04a79",
+    "74aa8797-63a5-4758-a1dc-1616a40f6d63",
+    "8a3c7e20-6fbb-44a0-a10f-a2e75490e8b8",
+    "b28d7ab6-076e-4475-9d38-eb9b8cbcdbd0"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:31:04.036Z",
+    "checks": [
+      "원출처·8/6상세공식발표확인",
+      "최초출시단정없이3기능안내로작성",
+      "음식주문미국/파트너시점·사용자검토조건구분",
+      "10도시목록기사와내용분리",
+      "후보12건·전체pending동일기능안내없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

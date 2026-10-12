@@ -1,0 +1,157 @@
+{
+  "id": "589afb68-48a0-4011-9580-daf39da42690",
+  "article": {
+    "url": "https://blog.developer.adobe.com/en/publish/2026/08/new-eslint-plugin-catches-common-premiere-uxp-bugs",
+    "title": "어도비, Premiere UXP의 액션 범위와 비동기 오용을 찾는 ESLint 플러그인 공개",
+    "summary": "어도비가 Premiere Pro UXP API 사용 패턴을 검사하는 ESLint 플러그인을 공개했다. 액션 객체의 범위 이탈과 트랜잭션 안의 비동기 작업을 점검하며, 문법 기반과 타입 기반 설정을 제공한다.",
+    "paragraphs": [
+      {
+        "heading": "실행 때 드러나는 API 오용을 앞당겨 찾는다",
+        "kind": "reporting",
+        "paragraphs": [
+          "어도비는 Premiere Pro의 UXP 플러그인 개발을 위한 ESLint 패키지 @adobe/eslint-plugin-premierepro를 공개했다. 액션을 잘못된 범위에서 만들거나 트랜잭션 맥락을 빠뜨리는 실수는 플러그인을 불러올 때 명확하게 드러나지 않을 수 있다. 회사는 실행 취소의 이상, 상태 문제나 특정 조건의 충돌로 나타나는 사용 패턴을 편집 중에 점검하려는 도구라고 설명했다.",
+          "검사는 개별 규칙으로 구성돼 팀이 필요한 항목을 설정할 수 있다. 핵심 범주는 Action API의 범위와 사용 방식, 트랜잭션의 실행 취소 설명, 잠금 콜백으로 트랜잭션을 감싸는 패턴이다. 발표는 개발 시점의 정적 분석을 추가한 것이며 실제 편집 작업의 모든 오류나 호스트 앱의 충돌을 제거한다고 보장한 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/08/new-eslint-plugin-catches-common-premiere-uxp-bugs"
+          }
+        ]
+      },
+      {
+        "heading": "잠금과 트랜잭션의 범위를 검사한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 규칙 목록에서 액션 생성 호출은 Project.lockedAccess 또는 Project.executeTransaction의 범위 안에 있어야 한다. CompoundAction의 addAction은 해당 트랜잭션 안에서 호출하고, 잠금·트랜잭션 콜백 내부의 비동기 작업과 액션 객체의 범위 밖 전달을 검사한다. 실행 전에 필요한 비동기 준비와 동기적인 변경 구간을 구분해야 하는 API의 사용 조건을 코드에서 확인하는 방식이다.",
+          "실행 취소 기록에 사람이 이해할 설명을 붙이는 prefer-undo-string은 경고 수준의 권장 규칙이다. executeTransaction을 lockedAccess로 감싸는 prefer-locked-access-wrapper도 권장 항목으로 제공한다. 액션의 잘못된 범위를 찾는 오류 규칙과 사용자가 변경을 알아보기 쉽게 만드는 경고를 구분해 적용할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "어도비 Premiere ESLint 공식 규칙 저장소",
+            "kind": "primary",
+            "url": "https://github.com/adobe/eslint-plugin-premierepro"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/08/new-eslint-plugin-catches-common-premiere-uxp-bugs"
+          }
+        ]
+      },
+      {
+        "heading": "타입 검사 여부에 따라 설정이 달라진다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 가이드는 문법 패턴을 보는 recommended 설정과 타입 정보를 사용하는 recommendedTypeChecked 설정을 나눈다. 전자는 일반 JavaScript나 TypeScript 프로젝트에서 쓸 수 있다. 후자는 typescript-eslint, 유효한 tsconfig와 Premiere 타입 정의를 갖춘 환경에서 실제 API와 액션 타입을 확인해 래퍼 함수 같은 간접 사용을 더 정확히 분석하도록 한다.",
+          "타입 기반 규칙은 대응하는 문법 기반 규칙을 대체하므로 보통 두 묶음을 모두 켤 필요는 없다. 이전 과정에서 함께 사용하면 같은 문제에 대한 중복 메시지가 나올 수 있다. 가이드는 플러그인과 @adobe/premierepro의 호환 버전을 맞추고, 에디터뿐 아니라 CI나 패키징 전에도 검사를 실행하는 개발 흐름을 제시한다."
+        ],
+        "references": [
+          {
+            "label": "어도비 Premiere UXP ESLint 공식 설정 가이드",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/premiere-pro/uxp/resources/fundamentals/eslint-support/"
+          },
+          {
+            "label": "어도비 Premiere ESLint 공식 규칙 저장소",
+            "kind": "primary",
+            "url": "https://github.com/adobe/eslint-plugin-premierepro"
+          }
+        ]
+      },
+      {
+        "heading": "추상화한 코드도 검사 대상에 포함한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "팀이 공통 유틸리티로 액션 생성과 변경을 감싸면 코드는 짧아지지만 호출 관계는 덜 직접적으로 보인다. 이름과 구문만 검사하는 도구가 놓칠 수 있는 지점이다. 이미 타입 검사 환경을 운영하는 팀이라면 실제 타입을 사용하는 규칙이 이런 추상화를 검토하는 데 유리할 수 있다. 반대로 간단한 JavaScript 플러그인은 문법 규칙부터 적용해 반복 실수를 줄일 수 있다.",
+          "이 선택에는 검사 비용과 설정 유지 부담도 따른다. 타입 정보가 프로젝트 소스를 제대로 포함하는지 확인해야 하고 분석 시간도 문법 검사보다 길 수 있다. 기존 코드에서 경고가 많이 발생한다면 메시지를 일괄 숨기기보다 실제 범위 이탈인지 이름 패턴의 오탐인지 구분하는 과정이 필요하다. 도구의 경고를 호스트 동작과 연결해야 규칙 도입의 효과를 판단할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "어도비 Premiere UXP ESLint 공식 설정 가이드",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/premiere-pro/uxp/resources/fundamentals/eslint-support/"
+          },
+          {
+            "label": "어도비 Premiere ESLint 공식 규칙 저장소",
+            "kind": "primary",
+            "url": "https://github.com/adobe/eslint-plugin-premierepro"
+          }
+        ]
+      },
+      {
+        "heading": "실행 취소 경험까지 개발 기준으로 만든다",
+        "kind": "analysis",
+        "paragraphs": [
+          "실행 취소 설명을 요구하는 규칙은 사용자 경험을 코드 검사의 대상으로 만든다는 점에서 눈에 띈다. 플러그인이 여러 편집을 한 번에 수행할 때 기록이 모호하면 사용자는 무엇을 되돌리는지 알기 어렵다. 범위와 비동기 사용을 엄격히 검사하는 항목에 더해 작업 의미를 명확하게 남기면, 변경의 정확성과 사용자의 이해를 함께 다룰 수 있다.",
+          "정적 분석을 통과한 뒤에도 실제 Premiere에서 편집·실행 취소·반복 실행을 확인하는 과정은 필요하다. ESLint는 코드에 드러난 패턴을 검사하며 문서 상태나 작업 순서가 만드는 모든 문제를 실행해 보는 도구는 아니다. 새 플러그인을 검토하는 팀은 범위 규칙을 공통 기준으로 두고, 자신이 지원하는 호스트 버전과 대표 작업의 결과를 함께 확인하는 흐름을 만들 수 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/08/new-eslint-plugin-catches-common-premiere-uxp-bugs"
+          },
+          {
+            "label": "어도비 Premiere UXP ESLint 공식 설정 가이드",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/premiere-pro/uxp/resources/fundamentals/eslint-support/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "액션 범위 이탈과 잠금·트랜잭션 콜백의 비동기 작업을 개발 중에 검사한다.",
+      "문법 기반과 타입 기반 권장 설정은 보통 하나를 선택한다.",
+      "실행 취소 설명은 경고 규칙이며 실제 호스트 동작 확인을 보완한다."
+    ],
+    "tags": [
+      "어도비",
+      "PremierePro",
+      "UXP",
+      "ESLint"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.developer.adobe.com/en/publish/2026/08/new-eslint-plugin-catches-common-premiere-uxp-bugs"
+      },
+      {
+        "label": "어도비 Premiere UXP ESLint 공식 설정 가이드",
+        "url": "https://developer.adobe.com/premiere-pro/uxp/resources/fundamentals/eslint-support/"
+      },
+      {
+        "label": "어도비 Premiere ESLint 공식 규칙 저장소",
+        "url": "https://github.com/adobe/eslint-plugin-premierepro"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.developer.adobe.com/en/publish/2026/08/new-eslint-plugin-catches-common-premiere-uxp-bugs",
+      "https://developer.adobe.com/premiere-pro/uxp/resources/fundamentals/eslint-support/",
+      "https://github.com/adobe/eslint-plugin-premierepro"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원문 WEB43줄·공식 설정 가이드149줄·adobe 공식 저장소 README/rules를 대조했다. 원문은 중첩 잠금/트랜잭션 표현을 쓰지만 현재 공식 require-action-lock-scope 규칙은 lockedAccess OR executeTransaction이고 wrapper는 warn이라 실제 규칙 기준을 본문에 명시했다. typed tier는 counterpart대체,둘 다 켜면 중복알림 가능;의존성 호환조건을 포함했다. 정적 검사 통과가 모든 런타임 버그 방지임을 주장하지 않는다. candidates UXP Hub와 snapshot.pending 전체 UXP/Bolt/Photoshop 관련 제목요약을 대조해 개별 Premiere 린트 패키지 공개가 별도 사건임을 확인했다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "7a3a054b-e63e-4d2a-b5bb-94ea26d43cec"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:34:28.447Z",
+    "checks": [
+      "require-action-lock-scope의 OR조건과 prefer-wrapper 경고를 실제 공식 규칙 표로 확인했다.",
+      "addAction 트랜잭션범위, 비동기 금지와 객체범위 이탈 규칙을 확인했다.",
+      "typed환경 요구조건과 대응 문법규칙 대체를 확인했다.",
+      "prefer-undo-string은 warn인 권장항목이며 실제 동작검사를 대신한다고 쓰지 않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

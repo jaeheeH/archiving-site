@@ -1,0 +1,143 @@
+{
+  "id": "fb85962d-5d70-4a8a-b919-01d5fce65a54",
+  "article": {
+    "url": "https://blog.developer.adobe.com/en/publish/2026/06/upcoming-photoshop-ui-changes-test-your-uxp-plugin-now",
+    "title": "어도비, 포토샵 베타 UI 기반 변경 안내… UXP 플러그인 호환성 점검 요청",
+    "summary": "어도비는 6월 안내에서 포토샵 베타의 UI 기반 교체가 UXP 플러그인에 영향을 줄 수 있다고 밝혔다. 패널 표시와 콜백을 미리 확인하되, 새 기반에 의존하는 배포는 정식 버전 제공 이후에 진행하고 지원 버전을 명시하라는 권고다.",
+    "paragraphs": [
+      {
+        "heading": "베타에서 먼저 확인할 UI 기반 교체",
+        "kind": "reporting",
+        "paragraphs": [
+          "어도비 포토샵 데스크톱 팀의 제품 관리자 코리 슈버트는 UXP 플러그인 개발자에게 포토샵 베타의 UI 기반 변경을 테스트하라고 안내했다. 발표는 6월 24일 기준 베타 빌드를 27.9.0 20260621.m.3580으로 제시했다. 이는 당시 테스트 환경을 특정한 기록이며 현재 최신 버전을 뜻하지 않는다.",
+          "어도비는 포토샵이 오래된 코드와 UI 구조를 갖고 있으며 이번 변경으로 다른 어도비 앱이 사용하는 더 현대적인 기반에 맞춘다고 설명했다. 개발자에게 더 예측 가능한 동작과 빠른 개선을 제공하겠다는 목표다. 공지는 그해 여름, 이르면 7월 정식 제공을 목표로 삼았지만 예정 시점만으로 실제 배포 완료를 확인할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/06/upcoming-photoshop-ui-changes-test-your-uxp-plugin-now"
+          }
+        ]
+      },
+      {
+        "heading": "화면이 보이는지와 작업이 끝나는지를 함께 검사하다",
+        "kind": "reporting",
+        "paragraphs": [
+          "권고한 점검 항목은 플러그인의 주요 작업 흐름, 패널과 대화상자 및 컨트롤의 표시, 이벤트 리스너와 콜백 실행이다. 레이아웃 이동이나 내용 잘림, 잘못된 위치를 살피고 UI 계층에 직접 닿는 기능을 특히 확인하라고 했다. 화면의 외형뿐 아니라 사용자의 입력이 실제 동작으로 연결되는지까지 포함하는 범위다.",
+          "문제가 생기면 포토샵 베타 버전과 재현 단계를 UXP 포럼에 남기도록 요청했다. 발표 당시 베타가 주 두 차례 갱신되므로 적어도 주 한 번 업데이트하는 방식을 권했다. 이 주기는 당시 안내에 속하며 모든 향후 릴리스에 고정된 배포 일정으로 해석해서는 안 된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/06/upcoming-photoshop-ui-changes-test-your-uxp-plugin-now"
+          }
+        ]
+      },
+      {
+        "heading": "최소 재현과 실제 업무 회귀는 서로 보완한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "호환성 문제를 좁히려면 작은 재현 플러그인이 유용하다. 전체 제품에서만 나타나는 오류는 UI 변화인지 자체 상태 관리인지 분리하기 어렵다. 특정 컨트롤과 한 개의 콜백만 남긴 재현은 개발자가 보고한 현상과 어도비가 조사할 조건을 일치시키는 데 도움을 준다.",
+          "다만 최소 예제가 정상이라고 실제 업무가 보장되지는 않는다. 패널을 열고 입력한 뒤 문서를 바꾸거나 대화상자를 닫고 다시 실행하는 식으로 대표 흐름도 별도로 확인해야 한다. 지원하려는 운영체제와 포토샵 버전을 기록하면 수정이 어떤 조합에서 확인됐는지 설명할 수 있다. 테스트 범위를 문서화하는 일 자체가 지원 문의에 답할 근거가 된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/06/upcoming-photoshop-ui-changes-test-your-uxp-plugin-now"
+          }
+        ]
+      },
+      {
+        "heading": "배포 시점과 지원 버전은 연결되어 있다",
+        "kind": "reporting",
+        "paragraphs": [
+          "어도비는 새 UI 기반에 의존하는 플러그인 업데이트를 해당 포토샵 정식 버전이 제공되기 전까지 게시하지 말라고 권고했다. 배포할 때는 최신 포토샵이 필요하다는 점을 설명이나 변경 기록에 적고, 아직 앱을 갱신하지 않은 사용자는 먼저 갱신하거나 이전 플러그인을 유지하도록 안내했다.",
+          "UXP 공식 매니페스트 문서는 host가 지원 앱과 버전 호환성을 정의하며 minVersion이 최소 지원 호스트 버전이라고 설명한다. 공지의 호환성 안내는 이러한 패키지 정보와 함께 관리할 필요가 있다. 공개 베타와 비밀유지계약을 전제로 한 프리릴리스 프로그램도 별개이므로 테스트 참여 조건을 혼동하지 않아야 한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/06/upcoming-photoshop-ui-changes-test-your-uxp-plugin-now"
+          },
+          {
+            "label": "어도비 UXP 매니페스트의 호스트 호환성 정의",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/uxp/guides/explanation/concepts/manifest/"
+          }
+        ]
+      },
+      {
+        "heading": "신규 기반 전환을 지원 정책의 변화로 다루다",
+        "kind": "analysis",
+        "paragraphs": [
+          "배포 설명에는 단순히 호환성 수정이라고 적기보다 어떤 앱 버전부터 적용되는지, 기존 사용자가 선택할 경로가 무엇인지 드러나는 편이 좋다. 플러그인을 먼저 설치한 뒤 앱 버전 부족을 발견하면 사용자는 개발자가 고친 문제와 별개로 작업을 멈추게 된다. 설치 조건과 변경 기록이 서로 맞는지 확인하는 이유다.",
+          "이번 안내가 제공하는 실무적 가치는 출시 속도에 대한 기대보다 전환을 관찰할 창구와 절차다. 베타에서 문제를 발견하고 재현 조건을 보고하며 정식 제공과 배포를 연결하는 과정이 필요하다. UI 기반이 공통화되더라도 개별 플러그인의 레이아웃과 이벤트 사용 방식은 다르므로, 공통 플랫폼이라는 사실만으로 호환성을 추정할 수 없다. 오류 기록도 단순한 정상·실패 표시보다 영향을 받은 작업과 재현 가능성을 담아야 한다. 예를 들어 컨트롤은 표시되지만 이벤트가 빠지는 경우와 컨트롤 자체가 잘리는 경우는 사용자에게는 모두 고장이지만 조사할 계층은 다르다. 이런 차이를 정리하면 다음 베타에서 무엇을 다시 확인해야 하는지도 분명해진다."
+        ],
+        "references": [
+          {
+            "label": "어도비 UXP 매니페스트의 호스트 호환성 정의",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/uxp/guides/explanation/concepts/manifest/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/06/upcoming-photoshop-ui-changes-test-your-uxp-plugin-now"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "6월 공지는 UI 기반 변경의 베타 테스트와 정식 제공 목표를 설명한 안내다.",
+      "패널·대화상자 표시뿐 아니라 주요 작업과 이벤트 콜백까지 확인해야 한다.",
+      "새 기반에 의존하는 배포 시점과 매니페스트·변경 기록의 지원 버전을 맞출 필요가 있다."
+    ],
+    "tags": [
+      "포토샵",
+      "UXP",
+      "플러그인",
+      "호환성"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.developer.adobe.com/en/publish/2026/06/upcoming-photoshop-ui-changes-test-your-uxp-plugin-now"
+      },
+      {
+        "label": "어도비 UXP 매니페스트의 호스트 호환성 정의",
+        "url": "https://developer.adobe.com/uxp/guides/explanation/concepts/manifest/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.developer.adobe.com/en/publish/2026/06/upcoming-photoshop-ui-changes-test-your-uxp-plugin-now",
+      "https://developer.adobe.com/uxp/guides/explanation/concepts/manifest/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 WEB 전문 0~69행 확인. RSS는 한 문장뿐이므로 실제 WEB 전문으로 모든 핵심 근거를 보충했다. 6월24일 베타 버전·주2회 갱신·여름/이르면7월 GA 목표를 당시 안내로 한정하며 10월 현재 출시 완료를 주장하지 않았다. 신규 UI 의존 업데이트는 GA 이후 게시 권고이고 공개베타와 NDA 프리릴리스는 별개다. 공식 UXP manifest host/minVersion 정의 대조. post.candidates 7a3a054b UXP Hub와 988776dd Fabric IQ는 사건이 다르며 snapshot.pending 76b9824e 런타임 변경/지원매트릭스, fb58 Bolt도 개별 후속/별도 도구 공지라 중복 아님.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "7a3a054b-e63e-4d2a-b5bb-94ea26d43cec",
+    "988776dd-0389-4549-933f-5f93f24b18ac"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:04:22.760Z",
+    "checks": [
+      "원출처가 제시한 빌드는 6월24일 당시 27.9.0 20260621.m.3580이다.",
+      "정식 제공은 여름·이르면7월이라는 목표이며 이 공지만으로 완료를 확정하지 않는다.",
+      "공식 매니페스트의 minVersion은 플러그인이 지원하는 최소 호스트 버전이다.",
+      "공개베타와 NDA 기반 프리릴리스 프로그램을 구분했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "id": "a88ac6ce-4f94-4564-8916-c44dbbc3a044",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/06/how-make-design-system-ai-ready/",
+    "title": "AI가 읽는 디자인 시스템, 화면보다 결정·토큰·검사 규칙을 함께 전달하기",
+    "summary": "스매싱 매거진이 AI 프로토타입에 명시적인 설계 지침과 토큰, 검사 절차를 제공하자고 제안했다. 아틀라시안은 코드 옆의 구조화된 원천에서 여러 전달 형식을 생성한 사례를 공개했다. 문서의 양보다 현재 구현과 규칙의 일치를 유지하는 작업이 중요하다.",
+    "paragraphs": [
+      {
+        "heading": "보기 좋은 목업이 설명하지 못하는 결정",
+        "kind": "reporting",
+        "paragraphs": [
+          "비탈리 프리드먼은 6월 3일 스매싱 매거진에서 AI가 활용하기 쉬운 디자인 시스템의 조건을 정리했다. 화면에 드러난 결과만으로 컴포넌트 사용 이유와 우선순위, 접근성 규칙을 모델이 알아낼 것이라고 가정하지 말자는 제안이다. 문서화하지 않은 결정과 정리하지 않은 고정값이 생성 결과의 일관성을 떨어뜨릴 수 있다는 관점을 제시했다.",
+          "그는 지침을 담은 명세 파일, 이름을 가진 토큰과 결과를 검사하는 절차를 함께 구성하도록 설명한다. 원하는 간격과 색을 매번 새로 추측하게 하는 대신 선택 가능한 범위를 제공하고, 생성한 화면이 그 범위를 지켰는지 점검하는 구조다. 이 글은 이런 운영 방식을 제안한 해설이며 모든 AI 도구에서 같은 개선률을 측정한 실험은 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 AI용 디자인 시스템 정리 제안",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/how-make-design-system-ai-ready/"
+          }
+        ]
+      },
+      {
+        "heading": "구조화된 원천에서 여러 형식을 생성",
+        "kind": "reporting",
+        "paragraphs": [
+          "아틀라시안이 6월 2일 공개한 공식 사례는 기존 문서와 피그마, 코드 패키지에 정보가 흩어져 있었던 문제를 설명한다. 같은 아이콘이나 컴포넌트의 안내가 여러 곳에서 서로 다르게 갱신되면 에이전트가 오래된 규칙을 읽거나 없는 기능을 추측할 수 있다는 것이다. 회사는 일관된 스키마로 자료를 정리하는 작업을 진행했다고 밝혔다.",
+          "공식 설명에 따르면 컴포넌트 사용법과 코드 예시, 속성, 콘텐츠와 접근성 지침을 코드 옆의 TypeScript 자료로 유지한다. 여기에서 MCP 서버와 스킬, DESIGN.md 등의 형식을 생성한다. 모델에 문서를 추가로 보여주는 방법과 별개로, 서로 다른 전달 경로가 같은 정보에 의존하도록 원천을 조직하는 접근이다."
+        ],
+        "references": [
+          {
+            "label": "아틀라시안의 구조화된 디자인 맥락 공식 사례",
+            "kind": "primary",
+            "url": "https://www.atlassian.com/blog/ai-at-work/teaching-ai-to-speak-our-design-language"
+          }
+        ]
+      },
+      {
+        "heading": "회사 내부 평가가 말하는 범위를 남긴다",
+        "kind": "reporting",
+        "paragraphs": [
+          "아틀라시안은 맥락을 제공하지 않은 상태, MCP와 구조화된 내용이 결합된 상태 등을 비교했다고 설명한다. 생성 코드와 작업 시간, 도구 호출과 토큰 사용을 평가해 개선을 보고했지만 대상은 자사 디자인 시스템 관련 과제다. 특정 조회에서의 정확도 개선과 전체 코드의 개선은 같은 지표가 아니며 외부 팀의 같은 결과를 보장하지 않는다.",
+          "회사는 컴포넌트가 바뀔 때 구조화된 내용을 갱신하고 평가와 코드 상태 확인을 실행하는 도구도 소개했다. 이 구조는 사람이 내린 결정을 전달하는 경로를 유지하려는 것이다. 모든 디자인 선택을 AI가 대신하거나 생성 결과의 접근성·품질을 자동 인증한다는 의미는 아니다. 유지하는 데이터와 결과 확인을 함께 놓아야 공개 사례의 범위를 정확하게 읽을 수 있다."
+        ],
+        "references": [
+          {
+            "label": "아틀라시안의 구조화된 디자인 맥락 공식 사례",
+            "kind": "primary",
+            "url": "https://www.atlassian.com/blog/ai-at-work/teaching-ai-to-speak-our-design-language"
+          }
+        ]
+      },
+      {
+        "heading": "토큰 이름과 사용 이유를 연결한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 사용 가능한 변수 목록만큼 어떤 상황에서 무엇을 골라야 하는지의 설명이 중요하다고 본다. 같은 색 토큰을 사용해도 오류와 일반 안내를 잘못 구분하면 화면의 의미는 달라진다. 컴포넌트가 존재한다는 정보와 그것을 사용할 조건은 다른 자료다. 선택의 근거가 있어야 결과를 검사할 때 단순한 이름 일치보다 제품의 규칙을 비교할 수 있다.",
+          "명세가 코드와 따로 움직이면 읽기 쉬운 문서를 늘린 뒤에도 오래된 가정이 남을 수 있다. 지원하지 않는 속성과 폐기한 패턴을 현재 예시에서 빼고 변경의 이유를 남기는 절차가 필요하다. 최신 상태라는 문구 하나보다 어떤 구현 버전에서 해당 지침이 유효한지 아는 편이 생성 결과의 차이를 조사하기 쉽다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 AI용 디자인 시스템 정리 제안",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/how-make-design-system-ai-ready/"
+          },
+          {
+            "label": "아틀라시안의 구조화된 디자인 맥락 공식 사례",
+            "kind": "primary",
+            "url": "https://www.atlassian.com/blog/ai-at-work/teaching-ai-to-speak-our-design-language"
+          }
+        ]
+      },
+      {
+        "heading": "감사는 수정할 판단의 근거를 만든다",
+        "kind": "analysis",
+        "paragraphs": [
+          "토큰 밖의 값을 발견한 검사는 무엇이 규칙에서 벗어났는지를 보여줄 수 있지만 그 값이 반드시 잘못됐는지까지 결정하지는 않는다. 새로운 요구가 기존 범위에 없을 수도 있기 때문이다. 반복되는 예외가 나타나면 결과만 지우기보다 시스템에 규칙을 추가할지 기존 선택을 사용할지 판단할 근거가 생긴다. 감사와 결정은 서로 이어지는 단계다.",
+          "운영팀은 작은 대표 과제에서 어떤 문서를 읽었고 어떤 검사를 통과했는지 함께 남길 수 있다. 코드를 얻은 뒤에도 오류 상태와 키보드 이용, 실제 데이터에서의 배치를 확인해야 제품의 경험이 완성된다. 이번 제안의 의미는 모델에 모든 것을 맡기는 데보다 설계 결정을 읽을 수 있게 만들고, 현재 구현과 맞는지 지속적으로 확인하는 일에 있다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 AI용 디자인 시스템 정리 제안",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/how-make-design-system-ai-ready/"
+          },
+          {
+            "label": "아틀라시안의 구조화된 디자인 맥락 공식 사례",
+            "kind": "primary",
+            "url": "https://www.atlassian.com/blog/ai-at-work/teaching-ai-to-speak-our-design-language"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "명세·토큰·검사를 함께 제공해 선택 범위를 설명한다.",
+      "여러 전달 형식이 같은 구조화된 원천을 사용할 수 있다.",
+      "내부 평가와 자동 검사만으로 제품 품질을 보증하지 않는다."
+    ],
+    "tags": [
+      "디자인시스템",
+      "AI프로토타입",
+      "설계지침",
+      "디자인토큰",
+      "Atlassian"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 AI용 디자인 시스템 정리 제안",
+        "url": "https://smashingmagazine.com/2026/06/how-make-design-system-ai-ready/"
+      },
+      {
+        "label": "아틀라시안의 구조화된 디자인 맥락 공식 사례",
+        "url": "https://www.atlassian.com/blog/ai-at-work/teaching-ai-to-speak-our-design-language"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.atlassian.com/blog/ai-at-work/teaching-ai-to-speak-our-design-language"
+    ],
+    "notes": "6/3Smashing www전문 및 실제6/2Atlassianstructuredcontent 공식본문을WEB읽음. 원문FigmaLint효능/가격은독립시험없이전재안함. TS원천·MCP/skill/DESIGN.md·평가구조대조. 52%특정query와4.9%code등다른분모숫자혼동피해정량자체전재없음. 후보4018Figma유지·4aeWeave·b28Express는다른10/7월제품변경으로별도. 전체 pending 같은6/3정리글없음;후속AI-tools실용화와설계원천관리 구분.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "401820d2-af4b-4c6a-a717-0d4a2b11ee6d",
+    "4aefff42-80b6-4f22-9c7d-684e3b8e4c56",
+    "b28d7ab6-076e-4475-9d38-eb9b8cbcdbd0"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:57:26.961Z",
+    "checks": [
+      "6/3 제안과6/2 회사 사례 구분",
+      "스키마·원천과 전달 형식 대조",
+      "특정조회와 전체코드 개선률 혼동 없음",
+      "구현과 문서 갱신 경계 명시",
+      "피그마 유지/Weave·Express와 별도 사건"
+    ],
+    "relatedPendingIds": []
+  }
+}

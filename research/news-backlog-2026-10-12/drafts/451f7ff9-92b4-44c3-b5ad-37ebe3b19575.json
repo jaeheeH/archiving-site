@@ -1,0 +1,143 @@
+{
+  "id": "451f7ff9-92b4-44c3-b5ad-37ebe3b19575",
+  "article": {
+    "url": "https://updates.midjourney.com/midjourneys-first-acquisition/",
+    "title": "미드저니 첫 인수는 Co–Star… 제품과 디자인 조직을 넓힌다",
+    "summary": "미드저니가 점성술 서비스 Co–Star를 첫 인수 대상으로 발표했다. 창업자 Banu와 팀은 제품·디자인 조직에 합류하며 기존 서비스의 방향은 유지한다고 설명했다. 거래 조건보다 공개된 조직 구상과 개인화 서비스의 표현 방식을 중심으로 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "첫 인수에서 강조한 제품·디자인의 역할",
+        "kind": "reporting",
+        "paragraphs": [
+          "미드저니는 2026년 7월 23일 Co–Star를 첫 인수 대상으로 발표했다. 발표자는 Co–Star 창업자 Banu와 팀이 합류해 더 넓은 제품과 디자인 조직을 만드는 일을 돕는다고 설명한다. 이미지 모델의 새 버전이나 점성술 기능을 미드저니에 즉시 통합하는 발표는 아니다.",
+          "회사 글은 창업자와 5년 넘게 생각을 나누었다는 관계를 소개하며 기존 Co–Star 프로젝트가 Banu의 통제와 방향 아래 남는다고 밝혔다. 인수 금액과 지분 구조, 계약의 세부 조건은 공개하지 않았다. 새로운 자원과 팀을 제공한다는 설명을 서비스 가격 변경이나 이용자 데이터 통합의 확정 공지로 읽을 근거도 없다."
+        ],
+        "references": [
+          {
+            "label": "미드저니의 첫 인수 공식 발표",
+            "kind": "primary",
+            "url": "https://updates.midjourney.com/midjourneys-first-acquisition/"
+          }
+        ]
+      },
+      {
+        "heading": "이미지 제품을 넘어 연구 조직을 구상하다",
+        "kind": "reporting",
+        "paragraphs": [
+          "미드저니는 발표에서 여러 야심찬 프로젝트를 앞으로 약 6개월에 걸쳐 소개하려는 방향을 설명했다. Midjourney Medical을 그 시작의 사례로 언급하지만 인수 공지는 의료 제품의 효능이나 허가를 입증하는 자료가 아니다. 어떤 프로젝트가 출시됐고 무엇을 제공할지는 각각의 후속 발표에서 확인할 사안이다.",
+          "이번 합류의 이유는 회사가 더 넓은 조직을 만드는 데 도움이 필요하다는 구상과 연결된다. 공개된 내용은 제품과 디자인 역량을 넓히려는 인적·조직적 방향이며, Co–Star의 점성술 모델을 과학 연구의 방법으로 채택했다는 설명은 없다. 서로 다른 프로젝트가 한 조직에 속한다는 사실과 같은 판단 기준을 사용한다는 주장은 구분해야 한다."
+        ],
+        "references": [
+          {
+            "label": "미드저니의 첫 인수 공식 발표",
+            "kind": "primary",
+            "url": "https://updates.midjourney.com/midjourneys-first-acquisition/"
+          }
+        ]
+      },
+      {
+        "heading": "코스타가 소개하는 개인화된 언어",
+        "kind": "reporting",
+        "paragraphs": [
+          "Co–Star의 공식 소개는 출생 날짜와 시간, 장소를 바탕으로 천체 배치를 구성하고 현재의 행성 위치와 비교해 개인화된 점성술 내용을 전달하는 서비스라고 설명한다. 사람이 해석한 NASA 자료와 AI를 이용해 정보를 읽고 공유할 수 있는 언어로 바꾼다는 것이 회사가 밝힌 방식이다.",
+          "친구의 차트와 비교하거나 감정과 관계를 이야기하는 기능도 서비스의 자기소개에 포함된다. 이것은 Co–Star가 자신의 경험을 어떻게 정의하는지에 대한 자료다. 천체 위치 자료를 사용한다는 사실만으로 성격 분석이나 관계 예측의 과학적 정확성이 입증되지는 않는다. 이번 인수 공지에도 그러한 정확성을 검증한 연구나 임상 결과는 제시되지 않았다."
+        ],
+        "references": [
+          {
+            "label": "코스타의 공식 서비스·AI 활용 소개",
+            "kind": "primary",
+            "url": "https://www.costarastrology.com/about"
+          },
+          {
+            "label": "미드저니의 첫 인수 공식 발표",
+            "kind": "primary",
+            "url": "https://updates.midjourney.com/midjourneys-first-acquisition/"
+          }
+        ]
+      },
+      {
+        "heading": "결과를 만드는 모델과 의미를 전달하는 제품",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 인수의 공개된 목적에서 기술 결과를 이용자가 어떻게 받아들이는지가 중요해지는 흐름을 읽는다. 이미지를 생성할 수 있는 모델과 그 결과를 탐색하고 선택하는 제품은 같은 대상이 아니다. 어떤 입력을 받고 무엇을 보여주며 다음 행동으로 어떻게 연결할지는 인터페이스와 언어의 설계에 달려 있다.",
+          "Co–Star는 개인에게 말하는 문장과 공유 경험을 제품의 중심에 둔다고 소개한다. 미드저니가 이런 팀을 제품·디자인 조직에 연결한다는 발표는 개별 기능을 넘어 서비스 경험을 다룰 역량에 관심을 둔 선택으로 해석할 수 있다. 다만 이는 공개된 조직 설명에 대한 분석이며, 인수 후 전환율이나 이용 만족도가 높아졌다는 측정 결과가 아니다."
+        ],
+        "references": [
+          {
+            "label": "미드저니의 첫 인수 공식 발표",
+            "kind": "primary",
+            "url": "https://updates.midjourney.com/midjourneys-first-acquisition/"
+          },
+          {
+            "label": "코스타의 공식 서비스·AI 활용 소개",
+            "kind": "primary",
+            "url": "https://www.costarastrology.com/about"
+          }
+        ]
+      },
+      {
+        "heading": "조직의 확장과 서비스 변화는 따로 확인한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "첫 인수라는 사건은 회사의 방향을 보여주지만 이용자에게 어떤 변화가 생길지는 아직 다른 질문이다. 기존 서비스의 독립적인 방향을 유지한다는 설명이 있다면 실제 통합 제품을 예고한 것으로 확대하기 어렵다. 후속 발표에서는 서비스 운영과 가격, 개인정보 처리, 새로운 기능을 각각 확인할 필요가 있다.",
+          "점성술처럼 개인적 의미를 찾는 서비스와 연구 프로젝트를 함께 다룰수록 주장마다 근거의 종류도 달라진다. 이용자가 공감하는 표현은 경험의 단서가 될 수 있으나 예측의 정확성이나 의료적 유효성의 증거가 되지는 않는다. 이번 소식의 확인 가능한 중심은 Co–Star 팀의 합류와 제품·디자인 조직 확장이다. 그 범위를 보존해야 아직 발표되지 않은 기능과 성과를 구분할 수 있다.",
+          "다양한 서비스를 한 조직에서 만드는 경우에는 제품마다 사용자에게 설명해야 할 기대도 달라진다. 놀이와 자기 성찰을 위한 표현인지 검증 가능한 결과를 전달하는 도구인지가 드러나야 한다. 새 팀이 합류했다는 사실보다 앞으로 어떤 제품에서 그 설명과 선택의 구조가 달라지는지가 조직 확장의 구체적인 결과를 보여줄 것이다."
+        ],
+        "references": [
+          {
+            "label": "미드저니의 첫 인수 공식 발표",
+            "kind": "primary",
+            "url": "https://updates.midjourney.com/midjourneys-first-acquisition/"
+          },
+          {
+            "label": "코스타의 공식 서비스·AI 활용 소개",
+            "kind": "primary",
+            "url": "https://www.costarastrology.com/about"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "미드저니는 첫 인수로 Co–Star와 창업자·팀의 합류를 발표했다.",
+      "기존 Co–Star의 방향 유지와 제품·디자인 조직 확장이 공개된 핵심이다.",
+      "거래 금액·제품 통합·과학적 정확성은 인수 발표에서 입증되지 않았다."
+    ],
+    "tags": [
+      "Midjourney",
+      "CoStar",
+      "제품디자인"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "미드저니의 첫 인수 공식 발표",
+        "url": "https://updates.midjourney.com/midjourneys-first-acquisition/"
+      },
+      {
+        "label": "코스타의 공식 서비스·AI 활용 소개",
+        "url": "https://www.costarastrology.com/about"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://updates.midjourney.com/midjourneys-first-acquisition/",
+      "https://www.costarastrology.com/about"
+    ],
+    "notes": "인수 공식공지 전문·CoStar About 직접 웹확인. Banu/팀합류·Product Design 조직·기존서비스방향유지·6개월 프로젝트계획을 공개범위로만 표현. 금액/지분/데이터통합/서비스가격추정없음. NASA천체자료 활용이 점성술 과학성/의료효능 입증아님을 구분, 의료세부효능/진단조언 없음. 원문과 공식소개 문구의 전체번역 아닌 독자적 분석. snapshot.pending 동일CoStar acquisition단일·후보0, 모델버전/기타점성술사건없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:58:47.805Z",
+    "checks": [
+      "첫 인수·팀 합류·서비스 방향 유지 원문 대조",
+      "미공개 거래 조건·제품 통합 추정 없음",
+      "천체 자료와 점성술 정확성·의료 효능 구분",
+      "전체 pending의 같은 인수 사건 없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

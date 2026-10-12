@@ -1,3 +1,4 @@
+import { matchesSearch } from './search-text';
 import type { NewsArticle } from './news-record';
 import { CATEGORIES } from './news-feeds';
 export type NewsSummary = Omit<NewsArticle, 'paragraphs' | 'points' | 'source_text'>;
@@ -8,7 +9,7 @@ export function newsPage(articles: NewsSummary[], filters: NewsFilters) {
   const q = (filters.q || '').slice(0, 100).trim();
   const source = (filters.source || '').slice(0, 100);
   const collection = (filters.collection || '').slice(0, 100);
-  const filtered = articles.filter(a => (category === 'all' || a.category === category) && (!source || a.source === source) && (!collection || a.collection === collection) && `${a.title} ${a.description} ${a.source} ${a.tags.join(' ')}`.toLowerCase().includes(q.toLowerCase()));
+  const filtered = articles.filter(a => (category === 'all' || a.category === category) && (!source || a.source === source) && (!collection || a.collection === collection) && matchesSearch(q, [a.title, a.description, a.source, a.original_title, ...a.tags]));
   const totalPages = Math.max(1, Math.ceil(filtered.length / NEWS_PAGE_SIZE));
   const requestedPage = Math.min(10000, Math.max(1, Number.parseInt(String(filters.page || 1), 10) || 1));
   const page = Math.min(requestedPage, totalPages);

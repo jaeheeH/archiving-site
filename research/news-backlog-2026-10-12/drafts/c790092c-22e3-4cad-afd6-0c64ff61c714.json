@@ -1,0 +1,151 @@
+{
+  "id": "c790092c-22e3-4cad-afd6-0c64ff61c714",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/06/impact-humanoid-robots-humanity/",
+    "title": "휴머노이드의 사회적 영향을 묻는 칼럼… 사람다운 외형과 검증된 작업 능력을 구분하다",
+    "summary": "캐리 웹스터는 휴머노이드가 사람과 비슷해질 때 관계·신뢰·일에 어떤 변화가 생길지 질문했다. BMW와 피규어 AI의 공식 배치 기록은 특정 공정에서의 성과를 보여 주지만 가정용 만능 로봇이나 인간과 구별할 수 없는 외형의 보급을 입증하지 않는다.",
+    "paragraphs": [
+      {
+        "heading": "사람과 닮은 기계가 던지는 사회적 질문",
+        "kind": "reporting",
+        "paragraphs": [
+          "사용자 중심 디자인 경력을 가진 캐리 웹스터는 스매싱 매거진의 의견 칼럼에서 휴머노이드 로봇의 사회적 영향을 다뤘다. 출발점은 매우 사실적인 로봇처럼 보였지만 실제로는 사람 배우로 바꿔 놓은 장면이 포함된 영상이다. 저자도 이 속임수를 인정하며, 그 경험을 미래에 인간과 기계의 경계를 구별하기 어려워질 가능성을 질문하는 계기로 삼았다.",
+          "칼럼은 위험하고 반복적인 일을 덜어 줄 가능성과 함께 사회적 고립, 일자리 전환, 정체성을 사칭하는 악용에 대한 우려를 제시한다. 이 부분은 앞으로의 가능성을 논의한 의견이며 특정 시점에 실제로 그런 피해가 발생했다는 조사 결과가 아니다. 인간과 거의 같은 로봇이 곧 대중화된다는 확정된 일정도 제시하지 않는다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/impact-humanoid-robots-humanity/"
+          }
+        ]
+      },
+      {
+        "heading": "공식 기록이 확인하는 산업 현장의 범위",
+        "kind": "reporting",
+        "paragraphs": [
+          "BMW그룹의 2월 공식 발표에 따르면 피규어 AI의 Figure02는 2025년 미국 스파턴버그 공장에서 판금 부품을 꺼내 용접용 위치에 놓는 시험 작업을 수행했다. BMW는 10개월 동안 X3 차량 3만 대 이상 생산에 기여했고 약 1250시간 가동했다고 설명했다. 자동차 전체를 로봇이 혼자 제작했다는 의미가 아니라 특정 공정의 기여 기록이다.",
+          "피규어 AI도 2025년 11월 배치 결과를 발표하면서 Figure03 출시 뒤 Figure02의 퇴역을 시작하고 BMW의 장비를 본사로 돌려보낸다고 밝혔다. 따라서 그 기록을 Figure02가 현재 같은 공정에서 계속 운영되고 있다는 주장으로 옮겨서는 안 된다. 두 발표는 운영 당사자의 설명이며 독립 기관이 모든 작업 조건을 실증한 결과와 구별된다."
+        ],
+        "references": [
+          {
+            "label": "BMW그룹의 휴머노이드 생산 시험 공식 발표",
+            "kind": "primary",
+            "url": "https://www.press.bmwgroup.com/global/article/detail/T0455864EN/"
+          },
+          {
+            "label": "피규어 AI의 Figure02 BMW 배치 결과·퇴역 발표",
+            "kind": "primary",
+            "url": "https://www.figure.ai/news/production-at-bmw"
+          }
+        ]
+      },
+      {
+        "heading": "자동화의 능력은 작업과 환경에 붙어 있다",
+        "kind": "analysis",
+        "paragraphs": [
+          "공장의 반복 작업은 로봇을 평가하기에 구체적인 단위를 제공한다. 다루는 부품과 위치, 주변 설비, 성공 조건을 정의할 수 있기 때문이다. 같은 외형의 장비라도 가정에서 낯선 물건을 찾고 사람 사이를 이동하는 일은 조건이 달라진다. 한 공정의 결과를 일상생활 전체의 능력으로 확장하지 않는 것이 기술 보도를 읽는 출발점이다.",
+          "실제 도입에서 중요한 질문도 얼마나 사람처럼 보이는지와 별개다. 업무를 수행하는 중에 장애가 생기면 누가 개입하는지, 기존 설비와 어떤 방식으로 연결되는지, 작업자를 위해 어떤 절차를 마련하는지를 확인해야 한다. 사용자가 기대하는 일을 분명히 정하면 불필요한 의인화보다 작업 범위와 책임을 중심으로 경험을 설계할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "BMW그룹의 휴머노이드 생산 시험 공식 발표",
+            "kind": "primary",
+            "url": "https://www.press.bmwgroup.com/global/article/detail/T0455864EN/"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/impact-humanoid-robots-humanity/"
+          }
+        ]
+      },
+      {
+        "heading": "외형의 친근함과 신뢰의 근거는 다르다",
+        "kind": "analysis",
+        "paragraphs": [
+          "인간과 닮은 표정과 말투는 행동을 쉽게 해석하게 할 수 있지만 기계가 실제로 이해하거나 돌봄의 책임을 맡는다는 증거는 아니다. 사용자가 말을 따라 행동할 때는 무엇을 관찰했고 어떤 정보로 답하는지, 어떤 일까지 수행할 수 있는지가 드러나야 한다. 외형이 만든 기대와 제공하는 기능이 어긋나면 사용 경험의 문제가 생긴다.",
+          "특히 개인 공간에 들어오는 제품을 설계한다면 함께 사는 다른 사람의 경험도 고려할 수 있다. 명령한 사용자 외에 방문자나 가족이 어떤 장비인지 알아보고, 촬영이나 실행 상태를 이해할 수 있는지 살피는 과제다. 이는 특정 미래 피해를 확정하는 주장이 아니라 물리적 기계가 여러 사람의 환경을 공유한다는 사실에서 나오는 설계 질문이다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/impact-humanoid-robots-humanity/"
+          }
+        ]
+      },
+      {
+        "heading": "미래의 규칙 제안과 지금의 검증을 분리하다",
+        "kind": "reporting",
+        "paragraphs": [
+          "웹스터는 물리적 비상 정지, 기계임을 알 수 있는 표식, 자동화로 생긴 부를 전환 지원에 쓰는 방안 등을 제안한다. 이는 저자의 사회적 제안이며 모든 국가에서 시행 중인 의무를 설명한 것은 아니다. 칼럼의 질문은 기술을 허용할지의 단순한 선택보다 사람에게 도움이 되는 이용 조건을 어떻게 만들지에 있다.",
+          "이 논의를 실제 제품 평가에 연결하려면 현재 확인된 작업과 앞으로 바라는 능력을 따로 적는 방식이 유용하다. 공장 배치의 가동 기록은 구체적인 출발점이지만 관계와 돌봄, 고용 변화의 결론을 대신하지 못한다. 각 기대에 맞는 근거를 구하면 산업 실험과 사회적 전망을 한 장면의 인상으로 묶는 일을 줄일 수 있다.",
+          "결국 휴머노이드의 영향은 외형의 정교함 하나로 평가하기 어렵다. 로봇이 맡는 과업, 함께 일하는 사람의 역할, 잘못된 동작을 확인하고 멈추는 경로가 함께 설계되어야 한다. 칼럼의 상상은 이런 질문을 앞당길 수 있으며, 공식 배치 자료는 그 질문 중 지금 어느 부분을 제한적으로 검토할 수 있는지 보여 준다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/impact-humanoid-robots-humanity/"
+          },
+          {
+            "label": "BMW그룹의 휴머노이드 생산 시험 공식 발표",
+            "kind": "primary",
+            "url": "https://www.press.bmwgroup.com/global/article/detail/T0455864EN/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "원문은 미래의 사회적 영향을 질문하는 의견 칼럼이며 영상의 배우 전환을 저자도 인정한다.",
+      "BMW의3만대 생산 기여는2025년 특정 판금 공정의 당사자 기록이다.",
+      "Figure02의퇴역 기록과 산업 작업의 범위를 보존하며 가정용 만능 능력으로 확장하지 않았다."
+    ],
+    "tags": [
+      "휴머노이드",
+      "로봇",
+      "사용자경험",
+      "자동화"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 원출처 개발 사례",
+        "url": "https://smashingmagazine.com/2026/06/impact-humanoid-robots-humanity/"
+      },
+      {
+        "label": "BMW그룹의 휴머노이드 생산 시험 공식 발표",
+        "url": "https://www.press.bmwgroup.com/global/article/detail/T0455864EN/"
+      },
+      {
+        "label": "피규어 AI의 Figure02 BMW 배치 결과·퇴역 발표",
+        "url": "https://www.figure.ai/news/production-at-bmw"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.press.bmwgroup.com/global/article/detail/T0455864EN/",
+      "https://www.figure.ai/news/production-at-bmw"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처비-www WEB실패뒤www전문26~115행확인. OpinionColumn명시,영상은저자도humanactor swaptrick 인정하므로실제인간구별불가robot증거아님. 원문의10~20년전망·일자리수백만대체·불쾌한골짜기회피보장·스스로완벽학습·모든로봇배터리/가격등미검증일반화제외. BMW2026-02-27공식2025스파턴버그10개월Figure02판금용접공정기여3만X3/약1250시간을당사자귀속. Figure2025-11-19는11개월전체배치와6개월daily실행설명,퇴역/본사복귀기록확인;서로기간을마구동일시안함. 제안한정지/ID/경제안전망을현행규정으로표현안함. post.candidates0건과snapshot.pending전체 및a026NVIDIA물리AI안전비교:이번은웹스터휴머노이드사회적디자인칼럼으로별도사건/논점.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:19:55.823Z",
+    "checks": [
+      "원문은 Carrie Webster의 의견 칼럼이며 소개 영상의 배우 교체를 인정한다.",
+      "BMW 공식자료는2025년판금부품배치공정의기여와10개월·3만대·약1250시간을설명한다.",
+      "Figure AI는2025년11월Figure02퇴역과BMW장비본사복귀를명시했다.",
+      "공장성과를완전한차량제조나가정용만능로봇실증으로확장하지않았다.",
+      "칼럼의기계식별·비상정지·경제정책제안은현행법령으로주장하지않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

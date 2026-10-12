@@ -1,0 +1,147 @@
+{
+  "id": "7cad5b2a-2e23-49cd-bf59-0f80c89a09c7",
+  "article": {
+    "url": "https://blog.google/products-and-platforms/products/education/teacher-stories-gemini-middle-school/",
+    "title": "중학교 기술 교사의 AI 수업 관점… 준비는 Gemini로, 판단은 학생이",
+    "summary": "미국 기술 교사 Kavita Khanna가 Gemini로 계획과 수준별 수업을 준비하면서 학생에게 질문과 추론을 강조하는 경험을 공개했다. 글은 AI를 보는 두려움을 줄이고 비판적 사고를 앞세운다는 교육관을 담는다. 계정 접근 설정과 생성 응답의 한계를 대조해 공개 경험의 범위를 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "준비 시간과 교실의 질문을 함께",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 5일 미국 캘리포니아주 Hayward의 Impact Academy of Arts and Technology에서 6·7학년 기술 선택 과목을 가르치는 Kavita Khanna의 경험을 공개했다. 작성자는 25년 전 인도에서 교직을 시작했을 때 기본적인 컴퓨터 사용이 교실 기술의 중심이었다고 회고한다. 현재는 Gemini로 수업 계획과 학생 수준에 맞춘 활동을 준비하고 관련 자료를 Drive에 보관한다고 설명한다. 이전보다 준비가 빨라졌다는 것은 작성자의 경험 평가다. 절감한 시간이나 자료의 개수, 같은 수업을 다른 도구로 준비한 비교 결과는 제시되지 않았다. 학생에게 AI 사용 모습을 보여 주는 일은 낯선 기술에 대한 두려움을 줄이는 데 도움이 된다고 평가하며, 사고의 중심에는 사람의 추론과 질문이 있어야 한다는 교육관을 강조했다. 이 짧은 글은 학습 효과를 측정한 연구보다 교사가 기술의 역할을 학생에게 설명하는 관점을 소개한다."
+        ],
+        "references": [
+          {
+            "label": "Kavita Khanna의 중학교 AI 교육 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/teacher-stories-gemini-middle-school/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "접근 권한과 응답의 한계는 별도 정보",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글의 학교 계정 도움말은 관리자가 교사와 학생 계정을 만들고 관리하며 서비스 접근과 연령별 권한을 설정한다고 설명한다. 추가 서비스 이용에는 해당 조건의 보호자 동의가 필요할 수 있다는 범위도 안내한다. 따라서 교실에서 AI를 보여 준 경험이 모든 학생의 개인 이용 권한을 설명하는 것은 아니다. Khanna의 원문도 학생의 정확한 계정 설정을 공개하지 않는다. Gemini 응답의 공식 도움말은 생성 결과가 부정확하거나 부적절할 수 있으며 모델이 자신의 학습 방식과 작동 과정을 설명할 때에도 사실처럼 잘못 말할 수 있다고 적었다. 모델이 유창하게 답한 설명만으로 그 도구의 능력이나 구조를 확정할 수 없다는 관련 자료다. 원문의 Drive 보관 언급을 모든 자료의 보안 설정이 검증됐다는 의미로 바꾸지도 않는다. 제품 접근을 관리하는 일과 학생이 응답을 해석하는 일은 서로 다른 층의 조건으로 남아 있다."
+        ],
+        "references": [
+          {
+            "label": "학교 계정의 관리자·연령별 접근 공식 안내",
+            "url": "https://support.google.com/edu/classroom/answer/11081157?hl=en",
+            "kind": "primary"
+          },
+          {
+            "label": "Gemini 응답의 부정확성과 자기 설명 한계",
+            "url": "https://support.google.com/gemini/answer/16279220?hl=en",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "도구에 익숙해지는 것과 판단하는 것",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 AI의 화면을 보여 주는 행동과 비판적으로 생각하도록 돕는 행동을 연결하되 같은 결과로 보지는 않는다. 낯선 기술이 어떻게 반응하는지 알면 질문을 시작하기 쉬울 수 있다. 그러나 익숙함만으로 답의 근거를 판단하는 능력이 생기는 것은 아니다. 학생은 같은 질문을 다르게 표현했을 때 어떤 설명이 바뀌는지 살피거나, 답에 포함된 주장 중 수업 자료로 확인할 수 있는 부분을 골라볼 수 있다. 이는 원문에 공개된 구체적 활동지가 아니라 작성자가 강조한 질문과 추론을 수업 설계로 해석한 분석이다. 자신이 왜 답을 받아들이거나 수정했는지 설명할 수 있을 때 단순한 도구 사용과 판단의 차이가 보인다. 교사가 앞에서 AI를 시연하는 방식은 이런 질문을 드러낼 기회를 주지만 학습의 변화를 확인하려면 학생의 설명을 함께 살펴야 한다. 두려움이 줄었다는 경험과 검토 능력이 향상됐다는 측정 결과를 구분해야 하는 이유다."
+        ],
+        "references": [
+          {
+            "label": "Kavita Khanna의 중학교 AI 교육 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/teacher-stories-gemini-middle-school/",
+            "kind": "primary"
+          },
+          {
+            "label": "Gemini 응답의 부정확성과 자기 설명 한계",
+            "url": "https://support.google.com/gemini/answer/16279220?hl=en",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "수준별 준비 이후에 남는 교사의 선택",
+        "kind": "analysis",
+        "paragraphs": [
+          "수준에 맞춘 수업을 빨리 준비하는 일도 결과물을 받은 뒤의 선택을 포함한다. 학생이 어려워하는 표현을 바꾸거나 활동의 순서를 조절하는 것은 단순히 과제를 짧게 만드는 것과 다르다. 그 선택이 어떤 학생의 어떤 필요를 겨냥하는지 교사가 알고 있어야 수업의 목적과 연결된다. 생성 모델이 여러 후보를 만들 수 있어도 학생의 반응을 모두 아는 것은 아니므로 준비 단계의 편의가 수업 전체의 적합성을 대신하지 않는다. 이번 경험담은 준비 업무를 도구에 나누고 교실에서는 인간의 사고를 앞세우려는 한 교사의 입장을 보여준다. 사례를 다른 학교에 적용할 때에는 계정의 사용 조건뿐 아니라 학생에게 무엇을 질문하게 할지, 교사가 어떤 응답을 선택하고 바꿀지 함께 정해야 한다. 후속 기록에서 절감한 시간과 학생의 추론이 각각 어떻게 관찰됐는지 드러난다면 준비 효율과 교육 목표의 관계를 더 구체적으로 살필 수 있을 것이다."
+        ],
+        "references": [
+          {
+            "label": "Kavita Khanna의 중학교 AI 교육 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/teacher-stories-gemini-middle-school/",
+            "kind": "primary"
+          },
+          {
+            "label": "학교 계정의 관리자·연령별 접근 공식 안내",
+            "url": "https://support.google.com/edu/classroom/answer/11081157?hl=en",
+            "kind": "primary"
+          },
+          {
+            "label": "Gemini 응답의 부정확성과 자기 설명 한계",
+            "url": "https://support.google.com/gemini/answer/16279220?hl=en",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "계획·수준별 수업의 준비 시간 절감은 Khanna의 경험 평가다.",
+      "학생에게 AI를 보여 주는 활동과 학생 계정의 직접 접근 권한은 구분된다.",
+      "공식 도움말은 Gemini가 자기 작동 방식도 잘못 설명할 수 있다고 안내한다."
+    ],
+    "tags": [
+      "Gemini",
+      "중학교",
+      "비판적사고",
+      "수업준비",
+      "AI교육"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "Kavita Khanna의 중학교 AI 교육 경험 원문",
+        "url": "https://blog.google/products-and-platforms/products/education/teacher-stories-gemini-middle-school/"
+      },
+      {
+        "label": "학교 계정의 관리자·연령별 접근 공식 안내",
+        "url": "https://support.google.com/edu/classroom/answer/11081157?hl=en"
+      },
+      {
+        "label": "Gemini 응답의 부정확성과 자기 설명 한계",
+        "url": "https://support.google.com/gemini/answer/16279220?hl=en"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/products-and-platforms/products/education/teacher-stories-gemini-middle-school/",
+      "https://support.google.com/edu/classroom/answer/11081157?hl=en",
+      "https://support.google.com/gemini/answer/16279220?hl=en"
+    ],
+    "notes": "원문·학교접근공식문서·Gemini응답공식한계웹확인.KavitaKhanna6/7techImpactHayward/25yearsIndia/lessonplan-differentiationDriveprep.시간분모·fearreduction측정없는경험귀속.교사시연학생직접access아님,Drive보관보안감사아님.응답자기설명hallucination공식확인.후보10및snapshot.pending전체제목URL교사10개대조본중학비판사고관점별개.제안활동은analysis가정실교안아님.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "1b26d953-c1ba-4eb9-baf3-6bba7f7bc9bb",
+    "3564e5a1-5821-49ef-bd96-912e5c73a483",
+    "3f96b1c3-6b91-42c6-a276-a72f4e691fe8",
+    "6a15a15c-65e2-411f-847a-f51c003cbab0",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "ec323858-ca4e-442e-96d0-a114cb836a2c",
+    "f902e8f3-2cfc-4931-9ea9-73956faaae60"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:48:58.632Z",
+    "checks": [
+      "교사·학교·6/7학년원문확인",
+      "절감·두려움감소경험을시험결과로확대안함",
+      "학생계정·관리자·연령접근조건대조",
+      "공식자기설명부정확성확인",
+      "후보10·전체pending동일교사관점없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

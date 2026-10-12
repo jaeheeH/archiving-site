@@ -1,0 +1,155 @@
+{
+  "id": "76b9824e-0c05-45b5-a875-891cf61c1e9e",
+  "article": {
+    "url": "https://blog.developer.adobe.com/en/publish/2026/07/uxp-changelog-and-support-matrix",
+    "title": "어도비 UXP 9.x 변경 기록, 기능 버전과 호스트 앱 지원을 나눠 확인해야",
+    "summary": "어도비가 UXP 9.0~9.4 변경 사항과 앱별 지원표를 정리했다. 예외 보고의 선택 활성화, macOS 한정 기능과 웹뷰 프레임 경계 등 조건을 확인하고 실제 배포 앱의 런타임을 대조해야 한다.",
+    "paragraphs": [
+      {
+        "heading": "런타임 기능과 제품 배포표를 함께 제공한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "어도비 개발자 블로그는 UXP 9.0부터 9.4까지의 변경 사항과 Photoshop·Premiere·InDesign의 지원표를 모아 공개했다. UXP는 여러 크리에이티브 앱의 플러그인이 사용하는 공통 실행 기반이지만 새 런타임이 각 앱에 들어가는 시점은 다르다. 변경 기록에 기능이 보인다는 사실과 사용자가 설치한 앱에서 그 기능을 쓸 수 있다는 사실을 구분하는 자료다.",
+          "공식 변경 기록도 새 UXP 버전이 이후 Creative Cloud 앱 릴리스에 반영되기까지 시간이 걸린다고 설명한다. 원문의 표에서는 UXP 9.3.0을 Photoshop 27.7, Premiere 26.3과 InDesign 21.4에 대응시켰으며 9.4.0 행의 세 앱은 비어 있다. 이는 해당 표가 안내하는 대응 관계이고, 모든 앱의 현재 배포가 9.4로 통일됐다는 뜻은 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/07/uxp-changelog-and-support-matrix"
+          },
+          {
+            "label": "어도비 UXP 공식 변경 기록",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/uxp/uxp-api/changelog"
+          }
+        ]
+      },
+      {
+        "heading": "9.4 예외 보고는 선택 활성화다",
+        "kind": "reporting",
+        "paragraphs": [
+          "UXP 9.4 변경 기록은 queueMicrotask, 웹뷰 탐색 응답의 HTTP 상태 코드와 CSS text-decoration 지원 확대를 포함한다. 처리되지 않은 JavaScript 예외와 Promise 거절을 진단 목적으로 수집·보고하는 기능도 추가됐지만, 전환 기간에는 매니페스트의 uncaughtException·unhandledRejection 플래그로 선택 활성화하는 조건이라고 설명한다.",
+          "따라서 런타임을 올리기만 하면 모든 기존 플러그인의 진단 설정이 같은 방식으로 켜진다고 읽어서는 안 된다. 같은 버전의 수정 목록에는 Windows의 UNC 경로를 웹뷰와 영상 속성에서 처리하는 문제, 콘텐츠와 크기 조합에 따른 대화상자 크기 변경 문제도 있다. 기능 추가와 오류 수정의 적용 범위를 각각 살펴볼 수 있다."
+        ],
+        "references": [
+          {
+            "label": "어도비 UXP 공식 변경 기록",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/uxp/uxp-api/changelog"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/07/uxp-changelog-and-support-matrix"
+          }
+        ]
+      },
+      {
+        "heading": "운영체제와 문서 경계의 조건도 바뀐다",
+        "kind": "reporting",
+        "paragraphs": [
+          "9.3의 영상 poster 속성 지원은 macOS에 한정된다. 또 웹뷰의 uxpHost 객체를 최상위 문서로 제한해 하위 프레임은 플러그인 메시지 API에 접근하지 못하게 했다. 9.2에는 절전과 복귀 이벤트가 추가됐다. 이런 항목은 단순히 새 API 이름을 확인하는 것보다 운영체제와 실행 문맥의 조건을 알아야 활용할 수 있는 변경이다.",
+          "원문은 새 런타임을 호스트의 공개 베타와 사전 릴리스에서 먼저 확인하는 경로도 안내한다. 공개 베타는 Creative Cloud에서 본 제품과 나란히 설치할 수 있지만, 사전 릴리스는 참여와 비밀유지 조건이 붙는다. 특히 Photoshop의 사전 릴리스는 초대 방식으로 설명된다. 베타에서 시험했다는 사실을 정식 제품 전체의 지원 확인으로 바꾸면 안 된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/07/uxp-changelog-and-support-matrix"
+          },
+          {
+            "label": "어도비 UXP 공식 변경 기록",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/uxp/uxp-api/changelog"
+          }
+        ]
+      },
+      {
+        "heading": "지원 범위를 앱·런타임·OS로 기록한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "여러 앱을 지원하는 플러그인은 같은 소스라도 실제 실행 기반이 다를 수 있다. 최소 지원 앱과 그 안의 UXP 버전, 운영체제를 함께 기록하면 새 기능을 사용할 경계를 구체적으로 정할 수 있다. 필요한 API가 없는 환경에서는 기존 경로를 유지할지 지원 최소 버전을 높일지 결정해야 하므로, 최신 런타임의 기능 목록만 보고 계획을 세우기는 어렵다.",
+          "하위 프레임의 메시지 접근 변경은 특히 실행 위치를 확인할 계기다. UI가 웹뷰 안에서 여러 문서로 나뉘어 있다면 어느 문서가 호스트에 메시지를 보내는지 살펴볼 수 있다. 메시지가 통과하지 않는 문제를 일반적인 로딩 실패로만 조사하면 원인을 놓칠 수 있다. 문서 경계의 계약을 알고 대표 통신 흐름을 시험하는 편이 변경의 영향을 더 정확히 확인한다."
+        ],
+        "references": [
+          {
+            "label": "어도비 UXP 공식 변경 기록",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/uxp/uxp-api/changelog"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/07/uxp-changelog-and-support-matrix"
+          }
+        ]
+      },
+      {
+        "heading": "베타 검증과 운영 진단을 연결한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "베타에서의 확인은 새 기능을 일찍 써 보는 일뿐 아니라 기존 동작이 바뀌는지 살피는 과정이기도 하다. 문서 열기, 영상 표시와 대화상자 같은 대표 작업을 현재 지원 버전과 나란히 실행하면 새 런타임에 의존하는 차이를 찾기 쉽다. 공개 베타와 제한된 사전 릴리스의 접근 조건이 다르다는 점도 팀의 검증 일정을 정할 때 반영해야 한다.",
+          "선택형 예외 보고는 진단을 강화하는 도구지만 오류를 예방하거나 자동으로 수정하는 기능과는 다르다. 어떤 예외가 발생했는지의 정보와 사용자가 수행한 작업을 연결할 수 있어야 실제 수정으로 이어진다. 이번 자료의 유용성은 버전 숫자를 한 줄로 요약하는 데보다 기능·플랫폼 조건과 배포 경로를 같은 기준으로 대조할 수 있게 한 데 있다."
+        ],
+        "references": [
+          {
+            "label": "어도비 UXP 공식 변경 기록",
+            "kind": "primary",
+            "url": "https://developer.adobe.com/uxp/uxp-api/changelog"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.developer.adobe.com/en/publish/2026/07/uxp-changelog-and-support-matrix"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "런타임의 변경 기록과 실제 호스트 앱의 포함 버전은 별도로 확인한다.",
+      "9.4 예외·Promise거절 보고는 매니페스트 플래그로 선택 활성화한다.",
+      "macOS 한정 poster와 최상위 문서만의 uxpHost 접근 등 조건이 있다."
+    ],
+    "tags": [
+      "어도비",
+      "UXP",
+      "호환성",
+      "플러그인"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.developer.adobe.com/en/publish/2026/07/uxp-changelog-and-support-matrix"
+      },
+      {
+        "label": "어도비 UXP 공식 변경 기록",
+        "url": "https://developer.adobe.com/uxp/uxp-api/changelog"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.developer.adobe.com/en/publish/2026/07/uxp-changelog-and-support-matrix",
+      "https://developer.adobe.com/uxp/uxp-api/changelog"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원문 WEB220줄의 changelog·matrix·beta/prerelease 전체를 읽었고 공식 UXPchangelog377줄중9.x를대조했다. matrix열순서Photoshop/Premiere/InDesign와9.3=27.7/26.3/21.4,9.4대시를확인해모든앱9.4GA로쓰지않았다. queueMicrotask/WebViewHTTPstatus/예외플래그optin·posterMacOSonly·uxpHostmaindoc조건을포함했다. 공개Beta와NDAprerelease를구분했다. 잘못추정한uxp-versionsURL은notaccessible실패했고 실제UXPHub링크를따라공식changelog를확인했다. candidates빈목록 및 snapshot.pending 전체UXP/Bolt/Photoshop검토글과대조해runtime여러버전정리사건은호스트UI변경안내·개별ESLint패키지와별도내용이다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:46:49.470Z",
+    "checks": [
+      "예외보고는featureFlags선택활성화이며예방/자동수정아님을확인했다.",
+      "원문matrix의9.4호스트미표기와9.3대응을정확히한정했다.",
+      "poster는macOS한정이고uxpHost하위프레임접근제한을확인했다.",
+      "공개베타병렬설치와NDA/초대사전릴리스조건을구분했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

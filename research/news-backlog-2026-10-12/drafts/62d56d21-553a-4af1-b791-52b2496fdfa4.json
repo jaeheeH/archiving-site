@@ -1,0 +1,155 @@
+{
+  "id": "62d56d21-553a-4af1-b791-52b2496fdfa4",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/05/rethinking-experience-system-tools/",
+    "title": "정리 완료 뒤에 무엇이 달라졌나…시스템 관리 도구의 경험을 다시 설계하기",
+    "summary": "맥포 디자이너 키릴로 레바쇼프가 시스템 관리 도구에서 언어·진행·완료의 경험을 함께 설계하자고 제안했다. CleanMyMac 개편과 접근성 발표를 대조하면, 시각적 만족감보다 실제 변화와 사용자 선택을 이해할 수 있는 화면이 중요한 과제로 남는다.",
+    "paragraphs": [
+      {
+        "heading": "관리 기능과 그것을 이해하는 화면",
+        "kind": "reporting",
+        "paragraphs": [
+          "맥포의 리드 제품 디자이너 키릴로 레바쇼프가 5월 5일 스매싱 매거진에 시스템 도구의 사용 경험을 다루는 글을 공개했다. 컴퓨터를 정리하거나 관리하는 기능뿐 아니라, 사용자가 무엇을 해야 하는지 이해하고 결과를 확인하는 과정도 제품의 일부라는 제안이다. 원문에는 맥포가 후원한 글이라는 표시가 있으므로 회사의 설계 관점과 독립적인 효과 검증을 구분해 읽어야 한다.",
+          "필자는 복잡한 기능을 일상적인 언어로 설명하고, 진행 중인 작업과 영향이 보이게 하며, 처리가 끝난 순간까지 설계하는 세 가지 방향을 제시한다. 기능이 끝났다는 알림과 컴퓨터가 어떤 상태가 됐는지 이해하는 일은 다르다는 문제의식이다. 다만 이 글은 애니메이션을 넣으면 처리 속도가 빨라진다는 실험 결과를 제시한 자료는 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 시스템 도구 경험 해설",
+            "kind": "primary",
+            "url": "https://smashingmagazine.com/2026/05/rethinking-experience-system-tools/"
+          }
+        ]
+      },
+      {
+        "heading": "2024년 개편에서 확인되는 관리 범위",
+        "kind": "reporting",
+        "paragraphs": [
+          "레바쇼프는 2024년의 CleanMyMac 개편을 자신의 설계 사례로 설명한다. 회사가 2024년 10월 공개한 발표에서는 작업을 타일로 구성하고 스마트 케어에서 정리·앱 업데이트·보안 확인·성능 관리 등의 루틴을 묶었다고 소개했다. 사용자에게 보여주는 기능의 조직과 실제 수행하는 관리 작업을 함께 바꿨다는 회사의 설명이다.",
+          "공식 발표는 성능 관리에서 로그인 항목과 백그라운드 항목을 다루고, 앱 관리에서는 제거 후 남는 파일과 업데이트를 확인한다고 안내한다. 마이 클러터는 크거나 오래된 파일, 중복 자료나 유사 이미지를 검토하는 영역이다. 회사는 무엇을 남기고 지울지 사용자가 결정하는 구조로 설명한다. 정리 후보가 발견됐다는 사실을 그 파일이 불필요하다고 확정한 판단과 동일하게 볼 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 시스템 도구 경험 해설",
+            "kind": "primary",
+            "url": "https://smashingmagazine.com/2026/05/rethinking-experience-system-tools/"
+          },
+          {
+            "label": "맥포의 2024년 CleanMyMac 개편 발표",
+            "kind": "primary",
+            "url": "https://macpaw.com/news/introducing-new-cleanmymac"
+          }
+        ]
+      },
+      {
+        "heading": "만족스러운 완료와 동작을 줄일 선택",
+        "kind": "reporting",
+        "paragraphs": [
+          "원문은 색과 깊이, 움직이는 아이콘과 입체적인 표현을 사용해 관리 작업의 결과를 전달한 사례를 소개한다. 이런 표현은 회사가 의도한 사용 경험이며 실제 사용자 모두가 같은 감정을 느꼈다는 검증 자료는 아니다. 특히 시각적 완료 효과가 작업 내용보다 강하게 보이면 어떤 항목이 바뀌었는지 놓칠 가능성도 별도로 살펴야 한다.",
+          "맥포는 2025년 3월 공식 접근성 발표에서 VoiceOver와 동작 줄이기 기능을 안내했다. 회사 설명에 따르면 화면 읽기와 움직임을 줄이는 선택을 지원하면서 핵심 기능을 이용할 수 있도록 했다. 이는 해당 지원을 발표했다는 근거이며 모든 접근성 기준을 독립 기관에서 통과했다는 인증은 아니다. 결과를 전달하는 방식은 사용자가 원하는 감각적 조건에 맞춰 선택할 수 있어야 한다는 검토 지점을 제공한다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 시스템 도구 경험 해설",
+            "kind": "primary",
+            "url": "https://smashingmagazine.com/2026/05/rethinking-experience-system-tools/"
+          },
+          {
+            "label": "맥포의 VoiceOver·동작 줄이기 지원 발표",
+            "kind": "primary",
+            "url": "https://macpaw.com/news/cleanmymac-accessibility-features"
+          }
+        ]
+      },
+      {
+        "heading": "완료 상태는 실제 변경 기록과 연결한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 시스템 도구의 완료 화면을 보기 좋은 종착점보다 변경된 내용을 확인하는 자리로 읽는다. 예를 들어 정리 후보를 보여주는 단계와 사용자가 선택한 파일을 실제로 처리한 단계가 같은 완료 문구로 표시되면, 무엇이 끝났는지 이해하기 어렵다. 진행 표현은 처리 대상과 실제 결과를 함께 설명할 때 의미가 생긴다.",
+          "회사 발표처럼 사용자가 유지·삭제를 결정하는 기능이라면 선택을 되돌아볼 수 있는 정보도 중요하다. 항목 이름과 범주가 지나치게 기술적이면 판단이 어렵지만, 설명을 단순화하면서 대상의 성격까지 숨기면 잘못된 결정을 유도할 수 있다. 일상적인 언어로 바꾸는 설계와 변경 내용을 정확하게 남기는 설계는 함께 검토할 과제다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 시스템 도구 경험 해설",
+            "kind": "primary",
+            "url": "https://smashingmagazine.com/2026/05/rethinking-experience-system-tools/"
+          },
+          {
+            "label": "맥포의 2024년 CleanMyMac 개편 발표",
+            "kind": "primary",
+            "url": "https://macpaw.com/news/introducing-new-cleanmymac"
+          }
+        ]
+      },
+      {
+        "heading": "감정 표현의 효과를 기능 성능과 나눠 평가",
+        "kind": "analysis",
+        "paragraphs": [
+          "친근한 시각 표현이 관리 작업을 시작하기 쉽게 만들었다는 가설과 실제 시스템 관리 성능은 나눠 평가해야 한다. 사용자가 완료를 이해했는지, 어떤 항목을 처리했는지 기억하는지와 처리 시간이 얼마나 줄었는지는 서로 다른 질문이다. 원문과 공식 개편 발표만으로 다른 도구보다 빠르거나 보안 문제가 모두 사라진다고 판단할 수 없다.",
+          "접근성 발표를 함께 보면 움직임을 기본 경험의 필수 조건으로 만들지 않는 방향도 확인할 수 있다. 시각적 효과를 줄인 상태에서도 결과와 다음 행동이 충분히 전달되는지 살피면 디자인의 목적이 장식에 머무르는지 검토할 수 있다. 새로운 색이나 입체 표현 자체보다, 실제 기능을 이해하고 통제할 수 있게 하는 관계가 이 사례에서 이어 볼 핵심이다.",
+          "이 글에서 소개한 개편은 2024년, 접근성 발표는 2025년의 사건이다. 2026년 해설을 현재 제품의 모든 기능 목록으로 확대하지 않았다. 시스템 도구를 선택하거나 설계할 때에는 자신의 버전에서 제공하는 기능과 권한, 결과 기록을 확인하면서 이 관점을 적용할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 시스템 도구 경험 해설",
+            "kind": "primary",
+            "url": "https://smashingmagazine.com/2026/05/rethinking-experience-system-tools/"
+          },
+          {
+            "label": "맥포의 VoiceOver·동작 줄이기 지원 발표",
+            "kind": "primary",
+            "url": "https://macpaw.com/news/cleanmymac-accessibility-features"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "시스템 관리에서는 언어·진행·완료의 이해도 기능 경험의 일부다.",
+      "CleanMyMac 개편 사례는 회사가 설명한 설계이며 성능 비교 실험이 아니다.",
+      "동작을 줄여도 결과와 사용자 선택이 전달되는지 함께 검토한다."
+    ],
+    "tags": [
+      "시스템도구",
+      "UX",
+      "CleanMyMac",
+      "접근성"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 시스템 도구 경험 해설",
+        "url": "https://smashingmagazine.com/2026/05/rethinking-experience-system-tools/"
+      },
+      {
+        "label": "맥포의 2024년 CleanMyMac 개편 발표",
+        "url": "https://macpaw.com/news/introducing-new-cleanmymac"
+      },
+      {
+        "label": "맥포의 VoiceOver·동작 줄이기 지원 발표",
+        "url": "https://macpaw.com/news/cleanmymac-accessibility-features"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://smashingmagazine.com/2026/05/rethinking-experience-system-tools/",
+      "https://macpaw.com/news/introducing-new-cleanmymac",
+      "https://macpaw.com/news/cleanmymac-accessibility-features"
+    ],
+    "notes": "원문 전체를 WEB 직접 읽음. MacPaw 후원/리드디자이너 입장 구분. 공식 Oct16 2024개편(Aug2025업데이트)와 Mar28 2025접근성(Apr2업데이트) 직접열람. 회사기능발표·감정적의도와독립성능/접근성인증구분. 후보[]와 전체pending 제목/요약 비교해 동일사건 없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:32:15.405Z",
+    "checks": [
+      "후원된 해설과 독립 검증 자료 구분",
+      "2024개편·2025접근성·2026해설 날짜 구분",
+      "MyClutter 후보와 사용자의 유지/삭제 결정 구분",
+      "VoiceOver·ReduceMotion 발표를 인증으로 확대하지 않음",
+      "측정하지 않은 속도·보안·만족 효과를 창작하지 않음"
+    ],
+    "relatedPendingIds": []
+  }
+}

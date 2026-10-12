@@ -5,6 +5,7 @@ import { getFreshArtCatalog } from '@/lib/art-catalog';
 import { getDashboardContext } from '@/lib/dashboard-data';
 import CatalogEditor from './CatalogEditor';
 import ContentPagination from '@/app/(dashboard)/components/ContentPagination';
+import { readNewsSummaries } from '@/lib/news';
 
 type Kind = 'art' | 'artists';
 const label = { art: '아트', artists: '작가' };
@@ -48,5 +49,6 @@ export async function CatalogEditPage({ kind, id }: { kind: Kind; id?: string })
   if (id && !row) notFound();
   const writable = ['admin', 'sub-admin'].includes(context.role) && catalog.databaseReady;
   if (!id && !writable) redirect(`/dashboard/contents/${kind}`);
-  return <CatalogEditor kind={kind} row={row} artists={catalog.artists} writable={writable} />;
+  const articles = kind === 'artists' ? (await readNewsSummaries()).articles.map(({ id, title }) => ({ id, title })) : [];
+  return <CatalogEditor kind={kind} row={row} artists={catalog.artists} articles={articles} writable={writable} />;
 }

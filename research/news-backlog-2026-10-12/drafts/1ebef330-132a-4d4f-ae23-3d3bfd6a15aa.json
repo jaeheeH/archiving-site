@@ -1,0 +1,188 @@
+{
+  "id": "1ebef330-132a-4d4f-ae23-3d3bfd6a15aa",
+  "article": {
+    "url": "https://blogs.nvidia.com/blog/geforce-now-thursday-control-resonant/",
+    "title": "CONTROL Resonant, 출시와 함께 GeForce NOW 합류…Googlebook 지원은 예고",
+    "summary": "엔비디아가 CONTROL Resonant의 GeForce NOW 지원과 해당 주9종 게임 추가를 발표했다. 게임 스토어 출시일과 클라우드 등록 시점은 다를 수 있다. Ultimate 번들은9월27일까지의 종료된 행사이며, Googlebook 지원은 향후 계획이다. 최대 화질은 멤버십·기기·네트워크 조건과 함께 봐야 한다.",
+    "paragraphs": [
+      {
+        "heading": "출시작을 클라우드에서 제공하는 소식",
+        "kind": "reporting",
+        "paragraphs": [
+          "엔비디아는 9월 24일 Remedy Entertainment의 CONTROL Resonant가 출시와 함께 GeForce NOW에 합류한다고 발표했다. 개발사·퍼블리셔가 Remedy로 표시된 스팀 상품도 출시일을 9월 24일로 안내한다. 게임은 변형된 맨해튼의 위기 속에서 딜런 페이든이 초자연적 능력과 형태를 바꾸는 근접 무기를 사용하는 액션 RPG다. 스팀 언어 표에는 한국어 인터페이스와 자막 지원이 있지만 한국어 전체 음성에는 표시가 없다. 이것은 스토어 상품의 언어 정보이며 클라우드 서비스가 별도 한국어 더빙을 추가했다는 소식은 아니다. 게임 자체의 출시와 원격으로 실행할 접점이 함께 늘어난 발표로 읽을 수 있다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 CONTROL Resonant 클라우드 지원 발표",
+            "url": "https://blogs.nvidia.com/blog/geforce-now-thursday-control-resonant/",
+            "kind": "primary"
+          },
+          {
+            "label": "Remedy의 CONTROL Resonant 공식 스팀 상품",
+            "url": "https://store.steampowered.com/app/3669870/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "멤버십은 게임 소유권과 다른 항목",
+        "kind": "analysis",
+        "paragraphs": [
+          "공식 FAQ는 GeForce NOW가 지원 스토어에서 보유하거나 구매한 게임을 계정과 연결해 실행하는 서비스라고 설명한다. 따라서 지원 목록에 추가됐다는 사실만으로 모든 멤버십 이용자에게 해당 유료 게임이 제공되는 것은 아니다. 원문이 소개한 CONTROL Resonant 번들은 12개월 Ultimate 멤버십 구매와 게임 제공을 묶은 별도 행사였다. 그 종료일은 9월 27일이므로 현재 계속 신청할 수 있는 혜택처럼 안내하지 않았다. 게임 보유 조건과 원격 실행 서비스의 사용 조건을 나눠 보면 출시 소식과 프로모션의 차이가 드러난다. 하나의 가입 비용만으로 모든 상용 게임과 부가 혜택을 무제한 사용할 수 있다는 해석은 맞지 않는다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 CONTROL Resonant 클라우드 지원 발표",
+            "url": "https://blogs.nvidia.com/blog/geforce-now-thursday-control-resonant/",
+            "kind": "primary"
+          },
+          {
+            "label": "GeForce NOW 게임 보유·멤버십 공식 FAQ",
+            "url": "https://www.nvidia.com/en-us/geforce-now/faq/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "최대 화질은 지원 기기에서의 조건",
+        "kind": "reporting",
+        "paragraphs": [
+          "엔비디아는 Ultimate에서 RTX5080급 클라우드 성능과 DLSS4·레이 트레이싱·Reflex, 지원 기기의 최대5K HDR 스트리밍을 소개했다. 이는 회사가 설명한 제공 범위와 최대치이며 모든 화면과 연결에서 같은 설정이 자동 적용된다는 뜻은 아니다. 공식 요구 사항은 앱·브라우저와 기기 유형마다 해상도·프레임 범위를 다르게 안내한다. 예를 들어 네이티브 데스크톱 앱의5K·120FPS 안내에는65Mbps 연결 기준이 제시되지만 브라우저의 QHD·120FPS 안내는 별도 조건이다. 서비스는 데이터센터까지80ms 미만 네트워크 지연을 요구하고 유선이나5GHz Wi-Fi를 권장한다. 이런 조건은 게임의 장면마다 동일한 프레임을 보장하는 성능 시험과 다르다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 CONTROL Resonant 클라우드 지원 발표",
+            "url": "https://blogs.nvidia.com/blog/geforce-now-thursday-control-resonant/",
+            "kind": "primary"
+          },
+          {
+            "label": "GeForce NOW 공식 기기·네트워크 요구 사항",
+            "url": "https://www.nvidia.com/en-us/geforce-now/system-reqs/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "로컬 설치의 부담을 연결 품질로 옮기는 방식",
+        "kind": "analysis",
+        "paragraphs": [
+          "클라우드에서는 원격 시스템이 게임을 실행하므로 로컬에 게임 전체와 고성능 그래픽 장치를 준비하는 부담을 줄일 수 있다. 스팀의 로컬 요구 사항에는 SSD와120GB 여유 공간이 안내되지만 원격 플레이를 같은 로컬 설치 조건으로 평가하는 것은 적절하지 않다. 대신 입력을 보내고 영상을 받는 연결 상태와 기기의 영상 처리·출력 조건이 경험에 영향을 준다. 게임을 실행할 수 있다는 것과 자신의 화면에서 높은 화질로 반응을 안정적으로 받는 일은 별도다. 특정 PC 업그레이드 비용을 모두 절약했다는 계산이나 지연이 사라진다는 표현을 원문의 클라우드 지원만으로 만들지 않았다."
+        ],
+        "references": [
+          {
+            "label": "Remedy의 CONTROL Resonant 공식 스팀 상품",
+            "url": "https://store.steampowered.com/app/3669870/",
+            "kind": "primary"
+          },
+          {
+            "label": "GeForce NOW 공식 기기·네트워크 요구 사항",
+            "url": "https://www.nvidia.com/en-us/geforce-now/system-reqs/",
+            "kind": "primary"
+          },
+          {
+            "label": "GeForce NOW 게임 보유·멤버십 공식 FAQ",
+            "url": "https://www.nvidia.com/en-us/geforce-now/faq/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "Googlebook과 주간 추가 게임의 진행 단계",
+        "kind": "reporting",
+        "paragraphs": [
+          "원문은 Googlebook에 GeForce NOW 지원이 곧 제공될 예정이라고 밝혔다. 기기가 가을에 순차 등장하는 계획과 함께 향후 채널에서 자세한 제공 정보를 알리겠다는 단계다. 발표 시점부터 모든 Googlebook에서 지원된다고 표현할 수는 없다. 해당 주간의 추가 목록은 CONTROL Resonant와 DragonSword: Awakening, Dune: Awakening 등9종이다. 각 날짜는 스토어 출시일이고 서비스 등록은 출시 뒤 해당 주에 진행돼 이용 시점이 달라질 수 있다는 각주도 있다. 발표 목록과 실제 앱에서 열리는 상태를 구분해야 게임이 특정 날짜부터 모든 지역에서 즉시 지원된다는 오해를 줄일 수 있다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 CONTROL Resonant 클라우드 지원 발표",
+            "url": "https://blogs.nvidia.com/blog/geforce-now-thursday-control-resonant/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "소식의 가치는 실제 이용 경로와 함께 보기",
+        "kind": "analysis",
+        "paragraphs": [
+          "이번 주간 발표의 변화는 새 게임을 지원 기기에서 원격으로 시작할 수 있는 경로를 더하고 향후 새 노트북 범주로 접점을 넓히는 데 있다. 다만 플랫폼·게임·기기 모두의 제공 조건을 한 번에 충족해야 원하는 이용 방식이 성립한다. 공식 FAQ는 지역별 게임 제공 차이와 멤버십 상품의 차이도 설명한다. 따라서 엔비디아 직접 서비스의 번들과 사양을 각 지역 제휴 사업자의 동일한 혜택으로 적용하지 않았다. 출시와 클라우드 등록, 종료된 프로모션과 향후 지원을 각각 읽으면 주간 소식에서 지금 확인할 수 있는 변화와 다음에 확인할 정보가 분명해진다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 CONTROL Resonant 클라우드 지원 발표",
+            "url": "https://blogs.nvidia.com/blog/geforce-now-thursday-control-resonant/",
+            "kind": "primary"
+          },
+          {
+            "label": "GeForce NOW 게임 보유·멤버십 공식 FAQ",
+            "url": "https://www.nvidia.com/en-us/geforce-now/faq/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "9월24일 스팀 출시와 클라우드 지원 발표를 공식 상품과 대조했다.",
+      "12개월 Ultimate 번들의9월27일 종료를 현재 혜택으로 안내하지 않았다.",
+      "게임 보유와 멤버십, 최대 화질과 기기·연결 조건을 구분했다.",
+      "Googlebook 지원은 예고이며 주간 목록의 날짜는 스토어 출시 기준이다."
+    ],
+    "tags": [
+      "엔비디아",
+      "GeForceNOW",
+      "CONTROLResonant",
+      "클라우드게임"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "엔비디아 CONTROL Resonant 클라우드 지원 발표",
+        "url": "https://blogs.nvidia.com/blog/geforce-now-thursday-control-resonant/"
+      },
+      {
+        "label": "Remedy의 CONTROL Resonant 공식 스팀 상품",
+        "url": "https://store.steampowered.com/app/3669870/"
+      },
+      {
+        "label": "GeForce NOW 공식 기기·네트워크 요구 사항",
+        "url": "https://www.nvidia.com/en-us/geforce-now/system-reqs/"
+      },
+      {
+        "label": "GeForce NOW 게임 보유·멤버십 공식 FAQ",
+        "url": "https://www.nvidia.com/en-us/geforce-now/faq/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blogs.nvidia.com/blog/geforce-now-thursday-control-resonant/",
+      "https://store.steampowered.com/app/3669870/",
+      "https://www.nvidia.com/en-us/geforce-now/system-reqs/",
+      "https://www.nvidia.com/en-us/geforce-now/faq/"
+    ],
+    "notes": "9/24원문·RemedySteam·GFNrequirements/FAQ 대조.스토어한국어UI/subtitles≠dub,localSSD120GB는회사원문100GB와차이있어스토어120근거만.번들9/27종료역사사실,현재신청유도없음.최대5K조건/65Mbps120FPS는native desktop문서,브라우저QHD별도.80msnetworkreq≠게임총입력지연보장.Googlebook예고/9종순차온보딩,지역동일성확대안함.후보10월25종/EDay주간은다른발표,전체pending 동일ControlResonant지원없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "b58159c9-4b8b-4a2d-8910-3d9314f9020c",
+    "16aae997-e9c3-40ab-bb39-c500781fbbfc",
+    "316c5a18-02ff-4735-943e-0c393784bea5",
+    "3a245b5e-786f-4b22-873b-ca01be894721",
+    "56b16575-ca25-4ba2-9903-3311573548c4",
+    "88909f47-c322-4252-aca4-51e619d16b9d",
+    "ca37e48d-c53f-4017-9aad-4b208f6a6a83"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:58:46.693Z",
+    "checks": [
+      "RemedySteam출시일과언어범위확인",
+      "9/27번들종료 반영",
+      "게임소유와서비스멤버십 분리",
+      "앱/브라우저해상도및네트워크기준 확인",
+      "회사5080급/5K최대치를일반성능보장으로확대안함",
+      "Googlebook과주간온보딩의미래·순차조건 반영"
+    ],
+    "relatedPendingIds": []
+  }
+}

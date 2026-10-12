@@ -1,3 +1,5 @@
+import { getSavedPage, getSavedCounts } from '@/lib/saved-data';
+import { RESOURCE_LABELS } from '@/lib/resource';
 import Image from "@/app/components/ArchiveImage";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -5,14 +7,13 @@ import type { ReactNode } from "react";
 import {
   ArrowRight,
   ChevronRight,
-  ExternalLink,
   FileText,
   ImageIcon,
   Sparkles,
   UserRound,
 } from "lucide-react";
 
-import { getMypageActivity, getMypageProfile } from "@/lib/mypage-data";
+import { getMypageProfile } from "@/lib/mypage-data";
 import { getHomeData } from "@/lib/public-data";
 import { getArtCatalog } from "@/lib/art-catalog";
 
@@ -29,11 +30,6 @@ function formatDate(value?: string | null) {
   return dateFormat.format(new Date(value));
 }
 
-function getTime(value?: string | null) {
-  if (!value) return 0;
-  const time = new Date(value).getTime();
-  return Number.isFinite(time) ? time : 0;
-}
 
 function getDailyIndex(length: number) {
   if (length < 1) return 0;
@@ -47,17 +43,18 @@ function getDailyIndex(length: number) {
 }
 
 export default async function MyPage() {
-  const [user, activity, catalog] = await Promise.all([
+  const [user, activity, catalog, savedCounts] = await Promise.all([
     getMypageProfile(),
-    getMypageActivity(),
+    getSavedPage({}),
     getArtCatalog(),
+    getSavedCounts(),
   ]);
 
   if (!user || !activity) {
     redirect("/login?redirect=/mypage");
   }
 
-  const totalSaved = activity.posts.length + activity.galleries.length + activity.references.length;
+  const totalSaved = activity.total;
   const { artworks, artists } = catalog;
   const dailyArtwork = artworks[getDailyIndex(artworks.length)];
   const homeData = dailyArtwork ? null : await getHomeData();
@@ -89,42 +86,7 @@ export default async function MyPage() {
           }
         : null;
 
-  const recentSavedItems = [
-    ...activity.posts.map((post) => ({
-      key: `blog-${post.id}`,
-      type: "기사",
-      title: post.title,
-      description: post.summary || post.subtitle || "북마크한 기사입니다.",
-      href: `/news/read/${post.slug}`,
-      date: post.published_at || post.created_at,
-      image: post.title_image_url,
-      unoptimized: false,
-      icon: <FileText className="h-5 w-5" />,
-    })),
-    ...activity.galleries.map((gallery) => ({
-      key: `gallery-${gallery.id}`,
-      type: "Gallery",
-      title: gallery.title,
-      description: gallery.description || "저장한 갤러리 이미지입니다.",
-      href: `/gallery/${gallery.id}`,
-      date: gallery.created_at,
-      image: gallery.thumbnail_url || gallery.image_url,
-      icon: <ImageIcon className="h-5 w-5" />,
-    })),
-    ...activity.references.map((reference) => ({
-      key: `reference-${reference.id}`,
-      type: "Reference",
-      title: reference.title,
-      description: reference.description || reference.url,
-      href: reference.url || "/references",
-      date: reference.created_at,
-      image: reference.image_url || reference.logo_url,
-      external: Boolean(reference.url),
-      icon: <ExternalLink className="h-5 w-5" />,
-    })),
-  ]
-    .sort((a, b) => getTime(b.date) - getTime(a.date))
-    .slice(0, 6);
+  const recentSavedItems = activity.items.slice(0,6).map(item => ({ key:`${item.type}-${item.id}`,type:RESOURCE_LABELS[item.type],title:item.title,description:item.description,href:item.url,date:item.date || null,image:item.image,external:item.type === 'reference',icon:<FileText className="h-5 w-5" /> }));
 
   return (
     <section className="w-full">
@@ -170,12 +132,12 @@ export default async function MyPage() {
 
       <div className="mb-10 grid border-y border-[var(--archive-line)] bg-white sm:grid-cols-2 xl:grid-cols-4">
         <SummaryCell label="전체 저장" value={totalSaved} href="/mypage/activity" />
-        <SummaryCell label="기사" value={activity.posts.length} href="/mypage/activity?tab=blog" />
-        <SummaryCell label="Gallery" value={activity.galleries.length} href="/mypage/activity?tab=gallery" />
-        <SummaryCell label="Reference" value={activity.references.length} href="/mypage/activity?tab=reference" />
+        <SummaryCell label="기사" value={savedCounts?.post || 0} href="/mypage/activity?tab=blog" />
+        <SummaryCell label="갤러리" value={savedCounts?.gallery || 0} href="/mypage/activity?tab=gallery" />
+        <SummaryCell label="참고사이트" value={savedCounts?.reference || 0} href="/mypage/activity?tab=reference" />
       </div>
 
-      <RecentSavedList items={recentSavedItems} />
+      <div className="mb-8 grid grid-cols-2 border-y border-border"><SummaryCell label="작품" value={savedCounts?.artwork || 0} href="/mypage/activity?type=artwork" /><SummaryCell label="작가" value={savedCounts?.artist || 0} href="/mypage/activity?type=artist" /></div><RecentSavedList items={recentSavedItems} />
     </section>
   );
 }

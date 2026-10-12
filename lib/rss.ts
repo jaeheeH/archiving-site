@@ -8,14 +8,13 @@ const RSS_ITEM_LIMIT = 50;
 
 type RssPost = {
   type: string;
-  content: { category?: Category } | null;
+  news_category: Category | null;
   id: string;
   title: string;
   subtitle: string | null;
   summary: string | null;
   slug: string;
   published_at: string | null;
-  created_at: string;
   updated_at: string | null;
   title_image_url: string | null;
   thumbnail_url: string | null;
@@ -66,27 +65,25 @@ export async function getBlogRssXml() {
   const siteName = "ARCH.B";
   const siteDescription = "디자인·AI·제품·개발·인테리어의 뉴스와 ARCH.B 에디토리얼을 함께 전합니다.";
 
+  const { data: published, error: publishedError } = await supabase.from('published_post_summaries').select('id').order('published_at', { ascending: false }).order('id').limit(RSS_ITEM_LIMIT);
+  if (publishedError) throw publishedError;
+
   const [postsRes, categoriesRes] = await Promise.all([
-    supabase
+    published.length ? supabase
       .from("posts")
       .select(
-        "id, type, content, title, subtitle, summary, slug, published_at, created_at, updated_at, title_image_url, thumbnail_url, category_id"
+        "id, type, news_category:content->>category, title, subtitle, summary, slug, published_at, updated_at, title_image_url, thumbnail_url, category_id"
       )
-      .in("type", ["news", "blog"])
+      .in("id", published.map(post => post.id))
       .eq("is_published", true)
       .not("published_at", "is", null)
       .order("published_at", { ascending: false })
-      .limit(RSS_ITEM_LIMIT),
+      .order('id') : Promise.resolve({ data: [], error: null }),
     supabase.from("categories").select("id, name").eq("type", "blog"),
   ]);
 
-  if (postsRes.error) {
-    console.error("RSS posts 조회 실패:", postsRes.error.message);
-  }
-
-  if (categoriesRes.error) {
-    console.error("RSS categories 조회 실패:", categoriesRes.error.message);
-  }
+  if (postsRes.error) throw postsRes.error;
+  if (categoriesRes.error) throw categoriesRes.error;
 
   const posts = ((postsRes.data || []) as RssPost[]).filter(
     (post) => post.title && post.slug
@@ -98,15 +95,14 @@ export async function getBlogRssXml() {
     ])
   );
 
-  const lastBuildDate = formatRssDate(
-    posts[0]?.updated_at || posts[0]?.published_at || posts[0]?.created_at
-  );
+  const latestChange = posts.map(post => post.updated_at || post.published_at).filter((date): date is string => !!date).sort((a, b) => Date.parse(b) - Date.parse(a))[0];
+  const lastBuildDate = formatRssDate(latestChange);
 
   const items = posts
     .map((post) => {
-      const link = `${baseUrl}/news/read/${post.slug}`;
+      const link = `${baseUrl}/news/read/${encodeURIComponent(post.slug)}`;
       const imageUrl = post.thumbnail_url || post.title_image_url;
-      const categoryName = post.type === "news" ? CATEGORIES[post.content?.category || "design"] : (post.category_id ? categoryMap.get(post.category_id) : "에디토리얼");
+      const categoryName = post.type === "news" ? CATEGORIES[post.news_category || "design"] : (post.category_id ? categoryMap.get(post.category_id) : "에디토리얼");
 
       return [
         "    <item>",
@@ -114,7 +110,7 @@ export async function getBlogRssXml() {
         `      <link>${escapeXml(link)}</link>`,
         `      <guid isPermaLink="true">${escapeXml(link)}</guid>`,
         `      <description>${escapeXml(buildPostDescription(post))}</description>`,
-        `      <pubDate>${formatRssDate(post.published_at || post.created_at)}</pubDate>`,
+        `      <pubDate>${formatRssDate(post.published_at)}</pubDate>`,
         categoryName ? `      <category>${escapeXml(categoryName)}</category>` : null,
         imageUrl
           ? `      <media:content url="${escapeXml(absoluteUrl(imageUrl, baseUrl))}" medium="image" />`

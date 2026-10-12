@@ -1,0 +1,164 @@
+{
+  "id": "8c54636e-6e5e-4d96-aab3-1029a5d15a78",
+  "article": {
+    "url": "https://openai.com/index/sophos",
+    "title": "소포스, Daybreak 활용 대응 시간 89초 보고… 자동화의 권한 경계",
+    "summary": "OpenAI가 소포스의 Daybreak 활용 사례를 공개했다. 양사는 AI 에이전트를 활용한 사건의 평균 대응 시간이 약 38분에서 89초로 줄었고 MDR 사건의 52%를 AI로 처리한다고 밝혔다. 회사가 제시한 성과의 범위와 고객의 대응 권한, 사람에게 넘기는 판단을 함께 읽어야 한다.",
+    "paragraphs": [
+      {
+        "heading": "회사 사례로 공개된 89초",
+        "kind": "reporting",
+        "paragraphs": [
+          "OpenAI는 2026년 10월 9일 사이버 보안 기업 소포스(Sophos)가 Daybreak 프로그램의 모델을 위협 조사와 대응에 사용하는 사례를 공개했다. 발표에 따르면 에이전트를 사용한 사건의 평균 대응 시간은 종전 약 38분에서 약 89초로 줄었다. 제목에 제시된 조사 시간 96% 감소는 이 회사 사례의 성과 주장이다. 소포스도 공식 Daybreak 참여 발표에서 MDR, 즉 관리형 탐지·대응 사건의 52%를 AI로 처음부터 끝까지 처리하고 사람이 감독한다고 설명한다. 이 수치는 모든 공격을 89초 안에 차단한다는 의미가 아니며, 고객마다 동일한 개선율이 나온다는 보장도 아니다. 원문은 에이전트를 사용한 사건의 평균 시간을 보고하고 있어 사건 유형과 대상의 범위를 함께 읽어야 한다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 소포스 도입 사례 원문",
+            "url": "https://openai.com/index/sophos",
+            "kind": "primary"
+          },
+          {
+            "label": "소포스의 Daybreak 참여 공식 발표",
+            "url": "https://www.sophos.com/en-us/press/press-releases/2026/06/sophos-joins-the-openai",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "탐지 정보에서 조사 계획으로",
+        "kind": "reporting",
+        "paragraphs": [
+          "공개된 흐름에서 조사 에이전트는 고객의 맥락, 탐지 결과, 침해 지표, 관련 위협 정보를 수집한다. 이어 계획 모델이 조사 계획을 만들고 실행한 뒤 결과를 검토하는 반복 과정을 수행하며, 분석가가 검토할 요약과 권장 대응을 남긴다. 다른 에이전트는 대응의 일부를 실행할 수 있다. 이 작업은 소포스의 Fusion 체계와 MDR 서비스에 연결된다. OpenAI는 Daybreak를 모델 하나의 이름으로만 설명하지 않는다. 공식 프로그램 페이지는 모델과 Codex 실행 환경, 보안 도구, 검증된 업무 흐름, 파트너를 결합한 방어 체계로 소개한다. 따라서 사례의 변화는 모델을 교체한 결과만으로 해석하기 어렵다. 기존 센서와 위협 정보, 회사의 대응 절차가 모델을 둘러싼 운영 조건으로 함께 작동한다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 소포스 도입 사례 원문",
+            "url": "https://openai.com/index/sophos",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI Daybreak 공식 프로그램 설명",
+            "url": "https://openai.com/daybreak/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "고객이 선택한 권한은 에이전트에도 적용",
+        "kind": "reporting",
+        "paragraphs": [
+          "소포스 MDR에는 고객에게 조사 결과와 대응을 권고하는 Notify, 고객과 함께 조치하는 Collaborate, 고객을 대신해 직접 대응하는 Authorise의 세 운영 방식이 있다. OpenAI 사례 원문은 사람이 수행하든 에이전트가 수행하든 같은 경계가 적용된다고 설명한다. 잠재적으로 파괴적인 조치에는 적절한 수준의 사람 감독이 필요하고, 에이전트에 맡기기 어렵다고 판단한 일은 사람에게 넘긴다는 것이다. 자동 처리 비중이 높다는 설명을 승인 과정이 사라졌다는 뜻으로 바꾸어 읽을 수 없는 이유다. 공개 사례에는 모델별 오류율이나 사건별 시간 분포, 외부 대조군을 통한 검증이 제시되지 않는다. 평균 시간과 자동 처리 비중은 도입 효과를 살펴볼 출발점이지만 오탐이나 잘못된 대응의 빈도를 직접 보여주는 지표는 아니다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 소포스 도입 사례 원문",
+            "url": "https://openai.com/index/sophos",
+            "kind": "primary"
+          },
+          {
+            "label": "소포스의 Daybreak 참여 공식 발표",
+            "url": "https://www.sophos.com/en-us/press/press-releases/2026/06/sophos-joins-the-openai",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "요약보다 조치 경계를 먼저 읽는 화면",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 이 사례에서 보안 운영 화면의 정보 순서를 생각해볼 수 있다고 본다. AI가 작성한 요약이 간결하더라도 어떤 고객 권한 아래에서 무엇을 실행했는지 확인하기 어려우면 검토자의 판단 부담은 남는다. 탐지 사실, 모델의 추정, 이미 실행한 조치, 아직 권고 단계인 조치를 구분해 보여주는 방식이 유용하다. 특히 단말 격리나 계정 조치처럼 업무에 영향을 주는 행동은 그 근거와 승인 상태를 같은 맥락에서 읽을 수 있어야 한다. 이는 이번 서비스에서 특정 화면이 구현됐다고 단정하는 설명이 아니라 공개된 권한 구조에서 도출한 설계 해석이다. 사람이 처리할 예외를 찾는 과정도 별도 업무다. 검토 대기 사건이 쌓이는지, 넘겨받은 분석가에게 필요한 증거가 남는지 함께 살피면 자동화 비중이 운영 역량으로 이어지는 조건을 더 분명하게 평가할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 소포스 도입 사례 원문",
+            "url": "https://openai.com/index/sophos",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI Daybreak 공식 프로그램 설명",
+            "url": "https://openai.com/daybreak/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "속도와 책임을 함께 기록하기",
+        "kind": "analysis",
+        "paragraphs": [
+          "도입 사례를 아카이빙할 때에는 96%라는 큰 숫자와 함께 평균 시간을 측정한 대상, 이전 절차, 사람의 개입 기준을 남기는 편이 유용하다. 이후 모델이나 대응 규칙이 바뀌었을 때 무엇이 개선을 만들었는지 비교할 수 있기 때문이다. 서비스 선택 과정에서도 빠른 응답이라는 설명을 실제 사고 대응의 완료 시간과 곧바로 동일시하기보다는 자신이 위임하려는 업무의 범위를 먼저 정할 필요가 있다. 조사 자료를 모으는 자동화와 고객 시스템을 바꾸는 자동화는 검토해야 할 정보가 다르다. 이번 발표가 보여주는 것은 소포스가 가진 보안 지식과 절차를 에이전트에 연결했다는 회사의 보고다. 어떤 모델이 모든 환경에서 안전하다고 결론 내리기보다, 권한·근거·사후 검토가 함께 이어지는 운영 체계를 구체적으로 살펴볼 자료로 읽는 것이 타당하다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 소포스 도입 사례 원문",
+            "url": "https://openai.com/index/sophos",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI Daybreak 공식 프로그램 설명",
+            "url": "https://openai.com/daybreak/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "89초는 에이전트를 사용한 사건의 평균 대응 시간에 대한 회사 발표다.",
+      "MDR의 Notify·Collaborate·Authorise 권한 경계는 사람과 에이전트에 동일하게 적용된다.",
+      "자동 처리 비중 52%만으로 오탐률이나 모든 고객 환경의 개선 효과를 판단할 수 없다."
+    ],
+    "tags": [
+      "소포스",
+      "OpenAI",
+      "사이버보안",
+      "에이전트",
+      "권한설계"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "OpenAI의 소포스 도입 사례 원문",
+        "url": "https://openai.com/index/sophos"
+      },
+      {
+        "label": "소포스의 Daybreak 참여 공식 발표",
+        "url": "https://www.sophos.com/en-us/press/press-releases/2026/06/sophos-joins-the-openai"
+      },
+      {
+        "label": "OpenAI Daybreak 공식 프로그램 설명",
+        "url": "https://openai.com/daybreak/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://openai.com/index/sophos",
+      "https://www.sophos.com/en-us/press/press-releases/2026/06/sophos-joins-the-openai",
+      "https://openai.com/daybreak/"
+    ],
+    "notes": "OpenAI 원문, 소포스 공식 Daybreak 발표, Daybreak 공식 프로그램 페이지를 직접 브라우징했다. 38분→89초는 에이전트 활용 사건 평균, 96%는 회사 사례 제목의 조사시간 주장, MDR 52%는 양사 자체 보고로 명시했다. 3가지 대응 모드, 파괴적 조치의 감독과 예외 이관 확인. 외부 비교 실험·오류율은 공개 사례에 없으므로 보편 성능이나 무감독 안전을 주장하지 않는다. 후보 9건과 snapshot.pending 전체의 제목·원제·URL 및 Sophos 관련 항목을 비교했다. 다른 OpenAI 기업 사례와 동일한 구체적 사건은 아니며 소포스 사례 중복은 없다. 6월 파트너 참여 발표를 10월 사례 발표와 동일 날짜로 묶지 않았다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2142abfa-1989-4097-b707-0373bbfa5385",
+    "359f8d3f-6531-4c22-8656-0398180f9250",
+    "3d4c214d-6e7b-4d16-9699-89052de96b77",
+    "42859509-04cf-4701-a4d0-38da66580b37",
+    "586ea001-9896-4223-ab06-06b8c3fc2941",
+    "66810653-081c-450b-b88b-962f93246dc6",
+    "7c9afd54-b7cf-4d95-a41f-67c2b4ba8d0f",
+    "b944ff1a-3e60-4ec5-a522-1ae00690be40",
+    "e2c21871-59fd-4490-b612-afa83b96d0ef"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:11:20.878Z",
+    "checks": [
+      "원출처 포함 3개 공식 근거 확인",
+      "38분→89초 평균의 범위와 자체 보고 귀속",
+      "Notify·Collaborate·Authorise 및 인간 감독 확인",
+      "후보 9건과 전체 pending에서 동일 소포스 사건 없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

@@ -1,4 +1,6 @@
 'use client';
+import { useSavedResource,useSavedCount } from '@/app/components/SavedProvider';
+import { saveLoginHref,notifySaved } from '@/lib/save-intent';
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
@@ -175,8 +177,10 @@ export default function BlogDetailClient({
   const [authorProfile, setAuthorProfile] = useState<AuthorProfile | null>(initialAuthorProfile);
   
   // ISR 페이지이므로 userScraped의 초기값은 정확하지 않을 수 있음 (일단 false나 props값으로 시작)
-  const [isScraped, setIsScraped] = useState(initialPost.userScraped || false);
-  const [scrapCount, setScrapCount] = useState(initialPost.scrap_count || 0);
+  const [storedScraped, setIsScraped] = useState(initialPost.userScraped || false);
+  const isScraped=useSavedResource('post',post.id) ?? storedScraped;
+  const [storedScrapCount, setScrapCount] = useState(initialPost.scrap_count || 0);
+  const scrapCount=useSavedCount('post',post.id) ?? storedScrapCount;
   const [viewCount, setViewCount] = useState(initialPost.view_count || 0);
   const [copied, setCopied] = useState(false);
   const [isLiked, setIsLiked] = useState(initialPost.userLiked || false);
@@ -345,8 +349,7 @@ export default function BlogDetailClient({
   const handleScrapToggle = async () => {
     if (!user) {
       alert('로그인이 필요합니다');
-      const redirectTo = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
-      router.push(`/login?redirect=${redirectTo}`);
+      router.push(saveLoginHref('post', post.id));
       return;
     }
     if (!post || isScrapping) return;
@@ -354,12 +357,11 @@ export default function BlogDetailClient({
 
     try {
       setIsScrapping(true);
-      const res = await fetch(`/api/posts/${post.id}/scrap`, { method: 'POST' });
+      const res = await fetch(`/api/posts/${post.id}/scrap`, { method: 'PUT', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({ scraped:!isScraped }) });
 
       if (res.status === 401) {
         alert('로그인이 필요합니다');
-        const redirectTo = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
-        router.push(`/login?redirect=${redirectTo}`);
+        router.push(saveLoginHref('post', post.id));
         return;
       }
 
@@ -371,6 +373,7 @@ export default function BlogDetailClient({
 
       const data = await res.json();
       if (accountId.current !== requestedAccount) return;
+      notifySaved('post',post.id,data.scraped,requestedAccount,data.scrapCount);
       setIsScraped(data.scraped);
       setScrapCount(data.scrapCount);
     } catch (error) {

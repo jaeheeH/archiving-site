@@ -1,0 +1,156 @@
+{
+  "id": "3cb9f2a3-ae98-4714-84b2-edbed99a1c05",
+  "article": {
+    "url": "https://blog.google/products-and-platforms/products/education/media-teacher-gemini/",
+    "title": "영상·교지 수업의 구글 도구 사례… 창작 아이디어를 마감 일정에 연결",
+    "summary": "미국 고등학교 교사 Michelle Bruno가 Google Drive로 제작 자료를 공유하고 Sheets로 업무와 일정을 관리하는 수업 경험을 공개했다. 영상과 교지의 공동 제작을 정리한 사례로 AI 자동 제작의 발표는 아니다. 편집 권한과 피드백, 공동 일정이 창작 과정에 주는 구조를 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "영상과 인쇄물의 공동 제작",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 5일 미국 펜실베이니아주 William Allen High School의 Michelle Bruno가 작성한 미디어 수업 경험을 공개했다. 작성자는 10~12학년을 대상으로 영상 제작과 인쇄 미디어, 업무 글쓰기를 가르친다고 소개된다. 수업에는 기술을 익히는 활동과 창의적인 아이디어를 실현하는 과정이 함께 있으며 방송 제작 일정과 교지 인쇄 마감도 맞춰야 한다. Bruno는 이런 빠른 제작 흐름을 정리하는 데 일상적인 협업 도구가 도움이 된다고 설명했다. 페이지 주소에는 Gemini가 포함되지만 실제 본문에서 설명한 작업은 Google Drive와 Sheets를 통한 자료·일정 관리다. 원문에 없는 AI 영상 생성이나 자동 교지 편집을 추가하면 사례의 내용이 달라진다. 이번 소식은 기존 협업 기능을 학교 제작 환경에 연결한 경험담이다."
+        ],
+        "references": [
+          {
+            "label": "Michelle Bruno의 미디어 제작 수업 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/media-teacher-gemini/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "자료를 모으고 담당자를 정하는 흐름",
+        "kind": "reporting",
+        "paragraphs": [
+          "Bruno에 따르면 학생들은 Drive에 큰 영상 자료를 저장하고 고해상도 사진을 주고받으며 서로의 작업에 피드백을 제공한다. Sheets에서는 업무를 배분하고 제작 일정을 관리해 방송과 교지의 마감을 맞추는 데 활용한다. 작성자는 이런 도구가 결과물의 품질과 조직적인 작업에 도움이 됐다고 평가했다. 기술적 자신감과 팀워크에도 의미를 둔다. 다만 학생 수나 제작한 작품 수, 이전 방식과 비교한 마감 준수율이나 품질 점수는 제시되지 않는다. 협업 기능을 쓴 사실과 성과 개선을 수치로 검증한 결과는 다른 종류의 근거다. 동료의 피드백이 어떤 형식으로 이뤄졌는지, 작업표에 어떤 열을 뒀는지도 원문은 밝히지 않는다. 특정 템플릿이나 자동 알림 기능까지 실제로 사용했다고 추정할 수 없다."
+        ],
+        "references": [
+          {
+            "label": "Michelle Bruno의 미디어 제작 수업 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/media-teacher-gemini/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "공식 도움말이 보여 주는 협업 조건",
+        "kind": "reporting",
+        "paragraphs": [
+          "Sheets의 공식 안내는 공유 대상에게 보기·댓글·편집 권한을 나누어 부여하고, 댓글에서 특정 사람에게 업무를 할당하는 기능을 설명한다. 이전 버전을 보거나 이름을 붙이는 기능과 보호할 범위를 정하는 설정도 별도로 안내한다. Drive의 공유 도움말 역시 파일을 누가 볼 수 있고 무엇을 바꿀 수 있는지에 따라 권한을 선택하도록 설명한다. 이 기능들은 공동 제작의 구조를 이해할 관련 자료이며 Bruno의 교실이 실제로 모든 설정을 사용했다는 증거는 아니다. 학생들이 같은 파일을 볼 수 있다는 사실과 누구나 원본을 수정할 수 있다는 사실은 다르다. 교사가 작업 환경을 구성할 때 공유 범위를 정하는 과정과 제작 내용을 검토하는 과정이 함께 필요할 수 있다. 원문의 저장 사례도 모든 계정에서 용량 제한 없이 영상 자료를 보관할 수 있다는 안내로 확대할 수 없다."
+        ],
+        "references": [
+          {
+            "label": "구글 스프레드시트의 협업·업무 할당 공식 안내",
+            "url": "https://support.google.com/docs/answer/9331169?hl=en",
+            "kind": "primary"
+          },
+          {
+            "label": "Google Drive 파일 공유와 권한 공식 도움말",
+            "url": "https://support.google.com/drive/answer/2494822?hl=en",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "좋은 아이디어가 다른 사람에게 도착하려면",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 이 사례에서 창작과 일정 관리가 같은 작업의 두 측면이라는 점에 주목한다. 영상의 기획이 좋아도 촬영 파일이 편집 담당자에게 전달되지 않으면 다음 단계가 멈춘다. 사진을 골라야 하는 사람과 교지의 지면을 편집하는 사람이 다르면 필요한 자료의 상태를 서로 이해할 수 있어야 한다. 공동 일정은 창의적인 선택을 제한하는 표보다 결정과 전달이 언제 필요한지 보여 주는 수단이 될 수 있다. 원문에 구체적인 작업표가 없으므로 이런 관계를 사례의 실제 세부로 재현하지는 않는다. 대신 학생이 자신의 산출물을 완성하는 데서 나아가 다음 사람의 작업과 연결하는 법을 배우는 환경으로 읽을 수 있다. 도구의 가치는 파일을 한곳에 모으는 것뿐 아니라 그 파일이 제작 과정에서 어떤 역할을 맡는지 드러내는 데 있다."
+        ],
+        "references": [
+          {
+            "label": "Michelle Bruno의 미디어 제작 수업 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/media-teacher-gemini/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글 스프레드시트의 협업·업무 할당 공식 안내",
+            "url": "https://support.google.com/docs/answer/9331169?hl=en",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "피드백과 수정 이력을 함께 읽기",
+        "kind": "analysis",
+        "paragraphs": [
+          "동료의 의견을 받을 수 있는 환경과 그 의견을 작품에 반영하는 과정도 구분해야 한다. 댓글이 많다는 사실만으로 협업의 질을 평가하기는 어렵다. 누가 어떤 이유로 수정을 제안했고 제작 담당자가 무엇을 선택했는지를 남기면 작업의 판단이 더 잘 보인다. 버전 기록은 변경 전후를 확인할 수 있지만 학생의 학습을 해석하려면 작품과 설명을 함께 살펴야 한다. 이번 경험담은 결과를 만드는 데 필요한 조직적 기반을 소개하며 모든 학생에게 같은 자신감이 생겼음을 입증하지 않는다. 교육 사례를 기록할 때에는 어떤 도구가 등장했는지만큼 담당자의 역할과 피드백이 오가는 맥락이 중요하다. 방송과 인쇄 마감이라는 구체적인 제약 안에서 학생이 서로의 작업을 이어 가도록 했다는 점이 다른 교실에서 검토할 수 있는 핵심이다."
+        ],
+        "references": [
+          {
+            "label": "Michelle Bruno의 미디어 제작 수업 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/media-teacher-gemini/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글 스프레드시트의 협업·업무 할당 공식 안내",
+            "url": "https://support.google.com/docs/answer/9331169?hl=en",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "원문은 Drive 자료 공유와 Sheets 업무·일정 관리를 설명하며 AI 자동 제작은 언급하지 않는다.",
+      "품질·자신감·팀워크 개선은 교사의 경험 평가로 정량 결과는 미공개다.",
+      "공식 도움말의 권한·댓글 할당·버전 기능은 일반 안내이며 교실의 설정을 확정하지 않는다."
+    ],
+    "tags": [
+      "구글교육",
+      "GoogleDrive",
+      "GoogleSheets",
+      "미디어제작",
+      "협업"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "Michelle Bruno의 미디어 제작 수업 경험 원문",
+        "url": "https://blog.google/products-and-platforms/products/education/media-teacher-gemini/"
+      },
+      {
+        "label": "구글 스프레드시트의 협업·업무 할당 공식 안내",
+        "url": "https://support.google.com/docs/answer/9331169?hl=en"
+      },
+      {
+        "label": "Google Drive 파일 공유와 권한 공식 도움말",
+        "url": "https://support.google.com/drive/answer/2494822?hl=en"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/products-and-platforms/products/education/media-teacher-gemini/",
+      "https://support.google.com/docs/answer/9331169?hl=en",
+      "https://support.google.com/drive/answer/2494822?hl=en"
+    ],
+    "notes": "교사원문·Sheets협업공식문서·Drive공유공식문서웹확인.MichelleBrunoWilliamAllenPA10-12video/print/businesswriting;Driveassetsphotosfeedback/Sheetstaskstimelinesbroadcastyearbook.주소Gemini라도본문AI없음확인.정량효과·무제한저장·특정template/autonotify발명없음.후보10·전체pending교사9개대조본인미디어공동제작별개.공식features실교실사용확정안함.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "1b26d953-c1ba-4eb9-baf3-6bba7f7bc9bb",
+    "3564e5a1-5821-49ef-bd96-912e5c73a483",
+    "3f96b1c3-6b91-42c6-a276-a72f4e691fe8",
+    "6a15a15c-65e2-411f-847a-f51c003cbab0",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "ec323858-ca4e-442e-96d0-a114cb836a2c",
+    "f902e8f3-2cfc-4931-9ea9-73956faaae60"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:42:27.894Z",
+    "checks": [
+      "원출처교사·학교·학년및두제품확인",
+      "GeminiURL을AI사용근거로오인하지않음",
+      "품질·자신감경험담정량효과로확대없음",
+      "공식공유권한·할당·버전기능범위확인",
+      "후보10·전체pending동일미디어사례없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

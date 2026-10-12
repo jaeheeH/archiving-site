@@ -1,0 +1,150 @@
+{
+  "id": "cb53ccb2-e089-4de3-b40d-f03a9cb9e0d4",
+  "article": {
+    "url": "https://openai.com/index/pollo-ai",
+    "title": "Pollo AI의 광고 제작 흐름, 모델 선택에서 장면 검토로",
+    "summary": "OpenAI가 Pollo AI의 이미지·영상 제작 사례를 공개했다. 플랫폼은 GPT-5.6으로 작업을 나누고 GPT-6 Astra로 복잡한 기획을 처리하며 GPT-Image-2.5를 이미지 생성에 사용한다. 제품 사진에서 광고로 이어지는 과정을 살피되, 제작 시간 주장과 판매 효과를 구분해 읽는다.",
+    "paragraphs": [
+      {
+        "heading": "모델을 고르기보다 의도를 전달",
+        "kind": "reporting",
+        "paragraphs": [
+          "OpenAI는 2026년 10월 8일 생성형 콘텐츠 플랫폼 Pollo AI가 자사 모델을 사용하는 사례를 공개했다. Pollo Agent는 이용자의 짧은 아이디어와 시각적 참조를 받아 이야기와 장면의 흐름, 대본을 만드는 방식으로 소개됐다. 회사 설명에 따르면 GPT-5.6은 작업 라우팅에, GPT-6 Astra는 서사나 장면 수정 계획처럼 더 복잡한 작업에 쓰인다. GPT-Image-2.5는 포스터와 스토리보드, 캠페인 시각 자료의 이미지 생성에 사용한다. 원문은 플랫폼 이용자 규모를 2,600만 명 이상으로 제시하고 창작 세션의 30%가 템플릿이나 유행 형식에서 시작한다고 밝혔다. 이 규모와 비율은 회사의 설명이며 활성 사용의 기간이나 조사 표본을 공개한 독립 통계로 제시되지는 않았다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 Pollo AI 제작 사례 원문",
+            "url": "https://openai.com/index/pollo-ai",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "제품 사진에서 약 15초 광고로",
+        "kind": "reporting",
+        "paragraphs": [
+          "원문은 Marketing Studio의 Photo to Video Ads를 제품 사진과 요청에서 짧은 영상을 만드는 도구로 설명한다. 향수 사진에서 약 15초 분량의 광고를 만든 사례에서는 벨벳 질감과 따뜻한 조명, 병의 근접 장면을 연결한 시퀀스가 소개됐다. 또 보석 브랜드의 캠페인 이미지와 복숭아 음료 사진을 작은 겨울 풍경으로 바꾼 이미지도 예시로 제시한다. 이는 공개된 제작 사례이며 모든 상품 사진에서 같은 정확도나 제작 시간이 나온다는 비교 시험은 아니다. Pollo AI는 이용자가 모델을 선택하거나 바꾸는 시간이 50% 이상 줄었다고 보고하지만 측정 방법과 대상 조건은 이 글에 자세히 나오지 않는다. 모델 선택에 든 시간의 감소를 전체 광고 제작 시간이나 매출 상승률로 옮겨 쓸 근거도 없다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 Pollo AI 제작 사례 원문",
+            "url": "https://openai.com/index/pollo-ai",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "공식 안내는 반복 수정 과정을 포함",
+        "kind": "reporting",
+        "paragraphs": [
+          "Pollo AI의 별도 공식 제작 안내는 인물이나 상품 이미지를 올리고 원하는 광고 유형, 시각 스타일, 카메라 방향 등을 요청하는 절차를 설명한다. 결과가 나온 뒤에는 대화로 스타일과 분위기를 조정하거나 참조 이미지와 링크, 세부 정보를 추가해 수정할 수 있다고 적고 있다. 이미지 생성과 영상 제작 흐름은 이런 여러 단계를 거쳐 연결된다. 공식 안내가 몇 분 안의 결과와 수동 편집 부담 감소를 홍보하더라도 실제 사용자의 모든 작업에서 검토가 필요 없다는 보장으로 읽을 수는 없다. 원문 사례의 GPT-Image-2.5는 이미지 역할로 소개됐으며 영상의 모든 프레임을 해당 모델 하나가 생성한다는 구조가 공개된 것은 아니다. 구체적인 영상 모델 조합이나 작업별 비용을 확인하려면 별도 제품 조건이 필요하다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 Pollo AI 제작 사례 원문",
+            "url": "https://openai.com/index/pollo-ai",
+            "kind": "primary"
+          },
+          {
+            "label": "Pollo AI 공식 사진 기반 광고 제작 안내",
+            "url": "https://pollo.ai/hub/how-to-turn-photos-into-creative-video-ads-with-ai",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "광고의 분위기와 상품의 사실을 나누기",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 제품 사진을 확장하는 제작 흐름에서 바뀌어도 되는 요소와 유지해야 할 요소를 먼저 나눌 필요가 있다고 본다. 배경과 조명, 장면의 분위기는 캠페인 방향에 따라 달라질 수 있지만 상품의 모양과 라벨, 수량은 실제 판매 자료와 맞아야 한다. 화면이 화려해졌다는 판단만으로 이 두 조건을 함께 승인하기는 어렵다. 제품 원본과 생성된 장면을 나란히 보며 어떤 부분이 재해석됐는지 확인할 정보가 유용하다. 이는 공개된 Pollo 결과에 특정 오류가 있었다는 판정이 아니라 제품 사진에서 새로운 장면을 만드는 과정에 관한 설계 분석이다. 기획을 도와주는 에이전트의 가치도 자동으로 장면을 많이 만드는 능력보다 사용자가 의도와 사실의 경계를 검토하며 수정할 수 있는 흐름에서 더 구체적으로 평가할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 Pollo AI 제작 사례 원문",
+            "url": "https://openai.com/index/pollo-ai",
+            "kind": "primary"
+          },
+          {
+            "label": "Pollo AI 공식 사진 기반 광고 제작 안내",
+            "url": "https://pollo.ai/hub/how-to-turn-photos-into-creative-video-ads-with-ai",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "시안 생성과 광고 성과의 거리",
+        "kind": "analysis",
+        "paragraphs": [
+          "창작 도구가 빠르게 시안을 만들 수 있다는 설명은 실험할 소재를 늘릴 가능성을 보여준다. 그러나 시안의 수와 실제 광고 효과는 다른 측정 대상이다. 판매 성과를 비교하려면 노출 조건과 타깃, 사용한 문구, 소재의 승인 여부 같은 맥락이 필요하며 이번 사례에는 그런 대조 실험이 제시되지 않았다. 독자는 완료된 영상의 미감과 회사가 보고한 도구 선택 시간, 캠페인의 결과를 각각 구분해 읽는 편이 적절하다. 작업 기록에는 출발한 상품 사진과 요청, 수정한 장면, 최종 승인본을 연결하면 후속 제작에서 같은 의도를 유지하기 쉽다. 모델 선택을 플랫폼이 담당할수록 이용자가 확인해야 할 일은 없어지는 것이 아니라 장면과 문구의 판단으로 이동할 수 있다. 이 사례는 그 작업 흐름을 소개한 기업 보고로 보존할 가치가 있다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 Pollo AI 제작 사례 원문",
+            "url": "https://openai.com/index/pollo-ai",
+            "kind": "primary"
+          },
+          {
+            "label": "Pollo AI 공식 사진 기반 광고 제작 안내",
+            "url": "https://pollo.ai/hub/how-to-turn-photos-into-creative-video-ads-with-ai",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "GPT-5.6 라우팅, GPT-6 Astra의 복잡한 기획, GPT-Image-2.5 이미지 생성이라는 역할이 소개됐다.",
+      "모델 선택·변경 시간 50% 이상 감소는 회사 보고로 전체 제작 시간이나 광고 성과와 다르다.",
+      "제품 사실을 유지하는 검토와 생성된 분위기에 대한 판단을 구분할 필요가 있다."
+    ],
+    "tags": [
+      "PolloAI",
+      "OpenAI",
+      "광고제작",
+      "이미지생성",
+      "창작워크플로"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "OpenAI의 Pollo AI 제작 사례 원문",
+        "url": "https://openai.com/index/pollo-ai"
+      },
+      {
+        "label": "Pollo AI 공식 사진 기반 광고 제작 안내",
+        "url": "https://pollo.ai/hub/how-to-turn-photos-into-creative-video-ads-with-ai"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://openai.com/index/pollo-ai",
+      "https://pollo.ai/hub/how-to-turn-photos-into-creative-video-ads-with-ai"
+    ],
+    "notes": "OpenAI 원문과Pollo공식7/1튜토리얼을직접웹확인. GPT5.6routing/Astranarrative·revision/Image2.5image역할,26M이상/30%template·50%모델선택시간은기업보고·조건미공개. 향수약15초는단일소개사례. tutorial이미지입력/상세요청/대화수정·추가참조확인. Image2.5단독영상모델설명·무조건정확/매출효과·무료상업권리보장없음. 후보9건·snapshot.pending전체제목·원제·URL/Pollo관련본문대조동일사례없음. 법적광고조언이나외부생성호출없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2142abfa-1989-4097-b707-0373bbfa5385",
+    "359f8d3f-6531-4c22-8656-0398180f9250",
+    "3d4c214d-6e7b-4d16-9699-89052de96b77",
+    "42859509-04cf-4701-a4d0-38da66580b37",
+    "586ea001-9896-4223-ab06-06b8c3fc2941",
+    "66810653-081c-450b-b88b-962f93246dc6",
+    "7c9afd54-b7cf-4d95-a41f-67c2b4ba8d0f",
+    "b944ff1a-3e60-4ec5-a522-1ae00690be40",
+    "e2c21871-59fd-4490-b612-afa83b96d0ef"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:29:33.369Z",
+    "checks": [
+      "원출처와회사제작튜토리얼확인",
+      "라우팅/기획/이미지생성역할구분",
+      "시간50%와전체제작·매출효과분리",
+      "단일향수15초사례·성능조건미공개명시",
+      "후보9건·전체pending동일사례없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

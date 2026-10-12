@@ -1,0 +1,174 @@
+{
+  "id": "8028dc31-5811-4062-bd56-9fe4d33ccc8a",
+  "article": {
+    "url": "https://openai.com/index/introducing-gpt-6-1-sol",
+    "title": "GPT-6.1 Sol 출시, Astra에 가까운 평가 성능과 낮은 토큰 단가의 조건",
+    "summary": "OpenAI가 GPT-6.1 Sol을 발표하며 코딩·업무 평가의 개선과 Astra보다 낮은 표준 단가를 제시했다. 다만 과제별 비용과 벤치마크 조건은 다르고 사실성 평가는 오류를 유발한 어려운 대화로 구성된다. API 문서의 긴 입력·캐시·속도 모드 요금을 함께 확인했다.",
+    "paragraphs": [
+      {
+        "heading": "일상적인 복잡한 업무를 겨냥한 Sol 개선",
+        "kind": "reporting",
+        "paragraphs": [
+          "OpenAI는 9월 29일 GPT-6 Sol의 후속 모델 GPT-6.1 Sol을 발표했다. 코딩과 컴퓨터 사용, 문서 기반 업무에서 Astra에 가까운 평가 결과를 더 낮은 가격으로 제공한다는 것이 회사의 설명이다. 발표 당시 Plus·Pro·Business·Enterprise·Edu 이용자의 ChatGPT Work와 Codex에 제공하고 API에서는 gpt-6.1-sol로 접근한다고 밝혔다. 일반 Chat에는 당시 제공되지 않는다고 명시했다. 이는 9월 29일의 배포 범위이며 이후 서비스 변경과 구분해 읽어야 한다. 능력의 개선 역시 여러 평가에서의 회사 측 결과다. 모든 분야에서 Astra와 동일한 결과를 내거나 모든 업무를 같은 비용으로 끝낸다는 발표는 아니다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI GPT-6.1 Sol 출시 발표",
+            "url": "https://openai.com/index/introducing-gpt-6-1-sol",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "표준 단가와 실제 요청 비용을 나눠 보기",
+        "kind": "analysis",
+        "paragraphs": [
+          "표준 API 단가는100만 토큰당 입력2달러, 출력10달러, 캐시 입력0.10달러다. Astra의 표준 입력·출력 단가의5분의1이라는 비교는 토큰당 요금에 관한 것이다. 현재 모델 문서는 캐시 쓰기2.50달러를 별도로 표시하고, 입력이27만2,000토큰을 넘으면 전체 요청의 입력·캐시 요금이두배, 출력이1.5배가 된다고 설명한다. 도구별 호출 요금도 따로 발생할 수 있다. 따라서 캐시를 많이 재사용하는 작업과 긴 신규 자료를 읽는 작업의 비용 구조는 다르다. 추론량과 재시도, 도구 실행까지 포함한 과제당 비용이 항상5분의1이라는 뜻으로 단가 비교를 확대해서는 안 된다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI GPT-6.1 Sol 출시 발표",
+            "url": "https://openai.com/index/introducing-gpt-6-1-sol",
+            "kind": "primary"
+          },
+          {
+            "label": "GPT-6.1 Sol 공식 API 모델 문서",
+            "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "코딩과 컴퓨터 사용 평가는 환경에 의존",
+        "kind": "reporting",
+        "paragraphs": [
+          "출시문은 DeepSWE1.1에서 기존 Sol의 최고 점수보다6.4퍼센트포인트 높은 결과를 더 낮은 추론 노력과 비용으로 얻었다고 설명한다. OSWorld2.0에서는 최대 추론 노력 기준 기존 Sol보다7퍼센트포인트 높고 Astra와2.1퍼센트포인트 차이라고 제시했다. 후자의 지표는2026년8월8일 버전의 오프라인 과제에서 측정한 부분 보상이다. 모든 작업의 완전한 성공 비율과 동일한 지표로 읽을 수 없다. OpenAI 모델의 평가는 연구 환경이나 API에서 수행됐고 시스템 지시와 도구·추론 설정에 따라 실제 서비스와 차이가 있을 수 있다는 각주도 있다. 모델 교체의 결과는 사용 중인 업무와 도구 구성에서 별도로 확인할 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI GPT-6.1 Sol 출시 발표",
+            "url": "https://openai.com/index/introducing-gpt-6-1-sol",
+            "kind": "primary"
+          },
+          {
+            "label": "GPT-6.1 Sol 시스템 카드 부록",
+            "url": "https://deploymentsafety.openai.com/gpt-6-1-sol",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "사실 오류32% 감소의 표본 조건",
+        "kind": "analysis",
+        "paragraphs": [
+          "사실성 평가에서는 낮은 추론 노력에서 오류가 하나 이상 포함된 응답 비율이 기존 Sol의11.4%에서7.7%로 줄었다. 상대 감소 약32%라는 설명과 실제 차이3.7퍼센트포인트를 구분해야 한다. 더 중요한 조건은 사용자가 이전 모델의 사실 오류를 지적한 비식별 대화를 표본으로 썼다는 점이다. 어려운 질문을 의도적으로 모은 평가여서7.7%를 일반 사용의 오류율로 옮길 수 없다. 개선된 결과도 원문과 수치를 확인하는 절차가 없어졌다는 뜻은 아니다. 특정 업무에서 모델을 비교할 때에는 답이 그럴듯한지보다 필요한 사실이 맞는지, 누락과 수정에 얼마나 시간이 드는지 살펴야 한다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI GPT-6.1 Sol 출시 발표",
+            "url": "https://openai.com/index/introducing-gpt-6-1-sol",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "안전 카드도 능력과 감시의 한계를 구분",
+        "kind": "reporting",
+        "paragraphs": [
+          "시스템 카드 부록은 회사의 Preparedness Framework에서 GPT-6.1 Sol을 사이버보안 능력은Critical, 생물·화학 능력은High로 취급하고 Astra와 같은 보호 체계를 적용한다고 설명한다. 이는 회사가 정한 능력 위험 분류와 대응이며, 의료·연구 작업의 승인이나 임상 성능 인증을 뜻하지 않는다. 카드의 감시 실험은 일부 조건에서 내부 추론만 보는 감시보다 행동 기록 전체를 포함한 감시가 더 유용하다고 설명한다. 특정 시험에서 우회가 관찰되지 않았다는 결과 역시 모든 외부 환경의 안전을 보장하는 결론은 아니다. 이 자료는 새 모델의 능력뿐 아니라 작업 권한과 감시 범위를 함께 평가해야 하는 근거로 읽을 수 있다."
+        ],
+        "references": [
+          {
+            "label": "GPT-6.1 Sol 시스템 카드 부록",
+            "url": "https://deploymentsafety.openai.com/gpt-6-1-sol",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "속도 모드까지 포함해 작업별로 비교",
+        "kind": "analysis",
+        "paragraphs": [
+          "출시문은 Ultrafast를 앞으로 제공할 계획과 최대8배 토큰 생성 속도를 소개했다. 현재 API 모델 문서는 Ultrafast 모드를 명시하고 표준 요금의6배로 안내한다. 토큰 생성이 빨라지는 것과 검색·도구 실행·사용자 검토를 포함한 전체 완료 시간이 같은 배수로 빨라지는 것은 다른 문제다. 표준 모드의 비용 이점과 빠른 모드의 요금도 나눠 비교해야 한다. GPT-6.1 Sol을 검토하는 팀은 반복 문맥의 캐시 활용, 입력 길이, 필요한 추론 노력과 수정 시간을 기준으로 기존 모델과 같은 과제를 시험할 수 있다. 발표의 핵심은 새 비용·성능 선택지가 생겼다는 점이며 가장 어려운 모든 작업에서 Astra를 대체할 수 있다는 보장은 아니다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI GPT-6.1 Sol 출시 발표",
+            "url": "https://openai.com/index/introducing-gpt-6-1-sol",
+            "kind": "primary"
+          },
+          {
+            "label": "GPT-6.1 Sol 공식 API 모델 문서",
+            "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+            "kind": "primary"
+          },
+          {
+            "label": "GPT-6.1 Sol 시스템 카드 부록",
+            "url": "https://deploymentsafety.openai.com/gpt-6-1-sol",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Astra 대비 5분의 1은 표준 입력·출력 토큰 단가이며 전체 과제 비용 보장이 아니다.",
+      "OSWorld는 오프라인 부분 보상, 사실성 표본은 기존 오류 지적 대화로 일반 사용 오류율과 다르다.",
+      "긴 입력·캐시 쓰기·도구·Ultrafast 요금을 포함해 작업별 비용을 비교해야 한다."
+    ],
+    "tags": [
+      "OpenAI",
+      "GPT6.1Sol",
+      "AI모델",
+      "API"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "OpenAI GPT-6.1 Sol 출시 발표",
+        "url": "https://openai.com/index/introducing-gpt-6-1-sol"
+      },
+      {
+        "label": "GPT-6.1 Sol 공식 API 모델 문서",
+        "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol"
+      },
+      {
+        "label": "GPT-6.1 Sol 시스템 카드 부록",
+        "url": "https://deploymentsafety.openai.com/gpt-6-1-sol"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://openai.com/index/introducing-gpt-6-1-sol",
+      "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+      "https://deploymentsafety.openai.com/gpt-6-1-sol"
+    ],
+    "notes": "9/29출시문·공식API현재모델문서·시스템카드대조.발표당시Work/Codex/API및Chat미지원은역사적범위.현재API27만2천초과입력2x/출력1.5x·캐시쓰기2.5·Ultrafast6x확인,최대8x는토큰생성.오류11.4→7.7은어려운flagged대화,상대32%와3.7pp구분.OSWorldv2026.08.08오프라인partialreward.SafetyRiskClass는회사위험분류이며임상인허가아님.후보10/7GPT6Chat롤아웃과Asana특정자동화사례는별도후속·활용사건,전체pending동일출시본ID뿐.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2142abfa-1989-4097-b707-0373bbfa5385",
+    "359f8d3f-6531-4c22-8656-0398180f9250",
+    "3d4c214d-6e7b-4d16-9699-89052de96b77",
+    "42859509-04cf-4701-a4d0-38da66580b37",
+    "586ea001-9896-4223-ab06-06b8c3fc2941",
+    "66810653-081c-450b-b88b-962f93246dc6",
+    "7c9afd54-b7cf-4d95-a41f-67c2b4ba8d0f",
+    "b944ff1a-3e60-4ec5-a522-1ae00690be40",
+    "e2c21871-59fd-4490-b612-afa83b96d0ef"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:23:22.236Z",
+    "checks": [
+      "9/29출시범위와후속현재API속도모드상태구분",
+      "100만토큰2/10/.10표준및긴입력/캐시쓰기요금확인",
+      "DeepSWE·OSWorld추론노력과오프라인부분보상조건명시",
+      "오류감소32%의분모와일반사용비대표성명시",
+      "시스템카드Critical/High는회사위험분류로한정",
+      "8배토큰생성과전체업무완료시간을구분"
+    ],
+    "relatedPendingIds": []
+  }
+}

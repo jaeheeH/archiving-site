@@ -1,0 +1,150 @@
+{
+  "id": "4ca20416-d622-4dfd-8564-443b43f6c356",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/06/why-accessibility-operational-capability-not-feature/",
+    "title": "접근성을 출시 뒤의 수정 목록에서 개발·운영의 반복 과정으로 옮기다",
+    "summary": "미하일 프로스미츠키는 접근성을 정기 감사에만 맡기지 않고 디자인 시스템과 코드 검토, 배포 점검에 연결하자고 제안했다. WebAIM 공식 조사와 GOV.UK 운영 설명은 자동 검사와 공통 컴포넌트가 출발점이 될 수 있지만 실제 서비스의 사용 가능성을 보장하지는 않는다는 점을 보여 준다.",
+    "paragraphs": [
+      {
+        "heading": "변하는 제품에는 계속 확인하는 과정이 필요하다",
+        "kind": "reporting",
+        "paragraphs": [
+          "소프트웨어 엔지니어 미하일 프로스미츠키는 스매싱 매거진 기고에서 접근성을 신뢰성과 보안처럼 지속적으로 다룰 운영 역량으로 보자고 제안했다. 글은 레벨 액세스의 지원을 받아 작성됐다. 한 번의 감사가 기록과 문제 발견에 쓰이더라도 이후 기능과 탐색 구조가 바뀌면 그 결과만으로 현재 상태를 설명하기 어렵다는 논지다.",
+          "저자는 디자인 시스템에서 출발해 완료 기준과 코드 검토에 접근성 요구를 넣고, 키보드 탐색과 포커스 관리도 일반적인 개발 관심사로 다루라고 권한다. AI 생성 코드에도 의미 있는 HTML과 상태·이름 정보를 요구하자는 제안이다. 이는 생성 방식과 관계없이 최종 동작을 검증하는 절차가 필요하다는 운영 관점으로 읽을 수 있다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/why-accessibility-operational-capability-not-feature/"
+          }
+        ]
+      },
+      {
+        "heading": "공식 조사 수치와 자동 검사의 한계",
+        "kind": "reporting",
+        "paragraphs": [
+          "WebAIM의 2026년 보고서는 2월에 백만 개 홈페이지를 WAVE로 분석해 95.9%에서 자동으로 발견 가능한 WCAG 실패를 찾았다고 밝혔다. 평균 오류 수는 페이지당 56.1개였다. 분석 대상은 각 사이트의 모든 화면이 아니라 홈페이지이며, 자동 검사로 발견할 수 없는 문제는 이 결과에 포함되지 않는다.",
+          "공식 보고서의 페이지 요소 수 증가율은 전년 대비 14.3%다. 원출처 기고가 설명한 20% 이상 증가와는 차이가 있다. 또한 이 조사만으로 AI 생성 코드가 증가의 원인이라고 확정할 수 없다. WebAIM은 오류가 발견되지 않아도 페이지의 접근성이나 기준 충족을 뜻하지 않는다고 명시한다."
+        ],
+        "references": [
+          {
+            "label": "웹에임의 2026년 백만 홈페이지 접근성 조사 원문",
+            "kind": "primary",
+            "url": "https://webaim.org/projects/million/"
+          }
+        ]
+      },
+      {
+        "heading": "공통 컴포넌트는 서비스 검증의 출발점이다",
+        "kind": "reporting",
+        "paragraphs": [
+          "GOV.UK 디자인 시스템 팀은 접근성 개선을 지속적이고 반복적인 과정으로 설명한다. 접근성을 고려한 스타일과 컴포넌트, 패턴을 사용하더라도 서비스에는 추가 연구와 설계, 개발, 테스트가 필요하다고 밝힌다. 구성 요소의 사용 여부와 전체 과업의 사용 가능성을 구별하는 공식 운영 설명이다.",
+          "따라서 공통 버튼을 사용했다는 이유만으로 결제나 가입 절차가 완성됐다고 볼 수는 없다. 구성 요소 자체의 이름과 동작 외에도 오류 뒤의 안내, 화면 전환 시 포커스, 단계 간 정보 연결을 살펴야 한다. 기고의 디자인 시스템 중심 접근은 이런 서비스 단위 검증과 함께 적용할 때 의미가 있다."
+        ],
+        "references": [
+          {
+            "label": "GOV.UK 디자인 시스템의 접근성 운영 설명",
+            "kind": "primary",
+            "url": "https://design-system.service.gov.uk/accessibility/"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/why-accessibility-operational-capability-not-feature/"
+          }
+        ]
+      },
+      {
+        "heading": "검사 결과를 실제 수정의 책임으로 연결하다",
+        "kind": "analysis",
+        "paragraphs": [
+          "자동 검사를 배포 과정에 넣으면 같은 종류의 문제가 되풀이되는지 볼 수 있다. 그러나 오류 숫자를 표시하는 대시보드만으로 수정은 일어나지 않는다. 담당 팀과 영향을 받는 과업, 완료를 확인할 조건을 연결해야 한다. 같은 오류라도 첫 화면의 장식과 제출 버튼 주변에서 나타나는 문제는 사용자에게 미치는 영향이 다를 수 있다.",
+          "컴포넌트를 고치는 경우에는 어느 화면에서 재사용되는지도 함께 확인할 필요가 있다. 한 곳의 수정이 여러 경로를 개선할 수 있는 대신, 변경이 새 포커스 문제나 상태 표현의 혼란을 만들 수도 있다. 대표 사용 흐름을 골라 회귀를 확인하면 재사용의 효과를 유지하면서 실제 동작을 살필 수 있다."
+        ],
+        "references": [
+          {
+            "label": "웹에임의 2026년 백만 홈페이지 접근성 조사 원문",
+            "kind": "primary",
+            "url": "https://webaim.org/projects/million/"
+          },
+          {
+            "label": "GOV.UK 디자인 시스템의 접근성 운영 설명",
+            "kind": "primary",
+            "url": "https://design-system.service.gov.uk/accessibility/"
+          }
+        ]
+      },
+      {
+        "heading": "생성 속도와 사용 가능성을 같은 완료 기준 안에",
+        "kind": "analysis",
+        "paragraphs": [
+          "AI로 빠르게 만든 화면도 사용자가 결과에 도달할 수 있어야 완료된다. 예를 들어 오류가 생겼다는 문구만 추가할 것이 아니라 무엇을 고쳐야 하는지 읽을 수 있고 해당 입력으로 돌아갈 수 있는지를 확인할 수 있다. 픽셀의 유사성과 과업 수행의 동등함을 나누어 보는 것이 코드 검토와 실제 이용 점검을 연결한다.",
+          "이때 사용자 연구는 스캐너의 통과 결과를 대체하는 점수 경쟁이 아니다. 도구가 표시하지 못한 어려움을 발견하고 예상한 동작이 실제로 이해되는지 확인하는 역할을 한다. 보조기술과 키보드 등 서로 다른 이용 방식에서 핵심 과업을 수행하는 과정을 살펴야 공통 컴포넌트의 한계와 서비스 설계의 문제가 구분된다.",
+          "운영 과정에는 이전에 수정한 문제가 다음 변경에서 다시 나타나는지 확인하는 일도 포함된다. 감사 기록을 날짜가 붙은 보고서로만 보관하기보다 수정 근거와 반복 점검의 입력으로 연결하면 유용하다. 접근성을 담당자 한 명의 기억에 의존시키지 않고 개발과 지원의 업무에 남기는 것이 이 기고가 제안하는 실질적인 전환이다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/why-accessibility-operational-capability-not-feature/"
+          },
+          {
+            "label": "GOV.UK 디자인 시스템의 접근성 운영 설명",
+            "kind": "primary",
+            "url": "https://design-system.service.gov.uk/accessibility/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "원출처는 레벨 액세스 지원을 받은 접근성 운영에 관한 엔지니어링 기고다.",
+      "WebAIM2026 수치는 홈페이지의 자동 탐지 결과이며 전체 접근성이나 AI 인과를 증명하지 않는다.",
+      "디자인 시스템·코드 검사·실제 과업 검증과 수정 책임을 반복 과정으로 연결할 필요가 있다."
+    ],
+    "tags": [
+      "접근성",
+      "개발운영",
+      "디자인시스템",
+      "AI개발"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 원출처 개발 사례",
+        "url": "https://smashingmagazine.com/2026/06/why-accessibility-operational-capability-not-feature/"
+      },
+      {
+        "label": "웹에임의 2026년 백만 홈페이지 접근성 조사 원문",
+        "url": "https://webaim.org/projects/million/"
+      },
+      {
+        "label": "GOV.UK 디자인 시스템의 접근성 운영 설명",
+        "url": "https://design-system.service.gov.uk/accessibility/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://webaim.org/projects/million/",
+      "https://design-system.service.gov.uk/accessibility/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 정확URL WEB리다이렉트전문26~115행확인. 협찬/지원표시보존. WebAIM공식2026조사2월백만homepage95.9%/56.1errors/페이지요소1437전년14.3% 직접대조. 원문의요소20%이상증가잘못된수치수정하고vibecoding원인추정·AI UI항상접근성부족·토큰비용동기·보안/법률/소비시장미검증일반화제외. GOV.UK공식서비스접근성추가연구개발시험필요조건확인. post.candidates0건과snapshot.pending전부대조:2326정신건강앱상태설계,4843인지포용은개별다른논점으로중복아님.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:14:33.552Z",
+    "checks": [
+      "원문에는 Level Access의 지원을 받았다는 표시가 있다.",
+      "공식 WebAIM2026은95.9%홈페이지자동탐지실패,평균56.1오류,요소증가14.3%다.",
+      "자동오류미탐지가접근성충족을뜻하지않는다는공식한계를명시했다.",
+      "GOV.UK디자인시스템사용만으로서비스가접근가능해지지않는다는공식조건을보존했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "status": "published",
+  "id": "de81342f-3f3d-4d73-aedd-b63dbd98b3ec",
+  "slug": "news-693b3130e25cc8808f58",
+  "title": "tokenizers v1 후보판, 같은 토큰을 더 빠르게 만드는 경로와 측정 조건",
+  "is_published": true,
+  "published_at": "2026-10-12T02:19:45.554+00:00",
+  "characters": 1824,
+  "source": "Hugging Face",
+  "verifiedAt": "2026-10-12T02:19:45.554Z"
+}

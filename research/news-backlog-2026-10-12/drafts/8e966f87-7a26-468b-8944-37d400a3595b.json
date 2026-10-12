@@ -1,0 +1,160 @@
+{
+  "id": "8e966f87-7a26-468b-8944-37d400a3595b",
+  "article": {
+    "url": "https://about.fb.com/news/2026/10/debunking-the-biggest-data-center-myths/",
+    "title": "메타의 데이터센터 해명, 냉각 구조와 지역 비용을 나눠 읽다",
+    "summary": "메타 뉴스룸에 실린 방문기가 물 사용, 전기요금, 일자리에 관한 데이터센터 논쟁을 다뤘다. 폐쇄형 냉각의 구조와 루이지애나 전력 계약은 구체적인 자료로 확인할 수 있지만, 두 시설의 관찰을 모든 지역의 환경 영향으로 확대할 수는 없다. 회사 설명과 검토에 필요한 단위를 구분한다.",
+    "paragraphs": [
+      {
+        "heading": "두 시설을 방문한 필자의 설명",
+        "kind": "reporting",
+        "paragraphs": [
+          "메타는 2026년 10월 8일 뉴스룸에 개발자이자 콘텐츠 제작자인 톰 쇼(Tom Shaw)의 데이터센터 방문기를 실었다. 글은 물 사용과 전기요금, 일자리라는 세 주제의 오해를 다루겠다고 밝힌다. 필자는 모든 운영사를 대변할 수 없으며 최근 방문한 두 종류의 메타 시설을 설명한다고 범위를 한정했다. 하나는 공기 냉각 시설, 다른 하나는 AI용 폐쇄형 액체 냉각 시설이다. 두 장소의 취수원도 상수도와 허가받은 현장 우물로 달랐다고 적었다. 이 내용은 메타가 게시한 방문자의 설명이지 여러 지역을 비교한 독립 환경 조사 결과는 아니다. 운영 방식을 이해할 구체적 단서는 제공하지만 데이터센터 전체의 물 사용이 작거나 지역 영향이 없다는 결론으로 확대하기에는 근거 범위가 다르다."
+        ],
+        "references": [
+          {
+            "label": "메타 뉴스룸의 데이터센터 해명 원문",
+            "url": "https://about.fb.com/news/2026/10/debunking-the-biggest-data-center-myths/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "순환하는 냉각수와 시설의 물 사용",
+        "kind": "reporting",
+        "paragraphs": [
+          "메타의 별도 냉각 설명에서 폐쇄형 시스템은 물과 글리콜을 섞은 냉각액으로 서버의 열을 옮긴 뒤 열교환기를 거쳐 다시 서버로 보내는 구조다. 냉각액을 계속 배출하는 방식과 달리 같은 액체를 반복해서 사용한다. 8월 공식 글은 건식 냉각기를 사용하는 전형적 AI 시설을 물 사용 비교의 조건으로 제시했다. 따라서 폐쇄형 순환 회로가 있다는 설명과 모든 시설이 같은 열 배출 장치나 같은 취수 조건을 가진다는 주장은 구분해야 한다. 원문에 등장한 골프장이나 식당과의 비교 역시 메타 측의 설명이며 시설별 사용량과 측정 방법을 대신하지 않는다. 서버에 닿는 냉각 회로의 물, 시설에서 필요한 전체 물, 지역에서 공급할 수 있는 물은 서로 다른 단위로 살펴볼 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "메타 뉴스룸의 데이터센터 해명 원문",
+            "url": "https://about.fb.com/news/2026/10/debunking-the-biggest-data-center-myths/",
+            "kind": "primary"
+          },
+          {
+            "label": "메타의 폐쇄형 액체 냉각 구조 설명",
+            "url": "https://about.fb.com/news/2026/08/closed-loop-cooling-explained-the-plumbing-behind-metas-ai/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "전력 계약과 고용은 다른 시간 단위",
+        "kind": "reporting",
+        "paragraphs": [
+          "원문은 메타가 전력 요금뿐 아니라 추가 수요를 위한 인프라 비용도 부담한다고 설명하며 루이지애나의 엔터지 계약을 예로 든다. 엔터지 루이지애나의 2026년 3월 발표는 메타가 전체 서비스 비용을 지불하도록 구성된 추가 계약과 향후 20년 동안 기대하는 고객 절감 효과를 제시한다. 이는 전력회사의 예상과 계약 설명으로, 절감액이 이미 실현됐다는 보고는 아니다. 엔터지는 발전·송전·저장 설비 확충도 계획으로 적었다. 메타 글은 건설 단계의 숙련 인력과 운영 단계의 기술·보안 인력을 나눠 일자리를 설명한다. 여러 해에 걸친 공사 인력과 상시 운영 고용을 같은 숫자로 합쳐 해석하기는 어렵다. 이번 자료만으로 모든 지역의 전기요금이나 순고용 효과를 확정할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "메타 뉴스룸의 데이터센터 해명 원문",
+            "url": "https://about.fb.com/news/2026/10/debunking-the-biggest-data-center-myths/",
+            "kind": "primary"
+          },
+          {
+            "label": "엔터지 루이지애나의 메타 전력 계약 발표",
+            "url": "https://www.entergy.com/news/entergy-louisiana-announces-a-new-agreement-with-meta-that-will-deliver-an-additional-2b-in-customer-savings",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "설비 이미지를 넘어 흐름을 기록하기",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 이 자료를 데이터센터의 시각적 기록을 넓힐 기회로 본다. 서버 랙의 사진만으로는 열이 어디로 이동하고 물과 전력이 어디서 오는지 알기 어렵다. 냉각 회로와 열 배출 장치, 취수원과 전력 연결을 함께 기록하면 같은 액체 냉각이라는 표현 안에서도 지역과 설비에 따른 차이를 읽을 수 있다. 물을 재사용한다는 문구는 시스템 내부의 순환을 설명하고, 지역 물 계획은 취수와 공급 조건을 다룬다. 두 설명을 한 도식에 겹쳐 보이되 범위를 구분하는 방식이 유용하다. 이 구분은 메타 시설이 특정 환경 성과를 달성했다고 추가로 주장하는 것이 아니라 공개 자료를 비교하는 방법에 관한 해석이다. 운영사가 제시한 효율 수치를 보존할 때도 어떤 시설과 장치, 기간을 설명한 값인지 함께 적어야 이후 변화와 비교할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "메타의 폐쇄형 액체 냉각 구조 설명",
+            "url": "https://about.fb.com/news/2026/08/closed-loop-cooling-explained-the-plumbing-behind-metas-ai/",
+            "kind": "primary"
+          },
+          {
+            "label": "엔터지 루이지애나의 메타 전력 계약 발표",
+            "url": "https://www.entergy.com/news/entergy-louisiana-announces-a-new-agreement-with-meta-that-will-deliver-an-additional-2b-in-customer-savings",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "해명 자료를 읽는 비교의 기준",
+        "kind": "analysis",
+        "paragraphs": [
+          "전기요금과 일자리에 관한 설명도 지역 주민의 경험과 연결하려면 기간과 범위를 맞춰야 한다. 앞으로의 계약 효과와 현재 청구서, 건설 중의 고용과 운영 후 고용은 서로 다른 관찰 대상이다. 계약의 비용 부담 구조를 확인하는 일은 의미가 있지만 수요가 늘어난 뒤의 실제 요금이나 공급 안정성을 자동으로 입증하지는 않는다. 시설별 자료를 모으는 독자는 회사의 발표와 나중에 공개될 사용량·요금·고용 기록을 연결해 두는 편이 좋다. 이번 원문은 논쟁에 대한 한 기업의 입장을 보여주는 자료로 가치가 있다. 필자가 방문한 범위와 전력회사가 예측한 범위를 남기면 회사의 주장과 지역의 장기 결과를 혼동하지 않고 후속 자료를 읽을 수 있다. 효율적인 냉각 설계와 지역 영향 검토는 같은 자료 안에서 다뤄도 각각의 질문과 근거가 필요하다."
+        ],
+        "references": [
+          {
+            "label": "메타 뉴스룸의 데이터센터 해명 원문",
+            "url": "https://about.fb.com/news/2026/10/debunking-the-biggest-data-center-myths/",
+            "kind": "primary"
+          },
+          {
+            "label": "엔터지 루이지애나의 메타 전력 계약 발표",
+            "url": "https://www.entergy.com/news/entergy-louisiana-announces-a-new-agreement-with-meta-that-will-deliver-an-additional-2b-in-customer-savings",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "원문은 톰 쇼가 방문한 메타 시설 두 종류를 설명하며 모든 운영사에 대한 조사로 제시되지 않았다.",
+      "폐쇄형 냉각 회로의 재사용과 시설 전체 취수·지역 공급 조건은 별도로 읽어야 한다.",
+      "엔터지 계약의 미래 절감 전망과 건설·운영 고용을 이미 실현된 보편 효과로 확대할 수 없다."
+    ],
+    "tags": [
+      "메타",
+      "데이터센터",
+      "냉각",
+      "지역인프라",
+      "환경자료"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "메타 뉴스룸의 데이터센터 해명 원문",
+        "url": "https://about.fb.com/news/2026/10/debunking-the-biggest-data-center-myths/"
+      },
+      {
+        "label": "메타의 폐쇄형 액체 냉각 구조 설명",
+        "url": "https://about.fb.com/news/2026/08/closed-loop-cooling-explained-the-plumbing-behind-metas-ai/"
+      },
+      {
+        "label": "엔터지 루이지애나의 메타 전력 계약 발표",
+        "url": "https://www.entergy.com/news/entergy-louisiana-announces-a-new-agreement-with-meta-that-will-deliver-an-additional-2b-in-customer-savings"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://about.fb.com/news/2026/10/debunking-the-biggest-data-center-myths/",
+      "https://about.fb.com/news/2026/08/closed-loop-cooling-explained-the-plumbing-behind-metas-ai/",
+      "https://www.entergy.com/news/entergy-louisiana-announces-a-new-agreement-with-meta-that-will-deliver-an-additional-2b-in-customer-savings"
+    ],
+    "notes": "Meta 원문, 8월 폐쇄형냉각 설명, Entergy 공식 3월계약 발표를 웹 확인. 저자Tom Shaw의방문2시설 범위를 보존하고 물수치/전기요금/일자리 주장은 기업귀속. 폐쇄순환 물+glycol와 heat exchange, drycooler 조건 확인. Entergy20년절감은 예상이며 건설/운영고용 분리. 후보9건 중62698afb-9ac9-43b4-8c88-ac0b95ed1e71는10/7AI자체데이터센터전략으로 동일 물·요금·고용 방문기 발표가 아니다. snapshot.pending 전체 제목·원제·URL 및 closed-loop/Entergy/TomShaw관련본문 비교, 동일 원문 중복없음. 독립감사결과나지역환경영향없음으로 단정하지 않았다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "62698afb-9ac9-43b4-8c88-ac0b95ed1e71",
+    "068917f0-0273-40a6-8765-bf94c6b81f68",
+    "1325962c-b29b-4e2f-a93c-a38de8cfb12c",
+    "157ccefd-9f15-4888-8c85-e2c803c3b52d",
+    "364f0bfa-7c39-45a2-8d9d-a14cc6871adc",
+    "bbf996b6-3d8d-49d5-abcd-de63fbbe38a7",
+    "d8192f83-6ac4-4483-8ed2-9926452ba612",
+    "effba7f2-0038-48db-ba90-76d469a35f4e",
+    "fc24425a-bbd8-4906-aaae-2ab545fe4d7f"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:16:48.211Z",
+    "checks": [
+      "원출처와 구체적냉각·전력계약 1차자료 확인",
+      "방문2시설과 기업입장 범위 명시",
+      "폐쇄회로/전체물사용 단위 구분",
+      "미래절감 전망 및 공사/상시고용 구분",
+      "후보9건·전체pending에 동일 사건 없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

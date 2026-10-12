@@ -1,0 +1,180 @@
+{
+  "id": "ad88dc65-b82c-4d5c-9057-5752741e5b08",
+  "article": {
+    "url": "https://blogs.nvidia.com/blog/open-protein-dataset/",
+    "title": "엔비디아·EMBL-EBI, 바이러스 단백질 구조 예측 공개…팬데믹 연구 기반 확대",
+    "summary": "엔비디아와 EMBL-EBI·구글 딥마인드 등이 2,800종 이상 바이러스의 단백질 복합체 구조 예측을 AlphaFold Database에 공개했다. 데이터를 만든 GPU 기반 워크플로도 공개한다. 연구 가설과 실험 대상 탐색을 돕는 자료이며 실제 단백질 상호작용·전파력이나 백신 효능을 검증한 임상 결과는 아니다.",
+    "paragraphs": [
+      {
+        "heading": "바이러스 복합체 구조의 공개 연구 자료",
+        "kind": "reporting",
+        "paragraphs": [
+          "엔비디아와 EMBL-EBI는 9월 24일 2,800종 이상 바이러스의 단백질 복합체 구조 예측을 AlphaFold Database에서 공개했다고 밝혔다. 인간 감염이 알려진 바이러스 계열의 단백질 정보를 우선 다룬 연구 자료다. 구글 딥마인드와 CEPI, 글래스고대학교, 서울대학교·성균관대학교, 스위스 생물정보학 연구소 등이 협력에 참여했다. 발표는 예측한 구조를 연구자가 접근할 수 있게 만든 소식이며 새로운 백신이나 치료제의 승인·보급 발표가 아니다. 공개 데이터베이스 전체의 2억 6,000만 개 이상 예측이라는 규모도 이번 바이러스 복합체 자료만의 수량과 다르다. 데이터 공개의 대상과 전체 서비스 규모를 구분해 읽어야 한다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 바이러스 단백질 데이터 발표",
+            "url": "https://blogs.nvidia.com/blog/open-protein-dataset/",
+            "kind": "primary"
+          },
+          {
+            "label": "EMBL-EBI 기관 발표와 책임 있는 사용 범위",
+            "url": "https://www.ebi.ac.uk/about/news/technology-and-innovation/alphafold-database-adds-viral-protein-complexes-to-support-pandemic-preparedness/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "단일 단백질을 넘어 상호작용의 가설로",
+        "kind": "analysis",
+        "paragraphs": [
+          "단백질은 다른 분자와 함께 작동하는 경우가 있어, 하나의 모양뿐 아니라 복합체에서 서로 맞닿는 부위를 보는 일이 연구의 출발점이 될 수 있다. 이번 자료는 어떤 구조와 연결을 실험에서 검토할지 가설을 만드는 데 쓰이는 기반이다. 엔비디아도 발표에서 가설 생성의 역할을 강조했다. 그러나 그럴듯한 예측 그림만으로 실제 세포 안에서 같은 상호작용이 일어나거나 특정 부위가 치료 표적으로 유효하다고 확정할 수는 없다. 구조를 탐색하는 단계와 기능을 확인하는 실험은 다른 질문을 다룬다. 공개 자료의 가치는 가능한 설명을 좁히는 데 있지만 최종적인 생물학적 확인을 대신하지 않는다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 바이러스 단백질 데이터 발표",
+            "url": "https://blogs.nvidia.com/blog/open-protein-dataset/",
+            "kind": "primary"
+          },
+          {
+            "label": "EMBL-EBI 기관 발표와 책임 있는 사용 범위",
+            "url": "https://www.ebi.ac.uk/about/news/technology-and-innovation/alphafold-database-adds-viral-protein-complexes-to-support-pandemic-preparedness/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "예측 과정과 신뢰도 정보를 함께 공개",
+        "kind": "reporting",
+        "paragraphs": [
+          "엔비디아는 데이터를 생성한 BioNeMo 구조 예측 파이프라인도 공개했다. 공식 저장소는 단백질 서열의 다중서열정렬을 만들고 단일·다중 사슬 구조를 예측한 뒤 신뢰도와 복합체 접촉면 등을 점검하는 단계로 설명한다. 구조 예측에는 AlphaFold2-Multimer 가중치와 OpenFold2 등의 구성, 엔비디아 추론 런타임이 사용된다. 결과의 신뢰도를 점수로 제공한다는 것은 모든 예측을 실험적으로 확인했다는 뜻이 아니다. 다른 연구자가 처리 과정을 읽고 자신의 대상에 적용할 수 있는 공개 워크플로라는 의미와 이미 검증된 구조 목록이라는 의미는 분리해야 한다. 모델의 예측과 실험 구조를 비교할 수 있도록 과정과 결과가 연결되는 점이 중요하다."
+        ],
+        "references": [
+          {
+            "label": "BioNeMo 구조 예측 파이프라인 공식 저장소",
+            "url": "https://github.com/NVIDIA-BioNeMo/BioNeMo-Structure-Prediction-Pipeline",
+            "kind": "primary"
+          },
+          {
+            "label": "엔비디아 바이러스 단백질 데이터 발표",
+            "url": "https://blogs.nvidia.com/blog/open-protein-dataset/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "구조만으로 전파력이나 변이 효과를 판단할 수 없다",
+        "kind": "reporting",
+        "paragraphs": [
+          "EMBL-EBI는 예측 구조만으로 바이러스의 실제 행동이나 유전적 변화의 영향을 판단할 수 없다고 명시했다. 바이러스와 숙주의 상호작용, 변이가 더 높은 전파력이나 치명성과 이어지는지는 실험적 조사가 필요하다는 설명이다. 따라서 특정 예측의 신뢰도가 높아도 질환의 위험도나 사람에게 투여하는 백신·약의 효과를 그대로 계산할 수 없다. 이번 자료는 분자 수준의 연구 정보를 제공하며 개인의 감염 진단이나 치료 선택에 관한 결과를 제공하지 않는다. 대응 수단 개발에 도움을 줄 수 있다는 기관의 전망은 임상적으로 안전성과 효능을 입증한 제품의 사용 범위와 다른 단계다."
+        ],
+        "references": [
+          {
+            "label": "EMBL-EBI 기관 발표와 책임 있는 사용 범위",
+            "url": "https://www.ebi.ac.uk/about/news/technology-and-innovation/alphafold-database-adds-viral-protein-complexes-to-support-pandemic-preparedness/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "데이터 접근과 대규모 계산의 장벽은 다르다",
+        "kind": "analysis",
+        "paragraphs": [
+          "예측 결과를 공개하면 같은 구조를 처음부터 계산해야 하는 부담을 줄이고 연구 질문을 공유하는 데 도움이 될 수 있다. 다만 공개 파이프라인을 직접 실행하는 데 필요한 자원까지 모든 연구자가 이미 갖고 있다는 뜻은 아니다. 저장소는 NVIDIA GPU를 사용하는 Slurm 클러스터와 입력 서열, 검색 데이터베이스·모델 가중치 등을 준비하도록 안내한다. 자료를 내려받아 탐색하는 일과 전체 서열부터 대규모 예측을 재현하는 일은 서로 다른 자원이 필요한 활동이다. 무료 접근이라는 표현을 계산 비용이 사라진다는 주장으로 확대하지 않았다. 공개된 결과와 처리 설명이 함께 있어야 각 연구팀이 어떤 부분을 활용하거나 검증할지 판단할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "BioNeMo 구조 예측 파이프라인 공식 저장소",
+            "url": "https://github.com/NVIDIA-BioNeMo/BioNeMo-Structure-Prediction-Pipeline",
+            "kind": "primary"
+          },
+          {
+            "label": "EMBL-EBI 기관 발표와 책임 있는 사용 범위",
+            "url": "https://www.ebi.ac.uk/about/news/technology-and-innovation/alphafold-database-adds-viral-protein-complexes-to-support-pandemic-preparedness/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "사전 지식을 쌓는 목표와 실제 대응 성과",
+        "kind": "analysis",
+        "paragraphs": [
+          "공동 발표의 목적은 유행이 시작되기 전에 바이러스 계열의 구조 정보를 쌓아 대응 연구의 출발점을 마련하는 데 있다. 알려진 구조가 적은 대상도 함께 볼 수 있다는 점은 연구 자료의 범위를 넓힌다. 하지만 발표에는 이 자료로 백신을 완성한 기간이나 임상 성공률을 대조한 결과가 없다. 이전 감염병 연구의 경험과 미래 대응에 대한 기대를 이번 데이터의 검증된 효과로 옮겨 적을 수는 없다. 앞으로 확인할 연구 진전은 예측을 바탕으로 세운 가설이 실험에서 어떻게 평가되고 어떤 기능을 설명하는지다. 이번 공개는 그러한 검증을 위한 공통 자료를 늘린 변화이며 팬데믹 예방이나 치료 성과 자체를 보장하는 결론은 아니다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 바이러스 단백질 데이터 발표",
+            "url": "https://blogs.nvidia.com/blog/open-protein-dataset/",
+            "kind": "primary"
+          },
+          {
+            "label": "EMBL-EBI 기관 발표와 책임 있는 사용 범위",
+            "url": "https://www.ebi.ac.uk/about/news/technology-and-innovation/alphafold-database-adds-viral-protein-complexes-to-support-pandemic-preparedness/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "2,800종 이상 바이러스 자료와 데이터베이스 전체 예측 규모를 구분했다.",
+      "구조 예측·신뢰도 점수는 실험적 상호작용이나 임상 효능의 확인과 다르다.",
+      "공식 기관이 명시한 변이·전파력·숙주 상호작용 해석의 한계를 반영했다.",
+      "데이터 공개 접근과 대규모 GPU 워크플로 재현 자원을 분리했다."
+    ],
+    "tags": [
+      "엔비디아",
+      "AlphaFold",
+      "EMBL-EBI",
+      "단백질연구"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "엔비디아 바이러스 단백질 데이터 발표",
+        "url": "https://blogs.nvidia.com/blog/open-protein-dataset/"
+      },
+      {
+        "label": "EMBL-EBI 기관 발표와 책임 있는 사용 범위",
+        "url": "https://www.ebi.ac.uk/about/news/technology-and-innovation/alphafold-database-adds-viral-protein-complexes-to-support-pandemic-preparedness/"
+      },
+      {
+        "label": "BioNeMo 구조 예측 파이프라인 공식 저장소",
+        "url": "https://github.com/NVIDIA-BioNeMo/BioNeMo-Structure-Prediction-Pipeline"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blogs.nvidia.com/blog/open-protein-dataset/",
+      "https://www.ebi.ac.uk/about/news/technology-and-innovation/alphafold-database-adds-viral-protein-complexes-to-support-pandemic-preparedness/",
+      "https://github.com/NVIDIA-BioNeMo/BioNeMo-Structure-Prediction-Pipeline"
+    ],
+    "notes": "9/24 NVIDIA원문·EMBL-EBI기관원문·공식파이프라인 대조.2.8k바이러스/전체260M분모분리,예측구조≠실험확정/임상효능/허가.기관구조만으로변이전파·치명성/숙주상호작용판단불가 명시.실행서열→MSA→OpenFold2 AF2Multimer→confidence,SlurmNVIDIAGPU등구성.30%new to science회사표현은분모/실험근거부족으로본문제외,2050팬데믹확률추정도직접방법검증필요해제외.FAQ검색의2.8k/3.5k결합집계혼동피하려수량추가안함.후보의영상진단·임신초음파는다른연구,전체pending동일바이러스자료공개없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2142abfa-1989-4097-b707-0373bbfa5385",
+    "56b16575-ca25-4ba2-9903-3311573548c4",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "ca37e48d-c53f-4017-9aad-4b208f6a6a83",
+    "16aae997-e9c3-40ab-bb39-c500781fbbfc",
+    "316c5a18-02ff-4735-943e-0c393784bea5",
+    "3a245b5e-786f-4b22-873b-ca01be894721",
+    "88909f47-c322-4252-aca4-51e619d16b9d",
+    "b58159c9-4b8b-4a2d-8910-3d9314f9020c"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:56:10.433Z",
+    "checks": [
+      "기업발표를EMBL-EBI기관원문과대조",
+      "데이터와전체DB수량분리",
+      "예측모델/워크플로와confidence 역할확인",
+      "실험·임상효능·인허가 범위로확대하지않음",
+      "변이/전파/치명성해석의한계반영",
+      "실제백신개발시간/예방성과수치만들지않음"
+    ],
+    "relatedPendingIds": []
+  }
+}

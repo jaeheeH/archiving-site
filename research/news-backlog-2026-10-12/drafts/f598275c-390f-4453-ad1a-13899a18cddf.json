@@ -1,0 +1,146 @@
+{
+  "id": "f598275c-390f-4453-ad1a-13899a18cddf",
+  "article": {
+    "url": "https://blog.google/products-and-platforms/products/education/gemini-google-colab/",
+    "title": "코딩 시험 대신 선택의 이유를 묻다… 말레이시아 교수의 Colab·Gemini 수업",
+    "summary": "말레이시아 Universiti Putra의 교수가 데이터 마이닝 평가를 코드 작성 시험에서 선택을 설명하는 구두 면담으로 바꾼 경험을 공개했다. 학생은 Colab의 Gemini 제안을 검토하고 모델링 결정을 정당화한다. 교수의 평가 방식과 제품 기능, 학습 효과의 근거를 구분해 읽는다.",
+    "paragraphs": [
+      {
+        "heading": "실행된 코드에서 학생의 판단으로",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 5일 말레이시아 Universiti Putra의 컴퓨터 과학·정보기술 학부 교수이자 최고디지털책임자인 Nurfadhlina Mohd Sharef의 경험을 공개했다. 작성자는 데이터 마이닝 학생의 평가 방식에 AI를 함께 생각하는 도구로 포함했다고 설명한다. 학생들은 문법을 작성하는 데만 시간을 쓰기보다 Google Colab의 Gemini를 활용해 코드와 대안을 제안받는다. 이후 무엇을 사용할지 선택하고 제안을 질문하며 최종 모델링 결정의 이유를 설명해야 한다는 내용이다. 이 글은 대학 전체의 시험 정책이나 자동 채점 서비스를 발표하지 않는다. 교수 본인이 평가를 다시 설계한 사례이며 참여 학생의 수와 평가 기간, 이전 방식과 비교한 성적 결과는 제시되지 않았다. 사용 경험의 변화와 정량적 교육 효과를 구분할 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "Nurfadhlina Mohd Sharef의 데이터 마이닝 평가 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/gemini-google-colab/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "교수가 진행하는 구두 면담",
+        "kind": "reporting",
+        "paragraphs": [
+          "Sharef는 학생이 자기 선택을 옹호하고 문제를 해결하며 AI의 권고가 잘못될 수 있는 부분을 찾아내도록 구두 면담을 진행한다고 밝혔다. AI가 작동하는 모델을 만들 수 있는 환경에서 학생이 그 지원에 판단을 행사할 수 있는지를 중요하게 본다는 설명이다. 원문은 Gemini Canvas와 Gemini Notebook도 교수의 평가 작업을 돕는 데 쓴다고 소개한다. 다만 구체적인 평가표나 자동화의 비중, 최종 점수를 도구가 결정하는지에 관한 절차는 공개하지 않는다. 따라서 면담을 AI가 대신 진행한다거나 채점을 모두 자동화했다고 표현할 수 없다. 작성자는 기술 의존 대신 지속적인 인간의 역량을 키우려는 방향을 강조하지만 그 역량이 어떤 표준 시험에서 얼마나 개선됐는지 검증한 연구를 제시한 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "Nurfadhlina Mohd Sharef의 데이터 마이닝 평가 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/gemini-google-colab/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "Colab의 제안과 실행 조건",
+        "kind": "reporting",
+        "paragraphs": [
+          "Colab 공식 FAQ는 노트북 안에서 코드를 만들고 수정하며 오류 해결 방안을 제안하는 AI 기능을 설명한다. 여러 단계의 작업에서는 계획을 제시하고 사용자가 실행을 선택할 수 있다고 안내한다. 이 기능의 존재는 교수의 구두 평가 기준과 다른 정보다. 문서는 AI 기능에 18세 이상 계정과 지원 지역 조건이 적용된다고 적었으며 생성 코드를 사용하기 전 시험하고 검토할 책임이 이용자에게 있다고 설명한다. 데이터 처리 안내에는 관련 프롬프트와 코드, 생성 결과 및 피드백을 수집하며 사람이 품질 개선을 위해 검토할 수 있다는 범위도 제시한다. 이를 모든 교육용 Gemini 제품의 조건과 같다고 가정할 수는 없다. 원문은 실제 수업의 구체적인 데이터 설정을 밝히지 않았으므로 해당 교수의 자료가 어떤 조건으로 처리됐는지까지 확정하지 않는다."
+        ],
+        "references": [
+          {
+            "label": "Google Colab의 AI 기능·실행·접근·데이터 공식 FAQ",
+            "url": "https://research.google.com/colaboratory/faq.html",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "정답의 모양보다 결정의 근거",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 작동하는 프로그램이 제출됐을 때 학생의 이해를 어떻게 확인할지 묻는 평가 전환에 주목한다. 코드를 실행할 수 있다는 사실만으로 데이터 선택과 모델의 가정을 설명할 수 있는 것은 아니다. 구두 면담은 학생이 제안을 받아들인 이유와 바꾼 이유를 드러낼 여지를 준다. 틀린 권고를 찾아내는 과정도 모델의 출력을 단순히 승인하는 행동과 다르다. 다만 면담이 있다는 이유만으로 평가의 공정성과 일관성이 자동으로 확보되지는 않는다. 어떤 질문으로 무엇을 확인했는지 기록해야 서로 다른 학생의 판단을 비교할 기반이 생긴다. 원문은 그 세부 기준을 공개하지 않았으므로 효과를 확정하는 대신 평가 대상을 문법 완성에서 모델링의 선택으로 옮겼다는 구체적인 변화에 의미를 둘 수 있다."
+        ],
+        "references": [
+          {
+            "label": "Nurfadhlina Mohd Sharef의 데이터 마이닝 평가 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/gemini-google-colab/",
+            "kind": "primary"
+          },
+          {
+            "label": "Google Colab의 AI 기능·실행·접근·데이터 공식 FAQ",
+            "url": "https://research.google.com/colaboratory/faq.html",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "판단을 남기려면 실험도 이어져야",
+        "kind": "analysis",
+        "paragraphs": [
+          "모델링 결정을 설명하려면 실행 결과를 어떻게 읽었는지도 중요하다. 그럴듯한 이유를 말하는 것과 다른 조건에서 결과가 바뀌는지 확인하는 것은 서로 다른 작업이다. 학생이 선택한 코드와 수정 흔적, 관찰한 결과를 함께 보면 대화에서 드러난 이해를 더 구체적으로 검토할 수 있다. 이는 공개된 수업에서 특정 실험을 했다거나 새 평가표를 적용했다는 주장 없이 사례의 평가 방향을 분석한 것이다. 코드 생성 도구가 작업을 쉽게 시작하게 할수록 학생이 어떤 가정을 남겼는지 확인하는 역할은 더 중요해질 수 있다. 이번 경험담은 인간과 AI의 협업을 능력 평가 안에 넣으려는 시도를 보여준다. 후속 자료에서 면담 기준과 학생의 실행 기록이 공개된다면 학습과 도구 의존을 어떻게 구분했는지 더 잘 비교할 수 있을 것이다."
+        ],
+        "references": [
+          {
+            "label": "Nurfadhlina Mohd Sharef의 데이터 마이닝 평가 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/gemini-google-colab/",
+            "kind": "primary"
+          },
+          {
+            "label": "Google Colab의 AI 기능·실행·접근·데이터 공식 FAQ",
+            "url": "https://research.google.com/colaboratory/faq.html",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "학생이 Colab의 코드 제안을 검토하고 최종 모델링 선택을 설명하도록 한 교수 경험이다.",
+      "구두 면담은 교수가 진행하며 AI 면담·전면 자동 채점의 발표가 아니다.",
+      "Colab의 연령·지역·코드 검토·데이터 안내는 실제 수업 설정과 구분해 읽어야 한다."
+    ],
+    "tags": [
+      "Gemini",
+      "GoogleColab",
+      "대학교육",
+      "코딩평가",
+      "데이터마이닝"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "Nurfadhlina Mohd Sharef의 데이터 마이닝 평가 경험 원문",
+        "url": "https://blog.google/products-and-platforms/products/education/gemini-google-colab/"
+      },
+      {
+        "label": "Google Colab의 AI 기능·실행·접근·데이터 공식 FAQ",
+        "url": "https://research.google.com/colaboratory/faq.html"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/products-and-platforms/products/education/gemini-google-colab/",
+      "https://research.google.com/colaboratory/faq.html"
+    ],
+    "notes": "원교수경험·ColabFAQ웹확인.NurfadhlinaMohdSharefUniversitiPutraCDOlecturer/studentGeminiColabtutor/modeldecisionjustify/profverbalinterview/CanvasNotebookassessmenthelp.면담AI진행·전자동채점추정없음;성적효과분모없음.공식Colab18+locale/reviewexecute/generatedcodereview/datahumanreviewconditions를educationGeminisame로안함.후보10·전체pendingColab단일·교사11개별구체평가사건.코드실행테스트없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "1b26d953-c1ba-4eb9-baf3-6bba7f7bc9bb",
+    "3564e5a1-5821-49ef-bd96-912e5c73a483",
+    "3f96b1c3-6b91-42c6-a276-a72f4e691fe8",
+    "6a15a15c-65e2-411f-847a-f51c003cbab0",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "ec323858-ca4e-442e-96d0-a114cb836a2c",
+    "f902e8f3-2cfc-4931-9ea9-73956faaae60"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:52:44.050Z",
+    "checks": [
+      "교수·기관·데이터마이닝원문확인",
+      "구두면담진행주체교수·자동채점추정없음",
+      "모델링선택·오류권고검토에집중",
+      "Colab연령·실행·데이터조건공식대조",
+      "후보10·전체pending동일Colab평가사례없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

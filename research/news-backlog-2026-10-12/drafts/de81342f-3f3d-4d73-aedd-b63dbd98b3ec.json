@@ -1,0 +1,158 @@
+{
+  "id": "de81342f-3f3d-4d73-aedd-b63dbd98b3ec",
+  "article": {
+    "url": "https://huggingface.co/blog/tokenizers-v1",
+    "title": "tokenizers v1 후보판, 같은 토큰을 더 빠르게 만드는 경로와 측정 조건",
+    "summary": "허깅페이스가 출력과 API를 유지하며 tokenizers의 처리 경로를 바꾼 v1 후보판을 소개했다. Apple M4 Max의 특정 비교에서 인코딩 성능 개선을 보고했지만 Python 호출 비용과 언어·반복도·전체 모델 처리 시간은 다른 조건이다.",
+    "paragraphs": [
+      {
+        "heading": "모델 앞의 입력 처리를 다시 살핀 후보판",
+        "kind": "reporting",
+        "paragraphs": [
+          "허깅페이스는9월21일 tokenizers v1의 릴리스 후보를 소개했다. 텍스트를 모델이 읽는 정수 목록으로 바꾸는 라이브러리의 출력과 어휘, 병합 순위, API를 유지하면서 처리 경로를 개선하려는 작업이다. 발표의 후보판과1.0.0에 남은 작업, 이후 GPU 실험 계획은 서로 다른 단계로 제시됐다.",
+          "원문은 Apple M4 Max의 한 스레드에서 열 가지 모델 계열을 비교해 v0.23 대비 인코딩이3~30배 빨라졌다고 보고한다. 낮은 값은 t5-base, 높은 값은 gpt2의 결과다. Rust 크레이트를 대상으로 측정했으며 Python 바인딩의 호출별 추가 비용은 포함하지 않았다고 명시한다. 모든 모델의 응답 생성이 같은 비율로 빨라졌다는 수치는 아니다."
+        ],
+        "references": [
+          {
+            "label": "허깅페이스 tokenizers v1 후보판 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/tokenizers-v1"
+          },
+          {
+            "label": "공식 tokbench의 검증·측정 계약",
+            "kind": "primary",
+            "url": "https://github.com/huggingface/tokbench"
+          }
+        ]
+      },
+      {
+        "heading": "나누기와 병합, 반복한 조각의 재사용",
+        "kind": "reporting",
+        "paragraphs": [
+          "주요 변경에는 임시 메모리의 재사용과 병합 처리의 재작성, 스레드별 단어 캐시가 포함된다. 지원하는 패턴에서는 일반 정규식 대신 SIMD 비트 연산으로 텍스트의 경계를 찾는다. 지원 목록에 없는 패턴은 기존 정규식 경로를 유지하므로 그 부분의 성능 이득을 모든 토크나이저에 적용할 수는 없다.",
+          "같은 사전 토큰 조각이 반복되면 캐시에서 완성된 ID를 가져와 병합을 다시 수행하지 않는다. 반대로 반복이 드문 입력에는 조회 비용에 비해 얻는 재사용이 적을 수 있다는 설명이다. 이 구조는 같은 단어를 다르게 해석하거나 모델의 어휘를 바꾸는 기능이 아니라 같은 출력에 도달하는 작업량을 줄이는 접근이다."
+        ],
+        "references": [
+          {
+            "label": "허깅페이스 tokenizers v1 후보판 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/tokenizers-v1"
+          }
+        ]
+      },
+      {
+        "heading": "같은 결과와 같은 작업을 확인한 뒤 속도를 비교",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 tokbench 저장소는 ID의 해시를 기준 출력과 대조해 결과가 다른 측정은 순위에서 제외한다고 설명한다. 어휘 로딩은 인코딩 시간과 나누고, 디코딩은 기준 ID를 입력으로 사용하며 출력 텍스트도 확인한다. 더 적은 일을 해서 빠르게 보이는 비교를 막기 위한 측정 계약이다.",
+          "저장소는 언어와 코퍼스의 반복도가 처리량에 영향을 주며, 같은 문서를 계속 재처리하는 경우와 새로운 문서들을 처리하는 경우를 구별한다. 스레드 확장에서도 라이브러리 자체 병렬 처리와 독립 인스턴스를 나눠 표시한다. 저장소의 M3 Max 예시와 발표의 M4 Max 결과는 별도의 환경이므로 수치를 합쳐 하나의 성능표로 만들지 않았다."
+        ],
+        "references": [
+          {
+            "label": "공식 tokbench의 검증·측정 계약",
+            "kind": "primary",
+            "url": "https://github.com/huggingface/tokbench"
+          },
+          {
+            "label": "허깅페이스 tokenizers v1 후보판 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/tokenizers-v1"
+          }
+        ]
+      },
+      {
+        "heading": "부분의 속도와 전체 작업의 속도는 다르다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 이번 개선을 모델 앞의 작업이 더 중요해질 수 있다는 사례로 읽는다. 입력 변환이 줄어들어도 모델 계산이나 네트워크 대기가 대부분인 서비스에서는 전체 시간이 같은 폭으로 줄지 않는다. 긴 문서를 자주 처리하거나 여러 요청이 동시에 들어오는 환경과 짧은 질문을 한 번 보내는 환경의 효과를 나눠 보아야 한다.",
+          "측정의 시작과 끝을 정하는 일도 필요하다. 라이브러리 내부의 인코딩 시간, Python에서 이를 부르는 시간, 요청을 받아 응답을 완료한 시간을 따로 기록하면 변화가 어느 구간에 나타났는지 볼 수 있다. 최고 배수를 서비스 전체에 곱하는 것보다 자신의 대표 입력에서 비중이 큰 단계를 찾는 편이 구체적인 판단이다."
+        ],
+        "references": [
+          {
+            "label": "허깅페이스 tokenizers v1 후보판 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/tokenizers-v1"
+          },
+          {
+            "label": "공식 tokbench의 검증·측정 계약",
+            "kind": "primary",
+            "url": "https://github.com/huggingface/tokbench"
+          }
+        ]
+      },
+      {
+        "heading": "교체를 판단할 때 출력의 계약을 남긴다",
+        "kind": "analysis",
+        "paragraphs": [
+          "토큰 ID를 유지하려는 목표는 기존 모델과 연결하는 과정에서 중요한 조건이다. 그러나 목표를 발표했다는 사실만으로 자신이 사용하는 모든 정규화와 특수 토큰, 사용자 정의 기능까지 검증이 끝나는 것은 아니다. 대표 입력의 ID와 후처리 결과를 함께 대조해야 속도 개선이 올바른 입력을 모델에 전달하는지 판단할 수 있다.",
+          "한국어와 혼합 코드, 반복되는 문서 제목처럼 서비스의 실제 자료를 측정에 포함하면 캐시가 도움이 되는 경우와 그렇지 않은 경우를 나눌 수 있다. 캐시가 비어 있는 시작과 오래 실행한 상태도 같은 조건이 아니다. 이번 공개는 후보판의 개선과 재현할 도구를 제공한 소식이며 이 기사에서는 라이브러리를 설치해 성능을 다시 측정하지 않았다. 출력의 일치와 입력의 구성, 전체 경로의 시간을 함께 남기는 것이 변화의 의미를 읽는 기준이다."
+        ],
+        "references": [
+          {
+            "label": "허깅페이스 tokenizers v1 후보판 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/tokenizers-v1"
+          },
+          {
+            "label": "공식 tokbench의 검증·측정 계약",
+            "kind": "primary",
+            "url": "https://github.com/huggingface/tokbench"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "v1후보판과정식버전에남은작업을구별한다.",
+      "3~30배는M4Max한스레드의특정인코딩비교다.",
+      "출력일치와코퍼스·캐시·호출비용을함께확인한다."
+    ],
+    "tags": [
+      "tokenizers",
+      "토큰화",
+      "HuggingFace",
+      "벤치마크",
+      "성능"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "허깅페이스 tokenizers v1 후보판 공개",
+        "url": "https://huggingface.co/blog/tokenizers-v1"
+      },
+      {
+        "label": "공식 tokbench의 검증·측정 계약",
+        "url": "https://github.com/huggingface/tokbench"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://huggingface.co/blog/tokenizers-v1",
+      "https://github.com/huggingface/tokbench"
+    ],
+    "notes": "9/21원문71–218실제전문읽음,Rustcandidate/M4Max10families3–30x/Pythonwrapper측정제외/패턴fallback확인. tokbench공식README218–348실제읽어hashgate/loadexcluded/disjointinput/repetition/lang/nativevsindependent/M3Max별도예시대조. M4/M3결과혼합안함/모델전체속도나한국어수치로확대안함. 출력일치목표와모든사용자정의행동검증보장구분,실제benchmark실행없음. 후보7건전체와pending토크나이저관련제목URL대조동일발표없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "1f37d111-b04f-4179-ae7e-26441b020245",
+    "308e353f-5b29-4612-a51b-1e40607ff7ec",
+    "5b0ce2d8-23fc-43f4-b782-67b2c8da2693",
+    "795ddb86-faac-4cac-aaa5-6378d7041ca5",
+    "a9d496fb-2cb7-4c78-9eb6-7394f2bb0fb4",
+    "d2e32dd3-a609-4e8e-bcde-6b9b66f4ac13",
+    "dd193a08-7d0e-4ca4-a1f8-92e753626910"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:16:51.869Z",
+    "checks": [
+      "후보판·정식·미래GPU실험 분리",
+      "정확하드웨어와인코딩측정범위 유지",
+      "미지원splitpattern fallback 확인",
+      "출력해시·로딩제외·코퍼스조건 확인",
+      "Rust와Python및전체모델시간 구분"
+    ],
+    "relatedPendingIds": []
+  }
+}

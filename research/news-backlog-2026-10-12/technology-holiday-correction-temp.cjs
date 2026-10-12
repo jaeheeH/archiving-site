@@ -1,0 +1,11 @@
+const fs=require('node:fs');
+const file=__dirname+'/drafts/13115717-0f59-449e-8564-72f066e5538c.json';
+const d=JSON.parse(fs.readFileSync(file,'utf8'));
+const ref={label:'삼성전자서비스 주중 예약 확대 공식 공지',url:'https://www.samsungsvc.co.kr/notice/3036666'};
+d.research.sources.push(ref);
+d.research.primarySourceUrls.push(ref.url);
+d.article.paragraphs[5].references.push({...ref,kind:'primary'});
+d.article.paragraphs[5].paragraphs[0]='공지는 휴무 다음 날 수요가 몰려 서비스가 지연될 수 있다는 설명도 담았다. 예외 운영으로 접점을 마련하더라도 전체 요청량과 대기, 수리 결과는 별도로 관찰할 항목이다. 한편5월29일의 공식 공지는6월1일부터 주중 모바일 예약을 월요일~토요일 오전으로 확대하고 센터별 가능한 시간은 예약 페이지에서 확인하도록 안내했다. 이 상시 예약 제도와 추석의 별도 운영표는 같은 일정이 아니다. 연휴 발표에는 처리 건수나 평균 수리시간의 전후 비교가 없어9개 센터·11개 간단 점검점의 계획을 전체 수요가 해소됐다는 성과로 표현하지 않았다. 확인 가능한 변화는 휴무와 예외 운영을 나누고 제품·증상에 따라 접수 경로를 마련한 것이다.';
+d.research.notes+=' 추가검증:3037350은검색색인에서2026/9/21상세전문확인했으나10/12직접web및공개HTTP404로삭제상태.현재접근가능주중예약공식3036666추가해특별연휴일정vs6/1상시예약확대구분.검색보존본문을현재live공지라단정안함.';
+d.review.checks.push('추석상세공지의현재404와검색보존근거를기록하고현재주중예약공식문서추가');
+fs.writeFileSync(file,JSON.stringify(d,null,2)+'\n');

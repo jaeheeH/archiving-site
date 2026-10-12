@@ -1,0 +1,176 @@
+{
+  "id": "68264226-2ef7-401a-9e22-8d69b6062fc7",
+  "article": {
+    "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8b%b1-%ec%8b%9c%ed%94%84%ed%8a%b8-%ec%a3%bc%ec%a0%9c%eb%a1%9c-%ec%82%bc%ec%84%b1-ai-%ed%8f%ac%eb%9f%bc-2026-%ea%b0%9c%ec%b5%9c",
+    "title": "삼성 AI 포럼, 에이전트의 업무 적용과 피지컬 AI·지속 학습을 함께 논의",
+    "summary": "삼성 AI 포럼2026이 9월30일 서울에서 열렸다. 공식 일정은 디바이스 기술과 반도체 업무 전환을 나누면서 에이전트·피지컬 AI·지속 학습을 연결한다. 강연과 연구 방향의 소개이며 신제품 출시나 모든 업무의 자동화 성과 발표와는 범위가 다르다.",
+    "paragraphs": [
+      {
+        "heading": "400명이 참석한 열 번째 AI 포럼",
+        "kind": "reporting",
+        "paragraphs": [
+          "삼성전자는 9월 30일 서울 서초사옥에서 삼성 AI 포럼2026을 개최했다고 밝혔다. 열 번째 행사인 올해의 주제는 에이전틱 시프트, 지능에서 임팩트로의 전환이다. 회사가 밝힌 참석자는 국내 AI 대학원 교수·연구원 100명과 삼성전자 AI 분야 임직원 300명이며 유튜브 생중계도 진행했다. 이 숫자는 현장 참석 구성으로 온라인 전체 시청자나 연구 성과를 활용한 이용자 수와는 다르다. 오전 기조 강연과 오후 두 트랙은 AI를 실제 업무와 제품에 연결하는 문제를 다뤘다. 행사 보도와 공식 일정표를 함께 보면 단일 모델의 성능 발표보다 연산 효율, 실행 시스템과 적용 조직의 조건을 폭넓게 논의하는 구성이 드러난다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 AI 포럼2026 개최 보도",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8b%b1-%ec%8b%9c%ed%94%84%ed%8a%b8-%ec%a3%bc%ec%a0%9c%eb%a1%9c-%ec%82%bc%ec%84%b1-ai-%ed%8f%ac%eb%9f%bc-2026-%ea%b0%9c%ec%b5%9c",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성리서치 AI 포럼 공식 일정표",
+            "url": "https://research.samsung.com/saif",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "에이전트 실행과 운영 환경의 기조 강연",
+        "kind": "reporting",
+        "paragraphs": [
+          "오전에는 OpenAI 하드웨어 담당 부사장 리처드 호가 ChatGPT·Codex와 프런티어 모델을 활용해 챗봇에서 에이전트 업무 흐름으로 옮겨가는 주제를 발표했다. AWS의 아시아태평양·일본 지역 AI 기술 리더 데이비드 그린은 개인 생산성을 넘어 실제 운영 환경에서 AI를 확장하는 문제를 다뤘다. 삼성 보도는 그 강연의 보안·거버넌스 방향도 소개한다. 워싱턴대 란제이 크리슈나 교수는 물리 세계에 기반한 에이전트의 발전을 주제로 강연했다. 이는 공식 프로그램과 주최사의 행사 설명에서 확인되는 발표 범위다. 발표 제목만으로 기업 전사 적용이 완료됐거나 소형 모델이 모든 로봇 과제에서 검증된 성능을 냈다고 판단할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 AI 포럼2026 개최 보도",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8b%b1-%ec%8b%9c%ed%94%84%ed%8a%b8-%ec%a3%bc%ec%a0%9c%eb%a1%9c-%ec%82%bc%ec%84%b1-ai-%ed%8f%ac%eb%9f%bc-2026-%ea%b0%9c%ec%b5%9c",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성리서치 AI 포럼 공식 일정표",
+            "url": "https://research.samsung.com/saif",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "디바이스 효율과 물리 세계 모델의 두 축",
+        "kind": "reporting",
+        "paragraphs": [
+          "오후 DX부문 AI Technology 트랙은 효율적인 AI, 피지컬 AI와 지속 학습을 순서대로 배치했다. 공식 일정에는 지능의 효율을 높이는 접근과 온디바이스 AI 플랫폼, 월드 모델의 가능성과 위험, 로봇이 사람에게서 배우는 도구에 관한 세션이 실려 있다. 삼성은 디바이스 설계와 최적화, 실제 플랫폼 적용 사례와 관련 연구 성과를 소개했다고 설명했다. 월드 모델은 현실의 변화를 예측하고 행동의 결과를 미리 살펴보려는 연구 방향이다. 이런 모델이 존재한다는 사실만으로 실제 로봇의 모든 동작이 검증되는 것은 아니다. 행사 자체도 가능성과 한계를 함께 다루도록 구성돼 있어 연구와 제품화의 간격을 살펴볼 주제로 읽을 수 있다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 AI 포럼2026 개최 보도",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8b%b1-%ec%8b%9c%ed%94%84%ed%8a%b8-%ec%a3%bc%ec%a0%9c%eb%a1%9c-%ec%82%bc%ec%84%b1-ai-%ed%8f%ac%eb%9f%bc-2026-%ea%b0%9c%ec%b5%9c",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성리서치 AI 포럼 공식 일정표",
+            "url": "https://research.samsung.com/saif",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "지속 학습과 사용자 기억은 운영 과제",
+        "kind": "analysis",
+        "paragraphs": [
+          "지속 학습 세션은 새로운 정보에 적응하면서 기존 지식을 유지하는 문제와 긴 작업을 수행하는 에이전트의 기억을 다뤘다. 삼성 보도는 사용자 맞춤형 AI와 실사용 피드백을 바탕으로 개선하는 AI 기술도 소개한다. 여기서 학습 방향을 설명한 것과 출시된 제품이 스스로 제한 없이 바뀐다는 주장은 다르다. 사용자의 정보를 오래 유지하려면 어떤 경험을 기억할지와 수정·삭제를 어떻게 반영할지 정해야 하며, 업데이트 뒤 이전 작업에서 성능이 유지되는지도 확인해야 한다. 이런 질문은 지속 학습이 제품 경험에 연결될 때 생기는 평가 과제다. 포럼 발표를 특정 기기의 이미 제공된 기능 목록으로 옮겨 적기보다 연구 주제와 구현 조건을 구분하는 것이 적절하다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 AI 포럼2026 개최 보도",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8b%b1-%ec%8b%9c%ed%94%84%ed%8a%b8-%ec%a3%bc%ec%a0%9c%eb%a1%9c-%ec%82%bc%ec%84%b1-ai-%ed%8f%ac%eb%9f%bc-2026-%ea%b0%9c%ec%b5%9c",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성리서치 AI 포럼 공식 일정표",
+            "url": "https://research.samsung.com/saif",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "반도체 업무 전환은 별도 트랙으로",
+        "kind": "reporting",
+        "paragraphs": [
+          "DS부문의 AX Innovation 트랙은 반도체 업무와 글로벌 협력사의 적용 사례에 초점을 맞췄다. 델 테크놀로지스와 앤트로픽 등이 기업용 AI 팩토리와 신뢰 가능한 에이전트의 업무 적용을 소개했다고 삼성은 설명했다. DS부문 AX·PI센터는 설계·제조의 적용 사례와 현장 과제를 해결하는 방향을 공유했다. 제품의 AI 연산 효율을 논의하는 DX 트랙과 조직의 업무 전환을 다루는 DS 트랙이 나뉘었다는 점이 중요하다. 행사 보도에는 모든 공정의 수율 개선이나 비용 절감을 비교한 세부 수치가 제공되지 않았다. 따라서 사례 발표를 반도체 생산 전반의 자동화 완료나 AI 단독 효과로 확대하지 않았다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 AI 포럼2026 개최 보도",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8b%b1-%ec%8b%9c%ed%94%84%ed%8a%b8-%ec%a3%bc%ec%a0%9c%eb%a1%9c-%ec%82%bc%ec%84%b1-ai-%ed%8f%ac%eb%9f%bc-2026-%ea%b0%9c%ec%b5%9c",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성리서치 AI 포럼 공식 일정표",
+            "url": "https://research.samsung.com/saif",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "지능의 점수에서 적용 조건으로 이동",
+        "kind": "analysis",
+        "paragraphs": [
+          "이번 포럼의 구성을 보면 성능이 높은 모델을 확보하는 일과 업무에서 유용한 시스템을 만드는 일이 함께 논의됐음을 알 수 있다. 디바이스에서는 연산·전력과 사용자 경험의 조합을, 로봇에서는 예측과 행동의 실제 검증을, 기업 업무에서는 도구 접근과 운영 책임을 살펴야 한다. 이들은 한 벤치마크 점수로 대체하기 어려운 문제다. 포럼은 그런 차이를 여러 트랙에 배치했지만 공개된 보도와 일정표만으로 각 강연의 기술 결과를 독립 재현할 수는 없다. 후속 연구 자료나 적용 사례의 구체적인 평가가 제공될 때 효율과 신뢰성의 진전을 더 정확히 판단할 수 있다. 현재 확인되는 성과는 연구·운영의 질문을 연결해 공유한 행사 자체다."
+        ],
+        "references": [
+          {
+            "label": "삼성전자 AI 포럼2026 개최 보도",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8b%b1-%ec%8b%9c%ed%94%84%ed%8a%b8-%ec%a3%bc%ec%a0%9c%eb%a1%9c-%ec%82%bc%ec%84%b1-ai-%ed%8f%ac%eb%9f%bc-2026-%ea%b0%9c%ec%b5%9c",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성리서치 AI 포럼 공식 일정표",
+            "url": "https://research.samsung.com/saif",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "9월 30일 서울 행사 현장 400명과 온라인 중계를 구분했다.",
+      "DX는 효율·피지컬 AI·지속 학습, DS는 반도체 업무 전환을 다뤘다.",
+      "강연·연구 방향을 이미 출시된 기능이나 반도체 생산성 입증으로 확대하지 않았다."
+    ],
+    "tags": [
+      "삼성전자",
+      "AI포럼",
+      "에이전트",
+      "피지컬AI"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "삼성전자 AI 포럼2026 개최 보도",
+        "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8b%b1-%ec%8b%9c%ed%94%84%ed%8a%b8-%ec%a3%bc%ec%a0%9c%eb%a1%9c-%ec%82%bc%ec%84%b1-ai-%ed%8f%ac%eb%9f%bc-2026-%ea%b0%9c%ec%b5%9c"
+      },
+      {
+        "label": "삼성리서치 AI 포럼 공식 일정표",
+        "url": "https://research.samsung.com/saif"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8b%b1-%ec%8b%9c%ed%94%84%ed%8a%b8-%ec%a3%bc%ec%a0%9c%eb%a1%9c-%ec%82%bc%ec%84%b1-ai-%ed%8f%ac%eb%9f%bc-2026-%ea%b0%9c%ec%b5%9c",
+      "https://research.samsung.com/saif"
+    ],
+    "notes": "삼성9/30개최보도와삼성리서치공식2026일정표대조.일정표일부연사는TBD로남아있어불일치하는4번째기조이름은본문에서생략.확인되는RichardHo/DavidGreen/RanjayKrishna와DX/DS트랙만명시.온디바이스·월드모델·지속학습은발표/연구내용이며상용기능범위확정하지않음.설계제조AI단독수율/비용효과수치없음.후보및전체pending동일포럼없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "259b1bc3-7c03-4bfc-9653-0a3452a297e6",
+    "a6e9c97c-1e29-4eb1-b357-a081becc7813",
+    "a55ebad0-e03d-418e-8ffd-43af660e7f38",
+    "d9dfde0c-a88d-47c1-863b-486eaefc9474",
+    "f1c6270a-4dac-4b5a-b155-3bfd66b56f9d",
+    "f4019e8c-959b-4367-abaf-985d452c901a"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:18:30.959Z",
+    "checks": [
+      "9/30서초사옥·10회째·현장400명구성확인",
+      "공식일정과확인가능한세기조연사대조",
+      "DX효율/물리/지속학습및DS업무전환트랙구분",
+      "기조주제와상용기능·실측결과구분",
+      "반도체수율/비용의미공개숫자추가하지않음",
+      "일정표TBD인연사로확정주장만들지않음"
+    ],
+    "relatedPendingIds": []
+  }
+}

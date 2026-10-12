@@ -1,0 +1,161 @@
+{
+  "id": "9e906ce0-74a9-46e4-8b17-d821dc22c073",
+  "article": {
+    "url": "https://blog.cloudflare.com/workers-on-demand-profiling/",
+    "title": "클라우드플레어, Workers 운영 프로파일링 공개…메모리 할당 범위 확인 필요",
+    "summary": "클라우드플레어가 운영 중인 Workers와 Durable Objects의 CPU·메모리 할당 프로파일을 요청해 플레임그래프로 살펴보는 기능을 공개했다. 수집 중 실제 트래픽이 필요하며, 메모리 프로파일은 남아 있는 객체의 스냅샷과 다르다. 내부 최적화 사례와 측정 범위를 함께 읽어야 한다.",
+    "paragraphs": [
+      {
+        "heading": "운영 코드의 비싼 함수와 할당 경로를 추적",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어는 Workers와 Durable Objects에서 요청에 따라 CPU·메모리 프로파일을 수집하는 기능을 발표했다. Workers Observability의 플레임그래프에서 함수별 결과를 살펴보고 원시 프로파일을 내려받아 추가 분석할 수 있다. 로컬 테스트와 다른 실제 운영 요청을 대상으로 자원이 많이 드는 코드 경로를 찾는 용도다.",
+          "공식 문서는 CPU 프로파일이 처리시간을 사용하는 함수를, Heap 프로파일이 메모리를 할당하는 코드를 보여준다고 설명한다. Heap은 수집 중 할당된 메모리 512kB마다 스택을 표본으로 기록하며, 남아 있는 객체를 보여주는 힙 스냅샷은 아니다. 할당된 메모리가 아직 살아 있는지까지 나타내지 않으므로 큰 할당 비중을 곧바로 메모리 누수의 증명으로 읽어서는 안 된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/workers-on-demand-profiling/"
+          },
+          {
+            "label": "워커스 운영 프로파일링 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/workers/observability/profiling-in-production/"
+          }
+        ]
+      },
+      {
+        "heading": "실제 트래픽과 선택한 배포 버전이 필요",
+        "kind": "reporting",
+        "paragraphs": [
+          "프로파일은 이미 활성화돼 로드된 실행 환경을 대상으로 한다. 수집을 위해 새 요청이나 실행 환경을 자동으로 시작하지 않으므로 선택한 버전에 트래픽이 있어야 한다. Workers에서는 실행 중인 환경 하나를 선택하며, Durable Objects는 특정 인스턴스를 지정해 해당 객체의 실행을 살필 수 있다고 회사는 설명한다.",
+          "공식 문서의 수집 시간은 1,000~50,000ms이고 기본값은 10,000ms다. API와 CLI의 latest는 가장 최근에 만든 버전이어서 실제 배포된 버전과 다를 수 있다. 로그 화면의 과거 기간 필터도 수집 범위를 정하지 않는다. 프로파일은 요청한 수집 시간 동안의 활동을 기록한다. 소스맵을 올려야 축소된 코드 대신 함수 이름과 파일 위치를 이해하기 쉽다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/workers-on-demand-profiling/"
+          },
+          {
+            "label": "워커스 운영 프로파일링 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/workers/observability/profiling-in-production/"
+          }
+        ]
+      },
+      {
+        "heading": "공급자의 내부 사례가 보여준 중복 작업",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어는 R2 바인딩 Worker의 CPU 프로파일에서 JSON 처리 함수가 중복으로 트리를 순회하던 문제를 발견했다고 밝혔다. JSON.stringify가 각 노드를 방문하는데 변환 함수도 다시 하위 트리를 훑어 같은 값을 반복 처리한 것이다. 회사는 이를 수정해 해당 함수가 2.7배 빨라졌다고 설명했다. 이 수치는 해당 함수의 결과이며 Worker 전체의 속도 향상률은 아니다.",
+          "메모리 사례에서는 비활성화됐다고 생각한 Prometheus 계측 경로가 여전히 실행되며 할당의 약 66.7%를 차지했다고 회사는 밝혔다. 그 경로를 제거한 뒤 P999 메모리가 133MB에서 118MB로 줄었다는 표도 공개했다. 이는 128MB 한도를 대상으로 한 내부 Worker의 전후 결과다. 같은 프로파일링 기능이 다른 서비스에서도 같은 감소 폭을 만든다는 보장은 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/workers-on-demand-profiling/"
+          }
+        ]
+      },
+      {
+        "heading": "플레임그래프는 함수 비중을 보여주는 자료",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 플레임그래프를 해석할 때 먼저 구분할 것은 측정 유형과 시간 구간이다. 같은 넓은 프레임도 CPU에서는 계산시간, Heap에서는 할당량을 뜻한다. 그래프의 가로 위치는 함수가 실행된 시점을 보여주는 타임라인이 아니다. 특정 함수를 확대해도 비교의 기준을 전체 수집 자료와 연결해 읽어야 잘못된 우선순위를 정하는 일을 피할 수 있다.",
+          "수집한 한 환경의 결과도 전체 서비스의 평균과 다를 수 있다. 특정 요청이나 객체에 작업이 몰린 상황을 살폈다면 어떤 트래픽과 버전을 대상으로 했는지 남겨야 한다. 기능의 목적은 비용이 큰 경로에 대한 근거를 확보하는 데 있다. 변경 후에는 같은 업무 경로를 다시 수집하고 요청의 지연과 오류 등 다른 관측 값도 비교해 실제 영향이 있는지 확인하는 편이 적절하다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/workers-on-demand-profiling/"
+          },
+          {
+            "label": "워커스 운영 프로파일링 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/workers/observability/profiling-in-production/"
+          }
+        ]
+      },
+      {
+        "heading": "수집 창 밖의 문제와 다음 계획을 구분",
+        "kind": "analysis",
+        "paragraphs": [
+          "이번 기능은 사용자가 수집을 시작해야 하므로 짧게 발생한 문제를 놓칠 수 있다. 특히 초기화 과정에서 큰 할당이 있었어도 그 이후에 수집했다면 해당 과정은 프로파일에 나타나지 않는다. 회사는 이런 한계를 보완할 지속 프로파일링을 작업 중이라고 설명했다. 그 후속 계획을 현재 자동 수집 기능이 이미 제공되는 것으로 바꿔 읽어서는 안 된다.",
+          "프로파일을 아카이빙할 때는 원시 파일과 코드 버전, 수집 시간과 대상 객체, 당시 요청 조건을 함께 남기는 것이 유용하다. 개선 전후의 이미지가 비슷해도 측정 대상이 달라지면 수치의 뜻이 바뀐다. 이번 내부 사례에서 참고할 부분 역시 큰 성능 수치 자체보다 예상 밖 계측 비용과 중복 순회를 실제 운영 자료로 찾아낸 과정이다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/workers-on-demand-profiling/"
+          },
+          {
+            "label": "워커스 운영 프로파일링 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/workers/observability/profiling-in-production/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "CPU와 Heap 프로파일은 운영 중인 대상에 요청해 수집하며 실제 트래픽이 필요하다.",
+      "Heap은 수집 중 할당량을 표본화하며 잔존 메모리를 보여주는 힙 스냅샷이 아니다.",
+      "함수 2.7배 개선과 P999 133→118MB는 클라우드플레어의 특정 내부 사례다."
+    ],
+    "tags": [
+      "클라우드플레어",
+      "Workers",
+      "DurableObjects",
+      "프로파일링",
+      "성능분석"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.cloudflare.com/workers-on-demand-profiling/"
+      },
+      {
+        "label": "워커스 운영 프로파일링 공식 문서",
+        "url": "https://developers.cloudflare.com/workers/observability/profiling-in-production/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.cloudflare.com/workers-on-demand-profiling/",
+      "https://developers.cloudflare.com/workers/observability/profiling-in-production/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 발표 원문과 profiling-in-production 공식 문서를 WEB으로 읽고 원출처 RSS 수집본문도 대조했다. Heap512kB표본·잔존메모리/스냅샷아님·1~50초·latest최근생성버전·실트래픽/로드된환경·과거로그필터독립·소스맵조건을 확인했다. 2.7배는 특정JSON함수,66.7%할당및P999133→118MB는 공급자 내부Worker의 결과로 한정했다. continuousprofiling은 작업중이지출시로쓰지 않았다. candidates9편의관측성통합/Traces는전체플랫폼요청추적이며본편의CPU/할당코드표본수집과새범위가달라후속상세기능이다. snapshot.pending 전체제목과profiling/Clef관련요약에서도동일이벤트중복없음. 실제프로파일수집/성능실측은하지 않았다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2019054a-a457-4356-9bc9-47b85aca06b5",
+    "2c1a4101-aae8-4295-b207-5ae567b4b4b6",
+    "4027d7c6-9b75-45ae-8b7f-1b6777e3bbbc",
+    "44c476d2-b8f8-4341-9694-f4e9b6e32222",
+    "64da50f0-d536-47bb-bd3e-dcc375b183f3",
+    "6fa4c931-8672-4bfd-8bf3-1af3e90b9b44",
+    "e1462898-b538-4aeb-96dc-f22e5eed6df0",
+    "ea15db4a-052c-4c9f-bca3-ed226cda42b8",
+    "faecfaa5-a532-492f-8d3a-bda52f50d1f7"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:26:20.625Z",
+    "checks": [
+      "공식 문서는 Heap을512kB할당당스택표본,잔존메모리측정/힙스냅샷과구분한다.",
+      "공식 수집범위1000~50000ms와기본10000ms,latest가최근생성버전이라는조건을확인했다.",
+      "수집은활성/로드된대상과실제트래픽이필요하고로그과거필터와별도다.",
+      "공급자의특정함수2.7배및내부WorkerP999133→118MB를전체서비스보장으로확대하지않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

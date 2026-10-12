@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
   checkGalleryOwnershipOrAdmin,
@@ -289,8 +289,10 @@ export async function PATCH(req: NextRequest, { params }: Props) {
       throw error;
     }
 
-    revalidateTag(CACHE_TAGS.gallery, "max");
+    revalidateTag(CACHE_TAGS.gallery, { expire: 0 });
     revalidateTag(CACHE_TAGS.home, "max");
+    revalidatePath('/sitemap.xml');
+    revalidatePath(`/gallery/${galleryId}`);
 
     if (previousGallery) {
       const nextImageUrl = typeof updateData.image_url === "string" ? updateData.image_url : previousGallery.image_url;
@@ -369,8 +371,10 @@ export async function DELETE(req: NextRequest, { params }: Props) {
       ]);
     }
 
-    revalidateTag(CACHE_TAGS.gallery, "max");
+    revalidateTag(CACHE_TAGS.gallery, { expire: 0 });
     revalidateTag(CACHE_TAGS.home, "max");
+    revalidatePath('/sitemap.xml');
+    revalidatePath(`/gallery/${galleryId}`);
 
     return NextResponse.json({
       success: true,

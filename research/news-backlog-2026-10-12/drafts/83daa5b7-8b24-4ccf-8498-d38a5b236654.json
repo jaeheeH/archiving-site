@@ -1,0 +1,149 @@
+{
+  "id": "83daa5b7-8b24-4ccf-8498-d38a5b236654",
+  "article": {
+    "url": "https://blog.cloudflare.com/civil-society-automation/",
+    "title": "클라우드플레어, 비영리 30곳의 자동화 사례 공개…두 번째 지원 모집",
+    "summary": "클라우드플레어가 비영리 지원 첫 집단 30곳의 개발 사례와 인권 단체를 위한 도구 제작을 소개하고 두 번째 모집을 시작했다. 지역 언론 업무 통합부터 자료 수집·분류까지 자동화의 범위가 넓어졌다. 서비스 크레딧과 현금 지원의 차이, 민감한 자료에서 사람의 판단이 남는 지점을 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "보안 지원에서 자체 도구 개발 지원으로 넓힌다",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어는 비영리·공익 조직 30곳이 참여한 첫 지원 집단의 자동화 사례를 공개하고 두 번째 집단 신청을 시작했다. 회사는 개발 서비스 크레딧을 통해 지역 언론, 정신건강 지원, 시민 참여와 교육 등의 도구를 만들도록 도왔다고 설명한다. 기존 사이트를 보호하는 지원에 더해 조직의 업무에 맞는 앱을 직접 만드는 단계로 범위를 넓힌 것이다.",
+          "이 프로그램은 2025년 Cloudflare for Startups를 비영리·시민사회·공익 조직으로 확대한 후속 활동이다. 당시 공식 발표는 조직당 최대 25만 달러의 서비스 크레딧을 제공할 수 있다고 밝혔다. 최신 발표의 750만 달러 규모도 개발 서비스 크레딧의 맥락이다. 이를 현금 기부액이나 모든 참여 조직이 실제로 사용한 서비스 비용으로 바꿔 읽어서는 안 된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/civil-society-automation/"
+          },
+          {
+            "label": "클라우드플레어 비영리 지원 프로그램 최초 발표",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/expanding-startups-for-nonprofits/"
+          }
+        ]
+      },
+      {
+        "heading": "작은 조직의 흩어진 업무를 한 흐름으로 묶는다",
+        "kind": "reporting",
+        "paragraphs": [
+          "지역 비영리 언론 LebTown은 문서와 캘린더, Discord, 이메일에 나뉘어 있던 편집 업무를 자체 관리 시스템으로 통합하고 있다. 기획부터 발행까지 기사 상태를 추적하고 도달 범위와 지역사회 영향을 기록한다. 클라우드플레어는 PDF 형태의 부동산 거래 기록을 구조화하는 도구와 WordPress에 연결되는 교정 에이전트도 제작 사례로 소개했다.",
+          "Kaya Guides는 WhatsApp 기반 지원 앱의 관리 시스템을 클라우드플레어로 옮기고 상담 담당자에게 실시간 피드백을 제공하는 AI 도구를 구축했다고 회사는 전했다. 자원봉사자가 운영하는 The Snorkelling Society는 이용자가 장소 정보와 사진을 공유하는 SnorkelMap을 개발하고 있다. 이 사례들은 서로 다른 조직의 업무 흐름을 보여 주며 같은 성과 지표로 비교된 결과는 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/civil-society-automation/"
+          }
+        ]
+      },
+      {
+        "heading": "인권 도구는 수집과 분류를 돕고 판단을 남긴다",
+        "kind": "reporting",
+        "paragraphs": [
+          "추가 엔지니어링 지원에는 개발 중인 인권 업무 도구가 포함된다. Freedom House와는 공개 보도에서 초국가적 탄압의 잠재 사례를 수집·구조화·표시하는 대시보드를 만들고 있다. Global Network Initiative와는 규제 제안과 의견 수렴 기회를 분류하고 내부 검토와 마감 일정을 관리하는 도구를 제작한다. 원출처는 이들을 프로토타입과 진행 중 작업으로 소개한다.",
+          "Article One과는 감사 자료와 국가별 맥락 보고서를 구조화해 주요 인권 위험과 권고 초안을 만드는 도구를 개발한다. 회사 발표는 AI가 정보를 정리하되 모든 판단은 Article One이 내린다고 명시했다. 인권 피해자의 이름 같은 민감한 자료를 다루므로 보안과 데이터 최소화, 출력 오류의 영향, 사람이 개입해야 할 지점을 설계 과정에서 검토하고 있다고 설명했다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/civil-society-automation/"
+          }
+        ]
+      },
+      {
+        "heading": "크레딧은 시작 비용을 낮추지만 운영 계획도 필요하다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 서비스 크레딧의 가치는 인력이 적은 조직이 아이디어를 실제 업무 도구로 시험할 기회를 넓힌다는 데 있다. 다만 사용할 수 있는 인프라와 장기간 유지할 수 있는 인프라는 다를 수 있다. 조직은 지원받는 제품과 사용량, 지원 종료 뒤 부담할 비용, 도구를 고칠 담당자를 함께 정리해야 기술이 일시적인 시연에 머물지 않는다.",
+          "맞춤형 도구를 만든다고 기존 업무가 자동으로 단순해지는 것도 아니다. LebTown 사례처럼 기획·발행·영향 기록을 연결하려면 각 상태의 의미와 책임자가 먼저 정해져야 한다. 자료 입력 방식이 팀마다 달라지면 시스템 안에서도 정보가 흩어질 수 있다. 작은 조직의 자동화는 기능 수보다 반복 업무를 일관된 흐름으로 만드는 정도로 평가할 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "클라우드플레어 비영리 지원 프로그램 최초 발표",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/expanding-startups-for-nonprofits/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/civil-society-automation/"
+          }
+        ]
+      },
+      {
+        "heading": "민감한 업무에서는 검토의 경계를 제품에 넣는다",
+        "kind": "analysis",
+        "paragraphs": [
+          "인권 보고서나 상담 업무의 자료 정리는 잘못된 분류가 미치는 영향이 크다. 잠재 사례를 표시하는 단계와 사실을 확정하는 단계, 권고 초안과 최종 판단을 구분하는 것이 중요한 이유다. 원출처의 Article One 사례는 그 경계를 명시한다. 도구의 출력이 사람의 검토 대기열에 들어가고 근거 자료로 돌아갈 수 있어야 담당자가 판단을 이어갈 수 있다.",
+          "이번 발표는 지원 조직과 개발 사례를 소개하는 회사의 보고이며 자동화의 독립적인 효과 평가를 제공하지 않는다. 처리량이 늘었다는 설명만으로 서비스 품질이나 사회적 영향이 향상됐다고 단정할 수 없다. 참여 조직은 절약한 시간뿐 아니라 검토 오류와 유지보수 부담, 정보 접근 범위를 함께 살펴야 한다. 사람의 업무를 어디까지 돕는지 구체화할수록 지원의 의미도 선명해진다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/civil-society-automation/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "첫 비영리 지원 집단 30곳의 개발 사례를 공개하고 두 번째 모집을 시작했다.",
+      "최대 25만 달러 지원은 서비스 크레딧이며 현금 기부와 구분해야 한다.",
+      "인권 도구는 개발 중인 사례로, AI가 자료를 구조화해도 최종 판단은 담당 조직에 남는다."
+    ],
+    "tags": [
+      "Cloudflare",
+      "비영리",
+      "자동화",
+      "개발사례"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.cloudflare.com/civil-society-automation/"
+      },
+      {
+        "label": "클라우드플레어 비영리 지원 프로그램 최초 발표",
+        "url": "https://blog.cloudflare.com/expanding-startups-for-nonprofits/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.cloudflare.com/civil-society-automation/",
+      "https://blog.cloudflare.com/expanding-startups-for-nonprofits/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 최신 원출처 WEB·보존 RSS 전문과 2025년 비영리 프로그램 최초 발표를 읽었다. 최초 발표의 지원 자격·크레딧 성격만 대조했고 2025년 마감일을 새 모집 일정에 사용하지 않았다. 상담 사례는 도구 운영으로만 다뤄 임상적 효과를 주장하지 않았다. Freedom House·GNI·Article One 도구를 개발 중/프로토타입으로 구분했다. 후보 9건과 snapshot.pending에는 같은 30곳 사례·2차 모집 사건이 없다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "e1462898-b538-4aeb-96dc-f22e5eed6df0",
+    "2019054a-a457-4356-9bc9-47b85aca06b5",
+    "2c1a4101-aae8-4295-b207-5ae567b4b4b6",
+    "4027d7c6-9b75-45ae-8b7f-1b6777e3bbbc",
+    "44c476d2-b8f8-4341-9694-f4e9b6e32222",
+    "64da50f0-d536-47bb-bd3e-dcc375b183f3",
+    "6fa4c931-8672-4bfd-8bf3-1af3e90b9b44",
+    "ea15db4a-052c-4c9f-bca3-ed226cda42b8",
+    "faecfaa5-a532-492f-8d3a-bda52f50d1f7"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:41:15.254Z",
+    "checks": [
+      "첫 집단 30곳·두 번째 모집·최대 25만 달러 서비스 크레딧을 공식 발표에서 확인했다.",
+      "세 인권 도구의 진행 상태와 Article One 최종 판단 귀속을 원문에서 확인했다.",
+      "지원액을 현금 기부나 독립 효과 평가로 표현하지 않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

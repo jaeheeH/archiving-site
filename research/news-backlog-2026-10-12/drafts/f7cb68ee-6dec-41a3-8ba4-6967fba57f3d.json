@@ -1,0 +1,140 @@
+{
+  "id": "f7cb68ee-6dec-41a3-8ba4-6967fba57f3d",
+  "article": {
+    "url": "https://huggingface.co/blog/allenai/impactful-scheduling",
+    "title": "Ai2, GPU 배분을 우선순위에서 시간 예산으로 바꾸다",
+    "summary": "Ai2가 연구용 GPU 클러스터에 시간 예산과 계층적 공정 배분, 최소 실행 시간 계약을 도입한 운영 사례를 공개했다. 연구소는 30일 관찰에서 배정해야 할 GPU 시간의 98%를 제공했다고 보고했다. 높은 점유율과 실제 연산 효율의 차이, 중단되는 작업의 복구 비용도 함께 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "모두가 높은 우선순위를 요청할 때",
+        "kind": "reporting",
+        "paragraphs": [
+          "앨런 인공지능 연구소(Ai2)는 2026년 10월 9일 허깅페이스에 연구용 GPU 클러스터의 배분 방식을 바꾼 사례를 공개했다. 연구소가 설명한 출발점은 장비 부족만큼이나 요청 방식의 문제였다. 모든 작업이 높은 우선순위를 사용하게 되면서 우선순위의 구분이 약해졌고, 짧은 디버깅 작업을 빨리 시작하려고 연산하지 않는 작업으로 GPU를 미리 점유하는 행동도 나타났다. Ai2는 약 150명의 내부 연구자가 사용하는 클러스터에서 요청량이 공급의 두세 배에 이른다고 밝혔다. 새 방식은 GPU를 팀에 고정 배정하는 대신 연구 과제마다 시간 예산을 정하고, 실제 사용 이력을 바탕으로 실행 순서를 조정한다. 이는 연구소가 설명한 내부 운영 사례다."
+        ],
+        "references": [
+          {
+            "label": "Ai2의 GPU 스케줄링 운영 보고",
+            "url": "https://huggingface.co/blog/allenai/impactful-scheduling",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "예산과 최소 실행 시간의 계약",
+        "kind": "reporting",
+        "paragraphs": [
+          "관리자는 연구 프로그램과 프로젝트의 계층에 따라 GPU 시간 비중을 배분한다. 스케줄러는 기본적으로 최근 7일 동안의 사용량을 살펴, 할당분보다 적게 사용한 쪽의 작업을 앞세운다. 예산이 있는 작업은 의미 있는 진전을 낼 수 있는 최소 실행 시간을 선언하며, 그동안은 선점으로부터 보호된다. 보호 시간이 끝난 뒤에는 다른 작업을 위해 중단되고, 재개 가능한 작업은 다시 대기열에 들어갈 수 있다. 최소 실행 시간을 0으로 둔 작업은 예산에서 차감되지 않는 여유 자원을 사용하지만 언제든 선점될 수 있다. 계층적 공정 배분 자체는 새 개념이 아니다. Slurm의 Fair Tree 공식 문서도 계정 계층의 배정 비중과 사용량을 이용해 사용자 순위를 정하는 기존 접근을 설명한다."
+        ],
+        "references": [
+          {
+            "label": "Ai2의 GPU 스케줄링 운영 보고",
+            "url": "https://huggingface.co/blog/allenai/impactful-scheduling",
+            "kind": "primary"
+          },
+          {
+            "label": "Slurm 공식 Fair Tree 알고리즘 문서",
+            "url": "https://slurm.schedmd.com/fair_tree.html",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "점유율을 유지하며 배분을 조정한 결과",
+        "kind": "reporting",
+        "paragraphs": [
+          "Ai2는 7월 말부터 클러스터별로 적용했고, 30일 시험 기간에 팀들이 받아야 할 GPU 시간의 98%를 제공했다고 보고했다. 이때 받아야 할 시간은 실제 수요를 시간별로 반영해 산정했으며, 클러스터 점유율은 전후 모두 98%였다. 사람이 관여해야 했던 장비 수리 건은 74% 줄었다는 설명도 포함된다. 다만 발표된 지표를 GPU 연산 성능의 개선율로 읽으면 안 된다. 원문은 장비가 작업에 배정된 시간을 뜻하는 점유율과, 배정 시간 동안 연산 용량을 얼마나 사용했는지를 뜻하는 활용률을 구분한다. 이번 작업은 주로 배분과 점유를 다뤘다. 연구소가 공개한 운영 수치는 해당 환경의 관찰 결과이며, 다른 연구실의 비용이나 학습 속도를 보장하지 않는다."
+        ],
+        "references": [
+          {
+            "label": "Ai2의 GPU 스케줄링 운영 보고",
+            "url": "https://huggingface.co/blog/allenai/impactful-scheduling",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "대기열의 이유를 설명하는 인터페이스",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 이 사례는 자원 배분의 규칙을 사용자가 읽을 수 있는 정보로 바꾸는 문제이기도 하다. 작업이 중단됐다는 알림만으로는 사용자가 예산 부족, 장비 점검, 다른 팀의 수요 중 무엇이 원인인지 알기 어렵다. 배정 비중과 누적 사용량, 보호 시간이 함께 보인다면 다음 실험을 언제 제출할지 판단할 근거가 생긴다. Slurm 문서가 계층별 지표를 통해 순위 차이를 설명하는 것도 이 지점과 연결된다. 공정성을 설계하려면 결과뿐 아니라 그 결과를 만든 계산 단위를 보여줄 필요가 있다. 단, 숫자가 투명해져도 어떤 연구에 예산을 줄지는 조직의 판단으로 남는다. 스케줄러가 연구의 가치를 객관적으로 측정하는 것으로 오해하지 않도록 관리자의 배분 결정과 시스템의 실행 규칙을 구분해 기록해야 한다."
+        ],
+        "references": [
+          {
+            "label": "Slurm 공식 Fair Tree 알고리즘 문서",
+            "url": "https://slurm.schedmd.com/fair_tree.html",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "중단 가능성에는 복구 비용이 따른다",
+        "kind": "analysis",
+        "paragraphs": [
+          "시간을 나누는 정책은 짧은 작업의 접근성을 높일 수 있지만, 대화형 작업의 상태를 잃는 사람에게는 다른 비용을 만든다. Ai2도 보호 실행 시간의 상한을 8시간으로 정한 뒤 연구자가 세션 상태를 수동으로 복구하는 문제를 발견했다고 밝혔다. CPU 전용 개발 환경과 복구 가능한 세션은 이를 줄이기 위한 향후 계획이며 이미 완성된 기능으로 소개하지 않았다. 큰 작업을 배치하기 어렵게 하는 자원 조각화도 조사 중이다. 이런 조건은 자원 관리 제품을 평가할 때 대기 시간만큼 중단 후 복구를 살펴야 함을 보여준다. 실험 기록, 체크포인트, 작업의 재개 여부를 함께 남겨야 짧아진 대기열이 실제 연구 진전으로 이어졌는지 판단할 수 있다. 장비 점유율 한 수치로 사용자 경험 전체를 대신하기는 어렵다."
+        ],
+        "references": [
+          {
+            "label": "Ai2의 GPU 스케줄링 운영 보고",
+            "url": "https://huggingface.co/blog/allenai/impactful-scheduling",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Ai2는 GPU 시간 예산, 계층적 공정 배분, 최소 실행 시간 계약을 결합한 운영 사례를 공개했다.",
+      "30일 관찰의 GPU 시간 제공율 98%와 점유율 98%는 연산 활용률이나 모델 성능의 개선율과 다르다.",
+      "대화형 세션 복구와 대규모 작업의 자원 조각화는 추가 과제로 남아 있다."
+    ],
+    "tags": [
+      "GPU",
+      "Ai2",
+      "인프라",
+      "자원배분",
+      "사용자경험"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "Ai2의 GPU 스케줄링 운영 보고",
+        "url": "https://huggingface.co/blog/allenai/impactful-scheduling"
+      },
+      {
+        "label": "Slurm 공식 Fair Tree 알고리즘 문서",
+        "url": "https://slurm.schedmd.com/fair_tree.html"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://huggingface.co/blog/allenai/impactful-scheduling",
+      "https://slurm.schedmd.com/fair_tree.html"
+    ],
+    "notes": "원문과 Slurm 공식 문서를 직접 브라우징했다. 원문 날짜 2026-10-09, 기본 회고창 7일, 최소 보호시간 상한 8시간, 30일 시험에서 수요 반영 GPU 제공율 98%와 변경 전후 점유율 98%, 사람 개입 수리 74% 감소를 확인했다. 수치를 Ai2 자체 보고로 귀속했으며 활용률 개선으로 바꾸지 않았다. CPU 개발 클러스터/복구 세션은 계획, 조각화는 조사 중이다. 후보 10건과 snapshot.pending 전체의 제목·원제·URL 및 스케줄링 관련 본문을 대조했다. AstaBrief 등 같은 연구소 소식은 다른 구체적 사건이며 동일 스케줄러 발표 중복은 없다. 분석은 공개 규칙을 바탕으로 한 ARCH.B 해석이다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "1f37d111-b04f-4179-ae7e-26441b020245",
+    "308e353f-5b29-4612-a51b-1e40607ff7ec",
+    "5b0ce2d8-23fc-43f4-b782-67b2c8da2693",
+    "795ddb86-faac-4cac-aaa5-6378d7041ca5",
+    "8c1ef8ec-15cd-47d8-a7c6-0bd6dc7aa0a9",
+    "8d9df11a-5fe9-473f-b6f5-3dafc1d34bf8",
+    "a9d496fb-2cb7-4c78-9eb6-7394f2bb0fb4",
+    "ba1c93b6-7549-4a21-936e-ec74f3f27198",
+    "d2e32dd3-a609-4e8e-bcde-6b9b66f4ac13",
+    "dd193a08-7d0e-4ca4-a1f8-92e753626910"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:11:20.877Z",
+    "checks": [
+      "원출처와 Slurm 1차 문서의 구체적 페이지 2개 확인",
+      "점유율과 연산 활용률 구분 확인",
+      "30일·수요 반영 조건과 미완성 복구 계획 명시",
+      "후보 10건과 전체 pending에 동일 사건 없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

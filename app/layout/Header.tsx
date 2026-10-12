@@ -310,17 +310,10 @@ export default function Header() {
 function SiteSearch() {
   const params = useSearchParams();
   const pathname = usePathname();
-  const targets: Record<string, { action: string; label: string; filters: string[] }> = {
-    art: { action: '/art', label: '작품 검색', filters: ['artist', 'museum'] },
-    artists: { action: '/artists', label: '작가 검색', filters: [] },
-    references: { action: '/references', label: '참고사이트 검색', filters: ['category'] },
-  };
-  const target = targets[pathname.split('/')[1]] || { action: '/news/stories', label: '기사 검색', filters: ['category', 'source', 'collection'] };
-  const query = pathname === target.action ? (params.get('q') || '').slice(0, 100) : '';
-  return <form className="editorial-search" role="search" aria-label={target.label} action={target.action} method="get">
-    <label className="sr-only" htmlFor="archb-search-query">{target.label}</label>
-    <input key={`${target.action}:${query}`} id="archb-search-query" type="search" name="q" autoComplete="off" defaultValue={query} placeholder={target.label} maxLength={100} />
-    {pathname === target.action && target.filters.map(name => params.get(name) ? <input key={name} type="hidden" name={name} value={params.get(name)!} /> : null)}
+  const query = pathname === '/search' ? (params.get('q') || '').slice(0, 100) : '';
+  return <form className="editorial-search" role="search" aria-label="통합 검색" action="/search" method="get">
+    <label className="sr-only" htmlFor="archb-search-query">통합 검색</label>
+    <input key={query} id="archb-search-query" type="search" name="q" autoComplete="off" defaultValue={query} placeholder="뉴스·작품·작가 검색" maxLength={100} />
     <button type="submit" aria-label="검색"><i className="ri-search-line" aria-hidden="true" /></button>
   </form>;
 }

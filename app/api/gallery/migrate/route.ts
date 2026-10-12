@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkGalleryEditPermission } from "@/lib/supabase/gallery-utils";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -314,8 +314,9 @@ export async function POST(req: NextRequest) {
     }
 
     if (processedItems.length > 0) {
-      revalidateTag(CACHE_TAGS.gallery, "max");
+      revalidateTag(CACHE_TAGS.gallery, { expire: 0 });
       revalidateTag(CACHE_TAGS.home, "max");
+      revalidatePath('/sitemap.xml');
     }
 
     return NextResponse.json({

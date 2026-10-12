@@ -1,0 +1,168 @@
+{
+  "id": "7997ea57-e9de-4288-99c8-86b452a14cd1",
+  "article": {
+    "url": "https://about.fb.com/news/2026/09/new-features-for-meta-ray-ban-display-navigation-hologram/",
+    "title": "메타 Ray-Ban Display, 자전거 길 안내와 얼굴 표현 예고…국가별 제공 일정 구분",
+    "summary": "메타가 기존 Ray-Ban Display에 자전거·대중교통 길 안내와 통화용 Hologram 등을 추가한다고 밝혔다. Hologram은 음성에서 표정을 추론하는 기능으로 미국 WhatsApp 조기 접근이 가을 뒤에 시작될 예정이다. 영국·캐나다 판매와 프랑스·이탈리아·독일 예약 및 10월 13일 제공은 서로 다른 일정이다.",
+    "paragraphs": [
+      {
+        "heading": "기존 디스플레이 안경을 확장하는 발표",
+        "kind": "reporting",
+        "paragraphs": [
+          "메타는 9월 23일 Connect 2026에서 기존 Ray-Ban Display의 기능 추가와 판매 지역 확대를 발표했다. 이번 소식의 대상은 렌즈의 일부에 정보를 보여주고 손목 밴드로 조작하는 디스플레이 안경이다. 같은 행사에서 별도로 공개된 VR 기기의 출시나 일반 카메라 안경의 새 세대와 구분해야 한다. 2025년 최초 소개는 손목의 근육 활동에서 생기는 신호를 명령으로 바꾸는 EMG 방식이라고 설명했다. 이 장치는 사용자의 생각을 직접 읽는 제품으로 소개되지 않았다. 화면과 작은 손동작으로 짧은 상호작용을 처리하는 기존 설계에 사용할 기능과 구매 경로를 더하는 변화다."
+        ],
+        "references": [
+          {
+            "label": "메타 Display 기능과 국가 확대 원문",
+            "url": "https://about.fb.com/news/2026/09/new-features-for-meta-ray-ban-display-navigation-hologram/",
+            "kind": "primary"
+          },
+          {
+            "label": "메타 Display 최초 소개와 근전도 제어 설명",
+            "url": "https://about.fb.com/news/2025/09/meta-ray-ban-display-ai-glasses-emg-wristband/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "길 안내를 화면과 주변 맥락으로 전달",
+        "kind": "reporting",
+        "paragraphs": [
+          "회사는 자전거의 회전별 길 안내와 대중교통 출발 정보를 미국·캐나다에서 9월 말부터 제공한다고 안내했다. 음성으로 목적지를 요청하면 안경 화면에 정보가 나타나는 방식이다. 도보 안내는 도로명만 말하는 대신 앞에 보이는 노란 집 같은 표식을 활용하는 방향도 소개했다. 이 설명은 새 안내 방식과 제공 지역을 보여주지만 모든 장소에서 같은 표식을 인식하거나 정보가 항상 최신이라고 검증한 결과는 아니다. 주변 물체를 기준으로 한 안내가 길을 이해하는 데 어떻게 도움이 되는지는 실제 장소와 정보 조건에 따라 평가할 문제다. 화면에 경로가 나타난다는 사실과 전체 이동의 정확성을 보장하는 결론은 다르다."
+        ],
+        "references": [
+          {
+            "label": "메타 Display 기능과 국가 확대 원문",
+            "url": "https://about.fb.com/news/2026/09/new-features-for-meta-ray-ban-display-navigation-hologram/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "통화의 얼굴은 실제 표정을 실시간 촬영한 영상과 다르다",
+        "kind": "reporting",
+        "paragraphs": [
+          "Hologram은 Meta AI 앱에서 짧게 자기 모습을 촬영해 통화에 사용할 사실적인 얼굴 표현을 만드는 기능이다. 메타는 생성된 얼굴의 움직임이 전적으로 음성에 의해 구동되고 말의 내용과 방식에서 표정을 추론한다고 설명했다. 실제 얼굴의 모든 움직임을 계속 카메라로 촬영해 전송하는 방식과는 다르다. 미국 Display 사용자의 WhatsApp 조기 접근은 가을 뒤에 순차 시작할 계획으로 안내됐다. 이 계획을 모든 국가와 영상통화 앱에서 이미 사용할 수 있는 기능으로 합칠 수 없다. 표현이 자신과 닮게 보인다는 회사의 설명도 추론한 표정이 실제 감정과 언제나 일치한다는 측정은 아니다."
+        ],
+        "references": [
+          {
+            "label": "메타 Display 기능과 국가 확대 원문",
+            "url": "https://about.fb.com/news/2026/09/new-features-for-meta-ray-ban-display-navigation-hologram/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "작은 화면에 무엇을 올릴지 선택하는 문제",
+        "kind": "analysis",
+        "paragraphs": [
+          "2025년 공식 소개는 화면을 계속 켜는 대신 짧은 확인에 사용하는 설계를 강조했다. 손목 밴드의 미세한 손동작은 알림을 읽거나 화면 항목을 넘기는 조작에 쓰인다. 이번 발표도 휴대전화 알림을 화면에 복제하는 기능은 곧 제공할 예정이며 사용자가 표시할 알림을 선택하고 끌 수 있다고 밝혔다. 화면이 있다는 것과 모든 알림을 상시 보여주는 것은 같은 사용 방식이 아니다. 어떤 정보가 시선을 요구하고 어떤 조작으로 닫을 수 있는지는 새 기능의 실제 이용을 이해하는 데 중요하다. 기존 제어 방식에 기능을 추가하는 업데이트라면 개별 기능의 제공 조건과 선택권을 함께 읽어야 한다."
+        ],
+        "references": [
+          {
+            "label": "메타 Display 최초 소개와 근전도 제어 설명",
+            "url": "https://about.fb.com/news/2025/09/meta-ray-ban-display-ai-glasses-emg-wristband/",
+            "kind": "primary"
+          },
+          {
+            "label": "메타 Display 기능과 국가 확대 원문",
+            "url": "https://about.fb.com/news/2026/09/new-features-for-meta-ray-ban-display-navigation-hologram/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "판매 확대와 기능 확대의 지도는 일치하지 않는다",
+        "kind": "reporting",
+        "paragraphs": [
+          "미국 온라인 주문과 영국·캐나다의 온라인·일부 매장 판매는 발표 당일 시작한다고 안내됐다. 프랑스·이탈리아·독일은 예약을 순차 시작하고 온라인·매장 판매는 10월 13일부터 진행할 계획이다. 따라서 10월 12일 기준으로 다음 날 예정된 판매를 이미 완료된 출시로 표현하지 않았다. 안경을 살 수 있는 국가가 늘어나는 것과 미국·캐나다 길 안내 또는 미국 WhatsApp 조기 접근의 이용 지역은 각각 다른 범위다. 2025년 문서에 적힌 초기 미국 판매와 당시의 확대 계획도 이번 발표의 새 일정과 혼합하지 않았다. 구매 경로와 소프트웨어 기능의 제공 지도를 따로 보면 지역 확대의 실제 의미가 분명해진다."
+        ],
+        "references": [
+          {
+            "label": "메타 Display 기능과 국가 확대 원문",
+            "url": "https://about.fb.com/news/2026/09/new-features-for-meta-ray-ban-display-navigation-hologram/",
+            "kind": "primary"
+          },
+          {
+            "label": "메타 Display 최초 소개와 근전도 제어 설명",
+            "url": "https://about.fb.com/news/2025/09/meta-ray-ban-display-ai-glasses-emg-wristband/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "새로운 상호작용과 배포 단계를 함께 보기",
+        "kind": "analysis",
+        "paragraphs": [
+          "이번 업데이트는 화면으로 이동 정보를 보고 통화에서 자신의 얼굴을 표현하며 휴대전화의 일부 확인 작업을 안경으로 옮기는 방향이다. 다만 공개된 시연이나 기능 이름은 개인의 일상에서 모든 작업이 자동으로 해결된다는 증거가 아니다. 음성에서 만들어진 얼굴은 표현을 생성하는 시스템이고, 근육 신호의 명령은 손동작을 입력으로 처리하는 시스템이다. 서로 다른 입력과 결과를 구분해야 기능의 역할을 과장 없이 이해할 수 있다. 새 판매국이 생기더라도 조기 접근·언어·앱별 조건이 남는 이유도 이와 같다. 실제 평가에 필요한 정보는 각 기능이 열리는 지역과 단계, 그리고 사람이 선택하고 확인하는 구체적인 이용 경로다."
+        ],
+        "references": [
+          {
+            "label": "메타 Display 기능과 국가 확대 원문",
+            "url": "https://about.fb.com/news/2026/09/new-features-for-meta-ray-ban-display-navigation-hologram/",
+            "kind": "primary"
+          },
+          {
+            "label": "메타 Display 최초 소개와 근전도 제어 설명",
+            "url": "https://about.fb.com/news/2025/09/meta-ray-ban-display-ai-glasses-emg-wristband/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "기존 Display의 업데이트와 별도 VR·카메라 안경 발표를 구분했다.",
+      "Hologram은 음성으로 표정을 추론하며 미국 WhatsApp 조기 접근을 예고했다.",
+      "미국·캐나다 길 안내와 국가별 판매 일정은 동일한 제공 범위가 아니다.",
+      "10월 13일 예정 판매와 발표 당시 시작한 주문·예약을 나눠 정리했다."
+    ],
+    "tags": [
+      "메타",
+      "RayBanDisplay",
+      "AI안경",
+      "웨어러블"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "메타 Display 기능과 국가 확대 원문",
+        "url": "https://about.fb.com/news/2026/09/new-features-for-meta-ray-ban-display-navigation-hologram/"
+      },
+      {
+        "label": "메타 Display 최초 소개와 근전도 제어 설명",
+        "url": "https://about.fb.com/news/2025/09/meta-ray-ban-display-ai-glasses-emg-wristband/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://about.fb.com/news/2026/09/new-features-for-meta-ray-ban-display-navigation-hologram/",
+      "https://about.fb.com/news/2025/09/meta-ray-ban-display-ai-glasses-emg-wristband/"
+    ],
+    "notes": "9/23원문(9/24갱신)과2025/9공식설계소개대조.기존Display기능업데이트별도기기/VR제품발표아님.사이클/대중교통laterSepUSCanada,Hologramvoiceinferred≠livefacecapture,EarlyAccessWhatsAppUSlaterfall.알림comingsoon및선택off조건.USAonline/UKCanada9/23vsFranceItalyGermanypreorder→10/13sales,current10/12미래반영.과거799달러를새지역현재가격으로대입안함,최초/모든지역/항상정확단정없음.후보인도RanveerRayBan캠페인다른모델·마케팅,전체pendingConnectrecap/Muse/VR은별도범위;본건Display배포·업데이트중심.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "364f0bfa-7c39-45a2-8d9d-a14cc6871adc",
+    "068917f0-0273-40a6-8765-bf94c6b81f68",
+    "1325962c-b29b-4e2f-a93c-a38de8cfb12c",
+    "157ccefd-9f15-4888-8c85-e2c803c3b52d",
+    "bbf996b6-3d8d-49d5-abcd-de63fbbe38a7",
+    "d8192f83-6ac4-4483-8ed2-9926452ba612",
+    "effba7f2-0038-48db-ba90-76d469a35f4e"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:05:42.119Z",
+    "checks": [
+      "정확한원본URL과기존제품설계공식대조",
+      "EMG근육신호와생각해독구분",
+      "Hologram음성표정추론및미국WhatsApp조기접근조건 확인",
+      "기능지역과판매국확대 분리",
+      "9/23주문/예약과10/13예정판매의시점구분",
+      "후보와pending다른제품·전략범위중복검토"
+    ],
+    "relatedPendingIds": []
+  }
+}

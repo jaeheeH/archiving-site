@@ -1,0 +1,161 @@
+{
+  "id": "674ccb06-0d95-49d7-8b97-db63d2524bfb",
+  "article": {
+    "url": "https://blog.google/innovation-and-ai/technology/safety-security/how-to-set-up-passkey/",
+    "title": "구글의 패스키 안내, 기기 잠금에서 시작하는 로그인과 복구 설계",
+    "summary": "구글이 사이버 보안 인식의 달을 맞아 패스키 설정을 안내했다. 지문·얼굴·기기 PIN으로 로그인하며 생체 정보는 기기에 남는다. 기존 비밀번호와 복구 수단이 자동으로 사라지는 것은 아니다. 공유 기기, 관리형 계정, 분실 후 제거 조건을 함께 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "신규 출시보다 설정을 알리는 소식",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 8일 사이버 보안 인식의 달을 맞아 Google 계정의 패스키 설정을 소개했다. 안내는 지문, 얼굴 인식, 기기의 PIN 등 평소 화면 잠금을 해제하는 방식으로 앱과 사이트에 로그인할 수 있다고 설명한다. 생체 정보는 기기에 머물며 구글에 전달되지 않는다는 점도 명시했다. 설정은 공식 패스키 관리 화면에서 생성 버튼을 누르고 기기의 안내를 따르는 흐름이다. 이번 글은 새로운 인증 표준이나 패스키의 첫 출시를 발표한 것이 아니라 이미 제공되는 로그인 방식을 알리는 짧은 안내다. 사용자가 기억하고 입력하는 비밀번호 중심의 절차를 기기를 가진 사람의 확인으로 바꾸는 방식이며, 어떤 계정과 기기에서 사용할지는 공식 도움말의 조건을 함께 살펴야 한다."
+        ],
+        "references": [
+          {
+            "label": "구글의 패스키 설정 안내 원문",
+            "url": "https://blog.google/innovation-and-ai/technology/safety-security/how-to-set-up-passkey/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글 계정 공식 패스키 설정·복구 도움말",
+            "url": "https://support.google.com/accounts/answer/13548313?hl=en",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "생체 정보가 서버로 가는 방식은 아니다",
+        "kind": "reporting",
+        "paragraphs": [
+          "FIDO Alliance는 패스키를 FIDO 표준을 바탕으로 한 암호학적 자격 증명으로 설명한다. 공개키 암호화 방식과 서비스별로 연결되는 키를 이용하므로 비밀번호를 가짜 로그인 화면에 입력하는 유형의 피싱에 저항하도록 설계됐다. 기기 잠금 해제는 해당 자격 증명을 사용하는 사람을 확인하는 단계이며, 서버가 지문이나 얼굴 사진을 받아 비교하는 로그인과는 다르다. 패스키는 제공자에 따라 기기 사이에 동기화되거나 하나의 기기에 묶여 있을 수 있다. 이 기술 설명을 모든 보안 위협이 사라진다는 보장으로 읽을 수는 없다. 기기의 잠금을 누가 풀 수 있는지, 자격 증명을 관리하는 계정과 제공자를 어떻게 관리하는지는 계속 중요하다. 구글 원문도 생체 인식뿐 아니라 기기 PIN을 선택 가능한 확인 방식으로 제시한다."
+        ],
+        "references": [
+          {
+            "label": "구글의 패스키 설정 안내 원문",
+            "url": "https://blog.google/innovation-and-ai/technology/safety-security/how-to-set-up-passkey/",
+            "kind": "primary"
+          },
+          {
+            "label": "FIDO Alliance 공식 패스키 기술 설명",
+            "url": "https://fidoalliance.org/passkeys/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "공유 기기와 관리형 계정의 조건",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글 공식 도움말은 자신이 소유하고 사용하는 기기에만 패스키를 만들도록 안내한다. 패스키가 만들어진 기기의 잠금을 풀 수 있는 사람은 계정에 접근할 수 있으므로 공유 기기에서는 생성하지 말라는 설명이다. 패스키를 추가해도 기존 인증과 계정 복구 수단은 자동으로 변경되거나 제거되지 않으며, 비밀번호를 사용해 로그인할 선택도 남는다. 학교나 회사의 Workspace 계정에서는 관리자의 정책에 따라 패스키만으로 로그인하지 못할 수 있다. 기기를 잃었거나 공유 기기에 잘못 만들었다면 계정에서 패스키를 제거하는 절차가 안내돼 있다. 자동으로 생성된 Android 패스키와 직접 만든 패스키의 제거 흐름은 다를 수 있다. 따라서 설정 완료 한 번으로 기기 교체와 분실 상황까지 모두 해결됐다고 가정해서는 안 된다."
+        ],
+        "references": [
+          {
+            "label": "구글 계정 공식 패스키 설정·복구 도움말",
+            "url": "https://support.google.com/accounts/answer/13548313?hl=en",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "쉬운 로그인에는 기억할 대상이 바뀐다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 패스키가 기억의 부담을 없앤다기보다 기억해야 할 대상을 바꾸는 경험이라고 본다. 긴 비밀번호 대신 어떤 기기나 자격 증명 관리자에 로그인 수단이 있는지 이해해야 한다. 화면에서 생성 성공만 보여주고 저장 위치나 해당 계정이 보이지 않으면 사용자는 다음 기기에서 왜 다른 절차를 요구하는지 혼란스러울 수 있다. 계정 이름, 사용할 기기, 제거 방법을 연결해 안내하는 방식이 유용하다. 공유 컴퓨터에서 잠깐 로그인하는 경우와 개인 휴대전화에 로그인 수단을 만드는 경우도 사용자가 구분할 수 있어야 한다. 이는 구글 화면을 실제 조작해 결함을 발견했다는 주장이 아니라 공식 조건을 바탕으로 한 설계 해석이다. 인증의 기술적 원리를 모두 설명하지 않아도 저장되는 대상과 다시 사용할 경로를 알리는 정보는 일상적인 판단을 돕는다."
+        ],
+        "references": [
+          {
+            "label": "구글 계정 공식 패스키 설정·복구 도움말",
+            "url": "https://support.google.com/accounts/answer/13548313?hl=en",
+            "kind": "primary"
+          },
+          {
+            "label": "FIDO Alliance 공식 패스키 기술 설명",
+            "url": "https://fidoalliance.org/passkeys/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "설정의 끝에 복구 경로를 연결",
+        "kind": "analysis",
+        "paragraphs": [
+          "로그인 기능의 품질은 정상적인 인증 순간뿐 아니라 기기가 없을 때의 흐름에서도 드러난다. 새로운 방식을 활성화하는 안내 옆에 다른 로그인 방법과 분실 기기의 제거 경로가 이어지면 사용자는 선택의 결과를 더 잘 이해할 수 있다. 패스키가 남아 있는 기기를 넘기거나 버리는 시점도 기록과 관리가 필요한 순간이다. 제품을 비교하는 독자에게는 생성 과정의 짧음과 복구 방법의 명확함을 함께 살피는 것이 의미가 있다. 서로 다른 제공자의 동기화 방식과 조직 관리 정책이 다르므로 한 서비스에서 본 경험을 모든 사이트에 적용하기는 어렵다. 이번 구글 안내는 로그인 절차를 간단히 소개하지만, 공식 도움말과 표준 설명을 연결해 읽으면 비밀번호의 대안을 선택하는 데 필요한 기기·계정·관리 조건을 구체적으로 이해할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "구글 계정 공식 패스키 설정·복구 도움말",
+            "url": "https://support.google.com/accounts/answer/13548313?hl=en",
+            "kind": "primary"
+          },
+          {
+            "label": "FIDO Alliance 공식 패스키 기술 설명",
+            "url": "https://fidoalliance.org/passkeys/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "이번 소식은 기존 패스키의 설정 안내이며 새 표준이나 최초 출시 발표가 아니다.",
+      "지문·얼굴 정보는 기기에 남고 패스키는 공개키 기반으로 피싱에 저항하도록 설계됐다.",
+      "공유 기기 생성은 피해야 하며 기존 인증·복구 수단과 Workspace 관리 정책을 함께 확인해야 한다."
+    ],
+    "tags": [
+      "구글",
+      "패스키",
+      "로그인",
+      "계정복구",
+      "사용자경험"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "구글의 패스키 설정 안내 원문",
+        "url": "https://blog.google/innovation-and-ai/technology/safety-security/how-to-set-up-passkey/"
+      },
+      {
+        "label": "구글 계정 공식 패스키 설정·복구 도움말",
+        "url": "https://support.google.com/accounts/answer/13548313?hl=en"
+      },
+      {
+        "label": "FIDO Alliance 공식 패스키 기술 설명",
+        "url": "https://fidoalliance.org/passkeys/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/innovation-and-ai/technology/safety-security/how-to-set-up-passkey/",
+      "https://support.google.com/accounts/answer/13548313?hl=en",
+      "https://fidoalliance.org/passkeys/"
+    ],
+    "notes": "원문·Google계정도움말·FIDO공식설명을 웹확인. awareness month설정소식으로최초출시 단정제외. 생체정보기기잔류,지문/얼굴/PIN,공개키·서비스연결·동기화/기기고정 차이확인. Google는개인소유기기만생성/공유기기잠금해제접근,기존인증·복구수단유지,비밀번호옵션,Workspace관리자조건,분실기기제거차이명시. 모든위협해결/일률성능개선보장없음. 후보10건·snapshot.pending전체 제목·원제·URL 및passkey관련본문대조, 동일소식없음. 실제계정설정변경없이자료대조만수행.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "1b26d953-c1ba-4eb9-baf3-6bba7f7bc9bb",
+    "3564e5a1-5821-49ef-bd96-912e5c73a483",
+    "3f96b1c3-6b91-42c6-a276-a72f4e691fe8",
+    "6a15a15c-65e2-411f-847a-f51c003cbab0",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "ec323858-ca4e-442e-96d0-a114cb836a2c",
+    "f902e8f3-2cfc-4931-9ea9-73956faaae60"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:20:27.557Z",
+    "checks": [
+      "원출처·구글계정·FIDO1차자료 확인",
+      "생체정보기기잔류와공개키인증구분",
+      "공유기기·복구·Workspace조건확인",
+      "기존수단유지와비밀번호선택명시",
+      "후보10건·전체pending에동일소식없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

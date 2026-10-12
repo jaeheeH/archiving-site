@@ -4,6 +4,8 @@ import { unstable_cache } from 'next/cache';
 import { createPublicClient } from "@/lib/supabase/public";
 import artworkData from "@/research/art-collection/artworks.json";
 import artistData from "@/research/art-collection/artists.json";
+import editorialData from '@/research/art-collection/editorial.json';
+import type { ArtistProfile } from './art-input';
 
 export type Artwork = {
   id: string;
@@ -16,6 +18,8 @@ export type Artwork = {
   date: string;
   medium: string;
   dimensions: string;
+  medium_ko?: string;
+  dimensions_ko?: string;
   culture: string;
   accession: string;
   source_url: string;
@@ -36,6 +40,7 @@ export type Artist = {
   name_ko: string | null;
   source_ids: string[];
   artwork_ids: string[];
+  profile?: Partial<ArtistProfile>;
   updated_at?: string;
 };
 
@@ -45,12 +50,12 @@ export const getFreshArtCatalog = cache(async () => {
   const db = createPublicClient();
   const [works, people, links] = await Promise.all([
     db.from("artworks").select("id,data,updated_at").order("id"),
-    db.from("artists").select("id,name,name_ko,source_ids,updated_at").order("name"),
+    db.from("artists").select("id,name,name_ko,source_ids,profile,updated_at").order("name"),
     db.from("artwork_artists").select("artwork_id,artist_id"),
   ]);
   const errors = [works.error, people.error, links.error].filter(Boolean);
   if (errors.length) {
-    if (errors.every(error => error?.code === "PGRST205")) return { artworks: artworkData as Artwork[], artists: artistData.artists as Artist[], databaseReady: false };
+    if (errors.every(error => error?.code === "PGRST205")) return { artworks: artworkData.map(work => ({ ...work, ...editorialData.artworks.find(item => item.id === work.id) })) as Artwork[], artists: artistData.artists.map(artist => ({ ...artist, profile: editorialData.artists.find(item => item.id === artist.id)?.profile })) as Artist[], databaseReady: false };
     throw errors[0];
   }
   // ponytail: a catalog below 1,000 rows fits one read; paginate this catalog when it grows beyond that ceiling.
@@ -58,7 +63,7 @@ export const getFreshArtCatalog = cache(async () => {
   const artists = (people.data || []).map(row => ({ ...row, artwork_ids: (links.data || []).filter(link => link.artist_id === row.id).map(link => link.artwork_id) })) as Artist[];
   return { artworks, artists, databaseReady: true };
 });
-export const getArtCatalog = unstable_cache(getFreshArtCatalog, ['art-catalog-v1'], { revalidate: 600, tags: [ART_CATALOG_TAG] });
+export const getArtCatalog = unstable_cache(getFreshArtCatalog, ['art-catalog-v2'], { revalidate: 600, tags: [ART_CATALOG_TAG] });
 
 export async function getArtwork(id: string) { return (await getArtCatalog()).artworks.find(work => work.id === id); }
 export async function getArtist(id: string) { return (await getArtCatalog()).artists.find(artist => artist.id === id); }

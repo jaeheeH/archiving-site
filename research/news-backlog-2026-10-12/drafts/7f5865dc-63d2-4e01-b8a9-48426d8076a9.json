@@ -1,0 +1,150 @@
+{
+  "id": "7f5865dc-63d2-4e01-b8a9-48426d8076a9",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/05/designing-stable-interfaces-streaming-content/",
+    "title": "응답이 자라는 화면을 안정적으로 읽다…스트리밍 UI의 중단·탐색 설계",
+    "summary": "스매싱 매거진이 채팅·로그·실시간 화면에서 자동 스크롤과 잦은 갱신이 읽기를 방해하는 문제를 다뤘다. 데이터 전송과 화면 갱신을 구분하고, 공식 접근성 지침을 바탕으로 사용자가 중단하거나 이전 내용을 읽을 수 있는 조건을 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "새 내용이 들어와도 읽던 위치를 지킨다",
+        "kind": "reporting",
+        "paragraphs": [
+          "스매싱 매거진은 5월 1일 내용이 계속 도착하는 스트리밍 인터페이스의 안정성을 다룬 해설을 공개했다. 채팅과 로그, 실시간 지표 화면의 예를 통해 자동 스크롤, 변하는 배치와 잦은 렌더링을 살핀다. 새로운 내용이 아래에 들어올 때 위로 이동해 읽는 사람을 다시 아래로 끌어내리는 행동이 대표적인 문제다.",
+          "원문은 사용자가 최신 부분을 보고 있을 때에만 자동으로 따라가고 이전 내용으로 이동하면 그 위치를 존중하는 방식을 제안한다. 또한 매번 전체 내용을 다시 만드는 대신 필요한 부분을 갱신하는 흐름을 설명한다. 이런 예는 화면을 설계할 단서이며 실제 제품에서 모든 읽기 문제를 해결했다는 성능 시험은 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 스트리밍 화면 설계 원문",
+            "kind": "primary",
+            "url": "https://smashingmagazine.com/2026/05/designing-stable-interfaces-streaming-content/"
+          }
+        ]
+      },
+      {
+        "heading": "데이터 도착과 다음 화면 갱신은 같은 시점이 아니다",
+        "kind": "reporting",
+        "paragraphs": [
+          "MDN은 requestAnimationFrame이 다음 화면 그리기 전에 콜백 실행을 요청하는 기능이라고 정의한다. 보통 디스플레이의 갱신 주기에 맞춰 호출되며 한 번의 요청이 한 번의 호출을 예약한다. 60Hz만을 전제할 수 없고 높은 주사율의 화면에서는 시간 정보를 기준으로 진행 정도를 계산하라고 안내한다.",
+          "대부분의 브라우저는 숨겨진 탭에서 이 호출을 일시정지한다. 화면에 보이지 않아 갱신이 멈췄다는 사실을 서버의 생성 작업이나 네트워크 요청까지 중단됐다는 뜻으로 해석할 수 없다. 반환되는 요청 식별자로 예약된 갱신을 취소할 수 있지만 데이터 전송의 취소와 화면 갱신 취소는 구현에서 구분해야 한다. 어떤 단계가 정지됐는지 표시하는 것이 중요하다."
+        ],
+        "references": [
+          {
+            "label": "MDN의 화면 갱신 요청과 취소 문서",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame"
+          }
+        ]
+      },
+      {
+        "heading": "중단은 멈춘 글과 다음 행동을 함께 보여준다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 중단 버튼이 글자 증가를 멈추는 데서 끝나지 않아야 한다고 본다. 사용자는 문장이 완성된 것인지, 요청이 끝난 것인지, 아직 전달 중인 것인지 화면만 보고 판단한다. 미완성 상태를 알리지 않으면 끊어진 답을 최종 결론으로 읽을 수 있다. 재시도할 때 이전 요청의 맥락을 다시 확인할 수 있어야 이어지는 행동도 이해하기 쉽다.",
+          "여러 요청이 겹치는 경우에는 어느 결과가 현재 화면에 속하는지 결정하는 문제가 생긴다. 늦게 도착한 글자가 새 요청의 답 뒤에 붙지 않도록 작업의 경계를 관리할 필요가 있다. 입력 내용을 보존하는 일과 출력 결과를 그대로 이어 붙이는 일도 다르다. 재시도의 목적이 같은 질문을 다시 처리하는 것인지 중단된 전송을 잇는 것인지 제품에서 분명하게 정할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 스트리밍 화면 설계 원문",
+            "kind": "primary",
+            "url": "https://smashingmagazine.com/2026/05/designing-stable-interfaces-streaming-content/"
+          },
+          {
+            "label": "MDN의 화면 갱신 요청과 취소 문서",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame"
+          }
+        ]
+      },
+      {
+        "heading": "움직임과 자동 갱신을 통제하는 접근성 기준",
+        "kind": "reporting",
+        "paragraphs": [
+          "W3C의 WCAG 2.2 기준 해설은 자동으로 시작해 5초 넘게 계속되고 다른 내용과 함께 표시되는 움직임·깜박임·스크롤에 대해 일시정지·정지·숨김 수단을 설명한다. 활동에 필수적인 움직임이라는 예외도 있다. 자동 갱신 정보에는 자동 시작과 다른 내용의 병행 표시라는 조건 아래 정지하거나 갱신 빈도를 제어할 수단을 다룬다.",
+          "두 조건을 모든 애니메이션에 똑같이 적용하는 것이 아니라 어떤 활동이 자동으로 시작되고 무엇과 함께 보이는지 살펴야 한다. 이 문서는 성공 기준의 이해를 돕는 해설이다. 글자가 도착한다는 이유로 이용자가 기다리거나 읽는 방식을 서비스가 모두 결정할 필요는 없다. 갱신을 따라갈지 이전 자료를 읽을지 선택할 수 있는 설계의 근거로 참고할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "W3C의 일시정지·정지·숨김 기준 해설",
+            "kind": "primary",
+            "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+          }
+        ]
+      },
+      {
+        "heading": "키보드 탐색과 읽기 흐름을 화면 갱신과 연결한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "W3C APG의 피드 패턴은 스크롤에 따라 새 글이 추가되는 동적 자료에서 웹페이지와 보조 기술이 읽기 위치를 함께 다루는 관계를 설명한다. 피드는 하나의 단순 위젯보다 기사들의 구조이며 제목과 내용, 각 항목의 위치가 드러나야 탐색에 도움이 된다. 이 패턴을 모든 채팅창에 그대로 붙이는 것은 목적이 다른 선택일 수 있다.",
+          "중요한 질문은 새 내용이 들어올 때 사용자가 보고 있던 항목과 조작하던 버튼을 계속 찾을 수 있는지다. 버튼을 바꾸거나 영역을 다시 만들면 포커스도 함께 검토해야 한다. 마우스로는 쉽게 누르는 중단이 키보드로는 도달하기 어렵다면 같은 기능을 제공한다고 보기 어렵다. 음성으로 읽는 경우에는 작은 변경마다 과도하게 반복되지 않는지도 실제 도구로 살펴야 한다.",
+          "스트리밍의 효과는 빠른 등장만으로 평가되지 않는다. 진행 중인 자료를 읽고, 필요할 때 중단하고, 이전 내용을 살핀 뒤 다음 행동으로 이어질 수 있어야 한다. 이번 해설과 공식 지침은 그 검토의 기준을 제공하며 ARCH.B가 데모나 보조 기술의 동작을 직접 시험한 결과를 대신하지는 않는다."
+        ],
+        "references": [
+          {
+            "label": "W3C APG의 동적 피드 읽기·포커스 안내",
+            "kind": "primary",
+            "url": "https://www.w3.org/WAI/ARIA/apg/patterns/feed/"
+          },
+          {
+            "label": "W3C의 일시정지·정지·숨김 기준 해설",
+            "kind": "primary",
+            "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "새 내용의 자동 추적과 사용자의 이전 내용 탐색을 구분한다.",
+      "화면 갱신 취소, 데이터 전송 중단과 서버 작업 중단은 다른 단계다.",
+      "완료·미완성 표시, 키보드 탐색과 자동 갱신 제어를 함께 검토한다."
+    ],
+    "tags": [
+      "스트리밍UI",
+      "접근성",
+      "웹개발",
+      "인터랙션"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 스트리밍 화면 설계 원문",
+        "url": "https://smashingmagazine.com/2026/05/designing-stable-interfaces-streaming-content/"
+      },
+      {
+        "label": "MDN의 화면 갱신 요청과 취소 문서",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame"
+      },
+      {
+        "label": "W3C의 일시정지·정지·숨김 기준 해설",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html"
+      },
+      {
+        "label": "W3C APG의 동적 피드 읽기·포커스 안내",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/feed/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://smashingmagazine.com/2026/05/designing-stable-interfaces-streaming-content/",
+      "https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame",
+      "https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html",
+      "https://www.w3.org/WAI/ARIA/apg/patterns/feed/"
+    ],
+    "notes": "원문전체RSS와WEB 앞뒤열람,MDNrequestAnimationFrame/W3CpauseSC2.2.2/APGfeed전체원문확인. 원문내잘못된detached remove throws/visibilityhiddenfocus/텍스트성장layout없음을복제안함. RAF1회/배경탭pause/주사율차이·네트워크와server취소는별개로명시. WCAGmoving5초조건과auto-update조건분리, feed를모든chat강제적용안함. 실제코드실행/화면·보조기술검증없음. 전체snapshot StreamingUI단일,CloudflareK2는transport제품발표별개/candidates[]검토.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:18:54.174Z",
+    "checks": [
+      "화면갱신·전송·서버중단 범위 구분",
+      "MDN1회요청/배경탭/주사율조건 대조",
+      "WCAG자동시작·병행내용·5초와자동갱신 조건분리",
+      "피드패턴의목적·키보드읽기와 실제시험여부 구분",
+      "전체pending와후보의같은사건없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

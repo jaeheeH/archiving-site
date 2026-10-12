@@ -1,0 +1,141 @@
+{
+  "id": "7ba01906-a7d8-445f-93bb-fe091da8d6f0",
+  "article": {
+    "url": "https://toss.tech/article/qa_hotfix",
+    "title": "토스 핫픽스 판단의 기준…버그를 겪은 1%의 의미부터 확인한다",
+    "summary": "토스 QA Platform 팀이 긴급 수정의 실행 여부를 결정하고 재발 방지를 추적하는 과정을 공개했다. 같은1%라도 배포 범위와 발생 조건에 따라 해석이 다르다. 양쪽 담당자의 합의, 크래시 재현 지원과 실행하지 않은 판단까지 남기는 기록 구조를 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "작은 비율이 작은 영향과 같지는 않다",
+        "kind": "reporting",
+        "paragraphs": [
+          "토스 QA Platform 팀 문성준은 핫픽스를 빨리 고치는 일보다 지금 고칠지 판단하는 일로 다룬다고 설명했다. Critical·Major·Minor 같은 심각도만으로는 같은 분류 안의 서로 다른 업무 영향을 구분하기 어려웠다고 밝혔다. 새 버전을 받은 사용자가1%뿐이라면 문제의 발생 비율이 작아 보이는 것은 배포가 아직 좁기 때문일 수도 있다는 예를 제시했다.",
+          "반대로 특정 조건의 사용자에게만 생기는 문제를 고치려고 모두에게 새 빌드를 내보내면 정상 사용자의 변경 위험도 생긴다고 설명한다. 따라서 팀은 기본 기능을 못 쓰거나 매출에 직접 영향을 주거나 규제와 관련된 문제를 긴급 수정 대상으로 보고, 이용률이 낮거나 조건이 좁거나 명확한 우회 방법이 있는 경우에는 정기 배포 반영을 검토하는 기준을 만들었다고 소개했다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/qa_hotfix"
+          }
+        ]
+      },
+      {
+        "heading": "배포와 품질의 담당자가 함께 결정한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "해당 주의 릴리즈 마스터와 QA 마스터가 각각 배포·품질의 관점에서 검토하고 합의해야 핫픽스를 배포한다고 밝혔다. 급한 문제는 빌드를 먼저 시작할 예외를 두지만 최종 배포 결정에는 양쪽 합의가 필요하다. 처음 검토했던2~4시간의 고정 대기 규칙은 없애고 충분히 검토했는지에 집중하는 방식으로 바꿨다고 설명한다.",
+          "재현 지원에는 Claude 기술 지침으로 만든 crash-path를 사용했다. 크래시 URL에서 Bugsnag 또는 Firebase Crashlytics의 경로를 구분해 행동 기록과 기기·OS·메모리 환경을 정리한다고 소개했다. 화면 이름이나 재현 신호는 AI가 임의로 추측하지 않도록 규칙을 제공했다고 밝혔다. 회사의 내부 도구 설명이며 공개된 정확도·재현 성공률 실험은 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/qa_hotfix"
+          }
+        ]
+      },
+      {
+        "heading": "실행하지 않은 판단과 재발 방지도 남긴다",
+        "kind": "reporting",
+        "paragraphs": [
+          "팀은 플랫폼 토션에 버전·시점·증상·원인·수정과 예방 조치를 같은 형식으로 모았다. 긴급 수정하지 않은 요청도 이유를 남겨 다음 판단의 근거로 사용했다. 사후 기록을 번거롭게 만들려던 시도는 핫픽스보다 기록을 줄였다고 설명한다. 이후 대화 맥락을 AI가 초안에 채우고 사람이 검토·보완해 기록의 부담을 낮췄다고 밝혔다.",
+          "Android·iOS·QA는 매달 이전 핫픽스와 반복 원인을 보고 새 조치를 정하며 지난 조치의 이행도 확인한다. 재발 방지는 별도 항목과 이슈 티켓으로 연결하고 티켓 종료 여부를 주기적으로 확인해 상태를 갱신한다고 설명했다. 회사는 핫픽스가 줄고 있다고 밝혔지만 감소율과 비교 조건은 공개 글에 없다. 이 운영 구조를 숫자로 입증된 보편적인 처방과 구분해 볼 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/qa_hotfix"
+          }
+        ]
+      },
+      {
+        "heading": "배포 범위와 결함 발생 조건을 나누어 읽는다",
+        "kind": "analysis",
+        "paragraphs": [
+          "핫픽스의 판단에서 비율을 해석하려면 먼저 어떤 집합을 분모로 삼았는지 확인해야 한다. 전체 사용자와 새 버전 사용자, 문제의 조건을 충족한 사용자는 서로 다르다. 배포 초기에 관측된1%만으로 앞으로의 영향을 추정하면 새 버전이 넓어졌을 때의 위험을 놓칠 수 있다. 같은 숫자를 기준으로 삼아도 버전과 발생 조건을 함께 기록하면 판단의 근거가 구체적으로 남는다.",
+          "구글 플레이 공식 도움말은 점진 배포가 선택한 비율의 사용자에게 업데이트를 제공하고 중단하면 추가 제공을 막는다고 설명한다. 이미 받은 사용자는 그 버전에 남는다. 이는 일반적인 Android 배포 조건을 확인하는 자료이며 토스의 모든 플랫폼 설정을 입증한 내용은 아니다. 배포 중단과 이미 영향을 받은 사용자의 복구는 다른 과제라는 점이 긴급 수정의 필요를 판단할 때 중요하다."
+        ],
+        "references": [
+          {
+            "label": "구글 플레이 점진 배포·중단 공식 도움말",
+            "kind": "primary",
+            "url": "https://support.google.com/googleplay/android-developer/answer/6346149?hl=en"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/qa_hotfix"
+          }
+        ]
+      },
+      {
+        "heading": "기록의 마찰을 줄이고 이행의 근거를 확인한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "하지 않은 결정을 남기면 후속 담당자가 당시의 조건을 되짚을 수 있다. 다만 과거에 넘겼던 문제와 지금의 조건이 같은지는 다시 확인해야 한다. 이용 범위나 우회 방법이 달라졌다면 이전 판단을 그대로 적용할 수 없기 때문이다. 월별 검토는 규칙을 늘리는 회의보다 어떤 판단과 예방 조치가 실제로 유효했는지 돌아보는 과정으로 이해할 수 있다.",
+          "티켓의 종료 상태를 자동으로 연결하면 미이행 조치가 기록에서 사라지는 일을 줄일 여지가 있다. 하지만 종료 표시만으로 같은 결함이 다시 발생하지 않는다는 보장은 되지 않는다. 조치의 증거와 이후 관측 결과를 함께 확인해야 한다. 토스 사례의 핵심은 AI로 결정권을 넘기는 것이 아니라 재현·기록의 준비를 돕고 사람의 결정과 후속 이행을 연결한 운영 흐름에 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/qa_hotfix"
+          },
+          {
+            "label": "구글 플레이 점진 배포·중단 공식 도움말",
+            "kind": "primary",
+            "url": "https://support.google.com/googleplay/android-developer/answer/6346149?hl=en"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "1%는 배포 범위가 좁은 결과인지 특정 조건의 결함인지 구분해야 한다고 설명했다.",
+      "릴리즈·QA마스터 합의를 유지하고 고정2~4시간 대기 규칙은 없앴다.",
+      "크래시 재현·기록 초안을 돕되 사람의 결정과 월별 재발 방지 이행을 연결했다."
+    ],
+    "tags": [
+      "토스",
+      "QA",
+      "핫픽스",
+      "점진배포"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://toss.tech/article/qa_hotfix"
+      },
+      {
+        "label": "구글 플레이 점진 배포·중단 공식 도움말",
+        "url": "https://support.google.com/googleplay/android-developer/answer/6346149?hl=en"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://toss.tech/article/qa_hotfix",
+      "https://support.google.com/googleplay/android-developer/answer/6346149?hl=en"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처WEB·보존전문과GooglePlay공식stagedrollout도움말을읽었다. 구체사내기준/양쪽합의/crash-path/토션/월검토는회사설명으로귀속했다. 버린2~4h버퍼를현재규칙으로쓰지않았다. Playhalt기존사용자버전유지는일반배포조건이며토스iOS/전체설정으로확대하지않았다. 감소율·crash정확도는공개근거없어숫자로쓰지않았다. 후보TossAppRouter는다른사건이며snapshot.pendingqa_hotfix는본ID하나다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "1194d285-301c-4c1b-898b-7df3f7f6a725"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:18:44.850Z",
+    "checks": [
+      "문성준QAPlatform·심각도대신실행여부조건과1%양면성을확인했다.",
+      "릴리즈/QA합의·고정대기폐기·crash-path규칙/양플랫폼분석을원문확인했다.",
+      "토션진행/미진행사유·AI초안·월검토/티켓상태연결 및Play중단조건을대조했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

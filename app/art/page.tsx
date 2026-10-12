@@ -1,3 +1,4 @@
+import { matchesSearch, queryText } from '@/lib/search-text';
 import Link from "next/link";
 import ArtworkCard from "./ArtworkCard";
 import { getArtCatalog } from "@/lib/art-catalog";
@@ -5,25 +6,27 @@ import { getPageMetadata } from '@/lib/site-settings';
 
 export async function generateMetadata({ searchParams }: ArtPageProps) {
   const { q, artist, museum } = await searchParams;
-  return getPageMetadata({ path: '/art', title: '아트 · 작품 아카이브', description: '출처와 이용 근거를 확인한 실제 작품을 작가, 시기, 소장처별로 탐색합니다.', noindex: !!(q?.trim() || artist || museum) });
+  return getPageMetadata({ path: '/art', title: '아트 · 작품 아카이브', description: '출처와 이용 근거를 확인한 실제 작품을 작가, 시기, 소장처별로 탐색합니다.', noindex: !!(queryText(q).trim() || queryText(artist) || queryText(museum)) });
 }
 
 type ArtPageProps = {
-  searchParams: Promise<{ q?: string; artist?: string; museum?: string }>;
+  searchParams: Promise<{ q?: string | string[]; artist?: string | string[]; museum?: string | string[] }>;
 };
 
 export default async function ArtPage({ searchParams }: ArtPageProps) {
   const { artists, artworks } = await getArtCatalog();
-  const { q = "", artist = "", museum = "" } = await searchParams;
-  const query = q.trim().toLocaleLowerCase("ko");
+  const params = await searchParams;
+  const q = queryText(params.q).slice(0, 100).trim();
+  const artist = queryText(params.artist);
+  const museum = queryText(params.museum);
+  const query = q;
   const museums = [...new Set(artworks.map((artwork) => artwork.museum))].sort();
   const filteredArtworks = artworks.filter((artwork) => {
-    const searchable = [artwork.title_ko, artwork.title, artwork.artist, artwork.medium]
-      .join(" ")
-      .toLocaleLowerCase("ko");
+    const names = artwork.artist_ids.flatMap(id => { const person = artists.find(a => a.id === id); return [person?.name,person?.name_ko]; });
+    const match = matchesSearch(query, [artwork.title_ko,artwork.title,artwork.artist,artwork.medium,artwork.medium_ko,...artwork.themes,...names]);
 
     return (
-      (!query || searchable.includes(query)) &&
+      match &&
       (!artist || artwork.artist_ids.includes(artist)) &&
       (!museum || artwork.museum === museum)
     );
@@ -38,7 +41,7 @@ export default async function ArtPage({ searchParams }: ArtPageProps) {
       </header>
 
       <form className="archive-controls" action="/art" aria-label="작품 필터">
-        {q && <input type="hidden" name="q" value={q} />}
+        <label className="sr-only" htmlFor="art-query">작품 검색</label><input id="art-query" type="search" name="q" defaultValue={q} maxLength={100} placeholder="제목·작가·재료 검색" className="border border-border bg-background p-3 text-sm" />
         <label className="sr-only" htmlFor="artist-filter">작가</label>
         <select id="artist-filter" name="artist" defaultValue={artist}>
           <option value="">모든 작가</option>

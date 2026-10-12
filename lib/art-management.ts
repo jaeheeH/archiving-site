@@ -1,22 +1,11 @@
 import 'server-only';
 import { revalidatePath, revalidateTag } from 'next/cache';
 import { randomUUID } from 'node:crypto';
-import { z } from 'zod';
+import { artistSchema, artworkSchema, artIdSchema as idSchema } from './art-input';
 import { getFreshArtCatalog, ART_CATALOG_TAG } from './art-catalog';
 import { checkPostEditPermission } from './supabase/post-utils';
 import { createAdminClient } from './supabase/admin';
 
-const text = (max = 300) => z.string().trim().max(max);
-const url = z.string().url().max(2000).refine(value => { const parsed = new URL(value); return parsed.protocol === 'https:' && !parsed.username && !parsed.password; }, 'https 주소를 입력해주세요.');
-const idSchema = z.string().regex(/^[a-z0-9][a-z0-9-]{0,99}$/);
-const artistSchema = z.object({ name: text(200).min(1), name_ko: text(200).nullable(), source_ids: z.array(text(200).min(1)).max(30) }).strict();
-const artworkSchema = z.object({
-  title: text().min(1), title_ko: text().min(1), museum: text().min(1), artist: text(),
-  artist_ids: z.array(idSchema).max(20), date: text(100), medium: text(500), dimensions: text(500),
-  culture: text(), accession: text(), source_url: url, preview_url: url, policy_url: url,
-  license: text(200).min(1), themes: z.array(text(50).min(1)).max(20),
-  image_width: z.number().int().min(1).max(50000), image_height: z.number().int().min(1).max(50000),
-}).strict();
 type Resource = 'artworks' | 'artists';
 
 export async function listArt(resource: Resource, request: Request, id?: string) {
@@ -57,7 +46,13 @@ export async function saveArt(resource: Resource, request: Request, id?: string)
     if (existing?.error) throw existing.error;
     if (id && !existing?.data) return Response.json({ error: '항목을 찾을 수 없습니다.' }, { status: 404 });
     if (resource === 'artists') {
-      const values = { ...parsed.data, updated_at: new Date().toISOString() };
+      const artist = artistSchema.parse(parsed.data);
+      if (artist.profile?.related_post_ids.length) {
+        const related = await db.from('posts').select('id').in('id', artist.profile.related_post_ids).in('type', ['news', 'blog']).eq('is_published', true).not('published_at', 'is', null);
+        if (related.error) throw related.error;
+        if (related.data?.length !== artist.profile.related_post_ids.length) return Response.json({ error: '발행된 뉴스·에디토리얼만 관련 글로 연결할 수 있습니다.', issues: [{ field: 'profile.related_post_ids', message: '비공개 또는 삭제된 글을 선택 해제해주세요.' }] }, { status: 400 });
+      }
+      const values = { ...artist, updated_at: new Date().toISOString() };
       const saved = id ? await db.from('artists').update(values).eq('id', id) : await db.from('artists').insert({ ...values, id: recordId });
       if (saved.error) throw saved.error;
     } else {

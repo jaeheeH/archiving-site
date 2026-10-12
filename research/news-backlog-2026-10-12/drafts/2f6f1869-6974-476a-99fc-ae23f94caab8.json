@@ -1,0 +1,197 @@
+{
+  "id": "2f6f1869-6974-476a-99fc-ae23f94caab8",
+  "article": {
+    "url": "https://news.samsung.com/kr/%ec%84%b8%ea%b3%84-%ec%8b%ac%ec%9e%a5%ec%9d%98-%eb%82%a0-%ec%86%90%eb%aa%a9%ec%97%90%ec%84%9c-%ec%8b%9c%ec%9e%91%eb%90%98%eb%8a%94-%ec%9d%bc%ec%83%81-%ec%86%8d-%ec%8b%ac%ec%9e%a5-%ea%b1%b4%ea%b0%95",
+    "title": "삼성의 심장 건강 기능 소개, 생활 점수와 ECG·혈압 측정의 범위 구분",
+    "summary": "삼성전자가 세계 심장의 날에 워치의 건강 점수·생체 지표·데이터 공유를 소개했다. 국내 사용 안내와 미국심장협회 자료를 대조하면 생활 지표 점수, 의료기기 앱의 측정과 질환 진단은 역할이 다르다. 불규칙 리듬 알림도 모든 이상을 지속 감지하는 기능으로 해석할 수 없다.",
+    "paragraphs": [
+      {
+        "heading": "기능 소개와 예방 효과의 검증을 나누기",
+        "kind": "reporting",
+        "paragraphs": [
+          "삼성전자는 9월 29일 세계 심장의 날을 맞아 갤럭시 워치와 삼성 헬스의 심장 관련 기능을 소개했다. 기사에는 심장 건강 점수, 심전도와 혈압, 불규칙 심장 리듬 알림, 수면 중 생체 징후와 가족 간 데이터 공유가 포함된다. 서로 다른 데이터와 목적을 가진 기능을 한데 묶은 제품 설명이며, 이 전체 조합이 심장 질환을 얼마나 예방했는지를 측정한 임상 연구 결과는 제시되지 않았다. 원문의 생명을 구한 사례나 조기에 변화를 알린다는 표현도 기능의 일반적인 예방 효과와 동일한 근거로 읽을 수 없다. 사용 데이터를 기록하는 범위와 질환을 진단·예측하는 결과를 구분해 살펴보는 것이 이번 소개를 이해하는 출발점이다."
+        ],
+        "references": [
+          {
+            "label": "삼성 세계 심장의 날 기능 소개",
+            "url": "https://news.samsung.com/kr/%ec%84%b8%ea%b3%84-%ec%8b%ac%ec%9e%a5%ec%9d%98-%eb%82%a0-%ec%86%90%eb%aa%a9%ec%97%90%ec%84%9c-%ec%8b%9c%ec%9e%91%eb%90%98%eb%8a%94-%ec%9d%bc%ec%83%81-%ec%86%8d-%ec%8b%ac%ec%9e%a5-%ea%b1%b4%ea%b0%95",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성 국내 헬스 모니터 사용·의료기기 안내",
+            "url": "https://www.samsung.com/sec/apps/samsung-health-monitor/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "단일 점수에 담긴 생활 지표의 의미",
+        "kind": "analysis",
+        "paragraphs": [
+          "삼성은 심장 건강 점수가 수면시간·활동량·체성분·혈관 스트레스 등 지표를 종합해 점수와 생활 가이드로 표시한다고 설명한다. 미국심장협회의 Life’s Essential8은 식사·활동·수면·니코틴 노출과 체중·혈중 지질·혈당·혈압을 다루는 심혈관 건강 체계다. 삼성의 점수가 이 여덟 요소를 모두 직접 측정하거나 협회의 평가를 그대로 재현한다는 뜻은 아니다. 특히 워치로 관찰한 변화와 별도 검사가 필요한 값은 같지 않다. 점수의 상승·하락을 자신의 기록 추세로 볼 수는 있지만, 공개된 기사만으로 특정 질환의 확률이나 정상 여부를 판정하는 검증된 임상 지표로 바꿀 수 없다."
+        ],
+        "references": [
+          {
+            "label": "삼성 세계 심장의 날 기능 소개",
+            "url": "https://news.samsung.com/kr/%ec%84%b8%ea%b3%84-%ec%8b%ac%ec%9e%a5%ec%9d%98-%eb%82%a0-%ec%86%90%eb%aa%a9%ec%97%90%ec%84%9c-%ec%8b%9c%ec%9e%91%eb%90%98%eb%8a%94-%ec%9d%bc%ec%83%81-%ec%86%8d-%ec%8b%ac%ec%9e%a5-%ea%b1%b4%ea%b0%95",
+            "kind": "primary"
+          },
+          {
+            "label": "미국심장협회 Life’s Essential8 원문",
+            "url": "https://www.heart.org/en/healthy-living/healthy-lifestyle/lifes-essential-8",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "ECG와 혈압 앱에는 측정 조건이 있다",
+        "kind": "reporting",
+        "paragraphs": [
+          "국내 삼성 헬스 모니터 안내는 혈압과 ECG 소프트웨어를 의료기기로 표시하고 사용 목적을 별도로 설명한다. ECG는 단일 유도와 유사한 신호를 기록해 심방세동 또는 정상 박동 여부를 판정하는 범위이며, 일반적인 심장 질환 전부를 알아내는 검사는 아니다. 혈압 측정은 별도 커프형 혈압계로 최초 보정하고28일마다 재보정하는 조건을 갖는다. 약30초 ECG 기록 시간과 이 보정 주기는 서로 다른 기능의 조건이다. 안내는 진단·치료의 대체 용도로 사용해서는 안 된다고 명시한다. 의료기기라는 표시를 원문에 소개된 건강 점수나 모든 새 기능의 동일한 허가·효능 인증으로 확대해서도 안 된다."
+        ],
+        "references": [
+          {
+            "label": "삼성 세계 심장의 날 기능 소개",
+            "url": "https://news.samsung.com/kr/%ec%84%b8%ea%b3%84-%ec%8b%ac%ec%9e%a5%ec%9d%98-%eb%82%a0-%ec%86%90%eb%aa%a9%ec%97%90%ec%84%9c-%ec%8b%9c%ec%9e%91%eb%90%98%eb%8a%94-%ec%9d%bc%ec%83%81-%ec%86%8d-%ec%8b%ac%ec%9e%a5-%ea%b1%b4%ea%b0%95",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성 국내 헬스 모니터 사용·의료기기 안내",
+            "url": "https://www.samsung.com/sec/apps/samsung-health-monitor/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "불규칙 리듬 알림은 모든 이상을 감지하지 않는다",
+        "kind": "reporting",
+        "paragraphs": [
+          "불규칙 심장 리듬 알림은 맥박 자료에서 심방세동이 의심되는 패턴을 분석해 ECG 기록을 제안하는 기능이다. 미국 공식 사용 안내는 사용자가 움직이지 않을 때 주기적으로 확인하며 심방세동을 끊임없이 찾는 방식이 아니라고 명시한다. 알림이 없더라도 심방세동이 있을 수 있고 모든 에피소드에 알림을 보내지 않는다는 제한도 있다. 이는 미국에 게시된 기능 안내의 범위로, 국가와 소프트웨어 버전에 따라 제공 조건을 따로 확인해야 한다. 같은 안내는 ECG 앱이 심장마비 징후를 찾는 기능이 아니라고 설명한다. 원문의 개별 발견 사례를 근거로 워치가 심근경색 등 모든 심장 위험을 직접 조기 진단한다고 표현하지 않았다."
+        ],
+        "references": [
+          {
+            "label": "삼성 세계 심장의 날 기능 소개",
+            "url": "https://news.samsung.com/kr/%ec%84%b8%ea%b3%84-%ec%8b%ac%ec%9e%a5%ec%9d%98-%eb%82%a0-%ec%86%90%eb%aa%a9%ec%97%90%ec%84%9c-%ec%8b%9c%ec%9e%91%eb%90%98%eb%8a%94-%ec%9d%bc%ec%83%81-%ec%86%8d-%ec%8b%ac%ec%9e%a5-%ea%b1%b4%ea%b0%95",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성 국내 헬스 모니터 사용·의료기기 안내",
+            "url": "https://www.samsung.com/sec/apps/samsung-health-monitor/",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성 미국 헬스 모니터 알림·제한 안내",
+            "url": "https://www.samsung.com/us/apps/samsung-health-monitor/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "생체 징후의 기준점과 질환 판정의 차이",
+        "kind": "analysis",
+        "paragraphs": [
+          "원문은 수면 중 심박수·심박변이도·호흡률·피부 온도·혈중 산소포화도를 바탕으로 평소와 다른 변화를 보여주는 생체 징후 기능을 설명한다. 건강 점수와 생체 징후에는 삼성 헬스7.0 이상이라는 앱 기준도 제시한다. 자신의 이전 기록과 비교하는 방식은 같은 사람의 변화에 주목한다는 의미가 있지만, 변화의 원인을 하나의 질환으로 확정하는 검사와는 다르다. 기사에는 염증이나 스트레스 등을 언급하더라도 각 상태를 구분하는 임상 민감도·특이도와 오탐률은 제공되지 않았다. 따라서 기준점을 벗어난 표시가 특정 질환을 확정하거나 항상 충분한 대응 시간을 확보해 준다는 보장으로 이어지지는 않는다."
+        ],
+        "references": [
+          {
+            "label": "삼성 세계 심장의 날 기능 소개",
+            "url": "https://news.samsung.com/kr/%ec%84%b8%ea%b3%84-%ec%8b%ac%ec%9e%a5%ec%9d%98-%eb%82%a0-%ec%86%90%eb%aa%a9%ec%97%90%ec%84%9c-%ec%8b%9c%ec%9e%91%eb%90%98%eb%8a%94-%ec%9d%bc%ec%83%81-%ec%86%8d-%ec%8b%ac%ec%9e%a5-%ea%b1%b4%ea%b0%95",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성 국내 헬스 모니터 사용·의료기기 안내",
+            "url": "https://www.samsung.com/sec/apps/samsung-health-monitor/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "가족 공유는 동의한 기록을 보여주는 기능",
+        "kind": "analysis",
+        "paragraphs": [
+          "삼성은 걸음·혈압·심박·복약 등 사용자가 고른 항목을 동의한 가족·친구에게 공유할 수 있다고 소개했다. 공유된 복약 기록을 본다는 것과 실제 약을 삼킨 사실을 워치가 확인한다는 것은 다른 일이다. 데이터 공유도 의료진의 지속 감시나 긴급 대응 서비스가 자동 제공된다는 의미는 아니다. 이번 기능 소개는 기록을 쉽게 살펴보고 전달하는 사용자 경험을 보여준다. 기능별로 센서와 앱 버전, 호환 기기·지역 조건이 다르다는 점과 국내 의료기기 안내에 적힌 사용 목적을 함께 보아야 한다. 회사의 홍보 사례와 생활 지표, 승인된 앱의 측정 범위를 나눠 읽으면 편의 기능의 가치를 임상적 보장으로 확대하는 오해를 줄일 수 있다."
+        ],
+        "references": [
+          {
+            "label": "삼성 세계 심장의 날 기능 소개",
+            "url": "https://news.samsung.com/kr/%ec%84%b8%ea%b3%84-%ec%8b%ac%ec%9e%a5%ec%9d%98-%eb%82%a0-%ec%86%90%eb%aa%a9%ec%97%90%ec%84%9c-%ec%8b%9c%ec%9e%91%eb%90%98%eb%8a%94-%ec%9d%bc%ec%83%81-%ec%86%8d-%ec%8b%ac%ec%9e%a5-%ea%b1%b4%ea%b0%95",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성 국내 헬스 모니터 사용·의료기기 안내",
+            "url": "https://www.samsung.com/sec/apps/samsung-health-monitor/",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성 미국 헬스 모니터 알림·제한 안내",
+            "url": "https://www.samsung.com/us/apps/samsung-health-monitor/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "생활 지표의 건강 점수와 ECG·혈압 의료기기 앱의 사용 목적을 구분했다.",
+      "혈압은 최초·28일 보정이 필요하며 ECG 기록 시간과 다른 조건이다.",
+      "알림 부재는 질환 부재를 뜻하지 않고 미국 안내의 제한을 모든 지역에 일괄 적용하지 않았다.",
+      "공유된 복약 기록을 실제 복용 확인이나 의료진의 상시 감시로 표현하지 않았다."
+    ],
+    "tags": [
+      "삼성전자",
+      "갤럭시워치",
+      "디지털헬스",
+      "심장건강"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "삼성 세계 심장의 날 기능 소개",
+        "url": "https://news.samsung.com/kr/%ec%84%b8%ea%b3%84-%ec%8b%ac%ec%9e%a5%ec%9d%98-%eb%82%a0-%ec%86%90%eb%aa%a9%ec%97%90%ec%84%9c-%ec%8b%9c%ec%9e%91%eb%90%98%eb%8a%94-%ec%9d%bc%ec%83%81-%ec%86%8d-%ec%8b%ac%ec%9e%a5-%ea%b1%b4%ea%b0%95"
+      },
+      {
+        "label": "삼성 국내 헬스 모니터 사용·의료기기 안내",
+        "url": "https://www.samsung.com/sec/apps/samsung-health-monitor/"
+      },
+      {
+        "label": "삼성 미국 헬스 모니터 알림·제한 안내",
+        "url": "https://www.samsung.com/us/apps/samsung-health-monitor/"
+      },
+      {
+        "label": "미국심장협회 Life’s Essential8 원문",
+        "url": "https://www.heart.org/en/healthy-living/healthy-lifestyle/lifes-essential-8"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://news.samsung.com/kr/%ec%84%b8%ea%b3%84-%ec%8b%ac%ec%9e%a5%ec%9d%98-%eb%82%a0-%ec%86%90%eb%aa%a9%ec%97%90%ec%84%9c-%ec%8b%9c%ec%9e%91%eb%90%98%eb%8a%94-%ec%9d%bc%ec%83%81-%ec%86%8d-%ec%8b%ac%ec%9e%a5-%ea%b1%b4%ea%b0%95",
+      "https://www.samsung.com/sec/apps/samsung-health-monitor/",
+      "https://www.samsung.com/us/apps/samsung-health-monitor/",
+      "https://www.heart.org/en/healthy-living/healthy-lifestyle/lifes-essential-8"
+    ],
+    "notes": "삼성9/29홍보원문·국내SHM의료기기사용목적/주의·미국SHM알림제한·AHAEssential8기관원문대조.점수/생체징후SamsungHealth7.0,혈압28일보정,단일유도ECG범위확인.국내페이지에는과거버전목록도있어원문의새이소성박동판정상용/허가범위는독립확인안돼확정제외.미국IHRN비연속/알림없어도질환있음·ECG심장마비감지아님은미국문서범위명시.임상효능·인허가범위모든기능에전용없음.생활조언·약물변경·질환단정없음.후보및전체pending동일기능소개없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "259b1bc3-7c03-4bfc-9653-0a3452a297e6",
+    "a55ebad0-e03d-418e-8ffd-43af660e7f38",
+    "a6e9c97c-1e29-4eb1-b357-a081becc7813",
+    "d9dfde0c-a88d-47c1-863b-486eaefc9474",
+    "f1c6270a-4dac-4b5a-b155-3bfd66b56f9d",
+    "f4019e8c-959b-4367-abaf-985d452c901a"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:29:08.016Z",
+    "checks": [
+      "AHA여덟요소와삼성점수입력범위의차이확인",
+      "건강점수와ECG/혈압의료기기사용목적분리",
+      "28일보정과30초ECG기록조건확인",
+      "IHRN모든에피소드감지/알림부재질환부재아님확인",
+      "미국지역기능제한과국내허가를일괄일치시키지않음",
+      "의료조언·심근경색직접진단·일반예방효능단정제외"
+    ],
+    "relatedPendingIds": []
+  }
+}

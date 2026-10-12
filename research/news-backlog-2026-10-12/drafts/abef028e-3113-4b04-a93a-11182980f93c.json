@@ -1,0 +1,144 @@
+{
+  "id": "abef028e-3113-4b04-a93a-11182980f93c",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/05/architecture-local-first-web-development/",
+    "title": "로컬 우선 웹앱, 빠른 응답 뒤에 남는 동기화와 저장의 책임",
+    "summary": "스매싱 매거진의 로컬 우선 개발 해설은 기기의 데이터 복제본에서 먼저 읽고 쓰는 구조를 다룬다. SQLite의 실제 저장 조건과 Yjs의 병합 전제를 대조해, 네트워크 대기를 줄이는 장점과 충돌·권한·보존을 설계하는 책임을 함께 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "기기의 자료에서 먼저 읽고 쓰는 구조",
+        "kind": "reporting",
+        "paragraphs": [
+          "두르게시 파와르는 5월 6일 스매싱 매거진에 로컬 우선 웹 개발의 경험을 정리했다. 연결이 불안정한 상황에서 자신이 만든 업무 앱이 자료를 보여주지 못했던 경험을 출발점으로 삼는다. 기기에 관련 데이터의 복제본을 두고 읽기와 쓰기를 수행한 뒤 서버나 다른 기기와 변경을 맞추는 구조를 설명한다.",
+          "필자는 캐시를 추가하거나 설치 가능한 웹앱을 만드는 것과 데이터의 중심을 바꾸는 일을 구분한다. 동시에 서버가 만드는 분석 자료나 강한 거래 일관성이 필요한 영역에서는 다른 접근을 검토해야 한다고 제안한다. 이는 여러 프로젝트를 겪은 작성자의 실무적 판단이며 모든 서비스의 성능을 비교한 독립 시험은 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 로컬 우선 개발 경험 해설",
+            "kind": "primary",
+            "url": "https://smashingmagazine.com/2026/05/architecture-local-first-web-development/"
+          }
+        ]
+      },
+      {
+        "heading": "브라우저 안의 저장소에도 동시 접근 조건이 있다",
+        "kind": "reporting",
+        "paragraphs": [
+          "SQLite 공식 문서는 WASM에서 OPFS에 자료를 보존하는 선택지와 제약을 안내한다. OPFS VFS 지원은 워커 스레드에서 사용할 수 있으며 브라우저의 필요한 API가 있어야 활성화된다. 저장소의 존재만으로 모든 기기와 문맥에서 같은 동작을 보장하지 않는다. 실제 실행 환경과 선택한 VFS의 조건을 확인해야 한다.",
+          "문서는 같은 파일에 대한 동시 접근과 잠금을 특히 다룬다. 접근 중인 트랜잭션을 오래 유지하지 않고 잠금 충돌에 대응하는 것이 중요하다는 설명이다. VFS에 따라 여러 연결 지원이 다르며 저장 용량 한도를 넘으면 입출력 오류가 발생할 수 있다. 브라우저에서 데이터베이스를 사용한다는 사실을 데스크톱과 동일한 동시성이나 영구 보존의 보장으로 바꾸지 않는다."
+        ],
+        "references": [
+          {
+            "label": "SQLite 공식 WASM 영구 저장·OPFS 조건",
+            "kind": "primary",
+            "url": "https://www.sqlite.org/wasm/doc/trunk/persistence.md"
+          }
+        ]
+      },
+      {
+        "heading": "자동 병합과 업무 결정의 충돌은 다른 질문이다",
+        "kind": "reporting",
+        "paragraphs": [
+          "Yjs 공식 문서는 공유 자료형을 여러 위치에서 수정하고 변경을 병합하는 CRDT를 소개한다. Map과 Array 같은 형태를 제공하며 문서의 변경은 선택한 네트워크 연결을 통해 전달할 수 있다. 문서는 모든 변경이 결국 도착한다는 전제에서 문서가 맞춰지고 적용 순서는 중요하지 않다고 설명한다.",
+          "이 병합 특성은 특정 조직에서 누가 문서를 바꿀 수 있는지나 마지막 재고를 누구에게 배정할지까지 정하는 규칙은 아니다. Yjs의 자료 모델과 네트워크 공급자를 구분해서 구성할 수 있다는 설명도 있다. 동시 편집을 위한 자료 구조, 실제 전달 경로와 업무 권한을 각각 결정해야 한다. 연결되지 않은 기기의 변경이 아직 도착하지 않았다면 다른 기기가 그 결과를 이미 안다고 가정할 수 없다."
+        ],
+        "references": [
+          {
+            "label": "Yjs 공식 공유 자료형과 네트워크 전제",
+            "kind": "primary",
+            "url": "https://docs.yjs.dev/"
+          }
+        ]
+      },
+      {
+        "heading": "즉시 반응하는 화면과 확정된 처리 구분",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 사용자의 입력이 기기에 먼저 남는 것이 불안정한 연결에서 유용할 수 있다고 본다. 그러나 사용자가 보는 성공 표시가 어떤 범위를 뜻하는지 정해야 한다. 메모가 이 기기에 저장된 상태와 다른 구성원에게 전달된 상태, 서버의 업무 조건을 통과한 상태는 서로 다를 수 있다. 모두 같은 완료 문구로 표시하면 나중의 충돌을 이해하기 어려워진다.",
+          "따라서 화면의 반응 시간만 줄이는 목표보다 자료가 어디까지 보존되고 전달됐는지 읽을 수 있는 흐름이 필요하다. 연결이 끊긴 뒤 다시 돌아왔을 때 남아 있던 변경을 어떻게 확인할지도 같은 설계의 일부다. 빠른 입력은 장점이지만 이후 과정이 드러나야 사람은 기다릴지, 수정할지, 다른 기기에서 이어 쓸지 판단할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 로컬 우선 개발 경험 해설",
+            "kind": "primary",
+            "url": "https://smashingmagazine.com/2026/05/architecture-local-first-web-development/"
+          },
+          {
+            "label": "Yjs 공식 공유 자료형과 네트워크 전제",
+            "kind": "primary",
+            "url": "https://docs.yjs.dev/"
+          }
+        ]
+      },
+      {
+        "heading": "보존과 권한의 경계를 제품에서 설명한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "기기마다 복제본을 둔다면 계정을 바꾸거나 공유 컴퓨터에서 작업을 끝낼 때 어떤 자료가 남는지도 질문해야 한다. 서버의 접근을 차단하는 일과 이미 기기에 내려간 자료를 정리하는 일이 동일하지 않을 수 있기 때문이다. 구현 방식에 따라 필요한 절차가 달라지며, 자동 병합이라는 이름으로 이 문제까지 해결됐다고 판단할 수는 없다.",
+          "저장 장치나 브라우저의 한계도 이용 경험의 일부다. 로컬에서 작업 중인 자료를 잃었을 때 다른 복제본에서 되찾을 수 있는지, 아직 전달하지 않은 변경은 어디에 남는지 확인할 필요가 있다. SQLite의 저장 지침이 용량과 잠금을 설명하는 이유도 실제 환경의 경계를 드러내는 데 있다. 이런 검토는 로컬 우선 구조를 포기하라는 의미가 아니라 보존 약속을 구체화하는 과정이다.",
+          "작은 기능부터 시작하면 어느 자료가 기기에 먼저 있어야 하는지 판단하기 쉽다. 초안이나 협업 메모처럼 연결이 끊겨도 이어 써야 하는 영역을 고르고, 충돌과 복구를 실제로 확인한 뒤 범위를 넓힐 수 있다. 로컬 우선 개발의 변화는 서버를 없애는 선언보다 자료의 위치와 완료 조건을 다시 설계하는 일에 가깝다."
+        ],
+        "references": [
+          {
+            "label": "SQLite 공식 WASM 영구 저장·OPFS 조건",
+            "kind": "primary",
+            "url": "https://www.sqlite.org/wasm/doc/trunk/persistence.md"
+          },
+          {
+            "label": "Yjs 공식 공유 자료형과 네트워크 전제",
+            "kind": "primary",
+            "url": "https://docs.yjs.dev/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "로컬 우선 구조는 기기의 복제본에서 먼저 작업하고 변경을 맞춘다.",
+      "SQLite 저장·잠금 조건과 Yjs 변경 전달 전제를 별도로 확인해야 한다.",
+      "빠른 화면 반응, 업무 처리 확정과 데이터 보존은 같은 보장이 아니다."
+    ],
+    "tags": [
+      "로컬우선",
+      "웹개발",
+      "동기화",
+      "데이터보존"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 로컬 우선 개발 경험 해설",
+        "url": "https://smashingmagazine.com/2026/05/architecture-local-first-web-development/"
+      },
+      {
+        "label": "SQLite 공식 WASM 영구 저장·OPFS 조건",
+        "url": "https://www.sqlite.org/wasm/doc/trunk/persistence.md"
+      },
+      {
+        "label": "Yjs 공식 공유 자료형과 네트워크 전제",
+        "url": "https://docs.yjs.dev/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://smashingmagazine.com/2026/05/architecture-local-first-web-development/",
+      "https://www.sqlite.org/wasm/doc/trunk/persistence.md",
+      "https://docs.yjs.dev/"
+    ],
+    "notes": "원출처전체기사앞부분+RSS와SQLite공식persistence/Yjs문서직접웹열람. InkSwitchURL본문빈페이지로미인용. 원문author experience를독립벤치마크로쓰지않음. SQLiteWorkerOPFS/VFSconcurrency/짧은transactions/busy/storage한도 검증;WAL이나wa-sqlite샘플을직접배포가이드로복제하지않음. Yjs allchanges eventuallyarrive/order independent/data model vs provider 확인. 자동merge업무권한/기기삭제보장으로확대안함. 실제설치/성능실행없음. 전체pendinglocalfirst단일/candidates[]확인.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:17:10.510Z",
+    "checks": [
+      "캐시·전달방식과로컬복제자료구조 구분",
+      "SQLite영구저장·워커·잠금·용량조건 공식대조",
+      "Yjs변경전달의전제와업무권한 구분",
+      "전체pending및후보의같은사건없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

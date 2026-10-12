@@ -1,0 +1,141 @@
+{
+  "id": "283296c6-7de3-48da-a699-954487b7a02c",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/07/digital-design-ai-era/",
+    "title": "MacPaw의 Eney 캐릭터 설계, AI 작업 상태를 표정과 절제된 움직임으로 표현",
+    "summary": "MacPaw가 후원한 디자인 사례는 Eney의 원형 캐릭터와 제한된 감정·동작을 설명한다. 친근함을 더하되 작업을 방해하지 않으려는 선택으로, 현재 공식 안내는 Mac용 프리뷰와 지원 조건을 구분한다.",
+    "paragraphs": [
+      {
+        "heading": "캐릭터로 AI 경험을 다르게 만들려는 시도",
+        "kind": "reporting",
+        "paragraphs": [
+          "스매싱 매거진은 MacPaw가 후원한 글에서 AI 도우미 Eney의 캐릭터 디자인 과정을 소개했다. 작성자는 회사의 캐릭터 제작 담당자로, 익숙한 대화형 텍스트 상자 중심의 경험에 실용성과 개성을 함께 더하려는 목적을 설명한다. 사용자 반응의 비교 실험이나 다른 AI보다 신뢰받는다는 성과를 보고한 자료는 아니다.",
+          "팀은 표현력이 있으면서도 지나치게 우스꽝스럽거나 어린 인상을 주지 않는 균형을 목표로 삼았다. 눈을 중심으로 한 작은 얼굴과 원형 형태를 고르고, 감정과 동작의 수를 제한했다고 설명한다. 친근한 시각 요소를 추가했다는 디자인 논점이지 텍스트 입력이나 기존 조작을 모두 없앴다는 인터페이스 명세로 제시된 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/digital-design-ai-era/"
+          }
+        ]
+      },
+      {
+        "heading": "움직임은 상태를 알리는 역할에 집중했다",
+        "kind": "reporting",
+        "paragraphs": [
+          "글에서 제시한 구체적인 예는 작업 중 캐릭터가 로딩 아이콘처럼 보이는 반응이다. 팀은 표현이 유용한 정보를 전달하도록 하고 화면 안의 움직임을 줄여 방해가 되지 않게 하려 했다. 캐릭터가 계속 시선을 끌기보다 보이지 않는 처리 과정을 사용자가 알아볼 수 있게 만드는 역할을 맡긴 것이다.",
+          "색상은 다른 AI 도구의 익숙한 파란 계열과 차별화하려고 분홍색을 골랐다고 설명한다. 형태·눈·표정·색은 사람이 의도적으로 선택한 요소이며 기술이 과정을 지원해도 최종 판단은 디자이너가 맡았다는 주장이다. 따뜻함이나 지능에 관한 색의 연상은 제작자의 선택 이유로 읽어야 하며 모든 문화의 사용자에게 같은 반응을 보장하는 결과는 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/digital-design-ai-era/"
+          }
+        ]
+      },
+      {
+        "heading": "제품의 제공 범위는 별도로 확인한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "MacPaw의 현재 공식 제품 안내는 Eney를 Mac용 AI 도우미로 소개하고 여러 앱의 작업을 연결하거나 다음 행동을 제안하는 예를 제시한다. 사용자가 통제한다는 방향을 함께 설명하지만, 이 제품 설명만으로 모든 예시의 수행 품질이나 캐릭터의 효과가 독립 검증됐다고 볼 수는 없다. 디자인 사례와 기능 안내는 서로 다른 정보를 제공한다.",
+          "같은 페이지의 제공 상태는 Setapp에서 사용할 수 있는 Eney Preview로 표시돼 있다. 시스템 조건은 Apple Silicon과 macOS 14 이상이며 지원 언어는 영어로 안내한다. 친근한 캐릭터의 소개를 모든 운영체제·언어에 정식 출시된 제품의 발표로 넓힐 수 없는 이유다. 도입 검토에서는 시각적 방향과 실제 제공 환경을 함께 확인해야 한다."
+        ],
+        "references": [
+          {
+            "label": "MacPaw의 Eney 제품·지원 조건 공식 안내",
+            "kind": "primary",
+            "url": "https://macpaw.com/eney"
+          }
+        ]
+      },
+      {
+        "heading": "친근함이 작업의 의미를 흐리지 않아야 한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "캐릭터는 진행 상태를 빠르게 인식하게 할 수 있지만 어떤 동작을 수행하는지는 별도로 알려 줘야 한다. 같은 표정이 검색, 파일 변경과 실패 상태에 모두 쓰이면 사용자는 무엇이 끝났는지 알기 어렵다. 표정과 움직임을 작업 상태에 연결하고 필요한 순간에 텍스트나 결과를 함께 제공하면 친근한 표현을 기능적인 정보로 만들 수 있다.",
+          "특히 사용자 대신 여러 작업을 처리하는 도우미에서는 완료와 제안을 구분하는 것이 중요하다. 기쁜 표정이나 짧은 애니메이션이 실행되지 않은 작업을 완료한 듯 보이게 해서는 안 된다. 원문이 감정과 움직임을 제한했다는 선택은 이런 상태 계약을 정의할 출발점으로 읽을 수 있지만, 실제 제품의 모든 오류 상태가 해결됐다는 증거는 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/digital-design-ai-era/"
+          },
+          {
+            "label": "MacPaw의 Eney 제품·지원 조건 공식 안내",
+            "kind": "primary",
+            "url": "https://macpaw.com/eney"
+          }
+        ]
+      },
+      {
+        "heading": "작업을 방해하지 않는 존재감을 평가한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "캐릭터 디자인을 평가할 때는 독립된 애니메이션의 매력뿐 아니라 작업 화면 안에서의 역할을 살펴볼 수 있다. 사용자가 기다리는 순간에는 상태가 보이고, 집중할 때는 필요 이상의 움직임이 줄어드는지가 중요하다. 같은 크기와 동작도 창 배치나 작업 종류에 따라 다르게 느껴질 수 있으므로 실제 사용 흐름에서 확인하는 편이 유용하다.",
+          "이 사례는 AI 시대의 디자인을 단순한 이미지 생성보다 정보·성격·주의의 관계를 정하는 작업으로 보여 준다. 기술이 초안을 만들더라도 어떤 상태를 표현하고 언제 모습을 드러낼지는 제품의 의도와 연결된다. 캐릭터가 친근하다는 사실을 기능 정확도나 개인정보 보호의 증명으로 바꾸지 않고, 사용자에게 무엇을 알려 주는지의 기준으로 검토할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/digital-design-ai-era/"
+          },
+          {
+            "label": "MacPaw의 Eney 제품·지원 조건 공식 안내",
+            "kind": "primary",
+            "url": "https://macpaw.com/eney"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "MacPaw 후원 사례는 제한된 표정과 움직임을 작업 정보에 연결한다.",
+      "색상과 원형 형태는 제작자의 선택 이유이며 사용자 효과의 실증 결과가 아니다.",
+      "현재 공식 제공 상태는 Setapp 프리뷰·Apple Silicon·macOS14 이상·영어다."
+    ],
+    "tags": [
+      "Eney",
+      "MacPaw",
+      "캐릭터디자인",
+      "AI인터페이스"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 원출처 개발 사례",
+        "url": "https://smashingmagazine.com/2026/07/digital-design-ai-era/"
+      },
+      {
+        "label": "MacPaw의 Eney 제품·지원 조건 공식 안내",
+        "url": "https://macpaw.com/eney"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://macpaw.com/eney"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. no-www WEB실패후www동일기사116줄26~63을확인했고RSS6249자전문과대조했다. MacPaw후원과회사SeniorCharacterProducer사례임을명시했다. 추가MacPaw공식제품페이지에서previewSetapp/AppleSilicon/macOS14+/English조건을현재표시대로확인했다. 텍스트입력전면제거·언어전체지원·정식GA·치료/신뢰상승효과는주장하지않았다. 원문blue=intelligence연상을객관보편실증으로인용하지않고제작자의pink차별화동기만다뤘다. candidatesCopilot로컬샌드박싱(e3da...)은다른제품기술; snapshot.pending전체AI캐릭터MetaMuseCharm(caf...)은다른제작사하드웨어사건으로중복아님.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "e3da44fd-7643-48f9-a9fe-20448cd3d0ee"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:54:17.347Z",
+    "checks": [
+      "후원여부·원형/눈/제한감정·로딩유사작업반응·움직임절제를원문과대조했다.",
+      "현재공식Preview및운영체제/하드웨어/언어범위를확인했다.",
+      "색상/친근함을검증된심리효과나기능정확도로포장하지않았다.",
+      "텍스트상자논점을입력UI완전폐지로확장하지않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "id": "17204da7-cbd0-451e-817b-843cef0fdd13",
+  "article": {
+    "url": "https://blogs.nvidia.com/blog/ai-security-agent-stack/",
+    "title": "엔비디아, AI 에이전트 보안 원칙 제시…모델 밖 권한 통제와 검증 근거 강조",
+    "summary": "엔비디아가 AI 에이전트 보안을 모델·도구·실행 환경에 걸친 엔지니어링 과제로 설명했다. OpenShell의 정책 집행 구조와 Cisco·JFrog의 도구 검증 방식을 대조했다. 고객 기록 수정 권한과 외부 전송 권한을 구분하고, 시험 결과와 변경 이력을 관리하는 접근이다. 제품 도입만으로 모든 공격 차단이 확인되는 것은 아니다.",
+    "paragraphs": [
+      {
+        "heading": "모델의 판단과 실제 실행 권한을 나눠 본다",
+        "kind": "reporting",
+        "paragraphs": [
+          "엔비디아는 9월 21일 공개한 글에서 AI 보안을 요구 사항과 집행 가능한 통제, 책임자, 작동 근거를 갖추는 문제로 설명했다. 모델은 판단 능력을 제공하고 도구·맥락·작업 흐름을 구성하는 프로그램은 그 능력을 업무에 연결하며 실행 환경은 실제 행동이 일어나는 자리를 제공한다는 구분이다. 어느 한 층의 설명만으로 전체 보안을 확인할 수 없다는 관점이다. 글의 고객 기록 수정 에이전트가 악성 문서 지시를 만나 외부로 데이터를 보내려는 상황은 통제 원칙을 설명하는 가정이다. 특정 고객에서 실제 발생하거나 차단한 사건의 결과로 소개하지 않았다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 AI 에이전트 보안 계층 원문",
+            "url": "https://blogs.nvidia.com/blog/ai-security-agent-stack/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "허용된 작업이 추가 권한을 자동으로 만들지 않는다",
+        "kind": "analysis",
+        "paragraphs": [
+          "가정된 사례의 핵심은 기록 수정 허용과 외부 목적지로의 전송 허용이 별개의 결정이라는 점이다. 에이전트가 작업에 필요하다고 판단해 접근을 요청할 수 있어도 그 요청 자체가 승인이 되어서는 안 된다는 원칙을 제시한다. OpenShell 안내 역시 기본적으로 접근을 거부하고 선언된 작업 범위에 맞춰 권한을 부여하는 구조를 설명한다. 모델에 올바른 행동을 지시하는 것과 파일·네트워크·프로세스의 실제 경계를 설정하는 것은 다른 역할이다. 이는 모델이 잘못 판단할 가능성까지 실행 정책에 반영하려는 접근으로 읽힌다. 원칙의 제시를 모든 환경에서 이미 같은 차단 결과가 확인됐다는 주장으로 확대할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 AI 에이전트 보안 계층 원문",
+            "url": "https://blogs.nvidia.com/blog/ai-security-agent-stack/",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenShell 공식 실행·권한 통제 구조",
+            "url": "https://build.nvidia.com/openshell",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "OpenShell은 작업 바깥에서 정책을 집행한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "OpenShell의 현재 공식 안내는 개별 샌드박스와 감독 프로세스, 여러 작업을 관리하는 게이트웨이, 정책의 권한을 점검하는 검증기를 설명한다. 감독 프로세스는 설정된 HTTP·GraphQL·MCP 요청에서 같은 API의 읽기를 허용하면서 쓰기를 막을 수 있다고 안내한다. 실제 서비스 자격 증명도 작업 밖에 두고 네트워크 접근과 권한 확인 뒤 요청에 넣는 방식이다. 정책 검증기는 운영자가 정한 경계 안에 모델링된 권한이 머무는지 확인한다. 이 설명은 선언된 정책과 요청 경로에 관한 통제이며 모든 애플리케이션의 내용이나 모든 보안 취약점을 자동으로 판정한다는 의미는 아니다."
+        ],
+        "references": [
+          {
+            "label": "OpenShell 공식 실행·권한 통제 구조",
+            "url": "https://build.nvidia.com/openshell",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "실행 기반과 스킬의 유통·검사는 서로 다른 역할",
+        "kind": "reporting",
+        "paragraphs": [
+          "Cisco는 DefenseClaw를 OpenShell 위에서 동작하는 운영 관리 층으로 소개한다. 도입 전 스킬·도구 등을 검사하고 실행 중 메시지를 살피며 차단 목록과 허용 목록을 관리하는 기능을 설명했다. JFrog의 별도 발표는 에이전트 스킬을 등록·검사·검증하고 프로젝트와 사업 조직별 승인 정책으로 접근을 제한하는 구조다. 어느 기능도 도구 이름만 확인하는 절차에 머물지 않는다. 실행 환경의 접근 경계와 사용할 자산의 출처·검사·승인 이력은 각각 다른 정보를 다룬다. 두 회사의 기능 설명과 엔비디아가 소개한 제휴를 독립된 공격 차단율 측정이나 전사 배포 완료 수치로 옮기지는 않았다."
+        ],
+        "references": [
+          {
+            "label": "Cisco DefenseClaw 공식 운영·검사 설명",
+            "url": "https://blogs.cisco.com/ai/cisco-announces-defenseclaw",
+            "kind": "primary"
+          },
+          {
+            "label": "JFrog의 에이전트 스킬 등록·승인 구조 발표",
+            "url": "https://investors.jfrog.com/news/news-details/2026/JFrog-Delivers-Trust-Layer-for-AI-Driven-Software-with-NVIDIA/default.aspx",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "공개 코드의 접근성과 설치 조건도 구분한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "현재 OpenShell 저장소는 Linux, Apple Silicon의 macOS, 실험적 지원인 Windows의 WSL 2와 컨테이너 또는 호스트 가상화 기반을 안내한다. 기본 샌드박스 이미지에는 에이전트가 설치돼 있지 않아 실행할 프로그램과 연결할 서비스를 별도로 구성해야 한다. 코드 공개가 곧 모든 운영체제와 조직의 환경에서 같은 설정으로 작동한다는 의미는 아닌 셈이다. 스킬이나 외부 자료를 가져와 사용하는 과정도 남는다. 실제 적용을 판단할 때는 지원 환경, 실행할 에이전트, 승인된 목적지와 자격 증명을 하나의 구성으로 살펴야 한다. 제품의 공개 여부와 개별 업무에 맞춘 권한 설정의 완료는 다른 단계다."
+        ],
+        "references": [
+          {
+            "label": "OpenShell 공개 저장소의 현재 실행 조건",
+            "url": "https://github.com/NVIDIA/OpenShell",
+            "kind": "primary"
+          },
+          {
+            "label": "JFrog의 에이전트 스킬 등록·승인 구조 발표",
+            "url": "https://investors.jfrog.com/news/news-details/2026/JFrog-Delivers-Trust-Layer-for-AI-Driven-Software-with-NVIDIA/default.aspx",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "변경 뒤에도 시험 결과를 다시 연결하는 접근",
+        "kind": "analysis",
+        "paragraphs": [
+          "엔비디아는 범위를 벗어난 자격 증명 획득과 외부 전송, 권한 변경, 감시 방해 시도를 시험 대상으로 제시했다. 실패는 재현·조사해 수정하고 반복 가능한 시험으로 남기며 모델·도구·작업 흐름이 크게 달라지면 다시 확인하라는 설명이다. 따라서 새 도구를 추가하거나 업무 범위를 넓히는 일은 앞선 시험 결과의 적용 조건도 바꿀 수 있다. 보안 팀이 활용할 기록에는 도구 호출뿐 아니라 권한 결정과 실제 결과가 함께 필요하다. 이번 글의 의미는 이런 운영 책임과 증거를 실행 구조에 연결하는 방향에 있다. 도구 목록을 갖춘 것과 조직의 실제 구성에서 그 경계가 작동함을 입증한 것은 구분해야 한다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 AI 에이전트 보안 계층 원문",
+            "url": "https://blogs.nvidia.com/blog/ai-security-agent-stack/",
+            "kind": "primary"
+          },
+          {
+            "label": "Cisco DefenseClaw 공식 운영·검사 설명",
+            "url": "https://blogs.cisco.com/ai/cisco-announces-defenseclaw",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "고객 기록 수정과 외부 전송 권한을 별개의 결정으로 설명했다.",
+      "OpenShell의 정책 집행·자격 증명 분리 범위를 공식 안내와 대조했다.",
+      "Cisco·JFrog의 기능 설명을 독립 성능 측정이나 모든 공격 차단 보장으로 확대하지 않았다.",
+      "현재 설치 조건과 중요 변경 뒤 재시험·책임자 관리의 필요를 구분했다."
+    ],
+    "tags": [
+      "엔비디아",
+      "AI에이전트",
+      "OpenShell",
+      "보안"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "엔비디아 AI 에이전트 보안 계층 원문",
+        "url": "https://blogs.nvidia.com/blog/ai-security-agent-stack/"
+      },
+      {
+        "label": "OpenShell 공식 실행·권한 통제 구조",
+        "url": "https://build.nvidia.com/openshell"
+      },
+      {
+        "label": "OpenShell 공개 저장소의 현재 실행 조건",
+        "url": "https://github.com/NVIDIA/OpenShell"
+      },
+      {
+        "label": "Cisco DefenseClaw 공식 운영·검사 설명",
+        "url": "https://blogs.cisco.com/ai/cisco-announces-defenseclaw"
+      },
+      {
+        "label": "JFrog의 에이전트 스킬 등록·승인 구조 발표",
+        "url": "https://investors.jfrog.com/news/news-details/2026/JFrog-Delivers-Trust-Layer-for-AI-Driven-Software-with-NVIDIA/default.aspx"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blogs.nvidia.com/blog/ai-security-agent-stack/",
+      "https://build.nvidia.com/openshell",
+      "https://github.com/NVIDIA/OpenShell",
+      "https://blogs.cisco.com/ai/cisco-announces-defenseclaw",
+      "https://investors.jfrog.com/news/news-details/2026/JFrog-Delivers-Trust-Layer-for-AI-Driven-Software-with-NVIDIA/default.aspx"
+    ],
+    "notes": "9/21 원문은 보안 엔지니어링 설명이며 신규 OpenShell 출시로 쓰지 않음. 원문 고객 기록 악성 문서는 hypothetical 사례로 명시, 실제 사고·차단 성과 아님. OpenShell 현재 페이지의 supervisor configured HTTP/GraphQL/MCP 읽기/쓰기 구분 및 policy prover modeled permissions/operator boundaries 대조. 공개 저장소 지원 OS·WSL2 experimental·기본 이미지 noagent 조건 확인. Cisco3/23·JFrog3/16은 별도 기존 발표: 신규9/21 출시·모든 공격 차단율로 전용 안함, 5분/2초·CVE/노출 수치·safe universal assurances 미독립검증 제외. 후보 Cloudflare agentic security harness는 다른 회사의 구체 구현 사건; 전체 pending SAIF·Daybreak/OpenAI safety cases와 모델/플랫폼·자료 구체 사건이 달라 중복 아님.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "e1462898-b538-4aeb-96dc-f22e5eed6df0",
+    "316c5a18-02ff-4735-943e-0c393784bea5",
+    "56b16575-ca25-4ba2-9903-3311573548c4",
+    "88909f47-c322-4252-aca4-51e619d16b9d",
+    "b58159c9-4b8b-4a2d-8910-3d9314f9020c",
+    "ca37e48d-c53f-4017-9aad-4b208f6a6a83"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:40:29.764Z",
+    "checks": [
+      "원문 날짜와 hypothetical 예시 확인",
+      "업데이트 허용과 데이터 전송 승인 구분",
+      "OpenShell 작업 밖 집행·자격 증명 조건 확인",
+      "정책 검증의 모델링된 권한 범위 반영",
+      "공개 저장소의 WSL2 experimental 및 별도 에이전트 설치 확인",
+      "Cisco·JFrog 기업 발표에 기능 주장 귀속",
+      "후보 전체 및 pending의 다른 보안 구현·연구와 사건 대조"
+    ],
+    "relatedPendingIds": []
+  }
+}

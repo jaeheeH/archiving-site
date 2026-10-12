@@ -1,0 +1,156 @@
+{
+  "id": "cc9d8d13-3e8d-4fb8-b5c2-33428dd02054",
+  "article": {
+    "url": "https://blog.google/products-and-platforms/products/education/teacher-voices-sweden/",
+    "title": "스웨덴 교사의 Sites·Notebook·Vids 수업… 정보를 받는 데서 직접 발표로",
+    "summary": "스웨덴 교사 Rebecca Braun이 공동 사이트와 자율 학습 노트, 영상 발표를 연결하는 수업 경험을 소개했다. Sites·Gemini Notebook·Vids가 서로 다른 역할을 맡는다. 학생의 제작 참여와 비판적 사고라는 목표를 경험담의 범위에서 읽고 제품의 협업·인용·접근 조건을 확인한다.",
+    "paragraphs": [
+      {
+        "heading": "학습을 자기 결과물로 옮기는 경험",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 5일 스웨덴 Helsingborg의 Innovitaskolan에서 일하는 Rebecca Braun의 수업 경험을 공개했다. 작성자는 7~9학년 교사이자 교육 개발 담당자로 소개된다. 일상 수업에서 Google Sites와 Gemini Notebook, Google Vids를 사용해 학생이 정보를 소비하는 데서 자신의 결과물을 만드는 방향으로 나아가도록 돕는다는 내용이다. Braun은 호기심과 학습의 주도권을 강조하며 기술이 교사를 대신하는 것이 아니라 학생에게 공간을 주는 도구라고 평가했다. 이 글은 새 제품이나 스웨덴 교육 정책의 출시 공지가 아니다. 한 교육자가 여러 제품을 학습 활동에 연결한 경험이며 참여 학생 수와 관찰 기간, 분석 능력의 전후 평가 결과는 공개하지 않았다. 학생의 자신감과 역량에 관한 기대도 작성자의 교육 목표와 경험으로 읽어야 한다."
+        ],
+        "references": [
+          {
+            "label": "Rebecca Braun의 스웨덴 수업 제작·공유 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/teacher-voices-sweden/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "사이트 공유·자율 노트·영상 발표",
+        "kind": "reporting",
+        "paragraphs": [
+          "Braun은 학생들이 배운 것을 공유하는 공동 Sites를 설계한다고 밝혔다. 학생은 자신의 속도로 학습 노트를 다루고 Vids로 아이디어를 영상 발표로 옮긴다고 설명한다. 제품을 하나의 기능으로 묶기보다 공유 공간과 학습 자료, 발표 형식에 각각 역할을 둔 구성이다. 원문은 어떤 노트를 올렸고 어떤 영상을 만들었는지 전체 자료를 제시하지 않는다. 또한 모든 영상이 AI가 자동 생성한 것이라고 밝히지도 않는다. 학생에게 협업과 비판적 사고, 자기 목소리를 표현할 기회를 주려 한다는 것은 작성자가 소개한 방향이다. 이 목표와 실제 능력 변화의 측정은 다른 단계다. 영상 한 편을 완성한 경험을 모든 정보의 사실성이나 학생의 미디어 이해가 검증됐다는 의미로 바꿀 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "Rebecca Braun의 스웨덴 수업 제작·공유 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/teacher-voices-sweden/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "인용과 영상 권한의 제품 조건",
+        "kind": "reporting",
+        "paragraphs": [
+          "Gemini Notebook의 교육용 안내는 이용자가 제공한 자료에 기반해 질문에 답하고 원문으로 이어지는 인용을 표시하는 기능을 소개한다. 자료를 학습 노트로 바꾸는 과정에서 확인 경로를 얻을 수 있지만 입력 자료 자체의 타당성과 모든 출력의 정확성을 자동으로 보장한다는 뜻은 아니다. Vids 공식 도움말은 기관이 지원할 때 이용할 수 있고 공유 대상의 보기·댓글·편집 권한을 선택할 수 있다고 안내한다. 기관이 공유 방식을 제한할 수 있다는 조건도 있다. Gemini 기능은 영어로 제공되고 일부 AI 기능은 다른 언어에서도 지원한다고 설명한다. 스웨덴 교사의 사용 사례만으로 모든 AI 기능의 스웨덴어 지원을 확정할 수는 없다. 이 공식 안내는 제품의 일반 조건이며 Braun의 학교에서 어떤 계정과 권한, 언어를 실제로 설정했는지는 별도 확인 대상이다."
+        ],
+        "references": [
+          {
+            "label": "Google Vids 영상 공유·댓글·기관 지원 공식 안내",
+            "url": "https://support.google.com/a/users/answer/14817958?hl=en",
+            "kind": "primary"
+          },
+          {
+            "label": "교육용 Gemini Notebook의 자료 기반 인용 안내",
+            "url": "https://edu.google.com/intl/ALL_us/ai-gemini-notebook/?pt_ref=products",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "형식을 바꾸며 생기는 해석",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 노트에서 사이트와 영상으로 이어지는 변환을 학생의 해석이 드러날 수 있는 과정으로 본다. 읽은 내용을 그대로 옮기는 것과 다른 사람에게 설명할 순서로 다시 구성하는 것은 다르다. 영상에 어떤 장면을 넣고 무엇을 생략할지 결정하면 자신의 이해가 어디까지인지 돌아볼 여지가 생긴다. AI가 제공한 요약이나 인용도 그 결정을 위한 참고 자료로 다룰 수 있다. 다만 형식을 여러 번 바꿨다는 사실만으로 깊은 분석이 이뤄졌다고 결론 내리지는 않는다. 학생이 선택한 설명의 근거와 원자료의 관계를 이야기할 수 있는지 살펴야 제작의 의미가 보인다. 원문은 그 평가 절차를 공개하지 않았으므로 특정 성취를 추가하지 않는다. 공개된 흐름은 정보 탐색과 표현 활동을 함께 설계하려는 시도로 읽을 수 있다."
+        ],
+        "references": [
+          {
+            "label": "Rebecca Braun의 스웨덴 수업 제작·공유 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/teacher-voices-sweden/",
+            "kind": "primary"
+          },
+          {
+            "label": "교육용 Gemini Notebook의 자료 기반 인용 안내",
+            "url": "https://edu.google.com/intl/ALL_us/ai-gemini-notebook/?pt_ref=products",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "공동 공간에서 보이는 판단의 책임",
+        "kind": "analysis",
+        "paragraphs": [
+          "공동 사이트에 결과를 올리는 활동은 개인의 이해가 다른 학생의 학습 자료가 될 수 있다는 점을 생각하게 한다. 누군가의 설명을 참고하는 과정에서는 작성자가 무엇을 근거로 판단했는지가 중요하다. 영상도 보기 쉬운 형식이라는 이유만으로 내용이 옳아지는 것은 아니다. 동료가 질문하고 제작자가 수정하는 과정이 남으면 공유 공간은 완성품을 전시하는 곳을 넘어 생각의 변화를 볼 자료가 될 수 있다. 이는 원문에 있는 특정 댓글 기록을 확인했다는 설명이 아니라 소개된 공동 제작 구조에 대한 분석이다. 이번 경험담은 학생의 목소리를 중심에 놓으려는 방향을 보여준다. 다른 학교가 참고할 부분은 세 제품의 이름뿐 아니라 자료의 근거와 발표의 선택을 누가 설명하는지다. 제품 이용 조건과 수업의 판단을 함께 남겨야 경험을 다른 교육 환경과 비교할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "Rebecca Braun의 스웨덴 수업 제작·공유 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/teacher-voices-sweden/",
+            "kind": "primary"
+          },
+          {
+            "label": "Google Vids 영상 공유·댓글·기관 지원 공식 안내",
+            "url": "https://support.google.com/a/users/answer/14817958?hl=en",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "공동 Sites, 자기 속도의 학습 노트, Vids 영상 발표를 연결한 교사 경험이다.",
+      "원문은 모든 영상의 AI 자동 생성이나 분석 역량의 정량 측정을 밝히지 않았다.",
+      "Notebook 인용과 Vids의 기관 지원·공유·언어 조건은 실제 교실 설정과 구분된다."
+    ],
+    "tags": [
+      "구글교육",
+      "GeminiNotebook",
+      "GoogleVids",
+      "학생제작",
+      "디지털시민"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "Rebecca Braun의 스웨덴 수업 제작·공유 경험 원문",
+        "url": "https://blog.google/products-and-platforms/products/education/teacher-voices-sweden/"
+      },
+      {
+        "label": "Google Vids 영상 공유·댓글·기관 지원 공식 안내",
+        "url": "https://support.google.com/a/users/answer/14817958?hl=en"
+      },
+      {
+        "label": "교육용 Gemini Notebook의 자료 기반 인용 안내",
+        "url": "https://edu.google.com/intl/ALL_us/ai-gemini-notebook/?pt_ref=products"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/products-and-platforms/products/education/teacher-voices-sweden/",
+      "https://support.google.com/a/users/answer/14817958?hl=en",
+      "https://edu.google.com/intl/ALL_us/ai-gemini-notebook/?pt_ref=products"
+    ],
+    "notes": "원문·Vids공식협업문서·Notebook교육안내웹확인.RebeccaBraunInnovitaskolanHelsingborg7-9/Sitescollaboration/selfpacednotebooks/Vidsvideo.영상전체AIgenerated발명없음/analyticalcriticalsconfidence개인목표평가.공식Vids기관지원roles100및languageEnglishsomeother로SwedishallAI보장없음.인용확인경로이지입력자료검증아님.후보10·전체pending교사10구체경험대조학교방송/고교media기타와본스웨덴순환별개.실교실설정테스트없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "1b26d953-c1ba-4eb9-baf3-6bba7f7bc9bb",
+    "3564e5a1-5821-49ef-bd96-912e5c73a483",
+    "3f96b1c3-6b91-42c6-a276-a72f4e691fe8",
+    "6a15a15c-65e2-411f-847a-f51c003cbab0",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "ec323858-ca4e-442e-96d0-a114cb836a2c",
+    "f902e8f3-2cfc-4931-9ea9-73956faaae60"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:51:14.010Z",
+    "checks": [
+      "교사·기관·학년·세제품역할원문확인",
+      "AI영상자동생성추정하지않음",
+      "학생역량을정량효과로확대안함",
+      "Vids기관/언어/권한과Notebook인용조건대조",
+      "후보10·전체pending동일스웨덴경험없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

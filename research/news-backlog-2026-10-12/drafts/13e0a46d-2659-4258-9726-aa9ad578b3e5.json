@@ -1,0 +1,159 @@
+{
+  "id": "13e0a46d-2659-4258-9726-aa9ad578b3e5",
+  "article": {
+    "url": "https://github.blog/changelog/2026-10-09-codeql-2-27-2-improves-c-go-rust-and-javascript-analysis",
+    "title": "CodeQL 2.27.2, 언어 분석 개선과 macOS 빌드 호환성 제약 공개",
+    "summary": "GitHub가 CodeQL 2.27.2의 C++·Go·Rust·JavaScript 분석 개선을 발표했다. Go 제어 흐름 그래프가 바뀌어 사용자 쿼리 수정이 필요할 수 있고, macOS 27 또는 Xcode 27 조합에서는 컴파일 언어의 추적 빌드 모드가 지원되지 않는다. 탐지 향상과 실행 조건을 함께 점검해야 한다.",
+    "paragraphs": [
+      {
+        "heading": "분석이 이해하는 라이브러리와 코드 패턴 확대",
+        "kind": "reporting",
+        "paragraphs": [
+          "GitHub는 CodeQL 2.27.2가 C++ 정규식과 여러 언어의 데이터 흐름 분석을 개선했다고 발표했다. C++에서는 std::regex의 ECMAScript 문법을 파싱하고 Comdb2 C API의 SQL 주입 관련 목적지 모델을 추가했다. Go에는 github.com/coder/websocket 경로 지원이, Rust에는 await로 사용하는 비동기 블록의 데이터 흐름과 TLS 라이브러리의 흐름 요약 개선이 포함됐다.",
+          "JavaScript와 TypeScript에서는 Workflow SDK의 use workflow·use step 지시문을 인식하고 Hapi의 사용자 정의 라우트 등록과 고차 함수에서 요청 입력 추적을 개선했다. 공식 변경 기록에 따르면 기본 쿼리 묶음은 보안 쿼리 498개로 CWE 170종을 다루며 확장 묶음은 쿼리 131개와 추가 CWE 32종을 제공한다. 이 숫자는 분석 규칙의 범위이며 취약점 탐지 성공률은 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-09-codeql-2-27-2-improves-c-go-rust-and-javascript-analysis"
+          },
+          {
+            "label": "CodeQL 2.27.2 공식 변경 기록",
+            "kind": "primary",
+            "url": "https://codeql.github.com/docs/codeql-overview/codeql-changelog/codeql-cli-2.27.2/"
+          }
+        ]
+      },
+      {
+        "heading": "Go 사용자 쿼리가 확인해야 할 구조 변경",
+        "kind": "reporting",
+        "paragraphs": [
+          "이번 버전의 Go 제어 흐름 그래프는 공용 CFG 라이브러리를 사용하도록 바뀐다. 할당과 매개변수·반환 값, range와 지연 호출 등에 노드가 추가되고 진입점에서 도달할 수 없는 노드는 제외된다. 노드와 간선, 위치·텍스트 표현, 기본 블록의 경계가 달라지므로 이전 표현에 의존한 사용자 쿼리는 수정이 필요할 수 있다고 GitHub는 설명했다.",
+          "공식 기록은 BasicBlocks::Cfg 제거와 ControlFlow::EntryNode·ExitNode 추가를 명시한다. IfStmt.getCond는 getCondition을 사용하도록 대체되며, IfStmt.getThen과 LoopStmt.getBody의 반환 타입도 Stmt로 변경된다. 이는 제품 화면의 변경만이 아니라 쿼리를 작성하는 사람이 사용하던 라이브러리 인터페이스의 변경이다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-09-codeql-2-27-2-improves-c-go-rust-and-javascript-analysis"
+          },
+          {
+            "label": "CodeQL 2.27.2 공식 변경 기록",
+            "kind": "primary",
+            "url": "https://codeql.github.com/docs/codeql-overview/codeql-changelog/codeql-cli-2.27.2/"
+          }
+        ]
+      },
+      {
+        "heading": "macOS와 Xcode 조합에 따라 추적 빌드 제한",
+        "kind": "reporting",
+        "paragraphs": [
+          "GitHub는 macOS 27에서 Xcode 버전과 관계없이, 또 macOS 26에서 Xcode 27을 선택했을 때 컴파일 언어의 autobuild와 manual 모드를 지원하지 않는다고 밝혔다. 해당 환경에서 추적 분석에 필요한 다중 아키텍처 바이너리가 제공되지 않는다는 설명이다. 이 빌드 모드를 사용하려면 macOS 26과 Xcode 26 이하의 지원 조합을 사용하도록 안내했다.",
+          "build mode none의 macOS 지원 개선은 진행 중이라고 소개됐으며 현재 완성된 대안으로 발표되지 않았다. 배포에서도 GitHub.com 코드 스캐닝에는 새 버전이 자동 제공되지만 GitHub Enterprise Server는 향후 릴리스에 포함될 예정이다. 이전 GHES에서는 CodeQL 버전을 수동 업그레이드할 수 있다고 안내해, 호스팅 환경별 적용 시점을 구분했다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-09-codeql-2-27-2-improves-c-go-rust-and-javascript-analysis"
+          }
+        ]
+      },
+      {
+        "heading": "새 분석 결과는 규칙과 실행 성공을 함께 보기",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 분석 엔진을 올릴 때 먼저 확인할 것은 스캔이 완료됐는지와 어떤 규칙을 실행했는지다. 경고 수가 줄어도 수정의 결과인지 분석 환경이 바뀌어 코드 추출이 실패한 것인지 구분해야 한다. 반대로 새로운 라이브러리 모델이 입력 흐름을 더 잘 이해하면서 경고가 늘 수 있으므로, 이전 버전과 동일한 코드에서 대표 경로를 비교하는 편이 도움이 된다.",
+          "Go용 사용자 쿼리가 있다면 명칭만 바꾸는 것으로 검증을 끝내기 어렵다. CFG의 도달 가능성과 블록 경계가 바뀌면 쿼리가 찾는 경로 자체도 달라질 수 있기 때문이다. 기대하는 문제 사례와 문제가 없는 사례를 함께 분석해 어떤 결과가 바뀌었는지 확인하고, 필요한 수정 이유를 쿼리 옆에 기록해야 이후 버전에서도 판단 근거가 남는다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-09-codeql-2-27-2-improves-c-go-rust-and-javascript-analysis"
+          },
+          {
+            "label": "CodeQL 2.27.2 공식 변경 기록",
+            "kind": "primary",
+            "url": "https://codeql.github.com/docs/codeql-overview/codeql-changelog/codeql-cli-2.27.2/"
+          }
+        ]
+      },
+      {
+        "heading": "로그 파서와 확장 데이터도 업그레이드 대상",
+        "kind": "analysis",
+        "paragraphs": [
+          "CLI 변경도 주변 자동화에 영향을 줄 수 있다. 공식 변경 기록은 표준 오류 메시지에 ERROR와 WARNING 접두사를 넣었지만 구조화된 로그와 SARIF는 유지된다고 설명한다. 텍스트의 모양을 직접 읽는 자동화가 있다면 기존 가정이 맞는지 확인할 지점이다. 오류를 더 분명히 알리는 개선이 이를 소비하는 모든 스크립트의 호환성을 자동 보장하지는 않는다.",
+          "또한 YAML 확장 데이터는 부호 있는 32비트 범위를 벗어나는 정수를 거부하도록 검증이 정리됐다. 이전에 조용히 잘린 값을 사용했다면 새 버전에서 실패가 드러날 수 있다. 아카이브에는 엔진 버전과 쿼리 팩뿐 아니라 운영체제·Xcode·빌드 모드, 사용자 쿼리와 확장 데이터의 버전을 함께 남겨야 분석 결과의 변화를 재현할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "CodeQL 2.27.2 공식 변경 기록",
+            "kind": "primary",
+            "url": "https://codeql.github.com/docs/codeql-overview/codeql-changelog/codeql-cli-2.27.2/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "C++ 정규식과 Go·Rust·JavaScript의 라이브러리 및 데이터 흐름 분석이 개선됐다.",
+      "Go CFG와 일부 라이브러리 API 변경은 사용자 쿼리의 수정·검증을 요구할 수 있다.",
+      "macOS 27 및 macOS 26+Xcode 27에서는 컴파일 언어의 autobuild·manual 모드가 지원되지 않는다."
+    ],
+    "tags": [
+      "깃허브",
+      "CodeQL",
+      "코드스캐닝",
+      "개발보안",
+      "macOS"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://github.blog/changelog/2026-10-09-codeql-2-27-2-improves-c-go-rust-and-javascript-analysis"
+      },
+      {
+        "label": "CodeQL 2.27.2 공식 변경 기록",
+        "url": "https://codeql.github.com/docs/codeql-overview/codeql-changelog/codeql-cli-2.27.2/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://github.blog/changelog/2026-10-09-codeql-2-27-2-improves-c-go-rust-and-javascript-analysis",
+      "https://codeql.github.com/docs/codeql-overview/codeql-changelog/codeql-cli-2.27.2/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원문과 연결된 CodeQL2.27.2 공식 변경 기록을 WEB으로 확인했다. 언어별 분석·GoCFG breaking change·macOS/Xcode 조건·빌드 모드 none의 진행중 상태·GHES 배포 차이를 대조했다. CLI의 표준오류 접두사/SARIF불변과 YAML32비트 검증도 확인했다. 설치나 사용자 쿼리 실행은 하지 않았으며 탐지 성공률을 주장하지 않았다. candidates 7편(보안 개요·비밀탐지·PR·API·npm)은 버전별 CodeQL 엔진 변경과 사건이 다르다. snapshot.pending 전체 제목과 GitHub 관련 요약을 비교해 같은 CodeQL2.27.2 기사 중복은 없다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "3348a0be-409f-4198-be4e-9e396a98cec8",
+    "44061c78-7fe5-44c2-818b-920797d7ac53",
+    "59fa6b92-df55-4f94-b5cf-ed93860a0810",
+    "5c1b6eb0-d4f3-4f54-a2d0-73f859848823",
+    "7da83f89-b5d3-4c7e-8158-cbf596e83859",
+    "7fbdcec8-0647-465f-a548-c50364470c17",
+    "8c6c9d95-ad5a-4c5c-aeb2-88d45f0b8e5c",
+    "a6f538ec-b033-4d9a-888c-53376fe2123c",
+    "ac49a872-6b09-4994-b96b-e1dd8386ee25",
+    "b208daae-7946-4310-b441-0ee0e1ebbfab",
+    "b6eba5af-010a-42d0-8578-82782a6000ae",
+    "e0c53a53-802f-4b66-9273-bb5d2a3aca01"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:22:00.994Z",
+    "checks": [
+      "공식 변경 기록에 기본498쿼리/170CWE, 확장추가131쿼리/추가32CWE가 기재됐다.",
+      "Go 공용CFG 전환·BasicBlocks::Cfg 제거·getCondition 및 Stmt 반환 변경을 확인했다.",
+      "macOS27 모든Xcode 및 macOS26+Xcode27 제한은 컴파일언어 autobuild/manual에 한정된다.",
+      "GitHub.com 자동 배포와 향후 GHES 포함, CLI접두사·SARIF불변·YAML32비트 거부 조건을 확인했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

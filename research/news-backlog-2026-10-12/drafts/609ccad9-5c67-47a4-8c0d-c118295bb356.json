@@ -1,0 +1,145 @@
+{
+  "id": "609ccad9-5c67-47a4-8c0d-c118295bb356",
+  "article": {
+    "url": "https://toss.tech/article/ads_dashboard_fe",
+    "title": "토스 광고 대시보드, 계정 데이터 상한을 확인하고 연산을 워커로 옮기다",
+    "summary": "토스가 광고 계정의 전체 목록을 브라우저 워커에 두고 필터·정렬·검색을 처리한 경험을 공개했다. 성과 없는 항목과 계층 검증 문제를 함께 해결했지만 초기 로딩과 장애 복구 비용은 남았다.",
+    "paragraphs": [
+      {
+        "heading": "대시보드의 목록 기준부터 바꿨다",
+        "kind": "reporting",
+        "paragraphs": [
+          "토스의 김동희 프론트엔드 개발자는 광고주 대시보드의 필터·정렬·검색·페이지 처리를 서버에서 브라우저로 옮긴 사례를 소개했다. 캠페인·광고세트·소재를 관리하는 화면에서 반복 조작마다 서버를 기다렸고, 성과 집계에 행이 없는 캠페인이 정렬 결과에서 사라지는 문제도 있었다. 회사는 목록의 존재와 성과 값의 공급을 구분해 구조를 바꿨다.",
+          "결정의 전제는 광고 계정별 데이터 규모였다. 당시 가장 큰 계정의 캠페인·광고세트·소재를 합쳐 약 2만 건이었고 설계 목표를 10만 건으로 잡았다고 설명했다. 모든 서비스 데이터를 브라우저로 옮긴 것이 아니라 이 계정 목록의 상한을 바탕으로 판단한 사례다. 원문은 데이터가 제한 없이 늘어나는 서비스에 같은 결정을 적용하지 말라고 강조한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/ads_dashboard_fe"
+          }
+        ]
+      },
+      {
+        "heading": "행은 먼저 만들고 값은 나중에 붙인다",
+        "kind": "reporting",
+        "paragraphs": [
+          "팀은 이름·상태·부모 ID를 담는 메타데이터, 성과 지표와 부가 컬럼의 API를 분리했다. 메타데이터가 먼저 도착하면 표를 그리고 나머지 값은 ID로 합친다. 목록을 메타데이터가 결정하므로 성과가 없는 캠페인도 남는다. 회사는 메타데이터 캐시 수명을 5분, 성과 캐시는 5초로 각각 설정했다고 밝혔다.",
+          "값이 도착하지 않은 컬럼의 정렬은 잠그고, 응답이 병합될 때 데이터 버전을 올려 결과 캐시를 갱신한다. 전체 순서를 알게 되면서 특정 ID가 있는 페이지로 이동하고, 이미 가진 값으로 새 정렬을 추가하며 URL에 담긴 부모·자식 선택도 검사할 수 있었다. 부분적인 API 실패는 관련 컬럼의 안내로 처리해 표 전체의 실패와 분리했다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/ads_dashboard_fe"
+          }
+        ]
+      },
+      {
+        "heading": "전체 데이터는 워커가 소유한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "무거운 연산은 웹 워커에 맡기고 화면에는 현재 페이지 100건만 전달한다. 공통 인증·오류·재시도 처리가 있는 기존 HTTP 클라이언트를 유지하기 위해 요청은 메인 스레드에서 보내되, 응답 본문을 ArrayBuffer로 받아 워커에 전송하고 파싱은 워커가 수행한다. 회사는 같은 전체 데이터를 양쪽에 보관하지 않는 방식으로 복제와 메모리 비용을 줄였다고 설명했다.",
+          "MDN은 ArrayBuffer를 전송하면 자원이 다른 문맥으로 이동해 원래 버퍼에서 사용할 수 없게 된다고 설명한다. 토스의 선택은 이 소유권 이전을 활용한 것이다. 워커가 종료되면 그 안의 전체 데이터도 사라지므로 서버에서 다시 받아 복구한다. 대기 중인 요청이 있으면 오류를 알리고 사용자가 재시도하며, 없으면 캐시를 무효화해 재로딩하는 두 경로를 뒀다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/ads_dashboard_fe"
+          },
+          {
+            "label": "MDN의 전송 가능한 객체와 ArrayBuffer 설명",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects"
+          }
+        ]
+      },
+      {
+        "heading": "연산 시간과 화면 정지를 구분한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "워커의 장점은 같은 연산을 다른 스레드로 옮겨 화면을 다루는 시간을 확보하는 데 있다. 데이터를 많이 갖는 문제와 DOM을 많이 그리는 문제도 다르다. 이 화면은 100행 단위 페이지를 유지했으므로 전체 목록이 크다는 이유만으로 가상 스크롤을 도입할 필요가 없었다. 구조를 선택할 때 실제로 막히는 계층을 구분한 점이 참고할 만하다.",
+          "서로 다른 API를 합치는 방식은 첫 화면을 빠르게 보여 주지만, 아직 없는 값을 정상 상태로 다루는 규칙이 필요하다. 빈 값과 0, 실패와 로딩이 구분되지 않으면 정렬 결과나 성과 판단이 잘못될 수 있다. 컬럼별 조작 가능 시점과 갱신 버전을 정한 설계는 점진적 로딩을 화면의 일관성과 연결한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/ads_dashboard_fe"
+          },
+          {
+            "label": "MDN의 전송 가능한 객체와 ArrayBuffer 설명",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects"
+          }
+        ]
+      },
+      {
+        "heading": "첫 진입과 복구 비용은 계속 남는다",
+        "kind": "analysis",
+        "paragraphs": [
+          "원문은 첫 진입이 여전히 느리며 큰 계정일수록 비용도 크다고 인정한다. 첫 페이지만 받으면 빠르게 시작할 수 있지만, 전체 순서 계산과 계층 검증의 이점을 다시 잃는다. 따라서 이 선택을 평가할 때는 조작 속도뿐 아니라 모든 기능이 사용 가능해지는 시점과 메모리 사용, 워커 복구 때의 재다운로드도 함께 살펴야 한다.",
+          "또 느린 화면 때문에 광고주가 탐색을 포기한다는 설명은 필자가 세운 가정이며 측정된 행동 개선 결과가 아니다. 다른 팀은 사용자 탐색이 실제로 늘어나는지 별도로 관찰할 수 있다. 계정 데이터 상한과 열별 정보 요구가 바뀌면 판단도 다시 해야 한다. 이 사례의 가치는 브라우저 연산의 보편적 우월성보다 어떤 조건에서 목록을 소유하기로 했는지와 감수한 비용을 남긴 데 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/ads_dashboard_fe"
+          },
+          {
+            "label": "MDN의 전송 가능한 객체와 ArrayBuffer 설명",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "계정별 현재 최대 약2만 건·목표10만 건이라는 조건에서 선택한 구조다.",
+      "메타데이터가 목록을 소유하고 성과·부가 정보는 ID로 병합한다.",
+      "워커는 화면 정지를 줄이지만 초기 로딩과 전체 재수신 복구 비용이 남는다."
+    ],
+    "tags": [
+      "토스",
+      "웹워커",
+      "광고대시보드",
+      "프론트엔드"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://toss.tech/article/ads_dashboard_fe"
+      },
+      {
+        "label": "MDN의 전송 가능한 객체와 ArrayBuffer 설명",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://toss.tech/article/ads_dashboard_fe",
+      "https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원문 WEB는 Timeout fetching 실패했고 보존 RSS 전문11755자를 앞뒤와 중간까지 읽었다. MDN 공식 Transferable objects의 ArrayBuffer 소유권 이전/원본분리 조건을 WEB로 대조했다. 데이터 상한은 계정의 캠페인+광고세트+소재 합계2만·설계10만이며 전체 DB/사용자 무제한 데이터를 뜻하지 않는다. 탐색 포기는 원문이 미측정 가정이라고 명시해 개선된 행동 지표로 쓰지 않았다. 캐시수명과 실제 성과데이터 갱신 주기를 동일시하지 않았다. 첫 진입 미해결과 워커 사망시 전량재수신 비용을 보존했다. 후보목록이 비어 있음을 확인했고 snapshot.pending 전체 및 광고관련요약을 대조해 플레이어블 광고 SDK와는 다른 운영대시보드 사례다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:33:11.231Z",
+    "checks": [
+      "목록의 존재는 Metadata가 정하고 성과 없는 행은 유지한다는 원문 규칙을 확인했다.",
+      "메인스레드 요청→ArrayBuffer 이전→Worker 파싱/전체소유→현재100행 반환을 확인했다.",
+      "ArrayBuffer 전송은 원본 자원을 분리하는 동작임을 공식 문서로 확인했다.",
+      "탐색포기 가정과 첫 진입 미해결을 공개된 성과로 꾸미지 않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

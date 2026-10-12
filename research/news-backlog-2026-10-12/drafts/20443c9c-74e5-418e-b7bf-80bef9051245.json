@@ -1,0 +1,192 @@
+{
+  "id": "20443c9c-74e5-418e-b7bf-80bef9051245",
+  "article": {
+    "url": "https://blogs.nvidia.com/blog/isaac-ros-5-0-agentic-open-source-robotics/",
+    "title": "Isaac ROS 5.0, 개발 에이전트와 표준 메시지 전환 지원…기존 코드 이관 필요",
+    "summary": "엔비디아가 Isaac ROS 5.0을 공개하며 로봇 개발용 에이전트 워크플로와 ROS2 Lyrical·Ubuntu24.04 지원을 소개했다. 공식 릴리스는 NITROS API를 직접 쓴 코드의 이관과 일부 플랫폼 제한도 명시한다. 개발 자동화와 실제 로봇의 자율 실행, 개별 라이브러리 가속과 전체 시스템 성능을 구분했다.",
+    "paragraphs": [
+      {
+        "heading": "로봇 개발을 돕는 패키지와 에이전트 워크플로",
+        "kind": "reporting",
+        "paragraphs": [
+          "엔비디아는9월22일 토론토 ROSCon에서 Isaac ROS5.0을 소개했다. 공식 릴리스 노트에는5.0.0 패키지의 공개 날짜가9월21일로 표시돼 있다. ROS 위에서 GPU 가속을 활용하는 패키지 모음에 설치·조작·모델 조정 작업용 스킬과 에이전트가 읽기 쉬운 문서를 더한 발표다. 개발 에이전트가 로봇 소프트웨어를 구성하고 반복 작업을 돕는 역할과 완성된 로봇이 물리적 환경에서 판단·행동하는 역할은 구분해야 한다. 발표는 개발 도구와 구현 경로를 확장한 소식이며 모든 로봇의 자율 작업이 자동으로 검증됐다는 의미는 아니다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 Isaac ROS 5.0 발표 원문",
+            "url": "https://blogs.nvidia.com/blog/isaac-ros-5-0-agentic-open-source-robotics/",
+            "kind": "primary"
+          },
+          {
+            "label": "Isaac ROS 5.0 공식 릴리스 변경·제한",
+            "url": "https://nvidia-isaac-ros.github.io/releases/index.html",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "ROS 표준 메시지와 GPU 저장을 연결",
+        "kind": "reporting",
+        "paragraphs": [
+          "5.0은 ROS2 Lyrical과 Ubuntu24.04를 지원하며 가속 데이터 전달을 표준 버퍼 구조로 옮겼다. 공식 설명에 따르면 rosidl::Buffer는 길이가 달라지는 기본형 배열을 담는 C++ 컨테이너다. 기본적으로 CPU 저장을 사용하지만 별도 백엔드가 GPU 같은 다른 메모리 영역을 제공할 수 있다. 메시지의 의미를 정의하는 형식과 저장 장소를 분리해 다른 메시지 타입을 새로 만들지 않아도 되는 구조다. 호환되는 연결에서는 데이터 전달 비용을 줄일 수 있지만 지원하지 않는 연결은 일반 CPU 직렬화로 돌아갈 수 있다. 따라서 모든 전달에서 복사가 사라진다는 일반 보장으로 표현하지 않았다."
+        ],
+        "references": [
+          {
+            "label": "Isaac ROS 5.0 공식 릴리스 변경·제한",
+            "url": "https://nvidia-isaac-ros.github.io/releases/index.html",
+            "kind": "primary"
+          },
+          {
+            "label": "표준 버퍼와 저장 방식의 공식 설명",
+            "url": "https://nvidia-isaac-ros.github.io/concepts/rosidl_buffer/index.html",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "공통 인터페이스가 기존 코드의 자동 호환을 뜻하지 않는다",
+        "kind": "analysis",
+        "paragraphs": [
+          "릴리스는 여러 NITROS 패키지를 제거했고 해당 API나 타입을 직접 호출하던 코드에는 소스 수준의 전환이 필요하다고 명시한다. 기존 데이터 처리 경로를 새 컨테이너와 변환 패키지에 연결해야 하는 변화다. 공식 설명은 보통의 응용 개발자가 이미지·텐서·점군 같은 의미 있는 데이터를 다루는 변환 패키지부터 사용하도록 안내한다. 장치 메모리의 수명이나 동기화를 직접 다뤄야 하는 경우는 별도의 백엔드 사용 영역이다. 공통 메시지 인터페이스가 생기는 이점과 기존 프로젝트를 옮기는 비용을 함께 읽어야 업데이트의 실제 범위가 보인다. 단순히 버전 번호만 올리는 작업으로 모든 기존 호출을 유지할 수 있는 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "Isaac ROS 5.0 공식 릴리스 변경·제한",
+            "url": "https://nvidia-isaac-ros.github.io/releases/index.html",
+            "kind": "primary"
+          },
+          {
+            "label": "표준 버퍼와 저장 방식의 공식 설명",
+            "url": "https://nvidia-isaac-ros.github.io/concepts/rosidl_buffer/index.html",
+            "kind": "primary"
+          },
+          {
+            "label": "NITROS 코드 전환 공식 안내",
+            "url": "https://nvidia-isaac-ros.github.io/concepts/rosidl_buffer/nitros_migration.html",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "스킬의 진행 단계와 GPU 자원 배분의 범위",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 릴리스는 개발 환경을 활성화하는 CLI 기능과 NITROS 노드를 새 버퍼로 옮기는 조기 접근 스킬을 소개한다. 모든 전환 기능이 같은 완료 단계라는 설명은 아니다. 새 GPU 파티셔닝 패키지는 CUDA MPS로 각 ROS2 프로세스에 일정 비율의 스트리밍 멀티프로세서를 배정한다. 문서는 이 기능이 GPU 메모리를 나누거나 작업을 서로 격리하지 않는다고 명시했다. 자원을 배정한다는 이름을 전체 메모리·작업 격리 기능으로 읽을 수는 없다. 어떤 계산 자원을 나누는지와 각 프로세스가 어떤 데이터를 전달하는지는 로봇에서 여러 작업을 함께 실행할 때 별도로 확인할 조건이다."
+        ],
+        "references": [
+          {
+            "label": "Isaac ROS 5.0 공식 릴리스 변경·제한",
+            "url": "https://nvidia-isaac-ros.github.io/releases/index.html",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "장치와 처리 단계마다 남는 제약 확인",
+        "kind": "analysis",
+        "paragraphs": [
+          "엔비디아는 Jetson Orin Nano에서 Thor까지 개발·배포 경로를 소개하지만 지원 범위가 모든 카메라와 설치 방식의 동일한 동작을 뜻하지 않는다.5.0 릴리스의 알려진 제한은 RealSense 카메라를 Docker 모드에서만 지원한다고 설명한다. 일부 장치에서는 이미지 전처리의 처리량·지연이4.6보다 나쁠 수 있어 현재 측정 결과를 확인하도록 안내했다. 이런 정보는 새 기능과 함께 실제 도입을 판단하는 근거다. 개별 인식 라이브러리가 빨라졌다는 회사의 최대 수치를 로봇의 전체 처리 속도로 대입하기 어렵다. 센서 입력과 전처리, 추론과 제어가 이어지는 경로에서 어느 부분을 측정했는지 구분해야 한다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 Isaac ROS 5.0 발표 원문",
+            "url": "https://blogs.nvidia.com/blog/isaac-ros-5-0-agentic-open-source-robotics/",
+            "kind": "primary"
+          },
+          {
+            "label": "Isaac ROS 5.0 공식 릴리스 변경·제한",
+            "url": "https://nvidia-isaac-ros.github.io/releases/index.html",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "개발 지원과 현장 검증을 연결하는 다음 단계",
+        "kind": "analysis",
+        "paragraphs": [
+          "스킬과 표준 데이터 인터페이스는 개발자가 반복하는 설정·전환·모델 적용을 도울 수 있는 기반이다. 다만 모델을 특정 카메라에 맞게 조정하는 작업과 실제 조작의 결과를 확인하는 일은 따로 남는다. 발표에 등장한 파트너들은 인식·이동·조작을 구성하고 시뮬레이션이나 하드웨어를 연결해 시험하는 사례를 제시했다. 이는 기업의 적용 설명이며 모든 장치의 충돌 없는 동작이나 현장 성과를 인증한 목록은 아니다. 이번 릴리스의 구체적인 변화는 개발 에이전트가 사용할 절차를 제공하면서 가속 메시지 처리 구조도 바꾼 데 있다. 기존 코드 전환과 자신의 센서·장치에서의 확인이 그 변화를 실제 로봇에 연결하는 과정이다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 Isaac ROS 5.0 발표 원문",
+            "url": "https://blogs.nvidia.com/blog/isaac-ros-5-0-agentic-open-source-robotics/",
+            "kind": "primary"
+          },
+          {
+            "label": "Isaac ROS 5.0 공식 릴리스 변경·제한",
+            "url": "https://nvidia-isaac-ros.github.io/releases/index.html",
+            "kind": "primary"
+          },
+          {
+            "label": "NITROS 코드 전환 공식 안내",
+            "url": "https://nvidia-isaac-ros.github.io/concepts/rosidl_buffer/nitros_migration.html",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "공식5.0.0 공개9월21일과 ROSCon 발표9월22일을 구분했다.",
+      "표준 버퍼가 메시지 의미와 GPU 저장을 분리하며 연결에 따라 CPU 전송도 남는다.",
+      "NITROS 직접 API 코드는 소스 전환이 필요하고 일부 이관 스킬은 조기 접근이다.",
+      "GPU 계산 자원 배분은 메모리 분할·작업 격리와 다르며 플랫폼 제약도 확인했다."
+    ],
+    "tags": [
+      "엔비디아",
+      "IsaacROS",
+      "로봇개발",
+      "오픈소스"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "엔비디아 Isaac ROS 5.0 발표 원문",
+        "url": "https://blogs.nvidia.com/blog/isaac-ros-5-0-agentic-open-source-robotics/"
+      },
+      {
+        "label": "Isaac ROS 5.0 공식 릴리스 변경·제한",
+        "url": "https://nvidia-isaac-ros.github.io/releases/index.html"
+      },
+      {
+        "label": "표준 버퍼와 저장 방식의 공식 설명",
+        "url": "https://nvidia-isaac-ros.github.io/concepts/rosidl_buffer/index.html"
+      },
+      {
+        "label": "NITROS 코드 전환 공식 안내",
+        "url": "https://nvidia-isaac-ros.github.io/concepts/rosidl_buffer/nitros_migration.html"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blogs.nvidia.com/blog/isaac-ros-5-0-agentic-open-source-robotics/",
+      "https://nvidia-isaac-ros.github.io/releases/index.html",
+      "https://nvidia-isaac-ros.github.io/concepts/rosidl_buffer/index.html",
+      "https://nvidia-isaac-ros.github.io/concepts/rosidl_buffer/nitros_migration.html"
+    ],
+    "notes": "공식발표·5.0release·buffer및migration실제문서대조.9/21release vs9/22announce.ROS2LyricalUbuntu24.04,CPUdefault/backenddifferentstorage/fallback조건확인.NITROSremoved/sourcelevelmigration,earlyaccessmigrate skill단계반영.MPScomputeSMpartition≠memorypartition/isolation,RealSenseDockermodeonly·이미지전처리regression알려진제약구분.5.5xFoundationPose비교분모불명확해본문수치제외,ROS1.3M사용자집계도방법미대조로제외.개발에이전트≠모든로봇자율실행인증.후보GPU·PC·진료연구다른사건,전체pending동일IsaacROS5없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "ca37e48d-c53f-4017-9aad-4b208f6a6a83",
+    "3a245b5e-786f-4b22-873b-ca01be894721",
+    "316c5a18-02ff-4735-943e-0c393784bea5",
+    "56b16575-ca25-4ba2-9903-3311573548c4",
+    "88909f47-c322-4252-aca4-51e619d16b9d",
+    "b58159c9-4b8b-4a2d-8910-3d9314f9020c"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:14:13.529Z",
+    "checks": [
+      "원문과공식릴리스의날짜·지원기반 대조",
+      "버퍼기술의기본저장/호환/CPUfallback 확인",
+      "NITROS API코드이관필요 반영",
+      "이관스킬조기접근및MPS자원범위 확인",
+      "5.0한정플랫폼/전처리제약 확인",
+      "개별최대가속을로봇전체성능·안전으로확대안함"
+    ],
+    "relatedPendingIds": []
+  }
+}

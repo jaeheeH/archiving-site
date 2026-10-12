@@ -1,0 +1,156 @@
+{
+  "id": "54f639bf-141f-47e9-ae49-9dff75e7c783",
+  "article": {
+    "url": "https://blog.google/products-and-platforms/products/education/english-teacher-gemini/",
+    "title": "문학을 읽기 전 역할극으로… 특수교육 교사의 Gemini 수업 설계 사례",
+    "summary": "시카고 특수교육 교사 Cheryl Graff가 Gemini로 역할극과 생활기술 활동을 계획하는 경험을 소개했다. 기후변화·인권 이야기를 읽기 전에 학생이 교실의 여러 활동 지점을 이동하도록 구성하는 방식이다. 활동 구상과 실제 이해·공감의 효과, 영양 관련 초안의 적용 범위를 나눠 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "추상적 문학 개념과 몸으로 하는 활동",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 5일 미국 시카고 Lake View High School의 특수교육 교사 Cheryl Graff가 쓴 수업 경험을 공개했다. 작성자는 문학의 추상적인 개념을 학생이 직접 참여하는 활동으로 연결하는 데 어려움이 있었다고 설명한다. 이후 Gemini를 계획을 함께 구상하는 도구로 사용해 예전에는 쉽게 만들기 어려웠던 교실 활동을 구성한다는 내용이다. 원문은 영어 수업과 생활기술 과목의 사례를 함께 소개한다. 특수교육 현장에 맞춰 새로운 수업을 설계했다는 경험이며 임상적 중재나 치료 결과의 보고는 아니다. 사용한 모델의 버전과 활동 회차, 학생 수는 공개하지 않았다. 따라서 사례를 모든 특수교육 학생에게 동일하게 적용할 수 있는 검증된 프로그램으로 소개할 근거는 없다."
+        ],
+        "references": [
+          {
+            "label": "Cheryl Graff의 문학·생활기술 활동 설계 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/english-teacher-gemini/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "책을 열기 전에 역할을 경험하기",
+        "kind": "reporting",
+        "paragraphs": [
+          "Graff는 기후변화나 인권을 다룬 복잡한 이야기를 읽기 전에 학생이 참여하는 모의 활동을 설계한다고 밝혔다. Gemini를 활용해 교실의 여러 지점에서 진행할 역할극 과제를 구성하고 학생들이 이동하며 문제를 해결하도록 하는 방식이다. 작성자는 독서에 앞선 활동이 참여와 공감을 돕는다고 평가했다. 별도의 생활기술 수업에서는 스무디 조리법과 식이 관련 자료를 구상해 학생이 재료를 섞는 활동을 준비한다고 소개한다. 실제 조리법과 영양 평가표, 학생별 적용 조건은 원문에 제시되지 않는다. 이 부분은 수업 계획 경험으로 다루며 특정 식단이나 재료를 독자에게 권하는 내용으로 옮기지 않는다. 역할극과 생활 활동 모두 교사가 실행을 구성하는 사례이지 생성된 계획이 자동으로 학생의 이해나 영양 상태를 개선했다는 시험 결과는 아니다."
+        ],
+        "references": [
+          {
+            "label": "Cheryl Graff의 문학·생활기술 활동 설계 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/english-teacher-gemini/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "교육용 계획 초안의 공식 범위",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글의 교육용 Gemini 안내는 학습 목표와 교육 기준에 맞춘 계획을 구상하거나 자료 수준을 조절하는 활용을 소개한다. 연습 문제와 평가 자료를 만드는 기능도 설명하지만 이는 교실에 적용할 초안과 선택지를 제공하는 제품 안내다. Graff가 실제로 어떤 프롬프트와 평가 도구를 사용했는지는 공개된 짧은 경험담만으로 재현할 수 없다. Gemini 응답의 공식 도움말은 생성 결과에 부정확한 정보가 포함될 수 있으며 의료나 다른 전문 조언으로 의존해서는 안 된다고 안내한다. 이 조건은 생활기술 수업의 영양 관련 자료를 개인에게 맞춘 전문 식이 지도와 구분할 근거가 된다. 책의 주제에 맞는 역할극을 설계하는 일과 개별 학생에게 적합한 활동인지 결정하는 일도 같은 단계가 아니다. 제품의 기능 설명이 그 결정을 대신했다고 볼 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "Gemini의 수업 계획·수준 조절 공식 교육 안내",
+            "url": "https://edu.google.com/intl/ALL_us/ai/gemini-for-education/",
+            "kind": "primary"
+          },
+          {
+            "label": "Gemini 응답의 정확성·전문 조언 범위 공식 설명",
+            "url": "https://support.google.com/gemini/answer/16279220?hl=en",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "움직임을 독서의 해석으로 연결하기",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B가 주목하는 설계는 책을 읽기 전에 학생이 상황 속 역할을 경험하게 한다는 순서다. 활동에서 어떤 선택을 했는지 기억하면 이후 등장인물의 행동을 읽는 질문으로 연결할 여지가 있다. 그러나 몸을 움직였다는 사실과 문학의 복잡한 의미를 이해했다는 사실은 다르다. 과제의 재미만 남으면 책의 주제와 연결되는 부분이 희미해질 수도 있다. 교사는 활동에서 나온 학생의 설명을 통해 어느 개념에 다음 지원이 필요한지 살필 수 있다. 원문은 그 후속 질문을 공개하지 않았으므로 실제 수업의 교안을 추정해 채우지 않는다. 대신 생성형 도구가 활동의 후보를 빠르게 제안할 때에도 독서 전 경험과 독서 후 해석을 연결하는 기준이 중요해진다는 점을 이 사례의 의미로 읽을 수 있다."
+        ],
+        "references": [
+          {
+            "label": "Cheryl Graff의 문학·생활기술 활동 설계 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/english-teacher-gemini/",
+            "kind": "primary"
+          },
+          {
+            "label": "Gemini의 수업 계획·수준 조절 공식 교육 안내",
+            "url": "https://edu.google.com/intl/ALL_us/ai/gemini-for-education/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "계획의 다양성과 참여의 선택지",
+        "kind": "analysis",
+        "paragraphs": [
+          "여러 활동 지점을 만드는 구성은 학생이 같은 주제에 다른 방식으로 참여할 선택지를 생각하게 한다. 문장으로 설명하는 일과 역할을 수행하는 일, 생활 도구를 만져 보는 일은 서로 다른 진입 경로가 될 수 있다. 다만 특정 학생이 어떤 방식을 선호하고 어느 지원을 필요로 하는지는 생성 모델의 일반 제안에서 바로 알 수 없다. 이 경험을 다른 교실로 옮길 때는 완성된 활동 수보다 학생의 참여 방식에 관한 정보를 함께 살피는 편이 유용하다. 교사가 AI를 계획 파트너로 썼다고 표현한 점도 이런 판단을 남겨 둔다. 이번 발표는 새로운 활동을 구상할 가능성을 보여주며 교사의 적용 선택과 학생의 실제 반응이 모두 공개된 연구는 아니다. 후속 기록에서 활동을 바꾼 이유와 독서에 연결된 설명이 남는다면 짧은 경험담이 더 구체적인 수업 자료로 이어질 수 있다."
+        ],
+        "references": [
+          {
+            "label": "Cheryl Graff의 문학·생활기술 활동 설계 경험 원문",
+            "url": "https://blog.google/products-and-platforms/products/education/english-teacher-gemini/",
+            "kind": "primary"
+          },
+          {
+            "label": "Gemini 응답의 정확성·전문 조언 범위 공식 설명",
+            "url": "https://support.google.com/gemini/answer/16279220?hl=en",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "특수교육 교사가 독서 전 여러 활동 지점의 역할극을 구상한 경험이다.",
+      "공감·참여 효과는 작성자의 평가이며 학생 수와 비교 성취 결과는 미공개다.",
+      "영양 관련 활동 구상은 개인 식단이나 임상적 조언의 근거로 제시되지 않는다."
+    ],
+    "tags": [
+      "Gemini",
+      "특수교육",
+      "문학교육",
+      "역할극",
+      "수업설계"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "Cheryl Graff의 문학·생활기술 활동 설계 경험 원문",
+        "url": "https://blog.google/products-and-platforms/products/education/english-teacher-gemini/"
+      },
+      {
+        "label": "Gemini의 수업 계획·수준 조절 공식 교육 안내",
+        "url": "https://edu.google.com/intl/ALL_us/ai/gemini-for-education/"
+      },
+      {
+        "label": "Gemini 응답의 정확성·전문 조언 범위 공식 설명",
+        "url": "https://support.google.com/gemini/answer/16279220?hl=en"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/products-and-platforms/products/education/english-teacher-gemini/",
+      "https://edu.google.com/intl/ALL_us/ai/gemini-for-education/",
+      "https://support.google.com/gemini/answer/16279220?hl=en"
+    ],
+    "notes": "원문·교육공식기능·응답공식한계웹확인.CherylGraffLakeViewChicagoSpecialEducation/Englishclimatehumanrightsreadingbeforemultistationphysicalroleplay/LifeSkillssmoothierecipesdietprofiles구상.원레시피·식단추천·영양효과발명없음;의료중재/clinical시험으로확대없음.후보10·전체pending교사10대조Eni특수교육음성시각별개구체행위.공감/engagement개인경험·분모미공개표시.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "1b26d953-c1ba-4eb9-baf3-6bba7f7bc9bb",
+    "3564e5a1-5821-49ef-bd96-912e5c73a483",
+    "3f96b1c3-6b91-42c6-a276-a72f4e691fe8",
+    "6a15a15c-65e2-411f-847a-f51c003cbab0",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "ec323858-ca4e-442e-96d0-a114cb836a2c",
+    "f902e8f3-2cfc-4931-9ea9-73956faaae60"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:47:51.426Z",
+    "checks": [
+      "특수교육교사·학교·독서전활동순서확인",
+      "여러지점역할극·생활기술구상정확히귀속",
+      "임상효과·레시피·개인식단권고없음",
+      "공식생성응답한계및계획초안범위대조",
+      "후보10·전체pending동일문학활동없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "id": "2d09e15b-50c6-4bf3-81c2-998636c1a979",
+  "article": {
+    "url": "https://blog.google/products-and-platforms/platforms/google-play/play-fest/",
+    "title": "구글 Play Fest 10월 13일 시작, 행사 혜택과 미국 경품 조건 구분",
+    "summary": "구글이 10월 13~19일 Play Fest를 예고했다. 포인트 경품 응모, 게임 리그와 앱·게임·도서 혜택을 결합하지만 제공 시장은 제한된다. 경품은 미국의 일부 성인 Play Points 회원 대상이며 일반 행사와 응모 종료 날짜가 다르다. 한국 이용 가능성을 단정하지 않고 이벤트의 참여 구조를 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "한 주간의 행사와 별도 응모 기간",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 8일 Google Play에서 Play Fest를 10월 13일부터 19일까지 진행한다고 발표했다. 경품 응모, 게임 리그, 앱과 게임·도서 등의 특별 혜택을 한 행사에 묶는 구성이다. 다만 공식 글의 각주는 행사를 일부 시장에서 제공한다고 밝힌다. 특히 경품 응모는 미국 내 일부 Play Points 회원 중 18세 이상을 대상으로 하며 구매가 필요 없다고 적고 있다. 경품 안내의 종료일은 11월 2일로 표시돼 일반 행사 기간과 다르다. 원문은 무료 응모 방법을 공식 규칙에서 확인하도록 안내한다. 행사 제목이나 상단의 날짜만 보고 한국의 모든 계정에서 동일한 경품에 참여할 수 있다고 해석해서는 안 된다. 이 글에서 한국 제공 범위를 구체적으로 확인할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "구글 Play Fest 공식 발표와 각주",
+            "url": "https://blog.google/products-and-platforms/platforms/google-play/play-fest/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "포인트를 응모와 리그 참여에 연결",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 발표는 Play Points를 경품 응모 횟수로 교환하는 방식과 큰 묶음에 붙는 보너스를 소개한다. 예시 경품에는 오스카 피아스트리의 2026년 시즌 헬멧을 본뜬 실물 크기 복제품, 게임 장비, XR 안경, 휴대전화와 TV가 포함된다. 이 목록은 경품 예시이며 모든 참가자에게 제품을 지급한다는 뜻은 아니다. 게임 리그에는 Angry Birds 2, Free Fire, 8 Ball Pool의 사전 등록이 안내됐고 각 리그에서 최대 5만 Play Points를 얻을 기회를 제시했다. 최대 보상은 참여 즉시 받는 기본 포인트와 구분해야 한다. 원문이 제시한 경쟁·경품·구매 보너스는 서로 다른 행동에 연결돼 있다. 리그에 등록하는 과정과 포인트를 사용해 응모하는 과정이 같은 참여로 처리된다고 가정할 근거도 없다."
+        ],
+        "references": [
+          {
+            "label": "구글 Play Fest 공식 발표와 각주",
+            "url": "https://blog.google/products-and-platforms/platforms/google-play/play-fest/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "포인트 회원이어도 혜택은 국가마다 다르다",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글 Play Points 공식 도움말은 디지털 콘텐츠 구매 등으로 포인트를 적립하고 쿠폰, 앱 내 아이템, Play 크레딧에 사용할 수 있는 보상 프로그램으로 설명한다. 한국을 포함한 지원 국가 목록이 있지만 적립할 콘텐츠와 등급·혜택은 국가에 따라 달라진다고 명시한다. 따라서 한국에서 Play Points를 사용할 수 있다는 사실만으로 이번 미국 경품의 자격을 얻는 것은 아니다. 행사 발표의 할인과 보너스에도 조건과 공급 수량 제한이 붙으며, 일부 도서 구매 배수는 10월 16~18일처럼 더 짧은 기간에 적용된다. 계정 국가, 실제 표시된 행사, 개별 혜택의 날짜를 함께 확인해야 한다. 전체 행사가 열리는 일주일과 모든 제안의 유효 기간이 하나의 날짜로 통일돼 있다고 읽기는 어렵다."
+        ],
+        "references": [
+          {
+            "label": "구글 Play Fest 공식 발표와 각주",
+            "url": "https://blog.google/products-and-platforms/platforms/google-play/play-fest/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글 Play Points 가입 및 국가별 조건 안내",
+            "url": "https://support.google.com/googleplay/answer/9077312",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "보상 화면에서 서로 다른 가치를 구분",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 이 행사를 포인트 프로그램이 여러 참여 방식을 한 화면으로 연결하는 사례로 읽는다. 확정적으로 교환하는 쿠폰, 순위에 따라 받는 리그 보상, 추첨으로 정하는 경품은 사용자가 이해해야 할 가치의 형태가 다르다. 큰 상품 사진과 최대 포인트를 가까이 배치할수록 그 차이를 표시하는 설명도 중요해진다. 사용자는 같은 포인트 잔액으로 어떤 행동을 선택하는지, 무엇이 확정되고 무엇이 기회에 불과한지 알아야 한다. 이는 이번 행사 화면을 직접 시험해 문제가 있다고 판정한 것이 아니라 공식 발표의 참여 구조에 대한 분석이다. 포인트 교환 수량과 당첨 가능성은 서로 다른 정보이며, 더 많은 응모 횟수라는 설명만으로 상품을 받을 확률을 계산할 수는 없다. 공개되지 않은 확률이나 참가자 수를 추정해 기대 보상을 단정하지 않는 것이 정확한 기록에 도움이 된다."
+        ],
+        "references": [
+          {
+            "label": "구글 Play Fest 공식 발표와 각주",
+            "url": "https://blog.google/products-and-platforms/platforms/google-play/play-fest/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글 Play Points 가입 및 국가별 조건 안내",
+            "url": "https://support.google.com/googleplay/answer/9077312",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "국가와 기간을 행사 기록의 일부로",
+        "kind": "analysis",
+        "paragraphs": [
+          "이벤트를 아카이빙할 때에는 대표 포스터와 상품 목록뿐 아니라 국가, 회원 조건, 혜택별 종료일을 함께 저장하는 편이 유용하다. 날짜가 지난 뒤 같은 이미지가 공유되면 당시의 대상 계정과 적용 기간이 사라져 현재의 상시 혜택처럼 읽힐 수 있기 때문이다. 특히 여러 나라에서 쓰는 플랫폼에서는 보상 프로그램 가입 여부와 특정 프로모션 자격이 겹치지 않을 수 있다. 상세 조건을 별도 링크로 연결하더라도 핵심 제한은 대표 안내 가까이 보이는 것이 사용자의 판단을 돕는다. 이번 자료에서 확인할 수 있는 것은 10월 행사 발표와 그 글에 적힌 참여 범위다. 경품의 전체 공식 규칙은 확인 가능한 안내에서 추가로 대조해야 하며, 이전에 진행한 다른 응모 행사 조건을 이번 행사에 가져와 적용해서는 안 된다. 새 행사와 상시 프로그램의 기록을 구분해 남기면 지역별 혜택을 더 정확하게 비교할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "구글 Play Fest 공식 발표와 각주",
+            "url": "https://blog.google/products-and-platforms/platforms/google-play/play-fest/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글 Play Points 가입 및 국가별 조건 안내",
+            "url": "https://support.google.com/googleplay/answer/9077312",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Play Fest의 일반 행사 기간은 2026년 10월 13~19일이며 제공 시장은 제한된다.",
+      "경품 각주는 미국의 일부 18세 이상 Play Points 회원, 구매 불필요, 11월 2일 종료를 안내한다.",
+      "한국의 Play Points 지원과 이번 미국 경품 자격은 별개이며 혜택마다 조건과 기간이 다르다."
+    ],
+    "tags": [
+      "구글플레이",
+      "PlayFest",
+      "포인트",
+      "이벤트",
+      "정보설계"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "구글 Play Fest 공식 발표와 각주",
+        "url": "https://blog.google/products-and-platforms/platforms/google-play/play-fest/"
+      },
+      {
+        "label": "구글 Play Points 가입 및 국가별 조건 안내",
+        "url": "https://support.google.com/googleplay/answer/9077312"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/products-and-platforms/platforms/google-play/play-fest/",
+      "https://support.google.com/googleplay/answer/9077312"
+    ],
+    "notes": "원문과 PlayPoints 공식 국가조건을 웹 확인. 10/13~19행사, 일부시장, 미국선별PlayPoints18+/구매불필요/11/2응모종료 원문각주 확인. 공식규칙 링크는401로 내용읽지못했으므로 우편방식·세금·환불·주별나이등 추가조건 쓰지않음. help17499462는8~9월 다른행사이므로이번규칙에 혼입하지않았다. 최대5만은league보상기회, 상품은경품예시. 한국프로그램지원과 이번응모자격 구분. 후보11건·snapshot.pending전체 제목·원제·URL 및PlayFest관련본문 대조해 동일행사없음. 경품당첨확률과할인실현성은 추정하지않았다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "4997b7f4-003c-4ff2-b026-7fc43b02691b",
+    "1b26d953-c1ba-4eb9-baf3-6bba7f7bc9bb",
+    "3564e5a1-5821-49ef-bd96-912e5c73a483",
+    "3f96b1c3-6b91-42c6-a276-a72f4e691fe8",
+    "6a15a15c-65e2-411f-847a-f51c003cbab0",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "ec323858-ca4e-442e-96d0-a114cb836a2c",
+    "f902e8f3-2cfc-4931-9ea9-73956faaae60"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:19:22.602Z",
+    "checks": [
+      "원문각주·PlayPoints공식국가조건 대조",
+      "행사10/13~19와 경품11/2 종료 구분",
+      "미국선별18+·구매불필요 제한 명시",
+      "이전8~9월 경품조건 혼입 제외",
+      "후보11건·전체pending에 동일행사 없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

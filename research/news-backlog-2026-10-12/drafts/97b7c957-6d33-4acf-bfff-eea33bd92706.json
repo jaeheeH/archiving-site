@@ -1,0 +1,164 @@
+{
+  "id": "97b7c957-6d33-4acf-bfff-eea33bd92706",
+  "article": {
+    "url": "https://openai.com/index/asana-browser-agent",
+    "title": "아사나, 브라우저 에이전트 캐시 재설계로 비용 개선… ‘76배’의 비교 조건",
+    "summary": "아사나가 브라우저 에이전트의 이력과 스크린샷 캐시를 재설계한 실험을 공개했다. OpenAI 사례의 76배 비용 개선은 기존 Model B 구성과 최적화한 GPT-6.1 Sol 구성을 비교한 추정 모델 비용이다. 동일 모델 안의 개선, 반복 횟수와 과제 범위를 구분해 읽는다.",
+    "paragraphs": [
+      {
+        "heading": "76배는 어떤 구성을 비교했나",
+        "kind": "reporting",
+        "paragraphs": [
+          "OpenAI는 2026년 10월 9일 아사나(Asana)가 브라우저 에이전트의 비용과 실행 시간을 줄인 사례를 발표했다. 아사나는 전날 공식 기술 글에서 실험 방법을 공개했다. 사례에 제시된 76배 비용 개선과 5배 속도 개선은 기존 운영 구성의 Model B와 최적화한 GPT-6.1 Sol 구성을 비교한 결과다. 최적화한 Sol 구성의 평균 추정 모델 비용은 실행당 0.47달러, 실행 시간은 약 4분이었다. 연구와 코드 검토에는 Codex 안의 GPT-6 Astra를 사용했고, 브라우저 과제를 실행한 비교 모델은 Sol을 포함한 네 종류였다. 개발을 도운 모델과 성능을 측정한 모델의 역할을 구분해야 한다. 이 결과를 Sol의 가격이 모든 경쟁 모델보다 76배 저렴하다는 주장으로 바꾸어 읽을 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 아사나 브라우저 에이전트 사례",
+            "url": "https://openai.com/index/asana-browser-agent",
+            "kind": "primary"
+          },
+          {
+            "label": "아사나의 캐시 실험 방법과 한계",
+            "url": "https://asana.com/inside-asana/cut-browsers-agent-cost",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "매 단계 지운 이력이 캐시를 깨뜨렸다",
+        "kind": "reporting",
+        "paragraphs": [
+          "아사나의 공식 설명에 따르면 기존 에이전트는 고정 지시와 도구 정의만 캐시하고, 계속 늘어나는 페이지 텍스트와 스크린샷 이력은 충분히 재사용하지 못했다. 이전 스크린샷을 자주 지우고 오래된 텍스트를 잘라내면서 요청 앞부분이 달라지는 것도 문제였다. 변경안은 탐색 이력을 캐시에 포함하고, 스크린샷을 20장까지 모은 뒤 최근 1장만 남기는 묶음 정리 방식을 사용했다. 텍스트 이력 예산도 12만 자에서 48만 자로 늘렸다. 요청을 매번 짧게 만드는 방식이 오히려 재사용을 끊을 수 있음을 보여주는 사례다. 다만 캐시 동작과 할인 조건은 제공자의 구현에 달린다. 이번 실험의 캐시 읽기 비중이나 비용 비율을 다른 API와 작업에 그대로 대입해서는 안 된다."
+        ],
+        "references": [
+          {
+            "label": "아사나의 캐시 실험 방법과 한계",
+            "url": "https://asana.com/inside-asana/cut-browsers-agent-cost",
+            "kind": "primary"
+          },
+          {
+            "label": "StackAI의 공식 실험 보고",
+            "url": "https://www.stackai.com/blog/how-stackai-by-asana-used-astra-codex-and-command-to-reduce-browser-agent-costs",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "같은 모델의 개선과 실험의 표본",
+        "kind": "reporting",
+        "paragraphs": [
+          "실험은 두 가지 이력 예산과 여섯 가지 캐시·스크린샷 정책을 네 모델에 적용하고 조건별로 세 번 실행한 144회 비교였다. 과제는 공개 데모 도서 목록에서 32권에 대해 여섯 항목을 수집하는 동일 작업이었다. 아사나는 별도로 준비한 정답과 답변을 대조했다고 밝혔다. OpenAI 원문에서 Sol 자체의 비용 개선은 1.97달러에서 0.47달러로 약 4배이며, Model B의 구성 최적화는 최소 36.21달러에서 1.24달러로 약 29배였다. 기존 일부 실행은 단계 한도에 걸렸기 때문에 기준 비용과 시간은 하한으로 표시된다. 조건별 세 번이라는 반복 수는 미세한 차이를 판단하기에는 제한적이다. 서로 다른 웹사이트나 인증 절차, 길이가 다른 업무에 같은 결과가 나온다고 결론 내리기 어렵다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 아사나 브라우저 에이전트 사례",
+            "url": "https://openai.com/index/asana-browser-agent",
+            "kind": "primary"
+          },
+          {
+            "label": "아사나의 캐시 실험 방법과 한계",
+            "url": "https://asana.com/inside-asana/cut-browsers-agent-cost",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "짧은 문맥보다 보존한 맥락의 가치",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 이 사례를 에이전트의 기억을 어떻게 구성할지에 관한 실무 자료로 읽는다. 화면에서 얻은 정보를 너무 일찍 지우면 사용자가 이미 확인한 내용을 다시 읽는 것처럼 모델도 같은 페이지를 재방문할 수 있다. 반대로 이력을 무제한 쌓으면 작업이 벗어났을 때 비용과 문맥 한도가 문제가 된다. 따라서 필요한 것은 항상 가장 짧은 요청이 아니라 현재 업무가 다시 사용할 정보를 적절히 보존하는 규칙이다. 설계자는 정리 시점과 남길 정보, 그 결정이 답변 정확도와 캐시 재사용에 미치는 영향을 함께 살펴야 한다. 도서 목록 수집이라는 반복 구조에서는 이전 기록을 유지하는 이점이 있었지만, 서로 무관한 페이지를 많이 읽는 작업에서는 다른 기준이 필요할 수 있다. 이 차이를 기록하면 캐시 설정을 단순한 비용 절약 옵션으로만 취급하지 않을 수 있다."
+        ],
+        "references": [
+          {
+            "label": "아사나의 캐시 실험 방법과 한계",
+            "url": "https://asana.com/inside-asana/cut-browsers-agent-cost",
+            "kind": "primary"
+          },
+          {
+            "label": "StackAI의 공식 실험 보고",
+            "url": "https://www.stackai.com/blog/how-stackai-by-asana-used-astra-codex-and-command-to-reduce-browser-agent-costs",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "운영 비용을 읽는 최소한의 기록",
+        "kind": "analysis",
+        "paragraphs": [
+          "비용 비교 화면이나 실험 보고서에는 모델 이름과 함께 과제, 성공 판정, 재시도, 단계 제한, 캐시 읽기량을 나란히 남기는 편이 좋다. 완료되지 않은 실행을 제외하면 빠르고 싼 구성만 남아 비교가 왜곡될 수 있기 때문이다. 아사나가 요청과 결과를 Command에 기록했다는 설명은 결론을 다시 검토할 근거를 보존했다는 점에서 의미가 있다. 동시에 실행당 0.47달러는 토큰 카운터로 추정한 모델 비용이며 전체 서비스의 인프라나 사람 검토 비용을 포함한 총원가로 제시되지 않았다. 독자는 큰 개선 배수보다 자신이 비교하려는 비용 단위부터 확인할 필요가 있다. 실제 도입에서는 한 실행이 반환한 정답과 실패한 실행의 비용을 같이 봐야 한다. 이번 사례는 그런 측정을 시작할 구체적인 변수를 제공하지만 일반적인 모델 순위를 확정하는 자료는 아니다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 아사나 브라우저 에이전트 사례",
+            "url": "https://openai.com/index/asana-browser-agent",
+            "kind": "primary"
+          },
+          {
+            "label": "아사나의 캐시 실험 방법과 한계",
+            "url": "https://asana.com/inside-asana/cut-browsers-agent-cost",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "76배는 기존 Model B 구성과 최적화한 GPT-6.1 Sol의 추정 모델 비용 비교다.",
+      "Sol 내부의 구성 개선은 약 4배로, 모델 교체 효과와 캐시 설계 효과를 분리해야 한다.",
+      "동일 도서 수집 과제, 조건별 세 번 반복, 일부 기준 실행의 한도 초과가 결과 해석의 조건이다."
+    ],
+    "tags": [
+      "아사나",
+      "OpenAI",
+      "브라우저에이전트",
+      "캐시",
+      "비용측정"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "OpenAI의 아사나 브라우저 에이전트 사례",
+        "url": "https://openai.com/index/asana-browser-agent"
+      },
+      {
+        "label": "아사나의 캐시 실험 방법과 한계",
+        "url": "https://asana.com/inside-asana/cut-browsers-agent-cost"
+      },
+      {
+        "label": "StackAI의 공식 실험 보고",
+        "url": "https://www.stackai.com/blog/how-stackai-by-asana-used-astra-codex-and-command-to-reduce-browser-agent-costs"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://openai.com/index/asana-browser-agent",
+      "https://asana.com/inside-asana/cut-browsers-agent-cost",
+      "https://www.stackai.com/blog/how-stackai-by-asana-used-astra-codex-and-command-to-reduce-browser-agent-costs"
+    ],
+    "notes": "원문·Asana·StackAI 공식 보고를 직접 브라우징했다. 144회=2 예산×6 정책×4 모델×3 반복이며 추가 followup12회는 본문 비교 수에 섞지 않았다. 76배는 Model B 기존과 Sol 최적화 비교, Sol 동일 모델 개선4배, Model B29배, 평균 추정0.47달러/약4분 확인. 32권×6필드 단일 데모 과제, 원기준 중 capped 실행으로 평균 하한, 조건3반복 한계를 명시했다. 토큰 추정 모델 비용을 전체 운영원가나 정가 인하로 쓰지 않았다. 후보9건과 snapshot.pending 전체 제목·원제·URL 및 Asana 관련 내용을 비교해 동일 사건 없음. 타사 Model A/B/C 실제 이름은 비공개이므로 추정하지 않았다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2142abfa-1989-4097-b707-0373bbfa5385",
+    "359f8d3f-6531-4c22-8656-0398180f9250",
+    "3d4c214d-6e7b-4d16-9699-89052de96b77",
+    "42859509-04cf-4701-a4d0-38da66580b37",
+    "586ea001-9896-4223-ab06-06b8c3fc2941",
+    "66810653-081c-450b-b88b-962f93246dc6",
+    "7c9afd54-b7cf-4d95-a41f-67c2b4ba8d0f",
+    "b944ff1a-3e60-4ec5-a522-1ae00690be40",
+    "e2c21871-59fd-4490-b612-afa83b96d0ef"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:11:20.878Z",
+    "checks": [
+      "원출처와 Asana·StackAI 1차 문서 확인",
+      "76배 교차구성 비교와 Sol4배 동일모델 비교 분리",
+      "144회·3반복·단일과제·capped 기준 한계 확인",
+      "후보9건 및 전체 pending에 동일 아사나 실험 사건 없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

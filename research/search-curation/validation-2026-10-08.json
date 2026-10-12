@@ -1,0 +1,132 @@
+{
+  "date": "2026-10-08",
+  "project": "overgjynkrnwayfammid",
+  "methodology": "Separate Next production builds on the same checkout and host; one warmup and median of five HTTP reads. Byte sizes are uncompressed unless labeled gzip. Script counts are unique initial HTML script references, not complete browser network request counts. Local cached timings do not represent deployed traffic.",
+  "before": [
+    {
+      "route": "/",
+      "status": 200,
+      "medianMs": 41,
+      "bytes": 144697,
+      "gzipBytes": 31268,
+      "scripts": 15,
+      "jsBytes": 1004323,
+      "jsGzipBytes": 296445
+    },
+    {
+      "route": "/news/stories",
+      "status": 200,
+      "medianMs": 36,
+      "bytes": 149209,
+      "gzipBytes": 30101,
+      "scripts": 15,
+      "jsBytes": 1004323,
+      "jsGzipBytes": 296445
+    },
+    {
+      "route": "/api/news?view=list",
+      "status": 200,
+      "medianMs": 13,
+      "bytes": 34922,
+      "gzipBytes": 11334,
+      "scripts": 0,
+      "jsBytes": 0,
+      "jsGzipBytes": 0
+    },
+    {
+      "route": "/search?q=%EB%AA%A8%EB%84%A4&type=artwork",
+      "status": 404,
+      "medianMs": 5,
+      "bytes": 38485,
+      "gzipBytes": 7225,
+      "scripts": 14,
+      "jsBytes": 1000115,
+      "jsGzipBytes": 294280
+    }
+  ],
+  "after": [
+    {
+      "route": "/",
+      "status": 200,
+      "medianMs": 33,
+      "bytes": 145275,
+      "gzipBytes": 31302,
+      "scripts": 15,
+      "jsBytes": 1009317,
+      "jsGzipBytes": 298399
+    },
+    {
+      "route": "/news/stories",
+      "status": 200,
+      "medianMs": 33,
+      "bytes": 149781,
+      "gzipBytes": 30139,
+      "scripts": 15,
+      "jsBytes": 1009317,
+      "jsGzipBytes": 298399
+    },
+    {
+      "route": "/api/news?view=list",
+      "status": 200,
+      "medianMs": 7,
+      "bytes": 34922,
+      "gzipBytes": 11334,
+      "scripts": 0,
+      "jsBytes": 0,
+      "jsGzipBytes": 0
+    },
+    {
+      "route": "/search?q=%EB%AA%A8%EB%84%A4&type=artwork",
+      "status": 200,
+      "medianMs": 21,
+      "bytes": 47177,
+      "gzipBytes": 8772,
+      "scripts": 14,
+      "jsBytes": 1005109,
+      "jsGzipBytes": 296234
+    }
+  ],
+  "database": {
+    "publishedRows": 190,
+    "fullProjectionJsonBytes": 4556013,
+    "summaryViewJsonBytes": 223641,
+    "reductionPercent": 95.09
+  },
+  "api": {
+    "fullNewsBytes": 1582956,
+    "page24SummaryBytes": 34922,
+    "gzipSummaryBytes": 11334,
+    "note": "Summary API was already paginated before this task; the new gain is avoiding full content and research in the database query."
+  },
+  "validation": [
+    "TypeScript passed",
+    "Changed-area ESLint: 0 errors; 13 existing warnings",
+    "Production build passed",
+    "Monet: two Monet artworks and one Manet artwork with Monet in its title",
+    "Korean/English multi-term search, ranking, repeated query parameters and pagination",
+    "All five save types, repeated PUT, 85 saved posts, server pages of 24",
+    "Own-user RLS; anonymous and other-user saved-row reads blocked",
+    "Publish/edit/unpublish refresh home curation, search and sitemap",
+    "Queue tests: duplicate requests, separate news/curation, browser abort, leases, failures/retry and preservation of edited drafts",
+    "Two real Gemini curation drafts created, reviewed by AI, kept unpublished and assigned to the existing author",
+    "Desktop/tablet/mobile, light/dark, keyboard save and native dialog Escape",
+    "Temporary test users/posts/jobs cleaned up"
+  ],
+  "drafts": [
+    {
+      "id": "06b8a453-fd42-421e-b69b-38e03d6b5076",
+      "topic": "빛과 공간",
+      "published": false
+    },
+    {
+      "id": "28a7e9ed-2589-4dd4-a4e8-292e841e5d1a",
+      "topic": "만드는 사람의 AI 도구",
+      "published": false
+    }
+  ],
+  "limitations": [
+    "Full Google OAuth sign-in was not repeated; return URL and pending intent validation were checked",
+    "No deployed production load measurement or complete browser network request capture",
+    "AI-generated editorial drafts require human review before publication"
+  ]
+}

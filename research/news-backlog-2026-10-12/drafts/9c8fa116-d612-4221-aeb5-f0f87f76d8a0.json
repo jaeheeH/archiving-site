@@ -1,0 +1,149 @@
+{
+  "id": "9c8fa116-d612-4221-aeb5-f0f87f76d8a0",
+  "article": {
+    "url": "https://blog.cloudflare.com/network-performance-birthday-week-2026/",
+    "title": "클라우드플레어, 측정 네트워크 74%서 연결 시간 1위…표본 수집 확대",
+    "summary": "클라우드플레어가 자체 측정한 상위 1,000개 네트워크의 74%에서 TCP 연결 시간이 가장 짧았다고 발표했다. 4월 60%에서 14%포인트 늘었으며 Challenge Pages로 수집 표본도 확대했다. 순위 지표의 의미와 측정 방법 변화가 결과 해석에 주는 조건을 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "74%는 네트워크별 순위의 비율이다",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어는 10월 2일 네트워크 성능 업데이트에서 8월 기준 상위 1,000개 네트워크의 74%에서 자사가 가장 빠른 제공자였다고 발표했다. 4월의 60%보다 14%포인트 높은 수치다. 측정은 APNIC의 추정 사용자 수 자료로 고른 큰 네트워크를 대상으로 수행했다고 회사는 설명한다. 전 세계 모든 연결이나 사용자 74%의 체감을 직접 측정한 수치는 아니다.",
+          "순위를 비교하는 지표는 사용자 기기가 TCP 핸드셰이크를 완료하는 데 걸리는 연결 시간이다. 회사는 25·50·75백분위 값을 가중 평균한 trimean으로 제공자별 순위를 계산한다. 페이지 전체 로드 시간이나 앱의 응답 처리 시간을 재는 지표와는 범위가 다르다. 따라서 74%를 전반적인 페이지 속도 개선율로 읽으면 발표의 의미를 벗어난다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/network-performance-birthday-week-2026/"
+          }
+        ]
+      },
+      {
+        "heading": "에러 페이지에 더해 Challenge Pages에서 측정한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "기존에는 클라우드플레어 표시가 있는 에러 페이지에 도달한 브라우저가 여러 제공자의 작은 파일을 요청하는 방식으로 실제 연결 시간을 수집했다. 대상에는 클라우드플레어, Amazon CloudFront, 구글, Fastly, Akamai가 포함된다. 이번 업데이트는 여기에 Challenge Pages에서 수행하는 비대화형 배경 측정을 추가해 네트워크와 지역 표본을 넓힌다고 설명한다.",
+          "공식 문서에서 Challenge Page는 방문자가 목적지에 도달하기 전 브라우저 신호를 확인하는 전체 페이지로 정의된다. WAF, Bot Management, 속도 제한 규칙 등에서 발생할 수 있고 검증을 통과해야 원래 요청이 이어진다. 성능 측정은 이미 제공되는 이 화면에서 추가 행동을 요구하지 않고 가벼운 파일 요청의 완료 여부와 소요 시간을 기록하는 방식이다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/network-performance-birthday-week-2026/"
+          },
+          {
+            "label": "클라우드플레어 Challenge Pages 동작 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/cloudflare-challenges/challenge-types/challenge-pages/"
+          }
+        ]
+      },
+      {
+        "heading": "무료 페이지의 일부 표본부터 범위를 늘린다",
+        "kind": "reporting",
+        "paragraphs": [
+          "회사는 현재 적격한 무료 Challenge Pages 중 작은 일부에서만 측정하고 기존 에러 페이지 수집도 계속한다고 밝혔다. 측정은 무료 Challenge Pages로 제한하며 데이터 품질이 개선되고 이용자의 성능에 영향을 주지 않을 때만 표본 비율을 높이겠다고 설명했다. 모든 사이트나 모든 검증 페이지의 방문자를 일괄 측정한다고 발표한 것은 아니다.",
+          "클라우드플레어는 가까운 순위의 제공자 사이에 연결 시간 차이가 1~2밀리초인 네트워크도 있다고 설명한다. 표본이 늘면 이런 차이를 일상 변동과 구분하기 쉬워질 것으로 기대한다. 사용자 수로 가중한 비교나 국가·세계 단위 분석도 향후 가능성으로 제시했다. 현재의 네트워크 개수 기반 순위와 앞으로 탐색할 분석 방식은 구분된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/network-performance-birthday-week-2026/"
+          }
+        ]
+      },
+      {
+        "heading": "순위 변화에 측정의 변화가 함께 들어 있다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 이번 수치에는 성능 결과와 관측 범위 확대라는 두 가지 소식이 있다. 회사도 새로운 측정 방법의 도입과 순위 개선이 같은 시점에 일어났다고 설명한다. 공개된 내용만으로 14%포인트 상승 전체를 네트워크 최적화의 효과로 분리해 계산하기는 어렵다. 표본의 구성과 양이 바뀌면 가까운 제공자들의 순위 판단도 달라질 수 있다.",
+          "이 때문에 과거와 현재의 수치를 비교할 때 같은 조건에서 얼마나 차이가 났는지와 측정이 얼마나 안정적인지를 함께 보는 것이 유용하다. 더 많은 표본은 평가의 근거를 강화할 수 있지만 표본이 어느 화면에서 생겼는지도 중요하다. 에러와 검증 페이지에 도달한 이용자는 일반 방문 전체와 같은 분포라고 자동으로 가정할 수 없다. 자체 측정 결과라는 출처를 유지해야 하는 이유다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/network-performance-birthday-week-2026/"
+          }
+        ]
+      },
+      {
+        "heading": "서비스 선택에는 실제 이용자의 경로를 더한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "연결 시간은 거리와 라우팅, 혼잡의 영향을 볼 수 있는 유용한 지표다. 다만 서비스를 고르는 개발팀은 자기 이용자가 있는 지역에서 앱의 데이터 처리와 캐시, 요청 크기가 만드는 결과까지 확인해야 한다. 연결이 빠르더라도 서버 처리나 프런트엔드 작업이 지연되면 체감은 달라질 수 있다. 공개 순위는 시험할 대상을 정하는 자료로 활용할 수 있다.",
+          "또한 보안 검증 화면을 성능 표본 수집에 이용한다는 발표는 새로 검증을 늘리라는 지시가 아니다. Challenge Pages는 API나 비HTML 요청의 흐름과 호환 조건이 다르다는 공식 안내도 있다. 팀은 보안 규칙을 서비스 요구에 맞게 구성하고, 자체 관측에서 연결 시간과 전체 응답 시간을 나누어 살펴야 한다. 한 가지 순위가 제품 경험 전체의 성과를 대신하지는 않는다."
+        ],
+        "references": [
+          {
+            "label": "클라우드플레어 Challenge Pages 동작 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/cloudflare-challenges/challenge-types/challenge-pages/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/network-performance-birthday-week-2026/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "회사 측정에서 상위 1,000개 네트워크 중 연결 시간 1위 비율이 60%에서 74%로 늘었다.",
+      "지표는 TCP 핸드셰이크 연결 시간의 trimean이며 전체 페이지 로드 개선율과 다르다.",
+      "무료 Challenge Pages 일부에서 표본을 추가했으며 측정 변화와 순위 변화를 함께 해석해야 한다."
+    ],
+    "tags": [
+      "Cloudflare",
+      "네트워크",
+      "성능측정",
+      "관측성"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.cloudflare.com/network-performance-birthday-week-2026/"
+      },
+      {
+        "label": "클라우드플레어 Challenge Pages 동작 문서",
+        "url": "https://developers.cloudflare.com/cloudflare-challenges/challenge-types/challenge-pages/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.cloudflare.com/network-performance-birthday-week-2026/",
+      "https://developers.cloudflare.com/cloudflare-challenges/challenge-types/challenge-pages/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 WEB·보존 RSS 전문을 읽고 Challenge Pages 공식 문서로 기술 동작을 대조했다. APNIC 원문 JSON 및 aspop 페이지는 WEB timeout/internal error로 직접 확인하지 못했으므로 APNIC 사용자 수 활용은 Cloudflare 설명으로 귀속하고 미검증 URL은 참고자료에 넣지 않았다. 74%는 네트워크별 순위 비율·14%포인트 상승이며 속도 개선율로 쓰지 않았다. 원문의 추가 150개와 14%포인트 수치 간 차이는 계산으로 보정하지 않고 추가150을 생략했다. 후보 9건 및 snapshot.pending에 같은 성능 업데이트는 없다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "4027d7c6-9b75-45ae-8b7f-1b6777e3bbbc",
+    "2019054a-a457-4356-9bc9-47b85aca06b5",
+    "2c1a4101-aae8-4295-b207-5ae567b4b4b6",
+    "44c476d2-b8f8-4341-9694-f4e9b6e32222",
+    "64da50f0-d536-47bb-bd3e-dcc375b183f3",
+    "6fa4c931-8672-4bfd-8bf3-1af3e90b9b44",
+    "e1462898-b538-4aeb-96dc-f22e5eed6df0",
+    "ea15db4a-052c-4c9f-bca3-ed226cda42b8",
+    "faecfaa5-a532-492f-8d3a-bda52f50d1f7"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:42:42.012Z",
+    "checks": [
+      "8월 74%·4월 60%와 TCP 연결 시간·trimean 정의를 원문에서 확인했다.",
+      "무료 적격 Challenge Pages 일부 표본 수집과 확대 조건을 확인했다.",
+      "측정 방법 추가 시점과 순위 상승을 구분하고 독립 벤치마크로 표현하지 않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

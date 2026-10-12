@@ -1,0 +1,145 @@
+{
+  "id": "c663d588-1e79-4f4e-b42c-c1823a95807a",
+  "article": {
+    "url": "https://openai.com/index/legalon-halves-codex-costs",
+    "title": "리걸온, Codex 하루 비용 추정치 65% 절감… 모델 선택과 예산의 조합",
+    "summary": "OpenAI가 리걸온의 Codex 비용 관리 사례를 공개했다. 회사는 작업별 모델 선택과 Fast 모드 제한, 사업 단계에 따른 예산 배분으로 하루 비용 추정치를 약 65% 줄였다고 밝혔다. 동일 작업의 독립 벤치마크는 아니며 고객 가치와 기능별 비용을 연결하는 측정 체계는 아직 구축 중이다.",
+    "paragraphs": [
+      {
+        "heading": "처음에는 한 모델을 제한 없이 사용",
+        "kind": "reporting",
+        "paragraphs": [
+          "OpenAI는 2026년 10월 8일 LegalOn Technologies가 Codex의 모델과 예산을 조정한 사례를 공개했다. 회사는 처음에 GPT-5.5의 Fast 모드를 개발자에게 제한 없이 제공하며 설계와 구현, 일상 업무로 사용 범위를 넓혔다고 설명한다. 이후 연간 예산을 관리할 필요가 생겨 AI 개발 지원 조직인 AID CoE가 모델 선택 지침을 만들고 시험 결과를 팀에 공유했다. 새 지침에서는 작업의 복잡성과 개발 단계에 따라 GPT-6 Luna, GPT-6.1 Sol, GPT-6 Astra를 선택한다. 원문 제목은 비용을 절반으로 줄였다고 표현하지만 본문과 결과 항목의 구체적 수치는 하루 비용 추정치 약 65% 감소다. 이는 회사가 보고한 운영 변화이며 모든 조직에 적용되는 가격 인하로 읽을 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 리걸온 비용 관리 사례 원문",
+            "url": "https://openai.com/index/legalon-halves-codex-costs",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "작업에 따라 개발자가 모델을 선택",
+        "kind": "reporting",
+        "paragraphs": [
+          "회사 사례에서 Luna는 요구 사항이 분명한 코드 구현과 일상적인 작업, Sol은 일반적인 설계와 분석·문서 작성, Astra는 복잡한 분석과 구조 설계·에이전트 조율에 사용된다. AID CoE의 시험과 지침을 바탕으로 엔지니어가 상황에 맞는 모델을 선택하는 방식으로 설명됐으며 모든 요청을 자동 분류하는 별도 라우팅 시스템의 구현이 공개된 것은 아니다. 기본 Fast 모드 사용을 제한하고 필요한 경우 개별 요청을 허용하는 운영 변경도 함께 이뤄졌다. OpenAI의 공식 모델 선택 문서는 같은 입력으로 모델과 추론 설정을 비교하고 요구 품질을 충족하는 가벼운 설정을 찾도록 안내한다. 이런 일반 지침이 리걸온의 65% 수치를 독립적으로 재현했다는 근거는 아니며 회사의 작업별 선택을 이해할 별도 참고 자료다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 리걸온 비용 관리 사례 원문",
+            "url": "https://openai.com/index/legalon-halves-codex-costs",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI 공식 업무별 모델 선택·평가 안내",
+            "url": "https://developers.openai.com/api/docs/guides/model-selection",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "절감 수치와 다음 측정 단계",
+        "kind": "reporting",
+        "paragraphs": [
+          "리걸온은 부서와 그룹, 개인에게 비용 상한을 두고 사업 단계별로 자원을 다르게 배분했다. 기존 사업에는 약 20% 수준까지 비용 효율 개선을 요구하는 반면 시작 단계의 새 사업에는 사용을 장려하는 예산을 줬다는 설명이다. 모델 선택, 기능 제한, 예산 조정을 합쳐 GPT-5.5를 쓰던 때보다 하루 비용 추정치를 약 65% 줄였고 개발 속도와 품질을 유지했다고 회사는 밝혔다. 공개 사례에는 같은 과제의 반복 실험 수나 품질 점수, 비용 산정 기간이 구체적으로 제시되지 않는다. 개별 작업 비용을 넘어 기능 하나의 출시와 고객 가치를 연결하는 측정 파이프라인도 아직 구축 중이다. 따라서 이미 고객 가치에 대한 투자 효과가 수치로 검증됐다는 결과로 바꾸어 쓰기 어렵다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 리걸온 비용 관리 사례 원문",
+            "url": "https://openai.com/index/legalon-halves-codex-costs",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "모델 이름보다 전환 이유를 남기기",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 작업별 선택 지침이 팀 안에서 이유를 공유할 수 있을 때 유용하다고 본다. 복잡한 작업이라는 말만으로는 같은 코드 수정에도 사람이 서로 다른 모델을 고를 수 있다. 요구가 확정돼 있는지, 여러 파일의 관계를 판단해야 하는지, 결과를 누가 검토할지처럼 실제 판단에 쓰인 조건을 남기면 선택을 다시 평가하기 쉽다. 빠른 응답이 꼭 필요한 작업과 기다려도 되는 작업도 구분할 수 있다. 이는 리걸온의 내부 지침을 더 상세히 확인했다는 주장이 아니라 발표와 공식 평가 안내에서 도출한 설계 해석이다. 가벼운 모델로 시작한 뒤 재시도나 수정이 크게 늘었다면 실행 한 번의 가격만으로 효율을 판단할 수 없다. 모델별 사용량과 함께 성공한 결과를 얻기까지의 전체 과정을 비교해야 한다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI 공식 업무별 모델 선택·평가 안내",
+            "url": "https://developers.openai.com/api/docs/guides/model-selection",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "기능 출시 단위의 비용이 묻는 것",
+        "kind": "analysis",
+        "paragraphs": [
+          "하루 지출은 예산 상태를 빠르게 알리지만 팀이 무엇을 만들었는지까지 설명하지는 않는다. 사용량이 줄어서 비용이 줄었는지, 같은 결과를 더 적은 자원으로 만들었는지 분리해서 살필 필요가 있다. 회사가 준비하는 기능 출시 단위의 측정은 이 차이에 접근하려는 시도로 읽을 수 있다. 다만 한 기능의 결과에는 개발자의 검토와 테스트, 이후 수정도 연결되므로 AI 사용 비용만 고객 가치와 일대일로 대응한다고 가정하기 어렵다. 운영 화면에는 상한에 도달한 상태와 작업 완료 상태를 구분하고, 제한 조정의 근거를 남기는 방식이 유용하다. 사업에 따라 예산을 다르게 주는 결정도 기술 성능만으로 정해지는 규칙은 아니다. 이번 사례는 비용 절감률 하나보다 모델 선택과 조직의 자원 배분을 어떻게 함께 관리했는지 살펴볼 구체적인 자료다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 리걸온 비용 관리 사례 원문",
+            "url": "https://openai.com/index/legalon-halves-codex-costs",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI 공식 업무별 모델 선택·평가 안내",
+            "url": "https://developers.openai.com/api/docs/guides/model-selection",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "65%는 GPT-5.5 사용 시기와 비교한 하루 비용 추정치 감소라는 회사 보고다.",
+      "작업별 모델 선택, 기본 Fast 모드 제한, 사업 단계별 예산 배분이 함께 적용됐다.",
+      "개발 속도·품질 유지의 독립 벤치마크는 없고 기능 출시별 고객 가치 측정은 구축 중이다."
+    ],
+    "tags": [
+      "리걸온",
+      "Codex",
+      "모델선택",
+      "비용관리",
+      "개발운영"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "OpenAI의 리걸온 비용 관리 사례 원문",
+        "url": "https://openai.com/index/legalon-halves-codex-costs"
+      },
+      {
+        "label": "OpenAI 공식 업무별 모델 선택·평가 안내",
+        "url": "https://developers.openai.com/api/docs/guides/model-selection"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://openai.com/index/legalon-halves-codex-costs",
+      "https://developers.openai.com/api/docs/guides/model-selection"
+    ],
+    "notes": "원문·공식model-selection을웹확인. titlehalves와본문estimateddaily65를구분; baselineGPT5.5Fast, Luna/Sol/Astra역할·엔지니어자율선택·CoE테스트·부서/개인상한·Fast개별요청·기존사업20효율요구·신사업예산명시. 자동라우터발명없음. 비용기간/품질벤치마크미공개 및feature-releaseROI파이프라인현재building확인. 후보9건·snapshot.pending전체제목·원제·URL/LegalOn관련본문대조동일사례없음. Asana캐시실험은다른기업/실험이므로중복아님. 공식일반평가안내를65%외부검증으로쓰지않음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2142abfa-1989-4097-b707-0373bbfa5385",
+    "359f8d3f-6531-4c22-8656-0398180f9250",
+    "3d4c214d-6e7b-4d16-9699-89052de96b77",
+    "42859509-04cf-4701-a4d0-38da66580b37",
+    "586ea001-9896-4223-ab06-06b8c3fc2941",
+    "66810653-081c-450b-b88b-962f93246dc6",
+    "7c9afd54-b7cf-4d95-a41f-67c2b4ba8d0f",
+    "b944ff1a-3e60-4ec5-a522-1ae00690be40",
+    "e2c21871-59fd-4490-b612-afa83b96d0ef"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:28:26.375Z",
+    "checks": [
+      "원출처와공식모델평가문서확인",
+      "65%추정일비용·baseline·복합정책구분",
+      "자동라우팅발명없이개발자선택귀속",
+      "20%효율요구와ROI구축계획구분",
+      "후보9건·전체pending 동일사례없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

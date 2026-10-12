@@ -1,3 +1,5 @@
+import { matchesSearch, queryText } from '@/lib/search-text';
+import { SaveButton } from '@/app/components/SavedProvider';
 import Link from "next/link";
 import Image from "@/app/components/ArchiveImage";
 import type { CSSProperties } from "react";
@@ -5,17 +7,17 @@ import { getArtCatalog } from "@/lib/art-catalog";
 import { getPageMetadata } from '@/lib/site-settings';
 
 export async function generateMetadata({ searchParams }: ArtistsPageProps) {
-  return getPageMetadata({ path: '/artists', title: '작가 아카이브', description: '여러 기관의 작품을 같은 작가별로 연결해 탐색합니다.', noindex: !!(await searchParams).q?.trim() });
+  return getPageMetadata({ path: '/artists', title: '작가 아카이브', description: '여러 기관의 작품을 같은 작가별로 연결해 탐색합니다.', noindex: !!queryText((await searchParams).q).trim() });
 }
 
-type ArtistsPageProps = { searchParams: Promise<{ q?: string }> };
+type ArtistsPageProps = { searchParams: Promise<{ q?: string | string[] }> };
 
 export default async function ArtistsPage({ searchParams }: ArtistsPageProps) {
   const { artists, artworks } = await getArtCatalog();
-  const { q = "" } = await searchParams;
-  const query = q.trim().toLocaleLowerCase("ko");
+  const q = queryText((await searchParams).q).slice(0,100).trim();
+  const query = q;
   const filteredArtists = artists
-    .filter((artist) => !query || `${artist.name_ko || ""} ${artist.name}`.toLocaleLowerCase("ko").includes(query))
+    .filter((artist) => matchesSearch(query, [artist.name_ko, artist.name, artist.profile?.description, artist.profile?.context]))
     .sort((a, b) => (a.name_ko || a.name).localeCompare(b.name_ko || b.name, "ko"));
 
   return (
@@ -26,6 +28,7 @@ export default async function ArtistsPage({ searchParams }: ArtistsPageProps) {
         <p>작가의 이름에서 출발해 서로 다른 기관에 소장된 작품을 이어 봅니다.</p>
       </header>
 
+      <form action="/artists" className="resource-search-form"><label className="sr-only" htmlFor="artist-query">작가 검색</label><input id="artist-query" type="search" name="q" defaultValue={q} maxLength={100} placeholder="작가 이름·소개 검색" /><button className="archive-button">검색</button></form>
       <div className="archive-caption border-t border-border"><p>{q ? `“${q}” 검색 결과 · ` : '함께 보는 작가 · '}<strong>{filteredArtists.length}</strong>명</p>{q ? <Link href="/artists">검색 초기화</Link> : <Link href="/art">전체 작품 보기 →</Link>}</div>
       {!filteredArtists.length && <div className="archive-empty">검색 결과가 없습니다. 한글 또는 원문 이름으로 찾아보세요.</div>}
       <section aria-label="작가 목록" className="archive-masonry">
@@ -43,7 +46,7 @@ export default async function ArtistsPage({ searchParams }: ArtistsPageProps) {
                 <h2>{artist.name_ko || artist.name}</h2>
                 {artist.name_ko && <p className="archive-card-description">{artist.name}</p>}
               </div>
-            </Link></article>
+            </Link><div className="mt-3 flex justify-end"><SaveButton type="artist" id={artist.id} title={artist.name_ko || artist.name} /></div></article>
           );
         })}
       </section>

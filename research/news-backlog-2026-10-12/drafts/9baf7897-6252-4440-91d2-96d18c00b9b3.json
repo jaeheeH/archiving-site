@@ -1,0 +1,162 @@
+{
+  "id": "9baf7897-6252-4440-91d2-96d18c00b9b3",
+  "article": {
+    "url": "https://huggingface.co/blog/grpo-with-trl-ifstruct",
+    "title": "350M 모델의 구조화 출력 학습, IFStruct 통과율 22.6%→29.7%",
+    "summary": "허깅페이스가 LFM2.5-350M에 100단계 GRPO 학습을 적용한 공개 실험을 소개했다. 동일한 서빙 환경의 2천 개 시험에서 통과율이 7.1%포인트 늘었다. JSON과 YAML의 차이, 형식 검증과 내용의 정확성을 구분해 결과를 읽는다.",
+    "paragraphs": [
+      {
+        "heading": "작은 모델의 형식 준수를 학습한 실험",
+        "kind": "reporting",
+        "paragraphs": [
+          "허깅페이스는 2026년 9월 3일 LFM2.5-350M 모델의 구조화 출력 능력을 GRPO로 개선하는 실험을 공개했다. 약 500개 학습 자료와 100단계 학습, LoRA를 이용한 구성이다. JSON이나 YAML이 요구한 구조와 조건을 따르는지 IFStruct로 평가했다. 일반적인 지식의 정확도와 모든 추론 능력을 측정한 시험은 아니다.",
+          "원문은 무료 등급 Colab 또는 Kaggle의 GPU에 맞춘 학습 구성을 제공하고 평가에는 별도의 로컬 서빙 환경을 사용했다고 설명한다. 학습이 짧다는 소개가 어떤 기기에서도 같은 시간과 비용으로 완료된다는 뜻은 아니다. 공개 노트북의 실행 조건과 평가 환경을 함께 읽어야 결과를 비교할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "허깅페이스의 350M 구조화 출력 GRPO 실험",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/grpo-with-trl-ifstruct"
+          }
+        ]
+      },
+      {
+        "heading": "2천 개 시험에서 무엇을 통과로 보는가",
+        "kind": "reporting",
+        "paragraphs": [
+          "IFStruct의 공식 저장소는 응답의 파싱 여부와 코드 블록 요구, 여분 설명, 최상위 구조와 항목 수를 차례로 확인한다고 설명한다. 마지막에는 필수 필드와 자료형, 값 범위 및 열거형 등 JSON 스키마 조건을 검사한다. 모든 검사에서 오류가 없어야 해당 사례를 통과로 세는 방식이다.",
+          "공개 시험 데이터셋은 2천 개 예제와 프롬프트, 출력 형식 및 대상 스키마를 제공한다. 계층 구조와 문자열 이스케이프, 항목 수 등 여러 조건을 다룬다. 시험을 통과했다는 결과는 요청한 형식과 구조를 만족했다는 뜻이다. 실제 고객의 금액이나 의료 기록 같은 생성된 내용이 현실의 사실과 맞는지는 별도의 검증 문제다."
+        ],
+        "references": [
+          {
+            "label": "IFStruct 공식 평가 절차·통과 기준",
+            "kind": "primary",
+            "url": "https://github.com/Liquid4All/ifstruct"
+          },
+          {
+            "label": "IFStruct 공개 시험 데이터셋",
+            "kind": "primary",
+            "url": "https://huggingface.co/datasets/LiquidAI/ifstruct-v1.0"
+          }
+        ]
+      },
+      {
+        "heading": "전체 개선과 형식별 차이를 함께 본다",
+        "kind": "reporting",
+        "paragraphs": [
+          "원문의 같은 llama.cpp·BF16 서빙 구성에서 기본 모델은 452개를 통과해 22.6%, 학습 후에는 594개를 통과해 29.7%를 기록했다. 차이는 7.1%포인트다. 29.7%를 모든 작업에서 성공하는 확률로 읽거나 7.1%의 상대 증가율이라고 표현해서는 안 된다.",
+          "형식별로 JSON은 18.0%에서 31.9%로, YAML은 27.2%에서 27.5%로 변했다. 같은 전체 평균 아래에서도 개선의 정도가 다르다. 작성자들은 자신들의 노트북이 기존 IFStruct 발표의 학습 파이프라인을 재현하는 목적은 아니라고 명시했다. 서로 다른 구현의 점수를 하나의 연속된 실험처럼 비교하지 않을 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "허깅페이스의 350M 구조화 출력 GRPO 실험",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/grpo-with-trl-ifstruct"
+          },
+          {
+            "label": "IFStruct 공식 평가 절차·통과 기준",
+            "kind": "primary",
+            "url": "https://github.com/Liquid4All/ifstruct"
+          }
+        ]
+      },
+      {
+        "heading": "형식이 맞아야 다음 시스템으로 이어진다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 구조화 출력의 검증을 문장이 그럴듯한지와 다른 질문으로 본다. 사람이 이해할 수 있는 설명이더라도 프로그램이 요구하는 필드와 자료형이 틀리면 다음 처리에 사용할 수 없다. 이 실험은 모델의 출력 습관을 요청의 형식에 맞추는 작업이 하나의 학습 대상으로 다뤄질 수 있음을 보여준다.",
+          "그러나 학습 후에도 전체 통과율은 29.7%다. 이 수치만으로 검증 없이 자동 연결해도 된다는 결론은 나오지 않는다. 필요한 항목을 검사하고 실패를 재시도하거나 사람에게 넘기는 경로가 남는다. 형식별 결과를 나누면 모델이 잘 대응하는 요청과 여전히 어려운 요청을 구분할 단서가 생기지만, 실제 업무의 자료를 별도로 시험하는 일을 대신하지는 않는다."
+        ],
+        "references": [
+          {
+            "label": "허깅페이스의 350M 구조화 출력 GRPO 실험",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/grpo-with-trl-ifstruct"
+          },
+          {
+            "label": "IFStruct 공식 평가 절차·통과 기준",
+            "kind": "primary",
+            "url": "https://github.com/Liquid4All/ifstruct"
+          }
+        ]
+      },
+      {
+        "heading": "검증할 수 있는 조건과 사실의 책임",
+        "kind": "analysis",
+        "paragraphs": [
+          "스키마로 필드와 값의 범위를 정의하면 기계적으로 확인할 수 있는 조건이 분명해진다. 그렇더라도 문서가 실제 사건을 정확히 표현했는지나 원래 자료를 누락했는지는 파싱 검사만으로 드러나지 않을 수 있다. 업무에 따라 형식 검사 뒤에 출처와 의미를 확인하는 단계를 따로 설계해야 한다.",
+          "모델 규모와 짧은 학습만 강조하면 어떤 시험에서 무엇이 좋아졌는지가 가려진다. 이번 기록의 유용한 부분은 데이터와 평가 절차를 공개하고 동일한 서빙 환경에서 비교했다는 점이다. 후속 결과를 볼 때도 모델 버전과 자료의 범위, 통과 기준을 함께 남겨야 변화의 이유를 살필 수 있다.",
+          "출력 형식의 개선과 업무 전체의 개선은 다른 측정이다. 실패를 처리하는 시간이나 사람이 수정하는 비용까지 보아야 도입의 역할을 판단할 수 있다. ARCH.B는 이번 학습을 직접 재실행하지 않았으며, 공개된 결과와 평가 절차를 바탕으로 읽었다. 특정 고객 작업에서 같은 통과율이나 비용을 얻는다는 주장은 하지 않는다."
+        ],
+        "references": [
+          {
+            "label": "허깅페이스의 350M 구조화 출력 GRPO 실험",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/grpo-with-trl-ifstruct"
+          },
+          {
+            "label": "IFStruct 공식 평가 절차·통과 기준",
+            "kind": "primary",
+            "url": "https://github.com/Liquid4All/ifstruct"
+          },
+          {
+            "label": "IFStruct 공개 시험 데이터셋",
+            "kind": "primary",
+            "url": "https://huggingface.co/datasets/LiquidAI/ifstruct-v1.0"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "약 500개 학습 자료와 100단계 GRPO를 적용한 공개 실험이다.",
+      "동일 서빙 환경의 2천 개 시험에서 452→594개 통과로 7.1%포인트 늘었다.",
+      "형식·스키마 통과와 실제 내용의 사실성은 별도로 검증해야 한다."
+    ],
+    "tags": [
+      "강화학습",
+      "구조화출력",
+      "IFStruct",
+      "HuggingFace"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "허깅페이스의 350M 구조화 출력 GRPO 실험",
+        "url": "https://huggingface.co/blog/grpo-with-trl-ifstruct"
+      },
+      {
+        "label": "IFStruct 공식 평가 절차·통과 기준",
+        "url": "https://github.com/Liquid4All/ifstruct"
+      },
+      {
+        "label": "IFStruct 공개 시험 데이터셋",
+        "url": "https://huggingface.co/datasets/LiquidAI/ifstruct-v1.0"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://huggingface.co/blog/grpo-with-trl-ifstruct",
+      "https://github.com/Liquid4All/ifstruct",
+      "https://huggingface.co/datasets/LiquidAI/ifstruct-v1.0"
+    ],
+    "notes": "허깅페이스원문앞/뒤와IFStruct공식README·dataset2000rows직접웹열람. training~500/100stepsLoRA, evalsame llama.cppBF16 452/2000→594/2000=22.6→29.7/7.1percentagepoints,JSON18→31.9/YAML27.2→27.5대조. 원문기존IFStructpublishedtrainingrecipe재현아님명시. 통과allzeroerrorsbinary와내용사실검증분리. 무료GPU조건을총비용/항상시간보장으로쓰지않음. 학습·평가실재실행없음. snapshot전체동일350M실험단일;후보NemotronIOIIMO별도연구.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "8d9df11a-5fe9-473f-b6f5-3dafc1d34bf8"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:08:07.672Z",
+    "checks": [
+      "학습자료와 시험자료의 분모·100단계 구분",
+      "2천개 동일서빙 결과·7.1%포인트 정확대조",
+      "JSON/YAML 개선 차이와 원래 학습 재현 목적 아님 표시",
+      "스키마와 사실성 검증·재실행 여부 구분",
+      "전체 pending와후보의 다른실험 구분"
+    ],
+    "relatedPendingIds": []
+  }
+}

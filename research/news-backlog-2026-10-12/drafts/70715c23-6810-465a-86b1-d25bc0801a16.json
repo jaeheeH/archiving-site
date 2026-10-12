@@ -1,0 +1,140 @@
+{
+  "id": "70715c23-6810-465a-86b1-d25bc0801a16",
+  "article": {
+    "url": "https://openai.com/index/oracle",
+    "title": "오라클의 ChatGPT·Codex 도입 사례, 빨라진 조사와 남는 설계 책임",
+    "summary": "OpenAI가 오라클의 채용 조사, 업무 분석, 운영 엔지니어링에 사용한 ChatGPT Work와 Codex 사례를 공개했다. 채용 조사 준비가 2~4일에서 15~20분으로 줄었다는 회사 설명 뒤에는 업무 개념의 구조화와 사람의 검토가 있다. 내부 도입 성과와 고객의 제품 조달 경로도 구분해 읽는다.",
+    "paragraphs": [
+      {
+        "heading": "채용 담당자의 조사 준비를 압축",
+        "kind": "reporting",
+        "paragraphs": [
+          "OpenAI는 2026년 10월 8일 오라클이 ChatGPT Work와 Codex를 채용, 업무 분석, 운영에 활용한 사례를 공개했다. 채용 부서는 직무 설명을 받아 유사 역할과 보수 수준, 지역별 인재 풀을 조사하는 도구를 만들었다고 설명한다. 회사 담당자는 채용 관리자와의 대화 준비에 필요한 자료를 모으는 시간이 종전 2~4일에서 약 15~20분으로 줄었다고 말했다. 원문의 98% 시간 감소는 이 채용 조사 사례에 제시된 성과이며 채용 절차 전체의 완료 시간이나 채용 성과 개선율로 확대할 수 없다. 소개 페이지는 ChatGPT 활성 사용자 13만 명, Codex 활성 사용자 9만5천 명 이상도 적고 있다. 수치는 회사 도입 사례의 보고이며 중복 여부나 활성 사용의 측정 기간은 원문에 구체적으로 설명되지 않았다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 오라클 내부 도입 사례",
+            "url": "https://openai.com/index/oracle",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "업무 개념을 정리한 뒤 질문을 연결",
+        "kind": "reporting",
+        "paragraphs": [
+          "Oracle Applications Lab은 회사의 객체와 관계, 규칙을 정리한 온톨로지를 구축해 자연어 업무 질문을 SQL 질의로 연결했다고 원문은 설명한다. 사용자가 원하는 결과를 말하면 Codex가 필요한 내부 시스템에서 정보를 모아 분석이나 보고서, 애플리케이션을 반환한다는 흐름이다. 운영 엔지니어링에서는 장애 관련 맥락과 대응 절차를 모으는 데 Codex를 사용한다고 밝혔다. 단순한 장애가 한 시간에서 몇 분으로 줄었다는 예시는 담당자의 설명이지 모든 장애 유형을 비교한 벤치마크가 아니다. 원문은 기초 시스템을 올바르게 설계할 사람이 필요하며 결과의 책임도 사람에게 남는다고 강조한다. 질문창 하나가 회사의 모든 데이터를 자동으로 정확하게 이해한다는 주장과는 다른 운영 조건이다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 오라클 내부 도입 사례",
+            "url": "https://openai.com/index/oracle",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "내부 활용과 고객 조달은 다른 발표",
+        "kind": "reporting",
+        "paragraphs": [
+          "관련 맥락으로 오라클의 공식 마켓플레이스 안내는 2026년 8월 7일 갱신 문구에서 고객이 OpenAI API와 Codex, ChatGPT Work 접근을 Oracle Marketplace를 통해 구매할 수 있다고 설명한다. 당시 안내의 제공 지역은 미국이며 추가 지역 지원은 향후 계획이다. 기존 클라우드의 구매와 거버넌스 절차를 활용해 제품을 조달할 수 있다는 설명이지만, 이는 이번 내부 채용 조사나 운영 성과를 고객에게 그대로 제공한다는 의미가 아니다. 해당 페이지에는 갱신 이전의 향후 제공 문구도 함께 남아 있어 실제 도입 시점과 조건은 최신 구매 안내를 대조해야 한다. OpenAI 사례는 오라클 직원이 도구를 어떻게 사용했는지를 다루고, 마켓플레이스 글은 고객이 도구 접근을 어떻게 조달하는지를 다룬다는 구분이 중요하다."
+        ],
+        "references": [
+          {
+            "label": "오라클의 OpenAI 제품 마켓플레이스 조달 안내",
+            "url": "https://blogs.oracle.com/oraclemarketplace/put-your-oracle-cloud-commitment-to-work-with-openai-models",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "원하는 결과를 말하려면 기준도 필요",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 이 사례의 핵심은 업무를 자연어로 요청할 수 있게 만드는 준비 과정이다. 같은 매출이나 인원이라는 단어도 회사의 부서와 시스템에 따라 집계 기준이 달라질 수 있다. 객체와 관계를 정리한 구조가 없다면 간결한 질문이 오히려 모호한 답을 만들 수 있다. 사용자가 원하는 결과를 설명하는 인터페이스에는 분석에 사용한 기간, 범위, 정의를 다시 확인할 정보가 필요하다. 채용 조사에서도 지역과 직무의 비교 기준, 자료의 날짜를 볼 수 있어야 담당자가 결과를 업무에 맞게 해석할 수 있다. 이는 이번 서비스에서 특정 화면이나 정확도 기능이 구현됐다고 주장하는 설명이 아니라 공개된 데이터 구조화 사례에서 도출한 설계 해석이다. 요청이 쉬워질수록 결과를 검토하는 기준도 일상 언어로 설명할 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 오라클 내부 도입 사례",
+            "url": "https://openai.com/index/oracle",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "유지보수는 생성 이후의 일",
+        "kind": "analysis",
+        "paragraphs": [
+          "개발 도구로 시제품을 빨리 만들 수 있어도 그 도구가 어떤 데이터에 접근하고 누가 변경할 수 있는지는 계속 관리해야 한다. 발표에서 사람이 코드를 이해하고 책임져야 한다고 한 대목은 이 유지 단계와 연결된다. 초기에 잘 작동한 업무 흐름도 직무 기준이나 데이터 항목, 내부 시스템이 바뀌면 결과가 달라질 수 있다. 도입 기록에는 절약한 시간과 함께 요청 유형, 승인한 결과, 후속 수정이 필요했던 사례를 남기는 편이 유용하다. 사용자 수는 확산의 규모를 보여주지만 한 사람이 얼마나 도움이 됐는지나 유지 비용이 얼마인지는 따로 측정해야 한다. 이번 사례를 보편적인 생산성 배수로 읽기보다 사람이 정의한 업무 구조와 검토 절차를 AI에 연결한 기업의 보고로 읽으면, 다른 조직이 비교할 변수를 더 구체적으로 찾을 수 있다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 오라클 내부 도입 사례",
+            "url": "https://openai.com/index/oracle",
+            "kind": "primary"
+          },
+          {
+            "label": "오라클의 OpenAI 제품 마켓플레이스 조달 안내",
+            "url": "https://blogs.oracle.com/oraclemarketplace/put-your-oracle-cloud-commitment-to-work-with-openai-models",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "98%는 채용 조사 준비 시간에 관한 회사 사례이며 채용 전체의 속도나 품질 개선율이 아니다.",
+      "자연어 분석은 회사 객체·관계·규칙을 구조화한 온톨로지와 사람의 시스템 설계를 전제로 소개됐다.",
+      "오라클 내부 사용 성과와 미국 고객 대상 Marketplace 조달 경로는 별도 범위다."
+    ],
+    "tags": [
+      "오라클",
+      "OpenAI",
+      "업무자동화",
+      "온톨로지",
+      "유지보수"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "OpenAI의 오라클 내부 도입 사례",
+        "url": "https://openai.com/index/oracle"
+      },
+      {
+        "label": "오라클의 OpenAI 제품 마켓플레이스 조달 안내",
+        "url": "https://blogs.oracle.com/oraclemarketplace/put-your-oracle-cloud-commitment-to-work-with-openai-models"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://openai.com/index/oracle",
+      "https://blogs.oracle.com/oraclemarketplace/put-your-oracle-cloud-commitment-to-work-with-openai-models"
+    ],
+    "notes": "OpenAI 원문과 Oracle Marketplace 공식 문서를 직접 웹 확인. 채용2~4일→15~20분/98%는 조사준비범위로 귀속; 사용자13만/9.5만이상은 측정기간·중복 정의 미공개. 온톨로지와SRE맥락수집, 사람설계/코드책임 확인. Marketplace8/7업데이트는 API/Codex/ChatGPTWork구매와 미국범위로 별도조달문맥이며 내부효과 증명으로 사용하지 않았다. 오래된 soon본문을 갱신문구와 구분. 후보9건·snapshot.pending전체 제목·원제·URL 및Oracle관련본문 대조, 동일사례없음. 독립벤치마크/전체채용품질/사용자수합산 없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2142abfa-1989-4097-b707-0373bbfa5385",
+    "359f8d3f-6531-4c22-8656-0398180f9250",
+    "3d4c214d-6e7b-4d16-9699-89052de96b77",
+    "42859509-04cf-4701-a4d0-38da66580b37",
+    "586ea001-9896-4223-ab06-06b8c3fc2941",
+    "66810653-081c-450b-b88b-962f93246dc6",
+    "7c9afd54-b7cf-4d95-a41f-67c2b4ba8d0f",
+    "b944ff1a-3e60-4ec5-a522-1ae00690be40",
+    "e2c21871-59fd-4490-b612-afa83b96d0ef"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:18:03.488Z",
+    "checks": [
+      "원출처·Oracle공식조달자료 확인",
+      "98% 채용조사준비만 제한",
+      "사용자수 합산과 일반성능확대 제외",
+      "내부이용과 고객조달범위 구분",
+      "후보9건·전체pending에 동일사례 없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

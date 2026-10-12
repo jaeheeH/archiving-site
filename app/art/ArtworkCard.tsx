@@ -1,3 +1,4 @@
+import { SaveButton } from '@/app/components/SavedProvider';
 import Link from "next/link";
 import Image from "@/app/components/ArchiveImage";
 import type { CSSProperties } from "react";
@@ -25,10 +26,10 @@ export default async function ArtworkCard({ artwork }: { artwork: Artwork }) {
             {artwork.title_ko}
           </h2>
           <p className="archive-card-description">
-            {artist?.name_ko || "작가 미상"} · {artwork.date}
+            {artist?.name_ko || artist?.name || "작가 미상"} · {artwork.date}
           </p>
         </div>
-      </Link>
+      </Link><div className="mt-3 flex justify-end"><SaveButton type="artwork" id={artwork.id} title={artwork.title_ko} /></div>
     </article>
   );
 }

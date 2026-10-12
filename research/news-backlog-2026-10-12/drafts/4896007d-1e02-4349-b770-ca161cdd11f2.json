@@ -1,0 +1,148 @@
+{
+  "id": "4896007d-1e02-4349-b770-ca161cdd11f2",
+  "article": {
+    "url": "https://www.figma.com/blog/workflow-lab-moving-between-design-and-code-with-agents/",
+    "title": "피그마가 제시한 디자인·코드 왕복 흐름…스크린샷에 없는 판단을 에이전트에 전달한다",
+    "summary": "피그마가 MCP와 Code Connect로 디자인과 코드를 연결하는 예시 워크플로우를 공개했다. 가상의 학습 앱에서 대량 메시지 작업을 구현하며 상태 흐름, 실제 컴포넌트와 변수 변경을 전달한다. 실증 사례와 구분해 문맥의 준비·갱신·검토 단계를 분석한다.",
+    "paragraphs": [
+      {
+        "heading": "가상의 학습 앱으로 문맥 전달을 설명한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "피그마의 Workflow Lab은 디자인 파일과 코드 사이를 오가며 에이전트에 필요한 맥락을 제공하는 예시를 소개했다. Radicle이라는 가상의 STEM 학습 앱을 대상으로 디자이너, 디자인 시스템 담당자와 엔지니어가 협업하는 시나리오다. 실제 회사가 시간이나 결함을 측정한 사례가 아니라 도구를 어떤 순서로 사용할 수 있는지 설명하는 구성이다.",
+          "과제는 메시지함의 대량 선택·삭제·읽지 않음 표시 흐름이다. 도구 모음, 확인 모달과 결과 알림을 만들고 취소나 실행 취소, 실패 상태도 다뤄야 한다. 예시의 첫 생성 결과에서는 아이콘과 간격이 다르고 알림의 실패 상태가 빠졌다. 화면 이미지와 개발 티켓만 전달하는 대신 행동과 재사용 자산을 구조화해 알려 주는 접근으로 문제를 다시 풀었다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/workflow-lab-moving-between-design-and-code-with-agents/"
+          }
+        ]
+      },
+      {
+        "heading": "행동 흐름을 검토하고 실제 컴포넌트를 연결한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "시나리오에서 개발자는 PRD와 기존 메시지함 코드를 바탕으로 화면·상태·전이를 먼저 정리하고 FigJam에 편집 가능한 다이어그램을 만든다. 디자이너와 시스템 담당자는 구현 전에 같은 흐름에 피드백을 남긴다. 어떤 동작이 모달을 열고 결과 알림의 실행 취소가 무엇을 되돌리는지처럼 스크린샷만으로 알기 어려운 조건을 공유하는 단계다.",
+          "이후 Code Connect로 Figma 컴포넌트를 실제 코드 파일과 연결하고 속성을 대응시킨다. 공식 도움말은 UI의 코드 경로 연결과 CLI의 템플릿·속성 대응이 MCP에 정보를 제공한다고 설명한다. 기능은 Organization·Enterprise 플랜의 Full·Dev좌석용이다. 디자인에서 어떤 컴포넌트를 쓰는지 아는 것과 그 컴포넌트의 실제 구현·사용법을 아는 것을 구분하는 구조다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/workflow-lab-moving-between-design-and-code-with-agents/"
+          },
+          {
+            "label": "피그마 Code Connect 연결·플랜 공식 도움말",
+            "kind": "primary",
+            "url": "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect"
+          }
+        ]
+      },
+      {
+        "heading": "변경을 다시 확인하고 빠진 상태는 캔버스에서 다룬다",
+        "kind": "reporting",
+        "paragraphs": [
+          "예시에서는 새 선택 상태의 패턴이 아직 연결되지 않아 디자인 시스템 검색으로 기존의 비슷한 컴포넌트를 찾는다. 모달 구현 중 브랜드 색과 버튼 모서리 반경이 바뀌면 변수 정의를 다시 조회해 코드의 토큰과 비교한다. 처음 받은 설계만 믿고 구현을 계속하지 않고, 업무 중의 라이브러리 변경을 다시 전달하는 흐름이다.",
+          "코드에만 있던 결과 알림은 편집 가능한 캔버스로 옮겨 디자이너가 실패와 재시도 상태를 추가하도록 했다. 시스템 담당자는 새 컴포넌트를 게시하고 코드 연결도 만든다. 마지막에는 개발자가 PR을 열고 엔지니어가 코드, 디자이너가 미리보기 빌드를 검토한다. 글은 이 과정을 제시하지만 도구만 연결하면 검토 없이 운영에 배포해도 된다고 설명한 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/workflow-lab-moving-between-design-and-code-with-agents/"
+          }
+        ]
+      },
+      {
+        "heading": "문맥은 화면의 모양과 동작을 함께 설명한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "이 예시에서 스크린샷은 유용한 입력이지만 화면의 최종 모습만으로 선택·취소·실패의 관계가 모두 드러나지는 않는다. 에이전트에 전달할 맥락을 시각적 속성과 행동의 규칙으로 나누면 어떤 자료가 빠졌는지 확인할 수 있다. 컴포넌트 연결도 단순한 외형보다 실제 코드의 경로와 속성을 제공한다. 팀이 이미 결정한 내용을 다시 추측하게 만들지 않는 것이 접근의 목적이다.",
+          "다만 더 많은 문맥을 주는 것이 그 자체로 정확한 구현의 증거는 아니다. 흐름의 요구가 모순되거나 연결이 오래되면 에이전트도 잘못된 기준을 사용할 수 있다. 구현 전에 다이어그램을 함께 보고 변경 때 변수를 다시 확인하는 단계가 그래서 중요하다. 예시를 도입할 팀은 성공 화면뿐 아니라 실패·취소·실행 취소의 결과가 업무 요구와 맞는지 실제 빌드에서 확인할 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/workflow-lab-moving-between-design-and-code-with-agents/"
+          },
+          {
+            "label": "피그마 Code Connect 연결·플랜 공식 도움말",
+            "kind": "primary",
+            "url": "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect"
+          }
+        ]
+      },
+      {
+        "heading": "왕복 흐름의 기준은 변경을 검토할 수 있는가다",
+        "kind": "analysis",
+        "paragraphs": [
+          "코드를 캔버스로 다시 가져오면 디자이너가 현재 구현을 기준으로 빠진 상태를 검토할 수 있다. 그러나 코드와 디자인이 연결됐다는 설명만으로 모든 변경이 자동으로 양쪽에 동기화되는 것은 아니다. 예시에서도 라이브러리 게시, 변수 조회와 새 코드 연결을 별도로 수행한다. 무엇을 갱신해야 하고 누가 확인하는지 명시해야 왕복이 의미 있는 협업 흐름이 된다.",
+          "동시에 자주 재사용하는 컴포넌트부터 연결하면 검토와 유지의 범위를 정하기 쉽다. 모든 화면을 한 번에 자동화할 필요보다 중요한 것은 어떤 자료를 신뢰하고 어디서 최종 결과를 확인하는지다. 가상의 앱은 그런 작업 순서를 보여 주는 설명 도구다. 실제 절감 시간이나 품질 개선은 자기 저장소와 대표 과제를 대상으로 평가해야 하며, 이 글의 시나리오를 측정된 성과로 인용할 근거는 없다."
+        ],
+        "references": [
+          {
+            "label": "피그마 Code Connect 연결·플랜 공식 도움말",
+            "kind": "primary",
+            "url": "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/workflow-lab-moving-between-design-and-code-with-agents/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Radicle은 가상의 앱이며 글은 실제 성과 실험보다 도구 활용 흐름을 설명한다.",
+      "상태 다이어그램·컴포넌트 코드 연결·변수 재조회와 캔버스의 실패 상태 검토를 제시했다.",
+      "Code Connect는 Organization/Enterprise Full·Dev좌석용이며 최종 PR·미리보기 검토가 흐름에 남는다."
+    ],
+    "tags": [
+      "Figma",
+      "MCP",
+      "CodeConnect",
+      "디자인개발협업"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://www.figma.com/blog/workflow-lab-moving-between-design-and-code-with-agents/"
+      },
+      {
+        "label": "피그마 Code Connect 연결·플랜 공식 도움말",
+        "url": "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.figma.com/blog/workflow-lab-moving-between-design-and-code-with-agents/",
+      "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처WEB전체와공식CodeConnect도움말,추가공식MCP해설을읽었다. Radicle은명시적fictional앱이므로실제기업사례·시간절감·새제품출시로쓰지않았다. 도구이름나열보다상태/코드연결/변수재조회/미리보기검토흐름을정리했다. 공개기능의플랜조건은CodeConnectHelp로대조했다. 후보a6fAgentGA워크플로는유지보수/피드백이고4aeWeave는마케팅assetpipeline으로본상태흐름설계와별개다. snapshot.pendingCoinbase는정량실험으로이예시와구분한다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "4aefff42-80b6-4f22-9c7d-684e3b8e4c56",
+    "a643e28e-ecc7-441d-8b19-d816a71ac7d4",
+    "a6f1ec3a-bf76-49eb-9511-ec46092a3888"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:20:09.271Z",
+    "checks": [
+      "Radicle가상·toolbar/modal/toast및undo/failure상태를원문확인했다.",
+      "FigJam사전검토·CodeConnect속성·search/variable재조회·canvas실패상태·최종PR검토를확인했다.",
+      "Organization/Enterprise Full/Dev·UI/CLI접근을공식문서에서확인했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

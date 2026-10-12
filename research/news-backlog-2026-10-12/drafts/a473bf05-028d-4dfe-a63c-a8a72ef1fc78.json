@@ -1,0 +1,162 @@
+{
+  "id": "a473bf05-028d-4dfe-a63c-a8a72ef1fc78",
+  "article": {
+    "url": "https://www.figma.com/blog/how-coinbase-used-code-connect-to-shrink-token-costs/",
+    "title": "코인베이스 Code Connect 평가…토큰 11.5%·비용 22.5% 감소한 조건은",
+    "summary": "피그마가 코인베이스 디자인 시스템 팀의 Code Connect 도입·평가 사례를 공개했다. 실제 컴포넌트 연결을 갱신하고 같은 디자인·프롬프트·모델로 비교한 결과를 소개했다. 토큰과 비용의 서로 다른 수치, 평가 범위 및 연결 자료의 유지 비용을 중심으로 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "오래된 컴포넌트 연결을 에이전트 작업에 맞췄다",
+        "kind": "reporting",
+        "paragraphs": [
+          "피그마는 코인베이스 디자인 시스템 팀이 Figma에서 코드로 옮기는 작업에 Code Connect를 도입한 사례를 소개했다. 팀에는 이미 컴포넌트 선택과 폐기된 패턴 회피, 디자인 토큰 사용을 안내하는 에이전트 기술 지침이 있었다. 그러나 이는 처음부터 코드를 작성하는 흐름에 맞춰져 있었고 디자인 파일을 기존 코드로 구현하는 작업은 느리고 불안정하다는 의견이 있었다고 설명한다.",
+          "팀의 기존 Code Connect 연결은 MCP 서버 출시 전 형식에 머물렀고 새 컴포넌트의 템플릿도 부족했다. 기술 리드 에리히 퀴르슈너는 Claude Code와 공식 Code Connect 기술 지침으로 컴포넌트 목록의 템플릿 작성을 병렬로 진행했다고 밝혔다. 이후 디자인 컴포넌트를 코드의 대응 항목에 연결하고 컴포넌트 변경 때 연결 템플릿을 함께 갱신하는 흐름에 포함했다고 설명했다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/how-coinbase-used-code-connect-to-shrink-token-costs/"
+          },
+          {
+            "label": "피그마 Code Connect 템플릿 작성·검토 공식 안내",
+            "kind": "primary",
+            "url": "https://developers.figma.com/docs/code-connect/quickstart-guide/"
+          }
+        ]
+      },
+      {
+        "heading": "같은 화면과 모델로 세 차례 비교했다",
+        "kind": "reporting",
+        "paragraphs": [
+          "평가에는 같은 디자인, 프롬프트와 Sonnet 4.6 모델을 사용했다. 빈 코드베이스에서 실행한 뒤 초기화해 이전 작업의 단서가 남지 않게 했고 프롬프트 캐시의 영향도 통제해야 했다고 설명한다. 요청은 디자인을 구현하라는 짧은 문장과 Figma 링크였으며, 여러 컴포넌트가 섞인 중간 정도 복잡도의 화면을 택했다. Code Connect 유무의 출력과 사용량·시간을 비교한 사례다.",
+          "세 차례 실행의 평균 결과는 토큰 사용 11.5%, 구현 시간 22.3%, 비용 22.5% 감소로 제시됐다. 토큰과 비용은 같은 수치가 아니다. 팀은 복잡한 Stepper를 기본 요소로 새로 만들기보다 실제 컴포넌트를 선택했는지, 색과 크기에 올바른 디자인 토큰을 썼는지도 확인했다. 이 결과는 팀이 공개한 해당 작업의 평가이며 모든 모델·화면·저장소의 절감률을 보장하지 않는다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/how-coinbase-used-code-connect-to-shrink-token-costs/"
+          }
+        ]
+      },
+      {
+        "heading": "Code Connect는 디자인과 실제 코드의 대응을 제공한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 도움말은 Code Connect가 저장소 컴포넌트와 디자인 파일의 컴포넌트를 연결하고 MCP에 실제 코드의 참조를 제공한다고 설명한다. Organization 또는 Enterprise 플랜에서 Full이나 Dev 좌석이 필요하다. UI의 시각적 경로 연결과 CLI의 템플릿·속성 대응 방식이 있으며 두 방식은 같은 MCP 기반에 정보를 전달한다. 단순히 에이전트에게 스타일을 잘 지키라고 요청하는 것과 다른 입력이다.",
+          "개발자 안내는 디자인 라이브러리와 컴포넌트 코드베이스를 준비하고 속성·사용 예를 연결한 템플릿을 작성해 검토한 뒤 게시하도록 설명한다. 코인베이스 사례에서도 기술 지침은 구현의 일반적인 방식, Code Connect는 디자인에서 출발할 때의 구체적인 컴포넌트 맥락이라는 역할 구분을 제시했다. 둘을 경쟁하는 도구보다 서로 다른 정보를 제공하는 층으로 사용했다."
+        ],
+        "references": [
+          {
+            "label": "피그마 Code Connect 플랜·연결 방식 공식 문서",
+            "kind": "primary",
+            "url": "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect"
+          },
+          {
+            "label": "피그마 Code Connect 템플릿 작성·검토 공식 안내",
+            "kind": "primary",
+            "url": "https://developers.figma.com/docs/code-connect/quickstart-guide/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/how-coinbase-used-code-connect-to-shrink-token-costs/"
+          }
+        ]
+      },
+      {
+        "heading": "사용량과 품질을 함께 측정해야 절감의 의미가 보인다",
+        "kind": "analysis",
+        "paragraphs": [
+          "토큰을 덜 썼다는 사실만으로 좋은 구현이라고 판단할 수는 없다. 이 사례가 컴포넌트 선택과 디자인 시스템 준수까지 보았다는 점은 사용량 감소의 의미를 해석할 단서를 준다. 실제 컴포넌트의 위치와 사용법이 주어지면 에이전트가 검색하거나 추측하는 작업을 줄일 가능성이 있다. 반면 틀린 컴포넌트를 빨리 선택한 결과라면 비용이 낮아도 검토와 수정 부담이 남는다.",
+          "팀의 도입 평가에서는 같은 화면과 요청을 유지하되 결과물의 컴포넌트·토큰 사용을 함께 비교할 수 있다. 모델과 캐시, 사전에 주어진 코드 맥락도 기록해야 결과의 차이를 기능에 연결하기 쉽다. 세 차례의 사례는 유용한 관찰이지만 변동성이 큰 다른 화면의 분포를 설명하지는 않는다. 복잡한 속성과 이름이 자주 틀리는 작업을 추가로 살펴보면 자기 시스템의 개선 여부를 판단할 자료가 된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/how-coinbase-used-code-connect-to-shrink-token-costs/"
+          },
+          {
+            "label": "피그마 Code Connect 플랜·연결 방식 공식 문서",
+            "kind": "primary",
+            "url": "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect"
+          }
+        ]
+      },
+      {
+        "heading": "연결 자료의 갱신도 디자인 시스템 운영의 일부다",
+        "kind": "analysis",
+        "paragraphs": [
+          "처음 템플릿을 빠르게 만드는 것과 이후 컴포넌트가 바뀔 때 정확한 연결을 유지하는 것은 서로 다른 작업이다. 원출처는 오래된 연결과 누락된 템플릿이 출발점의 문제였다고 설명한다. 따라서 Code Connect를 연결만 해 두는 설정으로 보면 같은 문제가 다시 생길 수 있다. 디자인과 코드의 변경 과정에 대응 자료의 검토를 넣은 팀의 운영 방식이 중요하다.",
+          "자동 작성한 템플릿도 실제 속성과 코드 사용법에 맞는지 검토해야 한다. 공식 안내 역시 생성 결과의 확인과 수정을 거친 게시를 요구한다. 모델이 좋아지면 일반적인 구현 지침의 필요가 달라질 수 있지만 자기 조직의 컴포넌트 위치와 의미는 여전히 별도의 맥락이다. 이번 사례는 비용 절감률뿐 아니라 그 맥락을 신뢰할 수 있는 형태로 관리하는 일을 함께 보여 준다."
+        ],
+        "references": [
+          {
+            "label": "피그마 Code Connect 템플릿 작성·검토 공식 안내",
+            "kind": "primary",
+            "url": "https://developers.figma.com/docs/code-connect/quickstart-guide/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/how-coinbase-used-code-connect-to-shrink-token-costs/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "평가 평균은 토큰11.5%·구현시간22.3%·비용22.5% 감소로 각 수치가 다르다.",
+      "같은 디자인·프롬프트·Sonnet4.6을 사용하고 빈 코드베이스를 초기화한 세 차례 실행 사례다.",
+      "Code Connect는 Organization/Enterprise의Full·Dev좌석용이며 실제 컴포넌트 연결의 검토·갱신이 필요하다."
+    ],
+    "tags": [
+      "Figma",
+      "Coinbase",
+      "CodeConnect",
+      "디자인시스템"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://www.figma.com/blog/how-coinbase-used-code-connect-to-shrink-token-costs/"
+      },
+      {
+        "label": "피그마 Code Connect 플랜·연결 방식 공식 문서",
+        "url": "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect"
+      },
+      {
+        "label": "피그마 Code Connect 템플릿 작성·검토 공식 안내",
+        "url": "https://developers.figma.com/docs/code-connect/quickstart-guide/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.figma.com/blog/how-coinbase-used-code-connect-to-shrink-token-costs/",
+      "https://help.figma.com/hc/en-us/articles/23920389749655-Code-Connect",
+      "https://developers.figma.com/docs/code-connect/quickstart-guide/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처WEB전체와공식CodeConnectHelp/CLIquickstart를읽었다. 도입부tokencost22.5표현대신본문·표의token11.5/time22.3/cost22.5를구분했다. same-design/prompt/modelSonnet4.6/blank-reset/cachecontrol/3runs는회사자체평가조건이며독립benchmark아님. ErichKuerschner는에리히퀴르슈너로표기. 후보Weave/인물인터뷰와별개이며snapshot.pendingMCPworkflowlab일반문맥설계와Coinbase측정사례는실질적으로다르다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "04f91b3b-8c5d-4486-a8e6-cc655b3822dd",
+    "2aff0061-4a82-4979-a193-e136f1c04a79"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:10:53.669Z",
+    "checks": [
+      "토큰11.5/시간22.3/비용22.5 및3run·동일모델/설계/요청·reset/cache조건을확인했다.",
+      "컴포넌트선택/디자인토큰평가와CodeConnect/agent-skills역할차이를원문확인했다.",
+      "Organization/Enterprise Full/Dev·UI/CLI·생성템플릿검토게시를공식문서에서확인했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "id": "40a461a5-49e5-41fb-9082-0034d09e8766",
+  "article": {
+    "url": "https://blog.cloudflare.com/account-abuse-protection-dashboard/",
+    "title": "클라우드플레어, 계정 악용 조사 대시보드 공개…집단 패턴에서 개별 기록까지",
+    "summary": "클라우드플레어가 Account Abuse Protection의 Early Access 고객에게 계정 악용 조사 대시보드를 제공한다. 로그인·가입 패턴을 계정 단위로 묶고 전체 현황에서 개별 이벤트로 내려가며, 개인정보 열람·내보내기 권한을 분리한다. 조사 신호와 침해 확정의 차이를 함께 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "한 번의 인증보다 누적된 계정 활동을 본다",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어는 Account Abuse Protection에 새로운 조사 대시보드를 도입했다. 먼저 Early Access 고객에게 제공되며, Bot Management Enterprise 고객은 조기 접근을 신청할 수 있다. 대시보드는 사이트에 구성된 로그인과 가입 흐름에서 관측한 활동을 계정별로 묶어, 전체 사용자 집단의 의심 패턴에서 특정 계정의 기록까지 좁혀 보게 한다.",
+          "계정을 연결하는 기준은 Hashed User ID다. 고객이 기존 로그인·가입 흐름의 이메일, 사용자 이름, 전화번호 같은 식별자를 지정하면 이를 암호학적으로 변환해 존별 식별자로 사용한다. 로그인·가입 이벤트와 에지에서 본 네트워크·기기 신호가 이 식별자에 연결된다. 공식 문서는 User ID가 선택적으로 켜는 기능이며 다른 고객이 해당 프로필에 접근할 수 없다고 설명한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/account-abuse-protection-dashboard/"
+          },
+          {
+            "label": "클라우드플레어 계정 악용 보호 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/bots/account-abuse-protection/"
+          }
+        ]
+      },
+      {
+        "heading": "전체 현황에서 조사할 계정을 고른다",
+        "kind": "reporting",
+        "paragraphs": [
+          "전체 화면은 로그인·가입 수, 활동한 계정 수, 고유 IP와 기기, 국가와 ASN 분포를 보여 준다. 실패 로그인이나 유출 자격 증명 일치가 늘었는지, 여러 계정이 같은 네트워크에 집중되는지 비교할 수 있다. 필터를 조합해 조사 범위를 좁힌 뒤 개별 계정의 최근 활동으로 이동하는 조사 흐름이다.",
+          "개별 화면에서는 이벤트 시각, Ray ID와 적용된 완화 조치 등으로 의심 행동 전후를 재구성한다. Ray ID는 Security Events에서 관련 요청을 찾는 연결 단서로 쓰인다. 분석가가 침해를 확인하면 기존 복구 절차를 진행하거나 Hashed User ID를 WAF 규칙에 사용해 후속 요청을 추가 확인·차단할 수 있다. 대시보드는 조사와 대응 판단을 돕는 작업 공간이다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/account-abuse-protection-dashboard/"
+          }
+        ]
+      },
+      {
+        "heading": "조사 신호와 개인정보 접근을 구분한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "회사는 유출 사용자 이름이나 비밀번호와 일치한 이벤트가 있다는 사실만으로 모든 관련 계정이 침해됐다고 결론낼 수 없다고 명시했다. 예시 필터의 실패 로그인 횟수와 고유 IP 개수도 조사할 계정을 추리는 조건이다. 서비스 전체에 적용해야 할 보편적인 침해 판정 기준이나 실제 피해 계정 수를 발표한 것이 아니다.",
+          "새 Account Abuse Protection 역할은 대시보드 접근을, 별도 Account Abuse Protection PII 역할은 이메일 등 추가 개인정보 열람을 제어한다. PII를 담은 Logpush 작업의 생성·수정에도 두 번째 역할이 필요하다. 대시보드 조사 권한과 개인정보 노출·내보내기 권한을 따로 부여해 담당자의 업무에 필요한 범위만 열 수 있도록 설계했다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/account-abuse-protection-dashboard/"
+          }
+        ]
+      },
+      {
+        "heading": "관측 범위를 알아야 빈 기록도 해석할 수 있다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 누적 이력의 가치는 로그인 흐름이 제대로 관측된다는 조건에 달려 있다. 공식 문서는 비표준 로그인·가입 엔드포인트가 자동 인식되지 않을 수 있어 적절한 표시를 확인하라고 안내한다. 대시보드에 기록이 없다는 이유만으로 의심 활동이 없었다고 판단하기보다 어떤 경로가 관측에 포함되는지 먼저 파악해야 한다.",
+          "제공 범위에도 조건이 있다. 공식 문서는 EU 지역의 Regional Services와 Data Localization Suite를 함께 사용하는 계정에서는 계정 탈취 탐지를 지원하지 않는다고 설명한다. 팀은 신청 가능 여부뿐 아니라 자기 구성에서 사용할 탐지 신호가 무엇인지 확인할 필요가 있다. 화면이 제공하는 집계는 확인 가능한 이벤트의 맥락이지 전체 서비스 행동을 빠짐없이 증명하는 자료가 아니다."
+        ],
+        "references": [
+          {
+            "label": "클라우드플레어 계정 악용 보호 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/bots/account-abuse-protection/"
+          }
+        ]
+      },
+      {
+        "heading": "계정 중심 대응에도 사람의 검토가 필요하다",
+        "kind": "analysis",
+        "paragraphs": [
+          "한 계정에서 국가나 기기가 바뀌었다는 사실은 유용한 조사 단서지만 그 자체로 악용을 확정하지 않는다. 정상적인 이동과 기기 변경도 있을 수 있기 때문이다. 여러 신호와 시간 순서를 묶어 검토하면 단일 요청에서 보이지 않던 패턴을 파악할 수 있다. 회사가 제시한 상태 기반 접근은 이런 맥락을 더하는 방향이며 자동 판정의 무오류를 보장하지 않는다.",
+          "운영팀은 조사 담당자, 개인정보 접근 담당자와 복구 책임자의 역할을 함께 정리할 수 있다. 필요한 경우에만 PII를 열고 조사 결과에 따라 대응하는 절차는 대시보드의 권한 분리와 잘 맞는다. 차단할 수 있는 기능이 있다는 사실과 어떤 계정을 차단해야 하는지는 다른 문제다. 계정 이력이 제공하는 근거를 기존 대응 정책에 연결할 때 새 화면의 실무 가치가 생긴다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/account-abuse-protection-dashboard/"
+          },
+          {
+            "label": "클라우드플레어 계정 악용 보호 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/bots/account-abuse-protection/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "대시보드는 AAP Early Access 고객에게 먼저 제공되고 Bot Management Enterprise가 신청 대상이다.",
+      "집단 현황에서 개별 계정·이벤트로 조사하며 유출 자격 증명 일치는 침해 확정과 다르다.",
+      "PII 열람 및 PII Logpush 생성·수정 권한을 대시보드 접근 권한과 분리했다."
+    ],
+    "tags": [
+      "Cloudflare",
+      "계정보안",
+      "관측성",
+      "개발운영"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.cloudflare.com/account-abuse-protection-dashboard/"
+      },
+      {
+        "label": "클라우드플레어 계정 악용 보호 공식 문서",
+        "url": "https://developers.cloudflare.com/bots/account-abuse-protection/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.cloudflare.com/account-abuse-protection-dashboard/",
+      "https://developers.cloudflare.com/bots/account-abuse-protection/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 WEB·보존 RSS 전문과 AAP 공식 문서를 읽었다. Early Access·Bot Management Enterprise, 선택적 User ID 설정과 비표준 엔드포인트 표시, EU Regional Services 조건을 대조했다. 예시 2.4K/11.7K 사건 수와 필터 임계값은 일반 성능/침해 통계로 사용하지 않았다. 후보 CF 보안 운영 하네스는 다른 제품/운영 구조이고 snapshot.pending의 AAP 대시보드는 본 ID 하나다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2019054a-a457-4356-9bc9-47b85aca06b5",
+    "2c1a4101-aae8-4295-b207-5ae567b4b4b6",
+    "4027d7c6-9b75-45ae-8b7f-1b6777e3bbbc",
+    "44c476d2-b8f8-4341-9694-f4e9b6e32222",
+    "64da50f0-d536-47bb-bd3e-dcc375b183f3",
+    "6fa4c931-8672-4bfd-8bf3-1af3e90b9b44",
+    "e1462898-b538-4aeb-96dc-f22e5eed6df0",
+    "ea15db4a-052c-4c9f-bca3-ed226cda42b8",
+    "faecfaa5-a532-492f-8d3a-bda52f50d1f7"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:40:03.231Z",
+    "checks": [
+      "Early Access 제공, 계정 식별자 기반 이력·Ray ID 연결을 원문에서 확인했다.",
+      "새 두 역할과 PII Logpush 권한 조건을 원문에서 확인했다.",
+      "자동 엔드포인트 인식의 제한과 EU Regional Services의 ATO 미지원 조건을 공식 문서에서 확인했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

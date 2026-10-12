@@ -1,0 +1,166 @@
+{
+  "id": "a026eb03-5d87-43aa-985e-8130c89ba5d3",
+  "article": {
+    "url": "https://blogs.nvidia.com/blog/physical-ai-halos-safety/",
+    "title": "엔비디아 Halos, 물리 AI 안전의 여러 층 설명…검사기관 인정과 제품 인증 구분",
+    "summary": "엔비디아가 차량·로봇의 하드웨어·소프트웨어·AI 행동·운영 환경을 함께 다루는 Halos의 안전 접근을 설명했다. 공식 기술 자료는 실제 시험과 시뮬레이션·운영 기록으로 안전 주장의 근거를 쌓는 구조다. ANAB의 검사기관 인정은 검사 수행 역량에 관한 것이며 모든 통합 제품의 최종 인증을 뜻하지 않는다.",
+    "paragraphs": [
+      {
+        "heading": "물리적 행동을 만드는 시스템 전체의 근거",
+        "kind": "reporting",
+        "paragraphs": [
+          "엔비디아는 9월 21일 자율주행차와 로봇 등 물리 AI의 안전을 여러 층에서 다뤄야 한다는 설명을 공개했다. 하드웨어·소프트웨어뿐 아니라 AI 행동과 운영 환경, 배포 이후의 변경까지 확인해야 한다는 회사의 접근이다. Halos를 통해 설계·검증·배포에 걸친 기능을 연결한다고 설명하며 차량과 로봇의 적용 구성은 따로 제시했다. 이 글은 안전 체계를 소개하는 자료이지 등장한 모든 기기가 같은 시험을 완료했다는 결과 발표는 아니다. 회사가 제시한 제품 구성과 파트너 목록을 제품마다 필요한 근거를 확인하는 과정과 함께 읽어야 설명의 범위가 드러난다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 물리 AI 안전 접근 원문",
+            "url": "https://blogs.nvidia.com/blog/physical-ai-halos-safety/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "차량과 로봇은 공유 원칙 아래 다른 구성을 사용",
+        "kind": "reporting",
+        "paragraphs": [
+          "차량용 설명에는 가속 연산 플랫폼과 운영체제·미들웨어, 추론 모델과 시뮬레이션·검증 도구가 등장한다. 로봇 쪽은 IGX Thor의 안전 관련 구성과 오류 감지·모니터링을 위한 소프트웨어, 센서 정보를 연결하는 Holoscan Sensor Bridge 등을 제시한다. 외부 카메라를 활용해 기기 탑재 센서 밖의 상황을 살피는 Outside-In Blueprint도 소개했다. 센서 정보를 늘리는 것과 모든 상황을 빠짐없이 감지한다는 주장은 다르다. 원문도 두 분야의 원칙은 공유하지만 플랫폼과 적용 기준·증거는 분야별이라고 명시한다. 하나의 부품이나 기술 이름이 전체 시스템의 안전 결론을 대신하지 않는 구성이다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 물리 AI 안전 접근 원문",
+            "url": "https://blogs.nvidia.com/blog/physical-ai-halos-safety/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "안전 주장은 요구 사항·데이터·시뮬레이션을 연결",
+        "kind": "reporting",
+        "paragraphs": [
+          "Halos 안전 평가 기술 자료는 요구 사항과 위험 평가를 관리하는 과정, 데이터를 수집·표시·선별·확장하는 기반, 시뮬레이터와 결과 분석을 세 요소로 설명한다. 어떤 운행 조건을 대상으로 하는지 먼저 정하고 그 조건의 위험과 허용 기준을 시스템 각 층에 연결하는 방식이다. 결과를 안전 주장에 사용할 증거로 모으는 접근이며 단일 도구만으로 결론을 만든다고 설명하지 않는다. 문서의 실패 빈도 예시는 검증에 필요한 규모를 설명하는 목표다. 이를 실제 고객 차량에서 이미 측정해 달성한 실패율로 읽거나 모든 로봇의 공통 안전 성능으로 적용하지 않았다."
+        ],
+        "references": [
+          {
+            "label": "Halos 안전 평가 프레임워크 공식 기술 자료",
+            "url": "https://docs.nvidia.com/common/resources/Nvidia_Halos_Safety_Evaluation_Framework_Tech_Brief.pdf",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "실제 기록과 생성한 상황의 역할을 구분",
+        "kind": "analysis",
+        "paragraphs": [
+          "기술 자료는 실제 운행 로그가 고객의 운행 분포에 안전 주장을 연결하고 확장한 시나리오가 드물지만 예상 가능한 상황을 더 다룰 수 있게 한다고 설명한다. 고속도로 기록을 많이 모았다는 사실만으로 도심 교차로의 성능을 주장할 수 없다는 예시도 제시했다. 합성된 상황의 현실성과 자동으로 표시한 데이터의 오류 역시 후속 판단에 영향을 줄 수 있다. 따라서 시뮬레이션의 횟수나 데이터 양만 늘리는 일이 모든 조건의 확인을 뜻하지 않는다. 어떤 상황을 대표하는 자료인지와 처리 도구 자체의 오류를 함께 살피는 구조다. 모델 성능 평가와 현장의 안전 주장을 연결하려면 그 사이의 가정도 공개할 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "Halos 안전 평가 프레임워크 공식 기술 자료",
+            "url": "https://docs.nvidia.com/common/resources/Nvidia_Halos_Safety_Evaluation_Framework_Tech_Brief.pdf",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "검사기관의 인정은 검사 대상의 최종 인증과 다르다",
+        "kind": "reporting",
+        "paragraphs": [
+          "ANAB는 Halos AI Systems Inspection Lab을 ISO/IEC 17020 검사기관 기준으로 인정했다고 별도 발표했다. ANAB의 설명은 검사기관이 역량·일관성·공정성에 관한 요구 사항에 맞게 운영된다는 독립 확인이다. 인정된 기관이 시스템을 평가해 향후 인증 활동의 기반을 제공할 수 있다는 범위로 안내한다. 모든 Halos 구성 요소나 이를 넣은 모든 차량·로봇을 최종 인증했다는 발표는 아니다. 엔비디아 원문도 정해진 통합 범위의 검사와 독립된 제3자 기관의 최종 시스템 인증 준비를 구분한다. 기관에 대한 인정과 특정 통합 시스템의 검사 결과, 시장에서의 최종 승인 조건은 각각 다른 정보다."
+        ],
+        "references": [
+          {
+            "label": "ANAB의 Halos 검사기관 인정 발표",
+            "url": "https://anab.ansi.org/anab-accredits-nvidia-halos-ai-inspection-lab-advancing-independent-assurance-for-physical-ai-safety/",
+            "kind": "primary"
+          },
+          {
+            "label": "엔비디아 물리 AI 안전 접근 원문",
+            "url": "https://blogs.nvidia.com/blog/physical-ai-halos-safety/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "변경 뒤에도 근거를 갱신하는 방향",
+        "kind": "analysis",
+        "paragraphs": [
+          "소프트웨어와 모델을 업데이트하거나 새로운 작업과 운영 조건을 추가하면 앞선 시험의 가정도 달라질 수 있다. 원문은 중요한 변경에 추가 안전 시험이 필요할 수 있다고 설명하고 기술 자료는 운영 기록에서 새 요구 사항을 찾아 다시 데이터와 평가에 반영하는 순환을 제시한다. 이는 배포 한 번으로 안전 주장이 영구히 완료되는 것으로 보지 않는 접근이다. 다만 이러한 체계를 마련했다고 실제 사고가 사라지거나 모든 파트너의 검증이 끝났다는 결과를 만들 수는 없다. 이번 글이 확인하는 것은 근거를 연결하고 갱신하는 회사의 구조와 검사기관 인정 범위다. 실제 제품의 결론은 해당 조건과 통합 범위를 다룬 개별 증거에서 확인해야 한다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 물리 AI 안전 접근 원문",
+            "url": "https://blogs.nvidia.com/blog/physical-ai-halos-safety/",
+            "kind": "primary"
+          },
+          {
+            "label": "Halos 안전 평가 프레임워크 공식 기술 자료",
+            "url": "https://docs.nvidia.com/common/resources/Nvidia_Halos_Safety_Evaluation_Framework_Tech_Brief.pdf",
+            "kind": "primary"
+          },
+          {
+            "label": "ANAB의 Halos 검사기관 인정 발표",
+            "url": "https://anab.ansi.org/anab-accredits-nvidia-halos-ai-inspection-lab-advancing-independent-assurance-for-physical-ai-safety/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "회사 체계 설명과 개별 차량·로봇의 시험 완료를 구분했다.",
+      "실제 운행 분포와 시뮬레이션·라벨 오류가 안전 주장의 조건임을 반영했다.",
+      "ANAB의 검사기관 역량 인정은 모든 제품의 최종 인증·시장 승인과 다르다.",
+      "예시 목표 실패율을 실제 달성 성능이나 무사고 보장으로 전용하지 않았다."
+    ],
+    "tags": [
+      "엔비디아",
+      "Halos",
+      "물리AI",
+      "안전평가"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "엔비디아 물리 AI 안전 접근 원문",
+        "url": "https://blogs.nvidia.com/blog/physical-ai-halos-safety/"
+      },
+      {
+        "label": "Halos 안전 평가 프레임워크 공식 기술 자료",
+        "url": "https://docs.nvidia.com/common/resources/Nvidia_Halos_Safety_Evaluation_Framework_Tech_Brief.pdf"
+      },
+      {
+        "label": "ANAB의 Halos 검사기관 인정 발표",
+        "url": "https://anab.ansi.org/anab-accredits-nvidia-halos-ai-inspection-lab-advancing-independent-assurance-for-physical-ai-safety/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blogs.nvidia.com/blog/physical-ai-halos-safety/",
+      "https://docs.nvidia.com/common/resources/Nvidia_Halos_Safety_Evaluation_Framework_Tech_Brief.pdf",
+      "https://anab.ansi.org/anab-accredits-nvidia-halos-ai-inspection-lab-advancing-independent-assurance-for-physical-ai-safety/"
+    ],
+    "notes": "9/21설명글·공식SEF16p·ANAB기관원문대조.새Halos출시로표현안함(6/22로보틱스발표존재).industryfirst/only·2035시장전망미독립검증으로제외,DriveOSASIL수치기관직접원문미대조라본문제외.ANAB기관17020인정=competenceconsistentimpartialinspection≠모든제품cert/finalapproval.문서illustrative107/108hours 및10k/20kKPI숫자실제달성으로전용안함.road/customerdistribution/simulationrealism/labelquality/ODD조건반영,자동외부감시≠항상검출.후보Isaac5dev·일반hardware다른사건,전체pendingOpenAI safetycases는LLM RL정책연구로다른구체자료.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "316c5a18-02ff-4735-943e-0c393784bea5",
+    "56b16575-ca25-4ba2-9903-3311573548c4",
+    "88909f47-c322-4252-aca4-51e619d16b9d",
+    "b58159c9-4b8b-4a2d-8910-3d9314f9020c",
+    "ca37e48d-c53f-4017-9aad-4b208f6a6a83"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:31:07.780Z",
+    "checks": [
+      "원문공개유형은물리안전체계설명임을확인",
+      "SEF문서의요구·데이터·시뮬레이션구조 확인",
+      "실제분포·라벨/생성현실성제약 반영",
+      "목표실패율과달성측정 분리",
+      "ANAB1차출처로검사기관인정범위 확인",
+      "정해진통합검사와제3자최종인증 구분"
+    ],
+    "relatedPendingIds": []
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "id": "21dc19c8-cc47-4e1d-9d9d-ad73a051bff7",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/05/practical-interface-patterns-ai-transparency/",
+    "title": "AI의 대기 화면에 무엇을 보여줄까…진행 상태와 부분 성공의 설계",
+    "summary": "빅터 요코가 AI 에이전트의 실제 작업을 진행 문구와 체크리스트, 결과 기록으로 설명하는 화면 패턴을 제안했다. 마이크로소프트 HAX 지침과 함께 보면 설명의 양보다 정확한 상태와 한계, 완료된 작업을 구분하는 것이 중요하다.",
+    "paragraphs": [
+      {
+        "heading": "회전하는 표시 뒤에 있는 작업을 설명한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "빅터 요코는 5월 13일 스매싱 매거진의 AI 투명성 시리즈 두 번째 글에서 진행 상태를 전달하는 화면 패턴을 제안했다. 단순한 대기 표시 대신 무엇을 어떤 조건 안에서 처리하는지 설명하는 접근이다. 동작을 나타내는 말, 구체적인 대상과 지켜야 할 조건을 묶는 문구 구성을 소개한다.",
+          "가벼운 배경 작업의 작은 상태 표시와 중요한 다단계 작업의 체크리스트를 구분한다. 후자는 끝난 단계와 처리 중인 단계, 앞으로 할 일을 보여준다. 원문은 화면의 체크 표시가 실제 작업 완료 이벤트와 연결돼야 한다고 설명한다. 그럴듯한 순서를 미리 보여주는 것만으로 에이전트의 현재 상태가 증명되는 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 AI 투명성 화면 패턴 원문",
+            "kind": "primary",
+            "url": "https://smashingmagazine.com/2026/05/practical-interface-patterns-ai-transparency/"
+          }
+        ]
+      },
+      {
+        "heading": "설명이 늘면 신뢰만이 아니라 과신도 늘 수 있다",
+        "kind": "reporting",
+        "paragraphs": [
+          "마이크로소프트 HAX 툴킷의 열한 번째 지침은 사용자가 AI의 행동이나 출력에 대한 설명에 접근할 수 있게 하라고 안내한다. 그러나 설명이 존재한다는 사실만으로 신뢰가 커져 시스템을 지나치게 의존할 수 있다고도 경고한다. 설명의 내용과 설계가 사용자의 목표에 도움이 되는지 혹은 방해가 되는지 함께 살펴야 한다는 조건이다.",
+          "툴킷은 시스템 전체를 설명하는 방식과 개별 출력에 연결된 설명을 구분하고 목적에 맞게 조합할 수 있다고 안내한다. 이를 모든 이용자에게 모든 로그를 기본으로 보여주라는 요구로 읽지 않는다. 어떤 자료가 결과에 쓰였는지, 무엇을 확인하지 못했는지 파악하는 데 필요한 수준을 정해야 한다. 설명의 길이와 실제 검토 가능성은 서로 다른 값이다."
+        ],
+        "references": [
+          {
+            "label": "마이크로소프트 HAX의 설명·과신 지침",
+            "kind": "primary",
+            "url": "https://www.microsoft.com/en-us/haxtoolkit/guideline/make-clear-why-the-system-did-what-it-did/"
+          }
+        ]
+      },
+      {
+        "heading": "전체 실패라는 문구가 완료된 일까지 가리지 않게 한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 여러 단계의 작업에서 일부만 실패했을 때 완료된 결과를 따로 남길 필요가 있다고 본다. 원문도 부분 성공의 설계를 제안한다. 사용자는 이미 처리된 부분을 반복할지, 실패한 부분만 다시 요청할지 결정해야 하기 때문이다. 성공한 단계가 기록에 남지 않으면 같은 외부 행동이 반복되는지 확인하기도 어려워진다.",
+          "다만 일부 단계가 성공했다는 비율만으로 전체 목표를 달성했다고 표시할 수는 없다. 중요한 마지막 단계가 실패했다면 작은 비중이라도 이용자에게 큰 영향을 줄 수 있다. 무엇이 끝났고 무엇이 남았는지 대상과 상태를 구체적으로 보여주는 이유다. 처리량의 백분율보다 다음 행동을 결정할 수 있는 정보가 먼저 필요한 상황이 있다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 AI 투명성 화면 패턴 원문",
+            "kind": "primary",
+            "url": "https://smashingmagazine.com/2026/05/practical-interface-patterns-ai-transparency/"
+          },
+          {
+            "label": "마이크로소프트 HAX의 설명·과신 지침",
+            "kind": "primary",
+            "url": "https://www.microsoft.com/en-us/haxtoolkit/guideline/make-clear-why-the-system-did-what-it-did/"
+          }
+        ]
+      },
+      {
+        "heading": "실패 이유는 실제로 확인한 범위까지 설명한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "외부 도구가 응답하지 않는 상황과 AI가 요청을 이해하지 못한 상황은 다르게 처리할 수 있다. 그러나 실제 원인을 확인하지 못했다면 외부 서비스 탓으로 확정하는 문구도 정확하지 않다. 원문의 오류 설명 패턴을 적용할 때에는 요청이 어느 단계에서 멈췄는지 확인한 뒤 가능한 복구 방법을 안내할 수 있다.",
+          "자동 재시도 문구도 실제 예약이 있을 때에만 약속이 된다. 다음 시도 시간과 대상이 화면에 표시돼도 서버에 그 작업이 없다면 사용자는 기다릴 근거를 잃는다. 예상과 확인된 상태, 계획과 실행을 분리하는 기준이 상태 설명의 내용까지 이어져야 한다. 이는 새로운 애니메이션의 문제가 아니라 화면과 처리 시스템이 같은 사실을 공유하는 문제다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 AI 투명성 화면 패턴 원문",
+            "kind": "primary",
+            "url": "https://smashingmagazine.com/2026/05/practical-interface-patterns-ai-transparency/"
+          }
+        ]
+      },
+      {
+        "heading": "작업 기록은 숨은 생각 대신 확인 가능한 증거를 연결한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "원문은 펼쳐 보는 운영 기록과 완료 후의 작업 이력을 제안하면서 민감 정보를 정리해 표시해야 한다고 설명한다. 여기에 넣을 수 있는 것은 확인한 출처나 실행한 단계, 도구의 응답 상태 같은 검토 가능한 자료다. 모델의 내부 사고를 그대로 보았다는 설명이나 실제로 수행하지 않은 과정을 꾸며 넣는 방식과 구분해야 한다.",
+          "마이크로소프트의 경고를 함께 읽으면 목적은 무조건 믿게 하는 화면보다 적절하게 판단하게 하는 화면에 가깝다. 출처가 있지만 그것이 결론을 뒷받침하는지 살필 수 없다면 설명의 존재만으로 과신이 생길 수 있다. 어떤 자료를 바탕으로 결과를 만들었는지와 아직 확인하지 못한 점을 연결하는 구성이 필요하다.",
+          "완료 후에도 기록을 볼 수 있으면 사용자는 다른 화면에 다녀온 뒤 결과를 검토할 수 있다. 단계를 접거나 펼치는 선택은 정보의 밀도를 조절하고, 실패한 작업의 복구는 행동의 경로를 제공한다. 이번 글은 이런 패턴을 소개하는 해설이며 특정 패턴이 모든 이용자의 신뢰나 작업 성공을 높였다는 독립 실험 결과는 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 AI 투명성 화면 패턴 원문",
+            "kind": "primary",
+            "url": "https://smashingmagazine.com/2026/05/practical-interface-patterns-ai-transparency/"
+          },
+          {
+            "label": "마이크로소프트 HAX의 설명·과신 지침",
+            "kind": "primary",
+            "url": "https://www.microsoft.com/en-us/haxtoolkit/guideline/make-clear-why-the-system-did-what-it-did/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "진행 문구와 체크리스트는 실제 대상·조건·완료 이벤트에 연결해야 한다.",
+      "부분 성공과 전체 목표 달성, 예정된 재시도와 실행 상태를 구분한다.",
+      "설명의 존재만으로 과신할 수 있어 출처와 한계의 검토 경로가 필요하다."
+    ],
+    "tags": [
+      "AI투명성",
+      "에이전트",
+      "UX",
+      "진행상태"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 AI 투명성 화면 패턴 원문",
+        "url": "https://smashingmagazine.com/2026/05/practical-interface-patterns-ai-transparency/"
+      },
+      {
+        "label": "마이크로소프트 HAX의 설명·과신 지침",
+        "url": "https://www.microsoft.com/en-us/haxtoolkit/guideline/make-clear-why-the-system-did-what-it-did/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://smashingmagazine.com/2026/05/practical-interface-patterns-ai-transparency/",
+      "https://www.microsoft.com/en-us/haxtoolkit/guideline/make-clear-why-the-system-did-what-it-did/"
+    ],
+    "notes": "Smashing원문앞뒤전체·HAX Guideline11직접WEB열람. 행동/대상/제약formula·breadcrumb/checklist/partialsuccess/audittrail·이벤트상태조건확인. HAXmerepresenceovertrust와global/local설명분리. rawinternalchain-of-thought공개대신실제operationalhistory/도구상태/출처로분명히집필. 원문ChatGPT2025memory현재제품으로정확하지않은관찰은사용안함. 새실험/신뢰향상수치없음. snapshot transparency단일/candidates[];FigmaShowWork는별도제품/감사사례이고여긴UI상태/부분성공패턴이라동일사건아님.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:23:07.262Z",
+    "checks": [
+      "상태문구와실제백엔드진행 구분",
+      "HAX설명존재로인한과신·global/local범위 대조",
+      "부분성공·전체목표·재시도실행 분리",
+      "민감자료정리·확인가능한이력과내부추론 구분",
+      "원문의오래된제품관찰전용없음·전체중복검토"
+    ],
+    "relatedPendingIds": []
+  }
+}

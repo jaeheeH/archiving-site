@@ -17,7 +17,7 @@ type Candidate = {
 };
 export type ResearchResult = { article: Editorial; research: { model: string; researchedAt: string; sources: Source[]; primarySourceUrls: string[]; notes: string; queries: string[]; searchSuggestions: string; characterCount: number; qualityReview?: { checkedAt: string; passed: true } } };
 
-async function generate(body: Record<string, unknown>, signal: AbortSignal): Promise<Candidate> {
+export async function generate(body: Record<string, unknown>, signal: AbortSignal): Promise<Candidate> {
   const key = process.env.GEMINI_API_KEY;
   if (!key) throw new Error('Gemini API 설정이 필요합니다.');
   const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent', { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, body: JSON.stringify(body), signal });
@@ -28,10 +28,10 @@ async function generate(body: Record<string, unknown>, signal: AbortSignal): Pro
   }
   const result = await response.json() as { candidates?: Candidate[] };
   const candidate = result.candidates?.[0];
-  if (!candidate || candidate.finishReason !== 'STOP') throw new Error('조사 응답이 완성되지 않았습니다. 기존 기사는 보존됩니다.');
+  if (!candidate || candidate.finishReason !== 'STOP') throw new Error(`조사 응답이 완성되지 않았습니다${candidate?.finishReason && /^[A-Z_]{1,40}$/.test(candidate.finishReason) ? ` (${candidate.finishReason})` : ''}. 기존 기사는 보존됩니다.`);
   return candidate;
 }
-const responseText = (candidate: Candidate) => (candidate.content?.parts || []).filter(part => !part.thought).map(part => part.text || '').join('');
+export const responseText = (candidate: Candidate) => (candidate.content?.parts || []).filter(part => !part.thought).map(part => part.text || '').join('');
 export async function checkNewsDuplicate(input: DuplicateInput, candidates: DuplicateCandidate[], signal: AbortSignal) {
   if (!candidates.length) return;
   const exact = candidates.find(candidate => exactDuplicate(input, candidate));

@@ -1,0 +1,149 @@
+{
+  "id": "f698baec-1459-46c5-8d5c-9e541d5f6d42",
+  "article": {
+    "url": "https://toss.tech/article/toss-frontend-ai-docs-eng",
+    "title": "토스 박씨와 실록봇 사례…업무 질문의 답과 대화 기록을 문서로 연결한다",
+    "summary": "토스 프론트엔드 챕터가 문서 기반 답변 챗봇 박씨와 대화를 문서 PR로 바꾸는 실록봇을 소개했다. 문서를 탐색하는 경로를 늘리기보다 업무 도구에서 질문하고 지식을 남기는 흐름이다. 검색 증강 생성의 자료 품질과 대화의 검토 경계를 함께 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "문서 탐색보다 동료에게 질문하는 행동을 관찰했다",
+        "kind": "reporting",
+        "paragraphs": [
+          "토스는 영문 글에서 프론트엔드 챕터의 AI 문서 시스템을 소개했다. 개발자를 관찰하고 인터뷰한 결과 필요한 지식을 찾을 때 문서 탐색보다 동료에게 직접 질문하는 행동이 두드러졌다고 설명한다. 정해진 문서 구조를 따라 원하는 내용을 찾아야 하는 부담을 줄이기 위해, 개발자가 일하는 곳에서 문서가 질문에 답하도록 만드는 접근을 택했다.",
+          "그 결과인 박씨 챗봇은 VS Code와 Cursor 같은 IDE 및 사내 메신저에서 사용할 수 있다고 소개했다. 질문하면 기존 문서를 바탕으로 답하며 출처를 제공하는 RAG 기반 시스템이다. 이름은 프론트엔드 챕터 리드 박소진의 페르소나에서 따왔다고 밝혔다. 사용자가 문서의 위치를 기억하고 여러 페이지를 탐색하기 전에 업무 질문으로 내용을 찾게 하는 목적이다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/toss-frontend-ai-docs-eng"
+          }
+        ]
+      },
+      {
+        "heading": "실록봇은 메신저 대화를 문서 PR로 만든다",
+        "kind": "reporting",
+        "paragraphs": [
+          "박씨가 좋은 답을 내려면 충분한 범위와 품질의 문서가 필요하지만 소수의 테크니컬 라이터와 개발자만으로 자료를 늘리기 어려웠다고 설명한다. 이때 만든 실록봇은 메신저 대화의 핵심 내용을 AI로 요약하고 문서 저장소에 PR을 여는 자동화 도구다. 대화에 지정 이모지로 반응하거나 봇을 직접 호출해 기록을 만들도록 한다.",
+          "원출처는 버그를 해결한 유용한 대화에서 실록봇을 불러 지식을 보존하고 이후 같은 질문에 박씨가 답하는 흐름을 제시했다. 반복 질문과 개인에게 집중되던 정보가 줄어 업무에 도움이 됐다고 설명한다. 다만 공개 글에는 그 변화의 실험 설계나 정확도·시간 절감 수치가 없다. 설명된 운영 경험을 문서 시스템의 설계 사례로 살펴볼 수 있으며 독립적인 성과 검증으로 볼 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/toss-frontend-ai-docs-eng"
+          }
+        ]
+      },
+      {
+        "heading": "검색된 자료의 품질이 답변의 조건이 된다",
+        "kind": "analysis",
+        "paragraphs": [
+          "박씨의 구조는 모델의 일반 지식만으로 사내 질문에 답하게 하지 않고 관련 문서를 맥락으로 전달하는 방식이다. AWS의 공식 RAG 해설도 외부 자료를 검색해 사용자 질문과 함께 모델에 제공하는 흐름 및 출처 확인을 설명한다. 이는 일반적인 기술 원리의 대조이며 토스가 AWS의 특정 서비스를 사용했다는 근거는 아니다. 사내 자료를 찾아오는 단계가 답변의 입력을 결정한다는 점이 중요하다.",
+          "출처가 붙어 있으면 사용자는 설명의 근거를 직접 확인할 수 있다. 그러나 인용할 문서가 잘못됐거나 필요한 조건이 빠졌다면 출처 표시는 정확성의 보장이 되지 않는다. 팀은 실제 업무 질문에서 적절한 문서를 찾았는지와 그 문서를 맞게 설명했는지를 나누어 검토할 수 있다. 대화 UI의 편의성과 답변 내용의 품질은 함께 확인해야 하는 서로 다른 조건이다."
+        ],
+        "references": [
+          {
+            "label": "AWS 검색 증강 생성의 검색·출처·갱신 해설",
+            "kind": "primary",
+            "url": "https://aws.amazon.com/ko/what-is/retrieval-augmented-generation/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/toss-frontend-ai-docs-eng"
+          }
+        ]
+      },
+      {
+        "heading": "대화의 요약과 확정된 지식을 구분한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "실록봇의 PR은 대화 중에 이미 만들어진 정보를 문서화할 출발점을 제공한다. 별도로 글을 쓰는 비용을 줄일 가능성이 있지만 대화에는 임시 가설과 폐기된 방법, 최종 결론이 섞일 수 있다. 요약이 이 차이를 지우면 이후 챗봇이 확정되지 않은 정보를 근거로 사용하게 된다. 생성된 문서를 어떤 기준으로 검토하고 반영할지는 지식의 유효성을 결정하는 단계다.",
+          "PR을 여는 기능은 변경 내용을 비교하고 검토할 경로를 제공한다. 글에서 자동 병합이나 모든 대화의 무조건 수집을 발표하지는 않았다. 같은 접근을 쓰는 팀은 최종 결론과 적용 범위, 원래 대화의 링크가 초안에 남는지 확인할 수 있다. 기록할 대화를 사람의 호출로 선택하는 흐름에는 문서화할 가치가 있는 내용을 현장에서 판단한다는 의미도 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/toss-frontend-ai-docs-eng"
+          },
+          {
+            "label": "AWS 검색 증강 생성의 검색·출처·갱신 해설",
+            "kind": "primary",
+            "url": "https://aws.amazon.com/ko/what-is/retrieval-augmented-generation/"
+          }
+        ]
+      },
+      {
+        "heading": "문서의 생성 경로와 갱신 경로를 함께 만든다",
+        "kind": "analysis",
+        "paragraphs": [
+          "한 번 해결한 질문의 답을 문서에 남기면 다음 사람이 같은 맥락을 다시 설명할 필요가 줄어들 수 있다. 반면 코드와 정책이 바뀌면 이전에 유용했던 기록도 오래된 답이 된다. AWS 해설 역시 최신 검색을 위해 외부 자료와 임베딩을 갱신해야 한다고 설명한다. 챗봇의 질의 화면뿐 아니라 자료가 새로 생성되고 변경되는 경로가 시스템 설계에 포함되어야 한다.",
+          "토스 사례를 참고하는 조직은 반복 질문의 목록에서 시작해 기록되지 않은 정보와 갱신되지 않은 정보를 나누어 볼 수 있다. 실록봇은 첫 문제에 대한 입력 경로, 박씨는 그 자료를 활용하는 접근 경로로 이해할 수 있다. 두 도구의 결합은 문서화를 별도 작업에서 업무 흐름으로 옮기는 방향을 보여 준다. 실제 효과는 기록의 신뢰성과 사람들이 필요한 답을 찾을 수 있는지로 판단할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "AWS 검색 증강 생성의 검색·출처·갱신 해설",
+            "kind": "primary",
+            "url": "https://aws.amazon.com/ko/what-is/retrieval-augmented-generation/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/toss-frontend-ai-docs-eng"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "박씨는 IDE와 사내 메신저에서 문서 기반 RAG 답변과 출처를 제공한다고 소개됐다.",
+      "실록봇은 지정 이모지나 호출로 대화를 요약하고 문서 저장소에 PR을 연다.",
+      "반복 질문 감소는 회사의 경험 설명이며 공개된 정량 평가나 자동 병합 보장은 없다."
+    ],
+    "tags": [
+      "토스",
+      "RAG",
+      "문서자동화",
+      "지식관리"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://toss.tech/article/toss-frontend-ai-docs-eng"
+      },
+      {
+        "label": "AWS 검색 증강 생성의 검색·출처·갱신 해설",
+        "url": "https://aws.amazon.com/ko/what-is/retrieval-augmented-generation/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://toss.tech/article/toss-frontend-ai-docs-eng",
+      "https://aws.amazon.com/ko/what-is/retrieval-augmented-generation/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 WEB·보존 전문과AWS 공식RAG검색/출처/자료갱신설명을읽었다. 회사가동료보다정확하다고표현했으나독립평가가없어그주장그대로일반화하지않았다. 실록봇opensPR만확인하고자동merge/모든대화무조건수집을주장하지않았다. 원출처previouslypublished링크는한국어TW2편으로이동하므로챗봇최초발행일을추정하지않았다. 후보TossBenchmark/웹뷰/UX/GPU사례와다르고snapshot.pending0eb/69d는역할변화·플랫폼설계연재로본챗봇의동작상세와구분했다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "01f3c059-d9c5-41f6-a1ba-a12ad17e7ed3",
+    "1194d285-301c-4c1b-898b-7df3f7f6a725",
+    "1af6973b-8c8e-4aee-b8d1-5cc639c333d2",
+    "dbbb2be6-baab-45eb-87fa-d49b4df1d375"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:05:57.926Z",
+    "checks": [
+      "Park질문·VSCode/Cursor/메신저·RAG출처및이름유래를원문확인했다.",
+      "Sillokbot이모지/직접호출→AI요약→문서PR흐름을확인했다.",
+      "일반RAG검색맥락주입·출처·자료갱신은AWS공식문서로대조했고사내성과와구분했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

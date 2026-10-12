@@ -1,0 +1,198 @@
+{
+  "id": "ba76c591-40b6-4bd8-9597-070f443d47e1",
+  "article": {
+    "url": "https://huggingface.co/blog/evaleval-aisi",
+    "title": "영국 AISI·EvalEval, 평가 점수와 실행 조건 공개…재현 가능한 비교 기반 마련",
+    "summary": "영국 AI Security Institute와 EvalEval이 평가 결과를 Evaluation Cards로 공개하는 협력을 소개했다. 다섯 주요 벤치마크의 여섯 모델 결과와 별도 사이버 평가를 다루며 Every Eval Ever 형식으로 맥락·설정을 연결한다. 연계 논문은 추론 자원과 실행 절차에 따라 점수가 달라지므로 동일 예산·조건 비교가 필요하다고 설명한다.",
+    "paragraphs": [
+      {
+        "heading": "평가 결과에 맥락과 설정을 연결하는 협력",
+        "kind": "reporting",
+        "paragraphs": [
+          "영국 AI Security Institute와 EvalEval은 공동 글에서 Evaluation Cards를 통해 공개된 평가 방법과 결과를 공유하는 협력을 소개했다. 앞선 공동 워크숍과 스키마에 대한 피드백을 실제 데이터 공개에 적용하는 단계라고 설명한다. EvalEval의 Every Eval Ever는 결과를 공통 구조로 기록하고 Evaluation Cards는 벤치마크·실행·모델 정보를 연결해 해석하도록 하는 기반이다. 새 모델의 출시나 모든 평가를 다시 실행해 같은 점수를 확인했다는 발표와는 다르다. 이번 소식의 변화는 점수만 보여주는 대신 그것이 어떤 방식으로 만들어졌는지 확인할 정보를 함께 공개하는 데 있다."
+        ],
+        "references": [
+          {
+            "label": "AISI·EvalEval 공동 원문 발표",
+            "url": "https://huggingface.co/blog/evaleval-aisi",
+            "kind": "primary"
+          },
+          {
+            "label": "허깅페이스 원문의 공식 소스 파일",
+            "url": "https://github.com/huggingface/blog/blob/main/evaleval-aisi.md",
+            "kind": "primary"
+          },
+          {
+            "label": "Every Eval Ever 공식 스키마·변환 저장소",
+            "url": "https://github.com/evaleval/every_eval_ever",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "다섯 주요 평가와 별도 사이버 결과의 대상",
+        "kind": "reporting",
+        "paragraphs": [
+          "공동 글은 HealthBench, FrontierMath, Humanity’s Last Exam, SWE-Bench Pro와 Terminal-Bench 2.0의 주요 실험 결과를 소개한다. 해당 공개 대상은 Claude Opus 4·4.5·4.6과 GPT-5·5.2·5.4의 여섯 모델이다. Cyber CTFs와 The Last Ones의 관련 결과도 포함하지만 이 두 평가의 모델 집합은 주요 실험과 완전히 같지 않다고 명시했다. 따라서 모든 평가가 같은 여섯 모델을 같은 조건으로 비교한 표라고 합칠 수 없다. HealthBench라는 의료 관련 평가 이름도 실제 환자 진료나 제품의 임상 적용을 검증한 결과와 구분해야 한다. 공개된 것은 연구의 평가 기록과 설정이다."
+        ],
+        "references": [
+          {
+            "label": "AISI·EvalEval 공동 원문 발표",
+            "url": "https://huggingface.co/blog/evaleval-aisi",
+            "kind": "primary"
+          },
+          {
+            "label": "허깅페이스 원문의 공식 소스 파일",
+            "url": "https://github.com/huggingface/blog/blob/main/evaleval-aisi.md",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "공통 형식이 기록하는 것과 보장하지 않는 것",
+        "kind": "reporting",
+        "paragraphs": [
+          "Every Eval Ever 공식 저장소는 출처와 평가자 관계, 생성 설정, 지표와 점수의 방향, 불확실성 등을 기록하는 형식을 설명한다. 개별 사례의 입력·출력·점수와 토큰 사용량을 별도 기록으로 연결할 수 있고 도구를 쓰는 에이전트 평가에는 호출·실행 기록도 담을 수 있다. Inspect AI·HELM·lm-eval-harness 로그를 바꾸는 변환기도 제공한다. 저장소의 검증은 형식과 기록 간 조건을 확인하는 절차다. 데이터가 형식에 맞는다는 사실만으로 해당 시험이 모든 사용 상황을 대표하거나 모델의 모든 답이 정확하다고 인증하는 것은 아니다. 비교에 필요한 정보와 결과의 해석을 구분하는 기반이다."
+        ],
+        "references": [
+          {
+            "label": "Every Eval Ever 공식 스키마·변환 저장소",
+            "url": "https://github.com/evaleval/every_eval_ever",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "추론 자원의 효과는 실행 절차와 함께 읽기",
+        "kind": "analysis",
+        "paragraphs": [
+          "연계 논문은 최대12개 모델과7개 벤치마크에서 더 큰 토큰 예산, 문맥 압축, 반복 제출을 결합해 비교했다. 반복은 모델이 스스로 진행하거나 제한적인 정답 여부 피드백을 받는 조건으로 나뉜다. 공동 글의 HLE 설명도 각 문제에서 가장 이른 성공을 기준으로 토큰 수에 따른 누적 해결 비율을 보여준다고 명시한다. 여러 번 시도할 기회와 정답 여부를 알려주는 평가 장치가 있으면 한 번 답하는 서비스와 다른 절차가 된다. 결과의 차이를 토큰을 늘린 단독 효과나 모델 자체만의 개선으로 볼 수는 없다. 무엇을 다시 제출할 수 있고 어떤 피드백을 받았는지가 함께 공개돼야 점수의 의미를 판단할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "AISI·EvalEval 공동 원문 발표",
+            "url": "https://huggingface.co/blog/evaleval-aisi",
+            "kind": "primary"
+          },
+          {
+            "label": "허깅페이스 원문의 공식 소스 파일",
+            "url": "https://github.com/huggingface/blog/blob/main/evaleval-aisi.md",
+            "kind": "primary"
+          },
+          {
+            "label": "AISI 추론 계산·평가 절차 연구 원문",
+            "url": "https://arxiv.org/abs/2606.17930",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "같은 점수와 같은 능력은 자동으로 일치하지 않는다",
+        "kind": "analysis",
+        "paragraphs": [
+          "논문은 예산과 피드백·병렬 시도의 이득이 평가마다 다르다고 보고했다. 한 가지 제한된 예산의 점수가 해당 설정에서 드러난 성능을 보여주지만 가능한 능력의 전체 범위를 그대로 나타내지는 않는다는 해석이다. 그렇다고 계산량을 늘리면 모든 평가가 계속 같은 비율로 좋아진다는 주장도 아니다. 연구자는 모델 세대 사이의 비교에서 큰 공통 계산 범위와 맞춘 예산, 명시적인 절차를 제시하라고 제안한다. 따라서 공개 카드를 나란히 볼 때 모델 이름과 점수뿐 아니라 사용한 자원과 도구·제출 조건을 확인하는 일이 필요하다. 비교의 단위를 맞추는 정보가 있어야 차이를 특정 모델의 효과로 해석할 근거가 생긴다."
+        ],
+        "references": [
+          {
+            "label": "AISI 추론 계산·평가 절차 연구 원문",
+            "url": "https://arxiv.org/abs/2606.17930",
+            "kind": "primary"
+          },
+          {
+            "label": "Every Eval Ever 공식 스키마·변환 저장소",
+            "url": "https://github.com/evaleval/every_eval_ever",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "재현과 재분석에 필요한 출발점을 제공",
+        "kind": "analysis",
+        "paragraphs": [
+          "개별 실행 기록이 있으면 연구자가 어떤 문제에서 어떤 답과 도구 사용이 나왔는지 다시 살펴볼 수 있다. 전체 시험을 반복 실행하기 비싸더라도 기존 기록의 실패·성공 조건을 분석하는 접근이 생긴다. 공개 형식은 그 자료를 다른 평가 체계와 연결할 수 있게 하지만 모든 비공개 데이터나 실행 환경이 자동으로 공개되는 것은 아니다. 공동 발표도 적절한 공개 범위에서 방법과 결과를 공유하는 방식으로 설명한다. 이번 협력의 구체적인 의미는 평가를 읽는 데 필요한 설정과 기록을 같은 구조로 제공한 데 있다. 순위의 절대성을 선언하기보다 비슷해 보이는 점수가 다른 조건에서 나왔는지 확인할 기반을 늘린 변화다."
+        ],
+        "references": [
+          {
+            "label": "AISI·EvalEval 공동 원문 발표",
+            "url": "https://huggingface.co/blog/evaleval-aisi",
+            "kind": "primary"
+          },
+          {
+            "label": "허깅페이스 원문의 공식 소스 파일",
+            "url": "https://github.com/huggingface/blog/blob/main/evaleval-aisi.md",
+            "kind": "primary"
+          },
+          {
+            "label": "Every Eval Ever 공식 스키마·변환 저장소",
+            "url": "https://github.com/evaleval/every_eval_ever",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "다섯 주요 벤치마크의 여섯 모델과 별도 사이버 평가의 다른 모델 집합을 구분했다.",
+      "공통 스키마의 형식 검증과 실제 능력·안전의 인증은 다른 절차다.",
+      "토큰 예산·압축·반복 제출·피드백이 결합된 연구를 단독 모델 효과로 바꾸지 않았다.",
+      "의료 관련 평가 이름을 실제 진료 성능·임상 허가 범위로 확대하지 않았다."
+    ],
+    "tags": [
+      "허깅페이스",
+      "AISI",
+      "EvalEval",
+      "AI평가"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "AISI·EvalEval 공동 원문 발표",
+        "url": "https://huggingface.co/blog/evaleval-aisi"
+      },
+      {
+        "label": "허깅페이스 원문의 공식 소스 파일",
+        "url": "https://github.com/huggingface/blog/blob/main/evaleval-aisi.md"
+      },
+      {
+        "label": "Every Eval Ever 공식 스키마·변환 저장소",
+        "url": "https://github.com/evaleval/every_eval_ever"
+      },
+      {
+        "label": "AISI 추론 계산·평가 절차 연구 원문",
+        "url": "https://arxiv.org/abs/2606.17930"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://huggingface.co/blog/evaleval-aisi",
+      "https://github.com/huggingface/blog/blob/main/evaleval-aisi.md",
+      "https://github.com/evaleval/every_eval_ever",
+      "https://arxiv.org/abs/2606.17930"
+    ],
+    "notes": "정확originalweb실패이나공개HTTP200같은title확인,공식huggingface/blog markdown전문검색/open대조.공동저자AISI/EvalEval귀속.현재재현연구June16/July16v3,새Sep모델실험으로오인안함.공개5benchmark6models vs관련cyberpartialoverlap분리,논문전체upto12/7분모차이반영.oraclerepeatedsubmit·contextcompaction·tokenbudget복합실험,earliestsuccessperattemptedtask≠singlepassusualservice.HealthBench기록≠환자진료/인허가.EEEvalidation≠modelqualitycertification.후보source-aware/MCP/agent실패다른연구,전체pending동일AISIcards공개없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "1f37d111-b04f-4179-ae7e-26441b020245",
+    "308e353f-5b29-4612-a51b-1e40607ff7ec",
+    "5b0ce2d8-23fc-43f4-b782-67b2c8da2693",
+    "795ddb86-faac-4cac-aaa5-6378d7041ca5",
+    "a9d496fb-2cb7-4c78-9eb6-7394f2bb0fb4",
+    "d2e32dd3-a609-4e8e-bcde-6b9b66f4ac13",
+    "dd193a08-7d0e-4ca4-a1f8-92e753626910"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:27:37.801Z",
+    "checks": [
+      "원본URL HTTP200와공식소스파일동일글 확인",
+      "공개주요모델/벤치마크집합과전체논문대상 분리",
+      "EEE출처·설정·지표·사례로그 구조확인",
+      "추론복합절차및oracle조건 확인",
+      "형식검증과능력/안전인증 분리",
+      "의료평가를임상성과로확대안함"
+    ],
+    "relatedPendingIds": []
+  }
+}

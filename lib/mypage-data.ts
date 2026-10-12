@@ -56,7 +56,6 @@ export type MypageActivity = {
   references: MypageReferenceItem[];
 };
 
-const ACTIVITY_LIMIT = 80;
 
 const getMypageContext = cache(async () => {
   const supabase = await createClient();
@@ -71,23 +70,6 @@ const getMypageContext = cache(async () => {
     user,
   };
 });
-
-type SupabaseRowsQuery<T> = PromiseLike<{
-  data: T[] | null;
-  error: { message?: string } | null;
-}>;
-
-async function readRows<T>(query: SupabaseRowsQuery<T>): Promise<T[]> {
-  const { data, error } = await query;
-
-  if (error) {
-    console.error("Mypage data query failed:", error.message);
-    return [];
-  }
-
-  return data || [];
-}
-
 function firstString(...values: unknown[]) {
   for (const value of values) {
     if (typeof value === "string" && value.trim()) {
@@ -96,10 +78,6 @@ function firstString(...values: unknown[]) {
   }
 
   return "";
-}
-
-function uniqueIds(values: Array<number | string | null | undefined>) {
-  return Array.from(new Set(values.filter((value): value is number | string => value != null)));
 }
 
 export const getMypageProfile = cache(async (): Promise<MypageProfile | null> => {
@@ -133,77 +111,3 @@ export const getMypageProfile = cache(async (): Promise<MypageProfile | null> =>
     role: firstString(profile?.role) || "user",
   };
 });
-
-export async function getMypageActivity(): Promise<MypageActivity | null> {
-  const context = await getMypageContext();
-  if (!context) return null;
-
-  const { admin, user } = context;
-  const [postScraps, galleryScraps, referenceScraps] = await Promise.all([
-    readRows<{ post_id: string }>(
-      admin
-        .from("post_scraps")
-        .select("post_id")
-        .eq("user_id", user.id)
-        .limit(ACTIVITY_LIMIT)
-    ),
-    readRows<{ gallery_id: number }>(
-      admin
-        .from("gallery_scraps")
-        .select("gallery_id")
-        .eq("user_id", user.id)
-        .limit(ACTIVITY_LIMIT)
-    ),
-    readRows<{ reference_id: number }>(
-      admin
-        .from("reference_scraps")
-        .select("reference_id")
-        .eq("user_id", user.id)
-        .limit(ACTIVITY_LIMIT)
-    ),
-  ]);
-
-  const postIds = uniqueIds(postScraps.map((item) => item.post_id));
-  const galleryIds = uniqueIds(galleryScraps.map((item) => item.gallery_id));
-  const referenceIds = uniqueIds(referenceScraps.map((item) => item.reference_id));
-
-  const [posts, galleries, references] = await Promise.all([
-    postIds.length
-      ? readRows<MypagePostItem>(
-          admin
-            .from("posts")
-            .select(
-              "id, type, title, subtitle, summary, slug, title_image_url, published_at, created_at, scrap_count"
-            )
-            .in("id", postIds)
-            .in("type", ["blog", "news"])
-            .eq("is_published", true)
-            .order("published_at", { ascending: false })
-        )
-      : Promise.resolve([]),
-    galleryIds.length
-      ? readRows<MypageGalleryItem>(
-          admin
-            .from("gallery")
-            .select("id, title, image_url, thumbnail_url, tags, description, created_at")
-            .in("id", galleryIds)
-            .order("created_at", { ascending: false })
-        )
-      : Promise.resolve([]),
-    referenceIds.length
-      ? readRows<MypageReferenceItem>(
-          admin
-            .from("references")
-            .select("id, title, description, url, image_url, logo_url, range, created_at")
-            .in("id", referenceIds)
-            .order("created_at", { ascending: false })
-        )
-      : Promise.resolve([]),
-  ]);
-
-  return {
-    posts,
-    galleries,
-    references,
-  };
-}

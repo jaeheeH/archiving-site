@@ -1,0 +1,152 @@
+{
+  "id": "a8352bec-cc03-4d03-8a64-236f4bc9e955",
+  "article": {
+    "url": "https://www.apple.com/newsroom/2026/09/apple-advances-health-and-fitness-capabilities-using-apple-intelligence/",
+    "title": "애플 건강 앱 재설계 예고, 일상의 요약과 장기 기록·데이터 출처를 연결",
+    "summary": "애플은9월 발표에서 건강 앱의 Insights·Longevity 탭과 기기 내 움직임 평가를 연말 미국 영어부터 제공할 계획이라고 밝혔다. 요약과 Health Age를 실제 수명이나 진단의 보장으로 읽지 않으며, 여러 자료의 출처·권한·기기 조건을 함께 확인해야 한다.",
+    "paragraphs": [
+      {
+        "heading": "센서 발표와 다른 앱의 제공 일정",
+        "kind": "reporting",
+        "paragraphs": [
+          "애플은9월9일 건강·피트니스 기능을 발표하며 워치의 새 센서와 재설계한 건강 앱을 함께 소개했다. 이 기사에서는 이미 별도 소개한 워치 하드웨어와 준비 점수보다 아이폰·아이패드에서 기록을 해석하고 관리하는 화면에 집중한다. 같은 발표 안의 모든 기능이 같은 날짜에 열리는 것은 아니다.",
+          "회사는 재설계한 건강 앱을 연말 미국 영어부터 제공하고 다른 언어를 뒤이어 추가할 계획이라고 명시했다. Apple Intelligence를 지원하는 기기와 최신 소프트웨어가 필요하며 일부 기능은 아이폰에만 제공된다. Health Age에는 애플워치가 필요하고 일부 기능의 연령·지역 조건도 남는다.10월의 날짜나 OS 업데이트만으로 한국어의 모든 새 기능이 완료됐다고 단정하지 않았다."
+        ],
+        "references": [
+          {
+            "label": "애플의 건강 앱 재설계·제공 조건 발표",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-advances-health-and-fitness-capabilities-using-apple-intelligence/"
+          }
+        ]
+      },
+      {
+        "heading": "오늘의 요약과 오래 쌓인 자료를 나눈다",
+        "kind": "reporting",
+        "paragraphs": [
+          "발표의 Insights 탭은 심장·수면·활동 등 자료를 요약하고 하루 중 새 데이터에 따라 갱신하는 화면이다. For You에는 사용자의 자료에 맞춘 권고와 관련 읽을거리를 제시한다. Longevity 탭은 여러 기간의 기록을 영역별로 보여주며 Health Age를 통해 실제 나이에 비해 지표가 어떤 상태인지 표현하는 구상이다.",
+          "회사가 설명한 움직임 평가는 아이폰 카메라와 워치 등의 입력을 이용해 기기 안에서 수행하며 영상을 기록·저장·공유하지 않는 방식이라고 한다. 이를 건강 앱의 모든 데이터가 저장되지 않거나 다른 연결 서비스가 전혀 없다는 의미로 넓힐 수는 없다. 회사의 설계 설명과 임상 효과를 독립적으로 검증한 결론도 구별해야 한다."
+        ],
+        "references": [
+          {
+            "label": "애플의 건강 앱 재설계·제공 조건 발표",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-advances-health-and-fitness-capabilities-using-apple-intelligence/"
+          },
+          {
+            "label": "애플 지원의 건강 데이터 출처·동기화 관리",
+            "kind": "primary",
+            "url": "https://support.apple.com/en-us/108779"
+          }
+        ]
+      },
+      {
+        "heading": "한 화면에 모인 자료에는 서로 다른 출처가 있다",
+        "kind": "reporting",
+        "paragraphs": [
+          "애플의9월14일 지원 문서는 건강 앱에 수동 입력과 기기, 다른 앱·액세서리의 자료가 들어올 수 있다고 설명한다. 여러 출처가 같은 유형의 데이터를 제공하면 우선순위를 사용하고 이용자가 순서를 바꿀 수 있다. 기록이 한곳에 보인다는 사실만으로 모두 같은 장치의 자동 측정값이 되는 것은 아니다.",
+          "문서는 연결 앱의 건강 범주별 접근을 조절하고 잘못 입력한 기록을 삭제하는 경로도 안내한다. iCloud에 동기화한 자료는 한 기기에서 삭제하면 같은 계정으로 동기화된 기기에서도 제거된다. iCloud 저장·전송의 암호화와 종단간 암호화의 버전·이중 인증 조건을 따로 설명한다. 기기 내 영상 처리와 클라우드 기록 관리는 서로 다른 데이터 경로다."
+        ],
+        "references": [
+          {
+            "label": "애플 지원의 건강 데이터 출처·동기화 관리",
+            "kind": "primary",
+            "url": "https://support.apple.com/en-us/108779"
+          }
+        ]
+      },
+      {
+        "heading": "짧은 문구 뒤에 기준과 기간을 남겨야 한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 일상의 요약과 장기 추세를 분리한 화면이 같은 기록을 다른 시간 단위로 보게 하는 선택이라고 읽는다. 어제의 한 값과 몇 달의 변화는 같은 의미가 아니다. 요약의 제목만으로 판단하기보다 어떤 자료와 기간을 사용했는지, 누락된 기록이 있는지를 확인할 수 있어야 비교의 목적이 분명해진다.",
+          "Health Age처럼 나이의 형태로 표현하는 결과는 익숙한 언어라 빠르게 이해되지만 실제 수명이나 모든 질환의 위험을 확정하는 값으로 오해하기도 쉽다. 이번 발표는 기능의 표시와 지원을 설명한 자료다. 특정 사용자의 진단이나 치료 효과, 수명이 늘어난 결과를 입증하지 않는다. 기록을 읽는 인터페이스의 편리함과 의료적인 판단을 하나의 결론으로 합치지 않는 것이 필요한 이유다."
+        ],
+        "references": [
+          {
+            "label": "애플의 건강 앱 재설계·제공 조건 발표",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-advances-health-and-fitness-capabilities-using-apple-intelligence/"
+          },
+          {
+            "label": "애플 지원의 건강 데이터 출처·동기화 관리",
+            "kind": "primary",
+            "url": "https://support.apple.com/en-us/108779"
+          }
+        ]
+      },
+      {
+        "heading": "개인화의 결과와 입력 관리가 함께 이어져야 한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "새 앱이나 기기가 같은 유형의 기록을 더하면 이전 자료와 다른 방식으로 값이 들어올 수 있다. 이용자는 요약의 변화가 자신의 생활 때문인지 입력 출처가 달라졌기 때문인지 구별할 수 있어야 한다. 원자료로 돌아가 출처와 시간을 보고 접근 범위를 조정하는 경로가 개인화 화면의 일부가 되는 셈이다.",
+          "삭제 역시 화면에서 항목 하나를 숨기는 것과 동기화된 원자료를 지우는 것은 다르다. 결과를 설명하는 문구만큼 변경의 범위를 설명하는 문구가 필요하다. 이번 재설계 예고의 의미는 개인의 자료와 읽을거리를 연결해 더 길게 기록을 보는 화면을 제시한 데 있다. 실제 이용에서는 지원 기기와 언어·지역뿐 아니라 입력의 출처와 보관 선택도 남는 조건이다. 이 기사에서 앱의 새 기능을 실행하거나 임상·개인정보 성능을 독립적으로 시험하지는 않았다."
+        ],
+        "references": [
+          {
+            "label": "애플의 건강 앱 재설계·제공 조건 발표",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-advances-health-and-fitness-capabilities-using-apple-intelligence/"
+          },
+          {
+            "label": "애플 지원의 건강 데이터 출처·동기화 관리",
+            "kind": "primary",
+            "url": "https://support.apple.com/en-us/108779"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "재설계앱은연말미국영어부터제공할계획이다.",
+      "기기내영상평가와저장·동기화된건강기록은다른경로다.",
+      "개인화요약과출처·기간·접근관리를함께확인한다."
+    ],
+    "tags": [
+      "AppleHealth",
+      "건강앱",
+      "AppleIntelligence",
+      "데이터출처",
+      "개인화"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "애플의 건강 앱 재설계·제공 조건 발표",
+        "url": "https://www.apple.com/newsroom/2026/09/apple-advances-health-and-fitness-capabilities-using-apple-intelligence/"
+      },
+      {
+        "label": "애플 지원의 건강 데이터 출처·동기화 관리",
+        "url": "https://support.apple.com/en-us/108779"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.apple.com/newsroom/2026/09/apple-advances-health-and-fitness-capabilities-using-apple-intelligence/",
+      "https://support.apple.com/en-us/108779"
+    ],
+    "notes": "9/9원문42–146앱전체/availability및9/14supportHealthData32–137실제읽음. 워치12준비점수/Ultra운동중복보다새HealthInsights/Longevity/HealthAge/온디바이스movement 및데이터출처관리 중심. later2026USenglish지원예고를10월현재한국서비스로혼동하지않음. 최고정확도/1000명연구원문안읽어수치·의학주장삭제. QuestUSlabs가격/폐경상담의료조언역시범위제외. 영상저장없음은해당평가만이며clouddata동기화는별도,삭제전기기범위/암호화조건정확. 후보6전체/pendingAppleHealth같은앱기사없음. 실제신기능실행/임상/보안감사없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "145a1a8f-0198-4d0f-aa94-098a8fec8409",
+    "1d0ab475-cad9-40f6-a125-290917de796e",
+    "682b3e84-79ef-4664-8ca1-9b7365454803",
+    "7eea6836-5130-410a-bbe3-4ecab0607e44",
+    "88dd33b0-f0fb-48b6-8fd6-bc3df072a7a4",
+    "956d329a-104f-4538-8c27-53d22881ff0f"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:16:51.874Z",
+    "checks": [
+      "센서와재설계앱의제공일 구분",
+      "미국영어·AI기기·기능별조건 유지",
+      "영상평가처리와클라우드기록 분리",
+      "수동/앱/기기출처우선순위 확인",
+      "HealthAge를수명·진단보장으로확대안함"
+    ],
+    "relatedPendingIds": []
+  }
+}

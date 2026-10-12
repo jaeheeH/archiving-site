@@ -1,0 +1,176 @@
+{
+  "id": "2a9d207a-bbdf-4e9b-8840-6930d4388046",
+  "article": {
+    "url": "https://blog.google/innovation-and-ai/technology/health/amie-clinical-study-lancet/",
+    "title": "AMIE 진료 전 대화 연구, 감독하의 가능성과 단일 기관의 한계",
+    "summary": "구글과 BIDMC 연구진의 AMIE 임상 가능성 연구가 란셋에 실렸다. 대화와 진료를 모두 마친 환자는 98명이었으며, 사전 기준에 따른 대화 중단은 없었다. 그러나 감독자는 오류 1건과 정보 보완 5건을 기록했다. 연구 조건과 설문 분모를 살피면 의료진을 보조할 가능성과 검증 과제를 함께 읽을 수 있다.",
+    "paragraphs": [
+      {
+        "heading": "실제 진료 전 대화의 가능성을 시험",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 8일 Beth Israel Deaconess Medical Center(BIDMC)와 수행한 AMIE 연구가 의학 학술지 란셋에 게재됐다고 밝혔다. AMIE는 임상 추론과 대화를 연구하는 AI 시스템이다. 기관이 공개한 논문 초록에 따르면 이번 연구는 단일 기관에서 대조군 없이 진행한 전향적 가능성 연구다. 영어를 사용하는 18세 이상 환자가 단일 증상에 대한 급성 문제의 일차 진료 예약을 앞두고 최대 5일 전에 AI와 대화했다. 의사인 안전 감독자가 모든 상호작용을 지켜봤고, 대화 기록과 요약은 방문 전에 진료 담당자에게 전달됐다. AI가 독립적으로 진료를 끝내는 환경을 검증한 연구가 아니라, 감독과 기존 진료 과정에 연결된 대화를 살펴본 설계다."
+        ],
+        "references": [
+          {
+            "label": "구글의 란셋 게재 소식 원문",
+            "url": "https://blog.google/innovation-and-ai/technology/health/amie-clinical-study-lancet/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글 리서치의 란셋 논문 초록",
+            "url": "https://research.google/pubs/a-prospective-clinical-feasibility-study-of-a-conversational-diagnostic-ai-in-an-ambulatory-primary-care-clinic/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "중단이 없었다는 결과의 정확한 뜻",
+        "kind": "reporting",
+        "paragraphs": [
+          "논문 초록은 2025년 4월부터 11월까지 114명이 등록했고, 98명이 AMIE 대화와 담당 의료진의 진료를 모두 마쳤다고 적고 있다. 사전에 정한 안전 기준에 따른 대화 중단은 0건이었다. 그러나 안전 감독자는 환각 오류 1건을 기록했고 다섯 상호작용에 임상 정보를 추가했다. 따라서 중단이 없었다는 결과를 AI 오류가 전혀 없었다는 뜻으로 바꾸면 연구의 내용을 놓치게 된다. 의료진의 사후 설문도 전체 98건을 분모로 삼지 않았다. 답변은 60건에서 확보됐고, 방문 전 기록을 검토한 44건 중 33건에서 진료 준비에 도움이 됐으며 25건에서 진료 행동을 바꾸었을 가능성이 있다고 응답했다. 원문 소식의 75%와 절반 이상이라는 표현은 이 44건의 설문 맥락에서 읽어야 한다."
+        ],
+        "references": [
+          {
+            "label": "구글 리서치의 란셋 논문 초록",
+            "url": "https://research.google/pubs/a-prospective-clinical-feasibility-study-of-a-conversational-diagnostic-ai-in-an-ambulatory-primary-care-clinic/",
+            "kind": "primary"
+          },
+          {
+            "label": "AMIE 공식 연구 프로젝트와 논문 목록",
+            "url": "https://sites.research.google/gr/amie/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "진단 후보와 제품 적용을 구분",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글의 공식 연구 설명에서 90%라는 진단 지표는 방문 뒤 8주 시점의 기록 검토로 정한 최종 진단이 AI가 제시한 상위 일곱 후보 안에 포함된 비율이다. 첫 번째 진단을 맞힌 비율이나 모든 환자에 대한 확정 진단 정확도로 소개할 수 없다. 해당 설명은 AI가 전자의무기록에 접근하거나 신체 검사를 수행하지 못한 조건도 밝히며, 관리 계획의 실용성과 비용 효율에서는 담당 의료진이 더 좋은 평가를 받았다고 적었다. 이번 소식은 연구 게재를 알린 것이며 상용 서비스의 이용 방법이나 규제기관 인허가 결과를 제시하지 않았다. 논문은 추가 연구가 필요하다고 결론 내린다. 대상과 감독 조건이 다른 환경까지 결과를 확대하려면 별도의 근거가 필요하다."
+        ],
+        "references": [
+          {
+            "label": "구글의 란셋 게재 소식 원문",
+            "url": "https://blog.google/innovation-and-ai/technology/health/amie-clinical-study-lancet/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글 리서치의 란셋 논문 초록",
+            "url": "https://research.google/pubs/a-prospective-clinical-feasibility-study-of-a-conversational-diagnostic-ai-in-an-ambulatory-primary-care-clinic/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글 리서치의 연구 조건 및 진단 후보 설명",
+            "url": "https://research.google/blog/exploring-the-feasibility-of-conversational-diagnostic-ai-in-a-real-world-clinical-study/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "대화 요약은 진료를 연결하는 문서",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 이 연구는 환자의 이야기와 의료진의 준비 사이에 어떤 문서를 놓을지 묻는다. 긴 대화를 압축한 요약은 시간을 줄일 수 있지만, 압축 과정에서 증상의 순서나 불확실한 표현이 사라지면 다른 해석을 만들 수 있다. 따라서 화면과 기록을 설계할 때 환자가 직접 말한 내용, 시스템이 정리한 내용, 감독자가 보완한 내용을 구분해 되짚을 수 있는 연결이 유용하다. 이는 이번 연구의 화면 구현을 확인했다는 주장이 아니라 공개된 대화·요약 전달 과정에서 도출한 해석이다. 준비에 도움이 됐다는 설문은 이런 연결 방식의 수용 가능성을 살피는 단서다. 그 자체로 환자의 건강 결과가 좋아졌거나 진료 시간이 줄었다는 인과 효과를 입증하지는 않는다. 사용 경험과 치료 성과는 서로 다른 검증 항목으로 남겨야 한다."
+        ],
+        "references": [
+          {
+            "label": "구글 리서치의 란셋 논문 초록",
+            "url": "https://research.google/pubs/a-prospective-clinical-feasibility-study-of-a-conversational-diagnostic-ai-in-an-ambulatory-primary-care-clinic/",
+            "kind": "primary"
+          },
+          {
+            "label": "AMIE 공식 연구 프로젝트와 논문 목록",
+            "url": "https://sites.research.google/gr/amie/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "가능성 연구를 보존하는 기준",
+        "kind": "analysis",
+        "paragraphs": [
+          "의료 AI 소식을 기록할 때에는 모델 이름이나 긍정적 백분율뿐 아니라 연구의 기관 수, 참여 언어, 연령 조건, 감독 방식과 분모를 함께 남기는 편이 적절하다. 대조군 없는 연구에서 경험이 좋아졌다는 응답은 의미가 있지만, 다른 도구나 기존 절차보다 얼마나 나은지는 별도로 비교해야 한다. 영어 성인 환자의 특정 방문 전 대화라는 조건도 다른 언어나 진료 환경에 그대로 옮겨갈 수 있는지 아직 답하지 않는다. 이 구분을 유지하면 임상 현장에 들어간 연구라는 점을 인정하면서도 이를 일반 의료 조언으로 전환하지 않을 수 있다. 이번 결과에서 보존할 핵심은 연구용 시스템을 실제 진료 흐름에 연결해 관찰했다는 사실과, 사람 감독 아래에서 확인한 초기 가능성의 범위다. 더 넓은 적용 여부는 후속 시험과 공개 근거를 통해 판단할 문제다."
+        ],
+        "references": [
+          {
+            "label": "구글 리서치의 란셋 논문 초록",
+            "url": "https://research.google/pubs/a-prospective-clinical-feasibility-study-of-a-conversational-diagnostic-ai-in-an-ambulatory-primary-care-clinic/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글 리서치의 연구 조건 및 진단 후보 설명",
+            "url": "https://research.google/blog/exploring-the-feasibility-of-conversational-diagnostic-ai-in-a-real-world-clinical-study/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "AMIE 대화와 진료를 모두 마친 98명의 단일 기관·단일군 가능성 연구다.",
+      "안전 기준상 대화 중단은 0건이지만 감독자는 오류 1건과 정보 추가 5건을 기록했다.",
+      "75% 도움 응답의 분모는 기록을 미리 검토한 의료진 설문 44건이며, 90%는 상위 7개 진단 후보 포함률이다."
+    ],
+    "tags": [
+      "AMIE",
+      "의료AI",
+      "임상연구",
+      "진료경험",
+      "정보설계"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "구글의 란셋 게재 소식 원문",
+        "url": "https://blog.google/innovation-and-ai/technology/health/amie-clinical-study-lancet/"
+      },
+      {
+        "label": "구글 리서치의 란셋 논문 초록",
+        "url": "https://research.google/pubs/a-prospective-clinical-feasibility-study-of-a-conversational-diagnostic-ai-in-an-ambulatory-primary-care-clinic/"
+      },
+      {
+        "label": "AMIE 공식 연구 프로젝트와 논문 목록",
+        "url": "https://sites.research.google/gr/amie/"
+      },
+      {
+        "label": "구글 리서치의 연구 조건 및 진단 후보 설명",
+        "url": "https://research.google/blog/exploring-the-feasibility-of-conversational-diagnostic-ai-in-a-real-world-clinical-study/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/innovation-and-ai/technology/health/amie-clinical-study-lancet/",
+      "https://research.google/pubs/a-prospective-clinical-feasibility-study-of-a-conversational-diagnostic-ai-in-an-ambulatory-primary-care-clinic/",
+      "https://sites.research.google/gr/amie/",
+      "https://research.google/blog/exploring-the-feasibility-of-conversational-diagnostic-ai-in-a-real-world-clinical-study/"
+    ],
+    "notes": "Google 원문과 논문 저자의 기관 초록, AMIE 공식 사이트, 상세 연구 블로그를 직접 브라우징했다. Lancet 직접 링크는 도구 접근 오류였으므로 본문을 읽었다고 주장하지 않고 기관이 공개한 논문 초록으로 대조했다. 단일기관·단일군 전향적, 영어18세이상·단일증상·진료최대5일전, 2025-04~11 등록114/완료98, 안전중단0/환각1/보완5, 의료진설문60 및 사전검토44 중 도움33·행동영향25를 확인. 90%는 상세 설명의 최종진단 상위7후보 포함률로 제한. 인허가나 일반진료 안전·효능 단정 없음. 후보10건과 snapshot.pending 전체 제목·원제·URL 및 AMIE/Lancet/BIDMC 관련 내용을 비교했다. 기존 초음파 연구 등은 다른 구체적 연구이며 동일 AMIE 연구 중복 없음. 연구 요약 인터페이스 논의는 ARCH.B 분석으로 분리.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "1b26d953-c1ba-4eb9-baf3-6bba7f7bc9bb",
+    "3564e5a1-5821-49ef-bd96-912e5c73a483",
+    "3f96b1c3-6b91-42c6-a276-a72f4e691fe8",
+    "6a15a15c-65e2-411f-847a-f51c003cbab0",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "ec323858-ca4e-442e-96d0-a114cb836a2c",
+    "f902e8f3-2cfc-4931-9ea9-73956faaae60"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:14:16.631Z",
+    "checks": [
+      "기관 공개 란셋 논문 초록과 정확한 분모 대조",
+      "안전중단0과 오류1·보완5 분리",
+      "90% 상위7후보·감독 조건·단일기관 한계 명시",
+      "진료 조언과 인허가·일반 성능 단정 제외",
+      "후보10건 및 전체 pending에 동일 연구 중복 없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

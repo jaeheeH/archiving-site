@@ -1,0 +1,156 @@
+{
+  "id": "530b2f8b-3905-45b8-ae1f-43644f3deb5f",
+  "article": {
+    "url": "https://blog.google/products-and-platforms/products/search/holiday-travel-trends-2026/",
+    "title": "구글 항공편의 연말 가격 분석… 미국 출발 평균과 개인 예약은 다르다",
+    "summary": "구글이 5년간 집계한 미국 출발 항공편 데이터로 2026년 연말 예약 경향을 공개했다. 크리스마스 평균 최저 시점은 출발 56일 전이며 여행지 순위는 검색의 상대 증가율이다. 과거 평균과 현재 노선의 가격, 저가 여정의 시간·편의 조건을 구분해 읽는다.",
+    "paragraphs": [
+      {
+        "heading": "5년간의 미국 출발 가격을 살핀 분석",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 5일 연말 여행을 앞두고 항공편 가격과 검색 경향을 소개했다. 일반적인 예약 시점 분석의 범위는 Google Flights에 집계된 5년간 데이터 중 미국 출발 항공편이다. 회사는 여러 여행 상황에서 평균 가격이 가장 낮았던 출발 전 시점을 제시했다. 미국 국내선은 39일 전, 국제선은 89일 전이며 추수감사절은 34일 전, 크리스마스는 56일 전이라고 설명한다. 크리스마스의 낮은 가격 범위는 출발 33~67일 전으로 제시됐다. 이는 과거 데이터의 집계 결과이며 한국 출발 노선의 예약 규칙을 조사한 자료는 아니다. 개별 노선의 표본 수와 원자료, 모든 운임 조건은 글에 공개되지 않는다. 특정 날짜를 모든 항공권의 최저가 구매일로 보장하는 해석과도 구분해야 한다."
+        ],
+        "references": [
+          {
+            "label": "구글의 2026년 연말 항공편 경향 공식 분석",
+            "url": "https://blog.google/products-and-platforms/products/search/holiday-travel-trends-2026/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "구매 요일·여행 요일·검색 순위",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 이번 분석에서 수요일 구매 가격이 일요일보다 약 1.4% 낮았지만 구매 요일의 차이는 크지 않았다고 설명했다. 반면 월요일 출발과 화요일 또는 수요일 귀국의 조합은 주말 여행보다 평균 약 14% 저렴했다고 밝혔다. 구매한 요일과 비행한 요일을 같은 조건으로 읽을 수는 없다. 직항은 연결편보다 평균 20% 비싸다는 결과도 제시했으며 이는 연결편을 선택하면 어떤 항공권이든 반드시 20% 할인된다는 뜻이 아니다. 여행지 경향은 2025년 대비 항공편 검색의 상대 증가율을 기준으로 삼았다. 국제 연말 여행에서는 Athens와 Québec City, Rio de Janeiro, Hanoi, Guatemala City를 소개한다. 실제 방문객과 판매된 항공권의 절대 수, 모든 이용자의 선호 순위와는 다른 지표다."
+        ],
+        "references": [
+          {
+            "label": "구글의 2026년 연말 항공편 경향 공식 분석",
+            "url": "https://blog.google/products-and-platforms/products/search/holiday-travel-trends-2026/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "현재 여정을 확인하는 제품 정보",
+        "kind": "reporting",
+        "paragraphs": [
+          "Google Flights 공식 도움말은 Best 탭이 가격과 편의, 예약 용이성의 균형을 고려하고 Cheapest 탭은 낮은 가격을 우선한다고 설명한다. 낮은 가격의 여정에는 연결 구간에서 짐을 직접 옮기거나 출국과 귀국에 다른 공항을 사용하는 조건이 포함될 수 있다. 과거 가격으로 제시하는 예측도 앞으로 가격이 예상과 다르게 움직일 가능성을 남겨 둔다. 가격 추적은 특정 항공편과 노선, 날짜를 기준으로 변화를 알리는 기능이며 날짜가 유동적일 때 별도 Any dates 옵션도 있다. 이런 기능 안내는 연말 분석에서 제시한 평균을 실제로 선택할 여정과 비교할 방법을 설명한다. 알림을 받는 일은 예약을 확정하는 행동과 다르고, 현재 검색에 표시된 가격도 모든 시장의 운임을 빠짐없이 대표한다는 뜻은 아니다."
+        ],
+        "references": [
+          {
+            "label": "Google Flights 최저가·추천·가격 예측 공식 설명",
+            "url": "https://support.google.com/travel/answer/7664728?hl=en",
+            "kind": "primary"
+          },
+          {
+            "label": "Google Flights 노선·날짜별 가격 추적 공식 안내",
+            "url": "https://support.google.com/travel/answer/6235879?hl=en",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "평균 최저 시점을 개인 규칙으로 바꾸기 전에",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 56일 같은 숫자가 주는 명확함과 실제 선택의 차이에 주목한다. 평균의 최저 지점은 여러 노선과 날짜의 변화를 요약하지만 이용자에게 필요한 좌석과 일정은 하나의 구체적인 조건이다. 여행 시간이 고정된 사람과 날짜를 움직일 수 있는 사람은 같은 통계를 보고도 다른 선택을 할 수 있다. 과거의 낮은 범위를 참고하더라도 원하는 항공편의 현재 조건이 무엇인지 확인하는 일이 남는다. 예측이 틀릴 가능성을 공식 설명이 함께 표시한다는 점도 그 차이를 보여준다. 뉴스의 역할은 독자의 구매 시점을 대신 정하는 것보다 데이터의 출발 지역과 비교 기간, 가격 지표를 이해하도록 돕는 데 있다. 미국 출발 분석의 숫자를 한국 여행자의 보편적인 절약 보장으로 바꾸면 이 자료의 가장 중요한 범위가 사라진다."
+        ],
+        "references": [
+          {
+            "label": "구글의 2026년 연말 항공편 경향 공식 분석",
+            "url": "https://blog.google/products-and-platforms/products/search/holiday-travel-trends-2026/",
+            "kind": "primary"
+          },
+          {
+            "label": "Google Flights 최저가·추천·가격 예측 공식 설명",
+            "url": "https://support.google.com/travel/answer/7664728?hl=en",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "싼 가격과 유용한 여정의 판단",
+        "kind": "analysis",
+        "paragraphs": [
+          "직항과 연결편의 가격 차이는 이동 시간이 가진 가치를 함께 생각하게 한다. 화면의 금액이 낮아도 짐을 옮기는 조건이나 공항 이동이 추가되면 이용자가 감수할 일이 늘 수 있다. Best와 Cheapest를 나눈 제품 구성도 하나의 순위가 모든 여행 목적에 맞지 않는다는 사실을 드러낸다. 검색 상대 증가율로 만든 여행지 목록 역시 이미 가장 많은 사람이 가는 장소와 새 관심이 늘어난 장소를 분리해서 읽을 필요를 보여준다. 작은 출발점에서 검색이 크게 늘면 비율은 높아질 수 있기 때문이다. 이번 소식은 가격 평균과 관심의 변화를 살필 자료이며 개별 예약의 결과를 확정하는 도구는 아니다. 출처에 남은 조건을 함께 보존해야 다음 해의 분석에서 시점과 관심이 어떻게 달라졌는지 비교할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "구글의 2026년 연말 항공편 경향 공식 분석",
+            "url": "https://blog.google/products-and-platforms/products/search/holiday-travel-trends-2026/",
+            "kind": "primary"
+          },
+          {
+            "label": "Google Flights 최저가·추천·가격 예측 공식 설명",
+            "url": "https://support.google.com/travel/answer/7664728?hl=en",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "예약 시점 분석은 5년간 미국 출발 항공편의 집계이며 한국 출발 규칙을 뜻하지 않는다.",
+      "크리스마스 56일 전은 평균 최저 지점으로 개별 항공권의 최저가 보장이 아니다.",
+      "여행지 경향은 검색의 상대 증가율이며 실제 방문·예약의 절대 순위와 다르다."
+    ],
+    "tags": [
+      "구글항공편",
+      "여행데이터",
+      "연말여행",
+      "가격비교",
+      "검색경향"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "구글의 2026년 연말 항공편 경향 공식 분석",
+        "url": "https://blog.google/products-and-platforms/products/search/holiday-travel-trends-2026/"
+      },
+      {
+        "label": "Google Flights 최저가·추천·가격 예측 공식 설명",
+        "url": "https://support.google.com/travel/answer/7664728?hl=en"
+      },
+      {
+        "label": "Google Flights 노선·날짜별 가격 추적 공식 안내",
+        "url": "https://support.google.com/travel/answer/6235879?hl=en"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/products-and-platforms/products/search/holiday-travel-trends-2026/",
+      "https://support.google.com/travel/answer/7664728?hl=en",
+      "https://support.google.com/travel/answer/6235879?hl=en"
+    ],
+    "notes": "원문·Flightsbestfare/track공식웹확인.USdepartures5yearsagg39domestic89international34thanksgiving56Christmas33-67range.1.4bookingWedvsSun/14MondepartTueWedreturnvsweekends;20nonstoppremiumNOT20connectingsavings.검색2025relativeincrease notbookings.원자료표본미공개·예측불확실·한국출발외삽없음.후보10전체및snapshot.pendingholiday/travel정확행사단일,도시음식지도기사별개.실제예약/추천목적없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "1b26d953-c1ba-4eb9-baf3-6bba7f7bc9bb",
+    "3564e5a1-5821-49ef-bd96-912e5c73a483",
+    "3f96b1c3-6b91-42c6-a276-a72f4e691fe8",
+    "6a15a15c-65e2-411f-847a-f51c003cbab0",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "ec323858-ca4e-442e-96d0-a114cb836a2c",
+    "f902e8f3-2cfc-4931-9ea9-73956faaae60"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:54:04.944Z",
+    "checks": [
+      "미국출발·5년집계조건원문확인",
+      "56·33-67·구매와비행요일정확히구분",
+      "직항20%premium을할인율로바꾸지않음",
+      "Best/Cheapest조건·예측불확실공식확인",
+      "후보10·전체pending동일연말분석없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

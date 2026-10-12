@@ -110,6 +110,20 @@ function NewsManager() {
     finally { setWorking(''); }
   }
 
+  async function deletePost(post: NewsPost) {
+    if (working || post.content?.automation?.status === 'writing') return;
+    if (!confirm(`‘${post.title}’ 뉴스를 삭제하시겠습니까?\n${post.is_published ? '공개 사이트에서도 삭제됩니다. ' : ''}삭제한 내용은 복구할 수 없습니다.`)) return;
+    setWorking(`delete:${post.id}`); setNotice(''); setError('');
+    try {
+      const response = await fetch(`/api/posts/${post.id}`, { method: 'DELETE' });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || '뉴스를 삭제하지 못했습니다.');
+      setNotice('뉴스를 삭제했습니다.');
+      setReload(value => value + 1);
+    } catch (cause) { setError(cause instanceof Error ? cause.message : '뉴스를 삭제하지 못했습니다.'); }
+    finally { setWorking(''); }
+  }
+
   function pageHref(number: number) { const params = new URLSearchParams(searchParams.toString()); params.set("page", String(number)); return `/dashboard/contents/news?${params}`; }
   const pages = Math.max(1, Math.ceil(total / 20));
   return <div>
@@ -164,6 +178,7 @@ function NewsManager() {
                 {!post.is_published && post.content?.paragraphs === undefined && post.content?.automation?.status === 'failed' && <button type="button" onClick={() => collect(false, post)} disabled={!!working || jobActive || !queue || !!queueError} aria-label={`다시 작성: ${post.title}`} aria-busy={working === post.id} title={jobActive ? '진행 중인 자동 작성이 끝나면 다시 요청할 수 있습니다.' : '이 기사 한 편을 다시 조사·작성합니다.'} className="content-table-action"><i className="ri-restart-line" aria-hidden="true" />{working === post.id ? '요청 중…' : jobActive && job?.retryPostId === post.id ? '재작성 대기' : '다시 작성'}</button>}
                 {!post.is_published && !!post.content?.paragraphs?.length && <button type="button" onClick={() => toggle(post)} disabled={!!working} aria-label={`바로 발행: ${post.title}`} aria-busy={working === post.id} className="content-table-create">{working === post.id ? "발행 중…" : "바로 발행"}</button>}
                 <Link href={`/dashboard/contents/news/${post.id}/edit`} className="content-table-action" aria-label={`${post.title} 수정`}><i className="ri-edit-line" aria-hidden="true" />수정</Link>
+                <button type="button" onClick={() => deletePost(post)} disabled={!!working || post.content?.automation?.status === 'writing'} aria-label={`${post.title} 삭제`} aria-busy={working === `delete:${post.id}`} title={post.content?.automation?.status === 'writing' ? '조사·작성 중인 뉴스는 작업이 끝난 뒤 삭제할 수 있습니다.' : '뉴스 삭제'} className="content-table-action content-table-action-danger"><i className="ri-delete-bin-line" aria-hidden="true" />{working === `delete:${post.id}` ? '삭제 중…' : '삭제'}</button>
                 {post.is_published && <Link href={`/news/read/${post.slug}`} target="_blank" rel="noopener noreferrer" className="block whitespace-nowrap text-xs text-gray-500 hover:underline">기사 보기 ↗</Link>}
               </div></td>
             </tr>; })}

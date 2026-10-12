@@ -1,0 +1,180 @@
+{
+  "id": "07bd1d2a-0fd6-48ab-862f-a4425661a0ca",
+  "article": {
+    "url": "https://blog.cloudflare.com/clef-faster-cheaper-multimodal/",
+    "title": "클라우드플레어, 클레프 옴니 공개…플래시 인하에 입력 한도 조정",
+    "summary": "클라우드플레어가 오디오·영상을 직접 받는 결정 모델 클레프 옴니를 공개하고 클레프 플래시 가격을 낮췄다. 플래시 호스팅의 문맥 한도는 함께 축소됐다. 입력을 선택지별 확률로 바꾸는 도구의 성격과 미디어 토큰, 서빙 성능의 측정 조건을 구분할 필요가 있다.",
+    "paragraphs": [
+      {
+        "heading": "텍스트·이미지·음성·영상으로 선택지를 평가",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어는 클레프(Clef) 모델군의 후속 모델 클레프 옴니를 공개했다. 기존 텍스트·이미지 입력에 음성 파일과 영상을 더해 하나의 요청에서 판단할 수 있게 했다는 발표다. 공식 모델 문서는 상태와 타입이 지정된 질문 스키마를 받아 각 질문의 허용된 선택지마다 확률을 반환하는 결정 모델로 설명한다. 자유로운 문장을 생성하는 대화 기능과는 용도가 다르다.",
+          "클레프 옴니는 총 300억 매개변수, 활성 30억 규모의 혼합 전문가 기반을 사용한다고 공식 문서는 안내한다. 호스팅 문맥은 64,000토큰이며 입력 100만 토큰당 가격은 0.15달러다. 미디어도 입력 토큰으로 환산되고 출력 토큰은 과금하지 않는다. 따라서 음성이나 영상을 지원한다는 사실은 그 파일의 처리 비용이 무료이거나 길이에 관계없이 일정하다는 뜻이 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/clef-faster-cheaper-multimodal/"
+          },
+          {
+            "label": "클레프 옴니 입력·과금 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/workers-ai/models/clef-omni/"
+          }
+        ]
+      },
+      {
+        "heading": "플래시 가격 인하와 문맥 축소를 함께 발표",
+        "kind": "reporting",
+        "paragraphs": [
+          "회사는 클레프 플래시의 입력 100만 토큰 가격을 0.09달러에서 0.038달러로 낮추면서 호스팅 문맥을 기존 64k에서 약 24k로 줄였다고 밝혔다. 확인 시점의 공식 플래시 문서는 정확한 한도를 24,576토큰으로 표기한다. 공개된 모델 가중치는 바꾸지 않았다는 설명이므로, 호스팅 서비스의 제약과 직접 운영하는 모델의 조건을 구분해야 한다.",
+          "플래시 문서는 미디어와 질문이 문맥 한도에 포함되며 이들이 한도를 넘으면 요청이 실패한다고 명시한다. 한도 안이라면 텍스트 state가 남은 공간에 맞게 잘릴 수 있다. 옴니 문서는 요청당 음성 네 개와 영상 두 개까지 받으며, 음성과 영상은 길이에 따라 입력 토큰을 계산한다고 안내한다. 가격표를 비교할 때는 문서 본문뿐 아니라 질문과 미디어가 차지하는 공간도 고려해야 한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/clef-faster-cheaper-multimodal/"
+          },
+          {
+            "label": "클레프 플래시 문맥·과금 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/workers-ai/models/clef-flash/"
+          },
+          {
+            "label": "클레프 옴니 입력·과금 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/workers-ai/models/clef-omni/"
+          }
+        ]
+      },
+      {
+        "heading": "기존 클레프의 속도 개선은 서빙 계층 변화",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어는 기존 클레프 호스팅도 빨라졌다고 발표했다. 회사의 표에서는 약 800토큰 입력의 중앙값이 262ms에서 152ms로, 약 3,400토큰은 616ms에서 305ms로 줄었다. 이는 회사가 제시한 입력 크기별 서빙 측정이며, 모든 요청의 왕복시간이나 사용자가 처리하는 전체 업무의 개선률은 아니다.",
+          "회사는 최적화가 주로 모델 가중치나 구조가 아닌 서빙 인프라에서 이뤄져 새 가중치를 배포하지 않았다고 설명했다. 모델을 직접 운영하는 사람이 호스팅의 지연 감소를 그대로 얻는다고 해석할 수 없는 이유다. 또한 공개한 평가 표에서는 과제별로 클레프 옴니와 다른 모델의 순위가 달라, 입력 종류의 확대가 모든 텍스트 과제의 정확도 향상을 뜻하지 않는다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/clef-faster-cheaper-multimodal/"
+          }
+        ]
+      },
+      {
+        "heading": "확률 반환과 업무상 결정을 구분하기",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 이 모델군의 실익은 자동화 흐름에 넣을 질문과 선택지를 구체적으로 정할 수 있다는 데 있다. 예를 들어 자료가 특정 조건을 충족하는지 분류하고 다음 처리 경로를 고를 때, 출력 형식을 제한하면 후속 시스템이 결과를 읽기 쉬워진다. 다만 선택지의 형식이 맞는 것과 실제 판단이 맞는 것은 서로 다른 검사다.",
+          "사용하는 팀은 어떤 입력에서 오판이 나는지와 그때의 확률을 함께 확인할 필요가 있다. 임계값 아래에서 사람이 검토할지, 재요청할지, 다른 경로로 보낼지는 모델이 제공하는 확률만으로 정해지지 않는다. 회사가 보정된 점수를 강조하더라도 자신의 업무 자료와 실패 비용에 맞는 기준을 따로 검증해야 한다. 결정 모델은 선택을 구조화하는 수단이지 업무 정책 자체가 아니다."
+        ],
+        "references": [
+          {
+            "label": "클레프 옴니 입력·과금 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/workers-ai/models/clef-omni/"
+          },
+          {
+            "label": "클레프 플래시 문맥·과금 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/workers-ai/models/clef-flash/"
+          }
+        ]
+      },
+      {
+        "heading": "비용과 품질은 잘린 문맥까지 포함해 비교",
+        "kind": "analysis",
+        "paragraphs": [
+          "가격을 낮춘 플래시를 도입할 때 가장 먼저 살필 것은 실제 입력 길이의 분포다. 평균 입력이 짧더라도 일부 긴 자료가 잘리면 중요한 조건이나 예외가 빠질 수 있다. 요청 성공 여부만 보지 말고 평가에 사용한 정보가 끝까지 포함됐는지 확인해야 비용 인하와 품질의 관계를 설명할 수 있다. 문서와 미디어가 함께 들어오는 요청에서는 이런 점검이 더 중요해진다.",
+          "아카이브에는 모델 ID와 실행 환경, 문맥 한도와 입력 구성, 질문 스키마를 함께 남기는 편이 유용하다. 같은 모델 이름이라도 호스팅 조건과 자체 서빙 환경이 다르면 비용과 지연시간이 달라질 수 있기 때문이다. 이번 후속 발표는 새 입력을 받는 옴니, 더 낮은 가격과 작은 문맥의 플래시, 기존 클레프의 인프라 최적화를 각각 다른 변화로 읽어야 한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/clef-faster-cheaper-multimodal/"
+          },
+          {
+            "label": "클레프 옴니 입력·과금 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/workers-ai/models/clef-omni/"
+          },
+          {
+            "label": "클레프 플래시 문맥·과금 공식 문서",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/workers-ai/models/clef-flash/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "클레프 옴니는 멀티모달 상태와 질문 스키마로 허용 선택지별 확률을 반환한다.",
+      "플래시는 입력 100만 토큰당 0.038달러이며 호스팅 문맥은 공식 문서 기준 24,576토큰이다.",
+      "기존 클레프의 지연 개선은 회사의 호스팅 측정으로 자체 서빙의 동일 효과를 보장하지 않는다."
+    ],
+    "tags": [
+      "클라우드플레어",
+      "클레프",
+      "멀티모달",
+      "WorkersAI",
+      "AI모델"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.cloudflare.com/clef-faster-cheaper-multimodal/"
+      },
+      {
+        "label": "클레프 옴니 입력·과금 공식 문서",
+        "url": "https://developers.cloudflare.com/workers-ai/models/clef-omni/"
+      },
+      {
+        "label": "클레프 플래시 문맥·과금 공식 문서",
+        "url": "https://developers.cloudflare.com/workers-ai/models/clef-flash/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.cloudflare.com/clef-faster-cheaper-multimodal/",
+      "https://developers.cloudflare.com/workers-ai/models/clef-omni/",
+      "https://developers.cloudflare.com/workers-ai/models/clef-flash/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원문 및 공식 clef-omni/clef-flash 문서를 WEB으로 읽었다. 원문의24k 표현을 최신 모델 문서24576토큰과 구분했고 flash0.038·omni0.15 가격 및 입력/출력 과금·미디어+질문 한도/텍스트절단을 확인했다. CPU/모델을 직접 실행하지 않았다. 속도 및 과제별 벤치마크는 공급자 공개 결과이며 일반 정확도·지연보장으로 서술하지 않았다. candidates 9편은 다른 클라우드플레어 제품/정책 소식이다. snapshot.pending f3552400은 최초 Clef/flash와RL플랫폼 소개이고 본 편은 omni추가·가격/문맥/호스팅성능 변경 후속 발표이므로 실질 추가 내용이 있다. 프로파일링 소식도 사건이 다르다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2019054a-a457-4356-9bc9-47b85aca06b5",
+    "2c1a4101-aae8-4295-b207-5ae567b4b4b6",
+    "4027d7c6-9b75-45ae-8b7f-1b6777e3bbbc",
+    "44c476d2-b8f8-4341-9694-f4e9b6e32222",
+    "64da50f0-d536-47bb-bd3e-dcc375b183f3",
+    "6fa4c931-8672-4bfd-8bf3-1af3e90b9b44",
+    "e1462898-b538-4aeb-96dc-f22e5eed6df0",
+    "ea15db4a-052c-4c9f-bca3-ed226cda42b8",
+    "faecfaa5-a532-492f-8d3a-bda52f50d1f7"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:23:18.878Z",
+    "checks": [
+      "omni공식 문서는30B/3Bactive·64000토큰·0.15달러/100만입력토큰과 선택지별 확률을 명시한다.",
+      "flash공식 문서는24576토큰·0.038달러와 미디어/질문이 한도를 넘으면 실패, 남은공간에state절단을 설명한다.",
+      "공식omni문서가음성4개/영상2개및길이별토큰환산을설명한다.",
+      "원문속도표의800토큰262→152ms와3400토큰616→305ms를호스팅내부결과로한정했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다.",
+      "최초 Clef 소개와 비교해 Omni 입력 확대, Flash 가격·문맥 변경, 기존 호스팅 최적화라는 실질적인 후속 변경을 확인했다."
+    ],
+    "relatedPendingIds": [
+      "f3552400-55e5-4cbe-8edf-75e19414d182"
+    ],
+    "distinctRelatedReviewed": true
+  }
+}

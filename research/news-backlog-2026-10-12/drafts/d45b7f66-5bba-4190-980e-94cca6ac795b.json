@@ -1,0 +1,166 @@
+{
+  "id": "d45b7f66-5bba-4190-980e-94cca6ac795b",
+  "article": {
+    "url": "https://openai.com/index/practical-guide-building-gpt-6",
+    "title": "OpenAI, GPT-6 실무 가이드 공개… 모델 이름보다 성공한 작업의 비용을 보라",
+    "summary": "OpenAI가 GPT-6 계열의 모델 선택과 추론 수준, 지시문, 장시간 작업 운영을 정리한 가이드를 공개했다. Astra·GPT-6.1 Sol·Luna의 역할과 API 가격을 구분하며 대표 업무에서 품질·시간·비용을 확인하도록 안내한다. 단가와 전체 비용, 기능과 실제 운영의 차이를 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "모델 계열을 사용하는 운영 안내",
+        "kind": "reporting",
+        "paragraphs": [
+          "OpenAI는 2026년 10월 2일 GPT-6 계열의 실무 사용 가이드를 공개했다. 모델을 고르고 지시문을 구성하며 오랫동안 이어지는 작업을 운영하는 방법을 정리한 글이다. 회사는 Astra를 어려운 추론, GPT-6.1 Sol을 복잡한 코딩과 조사·컴퓨터 사용, Luna를 범위가 명확한 반복 업무에 맞춘 선택으로 소개한다. 이런 역할은 OpenAI의 제품 안내이며 모든 실제 업무에서 고정된 순위를 보장하는 결과는 아니다. 별도 공식 모델 선택 문서도 같은 입력으로 모델과 추론 설정을 시험하고 자신의 품질 기준을 충족하는 가장 가벼운 설정을 유지하도록 제안한다. 제품별로 이용 가능한 도구와 설정, 사용 한도가 다르다는 조건도 표시한다. 새 계열 출시 소식과 달리 이 가이드의 중심은 이미 선택 가능한 모델을 어떤 작업에 적용하고 검증할지에 있다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 GPT-6 계열 실무 가이드 원문",
+            "url": "https://openai.com/index/practical-guide-building-gpt-6",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI 공식 모델 선택과 동일 작업 비교 안내",
+            "url": "https://developers.openai.com/api/docs/guides/model-selection",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "토큰 단가와 성공한 업무의 비용",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 API 비교 표에서 일반 텍스트 100만 토큰당 Astra 입력 가격은 10달러, 출력은 50달러로 표시된다. GPT-6.1 Sol은 각각 2달러와 10달러다. 가이드가 Sol을 5분의 1 가격으로 소개한 것은 이 입력·출력 단가의 비교로 읽을 수 있다. 전체 작업 비용이 항상 정확히 5분의 1이라는 의미는 아니다. 캐시 입력과 캐시 쓰기, 긴 문맥 조건, 도구 호출과 생성한 토큰 양도 비용에 영향을 줄 수 있다. 원문은 작업 성공과 지연 시간을 측정하고 성공한 과제당 비용을 살피도록 안내한다. API 토큰 가격을 ChatGPT나 Codex의 구독 사용량과 그대로 같은 과금 기준으로 취급해서도 안 된다. 공식 표는 API 가격이며 제품의 이용 조건은 해당 안내에서 확인할 별도 정보다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 GPT-6 계열 실무 가이드 원문",
+            "url": "https://openai.com/index/practical-guide-building-gpt-6",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI 공식 API 모델 비교·토큰 가격 표",
+            "url": "https://developers.openai.com/api/docs/models/compare",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "추론·속도·장시간 작업의 선택",
+        "kind": "reporting",
+        "paragraphs": [
+          "가이드는 추론 수준을 일상적 추출과 작은 수정에서 어려운 분석까지 업무에 맞게 조절하도록 설명한다. 더 높은 수준도 품질 향상이 추가 시간과 비용을 정당화할 때 유지하라는 조건을 둔다. 빠른 응답을 위한 Fast mode는 일반 처리보다 토큰 비용이 높다고 소개하며 속도와 추론을 같은 설정으로 보지는 않는다. 지시문에는 원하는 결과와 제약, 스스로 진행할 수 있는 결정과 완료 기준을 일관되게 담도록 안내한다. 장시간 작업에서는 상황 갱신과 비동기 도구, 독립적인 작업의 분담을 설명하고 API의 다중 에이전트 기능은 베타라고 표시한다. 기능이 있다는 설명과 모든 작업에서 그 기능이 더 좋은 결과를 낸다는 판단은 다르다. 가이드는 대표 작업을 시험하며 운영을 구성하는 방향으로 제시됐다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 GPT-6 계열 실무 가이드 원문",
+            "url": "https://openai.com/index/practical-guide-building-gpt-6",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI 공식 모델 선택과 동일 작업 비교 안내",
+            "url": "https://developers.openai.com/api/docs/guides/model-selection",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "모델 선택은 작업을 나누는 결정",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 이 안내를 가장 강한 모델 하나를 고르는 문제보다 업무의 성공 조건을 정하는 문제로 읽는다. 입력을 정리하는 단계와 여러 근거를 해석하는 단계는 필요한 판단이 다를 수 있다. 반복 업무의 낮은 단가도 오류를 사람이 자주 수정해야 한다면 기대한 비용 구조와 달라진다. 반대로 비싼 단가의 모델이 적은 시도에 필요한 결과를 내면 작업 전체의 비교는 다시 달라질 수 있다. 어느 경우도 실제 업무 기록 없이 확정할 수 없기 때문에 같은 입력과 기준으로 비교하라는 공식 설명이 중요하다. 모델의 이름을 남기는 것과 함께 어떤 결과를 성공으로 판단했는지 보존해야 이후 버전이 바뀌었을 때 효과를 비교할 수 있다. 가격표는 출발 자료이며 성공 조건은 이용자의 업무에서 정해진다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI 공식 모델 선택과 동일 작업 비교 안내",
+            "url": "https://developers.openai.com/api/docs/guides/model-selection",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI 공식 API 모델 비교·토큰 가격 표",
+            "url": "https://developers.openai.com/api/docs/models/compare",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "완료 기준이 길어진 작업을 묶는다",
+        "kind": "analysis",
+        "paragraphs": [
+          "작업이 여러 도구와 시간에 걸쳐 이어지면 중간 산출물이 무엇을 의미하는지 더 중요해진다. 코드가 작성된 상태와 실행한 결과를 확인한 상태는 다르며 도구의 응답을 기다리는 단계와 그 응답에 근거해 다음 결정을 내리는 단계도 다르다. 완료 기준을 명시하면 진행 보고를 결과로 오인할 여지를 줄일 수 있다. 독립 작업을 분담할 때에도 합쳐진 산출물의 기준이 없으면 각각의 성공이 전체 결과의 일관성을 보장하지 않는다. 이번 가이드는 모델 성능뿐 아니라 지시와 검증, 운영의 연결을 설명한다. 실제 적용에서는 속도 설정이나 에이전트 수를 늘리는 것보다 병목이 어떤 단계에 있는지 먼저 살필 필요가 있다. 남은 한계를 함께 기록할 때 가이드의 기능 목록이 구체적인 업무 판단의 자료로 이어질 수 있다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 GPT-6 계열 실무 가이드 원문",
+            "url": "https://openai.com/index/practical-guide-building-gpt-6",
+            "kind": "primary"
+          },
+          {
+            "label": "OpenAI 공식 모델 선택과 동일 작업 비교 안내",
+            "url": "https://developers.openai.com/api/docs/guides/model-selection",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "공식 안내는 대표 업무와 동일 입력으로 모델·추론 설정을 비교하도록 제안한다.",
+      "Sol의 5분의 1 가격은 API 입력·출력 단가 비교이며 전체 작업 비용 비율을 보장하지 않는다.",
+      "Fast 처리의 비용 조건과 다중 에이전트 베타, 제품별 도구·한도를 함께 읽어야 한다."
+    ],
+    "tags": [
+      "OpenAI",
+      "GPT6",
+      "모델선택",
+      "API비용",
+      "에이전트"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "OpenAI의 GPT-6 계열 실무 가이드 원문",
+        "url": "https://openai.com/index/practical-guide-building-gpt-6"
+      },
+      {
+        "label": "OpenAI 공식 모델 선택과 동일 작업 비교 안내",
+        "url": "https://developers.openai.com/api/docs/guides/model-selection"
+      },
+      {
+        "label": "OpenAI 공식 API 모델 비교·토큰 가격 표",
+        "url": "https://developers.openai.com/api/docs/models/compare"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://openai.com/index/practical-guide-building-gpt-6",
+      "https://developers.openai.com/api/docs/guides/model-selection",
+      "https://developers.openai.com/api/docs/models/compare"
+    ],
+    "notes": "원가이드·공식modelselection·modelscompare실제웹열람.10/2guidevsmodelrelease8028/intelligentUIcandidate별개.표per1MinputoutputAstra10/50Sol2/10;fifthpriceunitnotwholework/subscription.가이드Fastpremium/multiagentbeta/reasoningtradeoff/clearassignmentdoneauthorizations검증.캐시쓰기장문도구조건추가모델표설명/실사용비교미수행.후보10및전체pendingGPT6titlesURL대조같은guide없음.마케팅nearAstra보편보장없음.코드·API실행없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "8d9df11a-5fe9-473f-b6f5-3dafc1d34bf8",
+    "2142abfa-1989-4097-b707-0373bbfa5385",
+    "359f8d3f-6531-4c22-8656-0398180f9250",
+    "3d4c214d-6e7b-4d16-9699-89052de96b77",
+    "42859509-04cf-4701-a4d0-38da66580b37",
+    "586ea001-9896-4223-ab06-06b8c3fc2941",
+    "66810653-081c-450b-b88b-962f93246dc6",
+    "7c9afd54-b7cf-4d95-a41f-67c2b4ba8d0f",
+    "b944ff1a-3e60-4ec5-a522-1ae00690be40",
+    "e2c21871-59fd-4490-b612-afa83b96d0ef"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:56:35.222Z",
+    "checks": [
+      "원출처·모델선택·가격표직접웹확인",
+      "API100만텍스트토큰10/50대2/10단위유지",
+      "단가vs성공작업비용및구독구분",
+      "Fastpremium·multiagentbeta조건표시",
+      "후보10·전체pending동일실무guide없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

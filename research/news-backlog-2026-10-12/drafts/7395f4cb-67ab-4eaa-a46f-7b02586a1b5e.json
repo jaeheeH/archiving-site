@@ -1,0 +1,151 @@
+{
+  "id": "7395f4cb-67ab-4eaa-a46f-7b02586a1b5e",
+  "article": {
+    "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-2-3-%EA%B2%80%EC%83%89%EC%9D%84-%EC%96%B9%EA%B8%B0-lightrag%EC%99%80-navigator-9f3119060242",
+    "title": "여기어때, 라이트RAG와 문서 계층 탐색으로 사내 검색 보완",
+    "summary": "여기어때가 의미 검색을 담당하는 라이트RAG와 원본 문서 계층을 따라가는 Navigator를 결합한 사례를 공개했다. 동일 제목의 문서 구분, 비동기 적재 점검, 대규모 재임베딩 대응이 핵심이다. 내부 개선 수치는 해당 데이터와 평가 조건에서 해석해야 한다.",
+    "paragraphs": [
+      {
+        "heading": "비슷한 문서만으로 답하지 못한 문제",
+        "kind": "reporting",
+        "paragraphs": [
+          "여기어때 공통플랫폼개발팀은 사내 지식 검색 시리즈의 두 번째 글에서 라이트RAG(LightRAG)와 Navigator를 함께 사용한 구조를 설명했다. 가이드와 요청 절차, 과거 이슈에 답의 조각이 흩어져 있어 유사한 청크만 찾는 방식으로는 관계를 이어가기 어려웠다는 것이다. 라이트RAG의 공식 프로젝트도 문서의 개체·관계에 기반한 지식 그래프와 벡터 검색을 결합하는 접근을 제시한다.",
+          "기술블로그는 검색 도구가 답변을 대신 작성하게 하지 않고, /query/data로 개체·관계·청크의 근거를 돌려주게 했다고 밝혔다. 최종 답변은 도구를 사용하는 에이전트가 만든다. 검색 서버와 답변 생성을 분리한 선택이므로, 검색 자료가 옳은지와 그 자료를 사용한 답변이 옳은지는 별도로 확인해야 한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-2-3-%EA%B2%80%EC%83%89%EC%9D%84-%EC%96%B9%EA%B8%B0-lightrag%EC%99%80-navigator-9f3119060242"
+          },
+          {
+            "label": "라이트RAG 공식 프로젝트 문서",
+            "kind": "primary",
+            "url": "https://github.com/HKUDS/LightRAG"
+          }
+        ]
+      },
+      {
+        "heading": "비동기 처리의 완료를 따로 확인하다",
+        "kind": "reporting",
+        "paragraphs": [
+          "팀이 사용한 업로드 방식에서는 같은 ID의 문서를 다시 보내도 수정본이 갱신되지 않았다고 기술블로그는 설명한다. 팀은 삭제를 요청한 뒤 문서 목록에서 실제로 없어졌는지 확인하고 재업로드하는 절차를 만들었다. 업로드 접수 이후 개체 추출이 호출 한도에 걸려 실패하는 경우도 있어, 실패 문서를 조회해 알리고 재처리하는 점검을 운영했다.",
+          "또한 날짜와 이슈 번호 등 불필요한 개체를 줄이고 사내 개념에 맞게 추출 타입과 예시를 바꿨다. 기술블로그는 이 프롬프트 개선 후 내부 검색 정확도가 76%에서 84%로 상승했다고 밝혔다. 이는 팀이 선택한 모델과 문서·평가 기준에서 나온 결과다. 사용 버전이나 인덱싱 설정을 확인하지 않고 현재의 모든 라이트RAG 설치에 같은 갱신 제약과 효과를 적용해서는 안 된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-2-3-%EA%B2%80%EC%83%89%EC%9D%84-%EC%96%B9%EA%B8%B0-lightrag%EC%99%80-navigator-9f3119060242"
+          }
+        ]
+      },
+      {
+        "heading": "문서가 놓인 자리를 보존하는 Navigator",
+        "kind": "reporting",
+        "paragraphs": [
+          "의미가 유사한 B2C와 B2B 게이트웨이의 같은 제목 문서를 구분하기 위해 팀은 Navigator로 Confluence 트리와 Jira 계층을 보존했다. Neo4j에 원본 구조를 옮기고, 검색된 조각에서 부모와 주변 문서로 이동하도록 했다. 헤딩과 문단을 기준으로 문서를 자르되 경로와 직전 조각의 일부 문맥은 임베딩 입력에만 붙여 조회 본문이 반복 정보로 지저분해지는 일을 피했다.",
+          "전사 문서 17만 건으로 확대할 때는 저장 키의 인덱스와 분할 적재, 최종 임베딩 텍스트와 모델 이름을 포함한 해시를 사용했다. 내용이 같으면 재처리를 건너뛰고 모델이 바뀌면 다시 임베딩할 수 있게 한 구성이다. 기술블로그는 적재 시간이 약 81% 줄고 메모리 사용률은 40% 감소했다고 설명했으며, 이 역시 해당 내부 개선 전후의 측정값이다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-2-3-%EA%B2%80%EC%83%89%EC%9D%84-%EC%96%B9%EA%B8%B0-lightrag%EC%99%80-navigator-9f3119060242"
+          }
+        ]
+      },
+      {
+        "heading": "의미와 구조는 서로 다른 오류를 막는다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 문서 계층을 남기는 선택은 검색 품질을 점수 하나로 설명하기 어려운 이유를 보여준다. 본문이 비슷해도 담당 조직과 시스템이 다르면 적용 가능한 지침이 달라질 수 있다. 같은 제목을 정확히 찾아도 잘못된 부모 아래의 자료를 사용하면 답은 틀린다. 계층 정보는 문서 유사도만으로 확인되지 않는 적용 범위의 근거가 된다.",
+          "그렇다고 폴더 위치가 문서의 정확성을 증명하는 것은 아니다. 오래된 가이드나 잘못 연결된 이슈도 있을 수 있으므로 수정 시각과 원본 링크를 함께 확인해야 한다. 검색 결과에서 계층을 보여주는 UI나 도구 응답을 설계할 때도, 위치를 답의 결론으로 삼기보다 어떤 조직과 업무에 해당하는 자료인지 확인하는 문맥으로 쓰는 편이 적절하다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-2-3-%EA%B2%80%EC%83%89%EC%9D%84-%EC%96%B9%EA%B8%B0-lightrag%EC%99%80-navigator-9f3119060242"
+          },
+          {
+            "label": "라이트RAG 공식 프로젝트 문서",
+            "kind": "primary",
+            "url": "https://github.com/HKUDS/LightRAG"
+          }
+        ]
+      },
+      {
+        "heading": "확장에서는 갱신과 재처리를 같은 단위로 보기",
+        "kind": "analysis",
+        "paragraphs": [
+          "비동기 인덱싱에서 요청 성공과 검색 가능 상태는 다르다. 적재 파이프라인에는 접수된 문서뿐 아니라 완료·실패·재시도 중인 문서가 어떻게 조회되는지까지 남겨야 한다. 삭제 후 재등록은 실패 시 일시적으로 근거가 사라질 수 있으므로, 해당 절차를 도입하는 팀은 재처리 상태와 복구할 원문을 관리할 필요가 있다. 사례의 순서를 그대로 복사하기보다 자신이 쓰는 버전의 갱신 API를 확인해야 한다.",
+          "모델 이름을 해시에 넣는 방식은 임베딩 결과의 출처를 문서 변경 관리에 연결한다. 모델을 바꾸면 같은 텍스트도 새 검색 공간에서 다시 처리해야 하기 때문이다. 아카이브에도 청킹 기준과 임베딩 모델, 계층 경로의 구성법을 함께 적으면 과거 검색 결과를 설명하기 쉽다. 이런 운영 정보가 있어야 정확도 향상과 누락 복구가 각각 어떤 변경에서 비롯됐는지 추적할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 사례와 발표",
+            "kind": "primary",
+            "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-2-3-%EA%B2%80%EC%83%89%EC%9D%84-%EC%96%B9%EA%B8%B0-lightrag%EC%99%80-navigator-9f3119060242"
+          },
+          {
+            "label": "라이트RAG 공식 프로젝트 문서",
+            "kind": "primary",
+            "url": "https://github.com/HKUDS/LightRAG"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "라이트RAG의 의미 검색과 Navigator의 원본 계층 탐색을 함께 사용했다.",
+      "업로드 접수와 인덱싱 완료를 나누어 확인하고 실패 문서를 재처리했다.",
+      "정확도·적재 시간·메모리 개선값은 여기어때 내부 문서와 구성에서 나온 결과다."
+    ],
+    "tags": [
+      "여기어때",
+      "라이트RAG",
+      "문서검색",
+      "지식그래프",
+      "RAG"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 사례와 발표",
+        "url": "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-2-3-%EA%B2%80%EC%83%89%EC%9D%84-%EC%96%B9%EA%B8%B0-lightrag%EC%99%80-navigator-9f3119060242"
+      },
+      {
+        "label": "라이트RAG 공식 프로젝트 문서",
+        "url": "https://github.com/HKUDS/LightRAG"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://techblog.gccompany.co.kr/%EC%82%AC%EB%82%B4-%EC%A7%80%EC%8B%9D%EC%9C%BC%EB%A1%9C-agentic-rag-%EB%A7%8C%EB%93%A4%EA%B8%B0-2-3-%EA%B2%80%EC%83%89%EC%9D%84-%EC%96%B9%EA%B8%B0-lightrag%EC%99%80-navigator-9f3119060242",
+      "https://github.com/HKUDS/LightRAG"
+    ],
+    "notes": "Codex 직접 조사·집필, Gemini 및 외부 생성 API 호출 없음. WEB 원문·짧은 ID·Medium 대체 주소는 접근 실패했다. 원출처의 보존 RSS 전문과 직접 HTTP로 추가 조회한 최신 공식 RSS를 읽고 구조·업로드 조건·노드/프롬프트 개선·전사 확장 수치를 대조했다. 라이트RAG 공식 프로젝트는 WEB으로 확인했다. upsert 및 비동기 갱신 제약은 팀이 사용한 구성으로 한정했다. 76%→84%, 적재 81% 단축·메모리 사용률 40% 감소는 공급자 내부 측정이며 독립 검증이 아니다. 후보 기사 없음. snapshot.pending 전체 제목과 RAG 관련 요약을 비교했다. 같은 시리즈 3편은 관측·평가·MCP 서빙을 별도로 다룬 후속 글이고 토스 검색 기사와 조직·사례가 달라 중복이 아니다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:15:28.579Z",
+    "checks": [
+      "RSS가 /query/data만 사용하는 근거 반환 구조와 B2C/B2B 동명 문서 문제를 설명한다.",
+      "삭제 요청 이후 실제 완료 확인 뒤 재업로드하는 절차와 비동기 실패 점검이 기재됐다.",
+      "문서 17만 건 확장 및 키 인덱스·분할 적재·모델 이름 포함 해시를 확인했다.",
+      "정확도 76%→84%, 적재 81% 단축과 메모리 사용률 40% 감소를 내부 결과로만 서술했다.",
+      "실제 editorialSchema로 한국어·본문 1800~3000자·5섹션·서로 다른 HTTPS 원출처 포함 참조를 검증했다.",
+      "snapshot.pending 전체 원제 목록과 관련 제목·요약을 대조해 같은 사건의 중복이 없음을 검토했다.",
+      "최종 검수: 연결된 글은 다른 구체 사례·단계 또는 별도 실질 주제를 다루므로 중복 발표가 아님을 본문과 조사 메모로 확인했다."
+    ],
+    "relatedPendingIds": [
+      "55245698-bd28-4959-bee7-b77cce5c033a",
+      "e0370ed2-642a-40e2-ba69-7f6d54268cf5"
+    ],
+    "distinctRelatedReviewed": true
+  }
+}

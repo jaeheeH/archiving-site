@@ -1,10 +1,12 @@
-import { createHash, timingSafeEqual } from 'node:crypto';
+import { createHash, timingSafeEqual, randomUUID } from 'node:crypto';
+import type { CurationWriter } from './curation';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { assertNewsProject, canAutoWrite, canRetryNews, collectNewsInto, getNewsViewer, readQueuedNews, selectPendingNews, writePendingNews, type NewsViewer } from './news-pipeline';
 import { createAdminClient } from './supabase/admin';
 import { getSiteUrl } from './site-url';
 
 export type NewsJob = {
+  kind?: 'news' | 'curation'; draftId?: string; topic?: string;
   id: string; status: 'queued' | 'collecting' | 'writing' | 'completed' | 'failed';
   withCollection: boolean; limit: number; startedAt: string; finishedAt?: string;
   written: number; failed: number; skipped: number; duplicates: number; collected: number; collectionErrors: number;
@@ -14,6 +16,7 @@ export type NewsProcessStatus = { waiting: number; writing: number; failed: numb
 export const newsJobActive = (job?: NewsJob | null) => !!job && ['queued', 'collecting', 'writing'].includes(job.status);
 const fatalProviderError = /사용량 한도|Gemini.+요청.+(?:401|403)|API key not valid/i;
 type JobState = Omit<NewsJob, 'id' | 'status' | 'processed' | 'queued'> & {
+  curation?: { topic: string; draftId: string };
   collectionDone: boolean; planned: boolean; postIds: string[]; cursor: number;
   items: { id: string; status: 'ready' | 'failed' | 'skipped' | 'duplicate'; error?: string }[];
 };
@@ -23,14 +26,15 @@ const activeStatuses = ['queued', 'collecting', 'writing'];
 
 function publicJob(row: JobRow): NewsJob {
   const s = row.state;
-  return { id: row.id, status: row.status, withCollection: s.withCollection, limit: s.limit, startedAt: s.startedAt,
+  return { id: row.id, kind:s.kind || 'news',draftId:s.curation?.draftId,topic:s.curation?.topic,status: row.status, withCollection: s.withCollection, limit: s.limit, startedAt: s.startedAt,
     finishedAt: s.finishedAt, written: s.written, failed: s.failed, skipped: s.skipped, collected: s.collected,
     collectionErrors: s.collectionErrors, duplicates: s.duplicates || 0, remaining: s.remaining, currentTitle: s.currentTitle, error: s.error, retryPostId: s.retryPostId,
     processed: s.cursor, queued: Math.max(0, s.postIds.length - s.cursor) };
 }
 
-export async function getNewsJob(db: SupabaseClient, userId: string, id?: string) {
+export async function getNewsJob(db: SupabaseClient, userId: string, id?: string, kind: 'news' | 'curation' = 'news') {
   let query = db.from('news_jobs').select('*').eq('author_id', userId);
+  query = kind === 'curation' ? query.eq('state->>kind','curation') : query.or('state->>kind.is.null,state->>kind.eq.news');
   if (id) query = query.eq('id', id);
   const result = await query.order('created_at', { ascending: false }).limit(1).maybeSingle();
   if (result.error) throw new Error('저장된 뉴스 작업 상태를 불러오지 못했습니다.');
@@ -42,6 +46,7 @@ export async function createNewsJob(db: SupabaseClient, viewer: NewsViewer, opti
   if (!Number.isInteger(limit) || limit < 1 || limit > 15) throw new Error('한 번에 1~15편을 작성할 수 있습니다.');
   if ((await getNewsViewer(db, viewer.userId)).role !== viewer.role) throw new Error('뉴스를 작성할 권한이 없습니다.');
   const reuse = (row: JobRow) => {
+    if (row.state.kind === 'curation') throw new Error('진행 중인 큐레이션 작성이 끝난 뒤 뉴스 작성을 요청해주세요.', {cause:409});
     if (options.retryPostId && row.state.retryPostId !== options.retryPostId) throw new Error('진행 중인 자동 작성이 끝난 뒤 다시 요청해주세요.', { cause: 409 });
     return { job: publicJob(row), created: false };
   };
@@ -68,7 +73,7 @@ export async function createNewsJob(db: SupabaseClient, viewer: NewsViewer, opti
 }
 
 // One invocation performs collection, queue planning, or ONE article; no 50-minute callback.
-export async function runNextNewsJob(db: SupabaseClient, options: { jobId?: string; writer?: Writer } = {}) {
+export async function runNextNewsJob(db: SupabaseClient, options: { jobId?: string; writer?: Writer; curationWriter?: CurationWriter } = {}) {
   assertNewsProject(process.env.NEXT_PUBLIC_SUPABASE_URL!);
   const claimed = await db.rpc('claim_news_job', { p_job_id: options.jobId || null });
   if (claimed.error) throw new Error('뉴스 작업을 선점하지 못했습니다.');
@@ -85,8 +90,26 @@ export async function runNextNewsJob(db: SupabaseClient, options: { jobId?: stri
   };
   try {
     const viewer = await getNewsViewer(db, row.author_id);
-    if (!options.writer && !process.env.GEMINI_API_KEY) throw new Error('Gemini API 설정이 필요합니다.');
-    if (!state.collectionDone) {
+    if (!options.writer && !options.curationWriter && !process.env.GEMINI_API_KEY) throw new Error('Gemini API 설정이 필요합니다.');
+    if (state.kind === 'curation' && state.curation) {
+      status='writing'; await save(false);
+      try {
+        const existing = await db.from('posts').select('id,author_id,type').eq('id',state.curation.draftId).maybeSingle();
+        if (existing.error) throw existing.error;
+        if (existing.data && (existing.data.author_id !== row.author_id || existing.data.type !== 'blog')) throw new Error('큐레이션 초안의 작성자를 확인해주세요.');
+        if (!existing.data) {
+          const writer = options.curationWriter || (await import('./curation')).createCurationDraft;
+          const draft = await writer(state.curation.topic,AbortSignal.timeout(240_000));
+          const category = await db.from('categories').select('id').eq('type','blog').eq('slug','curation').single();
+          if (category.error) throw category.error;
+          const categoryId = category.data?.id;
+          if (!categoryId) throw new Error('주제 큐레이션 분류를 확인해주세요.');
+          const inserted = await db.from('posts').insert({ ...draft,id:state.curation.draftId,type:'blog',author_id:row.author_id,category_id:categoryId,slug:`curation-${state.curation.draftId}`,is_published:false,published_at:null });
+          if (inserted.error) throw inserted.error;
+        }
+        state.written=1; state.cursor=1; state.remaining=0; state.currentTitle=''; status='completed';
+      } catch (cause) { status='failed'; state.failed=1; state.error=(cause instanceof Error ? cause.message : '큐레이션 초안 작성에 실패했습니다.').slice(0,500); }
+    } else if (!state.collectionDone) {
       status = 'collecting'; await save(false);
       const collection = await collectNewsInto(db, row.author_id, row.id);
       state.collected = collection.inserted;
@@ -136,6 +159,28 @@ export async function runNextNewsJob(db: SupabaseClient, options: { jobId?: stri
     await save(true);
   }
   return publicJob({ ...row, state, status });
+}
+
+export async function createCurationJob(db: SupabaseClient, viewer: NewsViewer, topic: string, retryId?: string) {
+  if ((await getNewsViewer(db,viewer.userId)).role !== viewer.role) throw new Error('큐레이션을 작성할 권한이 없습니다.');
+  if (!process.env.GEMINI_API_KEY) throw new Error('Gemini API 설정이 필요합니다.');
+  const active = await db.from('news_jobs').select('*').eq('author_id',viewer.userId).in('status',activeStatuses).maybeSingle();
+  if (active.error) throw active.error;
+  if (active.data) {
+    const row = active.data as JobRow;
+    if (row.state.kind === 'curation' && row.state.curation?.topic === topic && !retryId) return {job:publicJob(row),created:false};
+    throw new Error('진행 중인 작성이 끝난 뒤 요청해주세요.',{cause:409});
+  }
+  let draftId = randomUUID();
+  if (retryId) {
+    const previous = await db.from('news_jobs').select('*').eq('id',retryId).eq('author_id',viewer.userId).eq('status','failed').eq('state->>kind','curation').maybeSingle();
+    if (previous.error || !previous.data?.state?.curation) throw new Error('재시도할 큐레이션을 찾지 못했습니다.',{cause:409});
+    draftId=previous.data.state.curation.draftId; topic=previous.data.state.curation.topic;
+  }
+  const state: JobState={kind:'curation',curation:{topic,draftId},withCollection:false,limit:1,startedAt:new Date().toISOString(),written:0,failed:0,skipped:0,duplicates:0,collected:0,collectionErrors:0,remaining:1,currentTitle:topic,collectionDone:true,planned:true,postIds:[draftId],cursor:0,items:[]};
+  const inserted=await db.from('news_jobs').insert({author_id:viewer.userId,state}).select('*').single();
+  if (inserted.error) throw new Error(inserted.error.code === '23505' ? '다른 작성 요청이 진행 중입니다.' : '큐레이션 작업을 저장하지 못했습니다.',{cause:409});
+  return {job:publicJob(inserted.data as JobRow),created:true};
 }
 
 export async function configureNewsWorker(db: SupabaseClient) {

@@ -1,0 +1,181 @@
+{
+  "id": "4e8f8147-e344-415c-bdfd-dbfb3800867c",
+  "article": {
+    "url": "https://news.samsung.com/kr/%ed%8c%90%ed%83%80%ec%a7%80%ec%9d%98-%ea%b2%bd%ea%b3%84%eb%a5%bc-%ed%99%95%ec%9e%a5%ed%95%98%eb%8b%a4-%ec%82%bc%ec%84%b1-%ec%8a%a4%ed%8e%98%ec%9d%b4%ec%85%9c-%ec%82%ac%ec%9d%b4%eb%8b%88%ec%a7%80",
+    "title": "삼성 스페이셜 사이니지, 도쿄게임쇼에서 캐릭터를 입구와 대기 동선에 배치",
+    "summary": "삼성전자가 도쿄게임쇼 2026 엔씨 부스에 설치한 85형·32형 스페이셜 사이니지 사례를 공개했다. 입구의 실물 크기 캐릭터 연출과 대기 공간의 작은 화면을 연결했다. 무안경 입체 표현과 얇은 설치 형태가 전시 구성의 핵심이며 방문객 반응은 현장 인터뷰로 제시돼 매출·체류시간 개선 통계와 구분해야 한다.",
+    "paragraphs": [
+      {
+        "heading": "입구에서 시작해 대기 공간으로 이어진 캐릭터",
+        "kind": "reporting",
+        "paragraphs": [
+          "삼성전자는 9월 23일 일본 지바현 마쿠하리 멧세에서 열린 도쿄게임쇼2026의 스페이셜 사이니지 설치 사례를 소개했다. 회사가 안내한 행사 기간은9월17~20일이다. 엔씨 부스의 게임 아스트라에 오라티오 캐릭터를85형과32형 화면에 배치해 입구와 관람 동선, 대기 공간에서 보여줬다. 입구의 큰 화면은 게임 배경 속 엘리베이터를 연출하고 캐릭터를 실제 사람과 가까운 크기로 표현했다. 게임을 직접 플레이하기 전에 세계관을 시각적으로 소개하는 장치인 셈이다. 이 사례는 전시의 구체적인 배치와 연출을 공개한 소식이며 게임의 출시 성과나 이용자 수를 집계한 발표는 아니다."
+        ],
+        "references": [
+          {
+            "label": "삼성 한국 뉴스룸 도쿄게임쇼 설치 사례",
+            "url": "https://news.samsung.com/kr/%ed%8c%90%ed%83%80%ec%a7%80%ec%9d%98-%ea%b2%bd%ea%b3%84%eb%a5%bc-%ed%99%95%ec%9e%a5%ed%95%98%eb%8b%a4-%ec%82%bc%ec%84%b1-%ec%8a%a4%ed%8e%98%ec%9d%b4%ec%85%9c-%ec%82%ac%ec%9d%b4%eb%8b%88%ec%a7%80",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성 글로벌 뉴스룸 동일 행사·공간 구성",
+            "url": "https://news.samsung.com/global/bringing-fantasy-characters-to-life-samsung-spatial-signage-transforms-tokyo-game-show-2026",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "입체감은 실제 공간의 깊이와 다른 표현",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 제품 소개는3D Plate가 양쪽 눈에 다른 영상을 전달하는 양안 시차를 이용해 별도3D 안경 없이 깊이를 느끼게 하는 기술이라고 설명한다.32형은49.4mm 두께와8.5kg 무게, 세로9대16의 FHD 화면을 제시했다. 행사 기사에서 언급한52mm는85형의 두께를 설명한 수치다. 화면 뒤에 별도 공간이 있는 것처럼 보였다는 방문객의 반응은 이 시각적 효과에 관한 경험이다. 화면에 등장한 캐릭터가 실제로 공간을 차지하거나 방문자의 말에 응답하는 대화형 에이전트라는 기능은 발표에 없다. 입체적으로 보이는 연출과 실제 상호작용 기능을 구분하면 화면이 맡은 역할이 명확해진다."
+        ],
+        "references": [
+          {
+            "label": "삼성 32형 공식 출시·3D Plate 설명",
+            "url": "https://news.samsung.com/global/samsung-expands-award-winning-spatial-signage-lineup-with-global-launch-of-32-inch-model",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성 한국 뉴스룸 도쿄게임쇼 설치 사례",
+            "url": "https://news.samsung.com/kr/%ed%8c%90%ed%83%80%ec%a7%80%ec%9d%98-%ea%b2%bd%ea%b3%84%eb%a5%bc-%ed%99%95%ec%9e%a5%ed%95%98%eb%8b%a4-%ec%82%bc%ec%84%b1-%ec%8a%a4%ed%8e%98%ec%9d%b4%ec%85%9c-%ec%82%ac%ec%9d%b4%eb%8b%88%ec%a7%80",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "큰 화면과 작은 화면에 서로 다른 역할 부여",
+        "kind": "analysis",
+        "paragraphs": [
+          "입구의85형 화면은 처음 보는 캐릭터의 크기와 움직임으로 시선을 모으는 역할을 한다. 대기 공간의32형 화면은 같은 세계관을 줄을 서 있는 사람에게 계속 보여주는 접점이다. 한 종류의 화면을 반복 배치하기보다 방문자가 처음 마주하는 순간과 기다리는 순간을 서로 다른 크기로 다룬 구성이다. 물리적 동선이 이어지면 캐릭터를 한 장면에서만 보여주는 포스터와 달리 여러 지점에서 전달할 수 있다. 다만 줄을 서는 시간이 짧게 느껴졌다는 인터뷰를 실제 대기시간이 줄었다는 결과로 바꾸지는 않았다. 체감에 관한 설명과 운영 시간의 측정은 별도의 자료가 필요한 질문이다."
+        ],
+        "references": [
+          {
+            "label": "삼성 한국 뉴스룸 도쿄게임쇼 설치 사례",
+            "url": "https://news.samsung.com/kr/%ed%8c%90%ed%83%80%ec%a7%80%ec%9d%98-%ea%b2%bd%ea%b3%84%eb%a5%bc-%ed%99%95%ec%9e%a5%ed%95%98%eb%8b%a4-%ec%82%bc%ec%84%b1-%ec%8a%a4%ed%8e%98%ec%9d%b4%ec%85%9c-%ec%82%ac%ec%9d%b4%eb%8b%88%ec%a7%80",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성 글로벌 뉴스룸 동일 행사·공간 구성",
+            "url": "https://news.samsung.com/global/bringing-fantasy-characters-to-life-samsung-spatial-signage-transforms-tokyo-game-show-2026",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "디스플레이 뒤의 공간도 전시 설계에 포함",
+        "kind": "reporting",
+        "paragraphs": [
+          "엔씨 담당자는 얇은 화면 덕분에 설치와 동선 설계를 하기 수월했고 뒤편에 관람객용 굿즈를 보관할 공간을 확보했다고 설명했다. 삼성 글로벌 자료도 입구의 화면을 시각적 중심이자 수납을 가리는 전시 구조의 일부로 소개한다. 전시 부스에서 화면은 콘텐츠를 보여주는 면이면서 주변의 구조물과 함께 자리와 통로를 차지한다. 이번 사례가 보여주는 것은 그 관계를 조정한 하나의 배치 방식이다. 얇다는 제품 수치만으로 모든 행사장의 공사비나 운영 인력이 줄어든다고 계산할 근거는 없다. 설치 규모와 고정 방식, 현장의 동선 조건이 달라지면 같은 제품을 쓰더라도 배치 결과는 달라질 수 있다."
+        ],
+        "references": [
+          {
+            "label": "삼성 한국 뉴스룸 도쿄게임쇼 설치 사례",
+            "url": "https://news.samsung.com/kr/%ed%8c%90%ed%83%80%ec%a7%80%ec%9d%98-%ea%b2%bd%ea%b3%84%eb%a5%bc-%ed%99%95%ec%9e%a5%ed%95%98%eb%8b%a4-%ec%82%bc%ec%84%b1-%ec%8a%a4%ed%8e%98%ec%9d%b4%ec%85%9c-%ec%82%ac%ec%9d%b4%eb%8b%88%ec%a7%80",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성 글로벌 뉴스룸 동일 행사·공간 구성",
+            "url": "https://news.samsung.com/global/bringing-fantasy-characters-to-life-samsung-spatial-signage-transforms-tokyo-game-show-2026",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "방문객 인터뷰의 반응과 사업 성과의 간격",
+        "kind": "analysis",
+        "paragraphs": [
+          "삼성은 캐릭터가 생생하게 보였고 촬영해 공유하고 싶었다는 콘텐츠 제작자·방문객의 반응을 소개했다. 현장의 인상을 이해하는 자료이지만 표본을 정한 소비자 조사나 전시 전후의 구매 전환율 비교로 제시되지는 않았다. 화면의 움직임과 크기, 게임 캐릭터에 대한 관심, 부스 전체의 연출이 함께 반응에 영향을 줄 수 있다. 따라서 긍정적인 반응을 디스플레이만의 단독 효과나 팬덤 전체의 평가로 넓힐 수는 없다. 캐릭터를 현실의 전시 접점에 가져오는 방식이 눈에 띄었다는 사실과 그 결과 실제 게임 이용·상품 구매가 늘었는지는 나눠 봐야 할 질문이다."
+        ],
+        "references": [
+          {
+            "label": "삼성 한국 뉴스룸 도쿄게임쇼 설치 사례",
+            "url": "https://news.samsung.com/kr/%ed%8c%90%ed%83%80%ec%a7%80%ec%9d%98-%ea%b2%bd%ea%b3%84%eb%a5%bc-%ed%99%95%ec%9e%a5%ed%95%98%eb%8b%a4-%ec%82%bc%ec%84%b1-%ec%8a%a4%ed%8e%98%ec%9d%b4%ec%85%9c-%ec%82%ac%ec%9d%b4%eb%8b%88%ec%a7%80",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성 글로벌 뉴스룸 동일 행사·공간 구성",
+            "url": "https://news.samsung.com/global/bringing-fantasy-characters-to-life-samsung-spatial-signage-transforms-tokyo-game-show-2026",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "리테일 확장은 콘텐츠와 설치 계획을 함께 요구",
+        "kind": "analysis",
+        "paragraphs": [
+          "회사는 에버랜드 대기 동선과 음악 페스티벌의 굿즈 소개도 같은 제품군의 적용 사례로 들었다. 각 공간에서는 동물·게임 캐릭터·상품 등 서로 다른 콘텐츠를 방문자의 위치와 시선에 맞춰 보여준다.32형 공식 소개가 선반과 카운터 같은 작은 자리까지 제품 범위를 넓힌다고 설명하는 이유도 이 맥락에 있다. 하지만 매장이나 테마파크에 같은 화면을 놓는 것만으로 콘텐츠의 제작과 운영이 자동으로 완성되는 것은 아니다. 이번 도쿄게임쇼 사례의 구체적인 의미는 무안경 입체 표현을 입구·대기·수납이 함께 있는 전시 구조에 결합한 데 있다. 다른 장소의 성과는 그 장소의 콘텐츠와 배치에서 새로 확인해야 한다."
+        ],
+        "references": [
+          {
+            "label": "삼성 한국 뉴스룸 도쿄게임쇼 설치 사례",
+            "url": "https://news.samsung.com/kr/%ed%8c%90%ed%83%80%ec%a7%80%ec%9d%98-%ea%b2%bd%ea%b3%84%eb%a5%bc-%ed%99%95%ec%9e%a5%ed%95%98%eb%8b%a4-%ec%82%bc%ec%84%b1-%ec%8a%a4%ed%8e%98%ec%9d%b4%ec%85%9c-%ec%82%ac%ec%9d%b4%eb%8b%88%ec%a7%80",
+            "kind": "primary"
+          },
+          {
+            "label": "삼성 32형 공식 출시·3D Plate 설명",
+            "url": "https://news.samsung.com/global/samsung-expands-award-winning-spatial-signage-lineup-with-global-launch-of-32-inch-model",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "85형 입구와32형 대기 화면의 역할을 실제 설치 사례로 정리했다.",
+      "양안 시차의 입체 표현과 실제 대화·물리적 공간을 구분했다.",
+      "52mm는85형,49.4mm는32형 두께라는 제품 조건을 확인했다.",
+      "현장 인터뷰를 매출·구매 전환·대기시간 개선 통계로 바꾸지 않았다."
+    ],
+    "tags": [
+      "삼성전자",
+      "스페이셜사이니지",
+      "도쿄게임쇼",
+      "전시디자인"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "삼성 한국 뉴스룸 도쿄게임쇼 설치 사례",
+        "url": "https://news.samsung.com/kr/%ed%8c%90%ed%83%80%ec%a7%80%ec%9d%98-%ea%b2%bd%ea%b3%84%eb%a5%bc-%ed%99%95%ec%9e%a5%ed%95%98%eb%8b%a4-%ec%82%bc%ec%84%b1-%ec%8a%a4%ed%8e%98%ec%9d%b4%ec%85%9c-%ec%82%ac%ec%9d%b4%eb%8b%88%ec%a7%80"
+      },
+      {
+        "label": "삼성 글로벌 뉴스룸 동일 행사·공간 구성",
+        "url": "https://news.samsung.com/global/bringing-fantasy-characters-to-life-samsung-spatial-signage-transforms-tokyo-game-show-2026"
+      },
+      {
+        "label": "삼성 32형 공식 출시·3D Plate 설명",
+        "url": "https://news.samsung.com/global/samsung-expands-award-winning-spatial-signage-lineup-with-global-launch-of-32-inch-model"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://news.samsung.com/kr/%ed%8c%90%ed%83%80%ec%a7%80%ec%9d%98-%ea%b2%bd%ea%b3%84%eb%a5%bc-%ed%99%95%ec%9e%a5%ed%95%98%eb%8b%a4-%ec%82%bc%ec%84%b1-%ec%8a%a4%ed%8e%98%ec%9d%b4%ec%85%9c-%ec%82%ac%ec%9d%b4%eb%8b%88%ec%a7%80",
+      "https://news.samsung.com/global/bringing-fantasy-characters-to-life-samsung-spatial-signage-transforms-tokyo-game-show-2026",
+      "https://news.samsung.com/global/samsung-expands-award-winning-spatial-signage-lineup-with-global-launch-of-32-inch-model"
+    ],
+    "notes": "원문webtimeout후정확source_url공개HTTP200/fullbody확인,글로벌동일설치및4/28공식제품기술대조.9/17–20행사및85/32동선,52mm85각주/49.4mm32확인.3DPlate양안시차≠홀로그램실물·대화형AI.정성방문객반응≠대조군조사/매출/체류·대기시간수치.회사지원공간사례로귀속,완전상호작용·모든각도보장없음.후보미술컬렉션/태블릿/기능올림픽다른사건,전체pending동일TGSNC설치없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "a55ebad0-e03d-418e-8ffd-43af660e7f38",
+    "a6e9c97c-1e29-4eb1-b357-a081becc7813",
+    "d9dfde0c-a88d-47c1-863b-486eaefc9474",
+    "f1c6270a-4dac-4b5a-b155-3bfd66b56f9d",
+    "f4019e8c-959b-4367-abaf-985d452c901a"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:10:35.709Z",
+    "checks": [
+      "정확원본URL HTTP200·본문 확인",
+      "글로벌회사발표로85/32동선 대조",
+      "공식기술문서의양안시차및사양 확인",
+      "크기별두께수치·각주 구분",
+      "현장정성반응과측정사업성과 분리",
+      "후보및전체pending동일설치사건없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

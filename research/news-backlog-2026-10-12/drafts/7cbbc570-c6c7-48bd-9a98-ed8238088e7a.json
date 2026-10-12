@@ -1,0 +1,159 @@
+{
+  "id": "7cbbc570-c6c7-48bd-9a98-ed8238088e7a",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/05/building-self-correcting-color-systems-contrast-color/",
+    "title": "CSS contrast-color로 고르는 검정·흰색, 자동 대비와 읽기 경험의 다른 범위",
+    "summary": "CSS contrast-color는 입력한 단색에 맞춰 검정이나 흰색을 반환한다. 테마에서 텍스트 색을 고르는 역할을 브라우저에 맡길 수 있지만 사진·그라데이션, 혼합한 색과 전체 접근성은 별도 검토가 필요하다.",
+    "paragraphs": [
+      {
+        "heading": "대비 계산을 스타일의 일부로 표현",
+        "kind": "reporting",
+        "paragraphs": [
+          "5월 28일 스매싱 매거진은 contrast-color를 활용한 테마 구성 사례를 소개했다. 배경색이 바뀔 때 텍스트 색을 고르는 계산을 별도 JavaScript 함수로 수행하는 대신 CSS 값으로 나타내는 방식이다. 동적으로 선택한 단색과 결과 색을 연결해 같은 컴포넌트에서 함께 갱신하도록 구성한다.",
+          "입력은 대비를 계산할 색이며 출력은 대비율 같은 숫자가 아니다. W3C의 CSS Color 5는 검정과 흰색 중 단색 배경의 텍스트에 더 큰 대비를 내는 색으로 해석하고, 두 결과가 같으면 흰색을 고르도록 정의한다. 현재 문법은 하나의 색을 받는다. 여러 브랜드색 후보와 목표 비율을 고르는 확장 구상을 지금 같은 문법으로 쓸 수 있다고 설명하지 않았다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 색 대비·테마 구성 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/05/building-self-correcting-color-systems-contrast-color/"
+          },
+          {
+            "label": "W3C CSS Color 5의 contrast-color 규칙",
+            "kind": "primary",
+            "url": "https://www.w3.org/TR/css-color-5/"
+          }
+        ]
+      },
+      {
+        "heading": "계산 규칙과 읽을 수 있음은 같지 않다",
+        "kind": "reporting",
+        "paragraphs": [
+          "명세는 대비 판단의 구체적인 알고리즘을 브라우저가 정하도록 남기고, 충분한 대비가 곧 가독성을 보장하지 않는다고 설명한다. 글자의 크기와 서체, 주변 색 등도 함께 작동하기 때문이다. MDN 역시 중간 밝기 배경과 작은 글자에서 읽기 경험을 확인하고 밝거나 어두운 배경을 고려하도록 안내한다.",
+          "따라서 이 함수를 사용했다는 사실을 사이트가 WCAG 전체나 더 엄격한 등급의 모든 기준을 통과했다는 증거로 삼을 수 없다. 단색에서 두 색 중 하나를 선택하는 기능과 문서 구조·포커스·상태 전달의 접근성은 다른 질문이다. 브라우저의 계산을 채택하더라도 사용하는 문맥에서 최종 표시를 확인할 책임이 남는다."
+        ],
+        "references": [
+          {
+            "label": "W3C CSS Color 5의 contrast-color 규칙",
+            "kind": "primary",
+            "url": "https://www.w3.org/TR/css-color-5/"
+          },
+          {
+            "label": "MDN의 contrast-color 문법과 호환성 안내",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/contrast-color"
+          }
+        ]
+      },
+      {
+        "heading": "배경 전체를 읽는 기능은 아니다",
+        "kind": "reporting",
+        "paragraphs": [
+          "함수는 CSS의 색 값을 받으므로 사진 주소나 그라데이션 자체를 넣는 문법이 아니다. 사진 위의 텍스트를 읽기 좋게 만들려면 어떤 영역이 텍스트 뒤에 오는지와 배경 처리 같은 별도의 선택이 필요하다. 하나의 단색을 계산한 결과가 움직이는 이미지 전체에서 유지되는 대비를 보증하지는 않는다.",
+          "MDN은 2026년 4월부터 최신 기기와 브라우저에서의 공통 제공 상태를 안내하면서 오래된 브라우저에서는 작동하지 않을 수 있다고 덧붙인다. 실제 사용 환경을 확인하고 지원하지 않는 경우에는 이미 검토한 색 조합을 유지하는 식으로 기능 감지와 대체 경로를 구성할 수 있다. 최신 제공 상태가 모든 방문자의 호환성을 뜻하는 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "MDN의 contrast-color 문법과 호환성 안내",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/contrast-color"
+          },
+          {
+            "label": "스매싱 매거진의 색 대비·테마 구성 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/05/building-self-correcting-color-systems-contrast-color/"
+          }
+        ]
+      },
+      {
+        "heading": "브랜드색을 섞은 뒤에는 다시 확인한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 자동 선택을 최종 팔레트의 출발점으로 사용할 수 있다고 본다. 검정·흰색에 배경의 색조를 섞으면 서로 다른 톤을 만들 수 있지만, 입력과 출력이 바뀐 만큼 처음 계산한 대비와 결과의 대비도 달라진다. 원문도 상대 색과 혼합을 사용한 뒤 다시 확인하도록 설명한다. 자동 선택에 장식적 조정을 더했을 때 원래의 보장을 그대로 물려받지는 않는다.",
+          "버튼의 본문과 입력 안내, 테두리에 같은 혼합 비율을 반복하는 것 역시 각각의 역할을 대조해야 한다. 정보의 중요도와 글자 크기, 상태 변화가 다르면 동일 비율의 색이 같은 읽기 조건을 만들지 않을 수 있다. 숫자를 하나로 통일하는 테마와 이용자가 같은 의미로 이해하는 경험은 별도로 검토할 대상이다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 색 대비·테마 구성 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/05/building-self-correcting-color-systems-contrast-color/"
+          },
+          {
+            "label": "W3C CSS Color 5의 contrast-color 규칙",
+            "kind": "primary",
+            "url": "https://www.w3.org/TR/css-color-5/"
+          }
+        ]
+      },
+      {
+        "heading": "줄어든 코드와 남은 검토의 경계",
+        "kind": "analysis",
+        "paragraphs": [
+          "두 색 중 하나를 고르기 위해 사용하던 코드만 이 함수로 대체할 수 있다면 그 계산을 애플리케이션에서 유지할 필요가 줄어든다. 그러나 기존 색 라이브러리가 팔레트 생성과 색 공간 변환 등 다른 역할도 맡았다면 패키지 전체를 바로 제거할 근거는 아니다. 실제로 쓰는 기능과 브라우저 지원, 대체 코드의 비용을 함께 비교해야 한다.",
+          "테마 전환과 동적으로 고른 색, 작은 글자와 오류 상태를 같은 대표 화면에서 확인하면 계산이 적용된 곳과 빠진 곳을 찾기 쉽다. 코드가 짧아졌다는 사실을 독립적인 속도 개선이나 사용자 성과로 주장하려면 별도의 측정이 필요하다. 이번 사례는 색 선택을 스타일 규칙에 담는 방법을 보여주며, 화면 전체의 가독성 판단을 자동으로 끝내는 기능은 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 색 대비·테마 구성 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/05/building-self-correcting-color-systems-contrast-color/"
+          },
+          {
+            "label": "MDN의 contrast-color 문법과 호환성 안내",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/contrast-color"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "검정·흰색 중 하나를 반환하며 대비율을 반환하지 않는다.",
+      "사진과 그라데이션 전체를 읽어 색을 고르는 기능이 아니다.",
+      "색을 다시 섞거나 작은 글자에 적용하면 결과를 확인해야 한다."
+    ],
+    "tags": [
+      "CSS",
+      "contrast-color",
+      "접근성",
+      "다크모드",
+      "디자인토큰"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 색 대비·테마 구성 사례",
+        "url": "https://smashingmagazine.com/2026/05/building-self-correcting-color-systems-contrast-color/"
+      },
+      {
+        "label": "W3C CSS Color 5의 contrast-color 규칙",
+        "url": "https://www.w3.org/TR/css-color-5/"
+      },
+      {
+        "label": "MDN의 contrast-color 문법과 호환성 안내",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/contrast-color"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.w3.org/TR/css-color-5/",
+      "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/contrast-color"
+    ],
+    "notes": "www원문과W3Cspec실제contrast-color절1315~1325·MDNsyntax/return/description/Baseline를WEB열람. black/white tieWhite·UAdefined·AA LARGEtext 권고확인;원문의AA전체통과/구현별동작단정전재안함. rawWebAIM수치불필요삭제. 원문color-transition불가능주장은interpolation검증필요로미전재. 반투명합성/WCAG3확정년도/폴리필과장제외. candidates[]/전체pending 동일함수해설없음, 다른Baseline/SMIL은다른구체기능.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:57:26.964Z",
+    "checks": [
+      "실제 현명세의1입력/blackwhite출력 확인",
+      "가독성과 전체WCAG 인증 구분",
+      "미래후보색문법을 현재로 쓰지 않음",
+      "사진·그래디언트≠color 입력",
+      "실서비스성능·전환불가능 등 미검증 수치 전재 안함"
+    ],
+    "relatedPendingIds": []
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "id": "8ce433a6-18f7-4e80-a304-af3ccae32709",
+  "article": {
+    "url": "https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+    "title": "아이폰 18 프로의 가변 조리개와 기준 이미지…촬영 제어·사진 검증의 다른 역할",
+    "summary": "애플은 아이폰 18 프로에 기계식 가변 조리개와 촬영 설정, 센서 정보를 바탕으로 비교하는 Reference Image를 소개했다. 창작의 제어와 편집 확인은 별도의 기능이며 사진의 맥락이나 사건의 진실까지 보증하지 않는다. 지역·소프트웨어 조건도 남아 있다.",
+    "paragraphs": [
+      {
+        "heading": "프로 카메라의 제어를 넓힌 발표",
+        "kind": "reporting",
+        "paragraphs": [
+          "애플은 9월 9일 아이폰 18 프로와 프로 맥스를 공개했다. A20 프로와 열 관리 구조, 작은 다이내믹 아일랜드, 카메라 제어의 확대를 소개했다. 예약은 9월 12일, 매장 판매는 9월 18일로 발표했으며 이번 기사에서는 사진을 만드는 설정과 촬영 결과를 비교하는 기능에 집중한다. 전체 매장 판매 개시나 특정 사진전과는 다른 제품 기능의 범위다.",
+          "메인 카메라는 4,800만 화소와 기계식 가변 조리개를 결합한다. 회사는 여섯 날의 구조로 조리개를 바꾸고 빛과 심도에 맞춰 자동으로 선택하거나 사용자가 직접 제어하도록 했다고 설명한다. 조리개를 바꿀 수 있다는 사실과 어떤 상황에서도 더 좋은 사진이 나온다는 평가는 서로 다른 정보다."
+        ],
+        "references": [
+          {
+            "label": "애플의 아이폰 18 프로·프로 맥스 공개",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/"
+          }
+        ]
+      },
+      {
+        "heading": "렌즈마다 다른 사양과 조작의 선택",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 사양에서 가변 조리개의 값은 메인 카메라의 f/1.48, f/1.8, f/2.8과 f/4.0이다. 초광각과 망원은 별도의 조리개와 초점거리를 갖는다. 모든 렌즈가 같은 방식으로 조리개를 바꾸는 것은 아니다. 프로 컨트롤에서는 조리개 외에 셔터 속도와 화이트밸런스, 히스토그램을 함께 볼 수 있다.",
+          "같은 목록은 광학 품질 2배·8배와 망원 렌즈의 4배 조건을 구분해 표기한다. 여러 확대값을 모두 별도의 물리 렌즈가 제공하는 것으로 오해하지 않도록 사양의 표현을 그대로 나눠 읽어야 한다. 카메라 선택의 의미는 화소 수 하나보다 촬영하는 거리와 빛, 필요한 수동 제어를 어떤 조합으로 쓰는지에 있다."
+        ],
+        "references": [
+          {
+            "label": "아이폰 18 프로 공식 카메라·배터리 사양",
+            "kind": "primary",
+            "url": "https://www.apple.com/iphone-18-pro/specs/"
+          }
+        ]
+      },
+      {
+        "heading": "Reference Image는 비교할 자산을 더한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "애플은 새 센서에서 서명한 데이터를 Private Cloud Compute가 처리해 변경할 수 없는 기준 이미지를 만드는 Reference Image를 소개했다. 사진 앱에서 메인 이미지 옆의 별도 자산으로 보고 편집 여부를 시각적으로 비교하도록 하는 기능이다. 공식 사양은 이 기능을 메인 카메라에 명시한다. 일반 사진을 모두 자동으로 같은 기준 자산으로 만든다는 발표는 아니다.",
+          "발표 각주는 사용자가 선택해 켜는 기능이며 중국에서는 출시 때 제공하지 않고, 유럽연합에서는 기준 이미지 촬영이 처음부터 제공되지 않는다고 안내한다. AI 편집을 알아보는 SynthID 지원도 이후 소프트웨어 업데이트 계획으로 설명했다. 지역별 촬영·개발·보기의 지원과 앞으로 추가되는 표시 체계를 한 번에 완성된 기능으로 묶을 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "애플의 아이폰 18 프로·프로 맥스 공개",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/"
+          },
+          {
+            "label": "아이폰 18 프로 공식 카메라·배터리 사양",
+            "kind": "primary",
+            "url": "https://www.apple.com/iphone-18-pro/specs/"
+          }
+        ]
+      },
+      {
+        "heading": "사진이 편집됐는지와 장면이 무엇인지는 다르다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 기준 이미지가 사진의 편집 관계를 확인할 단서를 더한다는 점에 주목한다. 결과 이미지와 센서 정보를 바탕으로 만든 자산을 나란히 볼 수 있다면 이후 변경을 살피는 경로가 생긴다. 그러나 촬영자가 어떤 방향을 골랐고 화면 밖에 무엇이 있었는지, 사진 설명이 실제 상황과 맞는지까지 그 비교 하나로 확정할 수는 없다.",
+          "이 구분은 사진을 보도나 기록에 사용할 때 중요하다. 파일의 생성·편집 여부와 사건의 맥락은 다른 확인 대상이다. 공식 발표가 소개하는 기술을 모든 사진의 진실을 자동 판정하는 장치로 표현하면, 기능이 제공하는 증거보다 결론이 커진다. 자료를 읽는 사람에게는 비교 가능한 자산이 무엇이고 어디까지 설명하는지 명확히 남길 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "애플의 아이폰 18 프로·프로 맥스 공개",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/"
+          },
+          {
+            "label": "아이폰 18 프로 공식 카메라·배터리 사양",
+            "kind": "primary",
+            "url": "https://www.apple.com/iphone-18-pro/specs/"
+          }
+        ]
+      },
+      {
+        "heading": "촬영 워크플로우에서는 지원과 시험 조건을 함께",
+        "kind": "analysis",
+        "paragraphs": [
+          "가변 조리개와 새 촬영 제어는 사용자가 빛과 움직임을 다루는 선택을 넓힌다. 자동 설정을 그대로 쓰는 사람과 장면별 값을 정하려는 사람은 같은 기능을 다르게 평가할 수 있다. API가 있다는 설명도 모든 카메라 앱이 이미 그 기능을 구현했다는 뜻은 아니므로 실제 사용하는 앱의 지원을 확인할 문제가 남는다.",
+          "긴 촬영에서 배터리를 비교할 때에도 공식 사양의 일반 사용 시간과 동영상 재생 시간을 구분해야 한다. 미국 eSIM 전용 모델의 최대 재생 시간을 다른 지역 모델이나 실제 카메라 촬영 시간으로 옮길 수 없다. 공식 자료는 설정과 망, 사용 방식에 따라 결과가 달라질 수 있다고 명시한다. 칩과 열 관리의 성능 설명 역시 회사의 비교이며 이 기사에서 수행한 실험이 아니다.",
+          "이번 제품 발표는 창작자가 설정할 수 있는 범위와 결과를 확인할 경로를 함께 확장했다는 소식으로 읽을 수 있다. 더 많은 제어가 항상 더 좋은 작품을 만든다거나 기준 이미지가 사실 확인을 끝낸다는 결론 대신, 촬영·편집·검토의 각 단계에서 어떤 선택과 근거가 추가됐는지 살펴볼 수 있다."
+        ],
+        "references": [
+          {
+            "label": "애플의 아이폰 18 프로·프로 맥스 공개",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/"
+          },
+          {
+            "label": "아이폰 18 프로 공식 카메라·배터리 사양",
+            "kind": "primary",
+            "url": "https://www.apple.com/iphone-18-pro/specs/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "메인 가변 조리개와 다른 렌즈의 사양을 구분한다.",
+      "Reference Image는 편집 비교 자산이며 사건 맥락까지 보증하지 않는다.",
+      "지역·업데이트·실제 앱과 배터리 시험 조건을 나눠 확인한다."
+    ],
+    "tags": [
+      "아이폰18프로",
+      "가변조리개",
+      "ReferenceImage",
+      "사진"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "애플의 아이폰 18 프로·프로 맥스 공개",
+        "url": "https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/"
+      },
+      {
+        "label": "아이폰 18 프로 공식 카메라·배터리 사양",
+        "url": "https://www.apple.com/iphone-18-pro/specs/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+      "https://www.apple.com/iphone-18-pro/specs/"
+    ],
+    "notes": "9/9원문핵심전체·공식기술사양카메라/배터리·원문각주직접WEB열람. f1.48/1.8/2.8/4메인한정,2x/8xopticalqualityvs4xphysicaltele구분. Referenceoptin/main·sensor/PCCasset·EUcapture초기미제공/China제한·SynthID향후. photocontexttruth는자체해석한계이며공식독립인증으로쓰지않음. 원문eSIMonlybattery최대36/45를한국촬영시간으로전용안함. 기존956d매장전체·88dd사진전은다른후속사건,이글제품내cameraControl·reference검증범위심화. 모든후보원제요약·전체pending관련대조.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "88dd33b0-f0fb-48b6-8fd6-bc3df072a7a4",
+    "956d329a-104f-4538-8c27-53d22881ff0f",
+    "3b46796c-dbb4-41e2-b1f7-ec8b1d882f54",
+    "88909f47-c322-4252-aca4-51e619d16b9d",
+    "1d0ab475-cad9-40f6-a125-290917de796e",
+    "682b3e84-79ef-4664-8ca1-9b7365454803",
+    "7eea6836-5130-410a-bbe3-4ecab0607e44"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:46:23.911Z",
+    "checks": [
+      "가변 조리개 값과 렌즈별 적용 범위 대조",
+      "광학품질 배율과 실제 렌즈 배율 구분",
+      "기준 이미지·AI표시·사건맥락 사실성을 서로 구분",
+      "Reference 선택형·지역제약·SynthID 예정 명시",
+      "동영상 재생시간을 실제 촬영 시간으로 쓰지 않음",
+      "기존 매장·사진전과 기능 검토의 범위 구분"
+    ],
+    "relatedPendingIds": []
+  }
+}

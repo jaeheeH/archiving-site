@@ -1,4 +1,5 @@
 "use client";
+import { saveLoginHref,notifySaved } from '@/lib/save-intent';
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
@@ -103,7 +104,7 @@ export default function ClientGalleryDetailModal({
     const { data: { session } } = await supabase.auth.getSession();
     const user = session?.user;
     if (!user) {
-      addToast("로그인이 필요한 서비스입니다.", "error");
+      window.location.assign(saveLoginHref('gallery',String(id)));
       return;
     }
 
@@ -112,9 +113,10 @@ export default function ClientGalleryDetailModal({
     setIsScraped(!isScraped); // 낙관적 업데이트
 
     try {
-      const res = await fetch(`/api/gallery/${id}/scrap`, { method: "POST" });
+      const res = await fetch(`/api/gallery/${id}/scrap`, { method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({scraped:!prevScraped}) });
       if (!res.ok) throw new Error("API Fail");
       const data = await res.json();
+      notifySaved('gallery',String(id),data.scraped,user.id,data.scrapCount);
       setIsScraped(data.scraped);
       addToast(data.scraped ? "보관함에 저장되었습니다." : "저장이 취소되었습니다.", "success");
     } catch (error) {

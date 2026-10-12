@@ -1,3 +1,4 @@
+import { getCurationCategory } from '@/lib/curation';
 import "@/app/css/news.css";
 import Link from "next/link";
 import { readNewsPlacement } from "@/lib/news-placement";
@@ -30,14 +31,16 @@ function StoryCard({ article }: { article: Article }) {
 export default async function Home() {
   let articles: Article[] = [];
   let error = false;
+  let curationCategory: string | undefined;
   let placement: Awaited<ReturnType<typeof readNewsPlacement>>;
   let banner: Awaited<ReturnType<typeof getNewsSidebarBanner>> = null;
-  try { const [news, result, ad] = await Promise.all([readNewsSummaries(), readNewsPlacement(), getNewsSidebarBanner()]); articles = news.articles; placement = result; banner = ad; }
+  try { const [news, result, ad, category] = await Promise.all([readNewsSummaries(), readNewsPlacement(), getNewsSidebarBanner(), getCurationCategory()]); articles = news.articles; placement = result; banner = ad; curationCategory=category; }
   catch (cause) { console.error("Home stories", cause); error = true; }
   placement ??= { featuredId: null, editorPickIds: [] };
   const featured = articles.find(a => a.id === placement.featuredId) ?? articles[0];
   const latest = articles.filter(a => a.url !== featured?.url).slice(0, 4);
   const promoted = new Set([featured?.url, ...latest.map(a => a.url)]);
+  const curations = articles.filter(a => curationCategory && a.collection === curationCategory).slice(0,3);
   const tags = [...new Set(articles.flatMap(a => a.tags))].slice(0, 9);
   return <div className="archb-news">
     <a className="skip-link" href="#news-stories">주요 기사로 바로 가기</a>
@@ -46,7 +49,8 @@ export default async function Home() {
         <div className="news-top-heading"><h2>주요 뉴스</h2><a href="/news/stories">전체 보기</a></div>
         <div className="news-top-stories"><article className="news-cover" aria-label="커버 스토리">{featured.image && <a className="news-cover-image" href={path(featured)} tabIndex={-1} aria-hidden="true"><ArchiveImage width={1200} height={800} sizes="(max-width: 768px) 100vw, 480px" src={featured.image} alt="" preload referrerPolicy="no-referrer" /></a>}<div className="news-cover-copy"><div className="news-topic-tags"><a href={`/news/stories?category=${featured.category}`}>{CATEGORIES[featured.category]}</a>{featured.tags.slice(0, 2).map(tag => <a href={`/news/stories?q=${encodeURIComponent(tag)}`} key={tag}>{tag}</a>)}</div><h3><a href={path(featured)}>{featured.title}</a></h3><p className="news-cover-summary">{featured.description}</p><div className="news-cover-bottom"><span>{featured.source} · <time dateTime={featured.published_at}>{date(featured.published_at)}</time></span><a href={path(featured)}>기사 읽기</a></div></div></article>
         <section className="news-latest" aria-label="최신 주요 뉴스">{latest.map(article => <article key={article.url}>{article.image && <a className="news-latest-image" href={path(article)} tabIndex={-1} aria-hidden="true"><ArchiveImage width={640} height={420} sizes="75px" src={article.image} alt="" loading="lazy" referrerPolicy="no-referrer" /></a>}<div><p className="news-latest-meta"><a href={`/news/stories?category=${article.category}`}>{CATEGORIES[article.category]}</a><span>{article.source}</span></p><h3><a href={path(article)}>{article.title}</a></h3><p className="news-latest-summary">{article.description}</p></div></article>)}</section></div>
-        {(Object.keys(CATEGORIES) as Category[]).map(category => { const categoryStories = articles.filter(a => a.category === category && a.url !== featured.url); const stories = [...categoryStories.filter(a => !promoted.has(a.url)), ...categoryStories.filter(a => promoted.has(a.url))].slice(0, 3); if (!stories.length) return null; const copy = sectionCopy[category]; return <section className="news-section" key={category}><div className="news-section-heading"><div><p className="news-kicker">{CATEGORIES[category]}</p><h2>{copy.title}</h2><p>{copy.description}</p></div><a href={`/news/stories?category=${category}`}>전체 보기</a></div><div className="news-card-grid">{stories.map(article => <StoryCard article={article} key={article.url} />)}</div></section>; })}
+        {!!curations.length && <section className="news-section" aria-labelledby="curation-section"><div className="news-section-heading"><div><p className="news-kicker">주제 큐레이션</p><h2 id="curation-section">주제로 이어보기</h2><p>뉴스와 작품, 만드는 사람과 참고 자료를 하나의 주제로 연결합니다.</p></div><Link href={`/news/stories?collection=${curationCategory}`}>전체 보기</Link></div><div className="news-card-grid">{curations.map(article => <StoryCard key={article.id} article={article} />)}</div></section>}
+        {(Object.keys(CATEGORIES) as Category[]).map(category => { const categoryStories = articles.filter(a => a.category === category && a.url !== featured.url && !curations.some(c => c.id === a.id)); const stories = [...categoryStories.filter(a => !promoted.has(a.url)), ...categoryStories.filter(a => promoted.has(a.url))].slice(0, 3); if (!stories.length) return null; const copy = sectionCopy[category]; return <section className="news-section" key={category}><div className="news-section-heading"><div><p className="news-kicker">{CATEGORIES[category]}</p><h2>{copy.title}</h2><p>{copy.description}</p></div><a href={`/news/stories?category=${category}`}>전체 보기</a></div><div className="news-card-grid">{stories.map(article => <StoryCard article={article} key={article.url} />)}</div></section>; })}
       </div><aside className="news-sidebar" aria-label="뉴스 탐색">
         <section><h2>뉴스 속 키워드</h2><div className="news-keywords">{tags.map(tag => <a href={`/news/stories?q=${encodeURIComponent(tag)}`} key={tag}>{tag}</a>)}</div></section>
         <NewsSidebarBanner banner={banner} />

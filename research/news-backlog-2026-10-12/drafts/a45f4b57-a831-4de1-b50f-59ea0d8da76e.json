@@ -1,0 +1,164 @@
+{
+  "id": "a45f4b57-a831-4de1-b50f-59ea0d8da76e",
+  "article": {
+    "url": "https://updates.midjourney.com/version-8-2/",
+    "title": "미드저니 V8.2, 이미지 미감과 개인화 개선에 초점",
+    "summary": "미드저니가 7월 24일 V8.2 이미지 모델을 공개하고 미감·품질·개인화 개선을 설명했다. 평가 결과는 정량적으로 공개하지 않았다. 기존 프로필의 호환 범위와 버전 선택 기록을 통해 취향에 맞는 결과와 요구에 맞는 결과를 구분한다.",
+    "paragraphs": [
+      {
+        "heading": "미감과 개인화가 중심인 버전 업데이트",
+        "kind": "reporting",
+        "paragraphs": [
+          "미드저니는 2026년 7월 24일 V8.2 이미지 모델 출시를 발표했다. 회사는 미감과 이미지 품질, 개인화를 이번 변경의 중심으로 설명한다. 더 창의적이고 강한 인상과 세련된 표현을 기대한다고 밝혔으며, 간헐적으로 품질이 낮은 이미지가 나오는 상황을 줄였다고 소개했다.",
+          "공개한 글에는 이러한 품질을 어떤 기준으로 판정했고 이전 버전과 얼마나 차이가 났는지 정량 평가가 제시되지 않았다. 따라서 회사의 개선 설명과 독립 비교 결과를 구분해야 한다. 새로운 기본 모델이 생겼다는 소식을 모든 프롬프트에서 더 좋은 결과를 보장하는 주장으로 바꿀 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "미드저니 V8.2 출시 공식 안내",
+            "kind": "primary",
+            "url": "https://updates.midjourney.com/version-8-2/"
+          },
+          {
+            "label": "미드저니 버전 선택·기능 호환 공식 문서",
+            "kind": "primary",
+            "url": "https://docs.midjourney.com/hc/en-us/articles/32199405667853-Version"
+          }
+        ]
+      },
+      {
+        "heading": "이미지 선택으로 취향을 기록하는 프로필",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 개인화 문서는 이용자가 좋아하는 이미지를 선택하거나 평가한 정보를 스타일에 반영하는 구조를 안내한다. V8.2 발표는 특히 평가가 많이 쌓인 프로필에서 취향 반영을 개선했으며 새 프로필을 만드는 이미지 후보군도 넓혔다고 설명했다. 개선의 방향이지 모든 이용자의 선택을 같은 정확도로 이해한다는 측정 결과는 아니다.",
+          "현재 공식 안내에 따르면 Global V7 프로필은 V8.1과 V8.2에서 사용할 수 있고 V8 계열의 추가 프로필도 만들 수 있다. 다만 Global V8 프로필은 현재 없고 V8 프로필을 V7에서 사용하는 것은 지원하지 않는다. 예전 프로필과 새 프로필을 모두 시도하라는 출시 안내도 이런 버전 관계와 함께 읽을 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "미드저니 V8.2 출시 공식 안내",
+            "kind": "primary",
+            "url": "https://updates.midjourney.com/version-8-2/"
+          },
+          {
+            "label": "미드저니 개인화 프로필 공식 설명",
+            "kind": "primary",
+            "url": "https://docs.midjourney.com/hc/en-us/articles/32433330574221-Personalization"
+          }
+        ]
+      },
+      {
+        "heading": "버전과 프로필 코드를 선택해 남긴다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 버전 문서는 V8.2가 7월 24일 기본 모델이 됐다고 안내한다. 이용자는 설정에서 기본 버전을 고르거나 프롬프트에 버전 매개변수인 --v를 지정할 수 있다. 버전이 달라지면 프롬프트를 처리하는 방식과 지원 기능도 달라질 수 있다. 최신이라는 이유로 기존 도구와 모두 같은 조건이라고 가정하기 어렵다.",
+          "개인화에는 --p와 프로필 ID 또는 코드를 사용할 수 있다. 문서는 선택과 평가를 더할수록 프로필이 바뀌고 새 코드가 생긴다고 설명한다. 이전 결과의 코드를 남기면 어떤 시점의 개인화를 썼는지 돌아볼 단서가 된다. 스타일 적용 강도를 조절하는 기능도 있지만 이 값이 높아졌다고 작업의 사실성이나 대상 재현 정확성이 높아지는 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "미드저니 개인화 프로필 공식 설명",
+            "kind": "primary",
+            "url": "https://docs.midjourney.com/hc/en-us/articles/32433330574221-Personalization"
+          },
+          {
+            "label": "미드저니 버전 선택·기능 호환 공식 문서",
+            "kind": "primary",
+            "url": "https://docs.midjourney.com/hc/en-us/articles/32199405667853-Version"
+          }
+        ]
+      },
+      {
+        "heading": "취향의 일치와 작업 조건의 일치",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 개인화의 개선을 원하는 그림을 쉽게 고르는 문제와 연결해 읽는다. 이미지가 마음에 드는 것과 특정 작업의 요구를 만족하는 것은 서로 다른 판단이다. 예를 들어 분위기를 찾는 초기 구상에서는 다양한 제안이 유용할 수 있지만 동일한 대상과 구성 조건을 유지해야 하는 작업에서는 강한 스타일이 요구를 흐릴 수도 있다.",
+          "이 차이를 평가하려면 모델 버전과 프롬프트를 남기고 개인화 적용 여부를 나누어 볼 수 있다. 새 프로필에서 얻은 결과를 기존 프로필과 비교할 때도 같은 내용의 입력인지 먼저 확인해야 한다. 우연히 좋은 한 장이 나왔다는 경험만으로 전체 작업의 품질이 개선됐다고 결론 내리기보다, 의도에 맞는 결과가 어느 조건에서 반복되는지를 보는 편이 설명력이 있다."
+        ],
+        "references": [
+          {
+            "label": "미드저니 V8.2 출시 공식 안내",
+            "kind": "primary",
+            "url": "https://updates.midjourney.com/version-8-2/"
+          },
+          {
+            "label": "미드저니 개인화 프로필 공식 설명",
+            "kind": "primary",
+            "url": "https://docs.midjourney.com/hc/en-us/articles/32433330574221-Personalization"
+          },
+          {
+            "label": "미드저니 버전 선택·기능 호환 공식 문서",
+            "kind": "primary",
+            "url": "https://docs.midjourney.com/hc/en-us/articles/32199405667853-Version"
+          }
+        ]
+      },
+      {
+        "heading": "프로필이 변화하면 비교의 기준도 움직인다",
+        "kind": "analysis",
+        "paragraphs": [
+          "개인화는 고정된 버튼 하나가 아니라 이용자의 선택이 누적되는 설정이다. 같은 프로필 이름을 사용해도 평가가 더해지면 스타일의 기준이 바뀔 수 있다. 장기 작업에서는 최종 이미지뿐 아니라 당시의 코드와 모델 버전을 함께 보존해야 이후 변경을 설명할 수 있는 근거가 남는다.",
+          "이번 발표가 말하는 신선함과 대담함은 제작자가 선택할 표현의 방향으로 이해할 수 있다. 모든 프로젝트에 같은 방향이 적합한 것은 아니다. 기존 작업의 톤을 유지하는 경우와 새 가능성을 찾는 경우를 구분하면 개선이라는 말을 더 구체적인 질문으로 바꿀 수 있다. ARCH.B는 모델을 직접 실행해 비교하지 않았으며, 실제 효과는 작업별 조건과 결과를 함께 검토해야 판단할 수 있다.",
+          "팀이 공동으로 결과를 검토하는 경우에는 누가 어떤 이미지를 선택했는지도 비교의 맥락이 된다. 한 사람의 취향을 작업 전체의 기준으로 쓰는 선택과 여러 요구를 조정하는 선택은 다르다. 프로필이 제안하는 표현을 최종 판단으로 간주하기보다, 제작자가 채택하거나 거절한 이유를 남기면 새로운 모델의 역할을 설명하기 쉽다."
+        ],
+        "references": [
+          {
+            "label": "미드저니 개인화 프로필 공식 설명",
+            "kind": "primary",
+            "url": "https://docs.midjourney.com/hc/en-us/articles/32433330574221-Personalization"
+          },
+          {
+            "label": "미드저니 버전 선택·기능 호환 공식 문서",
+            "kind": "primary",
+            "url": "https://docs.midjourney.com/hc/en-us/articles/32199405667853-Version"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "V8.2의 미감·품질 개선은 회사 설명이며 정량 비교는 공개되지 않았다.",
+      "Global V7 프로필은 V8.2에 호환되지만 V8 프로필은 V7에 호환되지 않는다.",
+      "모델 버전과 개인화 코드를 보존해야 결과를 비교할 기준이 남는다."
+    ],
+    "tags": [
+      "Midjourney",
+      "이미지생성",
+      "개인화"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "미드저니 V8.2 출시 공식 안내",
+        "url": "https://updates.midjourney.com/version-8-2/"
+      },
+      {
+        "label": "미드저니 버전 선택·기능 호환 공식 문서",
+        "url": "https://docs.midjourney.com/hc/en-us/articles/32199405667853-Version"
+      },
+      {
+        "label": "미드저니 개인화 프로필 공식 설명",
+        "url": "https://docs.midjourney.com/hc/en-us/articles/32433330574221-Personalization"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://updates.midjourney.com/version-8-2/",
+      "https://docs.midjourney.com/hc/en-us/articles/32199405667853-Version",
+      "https://docs.midjourney.com/hc/en-us/articles/32433330574221-Personalization"
+    ],
+    "notes": "공식 원문 전문·현재 Version/Personalization 문서를 웹 열람. 7/24기본V8.2와 --v 선택, Global V7 forward-compatible/V8 reverse-incompatible/noGlobalV8 조건 확인. 미감·품질·lowquality감소는 회사 주장으로 귀속, 수치·비교검증 없음. 프로필 코드 변화와 재현 기록을 분석하되 실제모델실행 없음. 전체pending Version8.2 단일, 기존후보0; 회사 인수 등 다른 사건과 구분.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:58:47.803Z",
+    "checks": [
+      "7월24일 모델 출시와 현재 버전 문서 대조",
+      "개인화 호환 방향·코드 변화 정확히 구분",
+      "품질 개선을 독립 벤치마크로 주장하지 않음",
+      "모델 실제 실행 없이 문서와 분석 구분",
+      "전체 pending에서 같은 버전 출시 중복 없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

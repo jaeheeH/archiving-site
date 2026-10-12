@@ -1,0 +1,11 @@
+{
+  "status": "published",
+  "id": "13e0a46d-2659-4258-9726-aa9ad578b3e5",
+  "slug": "news-24beabc691ccd09b06b9",
+  "title": "CodeQL 2.27.2, 언어 분석 개선과 macOS 빌드 호환성 제약 공개",
+  "is_published": true,
+  "published_at": "2026-10-12T00:24:42.787+00:00",
+  "characters": 2099,
+  "source": "GitHub Changelog",
+  "verifiedAt": "2026-10-12T00:24:42.787Z"
+}

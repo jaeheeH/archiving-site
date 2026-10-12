@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { ToastProvider } from "@/components/ToastProvider";
 import BalsaThemeActivation from "@/app/components/BalsaThemeActivation";
 import VisitorTracker from "@/app/components/VisitorTracker";
+import SavedProvider from "@/app/components/SavedProvider";
 import Header from "@/app/layout/Header";
 import Footer from "@/app/layout/Footer";
 import { getSiteSettings, getDefaultMetadata } from "@/lib/site-settings";
 import { getSiteUrl } from "@/lib/site-url";
-import { jsonLd } from '@/lib/seo';
+import { jsonLd, sitePageUrl } from '@/lib/seo';
 import { SITE_COPY } from '@/lib/site-copy';
 import { COLOR_MODE_INIT_SCRIPT } from '@/lib/color-mode';
 import "./css/pretendard.css";
@@ -143,7 +144,7 @@ export default async function RootLayout({
 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd({ '@context': 'https://schema.org', '@graph': [
           { '@type': 'WebSite', '@id': `${siteUrl}/#website`, url: siteUrl, name: 'ARCH.B', alternateName: 'ARCH-B', description: SITE_COPY.brand.description, inLanguage: 'ko-KR', publisher: { '@id': `${siteUrl}/#publisher` } },
-          { '@type': 'Organization', '@id': `${siteUrl}/#publisher`, name: 'ARCH.B', url: siteUrl, ...(settings?.logo_url ? { logo: settings.logo_url } : {}) },
+          { '@type': 'Organization', '@id': `${siteUrl}/#publisher`, name: settings?.organization_name || settings?.site_name || 'ARCH.B', alternateName: 'ARCH-B', url: siteUrl, logo: sitePageUrl(settings?.logo_url || '/logo.png') },
         ] }) }} />
       </head>
       <body className="antialiased">
@@ -166,11 +167,11 @@ export default async function RootLayout({
           <div dangerouslySetInnerHTML={{ __html: settings.custom_scripts }} />
         )}
 
-        <ToastProvider>
+        <ToastProvider><SavedProvider>
           <Header />
           {children}
           <Footer/>
-        </ToastProvider>
+        </SavedProvider></ToastProvider>
         
         {enableVercelInsights && (
           <>

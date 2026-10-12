@@ -1,0 +1,168 @@
+{
+  "id": "d836eeeb-c4ce-4048-a49f-0eb87a2f7dd0",
+  "article": {
+    "url": "https://blogs.nvidia.com/blog/ai-day-singapore/",
+    "title": "엔비디아 AI Day 싱가포르, 공공 연구와 동남아 언어 모델 적용 사례 공개",
+    "summary": "엔비디아가 싱가포르 AI Day에서 동남아 공공·기업의 AI 개발 사례를 소개했다. HTX의 공공안전 연구, AI Singapore의 지역 언어 모델 공개, Sea의 인프라 도입은 서로 다른 단계다. SEA-LION 논문의 언어 평가 결과와 실제 서비스 운영 효과를 구분해 지역화의 의미와 확인할 조건을 살펴봤다.",
+    "paragraphs": [
+      {
+        "heading": "동남아의 서로 다른 적용 단계를 한자리에서 소개",
+        "kind": "reporting",
+        "paragraphs": [
+          "엔비디아는9월22~23일 래플스 시티 컨벤션센터에서 진행한 AI Day 싱가포르와 관련해 지역 파트너의 연구·개발·도입 사례를 공개했다. 실습 교육과 전문가 세션을 진행하는 행사와 함께 공공 서비스, 지역 언어 모델과 기업 인프라를 소개하는 자료다. 회사는 실험에서 운영 규모로 확대하는 방향을 강조했지만 모든 사례가 같은 단계에 도달했다고 밝히지는 않았다. 싱가포르 HTX의 공공안전 AI 연구와 이미 공개한 언어 모델, 앞으로 확대할 기업 인프라가 함께 등장한다. 행사의 총괄 표현을 모든 국가에서 서비스가 완료됐다는 결론으로 옮기지 않고 각각의 개발 상태를 나눠 읽어야 한다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 AI Day 싱가포르 공식 사례 정리",
+            "url": "https://blogs.nvidia.com/blog/ai-day-singapore/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "공공안전 연구와 지역별 모델 조정",
+        "kind": "reporting",
+        "paragraphs": [
+          "HTX는 Nemotron3 Super와 Nano Omni를 활용한 연구를 시작하는 기관으로 소개됐다. 복잡한 추론과 여러 형식의 운영 데이터를 다루는 응용 가능성을 살핀다는 설명이다. 말레이시아 YTL AI Labs와 베트남 Viettel AI는 현지 서비스와 언어에 맞게 모델을 조정하는 사례로 등장했다. 태국 iApp은 법률 데이터를 활용한 모델 조정과 법률 보조 챗봇을 소개한다. 이 목록은 각 기관·기업의 개발 방향을 전하는 엔비디아의 발표이며 공공안전 사고 감소나 법률 판단 정확도를 공동으로 평가한 시험이 아니다. 연구를 시작한다는 사실과 현장 성과를 입증하는 자료는 서로 다른 정보를 제공한다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 AI Day 싱가포르 공식 사례 정리",
+            "url": "https://blogs.nvidia.com/blog/ai-day-singapore/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "SEA-LION의 공개 모델과 지역 데이터",
+        "kind": "reporting",
+        "paragraphs": [
+          "AI Singapore의 별도 공식 발표는9월18일 Nemotron-SEA-LION-v4.8을 공개했다고 밝혔다. Nemotron3 기반의30B-A3B와120B-A12B 계열에 지역 데이터와 지속 사전학습·후속 학습을 적용한 모델이다. 이름에서30B와120B는 전체 매개변수 규모를, A3B와 A12B는 추론에서 활성화하는 규모를 가리킨다. 활성 매개변수가 적다고 전체 가중치를 저장하는 자원까지 같은 비율로 줄어드는 것은 아니다. AI Singapore는 학습 프레임워크와 지역 언어 데이터를 결합한 공개 가중치 모델이라고 설명했다. 행사 소식에 나온 채택 사례와 모델 자체의 개발 방법을 연결해 볼 수 있는 자료다."
+        ],
+        "references": [
+          {
+            "label": "AI Singapore의 SEA-LION v4.8 개발 발표",
+            "url": "https://sea-lion.ai/blog/uplifting-ai-in-southeast-asia-sea-announcing-nemotron-sea-lion-v4-8-in-collaboration-with-nvidia/",
+            "kind": "primary"
+          },
+          {
+            "label": "AI Singapore SEA-LION v4.8 기술 보고서",
+            "url": "https://arxiv.org/html/2609.18310v3",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "언어 평가 점수는 업무 완료율과 다르다",
+        "kind": "analysis",
+        "paragraphs": [
+          "기술 보고서는120B 모델의 SEA-HELM 전체 점수가 대응하는 Nemotron3 Super의49.30에서63.44로 높아졌다고 보고한다.7개 동남아 언어의 과제 점수를 계층적으로 합친 평가이며9월15일 수집한 결과다. 논문은 모델별8회 실행을 평균하고 재표집으로 신뢰구간을 계산하는 방법도 설명한다. 이 점수는 실제 민원 처리나 기업 업무의 성공률, 비용 절감률을 뜻하지 않는다. 지역 언어로 답하고 지시를 따르는 능력을 비교하는 한 가지 근거로 읽어야 한다. 같은 논문이 언어와 능력별 개선이 균일하지 않다고 밝히므로 전체 평균의 상승을 모든 언어의 모든 과제에 동일하게 적용할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "AI Singapore SEA-LION v4.8 기술 보고서",
+            "url": "https://arxiv.org/html/2609.18310v3",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "기업 인프라 확대는 앞으로의 사용 계획과 연결",
+        "kind": "reporting",
+        "paragraphs": [
+          "엔비디아는 Sea가 Vera Rubin 플랫폼을 도입해 Shopee·Monee·Garena 사업의 AI 기반을 확대한다고 소개했다. 상품 정보 작성과 탐색, 디지털 금융 서비스와 게임 경험 등 사용 영역을 제시하지만 새 플랫폼으로 얻은 효과를 비교한 수치는 발표에 없다. 기존에 사용하는 AI 기능과 새 인프라를 바탕으로 앞으로 규모를 키울 계획도 구분해야 한다. 금융 서비스에서 AI를 사용한다는 사실만으로 신용평가의 공정성이나 사기 탐지 정확도가 검증됐다는 결론을 만들지 않았다. 이번 행사 자료가 확인하는 것은 기업의 도입 방향과 지역 서비스에 연결하려는 목적이다."
+        ],
+        "references": [
+          {
+            "label": "엔비디아 AI Day 싱가포르 공식 사례 정리",
+            "url": "https://blogs.nvidia.com/blog/ai-day-singapore/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "지역화의 평가는 언어와 배포 조건을 함께 보기",
+        "kind": "analysis",
+        "paragraphs": [
+          "지역 언어 데이터를 더하는 작업은 이미 있는 기반 모델을 현지의 문자·문화·업무 요청에 맞추는 접근이다. 다만 SEA-LION 보고서는 원래 토크나이저가 일부 문자에서 비효율적이고 학습 데이터와 능력별로 남는 차이가 있다고 설명한다. 가중치를 공개하는 방식은 개발자가 조정과 평가에 참여할 기반을 제공하지만 운영 성과를 자동으로 확정하지 않는다. 공공 연구라면 실제 데이터와 권한, 기업 서비스라면 사용하는 언어와 과제에서 결과를 확인해야 한다. AI Day의 여러 사례는 지역별로 모델과 인프라를 구성하는 방향을 보여준다. 그 변화의 효과는 행사에서 함께 소개됐다는 사실보다 각각의 연구·서비스 평가에서 드러날 정보다."
+        ],
+        "references": [
+          {
+            "label": "AI Singapore의 SEA-LION v4.8 개발 발표",
+            "url": "https://sea-lion.ai/blog/uplifting-ai-in-southeast-asia-sea-announcing-nemotron-sea-lion-v4-8-in-collaboration-with-nvidia/",
+            "kind": "primary"
+          },
+          {
+            "label": "AI Singapore SEA-LION v4.8 기술 보고서",
+            "url": "https://arxiv.org/html/2609.18310v3",
+            "kind": "primary"
+          },
+          {
+            "label": "엔비디아 AI Day 싱가포르 공식 사례 정리",
+            "url": "https://blogs.nvidia.com/blog/ai-day-singapore/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "HTX의 연구와 공개 언어 모델, Sea의 인프라 확대를 각각 다른 단계로 정리했다.",
+      "SEA-LION 전체 매개변수와 활성 매개변수 규모를 분리했다.",
+      "SEA-HELM은7개 언어 과제 평가이며 실제 업무 성공·절감 비율과 다르다.",
+      "공공안전·법률·금융·의료의 적용 전망을 검증된 현장 효과로 확대하지 않았다."
+    ],
+    "tags": [
+      "엔비디아",
+      "AISingapore",
+      "SEALION",
+      "지역언어AI"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "엔비디아 AI Day 싱가포르 공식 사례 정리",
+        "url": "https://blogs.nvidia.com/blog/ai-day-singapore/"
+      },
+      {
+        "label": "AI Singapore의 SEA-LION v4.8 개발 발표",
+        "url": "https://sea-lion.ai/blog/uplifting-ai-in-southeast-asia-sea-announcing-nemotron-sea-lion-v4-8-in-collaboration-with-nvidia/"
+      },
+      {
+        "label": "AI Singapore SEA-LION v4.8 기술 보고서",
+        "url": "https://arxiv.org/html/2609.18310v3"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blogs.nvidia.com/blog/ai-day-singapore/",
+      "https://sea-lion.ai/blog/uplifting-ai-in-southeast-asia-sea-announcing-nemotron-sea-lion-v4-8-in-collaboration-with-nvidia/",
+      "https://arxiv.org/html/2609.18310v3"
+    ],
+    "notes": "원문본문9/22발표·9/22–23행사(RSS9/23과구분),기관9/18모델공개·논문v3대조.HTXembarkingresearch≠완료운영;현지fine-tune사례회사귀속.Seaadopt앞으로scale≠새플랫폼기측정효과.Moneefinance사용을정확/공정/보장으로확대안함,신약연구예시는임상효과근거부족해제외.120BSuper49.30→63.44만조건달아사용;30B논문abstract46.06(Lightning)vsNano46.89표기차이있어수치제외.SEAHELM7언어/8runs/9/15scores·기능별불균일,originaltokenizer제약반영.후보통신openmodel다른활용,전체pending동일행사없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "068917f0-0273-40a6-8765-bf94c6b81f68",
+    "16aae997-e9c3-40ab-bb39-c500781fbbfc",
+    "316c5a18-02ff-4735-943e-0c393784bea5",
+    "56b16575-ca25-4ba2-9903-3311573548c4",
+    "88909f47-c322-4252-aca4-51e619d16b9d",
+    "b58159c9-4b8b-4a2d-8910-3d9314f9020c",
+    "ca37e48d-c53f-4017-9aad-4b208f6a6a83"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:12:20.042Z",
+    "checks": [
+      "본문발표일과RSS수집일 차이 확인",
+      "지역파트너별연구/개발/도입 단계구분",
+      "AI Singapore기관발표와논문대조",
+      "120B평가의비교모델/7언어/실행/집계일 조건확인",
+      "금융·의료·안전효과단정제외",
+      "후보및전체pending동일행사없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

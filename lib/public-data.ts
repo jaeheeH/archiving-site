@@ -1,4 +1,6 @@
 import "server-only";
+import { readGallerySearch } from "./gallery-search-data";
+import { matchesSearch } from "./search-text";
 
 import { unstable_cache } from "next/cache";
 import { createPublicClient } from "@/lib/supabase/public";
@@ -226,13 +228,7 @@ function parseTags(tagsCsv = "") {
     .slice(0, MAX_FILTER_TAGS);
 }
 
-function buildTextSearchQuery(search: string) {
-  return normalizeFilterText(search)
-    .split(/\s+/)
-    .filter(Boolean)
-    .map((word) => `${word}:*`)
-    .join(" & ");
-}
+
 
 function isMissingThumbnailColumn(error: unknown) {
   const queryError = error as { code?: string; message?: string } | null;
@@ -310,6 +306,7 @@ export const getGalleryPageData = unstable_cache(
     const offset = (page - 1) * limit;
     const safeSearch = normalizeFilterText(search);
     const filterTags = parseTags(tagsCsv);
+    const matchingIds = safeSearch ? (await readGallerySearch()).filter(item => matchesSearch(safeSearch,[item.title,item.description,item.searchText,...item.tags])).map(item => Number(item.id)) : null;
 
     const buildQuery = (columns: string) => {
       let query = supabase
@@ -318,7 +315,7 @@ export const getGalleryPageData = unstable_cache(
         .order("created_at", { ascending: false });
 
       if (safeSearch) {
-        query = query.textSearch("search_vector", buildTextSearchQuery(safeSearch));
+        query = query.in("id", matchingIds?.length ? matchingIds : [-1]);
       }
 
       for (const tag of filterTags) {
@@ -357,7 +354,7 @@ export const getGalleryPageData = unstable_cache(
       },
     };
   },
-  ["gallery-page-data"],
+  ["gallery-page-data-v2"],
   {
     revalidate: CACHE_SECONDS.short,
     tags: [CACHE_TAGS.gallery],
@@ -713,12 +710,14 @@ export const getBlogPostData = unstable_cache(
   async (slug: string) => {
     const supabase = createPublicClient();
 
-    const { data: post } = await supabase
+    const { data: post, error: postError } = await supabase
       .from("posts")
       .select(POST_DETAIL_COLUMNS)
       .eq("slug", slug)
       .eq("is_published", true)
-      .single();
+      .maybeSingle();
+
+    if (postError) throw postError;
 
     if (post) {
       const [categoryRes, authorRes] = await Promise.all([
@@ -775,11 +774,13 @@ export const getBlogPostData = unstable_cache(
       };
     }
 
-    const { data: history } = await supabase
+    const { data: history, error: historyError } = await supabase
       .from("post_slug_history")
       .select("new_slug")
       .eq("old_slug", slug)
-      .single();
+      .maybeSingle();
+
+    if (historyError) throw historyError;
 
     if (history?.new_slug) {
       return { post: null, redirectSlug: history.new_slug };
@@ -787,7 +788,7 @@ export const getBlogPostData = unstable_cache(
 
     return null;
   },
-  ["blog-post-data-v2"],
+  ["blog-post-data-v3"],
   {
     revalidate: CACHE_SECONDS.long,
     tags: [CACHE_TAGS.posts],
@@ -803,11 +804,19 @@ export const getReferencesPageData = unstable_cache(
         .from("reference_categories")
         .select("id, name")
         .order("created_at", { ascending: true }),
-      supabase
-        .from("references")
-        .select("id, title, description, url, image_url, logo_url, category, range, clicks, created_at")
-        .order("created_at", { ascending: false })
-        .limit(100),
+      (async () => {
+        const query = () => supabase.from('references').select('id,title,description,url,image_url,logo_url,category,range,clicks,created_at').order('created_at', { ascending:false }).order('id');
+        const first = await query().range(0,499);
+        if (first.error) return first;
+        const rows = [...(first.data || [])];
+        for (let start=500; rows.length === start; start+=500) {
+          const next = await query().range(start,start+499);
+          if (next.error) return next;
+          rows.push(...(next.data || []));
+          if (!next.data || next.data.length < 500) break;
+        }
+        return { data:rows,error:null };
+      })(),
     ]);
 
     if (categoriesRes.error) throw categoriesRes.error;
@@ -835,7 +844,7 @@ export const getReferencesPageData = unstable_cache(
       references: referencesRes.data || [],
     };
   },
-  ["references-page-data-v3"],
+  ["references-page-data-v4"],
   {
     revalidate: CACHE_SECONDS.long,
     tags: [CACHE_TAGS.references],

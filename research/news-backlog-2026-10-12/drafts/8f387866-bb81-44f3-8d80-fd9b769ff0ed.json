@@ -1,0 +1,144 @@
+{
+  "id": "8f387866-bb81-44f3-8d80-fd9b769ff0ed",
+  "article": {
+    "url": "https://engineering.fb.com/2026/08/24/networking-traffic/metaroce-rdma-transport-ai-ethernet/",
+    "title": "메타, 패킷 손실과 다중 경로를 NIC에서 다루는 MetaRoCE 전송 구조 발표",
+    "summary": "메타가 AI용 이더넷 RDMA 전송 기술 MetaRoCE를 소개했다. 무손실 스위치에 대한 의존을 줄이고 NIC가 경로와 재전송을 관리하는 설계로, 발표 당시에는 10월 사양·참조 구현 공개를 예고했다.",
+    "paragraphs": [
+      {
+        "heading": "8월 발표는 10월 공개 계획을 포함했다",
+        "kind": "reporting",
+        "paragraphs": [
+          "메타는 8월 24일 AI 학습용 이더넷의 RDMA 전송 기술인 MetaRoCE를 발표했다. 대규모 GPU 연결을 목표로 네트워크 혼잡과 손실을 종단 장치에서 처리하는 설계다. 다만 발표문은 사양과 최적화된 소프트웨어 참조 구현, 적합성 검증 자료를 10월 OCP 행사에서 공개하겠다고 예고했다. 당시 발표만으로 이미 배포된 공개 사양이나 상용 제품으로 판단할 수는 없다.",
+          "핵심 역할을 맡는 장치는 네트워크 인터페이스 카드인 NIC다. 경로별 왕복 시간과 혼잡 신호, 사용 상태를 측정하고 패킷마다 여러 경로에 분산한다. 스위치에는 일반적인 이더넷의 혼잡 알림과 다중 경로 전달 기능을 요구하며, 전용 패킷 처리나 네트워크 내부의 복잡한 상태 관리에 대한 의존을 줄이는 방향이라고 회사는 설명했다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://engineering.fb.com/2026/08/24/networking-traffic/metaroce-rdma-transport-ai-ethernet/"
+          }
+        ]
+      },
+      {
+        "heading": "순서가 달라도 도착한 데이터를 바로 쓴다",
+        "kind": "reporting",
+        "paragraphs": [
+          "MetaRoCE는 순서가 바뀌어 도착한 패킷을 목적지 메모리에 직접 기록하는 방식으로 설계됐다. 회사는 별도의 재정렬 버퍼와 앞선 패킷을 기다리는 정체를 피할 수 있다고 밝혔다. 각 경로의 전달 상태를 따로 관리하므로 한 경로의 지연이나 손실이 다른 경로의 진행을 모두 막는 상황도 줄이려 한다.",
+          "손실 복구에는 경로별 순번과 선택적 확인 정보를 사용해 누락된 패킷을 찾고 해당 경로에서 재전송한다. 무손실 이더넷을 만들기 위한 우선순위 흐름 제어나 일시 정지 프레임을 필수로 두지 않는다. 송신 측의 혼잡 조절에 수신 측의 대역폭 안내를 결합하고, 하나의 연결 안에서 여러 순서 보장 스트림과 여러 전송 경로를 다루는 구조다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://engineering.fb.com/2026/08/24/networking-traffic/metaroce-rdma-transport-ai-ethernet/"
+          }
+        ]
+      },
+      {
+        "heading": "실험 범위는 수백만 GPU 목표와 다르다",
+        "kind": "reporting",
+        "paragraphs": [
+          "메타가 공개한 검증 사례는 AMD GPU 64개 노드와 프로그래밍 가능한 AMD 펜산도 NIC를 사용한 환경이다. RCCL의 집단 통신을 기존 RoCEv2와 비교했고, 회사 관측에서는 1%의 패킷 손실 조건에서도 약 86%의 처리량을 유지했다고 설명했다. 이 수치는 특정 실험 결과이며 처리량이 86% 증가했다는 의미나 수백만 GPU에서의 실측으로 해석해서는 안 된다.",
+          "소프트웨어 측면에서는 기존 RDMA Verbs와 통신 스택을 가능한 한 유지하되 다중 네트워크 평면 등을 위한 확장을 제시했다. 이더넷 스위치를 활용한다는 사실이 기존 NIC가 새 전송 방식에 자동으로 대응한다는 뜻은 아니다. 참조 구현도 동작 검증과 상호 운용을 위한 기준으로 봐야 하며, 모든 하드웨어의 처리량을 보장하는 자료와는 구분된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://engineering.fb.com/2026/08/24/networking-traffic/metaroce-rdma-transport-ai-ethernet/"
+          }
+        ]
+      },
+      {
+        "heading": "단순한 패브릭 대신 종단의 책임이 커진다",
+        "kind": "analysis",
+        "paragraphs": [
+          "이 설계의 의미는 복잡성이 사라진다기보다 이동한다는 데 있다. 스위치의 특수 기능 의존을 낮추는 대신 NIC는 경로 선택, 손실 판별과 혼잡 제어를 정확히 수행해야 한다. 운영팀은 평균 처리량뿐 아니라 경로 장애 때의 재분배, 수신 측 경쟁과 오류 복구를 함께 검증해야 실제 학습 작업이 안정적으로 진행되는지 판단할 수 있다.",
+          "메타의 2025년 OCP 발표는 ESUN을 이더넷 기반 확장 연결의 프레이밍·스위칭·오류 처리와 상호 운용을 논의하는 작업으로 설명했다. 이는 MetaRoCE가 다루는 종단 전송과 관련된 배경이지만 같은 사양이라는 뜻은 아니다. 공개 생태계의 장점은 여러 계층의 구현이 만나는 경계를 검증할 수 있다는 데 있으며, 명칭만으로 호환성을 추정하면 도입 조건을 놓치기 쉽다."
+        ],
+        "references": [
+          {
+            "label": "메타의 OCP 2025 이더넷·ESUN 공식 발표",
+            "kind": "primary",
+            "url": "https://engineering.fb.com/2025/10/13/data-infrastructure/ocp-summit-2025-the-open-future-of-networking-hardware-for-ai/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://engineering.fb.com/2026/08/24/networking-traffic/metaroce-rdma-transport-ai-ethernet/"
+          }
+        ]
+      },
+      {
+        "heading": "도입 판단에는 사양과 실패 조건이 필요하다",
+        "kind": "analysis",
+        "paragraphs": [
+          "검토 단계에서는 발표의 규모 목표와 현재 확인된 시험 범위를 따로 놓는 편이 유용하다. 작은 환경에서 손실을 견뎠다는 결과는 설계 방향을 보여주지만, 실제 클러스터의 트래픽 분포와 토폴로지, NIC 자원 제약까지 대신 증명하지는 않는다. 공개 사양과 적합성 자료가 제공되면 먼저 지원 장치와 스트림 의미, 장애 조건을 확인하는 순서가 합리적이다.",
+          "원문이 언급한 장거리 연결과 분산 저장소 등 다른 사용처의 확장도 향후 작업으로 제시됐다. 학습 통신에서 얻은 결과를 모든 네트워크에 그대로 적용하기보다, 자신의 작업이 손실 복구·순서 보장·혼잡 공정성 중 무엇에 민감한지 구분해야 한다. 발표의 가치는 넓은 약속보다 이더넷의 손실과 경로 변화를 다루는 구체적인 설계 선택에서 찾을 수 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://engineering.fb.com/2026/08/24/networking-traffic/metaroce-rdma-transport-ai-ethernet/"
+          },
+          {
+            "label": "메타의 OCP 2025 이더넷·ESUN 공식 발표",
+            "kind": "primary",
+            "url": "https://engineering.fb.com/2025/10/13/data-infrastructure/ocp-summit-2025-the-open-future-of-networking-hardware-for-ai/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "발표 당시 사양·참조 구현·적합성 자료는 10월 공개 예정이었다.",
+      "경로 관리와 손실 복구를 NIC에 맡기고 무손실 스위치 의존을 낮추는 설계다.",
+      "64개 노드의 회사 실험과 수백만 GPU 규모 목표는 구분해야 한다."
+    ],
+    "tags": [
+      "메타",
+      "RDMA",
+      "이더넷",
+      "AI인프라"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://engineering.fb.com/2026/08/24/networking-traffic/metaroce-rdma-transport-ai-ethernet/"
+      },
+      {
+        "label": "메타의 OCP 2025 이더넷·ESUN 공식 발표",
+        "url": "https://engineering.fb.com/2025/10/13/data-infrastructure/ocp-summit-2025-the-open-future-of-networking-hardware-for-ai/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://engineering.fb.com/2026/08/24/networking-traffic/metaroce-rdma-transport-ai-ethernet/",
+      "https://engineering.fb.com/2025/10/13/data-infrastructure/ocp-summit-2025-the-open-future-of-networking-hardware-for-ai/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원문 WEB 전체와 보존 RSS를 확인했다. 첫 문단 releasing 표현보다 말미 October 2026 OCP release 계획을 우선해 발표 당시 공개 예정으로 한정했다. 2025 OCP 공식 발표에서 ESUN의 프레이밍·스위칭·오류 처리 및 상호 운용 범위를 대조했다. 64 AMD GPU nodes, Pensando NIC, RCCL, 1% 손실에서 약 86% throughput은 회사 실험이며 외부 검증이나 86% 성능 증가로 쓰지 않았다. candidates의 MTIA300(37a3a472-6f38-4a4c-b539-c7cf9f05e35e)은 별도 가속기/NIC 하드웨어 사건이다. snapshot.pending 전체 및 네트워크 관련 요약과 대조해 동일 MetaRoCE 사건 중복 없음. 일반 이더넷 활용은 기존 NIC 자동 호환을 뜻하지 않으며 향후 scale-across·storage 확대를 완료 기능으로 쓰지 않았다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "37a3a472-6f38-4a4c-b539-c7cf9f05e35e",
+    "448d8401-00b0-4c35-8b2a-df4ea80f13a0",
+    "f3265a10-bb53-430c-9445-a27583542b42"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:27:25.663Z",
+    "checks": [
+      "10월 OCP 사양·참조 구현 공개 계획을 확인했다.",
+      "목적지 직접 쓰기, 경로별 순번/SACK, PFC 불필수 구조를 확인했다.",
+      "검증은 64노드이며 수백만 GPU는 규모 목표라는 차이를 유지했다.",
+      "ESUN은 별도 패브릭 작업으로 MetaRoCE와 동일 규격으로 표현하지 않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

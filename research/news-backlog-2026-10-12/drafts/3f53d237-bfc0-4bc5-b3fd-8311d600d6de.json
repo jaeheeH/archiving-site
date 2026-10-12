@@ -1,0 +1,142 @@
+{
+  "id": "3f53d237-bfc0-4bc5-b3fd-8311d600d6de",
+  "article": {
+    "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%eb%8d%94-%ec%9e%91%ea%b3%a0-%ec%a0%95%ea%b5%90%ed%95%b4%ec%a7%84-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ec%8a%a4%eb%a7%88%ed%8a%b8%ed%83%9c%ea%b7%b83-%ea%b3%b5",
+    "title": "스마트태그3의 탐색 거리 확대, iOS 공유와 정밀 찾기의 지원 범위",
+    "summary": "삼성전자가 스마트태그3에 블루투스 6.0 채널 사운딩을 적용하고 iOS 위치 확인·공유를 지원한다고 발표했다. 최대 60m 탐색은 지정된 갤럭시 기기와 주변 환경에 따른 조건부 기능이다. 표준 기술과 실제 제품 지원 범위를 나눠 살펴봤다.",
+    "paragraphs": [
+      {
+        "heading": "작아진 태그와 넓어진 공유 범위",
+        "kind": "reporting",
+        "paragraphs": [
+          "삼성전자는 10월 1일 갤럭시 스마트태그3를 공개하며 분실물 탐색과 위치 공유의 기능을 설명했다. 회사에 따르면 전작보다 부피가 약 35%, 무게가 약 33% 줄었고, 둥근 쿠션 형태와 알루미늄 버튼을 채택했다. 열쇠·가방 등에 부착하는 용도에 더해 iOS 기기에서 태그 위치를 확인하고 공유할 수 있게 됐다. 이 변경은 위치 정보를 함께 보는 범위를 넓히지만 아이폰에서 모든 갤럭시 탐색 기능을 동일하게 쓴다는 뜻은 아니다. 공개 당시에는 10월 7일 국내를 시작으로 글로벌 시장에 순차 출시할 계획을 밝혔다. 이번 공개의 핵심은 새로운 하드웨어 사양과 탐색 방식이며, 이후 국내 판매 행사와는 발표 시점과 중심 내용이 구분된다."
+        ],
+        "references": [
+          {
+            "label": "삼성 스마트태그3 공개 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%eb%8d%94-%ec%9e%91%ea%b3%a0-%ec%a0%95%ea%b5%90%ed%95%b4%ec%a7%84-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ec%8a%a4%eb%a7%88%ed%8a%b8%ed%83%9c%ea%b7%b83-%ea%b3%b5",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "60m 탐색은 기기와 환경의 조건을 갖는다",
+        "kind": "reporting",
+        "paragraphs": [
+          "스마트태그3의 내 근처 탐색에는 블루투스 6.0의 채널 사운딩이 추가됐다. 삼성은 주변 환경에 따라 최대 60m 거리에서 컴퍼스 뷰로 방향과 거리를 확인할 수 있다고 설명했다. 발표 시 지원 기기는 갤럭시 Z 폴드8 울트라·폴드8, S26 울트라·S26 플러스로 명시했고 추가 기기 지원은 향후 가능성으로 남겼다. 가까워진 뒤에는 UWB를 활용해 더 정밀한 위치를 제공하는 방식이다. 원문의 공원 예시는 60m 안쪽에서 채널 사운딩을 쓰고 20m 이내에서 UWB로 전환하는 상황을 설명한다. 두 숫자를 모든 공간에서 확보되는 정확도나 항상 보장되는 작동 거리로 바꿔 읽을 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "삼성 스마트태그3 공개 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%eb%8d%94-%ec%9e%91%ea%b3%a0-%ec%a0%95%ea%b5%90%ed%95%b4%ec%a7%84-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ec%8a%a4%eb%a7%88%ed%8a%b8%ed%83%9c%ea%b7%b83-%ea%b3%b5",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "신호의 세기와 실제 거리 측정의 차이",
+        "kind": "analysis",
+        "paragraphs": [
+          "블루투스 SIG는 채널 사운딩이 위상 기반 거리 측정과 왕복 시간 측정을 이용한다고 설명한다. 여러 주파수에서 돌아온 신호의 위상 차이로 거리를 계산하고, 왕복 시간은 별도의 거리 검증에 활용하는 접근이다. 기존 신호 세기 표시와 구별되는 이유가 여기에 있다. 다만 표준의 정밀도 목표와 최대 거리 설명은 송신 전력과 구현 조건에 좌우되며, 곧바로 스마트태그3의 실측 성능이 되지는 않는다. 삼성의 제품 발표에도 별도의 호환 기기 제한이 있다. 따라서 블루투스 6.0이라는 버전 표시만으로 자신의 휴대폰이 같은 컴퍼스 뷰를 제공한다고 판단하기보다 제품별 지원 목록을 확인하는 편이 기능의 범위를 정확히 이해하게 한다."
+        ],
+        "references": [
+          {
+            "label": "삼성 스마트태그3 공개 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%eb%8d%94-%ec%9e%91%ea%b3%a0-%ec%a0%95%ea%b5%90%ed%95%b4%ec%a7%84-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ec%8a%a4%eb%a7%88%ed%8a%b8%ed%83%9c%ea%b7%b83-%ea%b3%b5",
+            "kind": "primary"
+          },
+          {
+            "label": "블루투스 SIG의 채널 사운딩 기술 설명",
+            "url": "https://www.bluetooth.com/learn-about-bluetooth/feature-enhancements/channel-sounding/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "직접 탐색과 주변 기기를 통한 탐색",
+        "kind": "reporting",
+        "paragraphs": [
+          "직접 연결 범위를 벗어난 태그는 갤럭시 파인드 네트워크로 찾도록 설계됐다. 삼성은 전 세계 9억 대 이상의 갤럭시 기기가 연결돼 있다고 밝혔으며, 오프라인 찾기를 설정한 주변 기기가 태그를 감지해 위치 확인을 돕는다고 설명했다. 전체 연결 기기 수는 특정 장소에서 작동하는 중계 기기 수나 위치 갱신 간격을 보장하는 숫자가 아니다. 지정 구역의 출입 알림과 연결이 끊긴 뒤 움직임 감지 알림, 위치 기록도 소개됐다. 이런 기능을 반려동물에 활용할 수 있다는 사용 예시는 있지만, 주변 기기와 통신 환경을 거치는 탐색을 실시간 GPS 추적이나 긴급 상황 대응의 보장으로 해석해서는 안 된다."
+        ],
+        "references": [
+          {
+            "label": "삼성 스마트태그3 공개 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%eb%8d%94-%ec%9e%91%ea%b3%a0-%ec%a0%95%ea%b5%90%ed%95%b4%ec%a7%84-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ec%8a%a4%eb%a7%88%ed%8a%b8%ed%83%9c%ea%b7%b83-%ea%b3%b5",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "배터리와 분실 모드는 각각 다른 조건",
+        "kind": "analysis",
+        "paragraphs": [
+          "교체형 CR2032 배터리 한 개의 사용 시간은 삼성 설명상 일반 환경에서 최대 550일, 절전 모드에서 최대 790일이다. 더 긴 숫자는 별도 모드의 상한이며 알림·탐색을 수시로 수행해도 똑같은 기간을 유지한다는 뜻이 아니다. IP67 방수·방진과 NFC 분실 모드도 지원한다. 분실 모드는 발견자가 NFC 지원 기기로 스캔해 소유자가 등록한 연락처나 메시지를 보는 기능이어서, 네트워크를 통한 위치 탐색과 역할이 다르다. 태그 버튼으로 호환 IoT 기기의 미리 설정한 루틴을 실행하는 기능 역시 별도 연결과 설정을 전제로 한다. 구매 판단에서는 크기와 배터리 수치에 더해 휴대폰 호환성, 공유 대상, 주로 찾을 장소의 연결 환경을 함께 비교할 필요가 있다.",
+          "화이트와 블랙 제품의 발표 가격은 한 개 4만4,000원, 네 개 묶음은 14만9,600원이다. 묶음 할인과 특정 기기 구매에 연동된 행사는 조건이 다르다. 공유 기능을 위해 태그를 늘리는 경우에도 묶음 가격만 보기보다 함께 쓸 휴대폰에서 필요한 탐색 방식이 지원되는지 먼저 따져볼 수 있다."
+        ],
+        "references": [
+          {
+            "label": "삼성 스마트태그3 공개 원문",
+            "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%eb%8d%94-%ec%9e%91%ea%b3%a0-%ec%a0%95%ea%b5%90%ed%95%b4%ec%a7%84-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ec%8a%a4%eb%a7%88%ed%8a%b8%ed%83%9c%ea%b7%b83-%ea%b3%b5",
+            "kind": "primary"
+          },
+          {
+            "label": "블루투스 SIG의 채널 사운딩 기술 설명",
+            "url": "https://www.bluetooth.com/learn-about-bluetooth/feature-enhancements/channel-sounding/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "iOS 지원은 위치 확인·공유이며 모든 정밀 탐색 기능의 동일 지원을 뜻하지 않는다.",
+      "최대 60m 컴퍼스 뷰는 발표 당시 지정된 갤럭시 네 기종과 환경 조건을 따른다.",
+      "최대 790일은 절전 모드 수치이며 일반 사용 상한은 550일이다."
+    ],
+    "tags": [
+      "삼성전자",
+      "스마트태그3",
+      "블루투스",
+      "위치탐색"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "삼성 스마트태그3 공개 원문",
+        "url": "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%eb%8d%94-%ec%9e%91%ea%b3%a0-%ec%a0%95%ea%b5%90%ed%95%b4%ec%a7%84-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ec%8a%a4%eb%a7%88%ed%8a%b8%ed%83%9c%ea%b7%b83-%ea%b3%b5"
+      },
+      {
+        "label": "블루투스 SIG의 채널 사운딩 기술 설명",
+        "url": "https://www.bluetooth.com/learn-about-bluetooth/feature-enhancements/channel-sounding/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://news.samsung.com/kr/%ec%82%bc%ec%84%b1%ec%a0%84%ec%9e%90-%eb%8d%94-%ec%9e%91%ea%b3%a0-%ec%a0%95%ea%b5%90%ed%95%b4%ec%a7%84-%ea%b0%a4%eb%9f%ad%ec%8b%9c-%ec%8a%a4%eb%a7%88%ed%8a%b8%ed%83%9c%ea%b7%b83-%ea%b3%b5",
+      "https://www.bluetooth.com/learn-about-bluetooth/feature-enhancements/channel-sounding/"
+    ],
+    "notes": "10/1 공개 원문과 Bluetooth SIG 채널 사운딩 문서를 대조. 60m/20m는 제품 설명과 예시, 표준 최대 거리·정밀도는 실제 제품 실측으로 전용하지 않음. iOS 위치 확인·공유와 네 기종 채널 사운딩 지원을 분리. f4019e8c 국내 출시 후보는 10/6 발표/10/7 판매·프로모션 중심의 후속 사건으로, 본 원고는 최초 사양 및 무선 거리 측정에 초점. 전체 pending에서 태그 별도 공개는 본 ID뿐.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "f4019e8c-959b-4367-abaf-985d452c901a",
+    "f1c6270a-4dac-4b5a-b155-3bfd66b56f9d",
+    "259b1bc3-7c03-4bfc-9653-0a3452a297e6",
+    "a55ebad0-e03d-418e-8ffd-43af660e7f38",
+    "a6e9c97c-1e29-4eb1-b357-a081becc7813",
+    "d9dfde0c-a88d-47c1-863b-486eaefc9474"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:06:12.117Z",
+    "checks": [
+      "10/1 사양 공개와 10/7 국내 출시 후속 구분",
+      "채널 사운딩 지원 네 기종을 원문 각주에서 확인",
+      "Bluetooth SIG 기술 설명을 제품 보장 성능으로 전용하지 않음",
+      "550일 일반 사용과 790일 절전 모드 구분",
+      "네트워크 규모를 실시간 GPS 추적 보장으로 표현하지 않음"
+    ],
+    "relatedPendingIds": []
+  }
+}

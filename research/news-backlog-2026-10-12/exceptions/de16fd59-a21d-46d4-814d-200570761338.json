@@ -1,0 +1,24 @@
+{
+  "id": "de16fd59-a21d-46d4-814d-200570761338",
+  "kind": "insufficient_evidence",
+  "reason": "원문 WEB 접근 실패로 보존 RSS 소개문 확인. Apple Podcasts 공식 배포 설명에서 2026-09-25·36분·iPhone Duo와 Washington 개선문 토론 주제 및 출연자는 확인되나 실제 토론의 전개와 결론은 없음. Podcast Rex 전사는 초반 약2분 뒤 유료 잠금이며 이름/직책 자동전사 오류가 있고, 별도 페이지의 요약은 36분 에피소드에 40분 목차를 제시하는 등 불일치가 있어 원토론 검증으로 사용할 수 없음. 공개 부분의 짧은 핸즈온 소감만으로 에피소드 전체를 다루는 1800–3000자 원본 기사를 작성하면 추정/분량 채우기가 됨. Apple 공식 보도자료는 제품 사양을 확인하지만 별도 대기 기사 b36815c2의 같은 발표를 재작성할 뿐, 토론의 새 정보 근거를 보충하지 못함. 후보12건 original_title/title/summary 및 pending273 전체 제목과 관련 요약 검토. 인터뷰 소감은 새 내용이므로 같은 제품만으로 duplicate 판정하지 않음.",
+  "relatedIds": [
+    "b36815c2-1bc0-43e4-8a56-411bac4641da"
+  ],
+  "checkedUrls": [
+    "https://www.dezeen.com/2026/09/25/iphone-duo-folding-smartphones-washington-triumphal-arch-dezeen-weekly/",
+    "https://podcasts.apple.com/us/podcast/will-the-iphone-duo-send-folding-smartphones-mainstream/id1871205904?i=1000791571609",
+    "https://podcastrex.com/shows/dezeen-weekly/will-the-iphone-duo-send-folding-smartphones-mainstream/transcript",
+    "https://podcastrex.com/shows/dezeen-weekly/will-the-iphone-duo-send-folding-smartphones-mainstream",
+    "https://www.podscan.fm/podcasts/dezeen-weekly/episodes/will-the-iphone-duo-send-folding-smartphones-mainstream",
+    "https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/",
+    "https://rss.libsyn.com/shows/606175/destinations/5278630.xml",
+    "https://18a8220b-6c38-49de-bf8e-abec948fe459.libsyn.com/will-the-iphone-duo-send-folding-smartphones-mainstream",
+    "https://parkplanning.nps.gov/showFile.cfm?projectID=136973&sfid=851022",
+    "https://www.cfa.gov/records-research/record-cfa-actions/2026/05/cfa-meeting/minutes"
+  ],
+  "resolution": "evidence_completed",
+  "resolvedAt": "2026-10-12T02:29:42.3998668Z",
+  "resolutionNotes": "기존 공개 전사의 부족 판단은 유지한다. 새로 확인한 디진 공식 Libsyn 공개 RSS와 에피소드 페이지는 2026-09-25, 36:23, 출연자 3명과 두 토론 주제를 뒷받침하며 공개 전체 오디오 URL도 포함한다. 전체 오디오를 청취·전사하지 않았으므로 패널의 구체 의견이나 결론은 기사에 쓰지 않았다. 사용자 승인에 따라 에피소드 소개에서 확인한 두 주제와 별도로 검증한 Apple 발표, NPS 2026년 6월 환경평가, CFA 2026년 5월 회의록을 바탕으로 접히는 화면의 사용 연속성과 공공 기념물의 목적·접근 설계를 설명하는 1911자 기사로 범위를 정했다. NPS/CFA 문서는 9월 군사시설 발언 이전의 검토이며 최종 군사시설 승인 근거가 아님을 명시했다. 기존 Apple 발표 기사와 동일 제품을 다루지만 두 주제를 연결하는 에피소드의 디자인 검토 범위이므로 같은 사건 재작성으로 판단하지 않았다. 초안 editorialSchema 검증 완료.",
+  "draftPath": "research/news-backlog-2026-10-12/drafts/de16fd59-a21d-46d4-814d-200570761338.json"
+}

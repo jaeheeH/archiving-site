@@ -1,0 +1,145 @@
+{
+  "id": "9ed09433-1d8c-40d9-9f01-d53d490bbc09",
+  "article": {
+    "url": "https://toss.tech/article/games-in-ads",
+    "title": "토스, MRAID 기반 게임 광고 SDK의 렌더 판정과 하위 호환 계약 공개",
+    "summary": "토스가 앱 안에서 게임을 체험하는 플레이어블 광고 SDK를 직접 만든 과정을 소개했다. 실제 소재가 쓰는 MRAID API만 구현하고 렌더 상태·외부 코드·브릿지 배포의 경계를 정한 사례다.",
+    "paragraphs": [
+      {
+        "heading": "게임 광고 소재를 받기 위한 자체 SDK",
+        "kind": "reporting",
+        "paragraphs": [
+          "토스의 정윤호 프론트엔드 개발자는 앱 지면에 플레이어블 광고를 넣기 위해 자체 SDK를 만든 과정을 공개했다. 팀은 게임 광고가 적었던 이유를 영업만의 문제가 아니라 광고주가 쓰는 체험형 소재를 받지 못하는 구조로 다시 정의했다. 기존 광고 선택 시스템을 직접 운영하고 있어 표시와 통신도 자체 구현하는 방향을 선택했다고 설명했다.",
+          "토스의 소재 등록 조건은 게임을 담은 단일 HTML 파일과 5MB 제한이다. 광고 서버는 소재와 브릿지 자바스크립트 주소를 전달하고, 네이티브 앱은 웹뷰에 브릿지를 먼저 주입한다. 소재는 브릿지 API로 상태와 클릭을 알리며 화면 제거와 노출 기록의 권한은 네이티브 앱이 가진다. 이 파일 크기 제한은 회사 운영 조건이지 MRAID 표준 전체의 공통 조건으로 제시된 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/games-in-ads"
+          }
+        ]
+      },
+      {
+        "heading": "표준 인터페이스와 구현 범위를 구분했다",
+        "kind": "reporting",
+        "paragraphs": [
+          "팀은 소재와 호스트의 통신 규약으로 IAB Tech Lab의 MRAID를 선택했다. IAB는 이를 HTML5·JavaScript 광고가 앱과 통신하는 공통 API로 설명한다. 다만 토스는 표준의 모든 기능을 구현하기보다 실제 서빙할 소재가 호출하는 API부터 지원했다. 미지원 기능은 크래시 대신 지원 여부와 오류 이벤트로 알리도록 구성했다.",
+          "본체의 상태 관리, 네이티브 송신, 네이티브 호출 수신과 이벤트 구독을 모듈로 나눴다. 상태의 원천은 실제 광고 뷰를 관리하는 네이티브이고, 닫기 API도 화면을 직접 제거하기보다 요청을 전달한다. 토스만의 엔드카드 기능은 별도 확장으로 다뤘다. 이 구현 경험을 전체 MRAID 기능의 적합성 인증으로 읽어서는 안 된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/games-in-ads"
+          },
+          {
+            "label": "IAB Tech Lab의 MRAID 표준과 검증 자료",
+            "kind": "primary",
+            "url": "https://iabtechlab.com/standards/mobile-rich-media-ad-interface-definitions-mraid/"
+          }
+        ]
+      },
+      {
+        "heading": "준비와 렌더 완료를 다른 신호로 다룬다",
+        "kind": "reporting",
+        "paragraphs": [
+          "광고 준비 완료와 사용자가 실제로 볼 화면의 준비는 구분됐다. 팀은 폰트·이미지 디코딩·페인트·DOM 안정·프레임 신호를 조합해 rendered를 판단하고, 감지 실패가 광고 자체를 막지 않도록 별도의 타임아웃 경로를 뒀다. 감지 경로와 소요 시간을 함께 전달해 타임아웃 비율이 늘 때 원인을 추적하도록 했다.",
+          "외부 소재는 SDK와 같은 자바스크립트 문맥을 공유하므로 등록 검사를 통과했다고 모든 코드를 신뢰하지 않았다. 공개 SDK 객체의 우발적 덮어쓰기를 막고, 소재의 이벤트 핸들러 하나가 실패해도 나머지는 실행하도록 격리했다. 외부 이동은 클릭 API를 통해 처리하며 실제 랜딩 주소는 소재가 준 값 대신 광고 서버의 값을 기준으로 삼았다고 설명했다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/games-in-ads"
+          }
+        ]
+      },
+      {
+        "heading": "렌더 판정은 관측 가능한 근사로 읽는다",
+        "kind": "analysis",
+        "paragraphs": [
+          "이 사례에서 렌더 판정의 중요한 부분은 신호를 조합하면서도 각 신호가 놓치는 범위를 남겼다는 점이다. HTML 로드와 페인트는 게임의 모든 에셋이 준비됐다는 뜻이 아니고, DOM에 없는 자산은 이미지 검사로 확인하기 어렵다. 따라서 조합한 판정도 모든 게임의 완료를 수학적으로 보증하기보다 실제 소재의 빈 화면을 줄이고 문제를 추적하는 운영 방식으로 이해할 수 있다.",
+          "SDK 객체를 얼리는 방어도 별도의 보안 격리와 동일시할 수 없다. 원문은 얕은 동결의 한계와 우발적 덮어쓰기 방지가 목적임을 밝힌다. 통신 오류, 지원하지 않는 호출과 비동기 핸들러 실패를 정상적인 운영 사건으로 다루는 것이 이 설계의 강점이다. IAB가 제공하는 초기화·이벤트·노출 및 부정 사례의 검증 자료는 구현 경계를 점검하는 별도 기준으로 활용할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/games-in-ads"
+          },
+          {
+            "label": "IAB Tech Lab의 MRAID 표준과 검증 자료",
+            "kind": "primary",
+            "url": "https://iabtechlab.com/standards/mobile-rich-media-ad-interface-definitions-mraid/"
+          }
+        ]
+      },
+      {
+        "heading": "빠른 배포를 받치는 것은 호환 계약이다",
+        "kind": "analysis",
+        "paragraphs": [
+          "팀은 브릿지 URL을 서버에서 내려 모든 앱 버전에 하나의 최신 파일을 공급하도록 바꿨다. 이를 위해 공개 API는 추가만 허용하고 구버전 네이티브는 알 수 없는 커맨드를 무시하는 계약을 뒀다. 배포 파일은 수정하지 않고 새 버전 파일로 교체하며 변경자와 사유를 남긴다. 변경을 빠르게 전달하는 구조에는 잘못된 변경도 빨리 퍼진다는 비용이 따른다.",
+          "이 방식이 다른 앱에서도 유용하려면 새 브릿지와 오래된 호스트가 만날 때의 동작을 먼저 정의해야 한다. 표준 API를 사용한다는 사실만으로 회사별 확장과 배포 방식의 호환성이 자동 보장되지는 않는다. 실제 소재가 호출하는 표면과 실패 시 응답, 버전 간 계약을 함께 관리하는 것이 앱 안의 웹 코드를 안정적으로 운영하는 핵심 과제로 드러난다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://toss.tech/article/games-in-ads"
+          },
+          {
+            "label": "IAB Tech Lab의 MRAID 표준과 검증 자료",
+            "kind": "primary",
+            "url": "https://iabtechlab.com/standards/mobile-rich-media-ad-interface-definitions-mraid/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "토스의 단일 HTML·5MB 조건과 부분 MRAID 구현은 회사 운영 범위다.",
+      "로드·준비·렌더 신호를 구분하고 감지 실패 경로도 관찰한다.",
+      "단일 최신 브릿지 배포에는 API 추가와 미지 커맨드 무시라는 호환 계약이 따른다."
+    ],
+    "tags": [
+      "토스",
+      "플레이어블광고",
+      "MRAID",
+      "SDK"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://toss.tech/article/games-in-ads"
+      },
+      {
+        "label": "IAB Tech Lab의 MRAID 표준과 검증 자료",
+        "url": "https://iabtechlab.com/standards/mobile-rich-media-ad-interface-definitions-mraid/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://toss.tech/article/games-in-ads",
+      "https://iabtechlab.com/standards/mobile-rich-media-ad-interface-definitions-mraid/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원문 WEB 및 RSS 전문9768자를 앞뒤 모두 확인했다. IAB Tech Lab 공식 MRAID 페이지의 공통API/3.0검증자료를 대조했다. 원문의 Moloco 마케팅 성과 수치는 별도 독립확인하지 않아 인용하지 않았다. 5MB는 토스 등록 조건,부분API구현은 표준 전체 인증이 아니라고 명시했다. requestAnimationFrame 등 신호조합은 모든 게임렌더 완전증명으로 확장하지 않았고 원문의 signal limits/timeout을 보존했다. Object.freeze는 얕은 우발적사고 방지이지 보안샌드박스가 아니다. 후보목록이 비었고 snapshot.pending 전체 및 광고 글을 비교해 운영대시보드와 다른 광고 표시/브릿지 사건임을 확인했다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:35:36.899Z",
+    "checks": [
+      "네이티브가 상태·제거 권한을 갖고 close는 요청이라는 계약을 확인했다.",
+      "MRAID는 공통 통신API이며 토스가 실제 호출 표면만 구현했다는 범위를 유지했다.",
+      "rendered의 신호조합/타임아웃 관측과 얕은 동결 한계를 포함했다.",
+      "단일 최신 브릿지의 API추가/미지커맨드무시/불변파일/감사로그 조건을 확인했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

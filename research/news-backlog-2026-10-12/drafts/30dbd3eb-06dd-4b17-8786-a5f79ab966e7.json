@@ -1,0 +1,145 @@
+{
+  "id": "30dbd3eb-06dd-4b17-8786-a5f79ab966e7",
+  "article": {
+    "url": "https://www.figma.com/blog/japan-local-data-hosting/",
+    "title": "피그마, 일본 데이터 저장 지원…Enterprise 파일의 적용 범위는",
+    "summary": "피그마가 일본 Enterprise 고객에게 현지 파일 데이터 저장을 제공한다. 디자인·협업 자료의 위치를 선택할 수 있지만 모든 서비스 데이터가 포함되지는 않는다. 공식 도움말의 저장 범위, 제외 항목과 편집분 처리 조건을 통해 조직의 도입 판단에 필요한 경계를 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "일본 기업의 현지 저장 요구에 대응한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "피그마는 2026년 9월 11일 일본 데이터 레지던시 도입을 발표했다. 일본의 Enterprise 고객이 Figma Design, FigJam, Figma Slides와 Figma Make 파일 데이터를 현지에 저장할 선택지를 제공한다. 회사는 일본 고객에게 자국 내 데이터 저장·관리 요구가 있었다고 설명하고, 데이터 관리 요구가 엄격한 조직의 저장 위치 통제에 의미가 있다고 밝혔다.",
+          "원출처는 결제 플랫폼 디지털 개러지, 광고 기술 기업 애드웨이즈와 도쿄과학대 관계자의 반응을 소개했다. 이들은 제품 개발의 공유 작업공간과 대학의 소통 업무에서 현지 저장을 환영한다고 말했다. 고객의 기대를 보여 주는 사례이며 보안 사고 감소나 업무 성과를 독립적으로 측정한 결과는 아니다. 이번 일본 지원은 기존 여러 지역의 현지 저장 선택을 확장하는 발표다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/japan-local-data-hosting/"
+          }
+        ]
+      },
+      {
+        "heading": "Enterprise 관리자가 파일 일부의 위치를 선택한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 도움말은 Enterprise 플랜의 조직 관리자에게 지역 저장 기능이 제공된다고 명시한다. 저장 기반은 AWS 데이터센터이며 일본의 기본 지역은 ap-northeast-1, 복구 지역은 ap-northeast-3로 나뉜다. 조직의 현재 저장 위치는 관리 화면의 설정에서 확인하고, 위치 변경은 지원팀에 문의하는 절차다. 모든 사용자 계정에서 개인 설정으로 바꾸는 기능은 아니다.",
+          "파일 안의 도형, 프레임, 컴포넌트, 이미지와 동영상 등은 지역 저장 대상이다. 텍스트와 스티커 메모도 포함되지만 사용자 언급은 제외된다. 공식 문서는 저장된 데이터에 적용하는 조건이라고 설명하며 전송 중인 데이터까지 같은 범위로 규정하지 않는다. 현지 데이터센터의 존재와 서비스의 모든 처리 단계가 해당 지역 안에만 머무는 것은 구분할 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "피그마 지역 파일 저장 범위 공식 도움말",
+            "kind": "primary",
+            "url": "https://help.figma.com/hc/en-us/articles/15643274574871-Enable-localized-file-hosting"
+          }
+        ]
+      },
+      {
+        "heading": "댓글·AI 대화와 새 편집분에는 다른 조건이 있다",
+        "kind": "reporting",
+        "paragraphs": [
+          "댓글, 플러그인, 파일명, 글꼴, 미리보기 이미지와 Dev Mode·Code Connect의 검사 패널 코드는 지역 저장 대상이 아니다. AI 대화도 제외 항목이다. 청구 정보, 프로필, 활동·보안 로그와 파일 검색 인덱스 등 파일 바깥의 데이터는 이 기능에 포함되지 않는다. 도움말은 새 파일 편집분을 생성 후 최대 30일 동안 미국에 임시 저장할 수 있다고 설명한다.",
+          "베타 기능의 파일 내용·결과와 Weave 도구 결과, 독립 Weave 제품도 범위 밖이다. AI로 만든 파일 데이터는 해당 조직의 설정과 데이터 종류에 따른 표를 적용하지만 인터넷에 공개한 파일 자료는 제외된다. 원출처는 접근 관리와 데이터 보호를 위한 Governance+를 함께 소개했으며, 이는 Enterprise 플랜에 추가하는 별도 부가 기능이라고 밝혔다."
+        ],
+        "references": [
+          {
+            "label": "피그마 지역 파일 저장 범위 공식 도움말",
+            "kind": "primary",
+            "url": "https://help.figma.com/hc/en-us/articles/15643274574871-Enable-localized-file-hosting"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/japan-local-data-hosting/"
+          }
+        ]
+      },
+      {
+        "heading": "자료 종류별로 요구와 기능을 맞춰 본다",
+        "kind": "analysis",
+        "paragraphs": [
+          "지역 저장의 가치는 조직이 관리하려는 자료의 위치에 대한 선택권을 얻는 데 있다. 하지만 요구 사항이 모든 관련 정보의 국내 보관이라면 파일 본문만 확인해서는 적합성을 판단하기 어렵다. 디자인 파일, 댓글의 고객 정보, AI 대화와 플러그인 결과를 서로 다른 항목으로 정리해야 한다. 같은 프로젝트에서 쓰는 정보라도 공식 기능의 적용 여부가 달라지기 때문이다.",
+          "예를 들어 이미지와 텍스트가 들어 있는 디자인은 대상일 수 있지만 그 파일에 붙인 댓글은 제외된다. 새 편집분의 임시 저장 조건도 검토할 항목이다. 이 구분은 기능이 유용하지 않다는 뜻이 아니라 팀이 어떤 자료를 어디에 넣을지 결정할 근거다. 현지 저장 선택을 조직 전체의 규제 준수나 모든 AI 처리의 지역 제한에 대한 보증으로 확대할 근거는 발표에 없다."
+        ],
+        "references": [
+          {
+            "label": "피그마 지역 파일 저장 범위 공식 도움말",
+            "kind": "primary",
+            "url": "https://help.figma.com/hc/en-us/articles/15643274574871-Enable-localized-file-hosting"
+          }
+        ]
+      },
+      {
+        "heading": "저장 위치와 접근 권한은 함께 관리한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "파일을 일본에 저장하는 결정과 그 파일을 누가 볼 수 있는지는 서로 다른 관리 문제다. 제품 개발에서 디자이너, 엔지니어와 사업 담당자가 같은 자료를 사용한다면 접근 범위와 공유 관행도 따로 점검해야 한다. 회사가 지역 저장과 Governance+를 함께 제안한 것은 위치 설정에 더해 접근 관리가 필요하다는 관점으로 읽을 수 있다.",
+          "조직은 실제로 사용하는 제품과 데이터 유형의 목록을 만든 뒤 관리자 화면의 저장 위치, 제외 범위와 지원팀의 변경 절차를 대조할 수 있다. 인터넷 공개나 베타 도구 사용이 늘면 해당 자료의 조건도 다시 확인해야 한다. 이번 발표의 도입 판단은 일본 저장 지원이라는 지역 이름뿐 아니라 조직의 실제 작업 흐름이 공식 저장 범위와 얼마나 맞는지에 달려 있다."
+        ],
+        "references": [
+          {
+            "label": "피그마 지역 파일 저장 범위 공식 도움말",
+            "kind": "primary",
+            "url": "https://help.figma.com/hc/en-us/articles/15643274574871-Enable-localized-file-hosting"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/japan-local-data-hosting/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "일본 현지 데이터 저장은 Enterprise 고객용이며 조직 관리자가 설정을 확인한다.",
+      "파일의 도형·텍스트·이미지 등 일부 저장 데이터가 대상이고 댓글·AI 대화·플러그인 자료 등은 제외된다.",
+      "새 편집분은 최대30일 미국에 임시 저장할 수 있고 Governance+는 별도 Enterprise 부가 기능이다."
+    ],
+    "tags": [
+      "Figma",
+      "데이터레지던시",
+      "Enterprise",
+      "거버넌스"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://www.figma.com/blog/japan-local-data-hosting/"
+      },
+      {
+        "label": "피그마 지역 파일 저장 범위 공식 도움말",
+        "url": "https://help.figma.com/hc/en-us/articles/15643274574871-Enable-localized-file-hosting"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.figma.com/blog/japan-local-data-hosting/",
+      "https://help.figma.com/hc/en-us/articles/15643274574871-Enable-localized-file-hosting"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 WEB와 공식 localized-file-hosting 도움말을 모두 읽었다. 도움말 지역 나열 문장은 일본이 빠졌으나 데이터센터 표에 Japan primary ap-northeast-1/recovery ap-northeast-3가 있고 신규 원출처 발표도 일본 출시를 확인한다. 본문은 파일 일부 at-rest·제외 범위·US 최대30일 신규편집 임시보관·beta/Weave 제외를 명시했다. 후보들은 인터뷰/AI 파이프라인/교육/제품출시 관점 글로 데이터레지던시 사건과 별개다. snapshot.pending 일본 저장 발표는 본 ID 하나다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "04f91b3b-8c5d-4486-a8e6-cc655b3822dd",
+    "2aff0061-4a82-4979-a193-e136f1c04a79",
+    "4364b4fb-57c9-4dde-bffb-f99dd86bab61",
+    "4d0d597e-d603-4833-a6ec-d24e41b28018",
+    "ff212910-7de6-4b5c-975e-db67a42d2c7e"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:56:50.142Z",
+    "checks": [
+      "2026-09-11 일본 Enterprise 지역 저장 출시와 대상4제품을 원문에서 확인했다.",
+      "AWS일본primary/recovery와 관리자·지원팀 절차를 도움말에서 확인했다.",
+      "파일별 포함/제외·AI chats·US신규편집30일·at-rest·beta/Weave 범위를 공식 문서에서 확인했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

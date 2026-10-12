@@ -1,0 +1,161 @@
+{
+  "id": "f3552400-55e5-4cbe-8edf-75e19414d182",
+  "article": {
+    "url": "https://blog.cloudflare.com/clef-decision-models/",
+    "title": "클라우드플레어, 결정 모델 Clef 공개…확률 출력과 맞춤 학습 지원",
+    "summary": "클라우드플레어가 선택지별 확률을 반환하는 Clef와 Clef-flash를 Workers AI 및 공개 가중치로 제공한다. 자유로운 문장 생성 대신 정해진 스키마의 판단을 수행하며 맞춤 학습은 엔지니어와 함께 지원한다. 자체 평가의 속도·품질 차이와 향후 셀프서비스 학습 계획을 구분해 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "문장을 생성하지 않고 정해진 선택지를 평가한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어는 10월 1일 자사가 훈련한 결정 모델 Clef와 Clef-flash를 공개했다. Workers AI에서 호출할 수 있고 Hugging Face에 Apache 2.0 라이선스의 가중치도 제공한다. 입력 상태와 질문별 선택지를 받아 각 선택지의 확률을 반환하는 모델로, 지원 메시지의 긴급도나 담당 팀을 코드에서 판단하는 용도로 소개됐다.",
+          "공식 모델 카드는 Clef가 Qwen3.8-27B를 기반으로 상태와 스키마의 질문을 한 번의 순방향 계산에서 평가한다고 설명한다. 자유 형식 텍스트를 생성한 뒤 해석하는 방식이 아니라 허용된 선택지별 값을 구한다. 참·거짓 질문, 이름 있는 선택지, 순서가 있는 점수에 대응하며 Jev와 SystemOne API 형식과 호환된다. 정해진 출력 구조가 판단의 의미를 보증하는 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/clef-decision-models/"
+          },
+          {
+            "label": "클라우드플레어 Clef 공개 모델 카드",
+            "kind": "primary",
+            "url": "https://huggingface.co/Cloudflare/clef"
+          }
+        ]
+      },
+      {
+        "heading": "자체 평가에서는 작업별 속도와 품질 차이가 보인다",
+        "kind": "reporting",
+        "paragraphs": [
+          "회사는 43개 평가에서 Clef의 중앙 지연을 209.3밀리초, Clef-flash를 38.8밀리초로 제시했다. 이는 클라우드플레어가 수행한 평가 결과이며 모든 앱의 종단 간 처리 시간이 이 값이라는 뜻은 아니다. 원출처의 도메인 분류 예시는 웹 페이지를 가져오고 렌더링한 뒤 분류하는 전체 흐름을 별도로 설명해 모델 처리와 업무 전체 시간을 구분한다.",
+          "빠른 변형이 모든 품질 항목에서 우세한 것도 아니다. 공개 표에서 CLINC150+OOS의 macro-F1은 Clef 97.43, Clef-flash 66.77로 차이가 났다. 반면 다른 과제에서는 flash가 높은 값을 보였다. 공식 모델 카드도 결과를 내부 평가로 표시한다. 단일 최고 점수나 중앙 지연만으로 자기 업무에 더 적합한 변형을 결정하기 어려운 이유다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/clef-decision-models/"
+          },
+          {
+            "label": "클라우드플레어 Clef 공개 모델 카드",
+            "kind": "primary",
+            "url": "https://huggingface.co/Cloudflare/clef"
+          }
+        ]
+      },
+      {
+        "heading": "맞춤 학습은 엔지니어 지원으로 시작한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어는 고객의 업무에 맞게 Clef를 조정하는 서비스를 현장 지원 엔지니어 팀과 함께 제공한다고 밝혔다. 이를 통해 얻는 경험을 바탕으로 자료 수집, 미세 조정, 재배포를 고객이 직접 수행하는 플랫폼을 만들 계획이다. 따라서 공개 모델의 이용과 향후 셀프서비스 강화학습 플랫폼의 준비 상태를 같은 단계로 다뤄서는 안 된다.",
+          "회사가 제시한 구성은 AI Gateway의 요청 자료 수집, Workers AI의 실행, Containers의 평가 환경, 가중치 갱신용 Trainer, Workers AI 재배포를 연결한다. 발표는 일부 구성 요소가 작업 중이라고 명시했다. 내부 지원 분류와 신뢰·안전 업무 같은 구체적 사례에서 조정할 모델을 시험하고 있으며, 모든 고객이 완성된 학습 플랫폼을 즉시 이용한다는 설명은 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/clef-decision-models/"
+          }
+        ]
+      },
+      {
+        "heading": "확률에서 실행으로 넘어가는 기준은 앱이 정한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B가 보는 결정 모델의 가치는 판단 결과를 프로그램의 분기와 연결하기 쉬운 형식에 있다. 담당 팀의 선택지마다 확률을 받으면 바로 전달하거나 추가 검토로 보낼 조건을 코드로 작성할 수 있다. 그러나 모델의 확률이 실제 정답 빈도와 얼마나 잘 맞는지는 업무 자료에서 확인해야 한다. 숫자가 높다는 이유만으로 위험한 행동을 자동 실행할 근거가 완성되지는 않는다.",
+          "지원 문의를 분류하는 팀이라면 놓친 긴급 요청과 잘못 전달된 요청이 각각 어떤 비용을 만드는지 먼저 정할 수 있다. 그 뒤 실제 문의의 평가 집합에서 변형별 오류와 지연을 비교하고 사람이 확인할 범위를 선택하는 방식이 유용하다. 일반 벤치마크에서 빠른 모델도 자기 도메인에 없는 입력이나 애매한 질문에서는 다른 결과를 낼 수 있다. 구조화된 출력은 이런 검토를 더 쉽게 만들 뿐이다."
+        ],
+        "references": [
+          {
+            "label": "클라우드플레어 Clef 공개 모델 카드",
+            "kind": "primary",
+            "url": "https://huggingface.co/Cloudflare/clef"
+          }
+        ]
+      },
+      {
+        "heading": "공개 가중치와 관리형 호출의 운영 조건을 비교한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "공개 가중치는 모델의 동작을 살피고 자체 환경에서 시험할 선택지를 제공한다. 다만 로컬 실행의 자원과 유지보수 비용이 사라지는 것은 아니다. 관리형 호출과 자체 실행을 비교할 때는 요청 자료의 위치, 처리량, 지연과 운영 담당자를 함께 따져야 한다. Apache 2.0이라는 공개 조건과 특정 하드웨어에서 원하는 성능을 얻는 조건도 별도로 확인해야 한다.",
+          "이번 최초 공개는 뒤에 발표된 Clef-omni의 멀티모달 확장과 가격 변경의 기반이 되는 별도 사건이다. 새 입력 기능을 평가하는 질문과 기본 결정 모델을 어떤 업무에 연결할지의 질문은 다르다. 도입팀은 최신 모델 문서에서 지원 조건을 확인하면서, 최초 발표의 자체 평가를 출발 자료로 사용해 자기 스키마와 업무 사례에서 판단 품질을 검증할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "클라우드플레어 Clef 공개 모델 카드",
+            "kind": "primary",
+            "url": "https://huggingface.co/Cloudflare/clef"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/clef-decision-models/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Clef 계열은 자유 형식 문장 대신 정해진 스키마의 선택지별 확률을 반환한다.",
+      "공개 가중치는 Apache 2.0이며 회사의 내부 평가에서 변형별 속도·품질 차이가 나타났다.",
+      "맞춤 학습은 엔지니어 지원으로 시작하고 셀프서비스 플랫폼은 향후 계획으로 발표됐다."
+    ],
+    "tags": [
+      "Cloudflare",
+      "Clef",
+      "의사결정모델",
+      "오픈소스"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.cloudflare.com/clef-decision-models/"
+      },
+      {
+        "label": "클라우드플레어 Clef 공개 모델 카드",
+        "url": "https://huggingface.co/Cloudflare/clef"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.cloudflare.com/clef-decision-models/",
+      "https://huggingface.co/Cloudflare/clef"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 WEB에서 RSS가 잘린 학습 플랫폼 후반부까지 읽고 공식 HF 모델 카드를 대조했다. 원문의 43평가 중앙 지연과 CLINC150+OOS 수치를 자체 결과로 귀속했으며 종단간 latency 또는 독립 재현으로 표현하지 않았다. 지원 엔지니어 기반 학습과 향후 셀프서비스 계획을 구분했다. 초기 64k 주장과 이후 문서 조건을 혼동하지 않도록 문맥 길이 수치는 생략했다. 후보의 Liquid Open d1은 다른 제공자의 모델이다. pending 07bd...의 Clef-omni 확장·가격 변경은 본 최초 공개와 별도 후속 사건이다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "64da50f0-d536-47bb-bd3e-dcc375b183f3",
+    "8c1ef8ec-15cd-47d8-a7c6-0bd6dc7aa0a9",
+    "16aae997-e9c3-40ab-bb39-c500781fbbfc",
+    "308e353f-5b29-4612-a51b-1e40607ff7ec",
+    "3d4c214d-6e7b-4d16-9699-89052de96b77",
+    "3f5e12eb-ac52-437e-b033-aa350546e94c",
+    "65af5e9e-d59b-4ce3-a44b-df5e0f2abcf7",
+    "8d9df11a-5fe9-473f-b6f5-3dafc1d34bf8",
+    "ce31e772-9b30-467c-a2f3-3a2ea4cec545",
+    "dd193a08-7d0e-4ca4-a1f8-92e753626910",
+    "ff212910-7de6-4b5c-975e-db67a42d2c7e",
+    "04f91b3b-8c5d-4486-a8e6-cc655b3822dd"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:43:58.928Z",
+    "checks": [
+      "Apache 2.0·Qwen3.8-27B·선택지별 확률·API 호환을 공식 모델 카드에서 확인했다.",
+      "중앙 지연 209.3/38.8ms와 CLINC150+OOS 97.43/66.77을 원출처 자체 표에서 확인했다.",
+      "FDE 서비스와 셀프서비스 학습 플랫폼의 향후 계획을 원문에서 확인했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다.",
+      "기존 발행한 Omni 확장·Flash 가격 변경은 후속 이벤트이며 본 글은 최초 공개 모델·평가·맞춤 학습 지원을 다룬다."
+    ],
+    "relatedPendingIds": [
+      "07bd1d2a-0fd6-48ab-862f-a4425661a0ca"
+    ],
+    "distinctRelatedReviewed": true
+  }
+}

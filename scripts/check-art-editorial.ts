@@ -1,0 +1,42 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { artistProfileSchema, artistSchema, artworkSchema } from '../lib/art-input';
+
+const editorial = JSON.parse(readFileSync('research/art-collection/editorial.json', 'utf8'));
+const works = JSON.parse(readFileSync('research/art-collection/artworks.json', 'utf8'));
+const artists = JSON.parse(readFileSync('research/art-collection/artists.json', 'utf8')).artists;
+assert.equal(editorial.artworks.length, works.length);
+assert.equal(editorial.artists.length, artists.length);
+assert.equal(new Set(editorial.artworks.map((row: { id: string }) => row.id)).size, works.length);
+assert.equal(new Set(editorial.artists.map((row: { id: string }) => row.id)).size, artists.length);
+for (const row of editorial.artists) {
+  assert(artists.some((artist: { id: string }) => artist.id === row.id));
+  assert(artistProfileSchema.safeParse(row.profile).success, row.id);
+  assert(row.profile.description && row.profile.sources.length);
+}
+for (const row of editorial.artworks) {
+  const original = works.find((work: { id: string }) => work.id === row.id);
+  assert(original, row.id);
+  assert(row.medium_ko && row.dimensions_ko);
+  // Compare every cm group, including framed, overall and each-panel measurements.
+  const cmGroups = (text: string) => [...text.matchAll(/(\d+(?:\.\d+)?(?:\s*[x×]\s*\d+(?:\.\d+)?)+)\s*cm/g)].map(match => match[1].replace(/\s*[x×]\s*/g, '×')).sort();
+  assert.deepEqual(cmGroups(row.dimensions_ko), cmGroups(original.dimensions), row.id);
+  const input = Object.fromEntries(Object.keys(artworkSchema.shape).filter(key => key in original).map(key => [key, original[key]]));
+  input.culture = String(input.culture || '');
+  const parsed = artworkSchema.safeParse({ ...input, medium_ko: row.medium_ko, dimensions_ko: row.dimensions_ko });
+  assert(parsed.success, `${row.id}: ${parsed.error?.message}`);
+  assert(artworkSchema.safeParse(input).success, 'older clients can omit translations');
+}
+const profile = editorial.artists[0].profile;
+assert(!artistProfileSchema.safeParse({ ...profile, sources: [] }).success, 'introductions need a source');
+for (const url of ['javascript:alert(1)', 'http://example.com', 'https://user:secret@example.com']) assert(!artistProfileSchema.safeParse({ ...profile, sources: [{ label: 'Source', url }] }).success, 'unsafe source URL');
+assert(!artistProfileSchema.safeParse({ ...profile, description: '가'.repeat(1501) }).success);
+assert(!artistProfileSchema.safeParse({ ...profile, private_notes: 'secret' }).success, 'unknown profile keys rejected');
+const postId = '0eb2038f-982f-4192-af39-d653908068a3';
+assert(!artistProfileSchema.safeParse({ ...profile, related_post_ids: [postId, postId] }).success);
+assert(!artistProfileSchema.safeParse({ ...profile, related_post_ids: ['not-a-post'] }).success);
+assert(artistSchema.safeParse({ name: 'Artist', name_ko: null, source_ids: [] }).success, 'older clients preserve profiles');
+assert.equal(editorial.artists.find((row: { id: string }) => row.id === 'yeoseol').profile.lifespan, '');
+assert.equal(editorial.artists.find((row: { id: string }) => row.id === 'yi-taek-gyun').profile.lifespan, '1808–1883년 이후');
+assert.equal(editorial.artists.find((row: { id: string }) => row.id === 'kim-si').profile.lifespan, '1524–1593');
+console.log(`Art editorial checks passed: ${works.length} works, ${artists.length} sourced introductions, validation and original measurements.`);

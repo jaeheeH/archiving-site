@@ -1,0 +1,163 @@
+{
+  "id": "2e3352f1-f6ad-40bf-8d53-2b3154206775",
+  "article": {
+    "url": "https://www.figma.com/blog/sightlines-issue-no3/",
+    "title": "피그마 사이트라인스 3호, AI 도입의 목표를 속도와 품질로 분리",
+    "summary": "피그마가 리더들과 나눈 대화를 정리한 사이트라인스 3호에서 AI 활용의 목표와 실험 시간을 다뤘다. 더 빨리 내놓는 결과와 더 나은 제품 판단을 구분하고, 학습을 기존 업무에 연결하자는 제안이다. 조직 운영 의견을 검증된 생산성 수치와 혼동하지 않는 것이 중요하다.",
+    "paragraphs": [
+      {
+        "heading": "AI의 가능성과 실제 업무 효과 사이를 질문",
+        "kind": "reporting",
+        "paragraphs": [
+          "피그마는 10월 9일 사이트라인스(Sightlines) 3호를 공개하고 제품·디자인·엔지니어링 리더들과 나눈 AI 관련 논의를 정리했다. 중심 질문은 도구가 약속하는 가능성을 실제 업무의 효과로 어떻게 연결하느냐이다. 뉴스레터는 빠르게 결과를 만드는 데서 나아가 여러 방향을 탐색하고 예외 상황을 확인하며 제품의 세부 품질을 다듬도록 기대를 설정하자고 제안했다.",
+          "이 글은 신제품 기능이나 도입 성과를 발표한 자료가 아니라 리더십 행사와 대화에서 얻은 관점을 편집한 콘텐츠다. 오픈AI의 제품 디자인 책임자 이안 실버는 속도만 중요하다는 신호를 주지 않도록 품질을 강조했고, 피그마의 AI 제품 디자인 책임자 귀 세이즈는 팀이 도구를 실험하고 실수할 시간을 관리자가 마련해야 한다는 취지로 설명했다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/sightlines-issue-no3/"
+          }
+        ]
+      },
+      {
+        "heading": "개인 숙련과 함께 일하는 조건을 구분",
+        "kind": "reporting",
+        "paragraphs": [
+          "뉴스레터는 동료가 주도하는 학습 공간, 기존 업무 흐름 안의 AI 활용, 실패한 실험 공유와 리더의 진행 중 작업 공개를 제시한다. 계정을 제공하거나 교육 참석을 늘리는 것만으로 조직 전체의 활용이 이뤄지지 않는다는 관점이다. 여기서 제안한 운영 조건은 특정 주당 횟수나 의무 형식을 모든 팀에 적용하는 표준으로 제시되지 않았다.",
+          "피그마의 별도 AI 협업 역량 해설도 내부 도구와 공유 프롬프트처럼 한 사람의 지식을 동료가 이해하고 사용할 수 있는 형태로 바꾸는 일을 강조한다. 또한 결정에 필요한 이해관계자를 참여시키고, 각 선택지의 문맥을 미리 전달하는 역할을 설명한다. 두 글 모두 활용과 판단의 연결을 다루며 조직 전체의 생산성 향상률을 입증하는 독립 실험은 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/sightlines-issue-no3/"
+          },
+          {
+            "label": "피그마의 AI 협업 역량 해설",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/ai-fluency-isnt-the-finish-line/"
+          }
+        ]
+      },
+      {
+        "heading": "리더의 기대는 리뷰에서 확인할 조건이 된다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 리더가 속도와 품질을 함께 말하려면 리뷰에서 무엇을 확인할지 구체적으로 정해야 한다. 시제품을 얼마나 빨리 만들었는지만 평가하면 탐색하지 않은 대안이나 예외 처리는 기록에서 사라지기 쉽다. 사용자에게 중요한 동작, 접근성, 실패 상황과 유지보수의 조건을 함께 적으면 새로운 도구로 만든 결과도 같은 목적 아래 검토할 수 있다.",
+          "그 기준은 모든 화면에 동일한 검사를 늘리는 방식일 필요는 없다. 사용자가 반드시 완료해야 하는 흐름과 실패했을 때의 비용을 먼저 정하고, 해당 작업에서 필요한 확인을 선택할 수 있다. 무엇을 검토했으며 무엇을 아직 모르고 있는지를 결과물 옆에 남기면, 단지 매끄럽게 보이는 프로토타입을 준비가 끝난 제품으로 받아들이는 오류를 줄일 수 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/sightlines-issue-no3/"
+          },
+          {
+            "label": "피그마의 AI 협업 역량 해설",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/ai-fluency-isnt-the-finish-line/"
+          }
+        ]
+      },
+      {
+        "heading": "실험 시간에는 되돌릴 기준도 포함하기",
+        "kind": "analysis",
+        "paragraphs": [
+          "실험할 시간을 마련하자는 제안은 팀의 산출물을 늦추는 목적이 아니라 익숙하지 않은 방법의 적용 범위를 확인하는 기회로 읽을 수 있다. 반복 업무 하나를 고르고 같은 요구를 기존 방식과 새 도구로 처리한 뒤, 필요한 수정과 누락을 비교하는 방법을 생각할 수 있다. 도구를 계속 사용할지 판단할 날짜와 조건을 함께 정하면 실험이 끝없이 이어지는 일을 줄인다.",
+          "실패한 시도도 적용한 업무와 입력 조건, 막힌 이유를 기록해야 다른 사람이 사용할 자료가 된다. 성공과 실패를 따로 점수화하는 데 그치지 않고, 다음 실험에서 어떤 조건을 바꿀지 연결하는 편이 좋다. 관리자가 자기 작업을 공개할 때도 완성된 결과만 보여주기보다 어떤 판단에서 사람의 확인이 필요했는지 설명하면 팀이 질문하기 쉬운 접점이 생긴다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/sightlines-issue-no3/"
+          },
+          {
+            "label": "피그마의 AI 협업 역량 해설",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/ai-fluency-isnt-the-finish-line/"
+          }
+        ]
+      },
+      {
+        "heading": "조직의 방향과 결과의 증거를 함께 보존",
+        "kind": "analysis",
+        "paragraphs": [
+          "제품·디자인·개발이 같은 목표를 말해도 품질을 해석하는 방식은 다를 수 있다. 한 직무는 화면의 일관성을, 다른 직무는 운영 시 예외 처리를 먼저 볼 수 있다. 공유 자료에는 그 차이를 숨기지 말고 어느 조건이 이번 결정에 중요했는지 적는 편이 적절하다. 이렇게 해야 후속 팀원이 결과가 나온 이유를 이해하고 다른 조건에서 다시 판단할 수 있다.",
+          "사이트라인스의 가치는 운영의 정답을 제공하는 데보다 리더가 조정해야 할 질문을 드러내는 데 있다. 팀의 도입 기록에는 사용 인원과 생성물 수뿐 아니라 검토에서 수정된 가정, 확인한 대안, 실험을 유지하거나 중단한 이유를 남길 수 있다. 이런 기록이 쌓여야 더 많은 AI 사용을 목표로 한 변화와 실제 제품 판단을 개선한 변화를 구분할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/sightlines-issue-no3/"
+          },
+          {
+            "label": "피그마의 AI 협업 역량 해설",
+            "kind": "primary",
+            "url": "https://www.figma.com/blog/ai-fluency-isnt-the-finish-line/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "사이트라인스 3호는 속도뿐 아니라 대안 탐색·예외 확인·제품 세부 품질을 목표로 삼자고 제안한다.",
+      "리더가 실험 시간을 만들고 진행 중 작업과 실패를 공유하는 조건을 강조한다.",
+      "리더십 대화를 편집한 관점 자료이며 생산성 향상률을 입증한 실험은 아니다."
+    ],
+    "tags": [
+      "피그마",
+      "AI도입",
+      "제품품질",
+      "리더십",
+      "팀협업"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://www.figma.com/blog/sightlines-issue-no3/"
+      },
+      {
+        "label": "피그마의 AI 협업 역량 해설",
+        "url": "https://www.figma.com/blog/ai-fluency-isnt-the-finish-line/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.figma.com/blog/sightlines-issue-no3/",
+      "https://www.figma.com/blog/ai-fluency-isnt-the-finish-line/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 사이트라인스3호 원문과 AI fluency 공식 글을 WEB으로 확인했다. 두 리더의 직함·이름과 발언 취지를 대조했으며 직접 인용·생산성수치를 쓰지 않았다. 후보6편은 BarShrimp·피그마에이전트GA·위브·오피스이전으로 사건이 다르다. snapshot.pending 첫6중4팀습관 기사와 비교했다. 그 편은 Figma/Sephora/Mercari/Atlassian의 구체학습형식, 본 편은 리더의 품질기대·실험시간이라는별도편집논점을 다룬다. pending950d의8월개발의견과도게시물·논의맥락이다르며내용을재번역하지않았다. 리더십 의견을 실제업무효과의입증으로쓰지 않았다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "ae61c6fb-778f-44ab-9582-7f961671a530",
+    "401820d2-af4b-4c6a-a717-0d4a2b11ee6d",
+    "4aefff42-80b6-4f22-9c7d-684e3b8e4c56",
+    "56e8b152-9631-4984-9719-438b302a1607",
+    "a6f1ec3a-bf76-49eb-9511-ec46092a3888",
+    "fb26981c-66f6-4a5d-b784-96686ed6bb17"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:24:39.501Z",
+    "checks": [
+      "원문은2026-10-09 사이트라인스3호이며리더십행사/웨비나대화의편집글이다.",
+      "원문이대안탐색·엣지케이스·품질과학습/실험시간을강조한다.",
+      "Ian Silber의OpenAI Head of Product Design, Gui Seiz의Figma Director of AI Product Design직함을대조했다.",
+      "해설의공유도구·이해관계자/결정문맥을확인하고생산성보장으로확대하지않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다.",
+      "4회사 학습 습관과 별도의 사이트라인스 3호이며 리더의 품질 기대·실험 시간에 초점을 둔 논의를 확인했다."
+    ],
+    "relatedPendingIds": [
+      "852e34f1-0486-4cf1-8c3c-ec806e9392d1",
+      "950d7d0e-32ec-47a2-b91e-6b861c348724"
+    ],
+    "distinctRelatedReviewed": true
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "id": "ea34df8a-51bf-4e18-a17d-86688b33b0ae",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/07/when-makes-sense-block-main-thread/",
+    "title": "화면 캡처의 메인 스레드 처리 사례, 계산보다 데이터 이동 비용을 먼저 재다",
+    "summary": "스매싱 매거진이 크롬 캡처 확장에서 숨은 문서의 이미지 처리를 활성 탭으로 옮긴 사례를 소개했다. 전송 왕복과 좌표 배율이 핵심이지만, 약1초 작업을 메인 스레드의 보편적인 허용 기준으로 삼을 수는 없다.",
+    "paragraphs": [
+      {
+        "heading": "숨은 문서에서의 처리가 더 느렸던 사례",
+        "kind": "reporting",
+        "paragraphs": [
+          "스매싱 매거진은 크롬 확장 Fastary의 화면 캡처 기능을 만들며 처리 위치를 바꾼 경험을 소개했다. 작성자는 배경 서비스 워커가 캡처한 이미지를 Offscreen Document로 보내 자르고 다시 받는 구조에서 약 2~3초의 지연을 관찰했다고 설명한다. 이미지 계산 자체보다 큰 문자열을 여러 실행 문맥 사이에서 주고받는 비용에 주목한 사례다.",
+          "원래 흐름은 캡처한 Base64 데이터 URL을 숨은 문서에 전달하고, 캔버스 처리 뒤 결과를 배경으로 돌려보내는 방식이었다. 수정한 흐름은 캡처 데이터를 활성 탭의 콘텐츠 스크립트로 직접 보내 그곳에서 자르기와 복사 작업을 수행한다. 일반적인 모든 이미지 처리나 워커의 성능을 비교한 벤치마크가 아니라 특정 확장의 왕복 경로를 줄인 경험이다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/when-makes-sense-block-main-thread/"
+          }
+        ]
+      },
+      {
+        "heading": "전송 API와 화면 좌표를 함께 확인한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "크롬 공식 문서는 확장 메시지 API가 JSON 직렬화를 사용하며 같은 API를 제공하는 다른 브라우저의 구조화 복제와 차이가 있다고 설명한다. 따라서 웹 워커의 전송 가능한 객체 방식과 크롬 확장 메시지를 같은 통신 수단으로 가정할 수 없다. 원문도 캡처의 문자열 페이로드와 해당 확장 통신 경로에서의 제약을 구분한다.",
+          "작성자가 다룬 다른 문제는 CSS 좌표와 캡처 이미지의 물리 픽셀 차이다. MDN은 devicePixelRatio를 물리 픽셀 해상도와 CSS 픽셀 해상도의 비율로 정의한다. 활성 탭의 배율을 기준으로 자르기 좌표를 적용하려는 선택은 이 차이를 처리한다. 다만 화면 확대나 다른 디스플레이로의 이동에 따라 값이 달라질 수 있어 한 기기의 고정 숫자를 모든 캡처에 적용할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "크롬 확장의 메시지 직렬화 공식 문서",
+            "kind": "primary",
+            "url": "https://developer.chrome.com/docs/extensions/develop/concepts/messaging"
+          },
+          {
+            "label": "MDN의 devicePixelRatio 좌표 배율 설명",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/when-makes-sense-block-main-thread/"
+          }
+        ]
+      },
+      {
+        "heading": "1초를 짧은 작업의 표준으로 삼지는 않는다",
+        "kind": "reporting",
+        "paragraphs": [
+          "원문 작성자는 사용자가 직접 요청한 일에서 약 1초의 메인 스레드 처리를 감수하는 선택을 제시했다. 이는 해당 경험에서의 판단이며 브라우저 성능 기준이 바뀌었다는 설명은 아니다. 웹닷데브 공식 안내는 50밀리초를 넘는 작업을 긴 작업으로 정의하고, 그 초과 구간 동안 사용자의 다른 상호 작용이 지연될 수 있다고 설명한다.",
+          "따라서 캡처 전체의 완료 시간이 줄었다는 것과 페이지가 응답할 시간을 충분히 확보했다는 것은 따로 살펴야 한다. 원문은 큰 데이터를 옮기는 시간과 실제 계산 시간을 비교하라고 제안한다. 이 비교는 처리 위치의 근거가 될 수 있지만 사용자가 요청한 작업이면 언제나 화면 정지가 괜찮다는 보편 규칙을 만드는 근거는 아니다."
+        ],
+        "references": [
+          {
+            "label": "웹닷데브의 긴 작업과 메인 스레드 설명",
+            "kind": "primary",
+            "url": "https://web.dev/articles/optimize-long-tasks"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/when-makes-sense-block-main-thread/"
+          }
+        ]
+      },
+      {
+        "heading": "왕복을 줄이는 선택과 응답성을 함께 평가한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "이 사례가 보여 주는 유용한 질문은 연산이 비싼지, 데이터를 옮기는 일이 비싼지다. 작은 계산을 위해 큰 문자열이 여러 번 오가면 다른 문맥으로 옮긴 이득을 전송 비용이 상쇄할 수 있다. 반대로 계산이 오래 지속된다면 데이터 이동 비용이 있더라도 화면과 분리할 이유가 커진다. 작업 이름만으로 위치를 정하기보다 실제 경로의 시간을 나눠 확인하는 편이 구체적이다.",
+          "측정에는 캡처, 전달, 이미지 준비, 자르기와 결과 복사까지의 시간을 각각 남길 수 있다. 사용자가 기다리는 전체 시간과 메인 스레드가 연속으로 점유되는 시간도 구분하면 구조 변경의 효과를 더 명확히 볼 수 있다. 왕복 횟수의 감소가 반드시 모든 구간의 개선을 의미하는 것은 아니므로 큰 이미지와 반복 요청에서도 같은 선택이 맞는지 확인해야 한다."
+        ],
+        "references": [
+          {
+            "label": "크롬 확장의 메시지 직렬화 공식 문서",
+            "kind": "primary",
+            "url": "https://developer.chrome.com/docs/extensions/develop/concepts/messaging"
+          },
+          {
+            "label": "웹닷데브의 긴 작업과 메인 스레드 설명",
+            "kind": "primary",
+            "url": "https://web.dev/articles/optimize-long-tasks"
+          }
+        ]
+      },
+      {
+        "heading": "좌표 계약도 처리 경로의 일부다",
+        "kind": "analysis",
+        "paragraphs": [
+          "자르기는 단순한 계산처럼 보여도 좌표를 만든 화면과 이미지를 처리하는 환경이 다르면 변환 규칙이 필요하다. 어떤 픽셀 기준의 영역을 전달했는지와 어떤 화면 배율을 사용했는지를 함께 기록하면 크기와 위치 오류를 찾기 쉽다. 처리 문맥을 바꾸는 결정에서 전송량만 보고 이 계약을 빠뜨리면 빨라진 결과가 잘못된 이미지를 만들 수 있다.",
+          "메인 스레드를 사용하는 선택은 목적과 범위를 제한한 절충으로 읽을 만하다. 이 사례를 모든 작업에 적용하기보다 대표 데이터 크기, 동시 사용과 화면 응답의 조건을 비교하면 자신의 구현에서 이동을 줄일지 계산을 분리할지 정할 수 있다. 원문의 관찰을 일반적인 허용 시간으로 바꾸지 않고 API와 좌표, 사용자 대기의 비용을 함께 살피는 것이 핵심이다."
+        ],
+        "references": [
+          {
+            "label": "MDN의 devicePixelRatio 좌표 배율 설명",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"
+          },
+          {
+            "label": "웹닷데브의 긴 작업과 메인 스레드 설명",
+            "kind": "primary",
+            "url": "https://web.dev/articles/optimize-long-tasks"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/when-makes-sense-block-main-thread/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "크롬 확장 메시지의 JSON 직렬화와 웹 워커 전송을 구분한다.",
+      "전체 완료 시간과 메인 스레드의 연속 점유 시간을 별도로 평가한다.",
+      "원문의 약1초 선택은 사례별 절충이며50ms 긴 작업 정의를 바꾸지 않는다."
+    ],
+    "tags": [
+      "메인스레드",
+      "크롬확장",
+      "웹성능",
+      "화면캡처"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 원출처 개발 사례",
+        "url": "https://smashingmagazine.com/2026/07/when-makes-sense-block-main-thread/"
+      },
+      {
+        "label": "크롬 확장의 메시지 직렬화 공식 문서",
+        "url": "https://developer.chrome.com/docs/extensions/develop/concepts/messaging"
+      },
+      {
+        "label": "웹닷데브의 긴 작업과 메인 스레드 설명",
+        "url": "https://web.dev/articles/optimize-long-tasks"
+      },
+      {
+        "label": "MDN의 devicePixelRatio 좌표 배율 설명",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://developer.chrome.com/docs/extensions/develop/concepts/messaging",
+      "https://web.dev/articles/optimize-long-tasks",
+      "https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. no-www원문WEB불가후www228줄26~164전체사례를읽어RSS12000자잘림을보완했다. Chrome공식MessagingSerialization의JSONvs타브라우저structuredclone,web.dev50mslongtask,MDNDPR비율/zoom변경을WEB로확인했다. 저자2~3sec지연은사례귀속이고실험기기/프로파일미공개;1sec작업을보편fast임계로추천하지않았다. 원문43배전송벤치마크는오래된자료조건직접확인없이전재하지않았다. Chrome확장OffscreenDocument를그냥WebWorker로혼동하지않았고모든extension API가transfer를금지한다고확대하지않았다. candidates빈목록및snapshot.pending전체성능/Worker제목요약대조:토스대시보드는반복연산/계정전체데이터로조건과사건이다르다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:58:05.897Z",
+    "checks": [
+      "Fastary수정경로와데이터왕복문제를원문전체에서확인했다.",
+      "Chrome확장메시지JSON직렬화조건을공식문서로대조했다.",
+      "50mslongtask정의와1sec사례판단을구분했다.",
+      "CSS/물리픽셀비율과변하는DPR을공식문서로대조했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

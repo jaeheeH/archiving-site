@@ -1,4 +1,6 @@
 'use client';
+import { useSavedResource } from '@/app/components/SavedProvider';
+import { saveLoginHref,notifySaved } from '@/lib/save-intent';
 
 import { useState, useEffect, useRef, useMemo, useLayoutEffect, useCallback } from 'react';
 import Image from 'next/image';
@@ -94,7 +96,8 @@ export default function GalleryDetailClient({
   });
 
   // Actions 상태
-  const [isScraped, setIsScraped] = useState(false);
+  const [storedScraped, setIsScraped] = useState(false);
+  const isScraped=useSavedResource('gallery',String(gallery.id)) ?? storedScraped;
   const [isCopied, setIsCopied] = useState(false);
   const [scrapLoading, setScrapLoading] = useState(false);
   const [similarGallery, setSimilarGallery] = useState<SimilarGalleryItem[]>([]);
@@ -395,12 +398,13 @@ export default function GalleryDetailClient({
     if (scrapLoading) return;
     const { data: { session } } = await supabase.auth.getSession();
     const user = session?.user;
-    if (!user) { addToast("로그인 필요", "error"); return; }
+    if (!user) { router.push(saveLoginHref('gallery',String(gallery.id))); return; }
     setScrapLoading(true); setIsScraped(!isScraped);
     try {
-      const res = await fetch(`/api/gallery/${gallery.id}/scrap`, { method: "POST" });
+      const res = await fetch(`/api/gallery/${gallery.id}/scrap`, { method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({scraped:!isScraped}) });
       if (!res.ok) throw new Error();
-      const data = await res.json(); setIsScraped(data.scraped); addToast(data.scraped ? "저장됨" : "취소됨", "success");
+      const data = await res.json(); notifySaved('gallery',String(gallery.id),data.scraped,user.id,data.scrapCount);
+      setIsScraped(data.scraped); addToast(data.scraped ? "저장됨" : "취소됨", "success");
     } catch { setIsScraped(!isScraped); } finally { setScrapLoading(false); }
   };
 

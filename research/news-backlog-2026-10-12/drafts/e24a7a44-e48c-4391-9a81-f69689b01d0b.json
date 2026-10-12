@@ -1,0 +1,159 @@
+{
+  "id": "e24a7a44-e48c-4391-9a81-f69689b01d0b",
+  "article": {
+    "url": "https://blogs.microsoft.com/blog/2026/07/22/powering-americas-genesis-mission-microsofts-commitment-to-scientific-discovery/",
+    "title": "마이크로소프트, 제네시스에 6천만 달러 지원…컴퓨팅과 엔지니어링을 함께",
+    "summary": "마이크로소프트가 미국 에너지부의 제네시스 미션에 컴퓨팅 크레딧과 엔지니어링 서비스를 지원하고 SPARK 협력 조직을 만든다고 밝혔다. 현금 지원과 서비스 가치를 구분하며, 연구 플랫폼의 연산 능력과 실제 실험·재현을 잇는 조건을 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "6천만 달러는 크레딧과 기술 서비스의 합계",
+        "kind": "reporting",
+        "paragraphs": [
+          "마이크로소프트는 2026년 7월 22일 미국 에너지부(DOE)의 제네시스 미션을 지원하는 6천만 달러 규모 패키지를 발표했다. 구성은 3년에 걸쳐 제공하는 Azure 컴퓨팅·AI 크레딧 4천만 달러와 솔루션 엔지니어링 지원 서비스 2천만 달러다. 모든 금액을 연구소에 전달하는 현금으로 표현할 수는 없다.",
+          "공식 발표는 컴퓨팅 자원을 제공하는 일에 더해 설계와 배포, 도입을 지원할 인력을 연결하는 구상이라고 설명한다. 발표에 제시한 금액은 지원 패키지의 규모이며 이미 지급하거나 사용한 총액은 아니다. 실제 프로젝트별 배분과 자원의 사용 성과를 판단하려면 별도의 집행 기록과 연구 결과가 필요하다."
+        ],
+        "references": [
+          {
+            "label": "마이크로소프트의 제네시스 지원 공식 발표",
+            "kind": "primary",
+            "url": "https://blogs.microsoft.com/blog/2026/07/22/powering-americas-genesis-mission-microsofts-commitment-to-scientific-discovery/"
+          }
+        ]
+      },
+      {
+        "heading": "협력의 창구가 되는 SPARK",
+        "kind": "reporting",
+        "paragraphs": [
+          "회사는 Scientific Partnership Advancing Research & Knowledge의 약자인 SPARK를 협력 조정 조직으로 소개했다. 연구 과제 접수와 우선순위, 실행 점검을 맡는 프로그램 조직에 기술 지원과 공동 연구를 연결한다. 컴퓨팅 크레딧을 어떤 과제에 사용할지와 기술 서비스를 어떻게 제공할지도 담당할 방향이다.",
+          "마이크로소프트는 AI 모델과 시뮬레이션, 자료와 실험 흐름을 잇는 Microsoft Discovery 접근을 지원한다고 밝혔다. 회사 글은 Discovery 플랫폼의 일반 제공과 데스크톱 앱의 프리뷰를 구분한다. 연구 협력을 발표했다는 사실은 모든 기관의 실험이 자동화됐거나 연구 결과의 정확성이 확인됐다는 의미가 아니다."
+        ],
+        "references": [
+          {
+            "label": "마이크로소프트의 제네시스 지원 공식 발표",
+            "kind": "primary",
+            "url": "https://blogs.microsoft.com/blog/2026/07/22/powering-americas-genesis-mission-microsofts-commitment-to-scientific-discovery/"
+          }
+        ]
+      },
+      {
+        "heading": "미국 에너지부가 설명한 협력의 범위",
+        "kind": "reporting",
+        "paragraphs": [
+          "같은 날 DOE는 제네시스 미션 컨소시엄을 통해 확보한 파트너 지원 약정이 8억 달러를 넘는다고 발표했다. 여기에도 연산 자원과 크레딧, 모델 접근, 클라우드와 전문 지식, 연구 협력 및 직접 자금 등 여러 유형이 섞여 있다. 전체 파트너 약정과 마이크로소프트의 개별 패키지는 같은 규모의 지표가 아니다.",
+          "DOE 공지는 17개 국립연구소와 관련 기관, 산업·비영리·자선 조직을 연결하는 구성과 학계 참여 확대를 설명한다. 공식 플랫폼 소개는 슈퍼컴퓨터와 실험 시설, AI 및 고유 자료를 통합하는 시스템을 구축 중이라고 안내한다. 미국 과학·공학의 생산성과 영향을 10년 안에 두 배로 높이겠다는 목표 역시 이미 달성한 결과와 구분해야 한다."
+        ],
+        "references": [
+          {
+            "label": "미국 에너지부의 제네시스 파트너 지원 공지",
+            "kind": "primary",
+            "url": "https://www.energy.gov/undersecretaryforscience/articles/us-department-energy-announces-more-800-million-partner"
+          },
+          {
+            "label": "미국 에너지부의 제네시스 플랫폼 공식 소개",
+            "kind": "primary",
+            "url": "https://www.energy.gov/undersecretaryforscience/genesis-mission/genesis-mission"
+          }
+        ]
+      },
+      {
+        "heading": "연산을 제공하는 일과 발견을 만드는 일",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 패키지가 크레딧과 기술 서비스로 나뉜 점을 연구의 실행 문제와 연결해 읽는다. 계산할 자원을 얻어도 연구 자료를 정리하고 모델을 실제 실험에 연결하는 일은 따로 남는다. 어떤 조건에서 만든 예측인지, 실험 결과와 어떻게 비교했는지를 기록할 수 있어야 계산 결과가 과학적 판단의 자료가 된다.",
+          "연산 시간이 늘었다는 수치와 검증된 발견의 수는 같은 성과가 아니다. 같은 연구에서 후보를 줄이는 효과가 있을 수도 있고, 더 많은 후보를 실험해 확인하는 과정이 필요할 수도 있다. 지원의 가치를 평가하려면 이전 방식의 자원과 시간, 실패한 선택과 검증 기준을 함께 살필 필요가 있다. 회사가 설명한 기대를 실제 프로젝트의 결과와 비교하는 단계가 남는 이유다."
+        ],
+        "references": [
+          {
+            "label": "마이크로소프트의 제네시스 지원 공식 발표",
+            "kind": "primary",
+            "url": "https://blogs.microsoft.com/blog/2026/07/22/powering-americas-genesis-mission-microsofts-commitment-to-scientific-discovery/"
+          },
+          {
+            "label": "미국 에너지부의 제네시스 파트너 지원 공지",
+            "kind": "primary",
+            "url": "https://www.energy.gov/undersecretaryforscience/articles/us-department-energy-announces-more-800-million-partner"
+          }
+        ]
+      },
+      {
+        "heading": "연구의 연결에는 재현과 변경 기록이 필요하다",
+        "kind": "analysis",
+        "paragraphs": [
+          "여러 기관과 도구가 한 연구 흐름을 공유하면 무엇을 같은 조건으로 비교할지 정하는 일이 중요해진다. 자료의 접근 권한과 버전, 모델의 입력과 실험 설정을 함께 남겨야 다른 사람이 결과의 경로를 따라갈 수 있다. 하나의 플랫폼에서 결과를 본다는 사실만으로 이런 조건이 자동으로 일치하는 것은 아니다.",
+          "SPARK처럼 과제와 기술 지원을 연결하는 조직은 협력을 시작할 경로를 명확하게 만들 수 있다. 그러나 어느 연구가 성공했고 어떤 판단을 바꾸었는지는 후속 자료로 확인해야 한다. 발표된 지원 유형과 목표를 보존하면 미래에 집행과 성과가 공개될 때 비교할 기준이 생긴다. 이번 소식은 연구 역량을 함께 확장하려는 약정이며, AI가 과학적 검증을 대신한다는 결론으로 읽기 어렵다.",
+          "특히 장기간의 지원에서는 최초 계획과 중간 변경을 구분하는 기록이 도움이 된다. 크레딧의 배분 대상이 바뀌거나 실험이 다른 방법으로 이어졌다면 그 이유도 결과를 이해할 자료다. 금액과 도구의 이름을 넘어 어떤 가설을 어떤 과정으로 확인했는지가 드러나야 협력의 실제 역할을 평가할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "마이크로소프트의 제네시스 지원 공식 발표",
+            "kind": "primary",
+            "url": "https://blogs.microsoft.com/blog/2026/07/22/powering-americas-genesis-mission-microsofts-commitment-to-scientific-discovery/"
+          },
+          {
+            "label": "미국 에너지부의 제네시스 파트너 지원 공지",
+            "kind": "primary",
+            "url": "https://www.energy.gov/undersecretaryforscience/articles/us-department-energy-announces-more-800-million-partner"
+          },
+          {
+            "label": "미국 에너지부의 제네시스 플랫폼 공식 소개",
+            "kind": "primary",
+            "url": "https://www.energy.gov/undersecretaryforscience/genesis-mission/genesis-mission"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "6천만 달러는 3년간 크레딧 4천만 달러와 기술 서비스 2천만 달러로 구성된다.",
+      "SPARK는 과제·기술 지원·공동 연구를 연결하는 협력 조직으로 발표됐다.",
+      "DOE 전체 약정 규모와 개별 회사 지원, 미래 목표와 실제 성과를 구분해야 한다."
+    ],
+    "tags": [
+      "Microsoft",
+      "AI과학",
+      "GenesisMission",
+      "연구인프라"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "마이크로소프트의 제네시스 지원 공식 발표",
+        "url": "https://blogs.microsoft.com/blog/2026/07/22/powering-americas-genesis-mission-microsofts-commitment-to-scientific-discovery/"
+      },
+      {
+        "label": "미국 에너지부의 제네시스 파트너 지원 공지",
+        "url": "https://www.energy.gov/undersecretaryforscience/articles/us-department-energy-announces-more-800-million-partner"
+      },
+      {
+        "label": "미국 에너지부의 제네시스 플랫폼 공식 소개",
+        "url": "https://www.energy.gov/undersecretaryforscience/genesis-mission/genesis-mission"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blogs.microsoft.com/blog/2026/07/22/powering-americas-genesis-mission-microsofts-commitment-to-scientific-discovery/",
+      "https://www.energy.gov/undersecretaryforscience/articles/us-department-energy-announces-more-800-million-partner",
+      "https://www.energy.gov/undersecretaryforscience/genesis-mission/genesis-mission"
+    ],
+    "notes": "Microsoft 원문·DOE7/22partnercommitments·Genesis공식플랫폼 직접 웹열람. $60m=$40mAzurecredits3years+$20mengineeringservices 현금총액아님/약정vs집행,SPARK조정역할. MS본문DiscoveryGA vs desktop preview 구분. DOE$800m이상전체약정의다중유형/17labs/10년2배goal 확인. 생물안보·원자력운영·Majorana 등 부차적효능/보안절대주장 미채택. snapshot전체 pending Genesis단일,후보3기업FY26·교육·보안은별도사건. 데이터·모델실제시험 없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "28fcb141-3f36-4591-bc17-216e8de1d4ec",
+    "0fd957f9-9a32-449e-b967-9c3722e4574f",
+    "6167e724-63c8-400d-8d69-56c2d7d52293"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:02:50.098Z",
+    "checks": [
+      "원문60/40/20백만 달러와3년크레딧 구성 대조",
+      "공식DOE 약정유형·목표와성과 구분",
+      "Discovery 플랫폼GA와앱프리뷰 구분",
+      "과학효능·보안·현금지원으로확대하지않음",
+      "전체 pending 및 후보3의 다른사건과 구분"
+    ],
+    "relatedPendingIds": []
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "id": "9567ebec-43cd-4b0b-90cd-3132cc621d39",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/07/weaponizing-defending-react-flight-protocol/",
+    "title": "React Flight 보안 해설, 서버 입력 검증과 프레임워크 패치의 역할을 구분하다",
+    "summary": "스매싱 매거진이 React2Shell 이후 Flight 역직렬화와 서버 함수의 방어를 다뤘다. 공식 공지와 대조하면 앱 입력 검증은 필요한 계층이지만 취약한 런타임을 업데이트하는 조치를 대신하지 않는다.",
+    "paragraphs": [
+      {
+        "heading": "기존 취약점의 구조를 다시 살핀 해설",
+        "kind": "reporting",
+        "paragraphs": [
+          "스매싱 매거진은 7월 21일 React Server Components의 Flight 프로토콜과 역직렬화 위험을 분석한 글을 공개했다. React2Shell로 불린 CVE-2025-55182의 메커니즘을 출발점으로 서버 함수의 입력과 데이터 경계를 검토한다. 새로운 원격 코드 실행 취약점을 발견했다는 공지라기보다 앞서 공개된 문제와 방어 계층을 설명하는 기술 해설이다.",
+          "React 팀의 공식 공지는 이 취약점을 인증 없이 서버에서 코드를 실행할 수 있는 결함으로 설명하고 CVSS 10.0을 명시한다. 서버 함수 엔드포인트로 전달된 페이로드를 해독하는 과정의 문제였으며, 앱이 직접 서버 함수를 구현하지 않았더라도 RSC를 지원하면 영향을 받을 수 있다고 안내했다. 브라우저에서만 실행되는 모든 React 앱이 같은 영향을 받는다는 뜻은 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/weaponizing-defending-react-flight-protocol/"
+          },
+          {
+            "label": "React 팀의 React2Shell 공식 보안 공지",
+            "kind": "primary",
+            "url": "https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components"
+          }
+        ]
+      },
+      {
+        "heading": "프레임워크 입력과 앱의 입력은 다른 계층이다",
+        "kind": "reporting",
+        "paragraphs": [
+          "해설은 전송된 구조를 다시 구성하는 과정과 앱의 업무 로직이 받는 인수를 나눠 살피고, 서버 함수의 입력 스키마와 권한, 민감한 데이터 전달 등을 방어 항목으로 제시한다. 여기서 앱의 검증을 강화하는 일과 프레임워크 자체의 역직렬화 결함을 수정하는 일은 별개의 조치다. 업무 함수 안의 검사만으로 취약한 파서를 수정했다고 볼 수는 없다.",
+          "React의 공식 use server 문서는 서버 함수의 인수가 완전히 클라이언트 통제 아래 있으므로 신뢰하지 말고 적절히 검증하라고 설명한다. 상태를 바꾸는 동작에서는 로그인한 사용자가 그 일을 할 권한이 있는지도 확인해야 한다. 화면의 입력 제한이나 클라이언트 타입만으로 서버의 처리 조건을 보장하지 않는다는 경계를 직접 명시한 문서다."
+        ],
+        "references": [
+          {
+            "label": "React Server Functions 입력·권한 공식 문서",
+            "kind": "primary",
+            "url": "https://react.dev/reference/rsc/use-server"
+          },
+          {
+            "label": "React 팀의 React2Shell 공식 보안 공지",
+            "kind": "primary",
+            "url": "https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/weaponizing-defending-react-flight-protocol/"
+          }
+        ]
+      },
+      {
+        "heading": "최초 수정과 후속 문제를 나눠 확인한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 자료에 따르면 최초 원격 코드 실행 수정은 2025년 12월에 배포됐다. 이후 같은 서버 컴포넌트 패키지에서 서비스 거부와 소스 코드 노출 문제가 추가로 공개됐다. React 팀은 후속 문제가 원격 코드 실행을 허용하는 것은 아니며 기존 React2Shell 수정은 그 실행 공격을 막는 데 유효하다고 설명했다. 추가 공지를 원래 패치가 모든 역할에서 실패했다는 뜻으로 읽으면 정확하지 않다.",
+          "후속 공지는 여러 차례 보완돼 2026년 1월 26일에도 수정과 업그레이드 범위를 갱신했다. 따라서 최초 패치 버전만 보고 관련 문제를 모두 해결했다고 판단하기보다 사용하는 프레임워크와 릴리스 계열의 수정 안내를 확인해야 한다. 공식 공지는 호스팅 사업자의 임시 완화 조치에만 의존하지 말고 실제 업데이트를 적용하라고 안내한다."
+        ],
+        "references": [
+          {
+            "label": "React 팀의 후속 서비스거부·소스노출 공지",
+            "kind": "primary",
+            "url": "https://react.dev/blog/2025/12/11/denial-of-service-and-source-code-exposure-in-react-server-components"
+          },
+          {
+            "label": "React 팀의 React2Shell 공식 보안 공지",
+            "kind": "primary",
+            "url": "https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components"
+          }
+        ]
+      },
+      {
+        "heading": "점검은 실제 배포 의존성에서 시작한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "RSC를 쓰는 팀이 확인할 대상은 코드에서 직접 서버 함수를 호출했는지뿐 아니라 배포에 어떤 서버 컴포넌트 패키지가 포함됐는지다. 프레임워크와 번들러가 내부 의존성을 제공하면 앱의 표면적인 API 사용만으로 범위를 판단하기 어렵다. 지원 방식과 실제 설치 버전을 함께 기록하면 영향을 받는 실행 계층과 수정 경로를 좁힐 수 있다.",
+          "앱의 입력 검증은 그 다음에도 필요한 기준이다. 값의 형태와 범위를 확인하는 검사와 해당 사용자가 대상 데이터를 변경할 수 있는지의 검사는 서로 보완한다. 형식이 맞는 요청도 권한이 없을 수 있고, 권한이 있는 사용자도 잘못된 값을 보낼 수 있다. 이 계약을 서버에서 확인하는 작업은 프레임워크 패치와 함께 유지해야 하는 업무 로직의 책임이다."
+        ],
+        "references": [
+          {
+            "label": "React Server Functions 입력·권한 공식 문서",
+            "kind": "primary",
+            "url": "https://react.dev/reference/rsc/use-server"
+          },
+          {
+            "label": "React 팀의 React2Shell 공식 보안 공지",
+            "kind": "primary",
+            "url": "https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components"
+          }
+        ]
+      },
+      {
+        "heading": "방어 도구는 막는 문제를 명시한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "역직렬화 결함, 데이터 노출과 업무 권한 문제를 하나의 도구로 모두 해결한다고 설명하면 방어의 빈틈을 놓치기 쉽다. 네트워크의 임시 필터는 대응 시간을 벌 수 있지만 패키지 수정의 완료와 같은 근거가 아니다. 실험적 데이터 전달 방지 API나 앱 스키마도 각자 다루는 경계가 있으므로, 어떤 실패를 막으려는지 따로 기록하는 편이 유용하다.",
+          "이번 해설의 실무적 의미는 공격 문자열을 따라 만드는 데보다 요청이 처리되는 계층을 나누는 데 있다. 공식 공지의 영향 범위와 업데이트 경로를 먼저 확인하고 앱 입력·권한·반환 데이터의 계약을 검토하면 조치를 서로 대체했다고 오해하지 않는다. 또한 과거 기술 해설에 적힌 버전을 현재 모든 보안 문제의 최종 상태로 고정하지 않고 후속 공식 안내와 함께 읽어야 한다."
+        ],
+        "references": [
+          {
+            "label": "React 팀의 React2Shell 공식 보안 공지",
+            "kind": "primary",
+            "url": "https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components"
+          },
+          {
+            "label": "React 팀의 후속 서비스거부·소스노출 공지",
+            "kind": "primary",
+            "url": "https://react.dev/blog/2025/12/11/denial-of-service-and-source-code-exposure-in-react-server-components"
+          },
+          {
+            "label": "React Server Functions 입력·권한 공식 문서",
+            "kind": "primary",
+            "url": "https://react.dev/reference/rsc/use-server"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "React2Shell은 기존 CVE의 기술 해설이며 모든 클라이언트 전용 React앱이 영향을 받는 것은 아니다.",
+      "앱 입력·권한 검증은 프레임워크 역직렬화 패치를 대신하지 않는다.",
+      "후속 서비스거부·소스노출과 최초RCE수정의 범위를 구분해 업데이트를 확인한다."
+    ],
+    "tags": [
+      "React",
+      "RSC",
+      "보안",
+      "역직렬화"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 원출처 개발 사례",
+        "url": "https://smashingmagazine.com/2026/07/weaponizing-defending-react-flight-protocol/"
+      },
+      {
+        "label": "React 팀의 React2Shell 공식 보안 공지",
+        "url": "https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components"
+      },
+      {
+        "label": "React 팀의 후속 서비스거부·소스노출 공지",
+        "url": "https://react.dev/blog/2025/12/11/denial-of-service-and-source-code-exposure-in-react-server-components"
+      },
+      {
+        "label": "React Server Functions 입력·권한 공식 문서",
+        "url": "https://react.dev/reference/rsc/use-server"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components",
+      "https://react.dev/blog/2025/12/11/denial-of-service-and-source-code-exposure-in-react-server-components",
+      "https://react.dev/reference/rsc/use-server"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. no-wwwWEB불가후www499줄원문핵심과방어부분을읽어잘린RSS보완했다. 기술적확정은React공식RCE공지/후속공지/use-server문서에의존했다. 원문의행태재구성세부태그/익스플로잇체인/공격자귀속은독립primary검증없이전재하지않았다. CVE2025-55182/CVSS10/RSC지원영향/클라이언트전용비영향은공식공지대조. 앱schema를preauth프레임워크결함패치대체로쓰지않고공식update를우선했다. 최초19.0.1등을현재완결보안버전으로안내하지않고후속DoS/sourceexposure와RCE패치유효성차이를포함했다. candidates빈목록및snapshot.pending전체React/RSC/CVE요약을확인해동일사건재보도없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:56:23.953Z",
+    "checks": [
+      "공식RCE영향범위와브라우저전용비영향·직접ServerFunction없어도RSC영향가능을확인했다.",
+      "untrusted인수및mutation권한확인공식기준을대조했다.",
+      "후속취약점은RCE아니고기존RCE패치는유효함을공식문서로확인했다.",
+      "앱검증/WAF등보조계층을런타임패치대체로표현하지않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

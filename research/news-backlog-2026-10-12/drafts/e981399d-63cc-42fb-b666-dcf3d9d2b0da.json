@@ -1,0 +1,160 @@
+{
+  "id": "e981399d-63cc-42fb-b666-dcf3d9d2b0da",
+  "article": {
+    "url": "https://huggingface.co/blog/ibm-research/altk-evolve-consistency",
+    "title": "다시 물어도 성공하는가, IBM이 분리한 에이전트의 평균 성능과 일관성",
+    "summary": "IBM 연구진은 같은 과제를 반복할 때 모두 성공한 비율을 평균 성공률과 함께 평가했다. 기록의 불안정한 결정에서 지침을 만들어 다음 실행에 쓰는 방식으로 개선을 보고했지만, 안정적인 판단이 정확한 판단과 같지는 않으며 추가 분석 비용과 적용 범위가 남는다.",
+    "paragraphs": [
+      {
+        "heading": "한 번 잘한 과제와 계속 잘하는 과제",
+        "kind": "reporting",
+        "paragraphs": [
+          "IBM 연구진은9월15일 ALTK-Evolve에 일관성 지침을 추가하는 접근을 공개했다. AppWorld의168개 test_normal 과제에서 GPT-4.1을 사용하는 ReAct 에이전트를 다섯 번씩 실행한 비교다. 평균 성공률은77.4%였지만 다섯 실행이 모두 성공한 과제의 비율은53.0%였다. 두 지표의 차이는24.4퍼센트포인트다.",
+          "평균을 뜻하는 Mean@5와 모두 성공해야 하는 Pass^5는 여러 시도 중 한 번만 성공하면 되는 Pass@5와 다르다. 같은 숫자와 기호를 비슷한 의미로 읽으면 사용자가 재요청할 때 경험하는 안정성을 놓칠 수 있다. 특정 벤치마크·모델·에이전트의 결과이며 모든 자동화 서비스의 실패율을 조사한 수치는 아니다."
+        ],
+        "references": [
+          {
+            "label": "IBM의 에이전트 일관성 기능 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/ibm-research/altk-evolve-consistency"
+          },
+          {
+            "label": "IBM 연구진의 일관성 분석 기술 보고서",
+            "kind": "primary",
+            "url": "https://arxiv.org/html/2609.08832v1"
+          }
+        ]
+      },
+      {
+        "heading": "지난 기록의 결정 지점을 다시 비교한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "Consistency Analyzer는 저장한 실행 기록의 각 결정에 쓰인 맥락을 모델에 다시 제시하고 응답이 얼마나 달라지는지 살핀다. 실제 도구를 다시 실행하거나 전체 과제를 다시 수행하는 단계와는 구별된다. 달라질 가능성이 큰 결정에서 지침을 만들고 기억에 저장해 이후 관련 과제의 프롬프트에 넣는 방식이다.",
+          "블로그는 도구의 기본 재표본 수를5개로 설명하지만 기술 보고서의 실제 실험은 결정당30개와 온도0.5를 사용했다고 명시한다. 같은 과제를 평가하는 다섯 실행과 분석 중의30개 응답도 서로 다른 단위다. 제품의 기본값과 공개한 실험 조건을 나누어 읽어야 결과를 재현할 대상을 정할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "IBM의 에이전트 일관성 기능 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/ibm-research/altk-evolve-consistency"
+          },
+          {
+            "label": "IBM 연구진의 일관성 분석 기술 보고서",
+            "kind": "primary",
+            "url": "https://arxiv.org/html/2609.08832v1"
+          }
+        ]
+      },
+      {
+        "heading": "개선의 수치와 검증되지 않은 범위",
+        "kind": "reporting",
+        "paragraphs": [
+          "같은 과제의 지침을 사용한 비교에서 GPT-4.1의 Pass^5는53.0%에서69.0%로, Mean@5는77.4%에서81.0%로 올랐다고 연구진은 보고했다. 같은 시나리오의 다른 과제에 지침을 옮긴 평가도 제시한다. 다만 논문은 그 전이 평가의 어려운 과제에서 평균 성공률이0.8퍼센트포인트 낮아진 구간을 기록했다.",
+          "보고서는 분석기가 안정성을 점수화할 뿐 정답 검증기는 아니며 확신 있게 틀린 판단도 일관되게 보일 수 있다고 밝힌다. 생성한 지침을 기억에 넣기 전 별도 검증하는 단계는 향후 과제다. 결정당30개 재표본은 분석의 토큰 비용을 늘린다는 한계도 있다. 개선을 전체 정확성 보장이나 추가 비용 없는 처리로 표현할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "IBM 연구진의 일관성 분석 기술 보고서",
+            "kind": "primary",
+            "url": "https://arxiv.org/html/2609.08832v1"
+          },
+          {
+            "label": "IBM의 에이전트 일관성 기능 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/ibm-research/altk-evolve-consistency"
+          }
+        ]
+      },
+      {
+        "heading": "반복 횟수보다 확인할 결과를 먼저 정한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 이 접근이 자동화의 평가 질문을 구체적으로 만든다고 본다. 한 번 성공한 화면과 반복해도 원하는 최종 상태가 되는 것은 다르다. 사람에게 친절한 완료 문장을 보이는지뿐 아니라 실제로 바뀌어야 할 기록과 남겨야 할 원본이 맞는지를 판단 기준으로 정해야 성공률의 의미가 생긴다.",
+          "반복 평가에서 외부 상태도 조절할 필요가 있다. 첫 실행이 기록을 만들고 다음 실행은 이미 있는 기록을 발견했다면 같은 출발점의 재시험과는 다르다. 동일한 과제를 비교하는 평가와 반복 요청을 안전하게 처리하는 제품 동작은 각각 확인해야 한다. 여러 번 시도한 결과를 한 성공으로 합치는 지표만으로는 중간의 잘못된 변경을 설명하기 어렵다."
+        ],
+        "references": [
+          {
+            "label": "IBM의 에이전트 일관성 기능 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/ibm-research/altk-evolve-consistency"
+          },
+          {
+            "label": "IBM 연구진의 일관성 분석 기술 보고서",
+            "kind": "primary",
+            "url": "https://arxiv.org/html/2609.08832v1"
+          }
+        ]
+      },
+      {
+        "heading": "지침의 안정성과 실제 업무의 정당성을 함께 본다",
+        "kind": "analysis",
+        "paragraphs": [
+          "잘못된 방법을 항상 선택하는 에이전트도 응답의 변화는 작을 수 있다. 그래서 변동을 줄이는 분석과 사실·권한·대상 검증을 서로 대체하지 않는 구성이 필요하다. 어떤 결정을 지침으로 남겼는지, 지침의 출처와 적용 조건이 무엇인지 보여주면 새 업무에서 오래된 규칙을 무작정 사용하는 문제를 검토할 수 있다.",
+          "같은 과제에서 배운 지침과 다른 과제로 옮긴 지침을 나눠 측정한 점은 이런 운영 질문과 연결된다. 이름이나 API의 매개변수가 조금 바뀌는 순간에는 비슷한 규칙도 다른 행동을 만들 수 있기 때문이다. 이번 공개는 반복 실행의 간격을 측정하고 줄이는 방법과 한계에 관한 연구다. 이 기사에서는 코드를 실행하거나 실서비스에서 수치를 재검증하지 않았으며, 자신의 업무에 적용할 때에는 결과의 정확성과 반복의 안정성을 함께 확인해야 한다."
+        ],
+        "references": [
+          {
+            "label": "IBM의 에이전트 일관성 기능 공개",
+            "kind": "primary",
+            "url": "https://huggingface.co/blog/ibm-research/altk-evolve-consistency"
+          },
+          {
+            "label": "IBM 연구진의 일관성 분석 기술 보고서",
+            "kind": "primary",
+            "url": "https://arxiv.org/html/2609.08832v1"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "Mean@5·Pass^5·Pass@5는다른성공조건이다.",
+      "기본재표본5개와논문실험30개를나누어읽는다.",
+      "일관성분석은정답검증을대체하지않는다."
+    ],
+    "tags": [
+      "IBM",
+      "AI에이전트",
+      "ALTK-Evolve",
+      "일관성",
+      "평가"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "IBM의 에이전트 일관성 기능 공개",
+        "url": "https://huggingface.co/blog/ibm-research/altk-evolve-consistency"
+      },
+      {
+        "label": "IBM 연구진의 일관성 분석 기술 보고서",
+        "url": "https://arxiv.org/html/2609.08832v1"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://huggingface.co/blog/ibm-research/altk-evolve-consistency",
+      "https://arxiv.org/html/2609.08832v1"
+    ],
+    "notes": "블로그106–199와논문html54–200및표226–233직접읽음. AppWorld168/ReAct/GPT4.1/5runs,평균77.4/모두53→69/81 정확. 논문actualN30temp0.5 vs블로그defaultk5명시. 같은과제개선과다른과제HardMean-0.8pp를혼합해neverdrops확대안함. stabilitynotcorrectness/generatedguidelinesvalidationfuture/cost30x조건읽었으며비용범용추정은제외. Thinkingbox는DB최종상태검증,ProvenanceGuard는source검증으로다른사건. 후보4/pending전체검토동일ALTKconsistency없음. 실제코드/모델API실행없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "fde64d1f-6184-4233-b2a4-b8abe804523d",
+    "308e353f-5b29-4612-a51b-1e40607ff7ec",
+    "5b0ce2d8-23fc-43f4-b782-67b2c8da2693",
+    "a9d496fb-2cb7-4c78-9eb6-7394f2bb0fb4"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:16:51.872Z",
+    "checks": [
+      "반복평가세지표 정의 확인",
+      "과제168개·모델·5회조건 유지",
+      "블로그기본값과논문실험재표본 구분",
+      "same-task와similar-task회귀범위 확인",
+      "안정성·정답검증·지침검증 미래조건 분리"
+    ],
+    "relatedPendingIds": []
+  }
+}

@@ -209,12 +209,14 @@ export default function SEOSettingsPage() {
             <span>네이버 소유 확인 값 {settings.naver_verification ? '저장됨' : '미설정'}</span>
           </div>
           <div className="mt-4 flex flex-wrap gap-4 text-[var(--archive-brand)]">
+            <a href={`${getSiteUrl()}/robots.txt`} target="_blank" rel="noopener noreferrer">수집 규칙 ↗</a>
             <a href={`${getSiteUrl()}/sitemap.xml`} target="_blank" rel="noopener noreferrer">사이트맵 ↗</a>
             <a href={`${getSiteUrl()}/rss.xml`} target="_blank" rel="noopener noreferrer">RSS ↗</a>
             <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer">Google Search Console ↗</a>
             <a href="https://searchadvisor.naver.com/console/board" target="_blank" rel="noopener noreferrer">네이버 서치어드바이저 ↗</a>
           </div>
           <p className="mt-3 text-xs leading-5 text-[var(--archive-muted)]">확인 값 저장은 등록 완료를 뜻하지 않습니다. 배포 후 각 도구에서 소유 확인을 완료하고 사이트맵을 제출하세요. 네이버에는 RSS도 제출할 수 있습니다.</p>
+          <p className="mt-2 text-xs leading-5 text-[var(--archive-muted)]">구글에서 HTML 태그로 인증할 경우 대표 도메인을 URL 접두어 속성으로 등록하고 content 값만 입력하세요. DNS로 이미 인증했다면 구글 인증 코드는 비워둘 수 있습니다. 검색·필터·개인 화면은 색인에서 제외하고, 발행된 글과 작품·작가·갤러리를 사이트맵에 자동으로 추가합니다.</p>
         </section>
         {/* 탭 네비게이션 */}
         <div className="border-b mb-6">

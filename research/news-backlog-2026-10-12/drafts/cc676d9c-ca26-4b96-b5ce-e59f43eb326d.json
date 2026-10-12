@@ -1,0 +1,160 @@
+{
+  "id": "cc676d9c-ca26-4b96-b5ce-e59f43eb326d",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/06/designing-uncertainty-how-ai-supercharges-probabilistic-thinking/",
+    "title": "AI의 성공 확률을 그대로 믿기 전에… 불확실성을 드러내는 제품 설계의 조건",
+    "summary": "프라틱 조글레카는 AI 예측을 확정된 답으로 다루지 않고 가설·실험·수정으로 연결하는 설계를 제안했다. 언어모델 자기 평가 연구를 함께 살펴보면, 모델이 적은 신뢰도와 실제 정답률의 관계를 확인해야 하며 설명·검토·복구 경로가 수치만큼 중요하다.",
+    "paragraphs": [
+      {
+        "heading": "예측과 확정 사이에서 인터페이스가 하는 일",
+        "kind": "reporting",
+        "paragraphs": [
+          "허브스폿의 시니어 제품 디자이너 프라틱 조글레카는 스매싱 매거진에 확률적 설계라는 사고 방식을 소개했다. AI가 제시하는 가능한 답을 제품과 사용자의 맥락에서 해석하고, 설계의 여러 가정을 실험으로 확인하자는 제안이다. 불확실한 결과를 인터페이스가 확정적인 정보처럼 보여 줄 때 사용자가 판단의 여지를 잃을 수 있다는 문제를 다룬다.",
+          "글은 한 설계의 성공 여부만 묻기보다 어떤 행동 가정을 시험하는지 명시하라고 권한다. AI 시뮬레이션도 실제 실험을 대체하는 결론이 아니라 검토할 가정을 찾는 도구로 설명한다. 예시로 등장하는 구매 확률과 전환율 수치는 이해를 돕는 가정이며 실제 제품에서 측정한 결과로 제시된 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/designing-uncertainty-how-ai-supercharges-probabilistic-thinking/"
+          }
+        ]
+      },
+      {
+        "heading": "모델이 적은 신뢰도는 검증된 확률과 다르다",
+        "kind": "reporting",
+        "paragraphs": [
+          "언어모델의 불확실성 보정에 관한 NeurIPS 2024 연구는 프롬프트만으로 좋은 보정을 얻기에 부족하다고 분석하고, 정답과 오답 자료를 이용한 별도의 학습 방법을 제시했다. 보정은 모델이 내놓은 확률과 실제 정답 빈도의 관계를 맞추는 문제다. 단순히 모델에 성공 확률을 적어 달라고 한 숫자와는 구별해야 한다.",
+          "앤트로픽의 2022년 자기 평가 연구는 적절한 형식의 객관식·참거짓 과업 등에서 가능성을 관찰했지만, 새로운 과업에서 알고 있다는 확률을 보정하는 데 어려움도 확인했다고 설명했다. 두 연구를 현재 모든 모델에 그대로 적용할 수는 없지만, 과업과 평가 조건을 떠난 신뢰도 숫자를 보편적인 정확성 보장으로 읽을 수 없다는 점은 분명하다."
+        ],
+        "references": [
+          {
+            "label": "언어모델 불확실성 보정에 관한 NeurIPS 연구 논문",
+            "kind": "primary",
+            "url": "https://arxiv.org/abs/2406.08391"
+          },
+          {
+            "label": "앤트로픽의 언어모델 자기 평가 연구 초록",
+            "kind": "primary",
+            "url": "https://www.anthropic.com/research/language-models-mostly-know-what-they-know"
+          }
+        ]
+      },
+      {
+        "heading": "설명의 길이보다 확인할 자료와 행동을 연결하다",
+        "kind": "analysis",
+        "paragraphs": [
+          "제품에서 신뢰도를 표시하려면 먼저 그 수치가 무엇을 뜻하는지 정의해야 한다. 특정 답의 정답 가능성인지, 여러 후보 사이의 상대적인 점수인지, 단순히 모델이 작성한 자기 설명인지에 따라 사용자가 할 수 있는 판단이 다르다. 모양이 같은 백분율로 표현하더라도 의미가 같지 않으므로 수치의 생성 방식과 확인 범위를 드러낼 필요가 있다.",
+          "불확실성을 긴 문구로만 설명하면 사용자의 읽기 부담을 늘릴 수 있다. 근거 자료를 열어 보거나 다른 후보와 비교하고, 필요할 때 담당자에게 연결되는 행동 경로가 함께 있어야 한다. 언제 판단을 보류할 수 있는지도 보여 주면 사용자는 낮은 신뢰도를 오류 메시지처럼 받아들이는 대신 다음 단계의 기준으로 활용할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "언어모델 불확실성 보정에 관한 NeurIPS 연구 논문",
+            "kind": "primary",
+            "url": "https://arxiv.org/abs/2406.08391"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/designing-uncertainty-how-ai-supercharges-probabilistic-thinking/"
+          }
+        ]
+      },
+      {
+        "heading": "가설을 기록하고 실제 사용에서 수정한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "조글레카는 예측, 시험, 학습, 조정의 반복과 사용자가 제안을 검토하거나 수정하고 거절할 순간을 설계하라고 제안했다. 확신이 높은 답도 다시 평가하고 낮은 신호도 바로 버리지 않는 태도다. 사용자의 개입을 단순한 장애물보다 결과와 설계를 개선할 자료로 다루자는 방향이 포함된다.",
+          "다만 거절 기록을 수집한다고 모델이 자동으로 좋아지는 것은 아니다. 원문에서 제시한 개선의 방향을 운영에 적용하려면 어떤 데이터가 수집되고 무엇을 학습이나 제품 변경에 쓰는지 별도로 정해야 한다. 사용자의 수정이 사실 오류 때문인지 자신의 선호 때문인지 구분하지 않으면 같은 반응을 다른 의미로 해석할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/designing-uncertainty-how-ai-supercharges-probabilistic-thinking/"
+          },
+          {
+            "label": "언어모델 불확실성 보정에 관한 NeurIPS 연구 논문",
+            "kind": "primary",
+            "url": "https://arxiv.org/abs/2406.08391"
+          }
+        ]
+      },
+      {
+        "heading": "불확실성의 표시를 결정의 품질로 연결하다",
+        "kind": "analysis",
+        "paragraphs": [
+          "팀은 AI 평가로 나온 가설마다 필요한 근거와 실패 조건을 적을 수 있다. 가입 단계를 줄이면 완료율이 높아질 것이라는 가정이라면 단순한 완료 숫자와 이후 실제 사용을 함께 확인하는 식이다. 모델의 그럴듯한 설명이 분석의 시작점은 될 수 있지만 사용자 관찰이나 실제 행동 자료를 대신하지는 않는다.",
+          "사용자 그룹을 흉내 낸 응답도 실제 그 그룹의 경험으로 이름 붙이지 않아야 한다. 가상의 의견이 여러 번 같게 나왔다고 대표성이 생기는 것은 아니다. 설계 팀이 미처 생각하지 못한 질문을 얻는 데 쓰되, 영향을 받는 사람의 관점은 실제 조사에서 확인해야 한다. 이런 구분이 있어야 시뮬레이션을 준비 도구로 활용하면서 검증의 대상을 잃지 않는다.",
+          "불확실성 설계의 목표는 모든 화면에 신뢰도 막대를 추가하는 데 있지 않다. 사용자가 무엇을 아는지, 무엇을 더 확인해야 하는지, 틀렸을 때 어느 지점으로 돌아갈지를 이해하도록 만드는 것이다. 예측 수치가 적절히 검증된 경우에도 이 경로는 필요하다. 확률은 판단 자료가 될 수 있지만 제품의 책임과 사용자의 선택을 대신할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "언어모델 불확실성 보정에 관한 NeurIPS 연구 논문",
+            "kind": "primary",
+            "url": "https://arxiv.org/abs/2406.08391"
+          },
+          {
+            "label": "앤트로픽의 언어모델 자기 평가 연구 초록",
+            "kind": "primary",
+            "url": "https://www.anthropic.com/research/language-models-mostly-know-what-they-know"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/06/designing-uncertainty-how-ai-supercharges-probabilistic-thinking/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "원문의 성공 확률과 전환율 예시는 실측 결과가 아니라 설계 설명용 가정이다.",
+      "자기 평가 신뢰도는 과업별 보정을 확인한 확률과 구분해야 한다.",
+      "시뮬레이션은 가설을 찾는 도구이며 실제 사용자 조사·실험·검토 경로가 필요하다."
+    ],
+    "tags": [
+      "AI",
+      "불확실성",
+      "제품설계",
+      "사용자연구"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 원출처 개발 사례",
+        "url": "https://smashingmagazine.com/2026/06/designing-uncertainty-how-ai-supercharges-probabilistic-thinking/"
+      },
+      {
+        "label": "언어모델 불확실성 보정에 관한 NeurIPS 연구 논문",
+        "url": "https://arxiv.org/abs/2406.08391"
+      },
+      {
+        "label": "앤트로픽의 언어모델 자기 평가 연구 초록",
+        "url": "https://www.anthropic.com/research/language-models-mostly-know-what-they-know"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://arxiv.org/abs/2406.08391",
+      "https://www.anthropic.com/research/language-models-mostly-know-what-they-know"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처비-wwwWEB실패,www전문26~190행확인. 예시60/90%구매·15%전환개선은가정이지실측아님. AI프롬프트성공확률·토큰우도·보정된정답률혼동하지않게원논문초록과HTML도읽었다(NeurIPS2024,2025v3수정). Anthropic2022직접연구초록은특정format객관식/참거짓자기평가와새과업P(IK)보정한계. 합성페르소나실제사용자대체/수정자동모델학습/Copilot절대commit안함같은현재보편사실단정제외. AirCanada법률사건은일차판결문미확인이라아예사용안함. post.candidates0건및snapshot.pending전체·a88AIready/5a76honestprototypes/80efmodality비교: 확률보정과불확실성/가설검증이핵심으로중복아님.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:18:19.733Z",
+    "checks": [
+      "원출처는 Pratik Joglekar의 확률적 설계 방법론이다.",
+      "논문은 프롬프트만으로충분한보정을얻는다는가정을검토하고별도학습을제안한다.",
+      "앤트로픽2022초록은새과업의P(IK)보정어려움을명시한다.",
+      "가정예시수치를실제성과나모든AI의신뢰도보장으로표현하지않았다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

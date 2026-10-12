@@ -1,0 +1,164 @@
+{
+  "id": "ad602b7b-a343-43e7-ae06-099e6e3c6fe3",
+  "article": {
+    "url": "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign",
+    "title": "OpenAI, 보호된 추론 추출 시도 차단 발표…공격 규모와 귀속의 한계",
+    "summary": "OpenAI가 7월 관찰한 조직적 모델 추론 추출 활동을 9월 30일 공개했다. 요청 수는 성공한 추출 건수가 아니며 문샷AI 관련 인물에 대한 귀속은 회사의 평가다. 연구 논문을 대조하면 암호화된 추론의 세션 간 재사용과 공개 로그 관리가 별도 보안 과제로 드러난다.",
+    "paragraphs": [
+      {
+        "heading": "7월 활동을 조사한 뒤 공개한 대응",
+        "kind": "reporting",
+        "paragraphs": [
+          "OpenAI는 9월 30일 자사 모델의 보호된 내부 추론을 추출하려는 조직적 활동을 발견하고 차단했다고 발표했다. 회사가 설명한 최초 관찰일은 7월 1일이며, 24~25일에는 관련 추출 패턴으로 4,000명 이상이 보낸 요청 약 1만6,000건의 급증을 관찰했다. 추가 조사에서 비슷한 프롬프트 패턴을 가진 1만5,000명 이상의 집단을 확인하고 28일까지 차단했다고 밝혔다. 원문 각주는 이 숫자가 성공한 추출이 아닌 시도를 나타낸다고 명시한다. 서로 다른 기간과 조사 범위의 숫자를 합산해 성공률이나 실제 유출량을 만들 수는 없다. 발표 시점 이전의 조사와 차단 경과를 소개한 내용이라는 시간 구분도 필요하다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 추론 추출 활동 대응 발표",
+            "url": "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "서비스 경계와 암호 해독은 다른 문제",
+        "kind": "reporting",
+        "paragraphs": [
+          "회사는 공격자가 암호 체계를 깨거나 데이터베이스를 침해하고 저장된 사용자 대화에 직접 접근한 것은 아니라고 설명했다. 대신 모델과의 상호작용을 조작해 보호된 추론이 요청자에게 보이는 형태로 재현되도록 했다고 밝혔다. 다른 대화에서 얻은 암호화된 추론을 다시 사용할 수 있는 경로도 조사 대상이었다. OpenAI는 이미 다른 사용자의 암호화된 추론을 가진 사람이 이를 재생해 내용을 얻는 경로를 닫고, 추론 노출 가능성이 있는 스트리밍 출력을 감지해 보류하는 검사를 추가했다고 설명한다. 이는 회사가 밝힌 대응 범위이며 이후 모든 형태의 추출을 완전히 막았다는 검증 결과로 확대할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 추론 추출 활동 대응 발표",
+            "url": "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "귀속 판단은 전체 활동의 확정이 아니다",
+        "kind": "analysis",
+        "paragraphs": [
+          "OpenAI는 핵심 활동 집단을 Kimi 개발사 문샷AI와 관련된 인물들에게 귀속한다고 평가했다. 동시에 관찰한 모든 운영자가 단일 행위자에게서 비롯했는지는 불분명하다고 밝혔다. 따라서 문샷AI가 모든 시도를 지휘했다는 확인된 사실이나 특정 모델이 추출 결과로 학습됐다는 입증으로 표현해서는 안 된다. 회사가 제시한 조직적 활동의 패턴과 귀속 판단은 사건을 이해하는 단서지만, 학습 데이터나 운영 주체 전체를 독립적으로 검증한 자료와는 다르다. 기사에서는 이 판단의 주체와 범위를 함께 표시했다. 추출 가능성, 실제 성공과 다른 모델에 미친 결과를 나눠야 보안 사건과 경쟁사 관련 주장을 정확히 읽을 수 있다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 추론 추출 활동 대응 발표",
+            "url": "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "연구 논문은 세션 간 호환의 위험을 분석",
+        "kind": "reporting",
+        "paragraphs": [
+          "OpenAI가 연결한 연구는 8월 10일 arXiv에 제출된 독점 LLM API의 추론 추출 논문이다. 연구진은 같은 제공자의 서로 다른 세션·사용자·모델에서 암호화된 추론 블록이 호환되는 구조를 분석하고, 더 약한 보호를 가진 모델을 통해 내용이 노출되는 경로를 실험했다고 설명한다. 이는 학술지 동료 평가가 완료됐다는 표시가 없는 사전 공개 논문이다. 공개 저장소에서 모은 추론 블록에 개인정보와 자격 증명이 포함됐다는 분석도 제시한다. 그 결과는 여러 제공자의 공개 로그를 대상으로 한 별도 연구이며, OpenAI가 발표한 7월 활동에서 동일한 개인정보가 유출됐다는 증거로 연결할 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 추론 추출 활동 대응 발표",
+            "url": "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign",
+            "kind": "primary"
+          },
+          {
+            "label": "독점 LLM API 추론 추출 연구 논문",
+            "url": "https://arxiv.org/abs/2608.09867",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "불투명한 로그도 관리 대상이 된다",
+        "kind": "analysis",
+        "paragraphs": [
+          "연구의 실무적 함의는 읽을 수 없는 암호화 블록을 무해한 로그로 간주하기 어렵다는 점이다. 내부 추론을 클라이언트에 보관하고 다시 서비스로 전달하는 구조에서는 암호화 자체에 더해 어느 사용자·세션·모델이 그 블록을 사용할 수 있는지 확인하는 경계가 중요해진다. 논문과 OpenAI 발표가 모두 재사용 경로를 다루는 이유다. 개발자가 공개한 실행 로그도 내부 내용이 눈에 보이지 않는다는 이유만으로 안전하다고 판단할 수 없다. 이 해석은 논문이 제시한 구조적 위험을 바탕으로 한 분석이며, 모든 서비스에 같은 취약점이 현재 남아 있다는 주장이나 특정 공개 로그의 안전성을 판정한 결과는 아니다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 추론 추출 활동 대응 발표",
+            "url": "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign",
+            "kind": "primary"
+          },
+          {
+            "label": "독점 LLM API 추론 추출 연구 논문",
+            "url": "https://arxiv.org/abs/2608.09867",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "모델 출력과 도구 경계를 함께 보완",
+        "kind": "analysis",
+        "paragraphs": [
+          "OpenAI는 계정 제한, 가입·인프라 통제 강화, 제삼자 서비스와의 협력과 업계 정보 공유를 대응으로 소개했다. 모델의 거절 동작만 바꾸는 것이 아니라 사용 경로와 운영 계층을 함께 다루는 접근이다. 회사는 파트너가 호스팅하는 배포에도 같은 보호가 필요하고 도구 출력 공격은 일반적인 가시적 텍스트 검사 이상의 대응이 요구된다고 설명했다. 추출 방어의 효과를 확인하려면 차단한 요청 수와 실제 노출 여부, 이미 적용한 보호와 남은 배포 범위를 구분해야 한다. 이번 공개는 암호화된 추론을 이동·재사용하는 시스템의 경계를 드러냈지만, 회사 스스로 추가 조사와 완화 작업을 계속한다고 밝혔다는 점에서 대응의 완료 선언으로 읽을 수는 없다."
+        ],
+        "references": [
+          {
+            "label": "OpenAI의 추론 추출 활동 대응 발표",
+            "url": "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign",
+            "kind": "primary"
+          },
+          {
+            "label": "독점 LLM API 추론 추출 연구 논문",
+            "url": "https://arxiv.org/abs/2608.09867",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "1만6,000건은 추출 시도 요청이며 성공 건수나 유출량이 아니다.",
+      "문샷AI 관련 인물 귀속은 OpenAI의 평가이고 전체 운영자의 단일 주체 여부는 불명이다.",
+      "논문의 공개 로그 분석과 OpenAI의 7월 활동을 별도 범위로 구분했다."
+    ],
+    "tags": [
+      "OpenAI",
+      "AI보안",
+      "모델증류",
+      "추론보호"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "OpenAI의 추론 추출 활동 대응 발표",
+        "url": "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign"
+      },
+      {
+        "label": "독점 LLM API 추론 추출 연구 논문",
+        "url": "https://arxiv.org/abs/2608.09867"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://openai.com/index/disrupting-a-coordinated-model-distillation-campaign",
+      "https://arxiv.org/abs/2608.09867"
+    ],
+    "notes": "OpenAI 9/30 대응문과 연결된 arXiv2608.09867 원문초록을 대조.7/1관찰시작,7/24~25요청16k/4k사용자,15k이상관련집단7/28차단은회사주장·추출시도각주확인.암호체계/DB직접침해부정과모델상호작용추출구분.문샷귀속은관련인물핵심집단평가,전체행위자단일확정아님.논문8/10사전공개·여러제공자공개로그결과는7월캠페인유출증거로합치지않음.실행가능한공격코드·세부프롬프트는없음.후보및전체pending동일사건없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2142abfa-1989-4097-b707-0373bbfa5385",
+    "359f8d3f-6531-4c22-8656-0398180f9250",
+    "3d4c214d-6e7b-4d16-9699-89052de96b77",
+    "42859509-04cf-4701-a4d0-38da66580b37",
+    "586ea001-9896-4223-ab06-06b8c3fc2941",
+    "66810653-081c-450b-b88b-962f93246dc6",
+    "7c9afd54-b7cf-4d95-a41f-67c2b4ba8d0f",
+    "b944ff1a-3e60-4ec5-a522-1ae00690be40",
+    "e2c21871-59fd-4490-b612-afa83b96d0ef"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:15:22.914Z",
+    "checks": [
+      "시도요청수와성공추출건수구분",
+      "7월관찰·차단과9/30공개시점구분",
+      "문샷관련인물귀속주체와범위명시",
+      "암호체계파괴/DB직접침해와API상호작용추출구분",
+      "arXiv논문과공격캠페인의표본범위분리",
+      "남은파트너배포/도구출력완화작업을완료보장으로쓰지않음"
+    ],
+    "relatedPendingIds": []
+  }
+}

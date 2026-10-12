@@ -1,0 +1,161 @@
+{
+  "id": "ae50e688-f98d-4b89-bf64-d83b4a3544d7",
+  "article": {
+    "url": "https://github.blog/changelog/2026-10-08-triage-role-users-or-higher-can-now-archive-pull-requests",
+    "title": "깃허브, triage 역할에 PR 보관 권한 확대…보관 중 새 활동 차단",
+    "summary": "깃허브에서 triage 이상의 저장소 역할이 PR을 보관하거나 복구할 수 있게 됐다. 보관된 PR은 공개 화면에서 숨겨지고 새 댓글·반응·자동 댓글이 차단된다. 보관을 해제해도 PR은 닫힌 상태를 유지한다. 권한 위임과 검토 기록 관리에 생기는 변화를 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "분류 담당자가 직접 PR을 보관할 수 있다",
+        "kind": "reporting",
+        "paragraphs": [
+          "깃허브는 10월 8일 저장소의 triage 역할 이상 사용자에게 풀 리퀘스트 보관과 보관 해제 권한을 확대했다. 이전에는 저장소 관리자만 보관할 수 있어 분류 담당자가 스팸이나 중복·방치된 요청을 발견해도 상위 권한자에게 처리를 넘겨야 했다. 이제 triage, write, maintain, admin 역할이 이 조치를 직접 수행한다.",
+          "이 변경은 코드 변경 권한을 주지 않고 검토 대기열을 관리하는 역할을 활용하려는 취지다. 깃허브의 저장소 역할 안내는 triage를 쓰기 권한 없이 이슈·토론·PR을 관리할 담당자에게 권장한다. 따라서 보관을 위해 코드를 푸시할 수 있는 역할까지 올려야 하는 부담을 줄인다. 보관 권한 확대가 triage에 모든 저장소 관리 권한을 부여하는 것은 아니다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-08-triage-role-users-or-higher-can-now-archive-pull-requests"
+          },
+          {
+            "label": "깃허브 조직 저장소 역할 안내",
+            "kind": "primary",
+            "url": "https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization"
+          }
+        ]
+      },
+      {
+        "heading": "보관 중에는 사람과 자동화의 새 활동을 막는다",
+        "kind": "reporting",
+        "paragraphs": [
+          "보관 조치는 PR을 자동으로 닫고 대화를 읽기 전용으로 만든다. 새 댓글뿐 아니라 반응과 자동화된 댓글도 차단된다. 원출처는 이전의 잠금 방식에서는 관리자가 댓글을 남길 수 있었다고 설명하며, 이번에는 보관 이후의 새 활동 자체를 막는 방식으로 바뀌었다고 밝혔다. 사람의 댓글과 봇의 후속 알림에 같은 중단 경계가 생긴다.",
+          "보관된 PR은 공개 화면에서 숨겨지며 triage, write, maintain, admin 역할 사용자에게는 계속 보인다. 깃허브는 10월 9일 편집자 주석으로 이 열람 범위를 명확히 했다. 단순히 목록에서 접어 두는 동작으로 이해하면 안 된다. 일반 공개 방문자와 저장소 분류 담당자가 해당 기록을 볼 수 있는 조건이 달라진다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-08-triage-role-users-or-higher-can-now-archive-pull-requests"
+          }
+        ]
+      },
+      {
+        "heading": "복구는 댓글을 되돌리지만 PR을 다시 열지 않는다",
+        "kind": "reporting",
+        "paragraphs": [
+          "보관 해제를 하면 댓글과 반응을 다시 남길 수 있지만 PR은 자동으로 재개되지 않는다. 변경을 검토 대기열로 되돌릴 필요가 있다면 닫힌 상태를 별도로 처리해야 한다. 보관과 열림·닫힘은 서로 영향을 주되 동일한 상태는 아니다. 운영 담당자는 기록을 복구했다는 사실과 코드 검토를 다시 시작했다는 사실을 구분해야 한다.",
+          "원출처는 triage 사용자가 대화의 잠금 상태를 임의로 바꾸는 권한을 받는 것이 아니라고 강조한다. 일반 잠금 상태를 조작하려면 쓰기 권한이 필요하다는 기존 경계를 유지하면서 보관 중 읽기 전용 동작을 구현한 것이다. 따라서 팀의 역할 안내에는 새 보관 권한을 추가하되, 대화 잠금과 코드 변경 권한까지 함께 확대된 것처럼 적지 않아야 한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-08-triage-role-users-or-higher-can-now-archive-pull-requests"
+          },
+          {
+            "label": "깃허브 조직 저장소 역할 안내",
+            "kind": "primary",
+            "url": "https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization"
+          }
+        ]
+      },
+      {
+        "heading": "위임의 단위가 분명해지는 운영 변화",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B가 주목하는 효과는 반복적인 정리 작업의 판단과 실행을 같은 담당자에게 맡길 수 있다는 점이다. 분류 담당자가 맥락을 확인하고도 관리자 응답을 기다리는 단계가 줄어든다. 다만 실제 처리 시간이나 관리자 업무 감소량은 발표에 제시되지 않았다. 권한 설계가 병목을 줄일 여지는 있어도 프로젝트의 개선 수치를 단정할 근거는 없다.",
+          "보관 대상의 기준을 팀 안에서 정해 두면 새 권한을 더 일관되게 사용할 수 있다. 중복으로 판단한 PR에는 대표 요청이 무엇인지, 방치된 PR에는 재개할 조건이 무엇인지 먼저 정리하는 식이다. 보관 뒤에는 새 댓글을 남길 수 없으므로 필요한 설명을 어느 시점에 기록할지도 중요하다. 실행 권한만 배포하고 결정 기준을 남기지 않으면 외부 기여자가 처리 이유를 이해하기 어렵다."
+        ],
+        "references": [
+          {
+            "label": "깃허브 조직 저장소 역할 안내",
+            "kind": "primary",
+            "url": "https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-08-triage-role-users-or-higher-can-now-archive-pull-requests"
+          }
+        ]
+      },
+      {
+        "heading": "기록 보존과 공개 대화의 종료를 함께 고려한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "보관은 삭제와 다른 운영 선택지지만, 공개 열람이 중단된다는 점 때문에 프로젝트의 지식 공유에도 영향을 준다. 다른 기여자가 같은 문제를 검색할 때 보관된 대화를 읽지 못할 수 있다. 중요한 기술적 결론이 담긴 요청이라면 공개 이슈나 유지되는 문서에 결론을 옮길 필요가 있는지 판단해야 한다. 보관은 목록 정리이면서 접근 범위를 바꾸는 행위다.",
+          "자동 댓글이 차단되는 동작은 봇 연동에도 확인 항목을 만든다. 팀은 보관된 요청에 후속 결과를 게시하려는 자동화가 있다면 실패나 누락을 어떻게 다루는지 살펴볼 수 있다. 이 업데이트가 기존 CI 실행 전체를 중지한다고 발표한 것은 아니다. 읽기 전용 대화에 쓰기를 시도하는 부분과 실제 코드 실행 파이프라인을 분리해서 검토해야 정확한 운영 판단이 된다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://github.blog/changelog/2026-10-08-triage-role-users-or-higher-can-now-archive-pull-requests"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "triage·write·maintain·admin 역할이 PR 보관과 보관 해제를 수행할 수 있다.",
+      "보관 중 새 댓글·반응·자동 댓글을 차단하고 일반 공개 열람을 숨긴다.",
+      "보관을 해제해도 PR은 자동으로 다시 열리지 않는다."
+    ],
+    "tags": [
+      "GitHub",
+      "풀리퀘스트",
+      "권한관리",
+      "오픈소스"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://github.blog/changelog/2026-10-08-triage-role-users-or-higher-can-now-archive-pull-requests"
+      },
+      {
+        "label": "깃허브 조직 저장소 역할 안내",
+        "url": "https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://github.blog/changelog/2026-10-08-triage-role-users-or-higher-can-now-archive-pull-requests",
+      "https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 최신 Changelog의 10월 9일 열람 범위 정정까지 WEB으로 확인했다. 별도 archive-pull-requests 공식 문서는 아직 admin 전용·해제 후 잠금 유지라고 적어 최신 Changelog와 달랐다. 새 기능에는 10월 8~9일 발표를 우선 적용했고 보조 출처는 역할 정의 문서를 사용했다. 후보의 stacked PR은 병합·검토 구조이고 본 보관 권한과 다르다. snapshot.pending의 draft PR 제한도 동시 생성 제한이라는 별개 사건이다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "59fa6b92-df55-4f94-b5cf-ed93860a0810",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "3348a0be-409f-4198-be4e-9e396a98cec8",
+    "44061c78-7fe5-44c2-818b-920797d7ac53",
+    "5c1b6eb0-d4f3-4f54-a2d0-73f859848823",
+    "7da83f89-b5d3-4c7e-8158-cbf596e83859",
+    "7fbdcec8-0647-465f-a548-c50364470c17",
+    "8c6c9d95-ad5a-4c5c-aeb2-88d45f0b8e5c",
+    "a6f538ec-b033-4d9a-888c-53376fe2123c",
+    "ac49a872-6b09-4994-b96b-e1dd8386ee25",
+    "b208daae-7946-4310-b441-0ee0e1ebbfab",
+    "b6eba5af-010a-42d0-8578-82782a6000ae"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:32:45.392Z",
+    "checks": [
+      "보관 가능 역할과 보관 중 열람 가능 역할을 편집자 주석 포함 원문에서 확인했다.",
+      "새 댓글·반응·자동 댓글 차단, 해제 후 PR 미재개를 원문에서 확인했다.",
+      "triage 역할의 쓰기 권한 미부여를 공식 역할 문서와 대조했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다.",
+      "같은 PR 관리 주제라도 보관 권한·읽기 전용 전환은 대기 초안의 동시 생성 제한과 별도 변경임을 확인했다."
+    ],
+    "relatedPendingIds": [
+      "2cc03f2b-39bb-4979-952f-107cfd6445fa"
+    ],
+    "distinctRelatedReviewed": true
+  }
+}

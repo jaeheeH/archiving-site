@@ -1,0 +1,126 @@
+{
+  "id": "5039fed6-9cd2-4c9a-8e38-4a1898fc49de",
+  "article": {
+    "url": "https://www.dezeen.com/2026/09/27/waste-wool-cladding-harvard-university-oslo-architecture-triennale/",
+    "title": "폐울의 단백질로 섬유를 결합하다, 하버드의 외벽 패널 연구",
+    "summary": "하버드의 울 바이오복합재 연구는 폐울에서 얻은 케라틴을 이용해 섬유를 결합하고 기존 건물에 덧댈 외장 패널을 제안한다. 전시 소개와 대학 연구 자료를 대조해 제작 방식과 재료의 변동성, 실제 외벽 적용에 남은 검증을 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "기존 건물을 위한 폐울의 새 역할",
+        "kind": "reporting",
+        "paragraphs": [
+          "하버드대학교의 그린엄 연구 그룹이 폐울을 이용한 단열 외장 타일을 오슬로 건축 트리엔날레에 선보였다고 디진이 보도했다. 업사이클링 울 에콜로지스라는 설치는 목재 프레임에 타일을 붙인 형태로 소피엔베르그 교회에서 소개됐다. 원문은 해당 전시를 9월 17일부터 10월 1일까지의 일정으로 안내한다. 연구팀은 농업과 섬유 생산에서 남는 울을 기존 건물의 성능을 개선하는 재료로 연결하려 한다. 하버드 아이젠버그 연구실의 공식 프로젝트 페이지도 울 바이오복합재 패널로 기존 건물에 적용 가능한 외장 시스템을 개발하는 목표를 명시한다. 새로운 건물을 짓는 재료만이 아니라 남아 있는 건물의 외피를 보완할 재료를 찾는 연구다."
+        ],
+        "references": [
+          {
+            "label": "디진 폐울 외장재 원문",
+            "kind": "reporting",
+            "url": "https://www.dezeen.com/2026/09/27/waste-wool-cladding-harvard-university-oslo-architecture-triennale/"
+          },
+          {
+            "label": "하버드 공식 울 에콜로지스 연구",
+            "kind": "primary",
+            "url": "https://aizenberglab.seas.harvard.edu/upcycling-wool-ecologies"
+          }
+        ]
+      },
+      {
+        "heading": "울에서 얻은 케라틴을 결합제로",
+        "kind": "reporting",
+        "paragraphs": [
+          "디진은 알칼리 용액으로 울의 케라틴 단백질을 일부 분해하고 기계적인 처리를 거친 뒤, 구연산과 열을 이용해 남은 울 섬유를 단단한 복합재로 결합하는 과정을 설명한다. 석유계 수지 없이 섬유를 묶으려는 방식이다. 하버드 공학·응용과학대학이 2026년 5월 소개한 관련 졸업 연구에서도 미아 몬트로즈는 울 섬유에서 케라틴을 추출하고 열과 화학적 처리를 통해 섬유를 결합해 외장 패널을 만들었다고 설명했다. 지도자는 레너드 파머와 조너선 그린엄이다. 이 대학 자료는 케라틴을 이용하는 연구의 원리를 뒷받침하지만, 오슬로 타일의 모든 배합과 공정을 같은 조건으로 검증하는 시험 성적서는 아니다."
+        ],
+        "references": [
+          {
+            "label": "하버드 공식 폐울 패널 연구 소개",
+            "kind": "primary",
+            "url": "https://seas.harvard.edu/news/mia-montroses-senior-project-building-panels-made-waste-wool"
+          }
+        ]
+      },
+      {
+        "heading": "밀도가 다른 층과 드러나는 섬유 색",
+        "kind": "reporting",
+        "paragraphs": [
+          "원문에 따르면 타일은 단열판 역할을 하는 낮은 밀도의 뒷층과, 내구성과 내후성을 겨냥한 높은 밀도의 바깥층을 결합한다. 전시용 울은 코네티컷의 아메리칸 울런 컴퍼니에서 나온 소비 전 폐기물을 사용했으며, 자연색과 염색된 섬유를 섞어 타일마다 색의 차이가 생겼다. 표면은 세로 홈을 반복한 형태로 압착했지만 다른 모양으로도 성형할 수 있다는 연구팀 설명이다. 대학의 몬트로즈 연구 소개는 울이 양마다 달라 가공 반응과 패널의 외관, 거동에서도 예상보다 큰 차이를 겪었다고 전한다. 폐울을 하나의 균일한 원료로 취급하기 어렵다는 제작상의 문제를 보여주는 대목이다."
+        ],
+        "references": [
+          {
+            "label": "디진 전시 타일의 구성과 원료",
+            "kind": "reporting",
+            "url": "https://www.dezeen.com/2026/09/27/waste-wool-cladding-harvard-university-oslo-architecture-triennale/"
+          },
+          {
+            "label": "대학 연구의 재료 변동성 설명",
+            "kind": "primary",
+            "url": "https://seas.harvard.edu/news/mia-montroses-senior-project-building-panels-made-waste-wool"
+          }
+        ]
+      },
+      {
+        "heading": "같은 재료를 다른 밀도로 설계하기",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 이 연구의 흥미를 폐울의 새로운 용도와 함께 층별 역할을 나누는 방식에서 찾는다. 뒷면은 열의 이동을 줄이는 역할, 바깥면은 외부에 노출되는 표면의 역할을 목표로 한다. 하나의 재료를 단순히 기존 패널과 바꾸는 일보다 밀도와 형태를 조정해 다른 요구를 연결하는 접근이다. 외부에서 덧댄다는 구상은 기존 벽의 내부를 손대는 범위를 줄일 가능성을 제시하지만, 실제 건물의 개보수 비용이나 기간이 줄었다는 증거는 아니다.",
+          "전시의 홈과 색 변화는 울의 흔적을 건축 표면으로 읽게 한다. 섬유 색이 혼합 과정에서 달라진다면 균일한 산업 제품의 색을 재현하는 대신 원료의 차이를 표현하는 설계도 가능하다. 동시에 여러 장을 이어 붙였을 때의 색 차이를 어떻게 관리할지, 요구 성능을 어느 범위 안에서 일정하게 유지할지라는 생산의 질문도 생긴다."
+        ],
+        "references": []
+      },
+      {
+        "heading": "연구 패널과 외벽 적용 사이",
+        "kind": "analysis",
+        "paragraphs": [
+          "울의 일반적인 단열 특성과 외벽 패널로서의 성능은 구분해야 한다. 완성된 복합재의 열전도율, 물을 흡수하고 마르는 방식, 반복적인 날씨 변화에 대한 거동, 화재 시험 결과는 특정 배합과 구조에 연결되는 정보다. 이번에 읽은 자료만으로 건축 현장에서 사용할 인증 제품이라고 판단할 수는 없다. 탄소를 재료에 남긴다는 연구팀의 의도도 생산 에너지와 운송, 수명, 폐기 방식까지 포함한 비교를 대신하지 않는다. 대학 자료에서 언급한 원료의 변동성은 오히려 다음 검증의 방향을 구체적으로 알려준다. 이 연구는 버려지는 섬유의 가치를 기존 건물의 외피로 옮기는 시도이며, 규모를 늘리려면 재료마다 다른 성질을 어떻게 반복 가능한 성능으로 연결할지 확인해야 한다. 외벽 시스템으로 판단할 때는 패널 자체뿐 아니라 고정 장치와 창문 주변의 접합부, 물을 배출하는 경로도 함께 다뤄야 한다. 전시의 목재 프레임은 재료를 보여 주는 장치이므로 실제 건물의 고정 상세와 같다고 볼 수 없다. 소재 실험을 건축 적용으로 이어가려면 이 연결 단계가 필요하다."
+        ],
+        "references": []
+      }
+    ],
+    "points": [
+      "대학 공식 프로젝트는 폐울 바이오복합재 외장 시스템 개발 목표를 확인한다.",
+      "케라틴 결합 원리는 관련 공식 졸업 연구 자료와 대조했다.",
+      "상용 인증이나 외벽 성능·탄소 절감의 정량 결과를 단정하지 않았다."
+    ],
+    "tags": [
+      "소재 연구",
+      "울",
+      "외장재",
+      "리트로핏",
+      "하버드"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "디진 원문",
+        "url": "https://www.dezeen.com/2026/09/27/waste-wool-cladding-harvard-university-oslo-architecture-triennale/"
+      },
+      {
+        "label": "하버드 아이젠버그 공식 연구",
+        "url": "https://aizenberglab.seas.harvard.edu/upcycling-wool-ecologies"
+      },
+      {
+        "label": "하버드 공식 졸업 연구",
+        "url": "https://seas.harvard.edu/news/mia-montroses-senior-project-building-panels-made-waste-wool"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://aizenberglab.seas.harvard.edu/upcycling-wool-ecologies",
+      "https://seas.harvard.edu/news/mia-montroses-senior-project-building-panels-made-waste-wool"
+    ],
+    "notes": "원문 web open InternalError RSS사용. 공식Harvard프로젝트와2026/5/14졸업연구 실제읽어 케라틴결합/외장목표/원료변동 대조. 구연산·다층·AmericanWoolen·전시세부는 RSS귀속. 논문ScienceDirect403 및 주최oslotriennale403, 전시9/17~10/1은 원문안내귀속만 사용. 전세계울수치와 항균/내화보장/LCA감축숫자는 제외. 후보12제목/요약 및 대기전체 Grinham/Wool/Oslo 검색 검토 동일 사건 중복없음. 관련졸업연구가 전시타일 전용시험임을 주장하지 않음.",
+    "queries": [
+      "site.gsd.harvard.edu Upcycling Wool",
+      "Grinham Research Group Upcycling Wool Ecologies official",
+      "Upcycling Wool Ecologies Triennale"
+    ],
+    "searchSuggestions": ""
+  },
+  "checks": [
+    "공식프로젝트외장시스템목표 확인",
+    "공식관련연구 케라틴결합원리와변동성확인",
+    "전시사양은원문귀속",
+    "인증/내화/탄소정량 단정 제외",
+    "후보/대기 동일사건중복없음"
+  ]
+}

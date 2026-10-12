@@ -1,0 +1,155 @@
+{
+  "id": "7d9a4b6c-7af6-4856-ba6d-defa1f153174",
+  "article": {
+    "url": "https://updates.midjourney.com/alpha-changelog-10-7-26/",
+    "title": "미드저니 알파, 공유 폴더 도입… 협업 권한과 이미지 공개는 별개",
+    "summary": "미드저니가 알파 웹에 공동 생성과 열람 권한을 나누는 공유 폴더를 추가했다. 비공개 폴더 안에서 만든 이미지도 Stealth가 아니면 Explore나 프로필에 보일 수 있다. 폴더 권한과 이미지 공개 설정의 차이, 작업 제출 오류와 정리 화면의 개선을 살핀다.",
+    "paragraphs": [
+      {
+        "heading": "공동 생성과 열람을 나누는 폴더",
+        "kind": "reporting",
+        "paragraphs": [
+          "미드저니는 2026년 10월 8일 게시한 10월 7일자 알파 변경 기록에서 공유 폴더를 핵심 업데이트로 소개했다. 알파 웹에서는 사용자 이름으로 사람을 초대하고 Collaborator 또는 Viewer 권한을 줄 수 있다. 공동 작업자는 폴더 안에서 이미지를 생성하고 서로의 결과를 바탕으로 작업할 수 있으며, 열람자는 이미지를 볼 수 있다. 링크로 공유하는 방식도 추가됐다. 초대한 사람만 접근하도록 하거나 링크를 가진 사람이 보게 할 수 있고, 미드저니 회원이 참여하도록 열 수도 있다는 설명이다. 소유자가 공유 폴더를 삭제하면 모두에게서 폴더가 사라지지만 이미지는 각 생성자의 개인 작업 이력에 남는다. 초기 기능이므로 이 안내를 정식 서비스의 완성된 협업 체계 전체로 확대해서 소개하지는 않는다."
+        ],
+        "references": [
+          {
+            "label": "미드저니 10월 7일자 알파 변경 기록",
+            "url": "https://updates.midjourney.com/alpha-changelog-10-7-26/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "비공개 폴더가 이미지를 숨기지는 않는다",
+        "kind": "reporting",
+        "paragraphs": [
+          "변경 기록은 폴더 공유가 이미지의 공개 설정을 바꾸지 않는다고 분명히 밝힌다. Stealth가 아닌 이미지는 비공개 폴더에서 생성해도 Explore와 프로필에 나타날 수 있다. 공식 Stealth 안내에 따르면 해당 모드는 Pro와 Mega 요금제에서 제공되며, 기본 설정을 바꿔도 이미 공개된 과거 이미지가 자동으로 비공개가 되지는 않는다. 또 Discord 공개 채널에서 생성하면 Stealth를 켰더라도 그 채널의 사람들은 결과를 볼 수 있다. 이미지 업로드 관리 문서도 업로드 보관함 자체는 다른 회원에게 보이지 않지만, Stealth가 아니면 참조 이미지와 파라미터 등 프롬프트의 세부 정보가 결과 옆에 보일 수 있다고 설명한다. 협업 폴더의 접근 권한과 생성 결과의 노출 경로를 따로 확인해야 하는 이유다."
+        ],
+        "references": [
+          {
+            "label": "미드저니 10월 7일자 알파 변경 기록",
+            "url": "https://updates.midjourney.com/alpha-changelog-10-7-26/",
+            "kind": "primary"
+          },
+          {
+            "label": "미드저니 공식 Stealth 모드 안내",
+            "url": "https://docs.midjourney.com/hc/en-us/articles/32019750070669-Stealth-Mode",
+            "kind": "primary"
+          },
+          {
+            "label": "미드저니 공식 이미지 업로드 관리 안내",
+            "url": "https://docs.midjourney.com/hc/en-us/articles/33329380893325-Managing-Image-Uploads",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "제출 상태와 정리 화면의 변경",
+        "kind": "reporting",
+        "paragraphs": [
+          "협업 기능과 함께 작업 상태를 더 명확히 전달하는 수정도 발표됐다. 제출 중에 멈춘 편집은 2분 안에 실패 상태로 끝나고, 실제로 성공한 작업은 피드에 표시되도록 바뀌었다는 설명이다. 인라인 편집기의 충돌, 대화상자나 확대 이미지 아래에서 작동하던 단축키, 긴 이력을 불러오다 멈추는 문제 등도 수정 목록에 포함됐다. 폴더를 사이드바 상단에 고정하고 이름을 직접 바꾸는 정리 기능, 폴더별 설정 유지, 개인화 프로필 삭제 뒤 실행 취소도 추가됐다. 무드보드에 많은 이미지를 올릴 때는 몇 장씩 업로드하고 진행 상태를 보여준다. 이 내용은 회사의 알파 수정 내역이며 모든 브라우저와 계정의 문제가 해결됐다는 검증 결과는 아니다. 자리를 떠났다가 돌아와도 유지되는 편집 이력은 다음 단계 계획으로 제시됐다."
+        ],
+        "references": [
+          {
+            "label": "미드저니 10월 7일자 알파 변경 기록",
+            "url": "https://updates.midjourney.com/alpha-changelog-10-7-26/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "협업 인터페이스는 두 권한을 보여줘야",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 이번 변경이 협업 제품에서 자주 겹쳐 보이는 두 결정을 드러낸다고 본다. 누가 작업 공간에 들어올 수 있는지와 결과물이 어디에 노출되는지는 다른 결정이다. 사용자가 폴더에 비공개 표시를 보고 이미지도 외부에서 보이지 않는다고 추정하기 쉬우므로, 폴더 접근 범위와 개별 결과의 공개 상태를 함께 확인할 수 있는 안내가 유용하다. 고객 시안이나 공개 전 브랜드 자료를 공동으로 다루는 팀이라면 초대 인원만 확인해서는 필요한 조건을 다 점검할 수 없다. 이는 특정 법적 보안을 보장해야 한다는 주장이 아니라 공식 공지가 밝힌 동작을 업무 과정에 반영하는 설계 해석이다. 소유자의 폴더 삭제와 생성자의 이력 보존이 분리돼 있다는 점도 팀의 기록 관리에 영향을 준다. 공간을 정리한 행동이 결과 전체를 없앤 행동처럼 읽히지 않도록 설명할 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "미드저니 10월 7일자 알파 변경 기록",
+            "url": "https://updates.midjourney.com/alpha-changelog-10-7-26/",
+            "kind": "primary"
+          },
+          {
+            "label": "미드저니 공식 Stealth 모드 안내",
+            "url": "https://docs.midjourney.com/hc/en-us/articles/32019750070669-Stealth-Mode",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "실패를 명확히 보여주는 것도 협업의 기반",
+        "kind": "analysis",
+        "paragraphs": [
+          "여러 사람이 한 폴더에 결과를 쌓으면 작업이 진행 중인지 실패했는지 알아야 같은 요청을 중복해서 제출하는 일을 줄일 수 있다. 이번 기록의 제출 상태 수정은 단순한 화면 다듬기보다 결과의 존재를 판단할 정보를 다루는 변화다. 성공한 작업이 피드에 보이고 멈춘 요청이 종료되면 팀원이 확인할 다음 단계가 분명해진다. 다만 2분은 멈춘 제출을 실패 처리하는 시간으로 안내됐으며 정상 이미지 생성이 2분 안에 끝난다는 보장으로 읽어서는 안 된다. 팀의 아카이브에는 생성자와 폴더, 최종 선택 여부를 함께 남기는 방법이 유용하다. 폴더 접근 설정과 이미지 공개 상태도 당시 조건으로 기록하면 이후 결과가 외부에 보였던 이유를 되짚을 수 있다. 새 공유 기능의 가치는 초대 버튼의 수보다 공동 작업자가 같은 상태와 권한을 이해하는지에 달려 있다."
+        ],
+        "references": [
+          {
+            "label": "미드저니 10월 7일자 알파 변경 기록",
+            "url": "https://updates.midjourney.com/alpha-changelog-10-7-26/",
+            "kind": "primary"
+          },
+          {
+            "label": "미드저니 공식 이미지 업로드 관리 안내",
+            "url": "https://docs.midjourney.com/hc/en-us/articles/33329380893325-Managing-Image-Uploads",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "공유 폴더는 공동 생성자와 열람자를 나누며 링크 접근 범위도 선택할 수 있다.",
+      "비공개 폴더와 이미지의 Stealth 공개 설정은 별개로 작동한다.",
+      "2분 안내는 멈춘 제출의 실패 처리 시간이며 정상 생성 속도 보장이 아니다."
+    ],
+    "tags": [
+      "미드저니",
+      "협업",
+      "공유폴더",
+      "공개설정",
+      "알파업데이트"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "미드저니 10월 7일자 알파 변경 기록",
+        "url": "https://updates.midjourney.com/alpha-changelog-10-7-26/"
+      },
+      {
+        "label": "미드저니 공식 Stealth 모드 안내",
+        "url": "https://docs.midjourney.com/hc/en-us/articles/32019750070669-Stealth-Mode"
+      },
+      {
+        "label": "미드저니 공식 이미지 업로드 관리 안내",
+        "url": "https://docs.midjourney.com/hc/en-us/articles/33329380893325-Managing-Image-Uploads"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://updates.midjourney.com/alpha-changelog-10-7-26/",
+      "https://docs.midjourney.com/hc/en-us/articles/32019750070669-Stealth-Mode",
+      "https://docs.midjourney.com/hc/en-us/articles/33329380893325-Managing-Image-Uploads"
+    ],
+    "notes": "10/7변경기록(게시2026-10-08), 공식 Stealth와 업로드 관리 문서를 직접 브라우징했다. Collaborator/Viewer, 초대·링크·회원참여 범위, 소유자삭제/개인생성이력보존, private folder와 non-stealth 공개 차이 확인. Pro/Mega와 기존이미지 비공개 수동 적용, Discord공개채널 제약은 공식문서 확인. stalled submit2분은 실패처리이며 생성속도로 오역하지 않았다. 편집이력 지속은 UP NEXT계획. 후보4건과 snapshot.pending 전체 제목·원제·URL 및 shared folder/Thinking 본문 비교. 기존10/1수정 및9월업데이트는 다른 실질변경. e063ec34-a9e8-499b-ab13-8bad6c0eb94b는 같은날 Thinking 시험소개지만 본기사는 새 공유폴더·권한·상태복구에 집중하며 Thinking 내용을 재보도하지 않는다. 공개 범위에 관한 해석과 회사 수정내역의 검증 한계는 명시했다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "864f2ad5-94f0-4b2a-ad99-df632ffd8027",
+    "875c26a5-6ea4-4747-847e-c5c0c10f785d",
+    "979a1524-4b89-44d4-9138-3d4445e9fa66",
+    "ffe2a6d1-ebc4-4c2e-aa5e-fb3f89fa3bec"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:14:16.631Z",
+    "checks": [
+      "원출처와 공식 공개범위 문서2개 확인",
+      "폴더 접근권한과 이미지 Stealth 분리",
+      "소유자 폴더삭제와 개인이력보존 구분",
+      "2분 실패처리 및 미래 편집이력 계획 구분",
+      "후보4건·전체 pending 비교 후 Thinking 기사와 실질내용 분리"
+    ],
+    "relatedPendingIds": []
+  }
+}

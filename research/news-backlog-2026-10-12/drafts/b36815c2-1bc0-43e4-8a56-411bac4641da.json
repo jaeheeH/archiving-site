@@ -1,0 +1,161 @@
+{
+  "id": "b36815c2-1bc0-43e4-8a56-411bac4641da",
+  "article": {
+    "url": "https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/",
+    "title": "아이폰 듀오 공개, 접는 화면보다 화면 사이의 작업을 다시 설계",
+    "summary": "애플은 안쪽7.6인치·바깥쪽5.4인치 화면을 갖춘 아이폰 듀오와 두 앱을 나란히 사용하는 경험을 소개했다.10월16일 예약 주문·23일 출시를 예고했으며 앱의 대응과 기능별 제공 일정은 별도로 확인해야 한다.",
+    "paragraphs": [
+      {
+        "heading": "공개와 예약 주문, 실제 판매의 날짜",
+        "kind": "reporting",
+        "paragraphs": [
+          "애플은9월9일 첫 폴더블 아이폰인 iPhone Duo를 공개했다. 발표에 따르면 예약 주문은 태평양시간10월16일 오전5시에 시작하고 한국을 포함한70개 이상 국가·지역에서10월23일 판매를 시작한다.10월30일에는28개 국가·지역이 더해진다.10월12일 현재 발표된 일정을 실제 판매가 이미 시작된 상태로 표현하지 않았다.",
+          "출시 때의 소프트웨어는 iOS27.1이다. USB-C 애플펜슬 지원은 연내 후속 제공 계획으로 안내돼 출시에 포함된 기능과 다르다. 발표 안에 함께 등장하는 이름이라도 이용할 수 있는 날짜는 나눠 읽어야 한다. 이 기사에서는 예약 주문과 출시의 계획을 확인했으며 실제 기기를 사용한 후기를 제공하지 않는다."
+        ],
+        "references": [
+          {
+            "label": "애플 iPhone Duo 공개·제공 일정",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/"
+          },
+          {
+            "label": "애플 iPhone Duo 공식 제품 안내",
+            "kind": "primary",
+            "url": "https://www.apple.com/iphone-duo/"
+          }
+        ]
+      },
+      {
+        "heading": "같은 비율의 두 화면과 자세의 변화",
+        "kind": "reporting",
+        "paragraphs": [
+          "안쪽 화면은7.6인치, 접었을 때 사용하는 바깥쪽 화면은5.4인치이며 두 화면의 가로세로 비율이 일치하도록 설계됐다. 안쪽 표면에는 반사를 줄이기 위한 나노 텍스처 처리를 적용했다고 회사는 설명한다. 이런 설계 설명을 어떤 조명에서도 반사가 없거나 접히는 부분이 전혀 보이지 않는다는 검증 결과로 바꾸지 않았다.",
+          "공식 제품 안내는 펼친 가로 화면의 병렬 작업, 세로 화면의 넓은 키보드, 접거나 세워 놓고 쓰는 자세를 예로 든다. 바깥 화면에는 촬영 대상에게 미리보기를 보여주는 용도도 제시한다. 인증은 측면 버튼의 Touch ID를 사용한다. 안쪽의 디스플레이 아래 FaceTime 카메라를 Face ID 기능의 발표로 혼동해서는 안 된다."
+        ],
+        "references": [
+          {
+            "label": "애플 iPhone Duo 공개·제공 일정",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/"
+          },
+          {
+            "label": "애플 iPhone Duo 공식 제품 안내",
+            "kind": "primary",
+            "url": "https://www.apple.com/iphone-duo/"
+          }
+        ]
+      },
+      {
+        "heading": "두 앱과 두 창, 앱의 대응은 별도 작업",
+        "kind": "reporting",
+        "paragraphs": [
+          "Split View는 두 앱을 나란히 쓰는 경험이며 발표에는 사파리처럼 같은 앱의 두 창을 여는 예도 포함된다. 공식 제품 페이지는 사진에서 메일로 이미지를 옮기는 작업을 보여준다. 화면이 넓어졌다는 사실만으로 모든 앱이 같은 방식으로 두 창을 지원한다고 단정할 수는 없다.",
+          "애플은 앱의 새로운 배치에 대응할 개발 도구와 지원 계획도 설명했다. 사이드 도크와 탐색 구조, 화면 방향 및 접힘의 변화에 맞춘 배치는 기존 아이폰 화면을 단순히 크게 확대하는 것과 다르다. 회사가 소개한 앱의 예와 각 개발사가 실제로 제공하는 버전·기능은 이용 시점에 다시 확인할 부분이다."
+        ],
+        "references": [
+          {
+            "label": "애플 iPhone Duo 공개·제공 일정",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/"
+          },
+          {
+            "label": "애플 iPhone Duo 공식 제품 안내",
+            "kind": "primary",
+            "url": "https://www.apple.com/iphone-duo/"
+          }
+        ]
+      },
+      {
+        "heading": "화면을 바꿔도 작업의 맥락은 이어져야 한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 이 발표를 화면의 크기와 함께 작업의 연속성을 설계하는 문제로 읽는다. 사용자가 글을 쓰다 접었다면 다시 열었을 때 커서와 입력 내용이 어느 위치에 남는지, 사진을 옮기다 방향을 바꾸면 선택한 대상이 유지되는지가 중요해진다. 더 많은 공간을 얻는 경험과 진행 중인 일을 잃지 않는 경험은 서로 다른 요구다.",
+          "한 화면의 작은 버튼을 그대로 여러 개 늘리는 방식만으로 넓은 공간의 가치를 만들 수는 없다. 읽는 자료와 편집하는 자료를 동시에 보여줄지, 한쪽의 선택에 다른 쪽이 반응하게 할지 정해야 한다. 두 창을 나란히 열어 둔 상태와 두 자료의 관계를 이해하도록 배치한 상태도 같지 않다. 제품의 발표는 이런 선택지를 제공하지만 각 앱의 완성도를 입증하는 시험은 아니다."
+        ],
+        "references": [
+          {
+            "label": "애플 iPhone Duo 공개·제공 일정",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/"
+          },
+          {
+            "label": "애플 iPhone Duo 공식 제품 안내",
+            "kind": "primary",
+            "url": "https://www.apple.com/iphone-duo/"
+          }
+        ]
+      },
+      {
+        "heading": "동시에 하는 일과 확인해야 할 경계를 나눈다",
+        "kind": "analysis",
+        "paragraphs": [
+          "두 앱 사이에서 내용을 옮길 때에는 빠른 동작만큼 대상을 확인하는 단계가 필요하다. 선택한 이미지가 다른 초안에 들어가거나 입력 중인 문장이 의도하지 않은 창으로 넘어가면 넓은 화면 자체가 이를 막아 주지는 않는다. 현재 작업하는 창과 저장한 결과, 취소할 수 있는 범위를 보여주는 배치가 병렬 작업의 기본 조건이 된다.",
+          "같은 기기라도 닫힌 화면과 펼친 화면에서 한 손의 도달 범위와 읽는 밀도는 달라진다. 긴 제목과 큰 글자, 키보드로 이동하는 경로까지 함께 살펴야 자세가 바뀌는 경험의 범위를 판단할 수 있다. 이번 공개의 핵심은 새로운 형태와 이에 맞춘 소프트웨어의 제안이다. 판매 전의 설계 설명을 내구성·배터리·작업 효율의 독립 검증처럼 읽지 않았으며 이 기사에서는 기기와 앱의 실제 전환 동작을 시험하지 않았다."
+        ],
+        "references": [
+          {
+            "label": "애플 iPhone Duo 공식 제품 안내",
+            "kind": "primary",
+            "url": "https://www.apple.com/iphone-duo/"
+          },
+          {
+            "label": "애플 iPhone Duo 공개·제공 일정",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "10월16일 예약 주문·23일 출시가 예고됐다.",
+      "안쪽7.6인치·바깥쪽5.4인치 화면의 비율을 맞췄다.",
+      "두 앱 병렬 사용과 앱별 대응·후속 기능을 구분한다."
+    ],
+    "tags": [
+      "애플",
+      "iPhoneDuo",
+      "폴더블",
+      "SplitView",
+      "인터페이스"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "애플 iPhone Duo 공개·제공 일정",
+        "url": "https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/"
+      },
+      {
+        "label": "애플 iPhone Duo 공식 제품 안내",
+        "url": "https://www.apple.com/iphone-duo/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.apple.com/newsroom/2026/09/apple-unveils-iphone-duo/",
+      "https://www.apple.com/iphone-duo/"
+    ],
+    "notes": "9/9newsroom본문31–221직접읽음,product166–244/1009–1038actualread. inner7.6outer5.4같은비율/TouchID/innerFaceTimecamera구분/출시iOS27.1. PT10/16preorder10/23KR포함70+/10/30+28을10/12이미판매혼동안함. USB-Cpencil연내계획별도. App두창은Safari예 notallapp. foldstate분석ARCH.B독자추론이며실제시험없음. 후보5대조별개이벤트. de16Dezeen2-topicepisode와제품원문발표는자료/주제범위다름.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "956d329a-104f-4538-8c27-53d22881ff0f",
+    "1d0ab475-cad9-40f6-a125-290917de796e",
+    "682b3e84-79ef-4664-8ca1-9b7365454803",
+    "7eea6836-5130-410a-bbe3-4ecab0607e44",
+    "88dd33b0-f0fb-48b6-8fd6-bc3df072a7a4"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:27:49.583Z",
+    "checks": [
+      "발표·예약·출시 날짜 분리",
+      "inner/outer치수와비율 확인",
+      "TouchID와FaceTime카메라 구분",
+      "두앱과같은앱두창 조건 분리",
+      "미래Pencil지원과현재기능 분리"
+    ],
+    "relatedPendingIds": []
+  }
+}

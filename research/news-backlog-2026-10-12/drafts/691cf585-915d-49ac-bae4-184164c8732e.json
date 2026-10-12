@@ -1,0 +1,141 @@
+{
+  "id": "691cf585-915d-49ac-bae4-184164c8732e",
+  "article": {
+    "url": "https://blog.google/products-and-platforms/products/maps/google-maps-fan-favorite-dining-list/",
+    "title": "구글 지도, 10개 도시 음식 트렌드 공개… 리뷰 증가와 방문은 다르다",
+    "summary": "구글 지도가 첫 Fan-Favorite Dining List를 공개했다. 10개 도시의 리뷰·평점·길찾기 검색으로 인기 음식과 장소를 소개한다. 뉴욕 프로즌 요거트의 320% 증가 등은 리뷰 언급의 변화이며 실제 판매나 방문 증가율은 아니다. 도시와 지표의 범위를 살펴 인기 목록을 읽는 기준을 짚는다.",
+    "paragraphs": [
+      {
+        "heading": "10개 도시의 지도 이용 데이터",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글은 2026년 10월 8일 첫 Fan-Favorite Dining List를 공개했다. 지도에 쌓인 리뷰와 평점, 집계한 길찾기 검색을 이용해 10개 도시의 인기 음식과 장소를 소개하는 목록이다. 대상은 애틀랜타, 시카고, 런던, 멜버른, 몬트리올, 뉴욕, 샌프란시스코, 산티아고, 시애틀, 도쿄다. 서울을 포함한 전 세계 모든 도시를 대표하는 조사로 제시되지 않았다. 공식 소개는 1년간의 데이터를 살폈다고 설명하지만 비교에 사용한 원자료나 리뷰 수, 세부 집계 기준을 이 글에 모두 공개하지는 않는다. 목록은 해당 플랫폼에 기록된 관심과 평가를 읽을 자료이며 도시 주민 전체의 식생활을 직접 조사한 결과와는 구분해야 한다. 다양한 이용 행동을 묶었다는 점도 개별 순위가 어떤 지표인지 확인할 이유가 된다."
+        ],
+        "references": [
+          {
+            "label": "구글 지도 인기 음식·장소 목록 발표 원문",
+            "url": "https://blog.google/products-and-platforms/products/maps/google-maps-fan-favorite-dining-list/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "음식 언급 증가와 길찾기 순위",
+        "kind": "reporting",
+        "paragraphs": [
+          "발표는 뉴욕 리뷰에서 프로즌 요거트 언급이 전년보다 320%, 몬트리올의 시나몬 번이 84%, 도쿄의 모치가 168% 늘었다고 설명한다. 런던의 호지차 언급 증가율은 114%로 제시됐다. 이 백분율은 음식 관련 리뷰의 언급 변화이며 판매량이나 실제 방문객 수 증가율로 바꾸어 읽을 수 없다. 별도로 가장 많이 길찾기를 요청한 장소 목록도 공개했다. 뉴욕의 Katz’s Delicatessen, 런던의 Fallow 등은 이 지표에서 소개되는 예시다. 길찾기 요청이 많다는 사실은 지도에서 해당 장소에 관심을 보인 행동을 뜻하지만 모든 요청이 방문으로 이어졌다는 확인은 아니다. 저렴한 가격과 넉넉한 양으로 리뷰에서 소개된 장소 목록도 함께 있어, 음식 트렌드와 장소 탐색을 서로 다른 관점으로 연결한다."
+        ],
+        "references": [
+          {
+            "label": "구글 지도 인기 음식·장소 목록 발표 원문",
+            "url": "https://blog.google/products-and-platforms/products/maps/google-maps-fan-favorite-dining-list/",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "방문 추정 데이터와 혼동하지 않기",
+        "kind": "reporting",
+        "paragraphs": [
+          "구글 지도에는 인기 시간대와 대기시간 같은 별도의 방문 관련 정보도 있다. 공식 도움말은 이 지표가 위치 기록에 동의한 사용자의 집계·익명 데이터에서 만들어지고 충분한 방문 데이터가 있을 때 표시된다고 설명한다. 인기 시간대는 해당 장소의 주간 최고 혼잡 수준을 기준으로 상대적인 활동 정도를 보여준다. 이번 연간 목록의 리뷰 언급이나 길찾기 요청과는 관찰한 행동과 집계 방식이 다르다. 별도 도움말을 이번 트렌드 목록의 산출 방식으로 가져와서는 안 된다. 발표에 나오는 여러 숫자는 같은 인기라는 표현을 쓰더라도 서로 다른 정보를 나타낸다. 원문이 제시한 도시, 음식, 비교 단위와 함께 읽으면 온라인 관심의 변화와 실제 장소의 혼잡 정보를 더 정확하게 구분할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "구글 공식 혼잡도·대기시간·방문 데이터 설명",
+            "url": "https://support.google.com/business/answer/6263531?hl=en",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "숫자가 장소의 성격을 대신하지는 않는다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 도시별 음식 데이터를 탐색의 시작점으로 보는 편이 유용하다고 본다. 언급이 급증한 음식은 새로운 메뉴나 시각적 트렌드를 살피는 단서가 되지만, 방문 목적에 맞는 장소인지 판단하려면 메뉴와 가격, 좌석, 영업 정보가 더 필요하다. 높은 증가율도 원래의 언급 규모를 모르면 절대적인 인기를 비교하기 어렵다. 따라서 목록 화면에서는 증가율 옆에 무엇이 증가했는지 표시하는 일이 중요하다. 리뷰 언급, 길찾기 검색, 방문 추정은 사용자가 취할 다음 행동을 다르게 만든다. 이 분석은 이번 목록 화면을 직접 시험한 평가는 아니다. 발표의 서로 다른 지표를 어떻게 설명하면 장소를 고르는 판단에 도움이 될지에 관한 해석이다. 인기 목록이 하나의 최고 음식점 순위처럼 읽히지 않도록 범주와 근거를 가까이 두는 정보 구성이 의미가 있다."
+        ],
+        "references": [
+          {
+            "label": "구글 지도 인기 음식·장소 목록 발표 원문",
+            "url": "https://blog.google/products-and-platforms/products/maps/google-maps-fan-favorite-dining-list/",
+            "kind": "primary"
+          },
+          {
+            "label": "구글 공식 혼잡도·대기시간·방문 데이터 설명",
+            "url": "https://support.google.com/business/answer/6263531?hl=en",
+            "kind": "primary"
+          }
+        ]
+      },
+      {
+        "heading": "도시별 기록의 차이를 남기는 방법",
+        "kind": "analysis",
+        "paragraphs": [
+          "음식과 공간을 수집하는 독자는 같은 재료가 도시마다 어떻게 소개되는지 비교할 수 있다. 다만 플랫폼에서 많이 언급된 음식이 그 도시의 전체 문화를 대표한다고 단정하지 않는 편이 적절하다. 관광객과 지역 주민, 리뷰를 자주 남기는 사람의 비중이 다를 수 있지만 이번 발표만으로 그 차이를 계산할 근거는 없다. 데이터를 저장할 때에는 연도와 도시, 리뷰 언급이라는 단위, 해당 장소의 당시 메뉴나 사진을 연결해 두는 방법이 유용하다. 이후 다른 해의 목록과 비교할 때 순위의 변화가 음식 자체의 변화인지, 기록되는 관심의 변화인지 질문할 수 있기 때문이다. 이번 자료의 가치는 단일한 세계 음식 유행을 확정하는 데 있기보다, 정해진 도시와 플랫폼에서 관찰된 다양한 탐색 행동을 구체적으로 보여주는 데 있다."
+        ],
+        "references": [
+          {
+            "label": "구글 지도 인기 음식·장소 목록 발표 원문",
+            "url": "https://blog.google/products-and-platforms/products/maps/google-maps-fan-favorite-dining-list/",
+            "kind": "primary"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "대상은 서울을 포함하지 않은 10개 도시이며 플랫폼 리뷰·평점·길찾기 검색을 이용한 목록이다.",
+      "뉴욕 프로즌 요거트 320% 등은 리뷰 언급 증가율로 판매·방문 증가율과 다르다.",
+      "연간 트렌드, 길찾기 요청, 별도 혼잡도 정보를 각각의 집계 범위로 읽어야 한다."
+    ],
+    "tags": [
+      "구글지도",
+      "음식트렌드",
+      "도시데이터",
+      "리뷰",
+      "정보시각화"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "구글 지도 인기 음식·장소 목록 발표 원문",
+        "url": "https://blog.google/products-and-platforms/products/maps/google-maps-fan-favorite-dining-list/"
+      },
+      {
+        "label": "구글 공식 혼잡도·대기시간·방문 데이터 설명",
+        "url": "https://support.google.com/business/answer/6263531?hl=en"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.google/products-and-platforms/products/maps/google-maps-fan-favorite-dining-list/",
+      "https://support.google.com/business/answer/6263531?hl=en"
+    ],
+    "notes": "원문과 Google공식방문데이터설명을 웹확인. 10도시/1년 플랫폼범위, froyo320/cinnamon84/mochi168/hojicha114는 reviewmentions전년비;directions를방문으로오인하지않음. 혼잡도도움말은별도지표의구분근거로사용하며Fan목록알고리즘이라고쓰지않음. 전용목록microsite는본문0줄이라세부집계방법확인주장없음. 후보10건과snapshot.pending전체제목·원제·URL/FanFavorite관련본문대조. fdc2c2b4-2ddd-4156-9370-a3dada88f877는동일날탐색기능3가지안내로새10도시목록과서로다른주제;본기사는도시데이터해석만집중. 표본수/관광객비중/판매량추정없음.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "7b32a772-87ba-41f1-a1b8-9d22736731c4",
+    "1b26d953-c1ba-4eb9-baf3-6bba7f7bc9bb",
+    "3564e5a1-5821-49ef-bd96-912e5c73a483",
+    "3f96b1c3-6b91-42c6-a276-a72f4e691fe8",
+    "6a15a15c-65e2-411f-847a-f51c003cbab0",
+    "71270e8b-f764-40f4-887d-b08d50f94116",
+    "982a98d7-e28f-4f89-9ef1-335635624d41",
+    "cc54a5d9-2762-40db-b19b-0e45b281af3e",
+    "ec323858-ca4e-442e-96d0-a114cb836a2c",
+    "f902e8f3-2cfc-4931-9ea9-73956faaae60"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:27:02.934Z",
+    "checks": [
+      "원출처·방문데이터공식문서 확인",
+      "10도시·리뷰언급/길찾기/혼잡도 지표구분",
+      "전년비를판매/실방문으로전환하지않음",
+      "동일날기능안내와내용초점분리",
+      "후보10건·전체pending 동일목록발표없음"
+    ],
+    "relatedPendingIds": []
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "id": "ff56b30c-818d-4201-9fdf-c1da2aa8d636",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/07/users-dont-need-more-tools-need-seamless-integrations/",
+    "title": "폴더와 문서 안에서 돕는 AI… 새 도구보다 기존 업무의 연결을 설계하다",
+    "summary": "비탈리 프리드먼은 AI 도구를 추가하기보다 기존 문서·폴더 맥락에 기능을 통합하는 설계를 제안했다. 폴더 지침은 출시 기능으로 확정할 수 없는 아이디어이며, 실제 Office 통합 사례와 비교하면 작업 범위·권한·확인 경로가 함께 드러나야 한다는 과제가 보인다.",
+    "paragraphs": [
+      {
+        "heading": "사용자가 일을 하는 자리에 도움을 배치한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "스매싱 매거진의 비탈리 프리드먼은 사용자가 매번 새 앱과 대화를 배우기보다 익숙한 작업 안에서 필요한 도움을 받는 통합 방식을 제안했다. 그가 강조한 대상은 심각하고 자주 반복되며 답답함이 큰 문제다. AI 중심이라는 제품 구호보다 기존의 사고 방식과 업무 경로에 맞춰 기능을 배치하자는 설계 의견이다.",
+          "글에서 조용한 AI는 주의를 요구하기보다 반복 작업을 뒤에서 돕는 기능을 뜻한다. 저자는 엑셀과 파워포인트, 워드 안의 클로드 통합을 사례로 들었다. 이는 모든 통합 도구가 항상 보이지 않아야 한다는 규칙보다, 도움을 쓰기 위해 현재의 문서 맥락을 떠나는 부담을 줄이자는 제안으로 읽을 수 있다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/users-dont-need-more-tools-need-seamless-integrations/"
+          }
+        ]
+      },
+      {
+        "heading": "폴더 지침은 목적과 범위를 묶는 아이디어",
+        "kind": "reporting",
+        "paragraphs": [
+          "또 다른 예시는 카르티케야 GS가 제시한 폴더 지침이다. 파일 정리 방식이나 하위 폴더의 동작을 사용자가 목적에 맞춰 정하고, 해당 폴더 안에서 작업을 수행하도록 하는 구상이다. 송장 파일의 이름과 순서를 정리하거나 새 PDF의 요약을 만드는 식의 예가 등장한다.",
+          "프리드먼은 권한과 행동을 해당 폴더에 한정하고 사용자가 확장하는 구조를 설명했다. 그러나 이 글은 특정 운영체제에 그 기능이 정식 출시됐다는 공지가 아니다. 예시 속 파일 접근과 외부 전송 역시 실제 제품의 보안 보장으로 옮길 수 없다. 폴더라는 익숙한 단위에 의도와 실행 범위를 함께 드러내는 설계 아이디어다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/users-dont-need-more-tools-need-seamless-integrations/"
+          }
+        ]
+      },
+      {
+        "heading": "실제 문서 통합 사례의 제공 조건",
+        "kind": "reporting",
+        "paragraphs": [
+          "앤트로픽은 5월 7일 공식 발표에서 클로드의 엑셀·파워포인트·워드 통합을 정식 제공하고 아웃룩 통합은 유료 요금제의 공개 베타라고 밝혔다. 발표는 열린 파일 사이에서 대화 맥락을 유지하는 방식을 설명하며, 문서와 스프레드시트 등을 나란히 열어 두는 조건을 제시한다. 폴더 지침과 달리 실제 서비스의 제공 안내다.",
+          "아웃룩에서는 답장과 일정 초안을 사용자가 보내기 전에 검토하고 전송 버튼을 누르게 한다고 설명했다. 이는 모든 자동화가 무조건 승인 없이 실행되는 것과는 다른 설계 선택이다. 원문이 말하는 통합의 편리함을 평가할 때도 어떤 작업이 제안이고 어떤 작업이 실제 변경이나 외부 전송인지 구분해서 볼 필요가 있다."
+        ],
+        "references": [
+          {
+            "label": "앤트로픽의 Microsoft 365 앱 통합 공식 발표",
+            "kind": "primary",
+            "url": "https://claude.com/resources/articles/collaborate-with-claude-across-excel-powerpoint-word-and-outlook"
+          }
+        ]
+      },
+      {
+        "heading": "자연스럽게 연결되려면 경계도 읽을 수 있어야 한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "폴더의 목적을 한 번 적는 방식은 반복 지시를 줄일 수 있지만 파일 내용과 사용자가 정한 규칙이 충돌할 때 무엇을 따를지 결정해야 한다. 예컨대 송장의 제목이 이상하더라도 원본을 보존한 채 새 이름을 제안할지, 바로 바꿀지를 제품이 구분해야 한다. 사용자는 통합이 편리한지와 변경이 예상 가능한지를 함께 경험한다.",
+          "권한의 범위도 장소와 행동을 나누어 표시하는 편이 이해하기 쉽다. 특정 폴더를 읽을 수 있다는 허용이 그 내용을 이메일로 보내도 된다는 허용과 같지는 않다. 파일을 읽고 분류하는 작업, 내용을 변경하는 작업, 외부 서비스와 공유하는 작업을 단계별로 설명하면 사용자가 목적에 맞게 자동화를 선택할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/users-dont-need-more-tools-need-seamless-integrations/"
+          },
+          {
+            "label": "앤트로픽의 Microsoft 365 앱 통합 공식 발표",
+            "kind": "primary",
+            "url": "https://claude.com/resources/articles/collaborate-with-claude-across-excel-powerpoint-word-and-outlook"
+          }
+        ]
+      },
+      {
+        "heading": "도구 이동을 줄인 뒤 오류 복구까지 연결하다",
+        "kind": "analysis",
+        "paragraphs": [
+          "통합의 효용은 앱을 적게 여는 횟수만으로 평가하기 어렵다. 변경한 셀을 찾거나 잘못 붙인 파일을 복원하는 데 더 많은 시간이 든다면 전체 과업의 부담은 달라진다. 작업 기록이 원래 문서와 연결되고, 수정 내용을 비교하며 되돌릴 수 있는지를 함께 확인해야 이동을 줄인 이익이 실제 완료 경험으로 이어지는지 알 수 있다.",
+          "또 여러 앱에서 같은 맥락을 공유할수록 오래된 가정이 다음 결과에 전파될 가능성도 살펴야 한다. 숫자의 출처와 갱신 시점, 사용자 확인이 필요한 변경을 표시하면 연결된 흐름 안에서도 판단 근거를 유지할 수 있다. 매번 다시 설명하지 않는 편리함과 현재 무엇을 알고 있는지 확인하는 투명성이 함께 필요하다.",
+          "이 글의 실무적 질문은 어떤 일을 새 도구로 이동시킬지보다 기존 작업 단위 안에서 어디를 연결할지에 있다. 시작은 자주 반복되는 한 과업으로 잡을 수 있다. 파일이 들어오는 순간부터 결과를 검토하고 잘못된 변경을 복구하는 과정까지 이어서 살펴야, 조용한 기능이 실제로 일을 덜어 주는지 평가할 수 있다."
+        ],
+        "references": [
+          {
+            "label": "앤트로픽의 Microsoft 365 앱 통합 공식 발표",
+            "kind": "primary",
+            "url": "https://claude.com/resources/articles/collaborate-with-claude-across-excel-powerpoint-word-and-outlook"
+          },
+          {
+            "label": "스매싱 매거진의 원출처 개발 사례",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/07/users-dont-need-more-tools-need-seamless-integrations/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "폴더 지침은 작업 의도와 범위를 연결하는 설계 구상이며 운영체제 출시 공지가 아니다.",
+      "실제 Office 통합은 앱별 정식·베타 제공과 열린 파일 조건을 구분해야 한다.",
+      "통합 평가에는 권한 범위, 외부 전송 확인, 변경 기록과 오류 복구도 포함할 필요가 있다."
+    ],
+    "tags": [
+      "AI통합",
+      "업무흐름",
+      "사용자경험",
+      "권한설계"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "스매싱 매거진의 원출처 개발 사례",
+        "url": "https://smashingmagazine.com/2026/07/users-dont-need-more-tools-need-seamless-integrations/"
+      },
+      {
+        "label": "앤트로픽의 Microsoft 365 앱 통합 공식 발표",
+        "url": "https://claude.com/resources/articles/collaborate-with-claude-across-excel-powerpoint-word-and-outlook"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://claude.com/resources/articles/collaborate-with-claude-across-excel-powerpoint-word-and-outlook"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처 비-www WEB 실패 뒤www 전문26~58행 확인, RSS4490자와 대조. 원출처 폴더지침은아이디어/컨셉이지특정OS 출시기능아님;실제권한보장/성능효과로확정안함. 앤트로픽공식5월7일발표는Word/Excel/PowerPoint GA,Outlook유료전체publicbeta,openfiles조건,전송전userreview확인. 독립생산성실증/완전온디바이스같은주장안함. post.candidates580a0e30 Connected Enterprise는사용자ID통합별도사건. snapshot.pending전체와e3ce AI가치비판,80ef 모달리티비교: 이 글의핵심은폴더지침·도구간문맥통합이라는구체적인워크플로설계로중복아님.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "580a0e30-a7c4-4fbb-a46e-41b554b43ebe"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T02:11:07.834Z",
+    "checks": [
+      "원문은 Quiet AI와 폴더별 지침이라는 설계 방식을 제안한다.",
+      "폴더지침을이미배포된운영체제기능이나보안보장으로표현하지않았다.",
+      "앤트로픽공식발표는세문서앱GA와Outlook공개베타를구분한다.",
+      "앱간문맥공유는열린파일에서동작한다는공식조건을보존했다.",
+      "Outlook의초안검토·사용자send클릭조건을확인했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

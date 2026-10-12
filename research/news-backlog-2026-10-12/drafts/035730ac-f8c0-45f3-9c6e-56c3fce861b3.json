@@ -1,0 +1,149 @@
+{
+  "id": "035730ac-f8c0-45f3-9c6e-56c3fce861b3",
+  "article": {
+    "url": "https://blog.cloudflare.com/protected-quick-tunnels/",
+    "title": "클라우드플레어 Quick Tunnels, 계정 없이 이메일로 미리보기 접근 제한",
+    "summary": "클라우드플레어가 임시 개발 URL을 이메일 주소나 도메인으로 보호하는 Quick Tunnels 옵션을 추가했다. cloudflared 2026.9.3부터 방문자는 일회용 PIN으로 이메일을 인증하고 로컬 커넥터가 허용 여부를 결정한다. 브라우저 중심 사용 조건과 개발용 제한을 함께 살펴본다.",
+    "paragraphs": [
+      {
+        "heading": "임시 URL에 이메일 인증을 추가한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "클라우드플레어는 10월 2일 Protected Quick Tunnels를 소개했다. cloudflared 2026.9.3부터 --allowed-mail 옵션으로 허용할 이메일 주소나 도메인을 지정할 수 있다. 방문자는 Cloudflare Access가 이메일로 보내는 일회용 PIN을 입력한다. 터널을 만드는 사람과 방문자 모두 클라우드플레어 계정이 필요하지 않으며 기존 Quick Tunnels처럼 무료다.",
+          "여러 주소는 옵션을 반복하거나 쉼표로 구분해 지정하고, 도메인 전체를 허용하는 와일드카드도 사용할 수 있다. 옵션을 생략하면 기존 공개 터널처럼 URL을 아는 사람이 접속할 수 있다. 허용 대상을 바꾸려면 프로세스를 중지하고 새 터널을 시작해야 한다. 프로세스가 끝나면 기존 방문자의 접근도 함께 끝난다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/protected-quick-tunnels/"
+          },
+          {
+            "label": "클라우드플레어 Quick Tunnels 설정과 제한",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/"
+          }
+        ]
+      },
+      {
+        "heading": "이메일 소유 확인과 허용 판단을 나눈다",
+        "kind": "reporting",
+        "paragraphs": [
+          "설계의 중심은 인증과 권한 판단의 분리다. Access는 방문자가 해당 이메일을 소유하는지 확인하고, 개발자 컴퓨터의 cloudflared가 그 주소를 메모리의 허용 규칙과 대조한다. 클라우드플레어 설명에 따르면 초대 목록은 개발자의 컴퓨터를 떠나지 않는다. 중앙 서비스가 모든 임시 터널의 개별 허용 목록을 보관하지 않는 구조다.",
+          "Workers에서 실행되는 인증 중개자는 확인된 신원을 짧은 수명의 서명된 전달 값으로 바꾼다. 이 값은 터널 호스트와 브라우저의 일회용 상태에 묶여 로컬 커넥터에서 검증된다. 확인에 실패하면 로컬 서비스로 요청을 넘기지 않으며 보호 터널이 공개 모드로 되돌아가지 않는다고 회사는 설명했다. 보호 여부를 서비스가 확인하지 않으면 시작도 거부한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/protected-quick-tunnels/"
+          }
+        ]
+      },
+      {
+        "heading": "개발 미리보기의 사용 조건을 유지한다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 문서는 이메일 인증에 대화형 브라우저 세션이 필요하며 비대화형 클라이언트를 지원하지 않는다고 명시한다. Quick Tunnels 자체는 테스트·개발용으로 가동 시간 보장이 없고, 진행 중 요청을 최대 200개 지원한다. 추가 요청에는 429 응답을 돌려주며 Server-Sent Events도 지원하지 않는다. 인증 옵션이 추가돼도 이러한 서비스 제한은 남는다.",
+          "매번 생성할 때 호스트 이름이 달라지므로 안정적인 주소나 운영 트래픽에는 일반 Cloudflare Tunnel을 구성해야 한다. 회사는 조직의 신원 공급자 그룹처럼 풍부한 규칙이 필요하면 Access와 일반 터널을 함께 쓰도록 안내한다. 브라우저에서 시연 결과를 보는 흐름과 자동 클라이언트가 지속적으로 호출하는 API 흐름은 같은 조건으로 다룰 수 없다."
+        ],
+        "references": [
+          {
+            "label": "클라우드플레어 Quick Tunnels 설정과 제한",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/"
+          },
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/protected-quick-tunnels/"
+          }
+        ]
+      },
+      {
+        "heading": "에이전트가 공유한 결과도 실행 옵션을 확인한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B의 관점에서 새 옵션은 개발 결과를 휴대폰이나 동료에게 빠르게 보여 주는 과정에 접근 경계를 더한다. 로컬 서버를 공개 URL에 연결하는 절차가 간단할수록 공유 대상 설정도 같은 작업 흐름에 들어가야 한다. 이메일 규칙 하나를 함께 전달할 수 있다는 점은 개발 미리보기의 편의와 접근 통제를 연결하는 실용적인 변화다.",
+          "다만 에이전트 지시 파일에 옵션을 적는 것만으로 매번 올바르게 실행됐다는 보증이 생기지는 않는다. 원출처도 실제 실행 명령과 인증 모드를 확인하라고 안내한다. 팀은 미리보기 생성 도구가 어떤 주소를 허용했는지와 보호 모드가 켜졌는지를 결과의 일부로 확인할 수 있다. 검증의 대상은 에이전트의 설명보다 실제 터널 설정이어야 한다."
+        ],
+        "references": [
+          {
+            "label": "원출처 공식 발표와 사례",
+            "kind": "primary",
+            "url": "https://blog.cloudflare.com/protected-quick-tunnels/"
+          }
+        ]
+      },
+      {
+        "heading": "초대 범위와 앱 자체의 권한은 함께 살펴야 한다",
+        "kind": "analysis",
+        "paragraphs": [
+          "특정 이메일을 허용하는 것과 도메인 전체를 허용하는 것은 초대 범위가 다르다. 조직 도메인의 누구나 볼 수 있어도 되는 시연인지, 특정 담당자만 확인할 자료인지에 따라 규칙을 선택해야 한다. 터널 인증은 접속 입구를 제한하지만 앱 안에서 어떤 데이터와 기능을 제공할지는 개발자의 설계에 달려 있다. 공유 전에 시연에 필요한 범위도 정리하는 편이 유용하다.",
+          "이번 기능의 적합성은 임시성에 있다. 짧게 확인하고 프로세스를 끝내는 브라우저 미리보기에는 계정 없는 이메일 인증이 잘 맞을 수 있다. 반면 지속적인 접속 주소, 자동화된 인증, 실시간 이벤트 전송이 필요하다면 문서의 지원 조건을 먼저 비교해야 한다. 빠르게 URL을 만드는 도구와 장기 운영할 접속 경로의 요구 사항을 구분하면 선택이 더 명확해진다."
+        ],
+        "references": [
+          {
+            "label": "클라우드플레어 Quick Tunnels 설정과 제한",
+            "kind": "primary",
+            "url": "https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "cloudflared 2026.9.3부터 이메일 주소·도메인별 접근 제한을 제공한다.",
+      "이메일 소유는 Access가 확인하고 초대 목록에 따른 허용은 로컬 커넥터가 판단한다.",
+      "개발용 서비스이며 비대화형 클라이언트·SSE 지원과 가동 시간 보장은 없다."
+    ],
+    "tags": [
+      "Cloudflare",
+      "개발환경",
+      "인증",
+      "에이전트"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "원출처 공식 발표와 사례",
+        "url": "https://blog.cloudflare.com/protected-quick-tunnels/"
+      },
+      {
+        "label": "클라우드플레어 Quick Tunnels 설정과 제한",
+        "url": "https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://blog.cloudflare.com/protected-quick-tunnels/",
+      "https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/"
+    ],
+    "notes": "Codex 직접 조사·집필. Gemini와 외부 생성 API를 호출하지 않았다. 원출처와 Quick Tunnels 공식 문서를 WEB으로 확인했다. 버전 2026.9.3, 옵션 생략 시 공개 유지, 로컬 권한 판단과 보호 모드 미확인 시 시작 거부는 원문에 근거한다. 비대화형 클라이언트·SSE 미지원과 진행 중 요청 200개 한도를 공식 문서에서 대조했다. 후보 9건은 관측성·보안·인턴십 등 별개 사건이며 snapshot.pending에도 본 Quick Tunnels 변경은 하나다.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "2019054a-a457-4356-9bc9-47b85aca06b5",
+    "2c1a4101-aae8-4295-b207-5ae567b4b4b6",
+    "4027d7c6-9b75-45ae-8b7f-1b6777e3bbbc",
+    "44c476d2-b8f8-4341-9694-f4e9b6e32222",
+    "64da50f0-d536-47bb-bd3e-dcc375b183f3",
+    "6fa4c931-8672-4bfd-8bf3-1af3e90b9b44",
+    "e1462898-b538-4aeb-96dc-f22e5eed6df0",
+    "ea15db4a-052c-4c9f-bca3-ed226cda42b8",
+    "faecfaa5-a532-492f-8d3a-bda52f50d1f7"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T00:37:38.846Z",
+    "checks": [
+      "버전·이메일 PIN·계정 불필요 조건을 원출처에서 확인했다.",
+      "초대 목록 로컬 유지와 인증/권한 분리 설명을 원문에서 확인했다.",
+      "개발용 제한과 인증의 대화형 브라우저 조건을 공식 문서에서 확인했다.",
+      "actual editorialSchema 검증: 한국어 본문 1800~3000자·5섹션·원출처 포함 서로 다른 HTTPS 참고자료 충족.",
+      "snapshot.pending 전체 제목 목록과 주제별 관련 요약을 대조해 같은 사건의 중복이 없음을 확인했다."
+    ],
+    "relatedPendingIds": []
+  }
+}

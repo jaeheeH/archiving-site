@@ -1,0 +1,148 @@
+{
+  "id": "f3ed13a8-f788-476b-b5bc-dc2b7bd4219b",
+  "article": {
+    "url": "https://www.apple.com/newsroom/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/",
+    "title": "애플워치 12, 건강 점수와 대화 요약을 손목에…센서·화면·제어의 역할 분리",
+    "summary": "애플은 워치 시리즈 12의 새 센서와 준비 상태 점수, 오디오 AI를 소개했다. 일상의 데이터를 짧은 판단으로 정리하는 화면이 늘지만 점수와 진단, 요약과 전사록은 다르다. 케이스별 유리와 충전 조건, 연말 베타도 구분해 읽어야 한다.",
+    "paragraphs": [
+      {
+        "heading": "새 센서와 일상용 형태를 함께 소개",
+        "kind": "reporting",
+        "paragraphs": [
+          "애플은 9월 9일 워치 시리즈 12를 공개하며 S11과 새 건강 센서 시스템을 소개했다. 알루미늄과 티타늄에 더해 펄 화이트와 나이트 블루의 세라믹 소재를 안내했다. 같은 시리즈 안에서도 케이스와 마감의 선택이 나뉜다. 발표는 9월 18일 판매 시작을 예고했으며 이번 기사에서는 일상 데이터를 보여주는 방식에 주목한다.",
+          "새 세라믹 실드 2 유리는 알루미늄 모델에 적용한다고 설명한다. 이전 알루미늄 모델의 아이온X보다 60% 더 견고하다는 표현은 회사의 비교이며 모든 시리즈 12 케이스에 같은 유리가 들어간다는 뜻은 아니다. 이름에 세라믹이 포함된 유리와 세라믹 케이스 자체를 동일한 부품으로 혼동하지 않아야 한다."
+        ],
+        "references": [
+          {
+            "label": "애플의 워치 시리즈 12 공개 발표",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/"
+          }
+        ]
+      },
+      {
+        "heading": "다양한 기록을 하나의 점수로 보여준다",
+        "kind": "reporting",
+        "paragraphs": [
+          "애플이 소개한 준비 상태 기능은 최근 활동과 훈련 부하, 생체 지표와 수면 점수를 함께 읽어 0~10점과 행동 제안을 보여준다. 새 데이터가 들어오면 점수를 갱신하고 어떤 요소가 영향을 줬는지 상세 화면에서 확인할 수 있다고 설명한다. 센서에서 나온 값과 여러 값을 묶어 표현한 점수는 다른 층위의 정보다.",
+          "발표 각주는 바이탈 앱을 웰니스 목적으로 한정하며 의료 용도로 사용하지 않는다고 안내한다. ECG 앱이나 수면 무호흡 알림 역시 대상 연령과 기능의 목적을 따로 명시한다. 여러 기능이 같은 시계에 있다는 이유로 새 준비 점수에 의료기기 기능의 역할을 그대로 부여할 수는 없다. 측정 정확도에 관한 회사의 주장도 모든 질환 진단의 정확성을 뜻하지 않는다."
+        ],
+        "references": [
+          {
+            "label": "애플의 워치 시리즈 12 공개 발표",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/"
+          }
+        ]
+      },
+      {
+        "heading": "오디오 기능은 선택과 보관을 따로 다룬다",
+        "kind": "reporting",
+        "paragraphs": [
+          "공식 지원 안내의 Siri 리캡은 사용자가 켠 시간·장소에서 대화를 짧게 요약해 나중에 살펴보는 기능이다. 라이브 리와인드는 버튼을 두 번 눌러 직전 15초의 말을 텍스트 조각으로 확인한다. 두 기능은 영어부터 연말 베타로 제공할 예정이며 지원 아이폰과 Apple Intelligence, 연령 조건이 있다. 소리 인식과 음악 인식의 기기 조건은 이와 별도로 안내된다.",
+          "애플은 원음을 녹음 파일로 저장하지 않는 설계를 설명하지만 사용자가 저장한 텍스트와 요약은 Siri 앱에 남을 수 있다. 저장·내보내지 않은 리캡의 7일 자동 삭제와 사용자가 저장을 선택한 자료는 다르다. 리와인드가 켜지면 무음 설정에서도 소리와 화면 표시가 나온다고 안내해, 착용자뿐 아니라 주변 사람에게 동작을 알리는 방식을 둔다."
+        ],
+        "references": [
+          {
+            "label": "워치 오디오 AI의 선택·처리·지원 안내",
+            "kind": "primary",
+            "url": "https://support.apple.com/en-us/148354"
+          }
+        ]
+      },
+      {
+        "heading": "짧은 결론의 뒤에 남겨야 할 맥락",
+        "kind": "analysis",
+        "paragraphs": [
+          "ARCH.B는 준비 점수와 요약을 짧은 화면으로 복잡한 기록에 접근하게 하는 두 방식으로 읽는다. 숫자나 몇 줄의 문구는 빠르게 보기 편하지만 무엇을 측정하거나 어떤 말을 생략했는지는 같은 화면에서 충분히 드러나지 않을 수 있다. 상세 정보로 이어지는 경로와 수정·삭제의 선택이 중요한 이유다.",
+          "오디오 지원 문서도 요약과 텍스트가 부정확하거나 중요한 내용을 놓칠 수 있다고 명시한다. 이 한계를 센서 점수의 의미와 혼합할 필요는 없지만, 두 기능 모두 결과를 읽을 때 목적을 정해야 한다는 점은 공통적이다. 개인 상태의 추세를 살피는 점수와 대화의 기억을 돕는 요약을 최종적인 사실 판정으로 사용하지 않는 기준이 된다."
+        ],
+        "references": [
+          {
+            "label": "애플의 워치 시리즈 12 공개 발표",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/"
+          },
+          {
+            "label": "워치 오디오 AI의 선택·처리·지원 안내",
+            "kind": "primary",
+            "url": "https://support.apple.com/en-us/148354"
+          }
+        ]
+      },
+      {
+        "heading": "일상 착용에서는 충전과 제어가 함께 중요",
+        "kind": "analysis",
+        "paragraphs": [
+          "회사는 일반 사용 최대 24시간, 야외 운동 최대 10시간과 15분 충전으로 최대 12시간 추가 사용을 제시했다. 각주는 사전 생산 기기와 소프트웨어를 사용한 회사 시험이며 설정과 망, 환경에 따라 달라진다고 설명한다. 충전을 짧게 끼워 넣을 수 있다는 목표와 모든 이용자가 같은 시간 동안 기록을 유지한다는 보장은 다르다.",
+          "낮과 밤의 기록을 잇는 제품에서는 충전으로 비어 있는 시간과 어떤 기능을 켰는지도 실제 데이터의 조건이 된다. 요약이 켜지는 시간과 자료를 지우는 선택은 배터리 최대 시간만으로 평가하기 어려운 경험이다. 제품을 검토할 때에는 외형과 착용, 기록의 목적과 보관 규칙을 서로 연결해 볼 수 있다.",
+          "이 글은 전체 제품의 매장 판매를 알린 기존 기사와 달리 시리즈 12의 일상 데이터 표현과 사용자 제어에 집중했다. 울트라의 장거리 운동 모드와도 구체적인 사용 조건이 다르다. 공식 자료를 비교한 해설이며 기기를 착용해 건강·요약·충전 성능을 검증한 실험은 아니다."
+        ],
+        "references": [
+          {
+            "label": "애플의 워치 시리즈 12 공개 발표",
+            "kind": "primary",
+            "url": "https://www.apple.com/newsroom/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/"
+          },
+          {
+            "label": "워치 오디오 AI의 선택·처리·지원 안내",
+            "kind": "primary",
+            "url": "https://support.apple.com/en-us/148354"
+          }
+        ]
+      }
+    ],
+    "points": [
+      "케이스별 소재와 알루미늄 전용 유리의 적용 범위를 나눠 본다.",
+      "준비 점수·의료기기 기능·대화 요약은 서로 다른 목적이다.",
+      "오디오 기능의 선택·표시·저장 조건과 베타 제공 시점을 확인한다."
+    ],
+    "tags": [
+      "애플워치12",
+      "웨어러블",
+      "건강데이터",
+      "오디오AI"
+    ]
+  },
+  "research": {
+    "model": "codex-direct",
+    "sources": [
+      {
+        "label": "애플의 워치 시리즈 12 공개 발표",
+        "url": "https://www.apple.com/newsroom/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/"
+      },
+      {
+        "label": "워치 오디오 AI의 선택·처리·지원 안내",
+        "url": "https://support.apple.com/en-us/148354"
+      }
+    ],
+    "primarySourceUrls": [
+      "https://www.apple.com/newsroom/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/",
+      "https://support.apple.com/en-us/148354"
+    ],
+    "notes": "9/9시리즈12발표sensor/readiness/재료/battery각주와9/30support Audio전체 직접열람. 새ceramiccase와AluminumCeramicShield2구분,company60%IonXSeries11비교. 바이탈웰니스/ECG22+/수면18+목적메타확인하되치료조언없음. support늦은2026베타를출시9/14광범위AI지원과혼동안함. summaryvsrawaudio/저장7일/소리표시/불완전성. 후보전체매장·의학가족guide·사진전은별도,Ultra는운동측정모드/지속시간계약중심으로같은기능재나열비중낮춤.",
+    "queries": [],
+    "searchSuggestions": ""
+  },
+  "reviewedCandidateIds": [
+    "7eea6836-5130-410a-bbe3-4ecab0607e44",
+    "956d329a-104f-4538-8c27-53d22881ff0f",
+    "145a1a8f-0198-4d0f-aa94-098a8fec8409",
+    "1d0ab475-cad9-40f6-a125-290917de796e",
+    "682b3e84-79ef-4664-8ca1-9b7365454803",
+    "88dd33b0-f0fb-48b6-8fd6-bc3df072a7a4"
+  ],
+  "review": {
+    "approved": true,
+    "checkedAt": "2026-10-12T01:46:23.910Z",
+    "checks": [
+      "케이스 재료와 알루미늄 유리 적용 분리",
+      "준비점수와 의료 목적 앱 범위 구분",
+      "연말 오디오 베타·기기 조건 확인",
+      "저장 요약과 원음 녹음 부재의 차이 확인",
+      "회사 배터리 시험과 자체 성능 검증 분리",
+      "울트라 운동모드와 시리즈 일상데이터 범위 구분"
+    ],
+    "relatedPendingIds": []
+  }
+}
