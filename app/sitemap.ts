@@ -7,6 +7,7 @@ import { sitePageUrl } from '@/lib/seo';
 export const dynamic = 'force-static';
 export const revalidate = 3600;
 const lastModified = (value?: string | null) => value && Number.isFinite(Date.parse(value)) ? new Date(value) : undefined;
+const escapeXml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const db = createPublicClient();
@@ -33,5 +34,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (data.length < 100) break;
   }
   if (pages.length > 50000) throw new Error('Sitemap exceeds 50,000 URLs; split into sitemap files before adding more content.');
-  return pages;
+  // ponytail: Next 16 inserts URLs verbatim; drop pre-escaping when its serializer handles XML.
+  return pages.map(page => ({ ...page, url: escapeXml(page.url), ...(page.images ? { images: page.images.map(escapeXml) } : {}) }));
 }
