@@ -117,8 +117,6 @@ export default function Header() {
   // 데스크탑용 메뉴 설정
   const menuItems = [
     { label: "뉴스", href: "/news/stories" },
-  ];
-  const archiveItems = [
     { label: "아트", href: "/art" },
     { label: "작가", href: "/artists" },
     { label: "참고사이트", href: "/references" },
@@ -128,7 +126,7 @@ export default function Header() {
   const mobileMenuItems = [
     { label: "뉴스", href: "/news/stories", icon: "ri-newspaper-line", activeIcon: "ri-newspaper-fill" },
     { label: "아트", href: "/art", icon: "ri-image-line", activeIcon: "ri-image-fill" },
-    { label: "작가", href: "/artists", icon: "ri-user-star-line", activeIcon: "ri-user-star-fill" },
+    { label: "작가", href: "/artists", icon: "ri-brush-line", activeIcon: "ri-brush-fill" },
     { label: "사이트", href: "/references", icon: "ri-links-line", activeIcon: "ri-links-fill" },
     { label: "MY", href: userInfo ? "/mypage" : "/login?redirect=/mypage", icon: "ri-user-line", activeIcon: "ri-user-fill" },
   ];
@@ -160,7 +158,7 @@ export default function Header() {
           <Suspense fallback={null}><SiteSearch /></Suspense>
 
           {/* Desktop Navigation (모바일에서 숨김: hidden md:flex) */}
-          <nav aria-label="주요 메뉴" className="client-header-menu ml-auto hidden items-center gap-7 md:flex">
+          <nav aria-label="주요 메뉴" className="client-header-menu ml-auto hidden items-center md:flex">
             {menuItems.map((item) => (
               <Link
                 key={item.href}
@@ -175,9 +173,6 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
-            <div className="editorial-archive-nav" role="group" aria-label="아카이브">
-              {archiveItems.map(item => <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</Link>)}
-            </div>
             {/* Reserve the account area while the session loads. */}
             <div className="client-header-account flex w-[144px] justify-end">
             {userInfo ? (
@@ -284,6 +279,7 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={active ? "page" : undefined}
                 className="flex flex-col items-center justify-center w-full h-full space-y-1"
               >
                 <i 
@@ -310,12 +306,49 @@ export default function Header() {
 function SiteSearch() {
   const params = useSearchParams();
   const pathname = usePathname();
+  const mobileSearchRef = useRef<HTMLDetailsElement>(null);
+  const mobileInputRef = useRef<HTMLInputElement>(null);
   const query = pathname === '/search' ? (params.get('q') || '').slice(0, 100) : '';
-  return <form className="editorial-search" role="search" aria-label="통합 검색" action="/search" method="get">
-    <label className="sr-only" htmlFor="archb-search-query">통합 검색</label>
-    <input key={query} id="archb-search-query" type="search" name="q" autoComplete="off" defaultValue={query} placeholder="뉴스·작품·작가 검색" maxLength={100} />
-    <button type="submit" aria-label="검색"><i className="ri-search-line" aria-hidden="true" /></button>
-  </form>;
+  const closeMobileSearch = () => {
+    if (!mobileSearchRef.current) return;
+    mobileSearchRef.current.open = false;
+    mobileSearchRef.current.querySelector('summary')?.focus();
+  };
+
+  return <>
+    <form className="editorial-search" role="search" aria-label="통합 검색" action="/search" method="get">
+      <label className="sr-only" htmlFor="archb-search-query">통합 검색</label>
+      <input key={query} id="archb-search-query" type="search" name="q" autoComplete="off" defaultValue={query} placeholder="뉴스·작품·작가 검색" maxLength={100} />
+      <button type="submit" aria-label="검색"><i className="ri-search-line" aria-hidden="true" /></button>
+    </form>
+    <details
+      key={`${pathname}?${params.toString()}`}
+      ref={mobileSearchRef}
+      className="editorial-mobile-search"
+      onKeyDown={(event) => { if (event.key === 'Escape') closeMobileSearch(); }}
+    >
+      <summary aria-label="통합 검색 열기" onClick={(event) => {
+        event.preventDefault();
+        if (!mobileSearchRef.current) return;
+        if (mobileSearchRef.current.open) {
+          closeMobileSearch();
+        } else {
+          mobileSearchRef.current.open = true;
+          mobileInputRef.current?.focus();
+        }
+      }}><i className="ri-search-line" aria-hidden="true" /></summary>
+      <div className="editorial-mobile-search-panel">
+        <div className="editorial-mobile-search-heading">
+          <label htmlFor="archb-mobile-search-query">통합 검색</label>
+          <button type="button" onClick={closeMobileSearch} aria-label="검색 닫기"><i className="ri-close-line" aria-hidden="true" /></button>
+        </div>
+        <form role="search" aria-label="통합 검색" action="/search" method="get">
+          <input ref={mobileInputRef} id="archb-mobile-search-query" type="search" name="q" autoComplete="off" defaultValue={query} placeholder="검색어를 입력하세요" maxLength={100} enterKeyHint="search" />
+          <button type="submit">검색</button>
+        </form>
+      </div>
+    </details>
+  </>;
 }
 
 function UserMenuLink({ href, icon, label }: { href: string; icon: string; label: string }) {

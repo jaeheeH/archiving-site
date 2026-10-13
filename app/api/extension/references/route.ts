@@ -9,8 +9,8 @@ import {
 } from "@/lib/extension-token";
 import {
   CACHE_TAGS,
-  PUBLIC_API_CACHE_CONTROL,
 } from "@/lib/public-data";
+import { readCapturedReferenceImage, readRemoteReferenceImage, referenceImageWebp } from "@/lib/reference-assets";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
   getPrimaryReferenceCategory,
@@ -24,13 +24,6 @@ const REFERENCE_WRITE_COLUMNS =
   "id, title, description, url, image_url, logo_url, category, range, clicks, created_at, updated_at";
 const MAX_REFERENCE_IMAGE_BYTES = 8 * 1024 * 1024;
 const MAX_REFERENCE_LOGO_BYTES = 4 * 1024 * 1024;
-const REMOTE_ASSET_TIMEOUT_MS = 12_000;
-const ALLOWED_REFERENCE_IMAGE_TYPES = new Set([
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-  "image/gif",
-]);
 
 type ExtensionUser = {
   id: string;
@@ -82,34 +75,6 @@ function getFaviconFallback(url: string) {
   }
 }
 
-function isBlockedAssetHost(hostname: string) {
-  const normalized = hostname.toLowerCase();
-
-  return (
-    normalized === "localhost" ||
-    normalized === "0.0.0.0" ||
-    normalized === "::1" ||
-    normalized.startsWith("127.") ||
-    normalized.startsWith("10.") ||
-    normalized.startsWith("192.168.") ||
-    /^172\.(1[6-9]|2\d|3[0-1])\./.test(normalized)
-  );
-}
-
-function normalizeRemoteAssetUrl(value: string | null) {
-  if (!value) return null;
-
-  try {
-    const url = new URL(value);
-    if (url.protocol !== "http:" && url.protocol !== "https:") return null;
-    if (isBlockedAssetHost(url.hostname)) return null;
-
-    return url.toString();
-  } catch {
-    return null;
-  }
-}
-
 function isReferenceStorageUrl(value: string) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   if (!supabaseUrl) return false;
@@ -127,76 +92,23 @@ function isReferenceStorageUrl(value: string) {
   }
 }
 
-function extensionFromContentType(contentType: string) {
-  const normalized = contentType.split(";")[0]?.trim().toLowerCase();
-
-  if (normalized === "image/jpeg") return "jpg";
-  if (normalized === "image/png") return "png";
-  if (normalized === "image/webp") return "webp";
-  if (normalized === "image/gif") return "gif";
-
-  return null;
+async function storeReferenceAsset(admin: ReturnType<typeof createAdminClient>, buffer: Buffer, userId: string, kind: "thumbnail" | "logo") {
+  const folder = kind === "logo" ? "logos" : "thumbnails";
+  const filePath = "references/extension/" + userId + "/" + folder + "/" + randomUUID() + ".webp";
+  const { error } = await admin.storage.from("references").upload(filePath, buffer, { cacheControl: "31536000", contentType: "image/webp", upsert: false });
+  if (error) throw error;
+  return admin.storage.from("references").getPublicUrl(filePath).data.publicUrl;
 }
 
-async function uploadRemoteReferenceAsset({
-  admin,
-  sourceUrl,
-  userId,
-  kind,
-}: {
-  admin: ReturnType<typeof createAdminClient>;
-  sourceUrl: string | null;
-  userId: string;
-  kind: "thumbnail" | "logo";
+async function uploadRemoteReferenceAsset({ admin, sourceUrl, userId, kind }: {
+  admin: ReturnType<typeof createAdminClient>; sourceUrl: string | null; userId: string; kind: "thumbnail" | "logo";
 }) {
-  const safeSourceUrl = normalizeRemoteAssetUrl(sourceUrl);
-  if (!safeSourceUrl) return null;
-  if (isReferenceStorageUrl(safeSourceUrl)) return safeSourceUrl;
-
+  if (!sourceUrl) return null;
+  if (isReferenceStorageUrl(sourceUrl)) return sourceUrl;
   try {
-    const response = await fetch(safeSourceUrl, {
-      headers: {
-        Accept: "image/avif,image/webp,image/png,image/jpeg,image/gif,image/*;q=0.8,*/*;q=0.5",
-        "User-Agent": "ARCH-B Reference Clipper/0.1",
-      },
-      signal: AbortSignal.timeout(REMOTE_ASSET_TIMEOUT_MS),
-    });
-
-    if (!response.ok) return null;
-
-    const contentType = response.headers.get("content-type")?.split(";")[0]?.trim().toLowerCase() || "";
-    if (!ALLOWED_REFERENCE_IMAGE_TYPES.has(contentType)) return null;
-
-    const maxBytes = kind === "logo" ? MAX_REFERENCE_LOGO_BYTES : MAX_REFERENCE_IMAGE_BYTES;
-    const contentLength = Number(response.headers.get("content-length") || 0);
-    if (contentLength > maxBytes) return null;
-
-    const buffer = Buffer.from(await response.arrayBuffer());
-    if (buffer.byteLength > maxBytes) return null;
-
-    const extension = extensionFromContentType(contentType);
-    if (!extension) return null;
-
-    const folder = kind === "logo" ? "logos" : "thumbnails";
-    const random = randomUUID().replace(/-/g, "").slice(0, 12);
-    const filePath = `references/extension/${userId}/${folder}/${Date.now()}-${random}.${extension}`;
-    const { error } = await admin.storage.from("references").upload(filePath, buffer, {
-      cacheControl: "31536000",
-      contentType,
-      upsert: false,
-    });
-
-    if (error) throw error;
-
-    const {
-      data: { publicUrl },
-    } = admin.storage.from("references").getPublicUrl(filePath);
-
-    return publicUrl;
-  } catch (error) {
-    console.warn("Extension reference asset upload failed:", sourceUrl, error);
-    return null;
-  }
+    const buffer = await readRemoteReferenceImage(sourceUrl, kind === "logo" ? MAX_REFERENCE_LOGO_BYTES : MAX_REFERENCE_IMAGE_BYTES);
+    return await storeReferenceAsset(admin, await referenceImageWebp(buffer, kind), userId, kind);
+  } catch { return null; }
 }
 
 async function getExtensionUser(req: NextRequest): Promise<{
@@ -269,7 +181,7 @@ export async function GET(req: NextRequest) {
       },
       {
         headers: {
-          "Cache-Control": PUBLIC_API_CACHE_CONTROL,
+          "Cache-Control": "private, no-store",
         },
       }
     );
@@ -295,17 +207,27 @@ export async function POST(req: NextRequest) {
     const normalizedTitle = normalizeReferenceTitle(body.title);
     const normalizedDescription = normalizeReferenceText(body.description);
     const normalizedRange = normalizeReferenceRange(body.range);
-    const fallbackRange = normalizedRange.length > 0 ? normalizedRange : ["미분류"];
+    if (!Array.isArray(body.range) || body.range.length < 1 || body.range.length > 3 || normalizedRange.length !== body.range.length) {
+      return json({ error: "범주는 1–3개 선택해주세요." }, { status: 400 });
+    }
 
     if (!normalizedTitle || !normalizedUrl) {
       return json({ error: "title and url are required" }, { status: 400 });
     }
 
+    const siteUrl = new URL(normalizedUrl);
+    if (siteUrl.username || siteUrl.password) return json({ error: "계정 정보가 포함된 주소는 등록할 수 없습니다." }, { status: 400 });
+    siteUrl.hash = "";
+    const referenceUrl = siteUrl.href;
     const admin = createAdminClient();
+    const { data: categories, error: categoryError } = await admin.from("reference_categories").select("name").in("name", normalizedRange);
+    if (categoryError) throw categoryError;
+    if (categories?.length !== normalizedRange.length) return json({ error: "관리자에 등록된 범주를 선택해주세요." }, { status: 400 });
     const { data: existing, error: existingError } = await admin
       .from("references")
       .select(REFERENCE_WRITE_COLUMNS)
-      .eq("url", normalizedUrl)
+      .in("url", [referenceUrl, referenceUrl.replace(/\/$/, "")])
+      .limit(1)
       .maybeSingle();
 
     if (existingError) throw existingError;
@@ -318,27 +240,26 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const fallbackLogo = getFaviconFallback(normalizedUrl);
+    let capturedImage: Buffer | null = null;
+    try {
+      if (body.image_data_url !== undefined) capturedImage = await referenceImageWebp(readCapturedReferenceImage(body.image_data_url), "thumbnail");
+    } catch (error) { return json({ error: getErrorMessage(error) }, { status: 400 }); }
+    const fallbackLogo = getFaviconFallback(referenceUrl);
     const remoteLogoUrl = normalizeReferenceUrl(body.logo_url) || fallbackLogo;
-    const remoteImageUrl = normalizeReferenceUrl(body.image_url) || remoteLogoUrl || fallbackLogo;
-    const uploadedLogoUrl = await uploadRemoteReferenceAsset({
-      admin,
-      sourceUrl: remoteLogoUrl,
-      userId: user!.id,
-      kind: "logo",
-    });
-    const uploadedImageUrl = await uploadRemoteReferenceAsset({
-      admin,
-      sourceUrl: remoteImageUrl,
-      userId: user!.id,
-      kind: "thumbnail",
-    });
+    const remoteImageUrl = normalizeReferenceUrl(body.image_url);
+    const [uploadedLogoUrl, uploadedImageUrl] = await Promise.all([
+      (async () => {
+        const logo = await uploadRemoteReferenceAsset({ admin, sourceUrl: remoteLogoUrl, userId: user!.id, kind: "logo" });
+        return logo || (remoteLogoUrl !== fallbackLogo ? await uploadRemoteReferenceAsset({ admin, sourceUrl: fallbackLogo, userId: user!.id, kind: "logo" }) : null);
+      })(),
+      capturedImage ? storeReferenceAsset(admin, capturedImage, user!.id, "thumbnail")
+        : uploadRemoteReferenceAsset({ admin, sourceUrl: remoteImageUrl, userId: user!.id, kind: "thumbnail" }),
+    ]);
     const normalizedLogoUrl = uploadedLogoUrl || uploadedImageUrl;
-    const normalizedImageUrl = uploadedImageUrl || uploadedLogoUrl;
-
+    const normalizedImageUrl = uploadedImageUrl;
     if (!normalizedImageUrl || !normalizedLogoUrl) {
       return json(
-        { error: "레퍼런스 이미지를 Supabase Storage에 저장하지 못했습니다." },
+        { error: "이미지를 저장하지 못했습니다. 확장 프로그램에서 현재 화면을 캡처하거나 이미지 주소를 바꿔주세요." },
         { status: 400 }
       );
     }
@@ -348,11 +269,11 @@ export async function POST(req: NextRequest) {
       .insert({
         title: normalizedTitle,
         description: normalizedDescription,
-        url: normalizedUrl,
+        url: referenceUrl,
         image_url: normalizedImageUrl,
         logo_url: normalizedLogoUrl,
-        category: getPrimaryReferenceCategory(fallbackRange, body.category),
-        range: fallbackRange,
+        category: getPrimaryReferenceCategory(normalizedRange, body.category),
+        range: normalizedRange,
         clicks: 0,
         author: user!.id,
         created_at: new Date().toISOString(),

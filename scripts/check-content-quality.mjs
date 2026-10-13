@@ -6,6 +6,7 @@ const editorial = read('research/art-collection/editorial.json');
 const works = read('research/art-collection/artworks.json');
 const artists = read('research/art-collection/artists.json').artists;
 const expansion = read('research/art-collection/expansion.json');
+const allArtists = [...artists, ...expansion.artists];
 const sources = read('research/art-collection/expansion-sources.json').sources;
 const references = read('content/references/editorial.json').references;
 const allowedCategories = new Set(['UI/UX', '개발', '공간', '디자인', '라이프스타일', '브랜딩', '사진', '전시 & 팝업', '패션']);
@@ -39,20 +40,26 @@ for (const artist of artists) {
   assert.deepEqual([...artist.artwork_ids].sort(), works.filter(work => work.artist_ids.includes(artist.id)).map(work => work.id).sort(), artist.id);
 }
 const catalog = [...works, ...expansion.artworks];
+assert.equal(new Set(allArtists.map(artist => artist.id)).size, allArtists.length, 'Unique artist IDs');
 assert.equal(new Set(catalog.map(work => work.id)).size, catalog.length, 'Unique artwork IDs');
 assert.equal(new Set(catalog.map(work => work.sha256)).size, catalog.length, 'Unique verified images');
 assert.equal(expansion.target_per_artist, 5);
 assert.deepEqual(expansion.coverage_exceptions.map(row => row.id).sort(), ['kim-si', 'yeoseol', 'yi-taek-gyun']);
-for (const artist of artists) {
+for (const artist of allArtists) {
   const count = catalog.filter(work => work.artist_ids.includes(artist.id)).length;
   if (expansion.coverage_exceptions.some(row => row.id === artist.id)) assert.equal(count, 1, artist.id);
   else assert(count >= expansion.target_per_artist, `${artist.id}: minimum five distinct works`);
+}
+for (const artist of expansion.artists) {
+  assert.deepEqual([...artist.artwork_ids].sort(), catalog.filter(work => work.artist_ids.includes(artist.id)).map(work => work.id).sort(), artist.id);
+  assert(artist.profile.description && artist.profile.sources.length, artist.id);
 }
 for (const work of expansion.artworks) {
   const source = sources.find(row => row.id === work.id);
   assert(source, work.id);
   assert.equal(work.artist_ids.length, 1, work.id);
   assert.equal(source.artist_id, work.artist_ids[0], work.id);
+  assert(allArtists.some(artist => artist.id === source.artist_id), `${work.id}: known artist`);
   assert(expansion.artist_source_ids[source.artist_id].includes(source.creator_source_id), work.id);
   assert.equal(work.artist_status, 'identified');
   assert(work.description && work.medium_ko && work.dimensions_ko && /[가-힣]/.test(work.title_ko), work.id);
@@ -64,8 +71,25 @@ for (const work of expansion.artworks) {
   } else if (work.id.startsWith('cma-')) {
     assert.equal(source.raw.share_license_status, 'CC0');
     assert(source.raw.creators.some(person => `cma:${person.id}` === source.creator_source_id && !person.qualifier && person.role === 'artist'), work.id);
+    assert(source.raw.creators.filter(person => person.role === 'artist').every(person => `cma:${person.id}` === source.creator_source_id && !person.qualifier), `${work.id}: exclude studio and joint attributions`);
     assert(!source.raw.cover_accession_number, 'Do not count a panel separately from its complete set');
     for (const [key, rawKey] of [['title', 'title'], ['date', 'creation_date'], ['medium', 'technique'], ['dimensions', 'measurements'], ['accession', 'accession_number']]) assert.equal(work[key], source.raw[rawKey], work.id);
+  } else if (work.id.startsWith('smk-')) {
+    assert.equal(source.raw.public_domain, true, work.id);
+    assert.equal(source.raw.rights, 'https://creativecommons.org/publicdomain/mark/1.0/', work.id);
+    assert.equal(work.license, 'Public Domain (PDM 1.0)', 'SMK PDM images must not be relabeled CC0');
+    assert.equal(source.raw.production.length, 1, work.id);
+    assert.equal(`smk:${source.raw.production[0].creator_lref}`, source.creator_source_id, work.id);
+    assert.equal(source.raw.production[0].creator, 'Hammershøi, Vilhelm', work.id);
+    assert.equal(source.raw.number_of_parts, 1, work.id);
+    assert.equal(work.title, source.raw.titles[0].title, work.id);
+    assert.equal(work.date, source.raw.production_date.map(row => row.period).join('; '), work.id);
+    assert.equal(work.medium, source.raw.techniques.join('; '), work.id);
+    assert.equal(work.accession, source.raw.object_number, work.id);
+    assert.equal(work.preview_url, source.raw.image_thumbnail, work.id);
+    assert(source.raw.dimensions.every(row => row.unit === 'centimeter'), work.id);
+    const dimensions = ['Netto', 'Brutto'].map(part => ({ part, values: source.raw.dimensions.filter(row => row.part === part).map(row => row.value) })).filter(group => group.values.length);
+    assert.equal(work.dimensions, dimensions.map(group => `${group.part}: ${group.values.join(' x ')} cm`).join('; '), work.id);
   }
 }
 assert.equal(expansion.artworks.find(work => work.id === 'bowes-bm-99').license, 'Public Domain (PDM 1.0 · PD-Art)', 'PD-Art must not be relabeled CC0');
@@ -89,13 +113,14 @@ if (process.argv.includes('--live')) {
     assert.deepEqual(links.filter(link => link.artwork_id === original.id).map(link => link.artist_id).sort(), [...original.artist_ids].sort());
   }
   for (const artist of editorial.artists) assert.deepEqual(liveArtists.find(row => row.id === artist.id)?.profile, artist.profile, artist.id);
+  for (const artist of expansion.artists) assert.deepEqual(liveArtists.find(row => row.id === artist.id)?.profile, artist.profile, artist.id);
   for (const original of expansion.artworks) {
     const live = liveWorks.find(row => row.id === original.id)?.data;
     assert(live, original.id);
     for (const key of Object.keys(original).filter(key => key !== 'artist_ids')) assert.deepEqual(live[key], original[key], `${original.id}: ${key}`);
     assert.deepEqual(links.filter(link => link.artwork_id === original.id).map(link => link.artist_id), original.artist_ids, original.id);
   }
-  for (const artist of artists.filter(row => !expansion.coverage_exceptions.some(item => item.id === row.id))) assert(links.filter(link => link.artist_id === artist.id).length >= 5, artist.id);
+  for (const artist of allArtists.filter(row => !expansion.coverage_exceptions.some(item => item.id === row.id))) assert(links.filter(link => link.artist_id === artist.id).length >= 5, artist.id);
   for (const reference of references) {
     const live = liveReferences.find(row => row.id === reference.id);
     assert(live, reference.title);
@@ -103,4 +128,4 @@ if (process.argv.includes('--live')) {
     assert.equal(live.category, reference.range[0], reference.title);
   }
 }
-console.log(`Content quality checks passed: ${catalog.length} works, 16 artists with at least 5 works, 3 documented coverage exceptions, ${references.length} sourced Korean site descriptions${process.argv.includes('--live') ? ' · public database verified' : ''}.`);
+console.log(`Content quality checks passed: ${catalog.length} works, ${allArtists.length - expansion.coverage_exceptions.length} artists with at least 5 works, ${expansion.coverage_exceptions.length} documented coverage exceptions, ${references.length} sourced Korean site descriptions${process.argv.includes('--live') ? ' · public database verified' : ''}.`);

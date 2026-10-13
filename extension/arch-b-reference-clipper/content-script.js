@@ -1,25 +1,11 @@
+/* global chrome */
 window.addEventListener("message", (event) => {
-  if (event.source !== window) return;
-  if (event.origin !== window.location.origin) return;
-
+  if (event.source !== window || event.origin !== window.location.origin) return;
   const data = event.data;
-  if (!data || data.source !== "archb-extension-connect" || !data.token) return;
+  if (data?.source !== "archb-extension-connect" || !data.token) return;
 
-  chrome.storage.local.set(
-    {
-      archbToken: data.token,
-      archbBaseUrl: (data.siteUrl || window.location.origin).replace(/\/+$/, ""),
-      archbTokenExpiresAt: data.expiresAt || "",
-      archbUser: data.user || null,
-    },
-    () => {
-      window.postMessage(
-        {
-          source: "archb-extension-connect-ack",
-          success: true,
-        },
-        window.location.origin
-      );
-    }
-  );
+  chrome.runtime.sendMessage({ type: "archb-connect", token: data.token, expiresAt: data.expiresAt, user: data.user })
+    .then(response => {
+      if (response?.success) window.postMessage({ source: "archb-extension-connect-ack", success: true }, window.location.origin);
+    }).catch(() => {});
 });

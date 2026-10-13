@@ -16,7 +16,7 @@ type TokenResponse = {
   error?: string;
 };
 
-type ConnectState = "loading" | "connected" | "unauthorized" | "forbidden" | "error";
+type ConnectState = "loading" | "ready" | "connected" | "unauthorized" | "forbidden" | "error";
 
 export default function ExtensionConnectClient() {
   const [state, setState] = useState<ConnectState>("loading");
@@ -27,6 +27,14 @@ export default function ExtensionConnectClient() {
   useEffect(() => {
     let cancelled = false;
     let interval: ReturnType<typeof setInterval> | null = null;
+    const receiveAck = (event: MessageEvent) => {
+      if (cancelled || event.source !== window || event.origin !== window.location.origin
+          || event.data?.source !== "archb-extension-connect-ack" || !event.data.success) return;
+      if (interval) clearInterval(interval);
+      setState("connected");
+      setMessage("확장 프로그램이 연결되었습니다. 등록할 사이트의 탭에서 확장 프로그램을 열어주세요.");
+    };
+    window.addEventListener("message", receiveAck);
 
     const connect = async () => {
       try {
@@ -55,14 +63,14 @@ export default function ExtensionConnectClient() {
         }
 
         setTokenData(data);
-        setState("connected");
-        setMessage("확장자가 연결되었습니다. 이제 브라우저에서 레퍼런스를 바로 저장할 수 있어요.");
+        setState("ready");
+        setMessage("연결 정보를 준비했습니다. 설치된 확장 프로그램의 응답을 기다리고 있습니다.");
 
         const payload = {
           source: "archb-extension-connect",
           token: data.token,
           expiresAt: data.expiresAt,
-          siteUrl: data.siteUrl || window.location.origin,
+          siteUrl: window.location.origin,
           user: data.user,
         };
 
@@ -73,6 +81,7 @@ export default function ExtensionConnectClient() {
 
           if (attempts >= 10 && interval) {
             clearInterval(interval);
+            setMessage("확장 프로그램의 응답이 없습니다. 설치·새로고침 후 이 페이지를 다시 열거나 토큰으로 연결해주세요.");
           }
         }, 300);
       } catch (error) {
@@ -87,6 +96,7 @@ export default function ExtensionConnectClient() {
 
     return () => {
       cancelled = true;
+      window.removeEventListener("message", receiveAck);
       if (interval) clearInterval(interval);
     };
   }, []);
@@ -94,9 +104,13 @@ export default function ExtensionConnectClient() {
   const copyToken = async () => {
     if (!tokenData?.token) return;
 
-    await navigator.clipboard.writeText(tokenData.token);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1400);
+    try {
+      await navigator.clipboard.writeText(tokenData.token);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1400);
+    } catch {
+      setMessage("토큰을 복사하지 못했습니다. 브라우저의 클립보드 권한을 확인해주세요.");
+    }
   };
 
   return (
@@ -128,7 +142,7 @@ export default function ExtensionConnectClient() {
               로그인하기
             </Link>
           )}
-          {state === "connected" && (
+          {(state === "ready" || state === "connected") && (
             <button
               type="button"
               onClick={copyToken}
@@ -156,6 +170,7 @@ export default function ExtensionConnectClient() {
 
 function stateLabel(state: ConnectState) {
   if (state === "loading") return "연결 준비 중";
+  if (state === "ready") return "확장 프로그램 응답 대기";
   if (state === "connected") return "연결 완료";
   if (state === "unauthorized") return "로그인 필요";
   if (state === "forbidden") return "권한 없음";

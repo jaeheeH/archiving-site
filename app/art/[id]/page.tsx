@@ -8,6 +8,7 @@ import ArtworkCard from "../ArtworkCard";
 import ArchiveMasonry from '@/app/components/ArchiveMasonry';
 import { getArtCatalog, getArtwork, getArtworkArtist, getArtworksByArtist } from "@/lib/art-catalog";
 import { jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
+import ArtworkTags from '@/app/components/ArtworkTags';
 
 type ArtworkPageProps = { params: Promise<{ id: string }> };
 
@@ -79,6 +80,12 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
             <dt className="text-muted-foreground">이용 표시</dt><dd>{artwork.license}</dd>
             <dt className="text-muted-foreground">수집일</dt><dd>{artwork.collected_at.slice(0, 10)}</dd>
           </dl>
+
+          {artwork.taxonomy && <div className="mb-5 border-t border-border pt-4">
+            <h2 className="text-sm font-medium">작품 분류</h2>
+            <ArtworkTags taxonomy={artwork.taxonomy} />
+            <details className="mt-3 text-xs leading-6 text-muted-foreground"><summary className="cursor-pointer">분류 확인 출처</summary><p className="mt-2">원출처의 제작 시기·재료·해설과 미술사 맥락을 바탕으로 ARCH.B가 정리한 탐색 분류입니다.</p><ul>{artwork.taxonomy.sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{source.label} <span aria-hidden="true">↗</span><span className="sr-only"> · 새 창</span></a></li>)}</ul></details>
+          </div>}
 
           {(artwork.medium_ko || artwork.dimensions_ko) && <details className="mb-5 border-t border-border pt-4 text-sm leading-6"><summary className="cursor-pointer font-medium">재료·크기 원문 보기</summary><dl className="mt-3 space-y-2 text-muted-foreground"><dt>재료·기법</dt><dd>{artwork.medium || '미확인'}</dd><dt>크기</dt><dd>{artwork.dimensions || '미확인'}</dd></dl></details>}
 

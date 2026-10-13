@@ -8,6 +8,7 @@ import ArchiveMasonry from '@/app/components/ArchiveMasonry';
 import { getArtCatalog, getArtist, getArtworksByArtist } from "@/lib/art-catalog";
 import { jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
 import { readNewsSummaries } from '@/lib/news';
+import { artTaxonomyTags } from '@/lib/art-taxonomy';
 
 type ArtistPageProps = { params: Promise<{ id: string }> };
 
@@ -62,6 +63,8 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
       <div className="archive-note">
         <strong className="text-foreground">현재 수집 범위</strong> · {museums.join(" · ")}. 이 페이지의 수량은 해당 작가의 전작이 아니라 ARCH.B가 확인한 표본입니다.
       </div>
+
+      <ul className="archive-tags archive-artist-tags" aria-label="수집 작품의 시대·사조·종류">{artTaxonomyTags(artistArtworks.flatMap(work => work.taxonomy ? [work.taxonomy] : [])).filter(tag => tag.group !== 'subject').map(tag => <li key={`${tag.group}-${tag.id}`}><Link href={`/art?${new URLSearchParams({ artist: artist.id, [tag.group]: tag.id })}`}>{tag.label} 작품 보기</Link></li>)}</ul>
 
       <ArchiveMasonry label={`${artist.name_ko || artist.name} 작품 목록`}>
         {artistArtworks.map((artwork) => <ArtworkCard key={artwork.id} artwork={artwork} />)}

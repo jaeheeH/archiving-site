@@ -4,6 +4,7 @@ import { useUnsavedChanges } from "@/lib/use-unsaved-changes";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { Artist, Artwork } from '@/lib/art-catalog';
+import { ART_PERIODS, ART_MOVEMENTS, ART_KINDS, ART_SUBJECTS } from '@/lib/art-taxonomy';
 
 export default function CatalogEditor({ kind, row, artists, articles = [], writable }: { kind: 'art' | 'artists'; row?: Artist | Artwork; artists: Artist[]; articles?: { id: string; title: string }[]; writable: boolean }) {
   const router = useRouter();
@@ -29,6 +30,10 @@ export default function CatalogEditor({ kind, row, artists, articles = [], writa
     } } : {
       ...Object.fromEntries(['title', 'title_ko', 'museum', 'artist', 'date', 'medium', 'medium_ko', 'dimensions', 'dimensions_ko', 'description', 'culture', 'accession', 'source_url', 'preview_url', 'policy_url', 'license'].map(name => [name, value(name)])),
       artist_ids: form.getAll('artist_ids').map(String), themes: list('themes'), image_width: Number(value('image_width')), image_height: Number(value('image_height')),
+      taxonomy: {
+        periods: form.getAll('taxonomy.periods').map(String), movements: form.getAll('taxonomy.movements').map(String), kind: value('taxonomy.kind'), subjects: form.getAll('taxonomy.subjects').map(String),
+        sources: Array.from({ length: 5 }, (_, index) => ({ label: value(`taxonomy.sources.${index}.label`), url: value(`taxonomy.sources.${index}.url`) })).filter(source => source.label || source.url),
+      },
     };
     setBusy(true); setError(''); setIssues([]);
     try {
@@ -61,7 +66,14 @@ export default function CatalogEditor({ kind, row, artists, articles = [], writa
           {field('medium_ko', '재료·기법 · 한국어', work?.medium_ko)}{field('medium', '재료·기법 · 원문', work?.medium)}
           {textarea('dimensions_ko', '작품 크기 · 한국어 (cm 기준)', work?.dimensions_ko)}{textarea('dimensions', '작품 크기 · 원문', work?.dimensions, 500)}
           <p className="text-xs leading-6 text-gray-500 md:col-span-2">한국어 정보가 있으면 먼저 표시합니다. 원문은 상세 페이지에서 펼쳐 볼 수 있습니다. 작품 자체·액자 포함·전체 크기를 구분하고, 원출처의 수치 순서를 유지해주세요.</p>
-          {field('accession', '소장품 번호', work?.accession)}{field('themes', '주제 · 쉼표로 구분', work?.themes.join(', '))}
+          {field('accession', '소장품 번호', work?.accession)}{field('themes', '큐레이션 주제 · 쉼표로 구분', work?.themes.join(', '))}
+          <fieldset className="space-y-5 rounded-md border p-4 md:col-span-2"><legend className="px-1 text-sm font-medium">작품 탐색 분류</legend>
+            <p className="text-xs leading-6 text-gray-500">작품 자체의 제작 시기·재료·해설과 확인한 미술사 맥락을 기준으로 선택합니다. 불확실한 사조는 비워두고, 시기가 두 시대에 걸치면 둘 다 선택해주세요. 작가의 다른 작품에 일괄 적용되지 않습니다.</p>
+            {([{ name: 'periods', label: '시대', options: ART_PERIODS }, { name: 'movements', label: '사조·양식', options: ART_MOVEMENTS }, { name: 'subjects', label: '주제 태그', options: ART_SUBJECTS }] as const).map(group => <fieldset key={group.name} className="space-y-2"><legend className="text-sm font-medium">{group.label}</legend><div className="grid gap-2 sm:grid-cols-2">{group.options.map(item => <label key={item.id} className="flex min-h-9 items-center gap-2 text-sm"><input type="checkbox" name={`taxonomy.${group.name}`} value={item.id} defaultChecked={work?.taxonomy?.[group.name].includes(item.id)} />{item.label}</label>)}</div>{issues.filter(issue => issue.field.startsWith(`taxonomy.${group.name}`)).map((issue, index) => <p key={index} className="text-xs text-red-700">{issue.message}</p>)}</fieldset>)}
+            <label className="block text-sm font-medium">작품 종류<select name="taxonomy.kind" defaultValue={work?.taxonomy?.kind || ''} className="mt-2 w-full border border-gray-200 bg-white px-3 py-2.5 text-sm"><option value="">미분류</option>{ART_KINDS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+            <fieldset className="space-y-3"><legend className="text-sm font-medium">분류 확인 출처</legend><p className="text-xs text-gray-500">소장품 정보 또는 공식 기관의 미술사 해설을 입력해주세요. 분류를 선택하면 출처가 한 곳 이상 필요합니다.</p>{Array.from({ length: 5 }, (_, index) => <div key={index} className="grid gap-3 sm:grid-cols-2">{field(`taxonomy.sources.${index}.label`, `출처 ${index + 1} · 자료명`, work?.taxonomy?.sources[index]?.label, 'text', 200)}{field(`taxonomy.sources.${index}.url`, `출처 ${index + 1} · URL`, work?.taxonomy?.sources[index]?.url, 'url', 2000)}</div>)}{issues.filter(issue => issue.field.startsWith('taxonomy.sources')).map((issue, index) => <p key={index} className="text-xs text-red-700">{issue.message}</p>)}</fieldset>
+            {issues.filter(issue => issue.field === 'taxonomy.kind' || issue.field === 'taxonomy').map((issue, index) => <p key={index} className="text-xs text-red-700">{issue.message}</p>)}
+          </fieldset>
           {field('source_url', '원출처 URL', work?.source_url, 'url', 2000)}{field('preview_url', '이미지 URL', work?.preview_url, 'url', 2000)}{field('license', '이용 표시', work?.license)}{field('policy_url', '이용 정책 URL', work?.policy_url, 'url', 2000)}{field('image_width', '이미지 너비 (px)', String(work?.image_width || 1000), 'number')}{field('image_height', '이미지 높이 (px)', String(work?.image_height || 1000), 'number')}
         </>}
       </fieldset>

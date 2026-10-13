@@ -7,6 +7,8 @@ import type { NewsSummary as Article } from '@/lib/news-list';
 import ArchiveImage from '@/app/components/ArchiveImage';
 import NewsSidebarBanner from '@/app/components/NewsSidebarBanner';
 import { NewsSources } from '@/app/components/NewsSources';
+import NewsSuggestion from '@/app/components/NewsSuggestion';
+import NewsArchiveDiscovery from '@/app/components/NewsArchiveDiscovery';
 import { getNewsSidebarBanner } from '@/lib/public-data';
 import { CATEGORIES, type Category } from "@/lib/news-feeds";
 import { getPageMetadata } from '@/lib/site-settings';
@@ -60,12 +62,10 @@ export default async function Home() {
           <Link href="/art"><span>아트</span><small>작품과 이야기 ↗</small></Link>
           <Link href="/artists"><span>작가</span><small>만드는 사람들 ↗</small></Link>
           <Link href="/references"><span>참고사이트</span><small>관점을 넓히는 곳 ↗</small></Link>
-          <div className="news-suggestion">
-            <p className="news-source-note">소개하고 싶은 소식이나 참고사이트, 개선 의견이 있다면 알려주세요.</p>
-            <a href="mailto:archbehind@gmail.com?subject=ARCH.B%20%EC%A0%9C%EC%95%88"><span>제안 보내기</span><small aria-hidden="true">↗</small></a>
-          </div>
+          <NewsSuggestion />
         </section>
         <p className="news-source-note">매체의 소식과 ARCH.B의 작성 글을 함께 읽습니다. 가공 기사는 원출처를, 에디토리얼은 작성자를 본문에 표시합니다.</p>
+        <NewsArchiveDiscovery />
       </aside></div>}
     </main>
   </div>;

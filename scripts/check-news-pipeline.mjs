@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import { assertNewsProject, canAutoWrite, canRetryNews, writePendingNews, newsWritingQueue } from '../lib/news-pipeline.ts';
 import { DuplicateNewsError } from '../lib/news-duplicates.ts';
 import { NEWS_FORMAT } from '../lib/news-record.ts';
-import { researchNews } from '../lib/news-research.ts';
+import { generate, researchNews } from '../lib/news-research.ts';
 
 const prepared = JSON.parse(fs.readFileSync(new URL('../content/news/researched-articles.json', import.meta.url), 'utf8'))[0];
 const raw = (id, author = 'admin') => ({ id, title: 'Original title', author_id: author, type: 'news', is_published: false, updated_at: '2026-10-07T01:00:00.000Z', content: { format: NEWS_FORMAT, source_url: prepared.article.url, source: 'Dezeen', category: 'design', source_published_at: '2026-10-07T00:00:00Z', source_text: 'Original material' } });
@@ -109,15 +109,22 @@ finally { globalThis.fetch = originalFetch; if (previousGeminiKey === undefined)
 
 const referenceUrls = [...new Set([prepared.article.url, ...prepared.article.paragraphs.flatMap(section => section.references.map(reference => reference.url))])];
 const generated = { ...prepared.article, primary_source_ids: referenceUrls.map((_, index) => `s${index}`), paragraphs: prepared.article.paragraphs.map(section => ({ ...section, references: section.references.map(reference => ({ label: reference.label, source_id: `s${referenceUrls.indexOf(reference.url)}` })) })) };
-let approve = false, drafts = 0, reviews = 0;
+let approve = false, drafts = 0, reviews = 0, interruptedReviews = 0, failureStatus = 0, finishReason = 'STOP';
+let requests = [];
 process.env.GEMINI_API_KEY = 'test-key';
 globalThis.fetch = async (input, options) => {
   const request = JSON.parse(options.body);
+  requests.push(request);
+  if (failureStatus) return Response.json({ error: { message: 'Provider unavailable test-key' } }, { status: failureStatus });
   const system = request.systemInstruction.parts[0].text;
   const investigation = system.includes('자료 조사 담당자');
   const reviewing = system.includes('사실 검수 담당자');
   if (reviewing) reviews++; else if (!investigation) drafts++;
-  return Response.json({ candidates: [{ finishReason: 'STOP', content: { parts: [{ text: investigation ? '공식 자료로 확인한 조사 메모' : JSON.stringify(reviewing ? { approved: approve, issues: approve ? [] : ['조사 메모에 없는 성능 단정을 삭제해주세요.'] } : generated) }] }, ...(investigation ? { groundingMetadata: { groundingChunks: referenceUrls.slice(1).map(uri => ({ web: { uri, title: 'Official source' } })), groundingSupports: [{ segment: { text: 'Claim' }, groundingChunkIndices: [0] }] } } : {}) }] });
+  if (reviewing && interruptedReviews > 0) {
+    interruptedReviews--;
+    return Response.json({ candidates: [{ finishReason: 'MAX_TOKENS', content: { parts: [{ text: '{"approved":' }] } }] });
+  }
+  return Response.json({ candidates: [{ finishReason, content: { parts: [{ text: investigation ? '공식 자료로 확인한 조사 메모' : JSON.stringify(reviewing ? { approved: approve, issues: approve ? [] : ['조사 메모에 없는 성능 단정을 삭제해주세요.'] } : generated) }] }, ...(investigation ? { groundingMetadata: { groundingChunks: referenceUrls.slice(1).map(uri => ({ web: { uri, title: 'Official source' } })), groundingSupports: [{ segment: { text: 'Claim' }, groundingChunkIndices: [0] }] } } : {}) }] });
 };
 try {
   const input = { url: prepared.article.url, title: '자료 확인', source: 'Test', category: 'design' };
@@ -126,6 +133,37 @@ try {
   approve = true;
   const checked = await researchNews(input);
   assert.equal(checked.research.qualityReview.passed, true);
+
+  requests = []; drafts = 0; reviews = 0; interruptedReviews = 1;
+  assert.equal((await researchNews(input)).research.qualityReview.passed, true);
+  assert.equal(drafts, 1, 'A truncated review retries the review rather than rewriting a valid article');
+  assert.equal(reviews, 2);
+  const reviewRequests = requests.filter(request => request.systemInstruction.parts[0].text.includes('사실 검수 담당자'));
+  assert.equal(reviewRequests[0].generationConfig.maxOutputTokens, 8000);
+  assert.equal(reviewRequests[1].generationConfig.maxOutputTokens, 16000);
+  assert.equal(reviewRequests[0].generationConfig.thinkingConfig.thinkingLevel, 'medium');
+  assert.deepEqual(reviewRequests[1], { ...reviewRequests[0], generationConfig: { ...reviewRequests[0].generationConfig, maxOutputTokens: 16000 } }, 'Retry preserves evidence, schema and quality instructions');
+
+  requests = []; drafts = 0; reviews = 0; interruptedReviews = 2;
+  rows = [raw('truncated-review')];
+  const failedReview = await writePendingNews(db, viewer);
+  assert.equal(failedReview.failed, 1);
+  assert.equal(drafts, 1); assert.equal(reviews, 2, 'Token retries are bounded; a provider failure does not trigger draft repair');
+  assert.equal(rows[0].title, 'Original title'); assert.equal(rows[0].content.paragraphs, undefined);
+  assert.match(failedReview.items[0].error, /AI 응답.*MAX_TOKENS/);
+  assert.ok(!failedReview.items[0].error.includes('초안 검증'), 'Provider truncation is distinct from article validation');
+  assert.equal(failedReview.items[0].error.match(/기존 기사는/g).length, 1, 'The preservation notice appears once');
+
+  requests = []; failureStatus = 500;
+  await assert.rejects(generate(reviewRequests[0], AbortSignal.timeout(1000)), error => error.message.includes('(500)') && !error.message.includes('test-key'));
+  assert.equal(requests.length, 1, 'HTTP failures do not receive token-limit retries');
+  failureStatus = 0; finishReason = 'SAFETY'; requests = [];
+  await assert.rejects(generate(reviewRequests[0], AbortSignal.timeout(1000)), /SAFETY/);
+  assert.equal(requests.length, 1, 'Safety blocks are not retried');
+  finishReason = 'STOP'; requests = [];
+  const abort = new AbortController(); abort.abort();
+  await assert.rejects(generate(reviewRequests[0], abort.signal), error => error.name === 'AbortError');
+  assert.equal(requests.length, 0, 'No provider request starts after cancellation');
 } finally { globalThis.fetch = originalFetch; if (previousGeminiKey === undefined) delete process.env.GEMINI_API_KEY; else process.env.GEMINI_API_KEY = previousGeminiKey; }
 
 console.log('News pipeline checks passed: private drafts, quality, retries, roles, source fairness, and edit preservation.');

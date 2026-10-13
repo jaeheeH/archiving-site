@@ -1,122 +1,62 @@
-const DEFAULT_BASE_URL = "https://www.archbehind.com";
+/* global chrome */
 
-function normalizeBaseUrl(value) {
-  return (value || DEFAULT_BASE_URL).replace(/\/+$/, "");
-}
-
-function absoluteUrl(value, base) {
-  if (!value) return "";
-  try {
-    return new URL(value, base).toString();
-  } catch {
-    return "";
-  }
-}
-
-function collectPageMeta() {
-  const getMeta = (selector) => document.querySelector(selector)?.getAttribute("content") || "";
-  const canonical = document.querySelector("link[rel='canonical']")?.href || location.href;
-  const title =
-    getMeta("meta[property='og:title']") ||
-    getMeta("meta[name='twitter:title']") ||
-    document.title ||
-    canonical;
-  const description =
-    getMeta("meta[property='og:description']") ||
-    getMeta("meta[name='description']") ||
-    getMeta("meta[name='twitter:description']");
-  const image =
-    getMeta("meta[property='og:image']") ||
-    getMeta("meta[name='twitter:image']") ||
-    document.querySelector("img")?.src ||
-    "";
-  const icon =
-    document.querySelector("link[rel='icon']")?.href ||
-    document.querySelector("link[rel='shortcut icon']")?.href ||
-    document.querySelector("link[rel='apple-touch-icon']")?.href ||
-    "/favicon.ico";
-
-  return {
-    title,
-    url: canonical,
-    description,
-    image_url: image,
-    logo_url: icon,
-  };
-}
-
-async function showBadge(text, color = "#111111") {
-  await chrome.action.setBadgeBackgroundColor({ color });
-  await chrome.action.setBadgeText({ text });
-  setTimeout(() => chrome.action.setBadgeText({ text: "" }), 1800);
-}
-
-async function saveCurrentTab(tab) {
-  const stored = await chrome.storage.local.get(["archbToken", "archbBaseUrl"]);
-  const token = stored.archbToken;
-  const baseUrl = normalizeBaseUrl(stored.archbBaseUrl || DEFAULT_BASE_URL);
-
-  if (!token) {
-    await chrome.tabs.create({ url: `${baseUrl}/extension/connect` });
-    return;
-  }
-
-  const [{ result }] = await chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: collectPageMeta,
-  });
-
-  const meta = {
-    ...result,
-    url: result?.url || tab.url || "",
-    title: result?.title || tab.title || tab.url || "",
-  };
-  meta.image_url = absoluteUrl(meta.image_url, meta.url);
-  meta.logo_url = absoluteUrl(meta.logo_url, meta.url);
-
-  const response = await fetch(`${baseUrl}/api/extension/references`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      title: meta.title,
-      url: meta.url,
-      description: meta.description,
-      image_url: meta.image_url,
-      logo_url: meta.logo_url,
-      category: "미분류",
-      range: ["미분류"],
-    }),
-  });
-
-  if (response.status === 401 || response.status === 403) {
-    await chrome.storage.local.remove(["archbToken", "archbTokenExpiresAt", "archbUser"]);
-    await chrome.tabs.create({ url: `${baseUrl}/extension/connect` });
-    return;
-  }
-
-  if (!response.ok) {
-    await showBadge("!", "#ff4800");
-    return;
-  }
-
-  await showBadge("OK", "#111111");
-}
+// Keep the token inaccessible to website content scripts.
+const storageReady = chrome.storage.local.setAccessLevel({ accessLevel: "TRUSTED_CONTEXTS" });
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.contextMenus.create({
+  chrome.contextMenus.removeAll(() => chrome.contextMenus.create({
     id: "save-to-archb",
-    title: "ARCH-B 레퍼런스로 저장",
-    contexts: ["page", "selection", "link", "image"],
-  });
+    title: "ARCH-B 참고사이트로 등록…",
+    contexts: ["page"],
+    documentUrlPatterns: ["https://*/*", "http://*/*"],
+  }));
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId !== "save-to-archb" || !tab?.id) return;
+  chrome.action.openPopup({ windowId: tab.windowId }).catch(console.error);
+});
 
-  saveCurrentTab(tab).catch(() => {
-    showBadge("!", "#ff4800");
-  });
+chrome.runtime.onMessage.addListener((message, sender, respond) => {
+  if (["archb-categories", "archb-save"].includes(message?.type)) {
+    if (sender.id !== chrome.runtime.id || sender.url !== chrome.runtime.getURL("popup.html")) return;
+    // The worker finishes registration even if the user closes the popup.
+    storageReady.then(async () => {
+      const stored = await chrome.storage.local.get(["archbToken", "archbBaseUrl"]);
+      const url = new URL(stored.archbBaseUrl);
+      const trusted = ["https://www.archbehind.com", "https://archbehind.com"].includes(url.origin)
+        || (url.protocol === "http:" && ["localhost", "127.0.0.1"].includes(url.hostname));
+      if (!trusted || url.username || url.password || !stored.archbToken) throw new Error("ARCH-B에 다시 연결해주세요.");
+      const save = message.type === "archb-save";
+      const response = await fetch(url.origin + "/api/extension/references", {
+        method: save ? "POST" : "GET",
+        headers: { Authorization: "Bearer " + stored.archbToken, ...(save ? { "Content-Type": "application/json" } : {}) },
+        ...(save ? { body: JSON.stringify(message.payload) } : {}),
+        signal: AbortSignal.timeout(55_000),
+      });
+      const data = await response.json();
+      respond({ ok: response.ok, status: response.status, data });
+    }).catch(error => respond({ ok: false, status: 0, data: { error: error.message || "ARCH-B 서버에 연결하지 못했습니다." } }));
+    return true;
+  }
+  if (message?.type !== "archb-connect" || sender.id !== chrome.runtime.id || sender.frameId !== 0) return;
+  let origin;
+  try {
+    const url = new URL(sender.url);
+    const trusted = ["https://www.archbehind.com", "https://archbehind.com"].includes(url.origin)
+      || (url.protocol === "http:" && ["localhost", "127.0.0.1"].includes(url.hostname));
+    if (!trusted || url.pathname !== "/extension/connect") return;
+    origin = url.origin;
+  } catch { return; }
+
+  if (typeof message.token !== "string" || !message.token || message.token.length > 4096
+      || !Number.isFinite(Date.parse(message.expiresAt)) || Date.parse(message.expiresAt) <= Date.now()) return;
+
+  storageReady.then(() => chrome.storage.local.set({
+    archbToken: message.token,
+    archbBaseUrl: origin,
+    archbTokenExpiresAt: message.expiresAt,
+    archbUser: message.user || null,
+  })).then(() => respond({ success: true })).catch(() => respond({ success: false }));
+  return true;
 });

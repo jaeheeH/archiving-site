@@ -1,5 +1,5 @@
 {
-  "verified_at": "2026-10-12T05:14:20.411Z",
+  "verified_at": "2026-10-13T00:01:08.556Z",
   "sources": [
     {
       "id": "cma-135299",
@@ -4183,6 +4183,2723 @@
         "policy_url": "https://commons.wikimedia.org/wiki/File:Jacob_van_Hulsdonck_(1582-1647)_-_Breakfast_Piece_-_B.M.99_-_Bowes_Museum.jpg"
       },
       "description_basis": "collection_record_and_image_observation"
+    },
+    {
+      "id": "cma-125104",
+      "artist_id": "edgar-degas",
+      "creator_source_id": "cma:1759",
+      "source_url": "https://clevelandart.org/art/1946.83",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/125104",
+      "raw": {
+        "id": 125104,
+        "title": "Frieze of Dancers",
+        "accession_number": "1946.83",
+        "creation_date": "c. 1895",
+        "technique": "oil on fabric",
+        "measurements": "Framed: 103 x 233.5 x 7 cm (40 9/16 x 91 15/16 x 2 3/4 in.); Unframed: 70 x 200.5 cm (27 9/16 x 78 15/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This painting may depict a single dancer seen from four different viewpoints. The young woman is placed in an undefined setting, surrounded by mere wisps of color, applied so spontaneously that the paint ran and dripped. Degas even added the circles in the foreground with his thumb. Such audacity, while acceptable in a small sketch, must have shocked the artist's contemporaries when presented on a six-foot canvas. Equally radical is the idea of combining multiple views of a single figure. Degas's unusual presentation may have been inspired by the photographs of Eadweard Muybridge (1830-1904)",
+        "did_you_know": "The ballet is a subject Degas returned to again and again over the course of his career. Rather than public performances, he often depicted dancers behind the curtain, practicing, waiting, or, as in this painting, lacing up their shoes.",
+        "url": "https://clevelandart.org/art/1946.83",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1946.83/1946.83_web.jpg",
+            "width": "900",
+            "height": "314",
+            "filesize": "96599",
+            "filename": "1946.83_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1946.83/1946.83_print.jpg",
+            "width": "3400",
+            "height": "1187",
+            "filesize": "1203087",
+            "filename": "1946.83_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1946.83/1946.83_full.tif",
+            "width": "32683",
+            "height": "11412",
+            "filesize": "1118962804",
+            "filename": "1946.83_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1759,
+            "description": "Edgar Degas (French, 1834–1917)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1834",
+            "death_year": "1917",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-135238",
+      "artist_id": "edgar-degas",
+      "creator_source_id": "cma:1759",
+      "source_url": "https://clevelandart.org/art/1958.25",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/135238",
+      "raw": {
+        "id": 135238,
+        "title": "Paul Lafond and Alphonse Cherfils Examining a Painting",
+        "accession_number": "1958.25",
+        "creation_date": "c. 1878–80",
+        "technique": "oil on wood panel",
+        "measurements": "Framed: 42.5 x 50 x 6 cm (16 3/4 x 19 11/16 x 2 3/8 in.); Unframed: 27 x 34 cm (10 5/8 x 13 3/8 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "The upper left corner of this painting bears a dedication by Degas \"to his dear friends.\" The double portrait depicts Paul Lafond (left), future curator of the art museum at Pau, in southwestern France, and Alphonse Cherfils (right), an art collector and defender of the Impressionists. Through the influence of these friends, Degas's works were selected for the annual exhibitions of the Société des Amis des Arts (Society of Friends of the Arts), and his painting, A Cotton Office (1873), was the first by the artist to be purchased by a museum. Since the painting held by the two men is probably by Degas, this intimate image commemorates both personal and business relationships.",
+        "did_you_know": "The gentlemen in this painting had close relationships with many Parisian artists and would go directly to their studios to purchase works that they wanted to exhibit or sell.",
+        "url": "https://clevelandart.org/art/1958.25",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.25/1958.25_web.jpg",
+            "width": "1148",
+            "height": "893",
+            "filesize": "677044",
+            "filename": "1958.25_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.25/1958.25_print.jpg",
+            "width": "3400",
+            "height": "2644",
+            "filesize": "6110864",
+            "filename": "1958.25_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.25/1958.25_full.tif",
+            "width": "6000",
+            "height": "4666",
+            "filesize": "84019128",
+            "filename": "1958.25_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1759,
+            "description": "Edgar Degas (French, 1834–1917)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1834",
+            "death_year": "1917",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-95271",
+      "artist_id": "edgar-degas",
+      "creator_source_id": "cma:1759",
+      "source_url": "https://clevelandart.org/art/1916.1043",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/95271",
+      "raw": {
+        "id": 95271,
+        "title": "Dancers",
+        "accession_number": "1916.1043",
+        "creation_date": "c. 1896",
+        "technique": "pastel with charcoal on tracing paper mounted on paper and backed with gray board",
+        "measurements": "Sheet: 55.7 x 41.4 cm (21 15/16 x 16 5/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Degas depicted the ballet in more than 1,000 paintings, prints, pastels, and sculptures. He preferred private, offstage moments to glamorous curtain calls or artfully constructed compositions. Here, three dancers stretch together in the wings, unaware of the viewer’s presence. Powdery layers of yellow, orange, and pink pastel create a rough surface characteristic of Degas’s late work in the medium. He invented special techniques that allowed him to build layer upon layer of color with varying degrees of opacity and transparency. This pastel’s rich surface and intense, vibrating palette is the result of such innovative methods.",
+        "did_you_know": "Degas joined six separate irregularly shaped sheets of paper to make this work, and their connections are faintly visible on its surface.",
+        "url": "https://clevelandart.org/art/1916.1043",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1916.1043/1916.1043_web.jpg",
+            "width": "671",
+            "height": "900",
+            "filesize": "364938",
+            "filename": "1916.1043_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1916.1043/1916.1043_print.jpg",
+            "width": "2536",
+            "height": "3400",
+            "filesize": "4333894",
+            "filename": "1916.1043_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1916.1043/1916.1043_full.tif",
+            "width": "11196",
+            "height": "15012",
+            "filesize": "504253356",
+            "filename": "1916.1043_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1759,
+            "description": "Edgar Degas (French, 1834–1917)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1834",
+            "death_year": "1917",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-135262",
+      "artist_id": "edgar-degas",
+      "creator_source_id": "cma:1759",
+      "source_url": "https://clevelandart.org/art/1958.27",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/135262",
+      "raw": {
+        "id": 135262,
+        "title": "Before the Race",
+        "accession_number": "1958.27",
+        "creation_date": "c. 1887–89",
+        "technique": "pastel with charcoal underdrawing on tracing paper mounted on cardboard",
+        "measurements": "Sheet: 57.5 x 65.4 cm (22 5/8 x 25 3/4 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Degas returned to the theme of horse and rider time and again throughout his career. Scholars believe that he executed the first version of this composition of four jockeys on horseback in a charcoal and pastel drawing. Several years later, he traced the composition, reversing its orientation to create the highly finished Cleveland pastel. The palette is intensified, the distance between the second and third jockeys is increased, and the foliage along the horizon has been added to suggest a lush spring day.",
+        "did_you_know": "When creating the series to which this pastel belongs, Edgar Degas was inspired by the 19th-century photographer Eadweard Muybridge, who attempted to record motion in static images.",
+        "url": "https://clevelandart.org/art/1958.27",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.27/1958.27_web.jpg",
+            "width": "1035",
+            "height": "893",
+            "filesize": "219453",
+            "filename": "1958.27_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.27/1958.27_print.jpg",
+            "width": "3400",
+            "height": "2933",
+            "filesize": "2182520",
+            "filename": "1958.27_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.27/1958.27_full.tif",
+            "width": "13382",
+            "height": "11544",
+            "filesize": "463469452",
+            "filename": "1958.27_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1759,
+            "description": "Edgar Degas (French, 1834–1917)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1834",
+            "death_year": "1917",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-130528",
+      "artist_id": "edgar-degas",
+      "creator_source_id": "cma:1759",
+      "source_url": "https://clevelandart.org/art/1953.268",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/130528",
+      "raw": {
+        "id": 130528,
+        "title": "Diego Martelli",
+        "accession_number": "1953.268",
+        "creation_date": "1879",
+        "technique": "charcoal and white chalk",
+        "measurements": "Sheet: 44 x 31.3 cm (17 5/16 x 12 5/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This sheet is one of many studies that Degas made in 1879 of his friend and supporter, the Italian art critic and patron Diego Martelli (1839-1896). Martelli was one of the most important champions of progressive modern art in Italy, and his writings on the 1879 Impressionist show became famous, playing a crucial role in publicizing the movement. This sheet relates to two painted portraits of the critic, one in the National Gallery of Scotland, Edinburgh, and the other in the National Museum of Fine Arts, Buenos Aires.",
+        "did_you_know": "The ghostly white tone of Diego Martelli's face was likely pink or peach when Degas made the work, and has gradually faded over time.",
+        "url": "https://clevelandart.org/art/1953.268",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1953.268/1953.268_web.jpg",
+            "width": "641",
+            "height": "893",
+            "filesize": "88539",
+            "filename": "1953.268_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1953.268/1953.268_print.jpg",
+            "width": "2440",
+            "height": "3400",
+            "filesize": "1505404",
+            "filename": "1953.268_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1953.268/1953.268_full.tif",
+            "width": "4399",
+            "height": "6129",
+            "filesize": "80910072",
+            "filename": "1953.268_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1759,
+            "description": "Edgar Degas (French, 1834–1917)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1834",
+            "death_year": "1917",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-128392",
+      "artist_id": "camille-pissarro",
+      "creator_source_id": "cma:1836",
+      "source_url": "https://clevelandart.org/art/1951.356",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/128392",
+      "raw": {
+        "id": 128392,
+        "title": "Edge of the Woods Near L'Hermitage, Pontoise",
+        "accession_number": "1951.356",
+        "creation_date": "1879",
+        "technique": "oil on fabric",
+        "measurements": "Framed: 166 x 204 x 16.5 cm (65 3/8 x 80 5/16 x 6 1/2 in.); Unframed: 125 x 163 cm (49 3/16 x 64 3/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Born to a French-Jewish family on St. Thomas island in the Caribbean, Pissarro painted this monumental landscape when he was desperately poor and struggling to sell his paintings. It depicts a man slumbering in the sun-dappled backwoods of the Hermitage, a rural village near Pontoise, where the artist had been living since 1872. Restricting his palette to pure hues, Pissarro applied brushstrokes in systematic diagonal patterns, producing an effect that he likened to knitting. This canvas was included in the fourth Impressionist exhibition of 1879.",
+        "did_you_know": "A goat seen from the back standing next to the figure in blue laying in the grass invites the viewer to step inside this serene and beautiful setting.",
+        "url": "https://clevelandart.org/art/1951.356",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1951.356/1951.356_web.jpg",
+            "width": "900",
+            "height": "690",
+            "filesize": "388399",
+            "filename": "1951.356_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1951.356/1951.356_print.jpg",
+            "width": "3400",
+            "height": "2605",
+            "filesize": "5555080",
+            "filename": "1951.356_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1951.356/1951.356_full.tif",
+            "width": "15203",
+            "height": "11648",
+            "filesize": "531286664",
+            "filename": "1951.356_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1836,
+            "description": "Camille Pissarro (French, 1830–1903)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1830",
+            "death_year": "1903",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-155626",
+      "artist_id": "camille-pissarro",
+      "creator_source_id": "cma:1836",
+      "source_url": "https://clevelandart.org/art/1990.7",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/155626",
+      "raw": {
+        "id": 155626,
+        "title": "The Lock at Pontoise",
+        "accession_number": "1990.7",
+        "creation_date": "1872",
+        "technique": "oil on fabric",
+        "measurements": "Framed: 76.8 x 105.7 x 11.4 cm (30 1/4 x 41 5/8 x 4 1/2 in.); Unframed: 53 x 83 cm (20 7/8 x 32 11/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Pissarro was instrumental in developing the radically new Impressionist technique of painting quickly outdoors to capture fleeting effects of light and atmosphere. The rushing water and overcast sky in this view of a river lock near the artist’s home at Pontoise, a rural commune about 17 miles northwest of Paris, are rendered with rapid, broken brushstrokes of pure color. Painting directly on canvas without preliminary drawing, Pissarro may have executed this work in a single session. The shimmering surface of broken color conveys the sensation of natural, outdoor light.",
+        "did_you_know": "The river portrayed here is 212 miles (341 km) long.",
+        "url": "https://clevelandart.org/art/1990.7",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1990.7/1990.7_web.jpg",
+            "width": "900",
+            "height": "572",
+            "filesize": "235234",
+            "filename": "1990.7_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1990.7/1990.7_print.jpg",
+            "width": "3400",
+            "height": "2159",
+            "filesize": "3200479",
+            "filename": "1990.7_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1990.7/1990.7_full.tif",
+            "width": "15083",
+            "height": "9577",
+            "filesize": "433381640",
+            "filename": "1990.7_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1836,
+            "description": "Camille Pissarro (French, 1830–1903)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1830",
+            "death_year": "1903",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-74228",
+      "artist_id": "camille-pissarro",
+      "creator_source_id": "cma:1836",
+      "source_url": "https://clevelandart.org/art/2020.113",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/74228",
+      "raw": {
+        "id": 74228,
+        "title": "Fishmarket",
+        "accession_number": "2020.113",
+        "creation_date": "1902",
+        "technique": "oil on canvas",
+        "measurements": "Unframed: 66 x 81.3 cm (26 x 32 in.)",
+        "culture": [
+          "France, 20th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This impressive view of a bustling fish market belongs to a series of paintings that Pissarro made during the summer of 1902 depicting the harbor at Dieppe. Borrowing from the Impressionist method of portraying a modern city from a high vantage point, he enlivened the scene with rich, vibrant colors applied with energetic, broken brushstrokes. Ever concerned with the fleeting effects of atmosphere, Pissarro painted the interpenetration of industrial steam with the clouds in the brilliant, sunlit sky.",
+        "did_you_know": "Pissarro painted this work from an upper level hotel room in Dieppe. He was suffering from a recurring eye infection at the time that prevented him from working outdoors.",
+        "url": "https://clevelandart.org/art/2020.113",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/2020.113/2020.113_web.jpg",
+            "width": "900",
+            "height": "721",
+            "filesize": "432817",
+            "filename": "2020.113_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/2020.113/2020.113_print.jpg",
+            "width": "3400",
+            "height": "2725",
+            "filesize": "5050477",
+            "filename": "2020.113_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/2020.113/2020.113_full.tif",
+            "width": "12504",
+            "height": "10020",
+            "filesize": "375900488",
+            "filename": "2020.113_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1836,
+            "description": "Camille Pissarro (French, 1830–1903)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1830",
+            "death_year": "1903",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-109137",
+      "artist_id": "camille-pissarro",
+      "creator_source_id": "cma:1836",
+      "source_url": "https://clevelandart.org/art/1927.298",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/109137",
+      "raw": {
+        "id": 109137,
+        "title": "The Mender",
+        "accession_number": "1927.298",
+        "creation_date": "c. 1881",
+        "technique": "pen and black ink and gray wash over graphite heightened with white gouache",
+        "measurements": "Sheet: 15.1 x 10.2 cm (5 15/16 x 4 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Camille Pissarro used the French countryside and its inhabitants as the subject of his art throughout his career. He frequently depicted women sewing, often outdoors or seated beside a window, as seen in this drawing. He indicated the effects of natural light illuminating his subject with the notation \"lumière\" at the left margin of the drawing.",
+        "did_you_know": "At the time this drawing was made, Camille Pissarro lived in the small village of Pontoise. He remained there for over a decade to immerse himself in the type of rural life that he depicted in his art.",
+        "url": "https://clevelandart.org/art/1927.298",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1927.298/1927.298_web.jpg",
+            "width": "597",
+            "height": "893",
+            "filesize": "417507",
+            "filename": "1927.298_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1927.298/1927.298_print.jpg",
+            "width": "2274",
+            "height": "3400",
+            "filesize": "6435559",
+            "filename": "1927.298_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1927.298/1927.298_full.tif",
+            "width": "3325",
+            "height": "4971",
+            "filesize": "49615564",
+            "filename": "1927.298_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1836,
+            "description": "Camille Pissarro (French, 1830–1903)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1830",
+            "death_year": "1903",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-148759",
+      "artist_id": "camille-pissarro",
+      "creator_source_id": "cma:1836",
+      "source_url": "https://clevelandart.org/art/1976.20",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/148759",
+      "raw": {
+        "id": 148759,
+        "title": "La Roche-Guyon",
+        "accession_number": "1976.20",
+        "creation_date": "1866",
+        "technique": "etching",
+        "measurements": "Image: 27.4 x 22.2 cm (10 13/16 x 8 3/4 in.); Plate: 31.8 x 23.9 cm (12 1/2 x 9 7/16 in.); Sheet: 43.5 x 32.8 cm (17 1/8 x 12 15/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "A very early etching by the Impressionist artist Camille Pissarro, this view of the massive rocks at La Roche-Guyon reveals the artist’s painterly attitude toward printmaking. Using only the etched line and a layer of ink left on his printing plate's surface, Pissarro created a dramatic landscape filled with brilliant sunlight and soft shadows.",
+        "did_you_know": "Camille Pissarro favored rural life and lived in the small village of La Roche-Guyon during the 1860s, when this print was made.",
+        "url": "https://clevelandart.org/art/1976.20",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1976.20/1976.20_web.jpg",
+            "width": "687",
+            "height": "893",
+            "filesize": "521119",
+            "filename": "1976.20_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1976.20/1976.20_print.jpg",
+            "width": "2616",
+            "height": "3400",
+            "filesize": "6469171",
+            "filename": "1976.20_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1976.20/1976.20_full.tif",
+            "width": "3925",
+            "height": "5102",
+            "filesize": "60108732",
+            "filename": "1976.20_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1836,
+            "description": "Camille Pissarro (French, 1830–1903)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1830",
+            "death_year": "1903",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-149410",
+      "artist_id": "paul-gauguin",
+      "creator_source_id": "cma:1776",
+      "source_url": "https://clevelandart.org/art/1978.63",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/149410",
+      "raw": {
+        "id": 149410,
+        "title": "In the Waves (Dans les Vagues)",
+        "accession_number": "1978.63",
+        "creation_date": "1889",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 123.8 x 106 x 7 cm (48 3/4 x 41 3/4 x 2 3/4 in.); Unframed: 92.5 x 72.4 cm (36 7/16 x 28 1/2 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Painted at Pont-Aven in northwest France, this depiction of a nude figure throwing herself into the sea suggests a metaphor for a modern European woman forsaking civilization and abandoning herself to her natural, primitive instincts. The simplified lines and exaggerated colors, especially the contrasting green and orange, seem invented rather than observed from life. Exhibiting the painting at the Café Volpini in Paris in 1889, Gauguin established himself as a leader of the Symbolist movement in art.",
+        "did_you_know": "Gauguin likely painted this work of art during his time in a small coastal village called Pont-Aven where he sought to immerse himself in nature and escape modern civilization.",
+        "url": "https://clevelandart.org/art/1978.63",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1978.63/1978.63_web.jpg",
+            "width": "700",
+            "height": "900",
+            "filesize": "277344",
+            "filename": "1978.63_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1978.63/1978.63_print.jpg",
+            "width": "2646",
+            "height": "3400",
+            "filesize": "3820562",
+            "filename": "1978.63_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1978.63/1978.63_full.tif",
+            "width": "11539",
+            "height": "14827",
+            "filesize": "513298268",
+            "filename": "1978.63_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1776,
+            "description": "Paul Gauguin (French, 1848–1903)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1848",
+            "death_year": "1903",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-148297",
+      "artist_id": "paul-gauguin",
+      "creator_source_id": "cma:1776",
+      "source_url": "https://clevelandart.org/art/1975.263",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/148297",
+      "raw": {
+        "id": 148297,
+        "title": "The Large Tree",
+        "accession_number": "1975.263",
+        "creation_date": "1891",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 92.4 x 112.7 x 6.4 cm (36 3/8 x 44 3/8 x 2 1/2 in.); Unframed: 74 x 92.8 cm (29 1/8 x 36 9/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Disgusted with the materialism of European society, Gauguin abandoned his family and career as a stockbroker and departed for Tahiti in 1891. This canvas is among the first paintings he completed on the island. Its rich colors and stylized figures were intended to be both symbolic and mysterious, evoking private thoughts and emotions. “I obtain symphonies,” he wrote, “harmonies that represent nothing real in the absolute sense of the word.”",
+        "did_you_know": "Gauguin positions four women in a friezelike sequence seeking shelter under the dark green leaves of a large tree while the leaves of the second tree add a decorative pattern to the pink thatched roof. With his brush, he captures contrasting elements of the tropical climate, sending the viewer into the cool shade to escape the hot sun.",
+        "url": "https://clevelandart.org/art/1975.263",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1975.263/1975.263_web.jpg",
+            "width": "900",
+            "height": "713",
+            "filesize": "336188",
+            "filename": "1975.263_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1975.263/1975.263_print.jpg",
+            "width": "3400",
+            "height": "2695",
+            "filesize": "4656287",
+            "filename": "1975.263_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1975.263/1975.263_full.tif",
+            "width": "14503",
+            "height": "11494",
+            "filesize": "500125892",
+            "filename": "1975.263_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1776,
+            "description": "Paul Gauguin (French, 1848–1903)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1848",
+            "death_year": "1903",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-123168",
+      "artist_id": "paul-gauguin",
+      "creator_source_id": "cma:1776",
+      "source_url": "https://clevelandart.org/art/1943.392",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/123168",
+      "raw": {
+        "id": 123168,
+        "title": "The Call",
+        "accession_number": "1943.392",
+        "creation_date": "1902",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 160.5 x 119 x 9.5 cm (63 3/16 x 46 7/8 x 3 3/4 in.); Unframed: 131.3 x 89.5 cm (51 11/16 x 35 1/4 in.)",
+        "culture": [
+          "France, late 19th–early 20th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Painted on a remote island in Polynesia a year before the artist's death, <em>The Call</em> belongs to a series of late works that explore the mysteries of life and death. Two women stand with bare feet, as if on sacred ground. One woman gestures to someone outside the picture, perhaps responding to a \"call\" from fate or destiny. Gauguin realized his ambition of painting from memory and the imagination through such mysterious, dreamlike images.",
+        "did_you_know": "Although known as one of the founders of modern art, Gauguin found inspiration in ancient Greek, Roman, and Egyptian art. The woman with the pointing finger on the right side of this painting was taken from a figure on the Parthenon frieze.",
+        "url": "https://clevelandart.org/art/1943.392",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1943.392/1943.392_web.jpg",
+            "width": "606",
+            "height": "900",
+            "filesize": "243342",
+            "filename": "1943.392_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1943.392/1943.392_print.jpg",
+            "width": "2291",
+            "height": "3400",
+            "filesize": "3236257",
+            "filename": "1943.392_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1943.392/1943.392_full.tif",
+            "width": "10517",
+            "height": "15608",
+            "filesize": "492479392",
+            "filename": "1943.392_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1776,
+            "description": "Paul Gauguin (French, 1848–1903)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1848",
+            "death_year": "1903",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-127115",
+      "artist_id": "paul-gauguin",
+      "creator_source_id": "cma:1776",
+      "source_url": "https://clevelandart.org/art/1949.439",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/127115",
+      "raw": {
+        "id": 127115,
+        "title": "Head of a Tahitian Woman",
+        "accession_number": "1949.439",
+        "creation_date": "1891",
+        "technique": "graphite with stumping and graphite wash on parchment",
+        "measurements": "Sheet: 30.5 x 24.4 cm (12 x 9 5/8 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This drawing belongs to a group of highly finished portrait drawings of Tahitians made by Paul Gauguin shortly after his arrival in the South Seas. While getting used to this new place, Gauguin initially avoided painting, preferring first to familiarize himself with the landscape and people through observation and drawing. The meticulous quality of this graphite study suggests that it was made from life. The woman’s noble face and enigmatic expression allude to the spirituality and melancholy that Gauguin sought to conjure in his Polynesian work.",
+        "did_you_know": "In his writings, Gauguin often referred to his drawings as \"documents\"—records of motifs and ideas he could use later.",
+        "url": "https://clevelandart.org/art/1949.439",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1949.439/1949.439_web.jpg",
+            "width": "713",
+            "height": "893",
+            "filesize": "399263",
+            "filename": "1949.439_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1949.439/1949.439_print.jpg",
+            "width": "2715",
+            "height": "3400",
+            "filesize": "7184914",
+            "filename": "1949.439_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1949.439/1949.439_full.tif",
+            "width": "4618",
+            "height": "5782",
+            "filesize": "80131448",
+            "filename": "1949.439_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1776,
+            "description": "Paul Gauguin (French, 1848–1903)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1848",
+            "death_year": "1903",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-114196",
+      "artist_id": "paul-gauguin",
+      "creator_source_id": "cma:1776",
+      "source_url": "https://clevelandart.org/art/1933.444",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/114196",
+      "raw": {
+        "id": 114196,
+        "title": "Nave Nave Fenua (Fragrant Isle)",
+        "accession_number": "1933.444",
+        "creation_date": "1893–94",
+        "technique": "color woodcut",
+        "measurements": "Sheet: 38.5 x 22.8 cm (15 3/16 x 9 in.); Platemark: 35.7 x 20.5 cm (14 1/16 x 8 1/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "In 1891 Paul Gauguin traveled to Tahiti, seeking a more authentic style of art making than the conservatism he rejected in Western culture. After returning to Paris in 1893, he began working on <em>Noa Noa,</em> an illustrated book that explained and illustrated his experiences abroad. Although the project was never completed, this print is one of its illustrations. Gauguin depicted a lush landscape by chiseling roughly into a woodblock, a technique meant to suggest relief sculpture he viewed in Tahiti.",
+        "did_you_know": "Paul Gauguin printed the woodblocks for <em>Noa Noa</em> using a variety of inks and papers.",
+        "url": "https://clevelandart.org/art/1933.444",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1933.444/1933.444_web.jpg",
+            "width": "525",
+            "height": "893",
+            "filesize": "443143",
+            "filename": "1933.444_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1933.444/1933.444_print.jpg",
+            "width": "2000",
+            "height": "3400",
+            "filesize": "5075862",
+            "filename": "1933.444_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1933.444/1933.444_full.tif",
+            "width": "3471",
+            "height": "5901",
+            "filesize": "61480008",
+            "filename": "1933.444_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1776,
+            "description": "Paul Gauguin (French, 1848–1903)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1848",
+            "death_year": "1903",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-148753",
+      "artist_id": "odilon-redon",
+      "creator_source_id": "cma:1748",
+      "source_url": "https://clevelandart.org/art/1926.1976",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/148753",
+      "raw": {
+        "id": 148753,
+        "title": "Violette Heymann",
+        "accession_number": "1926.1976",
+        "creation_date": "1910",
+        "technique": "pastel on gray wove paper",
+        "measurements": "Unframed: 72 x 92 cm (28 3/8 x 36 1/4 in.)",
+        "culture": [
+          "France, early 20th Century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Although he was known early in his career for works primarily in black and white, such as charcoal drawings and lithographs, Odilon Redon turned to more colorful media, including pastel, later on. In particular, he focused on commissioned pastel portraits of women with flowers, such as this one. Here, the young niece of the Parisian collector Marcel Kapferer appears alongside colorful blossoms as she looks forward, focused as if in the dreamlike state evoked by her surroundings.",
+        "did_you_know": "This pastel was acquired by the Cleveland Museum of Art in the same year as several other works by Redon, leading arts writers to describe Cleveland as holding the most important works by the artist outside of Paris at the time.",
+        "url": "https://clevelandart.org/art/1926.1976",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1926.1976/1926.1976_web.jpg",
+            "width": "900",
+            "height": "705",
+            "filesize": "258753",
+            "filename": "1926.1976_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1926.1976/1926.1976_print.jpg",
+            "width": "3400",
+            "height": "2665",
+            "filesize": "3589165",
+            "filename": "1926.1976_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1926.1976/1926.1976_full.tif",
+            "width": "9989",
+            "height": "7831",
+            "filesize": "234695396",
+            "filename": "1926.1976_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1748,
+            "description": "Odilon Redon (French, 1840–1916)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1840",
+            "death_year": "1916",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-108544",
+      "artist_id": "odilon-redon",
+      "creator_source_id": "cma:1748",
+      "source_url": "https://clevelandart.org/art/1926.25",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/108544",
+      "raw": {
+        "id": 108544,
+        "title": "Orpheus",
+        "accession_number": "1926.25",
+        "creation_date": "c. 1903–10",
+        "technique": "pastel on brown paper",
+        "measurements": "Sheet: 68.8 x 56.8 cm (27 1/16 x 22 3/8 in.)",
+        "culture": [
+          "France"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Drawn in vivid layers of pastel crayon, this work depicts the head of the poet and musician Orpheus. The story of the god of music, whose music carried on after his death through his lyre and head, fascinated Redon, who related to Orpheus's dedication to his art. The subject also aligned with Redon's broader interest in dreams and spirituality around this time and he represented Orpheus several times throughout his career, in various media. Here, the god's head floats as if in stasis while Mount Parnassus—the home of Apollo and the Muses—soars from behind.",
+        "did_you_know": "Another version of this pastel (now in the collection of the Musée Fabre de Montpellier) was part of a group of later works by Redon shown at the 1913 International Exhibition of Modern Art—better known as the Armory Show—which introduced the artist to American audiences.",
+        "url": "https://clevelandart.org/art/1926.25",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1926.25/1926.25_web.jpg",
+            "width": "744",
+            "height": "900",
+            "filesize": "235146",
+            "filename": "1926.25_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1926.25/1926.25_print.jpg",
+            "width": "2812",
+            "height": "3400",
+            "filesize": "3366933",
+            "filename": "1926.25_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1926.25/1926.25_full.tif",
+            "width": "11795",
+            "height": "14260",
+            "filesize": "504617072",
+            "filename": "1926.25_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1748,
+            "description": "Odilon Redon (French, 1840–1916)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1840",
+            "death_year": "1916",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-135469",
+      "artist_id": "odilon-redon",
+      "creator_source_id": "cma:1748",
+      "source_url": "https://clevelandart.org/art/1958.46",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/135469",
+      "raw": {
+        "id": 135469,
+        "title": "Vase of Flowers",
+        "accession_number": "1958.46",
+        "creation_date": "1916",
+        "technique": "pastel",
+        "measurements": "Sheet: 84.1 x 58 cm (33 1/8 x 22 13/16 in.)",
+        "culture": [
+          "France, 20th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Inspired by Cleveland’s groundbreaking acquisitions of Odilon Redon’s artworks during the 1920s, local philanthropist and collector Leonard C. Hanna Jr. purchased this luminous pastel of a floral still life in 1937. Hanna acquired it from Jacques Seligmann, a dealer based in New York City and Paris who was fundamental in bringing 19th-century French art to American audiences. In 1939, Hanna loaned the pastel to the New York World’s Fair, where it represented Redon’s work. Those who saw it there were attracted to the vivid color and timeless subject, which preoccupied the artist at the end of his life.",
+        "did_you_know": "Redon was inspired to depict flowers after meeting the botanist Armand Clavaud, a cataloguer of plant species in the artist's native region of Bordeaux",
+        "url": "https://clevelandart.org/art/1958.46",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.46/1958.46_web.jpg",
+            "width": "566",
+            "height": "900",
+            "filesize": "174087",
+            "filename": "1958.46_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.46/1958.46_print.jpg",
+            "width": "2137",
+            "height": "3400",
+            "filesize": "1920125",
+            "filename": "1958.46_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.46/1958.46_full.tif",
+            "width": "4840",
+            "height": "7701",
+            "filesize": "111849884",
+            "filename": "1958.46_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1748,
+            "description": "Odilon Redon (French, 1840–1916)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1840",
+            "death_year": "1916",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-109138",
+      "artist_id": "odilon-redon",
+      "creator_source_id": "cma:1748",
+      "source_url": "https://clevelandart.org/art/1927.299",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/109138",
+      "raw": {
+        "id": 109138,
+        "title": "Melancholy",
+        "accession_number": "1927.299",
+        "creation_date": "c. 1868",
+        "technique": "graphite on beige wove paper",
+        "measurements": "Sheet: 32.1 x 22 cm (12 5/8 x 8 11/16 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Odilon Redon grew up near the massive Pyrénées mountains in southern France and their image recurred throughout his work. In a series of drawings made during the 1870s, Redon used the craggy surface and infinite reach of his native landscape to evoke a sense of solitude and isolation. The woman seen here, for example, leans forward and casts her eyes downward as if in resignation.",
+        "did_you_know": "Redon incorporated fantastical details into his mountainous landscape, including a small creature seen faintly directly above the woman and a profile that vaguely appears in the shadows next to her.",
+        "url": "https://clevelandart.org/art/1927.299",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1927.299/1927.299_web.jpg",
+            "width": "691",
+            "height": "893",
+            "filesize": "429760",
+            "filename": "1927.299_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1927.299/1927.299_print.jpg",
+            "width": "2633",
+            "height": "3400",
+            "filesize": "3108216",
+            "filename": "1927.299_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1927.299/1927.299_full.tif",
+            "width": "3967",
+            "height": "5123",
+            "filesize": "60994980",
+            "filename": "1927.299_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1748,
+            "description": "Odilon Redon (French, 1840–1916)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1840",
+            "death_year": "1916",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-115067",
+      "artist_id": "odilon-redon",
+      "creator_source_id": "cma:1748",
+      "source_url": "https://clevelandart.org/art/1935.233",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/115067",
+      "raw": {
+        "id": 115067,
+        "title": "Vase of Flowers",
+        "accession_number": "1935.233",
+        "creation_date": "c. 1905",
+        "technique": "oil on fabric",
+        "measurements": "Framed: 90.8 x 62.2 x 10.2 cm (35 3/4 x 24 1/2 x 4 in.); Unframed: 73 x 59 cm (28 3/4 x 23 1/4 in.)",
+        "culture": [
+          "France, late 19th-early 20th Century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Rapturous flower still lifes like this dominated the last decade and a half of Odilon Redon’s career and provided his greatest commercial success. His interest in plants and flowers began in his youth; child of wine producers, he grew up northwest of Bordeaux and was sensitive to fluctuations in weather, light, and temperature affecting the grape harvest. When he was 20, Redon met Armond Clavaud, a botanist and draftsman who illustrated his own compendium of flowers of the Bordeaux region. Clavaud’s meticulously rendered drawings sparked the young Redon’s imagination and helped to instill his desire to paint “nature, as seen in a dream.”",
+        "did_you_know": "Redon returned to the subject of flowers many times throughout his career. His interest in plants may have been inspired by his friend and mentor Armand Clavaud, a botanist and illustrator who lived in Redon's hometown of Bordeaux.",
+        "url": "https://clevelandart.org/art/1935.233",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1935.233/1935.233_web.jpg",
+            "width": "657",
+            "height": "893",
+            "filesize": "557057",
+            "filename": "1935.233_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1935.233/1935.233_print.jpg",
+            "width": "2500",
+            "height": "3400",
+            "filesize": "8670915",
+            "filename": "1935.233_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1935.233/1935.233_full.tif",
+            "width": "4190",
+            "height": "5699",
+            "filesize": "71671244",
+            "filename": "1935.233_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1748,
+            "description": "Odilon Redon (French, 1840–1916)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1840",
+            "death_year": "1916",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-135706",
+      "artist_id": "rembrandt-van-rijn",
+      "creator_source_id": "cma:2520",
+      "source_url": "https://clevelandart.org/art/1959.241",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/135706",
+      "raw": {
+        "id": 135706,
+        "title": "Christ Crucified Between the Two Thieves: 'The Three Crosses'",
+        "accession_number": "1959.241",
+        "creation_date": "1653-c.1660",
+        "technique": "drypoint",
+        "measurements": "Sheet: 37.5 x 44 cm (14 3/4 x 17 5/16 in.)",
+        "culture": [
+          "Rembrandt, 17th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Rembrandt’s <em>Christ Crucified Between the Two Thieves</em> is executed entirely in drypoint. Because of the delicacy of the technique, the copper plate was worn after the artist printed about 40 impressions of the first three states. In order to continue using the plate, Rembrandt reworked it, changing the image somewhat. In this fourth state, slashing strokes obscure the spectators visible in the earlier version, creating a tenebrous setting that focuses attention on Christ bathed in celestial light. Although drypoint is an inherently linear medium, Rembrandt used it to obtain tonal qualities associated with painting. The blackness becomes an active force that threatens to extinguish the light of Christ—a literal illustration of the Evangelist Luke’s description of the event that brought \"a darkness over all the earth.\"",
+        "did_you_know": "When he printed this impression, Rembrandt deliberately left ink on the printing plate, specifically on the left and right sides, essentially creating a unique work.",
+        "url": "https://clevelandart.org/art/1959.241",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1959.241/1959.241_web.jpg",
+            "width": "900",
+            "height": "764",
+            "filesize": "348007",
+            "filename": "1959.241_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1959.241/1959.241_print.jpg",
+            "width": "3400",
+            "height": "2886",
+            "filesize": "4562095",
+            "filename": "1959.241_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1959.241/1959.241_full.tif",
+            "width": "6711",
+            "height": "5696",
+            "filesize": "114710744",
+            "filename": "1959.241_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 2520,
+            "description": "Rembrandt van Rijn (Dutch, 1606–1669)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1606",
+            "death_year": "1669",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-144844",
+      "artist_id": "rembrandt-van-rijn",
+      "creator_source_id": "cma:2520",
+      "source_url": "https://clevelandart.org/art/1969.69",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/144844",
+      "raw": {
+        "id": 144844,
+        "title": "Tobias Healing His Father's Blindness",
+        "accession_number": "1969.69",
+        "creation_date": "c. 1640–45",
+        "technique": "Pen and brown ink, touched with white gouache; framing lines in pen and brown ink",
+        "measurements": "Sheet: 21.1 x 17.7 cm (8 5/16 x 6 15/16 in.)",
+        "culture": [
+          "Netherlands"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This drawing is a prime example of the Dutch painter Rembrandt van Rijn's innovative approach to biblical narrative, in which he often humanized traditional pictorial formulas through the inclusion of observed details from everyday life. It depicts the climactic moment of the Book of Tobit, an apocryphal book of the Old Testament, in which, instructed by the archangel Raphael, Tobias heals his father Tobit's blindness by rubbing his eyes with fish gall. With spontaneity, a deft hand, and deceptive simplicity in his mark-making, Rembrandt depicts an intimate family scene including the archangel, Tobias, Hannah, and Sarah around a seated Tobit. Hannah’s spectacles, a unique detail among images of the scene created by Rembrandt and his circle, further thematizes sight. Rembrandt’s most innovative addition to the story centers on Tobias, who concentrates intensely to use a scalpel, rather than fish gall, to perform a cataract operation on his father’s left eye. Cataract surgery was a new procedure pioneered in Amsterdam in 1635 by Dr. Job Janszoon van Meekren, and Rembrandt may have witnessed the doctor perform it.",
+        "did_you_know": "The seated figure in this drawing is receiving cataract surgery on his left eye, a procedure pioneered in Amsterdam in 1635 by Dr. Job Janszoon van Meekren.",
+        "url": "https://clevelandart.org/art/1969.69",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1969.69/1969.69_web.jpg",
+            "width": "758",
+            "height": "900",
+            "filesize": "451731",
+            "filename": "1969.69_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1969.69/1969.69_print.jpg",
+            "width": "2863",
+            "height": "3400",
+            "filesize": "5489081",
+            "filename": "1969.69_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1969.69/1969.69_full.tif",
+            "width": "9119",
+            "height": "10829",
+            "filesize": "296281144",
+            "filename": "1969.69_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 2520,
+            "description": "Rembrandt van Rijn (Dutch, 1606–1669)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1606",
+            "death_year": "1669",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-149378",
+      "artist_id": "rembrandt-van-rijn",
+      "creator_source_id": "cma:2520",
+      "source_url": "https://clevelandart.org/art/1978.38",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/149378",
+      "raw": {
+        "id": 149378,
+        "title": "Shah Jahan",
+        "accession_number": "1978.38",
+        "creation_date": "c. 1656–61",
+        "technique": "pen and brown ink and brush and brown wash",
+        "measurements": "Sheet: 22.5 x 17.1 cm (8 7/8 x 6 3/4 in.); Secondary Support: 27.6 x 22.4 cm (10 7/8 x 8 13/16 in.)",
+        "culture": [
+          "Netherlands"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Rembrandt’s drawing portrays Shah Jahan, the ruler of the Mughal Empire from 1628-58. It is one of twenty-three drawings that Rembrandt made after Indian miniatures, which he had very likely studied in an album then in Holland. By the 18th century, the album had been dismantled, and the model for this drawing now resides at the Schloss Schönbrunn, Vienna. Rembrandt imposed his characteristic realist tendencies on a more detailed, formal, and stylized model, bringing the shah to life with especially fine pen strokes on the face and shoes mixed with evanescent brown ink washes around the figure that introduce a dynamic interplay of light, shade, and figure. Above the shah’s head, he scratched away parts of the ink and paper to create a nimbus shape that frames the profile. His meticulous technique and use of a rare and expensive Japanese paper suggest that he regarded his drawings after Mughal paintings as exceptional.",
+        "did_you_know": "The Mughal ruler portrayed in this drawing carries a fly swatter in his left hand.",
+        "url": "https://clevelandart.org/art/1978.38",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1978.38/1978.38_web.jpg",
+            "width": "698",
+            "height": "900",
+            "filesize": "224249",
+            "filename": "1978.38_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1978.38/1978.38_print.jpg",
+            "width": "2636",
+            "height": "3400",
+            "filesize": "2584393",
+            "filename": "1978.38_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1978.38/1978.38_full.tif",
+            "width": "4789",
+            "height": "6176",
+            "filesize": "88763016",
+            "filename": "1978.38_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 2520,
+            "description": "Rembrandt van Rijn (Dutch, 1606–1669)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1606",
+            "death_year": "1669",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-136153",
+      "artist_id": "rembrandt-van-rijn",
+      "creator_source_id": "cma:2520",
+      "source_url": "https://clevelandart.org/art/1959.81",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/136153",
+      "raw": {
+        "id": 136153,
+        "title": "Rembrandt and His Wife Saskia",
+        "accession_number": "1959.81",
+        "creation_date": "1636",
+        "technique": "etching",
+        "measurements": "Sheet: 10.5 x 9.2 cm (4 1/8 x 3 5/8 in.); Matted: 49.1 x 36.2 cm (19 5/16 x 14 1/4 in.)",
+        "culture": [
+          "Netherlands"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This self-portrait is the only one in which Rembrandt showed himself with his young wife, Saskia. Both figures appear in formal attire and directly meet the viewer’s gaze. To represent himself, Rembrandt deeply etched the copper plate to create dark and decisive lines, as seen below his collar and on his left wrist. He etched Saskia’s image more lightly, with faint lines that situate her in the composition’s background. Rembrandt may have drawn the image at least in part while sitting in front of a mirror.",
+        "did_you_know": null,
+        "url": "https://clevelandart.org/art/1959.81",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1959.81/1959.81_web.jpg",
+            "width": "806",
+            "height": "893",
+            "filesize": "662010",
+            "filename": "1959.81_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1959.81/1959.81_print.jpg",
+            "width": "3037",
+            "height": "3366",
+            "filesize": "7759183",
+            "filename": "1959.81_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1959.81/1959.81_full.tif",
+            "width": "3037",
+            "height": "3366",
+            "filesize": "30701880",
+            "filename": "1959.81_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 2520,
+            "description": "Rembrandt van Rijn (Dutch, 1606–1669)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1606",
+            "death_year": "1669",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-114751",
+      "artist_id": "rembrandt-van-rijn",
+      "creator_source_id": "cma:2520",
+      "source_url": "https://clevelandart.org/art/1934.350",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/114751",
+      "raw": {
+        "id": 114751,
+        "title": "Self-Portrait Drawing at a Window",
+        "accession_number": "1934.350",
+        "creation_date": "1648",
+        "technique": "etching, drypoint, and engraving",
+        "measurements": "Sheet: 17.3 x 14.5 cm (6 13/16 x 5 11/16 in.); Platemark: 15.6 x 12.9 cm (6 1/8 x 5 1/16 in.)",
+        "culture": [
+          "Netherlands"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "In this late self-portrait—one of more than 80 created by Rembrandt van Rijn—the artist shows himself informally posed at a studio window. He uses a needle to draw into a copper etching plate and gazes directly at the viewer as if interrupted in the process of creating a work of art. The window provides the light required to complete this task, but it also reveals the isolation of art making by juxtaposing Rembrandt’s interior space with the expansive landscape and external world from which he has sequestered himself.",
+        "did_you_know": "In order to show himself with the direct gaze that characterizes this self-portrait, Rembrandt translated a view seen while studying himself in a mirror.",
+        "url": "https://clevelandart.org/art/1934.350",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1934.350/1934.350_web.jpg",
+            "width": "760",
+            "height": "893",
+            "filesize": "510360",
+            "filename": "1934.350_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1934.350/1934.350_print.jpg",
+            "width": "2893",
+            "height": "3400",
+            "filesize": "7032316",
+            "filename": "1934.350_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1934.350/1934.350_full.tif",
+            "width": "3792",
+            "height": "4457",
+            "filesize": "50733500",
+            "filename": "1934.350_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 2520,
+            "description": "Rembrandt van Rijn (Dutch, 1606–1669)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1606",
+            "death_year": "1669",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-106088",
+      "artist_id": "winslow-homer",
+      "creator_source_id": "cma:3143",
+      "source_url": "https://clevelandart.org/art/1924.195",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/106088",
+      "raw": {
+        "id": 106088,
+        "title": "Early Morning After a Storm at Sea",
+        "accession_number": "1924.195",
+        "creation_date": "1900–1903",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 111 x 160 x 12 cm (43 11/16 x 63 x 4 3/4 in.); Unframed: 76.8 x 127 cm (30 1/4 x 50 in.)",
+        "culture": [
+          "America, late 19th-early 20th Century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "The powerful Atlantic surf pounding against the desolate coast of Prouts Neck, Maine, provided primary subject matter for the dramatic paintings that Homer created during his final decades. This example, which the artist proclaimed as \"the best picture of the sea that I have painted,\" was initially conceived as a watercolor. Undertaking the composition in oil after a lapse of nearly two decades, Homer patiently waited for the appropriate atmospheric conditions, executing the work in four different sessions spread over two years.",
+        "did_you_know": "Winslow Homer's studio in Prouts Neck, Maine, is a National Historic Landmark.",
+        "url": "https://clevelandart.org/art/1924.195",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1924.195/1924.195_web.jpg",
+            "width": "1263",
+            "height": "762",
+            "filesize": "642840",
+            "filename": "1924.195_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1924.195/1924.195_print.jpg",
+            "width": "3400",
+            "height": "2050",
+            "filesize": "4653289",
+            "filename": "1924.195_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1924.195/1924.195_full.tif",
+            "width": "6000",
+            "height": "3618",
+            "filesize": "65155832",
+            "filename": "1924.195_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 3143,
+            "description": "Winslow Homer (American, 1836–1910)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1836",
+            "death_year": "1910",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-124040",
+      "artist_id": "winslow-homer",
+      "creator_source_id": "cma:3143",
+      "source_url": "https://clevelandart.org/art/1944.524",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/124040",
+      "raw": {
+        "id": 124040,
+        "title": "The Brierwood Pipe",
+        "accession_number": "1944.524",
+        "creation_date": "1864",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 68.9 x 64.1 x 9.2 cm (27 1/8 x 25 1/4 x 3 5/8 in.); Unframed: 42.8 x 37.5 cm (16 7/8 x 14 3/4 in.); Former: 69 x 64 x 8 cm (27 3/16 x 25 3/16 x 3 1/8 in.)",
+        "culture": [
+          "America"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Created during the United States Civil War, Winslow Homer’s painting depicts two volunteers for the Union Army who sport their regiment’s highly colorful uniforms, a design discovered to be impractical due to its ability to be spotted by sharpshooters. Passing idle time in their encampment, one soldier holds a lit pipe and watches his companion whittle a block of wood. The painting shares its title with a contemporary poem, in which a soldier smokes a brierwood pipe and daydreams of the time when the conflict will end so he can return home. The museum acquired this painting during World War II, and it seems likely that the painting’s subject was viewed as especially significant for its wartime audience.",
+        "did_you_know": "During the Civil War, Homer worked as an artist-reporter for the New York newspaper <em>Harper's Weekly</em>.",
+        "url": "https://clevelandart.org/art/1944.524",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1944.524/1944.524_web.jpg",
+            "width": "791",
+            "height": "893",
+            "filesize": "113881",
+            "filename": "1944.524_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1944.524/1944.524_print.jpg",
+            "width": "3012",
+            "height": "3400",
+            "filesize": "1672433",
+            "filename": "1944.524_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1944.524/1944.524_full.tif",
+            "width": "4613",
+            "height": "5207",
+            "filesize": "72084800",
+            "filename": "1944.524_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 3143,
+            "description": "Winslow Homer (American, 1836–1910)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1836",
+            "death_year": "1910",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-131337",
+      "artist_id": "winslow-homer",
+      "creator_source_id": "cma:3143",
+      "source_url": "https://clevelandart.org/art/1954.128",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/131337",
+      "raw": {
+        "id": 131337,
+        "title": "Boy with Anchor",
+        "accession_number": "1954.128",
+        "creation_date": "1873",
+        "technique": "Watercolor and graphite on paper",
+        "measurements": "Sheet: 19.4 x 34.9 cm (7 5/8 x 13 3/4 in.)",
+        "culture": [
+          "America"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "In this work from a series of watercolors produced in Gloucester, MA, in the summer of 1873 Winslow Homer evokes the fraught nature of the local fishing industry by focusing not on the perilous work of adults, but rather the children they leave behind. In <em>Boy with Anchor</em>, the massive anchor pointing toward the sea foreshadows the weight of the boy’s maritime destiny. The work is an early example of Homer's talent for evoking atmospheric effects and his interest in technical variety. Presumably working outdoors, Homer layered fluent washes of blue, gray, and brown transparent watercolor over his graphite underdrawing to flesh out the beach and sky. He built up the hot, pebble-studded surface of the beach by using dense gouache to draw textural detail and created the broken cloud pattern in the sky by lightly blotting his wet blue wash. The picture’s formal tensions between warm and cool colors, outline and wash, and transparency and opacity mirror the emotional tension of the scene.",
+        "did_you_know": "The mottled texture of the sky is an example of Homer’s blotting technique—a subtractive process in which he applied a wash of water, sprinkled some breadcrumbs, and then gently rubbed the paper with his fingers in order to absorb the extra color, leaving behind a granulated texture.",
+        "url": "https://clevelandart.org/art/1954.128",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1954.128/1954.128_web.jpg",
+            "width": "900",
+            "height": "511",
+            "filesize": "242567",
+            "filename": "1954.128_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1954.128/1954.128_print.jpg",
+            "width": "3400",
+            "height": "1931",
+            "filesize": "2778457",
+            "filename": "1954.128_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1954.128/1954.128_full.tif",
+            "width": "13051",
+            "height": "7414",
+            "filesize": "290310902",
+            "filename": "1954.128_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 3143,
+            "description": "Winslow Homer (American, 1836–1910)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1836",
+            "death_year": "1910",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-147393",
+      "artist_id": "winslow-homer",
+      "creator_source_id": "cma:3143",
+      "source_url": "https://clevelandart.org/art/1973.142",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/147393",
+      "raw": {
+        "id": 147393,
+        "title": "Leaping Trout",
+        "accession_number": "1973.142",
+        "creation_date": "1889",
+        "technique": "watercolor over graphite",
+        "measurements": "Sheet: 35 x 50.6 cm (13 3/4 x 19 15/16 in.)",
+        "culture": [
+          "America"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "In 1886, Winslow Homer began to produce oil paintings and watercolors of subjects in the Adirondack Mountains, where he and his brother Charles had fished and hunted since the 1870s. In <em>Leaping Trout</em>, a silvery trout propels itself from the water in pursuit of a hapless insect or a fisherman’s fly. Homer’s choice to adopt the fish’s perspective, rather than a fisherman’s, is quite unconventional and heightens the drama and immediacy of the scene. His technique, influenced by the free brushwork of French Impressionism, similarly animates his still-life subject. Luminous washes of transparent blue and grey watercolor suggest the fish’s iridescent skin, while opaque pricks of bright red on its body lend a decorative effect reminiscent of Japanese prints. On the water’s surface, Homer uses scraping to create two brilliant white highlights, and dry brushing to produce the impression of a reflective surface. Although the overall effect is mysterious and dreamlike, the color and movement of the fish is carefully studied, suggesting Homer’s desire to appeal to the sportsmen who might buy his works.",
+        "did_you_know": "Noted for his technical variety in watercolors, Homer used a technique called scraping—removing softened paint and paper fibers by taking a blunt or sharp object to the paper’s wet surface—to produce the pond’s two glistening white highlights.",
+        "url": "https://clevelandart.org/art/1973.142",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1973.142/1973.142_web.jpg",
+            "width": "1263",
+            "height": "887",
+            "filesize": "729442",
+            "filename": "1973.142_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1973.142/1973.142_print.jpg",
+            "width": "3400",
+            "height": "2388",
+            "filesize": "5801974",
+            "filename": "1973.142_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1973.142/1973.142_full.tif",
+            "width": "5984",
+            "height": "4203",
+            "filesize": "75484912",
+            "filename": "1973.142_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 3143,
+            "description": "Winslow Homer (American, 1836–1910)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1836",
+            "death_year": "1910",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-123437",
+      "artist_id": "winslow-homer",
+      "creator_source_id": "cma:3143",
+      "source_url": "https://clevelandart.org/art/1943.660",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/123437",
+      "raw": {
+        "id": 123437,
+        "title": "A Fisherman's Daughter",
+        "accession_number": "1943.660",
+        "creation_date": "1873",
+        "technique": "watercolor and gouache over graphite",
+        "measurements": "Sheet: 24.2 x 32.9 cm (9 1/2 x 12 15/16 in.)",
+        "culture": [
+          "America"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Homer created some of the most luminous and influential watercolors in the history of the medium. A Fisherman’s Daughter, painted in Gloucester, Massachusetts, is among a group of works that represent his first sustained use of the medium. Here, three girls sit on the shore of a sunlit beach and play with a lobster. Their downcast eyes suggest a solemn tranquility to their activity. The life of the local fishermen was perilous; they often spent weeks away from home and were sometimes lost at sea. Thus, waiting was a central part of life for Gloucester families. An overturned boat on the dunes behind the figures evokes the ominous form of a coffin.",
+        "did_you_know": null,
+        "url": "https://clevelandart.org/art/1943.660",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1943.660/1943.660_web.jpg",
+            "width": "1206",
+            "height": "893",
+            "filesize": "943728",
+            "filename": "1943.660_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1943.660/1943.660_print.jpg",
+            "width": "3400",
+            "height": "2517",
+            "filesize": "7135892",
+            "filename": "1943.660_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1943.660/1943.660_full.tif",
+            "width": "5000",
+            "height": "3701",
+            "filesize": "55551944",
+            "filename": "1943.660_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 3143,
+            "description": "Winslow Homer (American, 1836–1910)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1836",
+            "death_year": "1910",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-128072",
+      "artist_id": "berthe-morisot",
+      "creator_source_id": "cma:1865",
+      "source_url": "https://clevelandart.org/art/1950.89",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/128072",
+      "raw": {
+        "id": 128072,
+        "title": "Reading",
+        "accession_number": "1950.89",
+        "creation_date": "1873",
+        "technique": "oil on canvas",
+        "measurements": "Framed: 74.3 x 100.3 x 12.1 cm (29 1/4 x 39 1/2 x 4 3/4 in.); Unframed: 46 x 71.8 cm (18 1/8 x 28 1/4 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Morisot’s sister, Edma, posed for this painting of a woman seated on her shawl in a field, her eyes on the pages of a book, with a parasol and fan discarded on the grass. Her white dress reflects the light and shadows of the outdoor setting; its delicate floral pattern echoes the meadow’s wildflowers.<br><br>X-ray examination reveals that Morisot revised Edma’s eyes, which previously looked directly at the beholder, in a manner more typical of Manet’s figures (see The Railway on view in this gallery). Whereas women in Manet’s paintings often return the viewer’s look, Morisot’s figures are usually absorbed in tasks or private reflection.",
+        "did_you_know": "The Impressionists were mostly men with a few notable exceptions, including Berthe Morisot. While Morisot's work includes many of the hallmarks of Impressionism, such as her loose brushwork, the subject matter of her paintings often reflects the social constraints of her gender. Her paintings often depicted domestic tableaux or images of her friends and family, such as this painting of her sister.",
+        "url": "https://clevelandart.org/art/1950.89",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1950.89/1950.89_web.jpg",
+            "width": "900",
+            "height": "575",
+            "filesize": "246885",
+            "filename": "1950.89_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1950.89/1950.89_print.jpg",
+            "width": "3400",
+            "height": "2174",
+            "filesize": "2864695",
+            "filename": "1950.89_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1950.89/1950.89_full.tif",
+            "width": "13576",
+            "height": "8679",
+            "filesize": "353507400",
+            "filename": "1950.89_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1865,
+            "description": "Berthe Morisot (French, 1841–1895)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1841",
+            "death_year": "1895",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-135405",
+      "artist_id": "berthe-morisot",
+      "creator_source_id": "cma:1865",
+      "source_url": "https://clevelandart.org/art/1958.41",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/135405",
+      "raw": {
+        "id": 135405,
+        "title": "Mademoiselle Louise Riesener in a Hat",
+        "accession_number": "1958.41",
+        "creation_date": "c. 1877–80",
+        "technique": "pastel on pale blue laid paper",
+        "measurements": "Sheet: 55.5 x 46.8 cm (21 7/8 x 18 7/16 in.); Framed: 75.3 x 66.2 x 4.5 cm (29 5/8 x 26 1/16 x 1 3/4 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This portrait depicts Louise Riesener, daughter of artist Léon Riesener and close friend of Morisot. The artist depicted her subject in bust-length profile wearing a black jacket out of which peek the decorative ties of a white blouse. Morisot paid particular attention to the hat; a fashionable Parisian woman of the upper-middle class would have worn such an accessory whenever she went out in public. Morisot produced nearly 200 pastels during her career, the majority figure studies and portraits brought to varying degrees of finish.",
+        "did_you_know": "Morisot favored the (formerly) blue paper used here for pastels and used it for numerous works.",
+        "url": "https://clevelandart.org/art/1958.41",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.41/1958.41_web.jpg",
+            "width": "757",
+            "height": "900",
+            "filesize": "293937",
+            "filename": "1958.41_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.41/1958.41_print.jpg",
+            "width": "2858",
+            "height": "3400",
+            "filesize": "4575115",
+            "filename": "1958.41_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1958.41/1958.41_full.tif",
+            "width": "9474",
+            "height": "11272",
+            "filesize": "320398909",
+            "filename": "1958.41_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1865,
+            "description": "Berthe Morisot (French, 1841–1895)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1841",
+            "death_year": "1895",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-148371",
+      "artist_id": "berthe-morisot",
+      "creator_source_id": "cma:1865",
+      "source_url": "https://clevelandart.org/art/1975.83",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/148371",
+      "raw": {
+        "id": 148371,
+        "title": "Young Saint John",
+        "accession_number": "1975.83",
+        "creation_date": "1890",
+        "technique": "pastel on pale blue laid paper",
+        "measurements": "57.1 x 38.1 cm (22 1/2 x 15 in.)",
+        "culture": [
+          "France, 19th century"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "In the spring of 1890 Berthe Morisot and her husband, Eugène Manet, rented a house with a garden overlooking the Seine River in the rural French town of Mézy. Morisot worked in the attic studio while the pair was there. A young boy from the village served as the model for this pastel, one of several studies for a full-length painting of Saint John the Baptist with his cross. In this drawing, Morisot developed the loose and sketchy marks that would characterize her final canvas.",
+        "did_you_know": "This pastel's first owner was Berthe Morisot's daughter, Julie Manet, and her husband Ernest Rouart.",
+        "url": "https://clevelandart.org/art/1975.83",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/1975.83/1975.83_web.jpg",
+            "width": "597",
+            "height": "900",
+            "filesize": "218791",
+            "filename": "1975.83_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/1975.83/1975.83_print.jpg",
+            "width": "2256",
+            "height": "3400",
+            "filesize": "2756691",
+            "filename": "1975.83_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/1975.83/1975.83_full.tif",
+            "width": "5155",
+            "height": "7769",
+            "filesize": "120177876",
+            "filename": "1975.83_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1865,
+            "description": "Berthe Morisot (French, 1841–1895)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1841",
+            "death_year": "1895",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-676651",
+      "artist_id": "berthe-morisot",
+      "creator_source_id": "cma:1865",
+      "source_url": "https://clevelandart.org/art/2024.34",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/676651",
+      "raw": {
+        "id": 676651,
+        "title": "Young Woman at Rest",
+        "accession_number": "2024.34",
+        "creation_date": "1889",
+        "technique": "drypoint",
+        "measurements": "Platemark: 8.3 x 12.1 cm (3 1/4 x 4 3/4 in.); Sheet: 22.4 x 30.6 cm (8 13/16 x 12 1/16 in.)",
+        "culture": [
+          "France"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "Berthe Morisot was one of the few women to participate in the Impressionists’ group exhibitions and is remembered today for her intimate depictions of the everyday lives of women in Paris and its exurbs during her time. In this drypoint, she depicts one of her favorite models, Jeanne-Marie Fourmanoir, reclining on a couch in the artist’s studio. Drypoint allowed for a precise line that allowed Morisot to focus on capturing details such as the curls of the artist’s hair and the detail of the swan carved into the chair upon which she reclines.",
+        "did_you_know": "Berthe Morisot only created eight etchings and only printed each in a few impressions during her lifetime.",
+        "url": "https://clevelandart.org/art/2024.34",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/2024.34/2024.34_web.jpg",
+            "width": "900",
+            "height": "667",
+            "filesize": "183031",
+            "filename": "2024.34_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/2024.34/2024.34_print.jpg",
+            "width": "3400",
+            "height": "2519",
+            "filesize": "3184070",
+            "filename": "2024.34_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/2024.34/2024.34_full.tif",
+            "width": "12044",
+            "height": "8922",
+            "filesize": "322398012",
+            "filename": "2024.34_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1865,
+            "description": "Berthe Morisot (French, 1841–1895)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1841",
+            "death_year": "1895",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "cma-703436",
+      "artist_id": "berthe-morisot",
+      "creator_source_id": "cma:1865",
+      "source_url": "https://clevelandart.org/art/2025.209",
+      "api_url": "https://openaccess-api.clevelandart.org/api/artworks/703436",
+      "raw": {
+        "id": 703436,
+        "title": "Sewing near the Window",
+        "accession_number": "2025.209",
+        "creation_date": "about 1885",
+        "technique": "watercolor and graphite on paper",
+        "measurements": "Sheet: 28.6 x 22.9 cm (11 1/4 x 9 in.)",
+        "culture": [
+          "France"
+        ],
+        "share_license_status": "CC0",
+        "record_type": "object",
+        "cover_accession_number": null,
+        "description": "This watercolor depicts Euphrasie, or Pasie, the nanny for Berthe Morisot’s young daughter Julie. Pasie appears in the artist’s apartment, sewing before a window during a contemplative moment. As with many of Morisot’s works in the medium, she used this example to develop the composition of a future painting into which she added Julie and more tightly cropped the scene. Watercolor was a constant interest for Morisot, and she practiced it from around 1870 throughout the rest of her career, creating both finished and preparatory works.",
+        "did_you_know": "Edgar Degas admired Berthe Morisot’s watercolors, and seeing an example inspired him to invite her to participate in the Impressionists’ first group exhibition.",
+        "url": "https://clevelandart.org/art/2025.209",
+        "images": {
+          "annotation": null,
+          "web": {
+            "url": "https://openaccess-cdn.clevelandart.org/2025.209/2025.209_web.jpg",
+            "width": "723",
+            "height": "900",
+            "filesize": "222517",
+            "filename": "2025.209_web.jpg"
+          },
+          "print": {
+            "url": "https://openaccess-cdn.clevelandart.org/2025.209/2025.209_print.jpg",
+            "width": "2731",
+            "height": "3400",
+            "filesize": "3676213",
+            "filename": "2025.209_print.jpg"
+          },
+          "full": {
+            "url": "https://openaccess-cdn.clevelandart.org/2025.209/2025.209_full.tif",
+            "width": "8212",
+            "height": "10222",
+            "filesize": "251859344",
+            "filename": "2025.209_full.tif"
+          }
+        },
+        "creators": [
+          {
+            "id": 1865,
+            "description": "Berthe Morisot (French, 1841–1895)",
+            "extent": null,
+            "qualifier": null,
+            "role": "artist",
+            "name_in_original_language": null,
+            "birth_year": "1841",
+            "death_year": "1895",
+            "use_in_caption": true,
+            "include_extent": false,
+            "weight": 1
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record"
+    },
+    {
+      "id": "smk-kms3696",
+      "artist_id": "vilhelm-hammershoi",
+      "creator_source_id": "smk:180_person",
+      "source_url": "https://open.smk.dk/artwork/image/KMS3696",
+      "api_url": "https://api.smk.dk/api/v1/art?object_number=KMS3696",
+      "raw": {
+        "id": "1170012462_object",
+        "object_number": "KMS3696",
+        "titles": [
+          {
+            "title": "Stue i Strandgade med solskin på gulvet",
+            "type": "museumstitel",
+            "language": "dansk"
+          }
+        ],
+        "production_date": [
+          {
+            "start": "1901-01-01T00:00:00.000Z",
+            "end": "1901-12-31T00:00:00.000Z",
+            "period": "1901"
+          }
+        ],
+        "techniques": [
+          "Olie på lærred"
+        ],
+        "materials": [
+          "Lærred"
+        ],
+        "dimensions": [
+          {
+            "notes": "465 x 520 mm",
+            "part": "Netto",
+            "type": "højde",
+            "unit": "centimeter",
+            "value": "46.5"
+          },
+          {
+            "notes": "465 x 520 mm",
+            "part": "Netto",
+            "type": "bredde",
+            "unit": "centimeter",
+            "value": "52"
+          },
+          {
+            "notes": "639 x 702 x 55 mm",
+            "part": "Brutto",
+            "type": "højde",
+            "unit": "centimeter",
+            "value": "63.9"
+          },
+          {
+            "notes": "639 x 702 x 55 mm",
+            "part": "Brutto",
+            "type": "bredde",
+            "unit": "centimeter",
+            "value": "70.2"
+          },
+          {
+            "notes": "639 x 702 x 55 mm",
+            "part": "Brutto",
+            "type": "dybde",
+            "unit": "centimeter",
+            "value": "5.5"
+          }
+        ],
+        "number_of_parts": 1,
+        "public_domain": true,
+        "rights": "https://creativecommons.org/publicdomain/mark/1.0/",
+        "frontend_url": "https://open.smk.dk/artwork/image/KMS3696",
+        "object_url": "https://api.smk.dk/api/v1/art?object_number=KMS3696",
+        "image_thumbnail": "https://iip-thumb.smk.dk/iiif/jp2/3197xr831_KMS3696.tif.jp2/full/!1024,/0/default.jpg",
+        "image_native": "https://api.smk.dk/api/v1/download/W3siaW1nX3VybCI6Imh0dHBzOi8vaWlwLnNtay5kay9paWlmL2pwMi8zMTk3eHI4MzFfS01TMzY5Ni50aWYuanAyL2Z1bGwvZnVsbC8wL25hdGl2ZS5qcGciLCJwdWJsaWNfZG9tYWluIjp0cnVlLCJvYmplY3RfbnVtYmVyIjoiS01TMzY5NiIsIm51bSI6IiJ9XQ==/KMS3696.jpg",
+        "image_width": 23311,
+        "image_height": 20467,
+        "production": [
+          {
+            "creator": "Hammershøi, Vilhelm",
+            "creator_forename": "Vilhelm",
+            "creator_surname": "Hammershøi",
+            "creator_date_of_birth": "1864-05-15T00:00:00.000Z",
+            "creator_date_of_death": "1916-02-13T00:00:00.000Z",
+            "creator_nationality": "Dansk",
+            "creator_gender": "MALE",
+            "creator_lref": "180_person"
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record",
+      "description_url": "https://blog.smk.dk/how-to-turn-sunlight-into-solid-gold"
+    },
+    {
+      "id": "smk-kms7444",
+      "artist_id": "vilhelm-hammershoi",
+      "creator_source_id": "smk:180_person",
+      "source_url": "https://open.smk.dk/artwork/image/KMS7444",
+      "api_url": "https://api.smk.dk/api/v1/art?object_number=KMS7444",
+      "raw": {
+        "id": "1170012534_object",
+        "object_number": "KMS7444",
+        "titles": [
+          {
+            "title": "Interiør med kunstnerens staffeli",
+            "type": "museumstitel",
+            "language": "dansk"
+          }
+        ],
+        "production_date": [
+          {
+            "start": "1910-01-01T00:00:00.000Z",
+            "end": "1910-12-31T00:00:00.000Z",
+            "period": "1910"
+          }
+        ],
+        "techniques": [
+          "Olie på lærred"
+        ],
+        "materials": [
+          "Lærred"
+        ],
+        "dimensions": [
+          {
+            "notes": "840 x 690 mm",
+            "part": "Netto",
+            "type": "højde",
+            "unit": "centimeter",
+            "value": "84"
+          },
+          {
+            "notes": "840 x 690 mm",
+            "part": "Netto",
+            "type": "bredde",
+            "unit": "centimeter",
+            "value": "69"
+          },
+          {
+            "notes": "985 x 833 x 73 mm",
+            "part": "Brutto",
+            "type": "højde",
+            "unit": "centimeter",
+            "value": "98.4"
+          },
+          {
+            "notes": "985 x 833 x 73 mm",
+            "part": "Brutto",
+            "type": "bredde",
+            "unit": "centimeter",
+            "value": "83.5"
+          },
+          {
+            "notes": "985 x 833 x 73 mm",
+            "part": "Brutto",
+            "type": "dybde",
+            "unit": "centimeter",
+            "value": "8.6"
+          }
+        ],
+        "number_of_parts": 1,
+        "public_domain": true,
+        "rights": "https://creativecommons.org/publicdomain/mark/1.0/",
+        "frontend_url": "https://open.smk.dk/artwork/image/KMS7444",
+        "object_url": "https://api.smk.dk/api/v1/art?object_number=KMS7444",
+        "image_thumbnail": "https://iip-thumb.smk.dk/iiif/jp2/rx913s91d_KMS7444.tif.reconstructed.tif.jp2/full/!1024,/0/default.jpg",
+        "image_native": "https://api.smk.dk/api/v1/download/W3siaW1nX3VybCI6Imh0dHBzOi8vaWlwLnNtay5kay9paWlmL2pwMi9yeDkxM3M5MWRfS01TNzQ0NC50aWYucmVjb25zdHJ1Y3RlZC50aWYuanAyL2Z1bGwvZnVsbC8wL25hdGl2ZS5qcGciLCJwdWJsaWNfZG9tYWluIjp0cnVlLCJvYmplY3RfbnVtYmVyIjoiS01TNzQ0NCIsIm51bSI6IiJ9XQ==/KMS7444.jpg",
+        "image_width": 5524,
+        "image_height": 6735,
+        "production": [
+          {
+            "creator": "Hammershøi, Vilhelm",
+            "creator_forename": "Vilhelm",
+            "creator_surname": "Hammershøi",
+            "creator_date_of_birth": "1864-05-15T00:00:00.000Z",
+            "creator_date_of_death": "1916-02-13T00:00:00.000Z",
+            "creator_nationality": "Dansk",
+            "creator_gender": "MALE",
+            "creator_lref": "180_person"
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record",
+      "description_url": "https://hammershoi.smk.dk/artwork/interior-with-the-artists-easel/",
+      "dimensions_note": "SMK API structured dimensions: 84 × 69 cm; ViHDA overview: 84.2 × 69.5 cm. API values and its original notes are preserved without replacement."
+    },
+    {
+      "id": "smk-kms3352",
+      "artist_id": "vilhelm-hammershoi",
+      "creator_source_id": "smk:180_person",
+      "source_url": "https://open.smk.dk/artwork/image/KMS3352",
+      "api_url": "https://api.smk.dk/api/v1/art?object_number=KMS3352",
+      "raw": {
+        "id": "1170013073_object",
+        "object_number": "KMS3352",
+        "titles": [
+          {
+            "title": "Kunstnerens hustru Ida Hammershøi med en tekop",
+            "type": "museumstitel",
+            "language": "dansk"
+          },
+          {
+            "title": "Ida Hammershøi, f. Ilsted, kunstnerens hustru",
+            "notes": "Tidligere titel",
+            "type": "tidligere titel",
+            "language": "dansk"
+          }
+        ],
+        "production_date": [
+          {
+            "start": "1907-01-01T00:00:00.000Z",
+            "end": "1907-12-31T00:00:00.000Z",
+            "period": "1907"
+          }
+        ],
+        "techniques": [
+          "Olie på lærred"
+        ],
+        "materials": [
+          "Lærred"
+        ],
+        "dimensions": [
+          {
+            "notes": "910 x 735 mm",
+            "part": "Netto",
+            "type": "højde",
+            "unit": "centimeter",
+            "value": "91"
+          },
+          {
+            "notes": "910 x 735 mm",
+            "part": "Netto",
+            "type": "bredde",
+            "unit": "centimeter",
+            "value": "73.5"
+          },
+          {
+            "part": "Brutto",
+            "type": "højde",
+            "unit": "centimeter",
+            "value": "94"
+          },
+          {
+            "part": "Brutto",
+            "type": "bredde",
+            "unit": "centimeter",
+            "value": "76"
+          },
+          {
+            "part": "Brutto",
+            "type": "dybde",
+            "unit": "centimeter",
+            "value": "4.2"
+          }
+        ],
+        "number_of_parts": 1,
+        "public_domain": true,
+        "rights": "https://creativecommons.org/publicdomain/mark/1.0/",
+        "frontend_url": "https://open.smk.dk/artwork/image/KMS3352",
+        "object_url": "https://api.smk.dk/api/v1/art?object_number=KMS3352",
+        "image_thumbnail": "https://iip-thumb.smk.dk/iiif/jp2/pn89d956v_KMS3352-cropped.tif.jp2/full/!1024,/0/default.jpg",
+        "image_native": "https://api.smk.dk/api/v1/download/W3siaW1nX3VybCI6Imh0dHBzOi8vaWlwLnNtay5kay9paWlmL2pwMi9wbjg5ZDk1NnZfS01TMzM1Mi1jcm9wcGVkLnRpZi5qcDIvZnVsbC9mdWxsLzAvbmF0aXZlLmpwZyIsInB1YmxpY19kb21haW4iOnRydWUsIm9iamVjdF9udW1iZXIiOiJLTVMzMzUyIiwibnVtIjoiIn1d/KMS3352.jpg",
+        "image_width": 5750,
+        "image_height": 7229,
+        "production": [
+          {
+            "creator": "Hammershøi, Vilhelm",
+            "creator_forename": "Vilhelm",
+            "creator_surname": "Hammershøi",
+            "creator_date_of_birth": "1864-05-15T00:00:00.000Z",
+            "creator_date_of_death": "1916-02-13T00:00:00.000Z",
+            "creator_nationality": "Dansk",
+            "creator_gender": "MALE",
+            "creator_lref": "180_person"
+          }
+        ]
+      },
+      "description_basis": "institution_collection_record_and_image_observation"
+    },
+    {
+      "id": "smk-kms1542",
+      "artist_id": "vilhelm-hammershoi",
+      "creator_source_id": "smk:180_person",
+      "source_url": "https://open.smk.dk/artwork/image/KMS1542",
+      "api_url": "https://api.smk.dk/api/v1/art?object_number=KMS1542",
+      "raw": {
+        "id": "1170012513_object",
+        "object_number": "KMS1542",
+        "titles": [
+          {
+            "title": "Amalienborg Plads",
+            "type": "museumstitel",
+            "language": "dansk"
+          }
+        ],
+        "production_date": [
+          {
+            "start": "1896-01-01T00:00:00.000Z",
+            "end": "1896-12-31T00:00:00.000Z",
+            "period": "1896"
+          }
+        ],
+        "techniques": [
+          "Olie på lærred"
+        ],
+        "materials": [
+          "Lærred"
+        ],
+        "dimensions": [
+          {
+            "notes": "1365 x 1365 mm",
+            "part": "Netto",
+            "type": "højde",
+            "unit": "centimeter",
+            "value": "136.5"
+          },
+          {
+            "notes": "1365 x 1365 mm",
+            "part": "Netto",
+            "type": "bredde",
+            "unit": "centimeter",
+            "value": "136.5"
+          },
+          {
+            "notes": "1490 x 1488 x 80 mm",
+            "part": "Brutto",
+            "type": "højde",
+            "unit": "centimeter",
+            "value": "149"
+          },
+          {
+            "notes": "1490 x 1488 x 80 mm",
+            "part": "Brutto",
+            "type": "bredde",
+            "unit": "centimeter",
+            "value": "148.8"
+          },
+          {
+            "notes": "1490 x 1488 x 80 mm",
+            "part": "Brutto",
+            "type": "dybde",
+            "unit": "centimeter",
+            "value": "8"
+          }
+        ],
+        "number_of_parts": 1,
+        "public_domain": true,
+        "rights": "https://creativecommons.org/publicdomain/mark/1.0/",
+        "frontend_url": "https://open.smk.dk/artwork/image/KMS1542",
+        "object_url": "https://api.smk.dk/api/v1/art?object_number=KMS1542",
+        "image_thumbnail": "https://iip-thumb.smk.dk/iiif/jp2/jq085p313_KMS1542.tif.reconstructed.tif.jp2/full/!1024,/0/default.jpg",
+        "image_native": "https://api.smk.dk/api/v1/download/W3siaW1nX3VybCI6Imh0dHBzOi8vaWlwLnNtay5kay9paWlmL2pwMi9qcTA4NXAzMTNfS01TMTU0Mi50aWYucmVjb25zdHJ1Y3RlZC50aWYuanAyL2Z1bGwvZnVsbC8wL25hdGl2ZS5qcGciLCJwdWJsaWNfZG9tYWluIjp0cnVlLCJvYmplY3RfbnVtYmVyIjoiS01TMTU0MiIsIm51bSI6IiJ9XQ==/KMS1542.jpg",
+        "image_width": 5379,
+        "image_height": 5349,
+        "production": [
+          {
+            "creator": "Hammershøi, Vilhelm",
+            "creator_forename": "Vilhelm",
+            "creator_surname": "Hammershøi",
+            "creator_date_of_birth": "1864-05-15T00:00:00.000Z",
+            "creator_date_of_death": "1916-02-13T00:00:00.000Z",
+            "creator_nationality": "Dansk",
+            "creator_gender": "MALE",
+            "creator_lref": "180_person"
+          }
+        ]
+      },
+      "description_basis": "institution_description_or_collection_record",
+      "description_url": "https://hammershoi.smk.dk/da/artwork/amalienborg-square/"
+    },
+    {
+      "id": "met-441933",
+      "artist_id": "vilhelm-hammershoi",
+      "creator_source_id": "met:165225",
+      "source_url": "https://www.metmuseum.org/art/collection/search/441933",
+      "api_url": "https://collectionapi.metmuseum.org/public/collection/v1/objects/441933",
+      "raw": {
+        "objectID": 441933,
+        "isHighlight": false,
+        "accessionNumber": "2012.203",
+        "accessionYear": "2012",
+        "isPublicDomain": true,
+        "primaryImage": "https://images.metmuseum.org/CRDImages/ep/original/DP273105.jpg",
+        "primaryImageSmall": "https://images.metmuseum.org/CRDImages/ep/web-large/DP273105.jpg",
+        "additionalImages": [],
+        "constituents": [
+          {
+            "constituentID": 165225,
+            "role": "Artist",
+            "name": "Vilhelm Hammershøi",
+            "constituentULAN_URL": "http://vocab.getty.edu/page/ulan/500000827",
+            "constituentWikidata_URL": "https://www.wikidata.org/wiki/Q380706",
+            "gender": ""
+          }
+        ],
+        "department": "European Paintings",
+        "objectName": "Painting",
+        "title": "Moonlight, Strandgade 30",
+        "culture": "",
+        "period": "",
+        "dynasty": "",
+        "reign": "",
+        "portfolio": "",
+        "artistRole": "Artist",
+        "artistPrefix": "",
+        "artistDisplayName": "Vilhelm Hammershøi",
+        "artistDisplayBio": "Danish, Copenhagen 1864–1916 Copenhagen",
+        "artistSuffix": "",
+        "artistAlphaSort": "Hammershøi, Vilhelm",
+        "artistNationality": "Danish",
+        "artistBeginDate": "1864",
+        "artistEndDate": "1916",
+        "artistGender": "",
+        "artistWikidata_URL": "https://www.wikidata.org/wiki/Q380706",
+        "artistULAN_URL": "http://vocab.getty.edu/page/ulan/500000827",
+        "objectDate": "1900–1906",
+        "objectBeginDate": 1900,
+        "objectEndDate": 1906,
+        "medium": "Oil on canvas",
+        "dimensions": "16 1/8 x 20 1/8 in. (41 x 51.1 cm)",
+        "measurements": [
+          {
+            "elementName": "Overall",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 40.95758,
+              "Width": 51.117603
+            }
+          },
+          {
+            "elementName": "Glazing",
+            "elementDescription": null,
+            "elementMeasurements": {
+              "Height": 42.227585,
+              "Width": 53.022606
+            }
+          }
+        ],
+        "creditLine": "Purchase, European Paintings Funds, and Annette de la Renta Gift, 2012",
+        "geographyType": "",
+        "city": "",
+        "state": "",
+        "county": "",
+        "country": "",
+        "region": "",
+        "subregion": "",
+        "locale": "",
+        "locus": "",
+        "excavation": "",
+        "river": "",
+        "classification": "Paintings",
+        "rightsAndReproduction": "",
+        "linkResource": "",
+        "metadataDate": "2026-10-06T04:59:37.62Z",
+        "repository": "Metropolitan Museum of Art, New York, NY",
+        "objectURL": "https://www.metmuseum.org/art/collection/search/441933",
+        "tags": [
+          {
+            "term": "Doors",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300002803",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q36794"
+          },
+          {
+            "term": "Windows",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300002944",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q35473"
+          },
+          {
+            "term": "Interiors",
+            "AAT_URL": "http://vocab.getty.edu/page/aat/300391239",
+            "Wikidata_URL": "https://www.wikidata.org/wiki/Q2998430"
+          }
+        ],
+        "objectWikidata_URL": "https://www.wikidata.org/wiki/Q20168270",
+        "isTimelineWork": false,
+        "GalleryNumber": "813"
+      },
+      "description_basis": "institution_description_or_collection_record",
+      "description_url": "https://www.metmuseum.org/art/collection/search/441933"
     }
   ]
 }

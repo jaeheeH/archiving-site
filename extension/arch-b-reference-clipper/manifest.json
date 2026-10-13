@@ -1,11 +1,14 @@
 {
   "manifest_version": 3,
-  "name": "ARCH-B Reference Clipper",
-  "description": "현재 보고 있는 웹사이트를 ARCH-B 레퍼런스로 바로 저장합니다.",
-  "version": "0.1.0",
+  "name": "ARCH-B 참고사이트 등록",
+  "description": "현재 페이지의 제목·설명·이미지를 확인하고 ARCH-B 참고사이트로 등록합니다.",
+  "version": "0.2.0",
+  "minimum_chrome_version": "127",
+  "icons": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "ARCH-B에 저장"
+    "default_title": "ARCH-B 참고사이트 등록",
+    "default_icon": { "16": "icons/16.png", "48": "icons/48.png" }
   },
   "background": {
     "service_worker": "background.js"
@@ -14,14 +17,16 @@
   "host_permissions": [
     "https://www.archbehind.com/*",
     "https://archbehind.com/*",
-    "http://localhost:3000/*"
+    "http://localhost/*",
+    "http://127.0.0.1/*"
   ],
   "content_scripts": [
     {
       "matches": [
         "https://www.archbehind.com/extension/connect*",
         "https://archbehind.com/extension/connect*",
-        "http://localhost:3000/extension/connect*"
+        "http://localhost/extension/connect*",
+        "http://127.0.0.1/extension/connect*"
       ],
       "js": ["content-script.js"],
       "run_at": "document_start"

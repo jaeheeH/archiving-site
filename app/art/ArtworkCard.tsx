@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "@/app/components/ArchiveImage";
 import type { CSSProperties } from "react";
 import { getArtworkArtist, type Artwork } from "@/lib/art-catalog";
+import ArtworkTags from '@/app/components/ArtworkTags';
 
 export default async function ArtworkCard({ artwork }: { artwork: Artwork }) {
   const artist = await getArtworkArtist(artwork);
@@ -28,6 +29,7 @@ export default async function ArtworkCard({ artwork }: { artwork: Artwork }) {
         <p className="archive-card-description">
           {artist?.name_ko || artist?.name || "작가 미상"} · {artwork.date}
         </p>
+        <ArtworkTags taxonomy={artwork.taxonomy} groups={['subject']} />
       </div>
     </article>
   );

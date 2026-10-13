@@ -37,6 +37,10 @@ for (const work of expansion.artworks) {
   const cmGroups = (value: string) => [...value.matchAll(/(\d+(?:\.\d+)?(?:\s*[x×]\s*\d+(?:\.\d+)?)+)\s*cm/g)].map(match => match[1].replace(/\s*[x×]\s*/g, '×')).sort();
   assert.deepEqual(cmGroups(work.dimensions_ko), cmGroups(work.dimensions), `${work.id}: preserve every cm measurement`);
 }
+for (const artist of expansion.artists) {
+  assert(artistProfileSchema.safeParse(artist.profile).success, artist.id);
+  assert(artistSchema.safeParse({ name: artist.name, name_ko: artist.name_ko, source_ids: artist.source_ids, profile: artist.profile }).success, artist.id);
+}
 const profile = editorial.artists[0].profile;
 assert(!artistProfileSchema.safeParse({ ...profile, sources: [] }).success, 'introductions need a source');
 for (const url of ['javascript:alert(1)', 'http://example.com', 'https://user:secret@example.com']) assert(!artistProfileSchema.safeParse({ ...profile, sources: [{ label: 'Source', url }] }).success, 'unsafe source URL');
@@ -49,4 +53,4 @@ assert(artistSchema.safeParse({ name: 'Artist', name_ko: null, source_ids: [] })
 assert.equal(editorial.artists.find((row: { id: string }) => row.id === 'yeoseol').profile.lifespan, '');
 assert.equal(editorial.artists.find((row: { id: string }) => row.id === 'yi-taek-gyun').profile.lifespan, '1808–1883년 이후');
 assert.equal(editorial.artists.find((row: { id: string }) => row.id === 'kim-si').profile.lifespan, '1524–1593');
-console.log(`Art editorial checks passed: ${works.length} works, ${artists.length} sourced introductions, validation and original measurements.`);
+console.log(`Art editorial checks passed: ${works.length + expansion.artworks.length} works, ${artists.length + expansion.artists.length} sourced artist introductions, validation and original measurements.`);

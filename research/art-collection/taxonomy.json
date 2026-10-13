@@ -1,0 +1,3111 @@
+{
+  "reviewed_at": "2026-10-13",
+  "artworks": [
+    {
+      "id": "bowes-bm-99",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "still-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://artuk.org/discover/artworks/breakfast-piece-45768"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-101461",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1920.254"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-102578",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "interior"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1921.1239"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-103244",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "ukiyo-e"
+        ],
+        "kind": "print",
+        "subjects": [
+          "landscape",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1921.318"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/55433"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-106088",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1924.195"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-108544",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [
+          "symbolism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "figure",
+          "religion-myth",
+          "imagination"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1926.25"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1926.1976"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/108544"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-109137",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "interior",
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1927.298"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/109137"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-109138",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "drawing",
+        "subjects": [
+          "figure",
+          "landscape",
+          "imagination"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1927.299"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/109138"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-111654",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "ukiyo-e"
+        ],
+        "kind": "print",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1930.189"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/55433"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-114196",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "post-impressionism"
+        ],
+        "kind": "print",
+        "subjects": [
+          "figure",
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1933.444"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-114751",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "baroque"
+        ],
+        "kind": "print",
+        "subjects": [
+          "figure",
+          "interior",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1934.350"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/zh/essays/portraiture-in-renaissance-and-baroque-europe"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-115067",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [
+          "symbolism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "still-life",
+          "nature",
+          "imagination"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1935.233"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1926.1976"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-115405",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "post-impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1936.19"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-117715",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1938.333"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-118159",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1939.269"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-118800",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "ukiyo-e"
+        ],
+        "kind": "print",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1940.1002"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/55433"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-119697",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1940.534"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-120225",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "ukiyo-e"
+        ],
+        "kind": "print",
+        "subjects": [
+          "landscape",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1940.986"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/55433"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-120286",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "still-life",
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1941.14"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-121188",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1942.1065"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-122351",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "romanticism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape",
+          "history"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1942.647"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-123168",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [
+          "post-impressionism",
+          "symbolism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "imagination"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1943.392"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1926.1976"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-123249",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "ukiyo-e"
+        ],
+        "kind": "print",
+        "subjects": [
+          "still-life",
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1943.5"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/55433"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-123437",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "drawing",
+        "subjects": [
+          "figure",
+          "landscape",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1943.660"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/123437"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-124040",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "daily-life",
+          "history"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1944.524"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-125104",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "performance"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1946.83"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-125234",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1947.196"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-125249",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "post-impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1947.209"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-125816",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "renaissance"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "figure",
+          "religion-myth"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1947.70"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/436896"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/125816"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-126086",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "ukiyo-e"
+        ],
+        "kind": "print",
+        "subjects": [
+          "landscape",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1948.306"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/55433"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-127115",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "post-impressionism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1949.439"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/127115"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-128072",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1950.89"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-128364",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1951.324"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-128392",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape",
+          "figure",
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1951.356"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-130163",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1952.542"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-130391",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "still-life",
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1953.155"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-130528",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1953.268"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/130528"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-131337",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "drawing",
+        "subjects": [
+          "figure",
+          "landscape",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1954.128"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/131337"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-131338",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "romanticism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "landscape",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1954.129"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1942.647"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/131338"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-134236",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "drawing",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1956.718"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/134236"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-134862",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1957.422"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-134863",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1957.423"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-135173",
+      "taxonomy": {
+        "periods": [
+          "modern",
+          "20th-century"
+        ],
+        "movements": [
+          "post-impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1958.20"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-135185",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [
+          "post-impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1958.21"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-135238",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "interior",
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1958.25"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-135262",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "landscape",
+          "figure",
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1958.27"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/135262"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-135299",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "post-impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1958.31"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-135336",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1958.34"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-135382",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1958.39"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-135405",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1958.41"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/135405"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-135469",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [
+          "symbolism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "still-life",
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1958.46"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1926.1976"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/135469"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-135480",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1958.47"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-135706",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "baroque"
+        ],
+        "kind": "print",
+        "subjects": [
+          "figure",
+          "religion-myth"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1959.241"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/zh/essays/portraiture-in-renaissance-and-baroque-europe"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-136153",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "baroque"
+        ],
+        "kind": "print",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1959.81"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/zh/essays/portraiture-in-renaissance-and-baroque-europe"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-136510",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape",
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1960.81"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-136757",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "rinpa"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1961.259"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/exhibitions/listings/2012/rinpa-aesthetic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-137259",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "realism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1962.2"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1964.420"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-138464",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "neoclassicism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "religion-myth"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1962.37"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/es/essays/the-legacy-of-jacques-louis-david-1748-1825"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-140148",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "renaissance"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "religion-myth"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1964.150"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/436896"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-140476",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "rinpa"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1964.386"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/exhibitions/listings/2012/rinpa-aesthetic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-141168",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "realism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1964.420"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-141639",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1965.233"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-144732",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1969.52"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-144844",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "baroque"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "interior",
+          "figure",
+          "religion-myth"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1969.69"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/zh/essays/portraiture-in-renaissance-and-baroque-europe"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/144844"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-147393",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "drawing",
+        "subjects": [
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1973.142"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/147393"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-147526",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "drawing",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1973.36"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/147526"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-148297",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "post-impressionism",
+          "symbolism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape",
+          "figure",
+          "imagination"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1975.263"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1926.1976"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-148371",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "figure",
+          "religion-myth"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1975.83"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/148371"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-148739",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "realism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1976.18"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1964.420"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/148739"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-148753",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [
+          "symbolism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "figure",
+          "nature",
+          "imagination"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1926.1976"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/148753"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-148759",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "print",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1976.20"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-148774",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "drawing",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1976.30"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/148774"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-149378",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "baroque"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1978.38"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/zh/essays/portraiture-in-renaissance-and-baroque-europe"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/149378"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-149410",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "post-impressionism",
+          "symbolism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "landscape",
+          "imagination"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1978.63"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1926.1976"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-152499",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "ukiyo-e"
+        ],
+        "kind": "print",
+        "subjects": [
+          "interior",
+          "landscape",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1985.320"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/55433"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-153339",
+      "taxonomy": {
+        "periods": [
+          "joseon"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1986.45"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-153664",
+      "taxonomy": {
+        "periods": [
+          "joseon"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape",
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1987.187"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-155043",
+      "taxonomy": {
+        "periods": [
+          "joseon"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1989.6"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-155626",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1990.7"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-156858",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "ukiyo-e"
+        ],
+        "kind": "print",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1992.73"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/55433"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-159836",
+      "taxonomy": {
+        "periods": [
+          "joseon"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1997.148"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-160880",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1999.169"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-169545",
+      "taxonomy": {
+        "periods": [
+          "joseon"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "still-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/2011.37"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-170727",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "neoclassicism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "figure",
+          "history"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/2013.249"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/es/essays/the-legacy-of-jacques-louis-david-1748-1825"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/170727"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-173180",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1915.684"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-315934",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "still-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/2018.258"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-676651",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "print",
+        "subjects": [
+          "interior",
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/2024.34"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-703436",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "interior",
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/2025.209"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/703436"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-74228",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/2020.113"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-90249",
+      "taxonomy": {
+        "periods": [
+          "joseon"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/2015.517"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-95271",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "drawing",
+        "subjects": [
+          "figure",
+          "performance"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1916.1043"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          },
+          {
+            "label": "클리블랜드 미술관 · 소장품 분류 API",
+            "url": "https://openaccess-api.clevelandart.org/api/artworks/95271"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-95272",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1916.1044"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/impressionism-art-and-modernity"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-95392",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "ukiyo-e"
+        ],
+        "kind": "print",
+        "subjects": [
+          "landscape",
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1916.1145"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/55433"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cma-95413",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "ukiyo-e"
+        ],
+        "kind": "print",
+        "subjects": [
+          "landscape",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://clevelandart.org/art/1916.1164"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/55433"
+          }
+        ]
+      }
+    },
+    {
+      "id": "getty-103rhk",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "still-life",
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.getty.edu/art/collection/object/103RHK"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-10481",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/10481"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-435866",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "post-impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "still-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/435866"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-435868",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "post-impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "interior",
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/435868"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-436002",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "realism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "nature",
+          "interior"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/436002"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1964.420"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-436023",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "realism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/436023"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1964.420"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-436105",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "neoclassicism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "history"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/436105"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/es/essays/the-legacy-of-jacques-louis-david-1748-1825"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-436524",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "post-impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "still-life",
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/436524"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-436532",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "post-impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/436532"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-436535",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "post-impressionism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/436535"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/essays/post-impressionism"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-436698",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "still-life",
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/436698"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-436895",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "renaissance"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "religion-myth"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/436895"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/436896"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-436896",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "renaissance"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "interior",
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/436896"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-436897",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "renaissance"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "religion-myth"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/436897"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/art/collection/search/436896"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-436944",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "performance"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/436944"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-436965",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape",
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/436965"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-437852",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "romanticism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/437852"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1942.647"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-437853",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "romanticism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/437853"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1942.647"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-437854",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [
+          "romanticism"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "landscape",
+          "nature",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/437854"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://clevelandart.org/art/1942.647"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-437877",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "baroque"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "interior",
+          "figure",
+          "religion-myth"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/437877"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/zh/essays/portraiture-in-renaissance-and-baroque-europe"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-437878",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "baroque"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "interior",
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/437878"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/zh/essays/portraiture-in-renaissance-and-baroque-europe"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-437879",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "baroque"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "figure"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/437879"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/zh/essays/portraiture-in-renaissance-and-baroque-europe"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-437880",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "baroque"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "interior",
+          "figure",
+          "performance"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/437880"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/zh/essays/portraiture-in-renaissance-and-baroque-europe"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-437881",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [
+          "baroque"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "interior",
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/437881"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/zh/essays/portraiture-in-renaissance-and-baroque-europe"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-441933",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "interior"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/441933"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-45392",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "rinpa"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/45392"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/exhibitions/listings/2012/rinpa-aesthetic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-53423",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [
+          "rinpa"
+        ],
+        "kind": "painting",
+        "subjects": [
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/53423"
+          },
+          {
+            "label": "미술관 · 사조·양식 맥락",
+            "url": "https://www.metmuseum.org/exhibitions/listings/2012/rinpa-aesthetic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "met-705791",
+      "taxonomy": {
+        "periods": [
+          "edo"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "religion-myth"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.metmuseum.org/art/collection/search/705791"
+          }
+        ]
+      }
+    },
+    {
+      "id": "nga-161665",
+      "taxonomy": {
+        "periods": [
+          "early-modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "still-life",
+          "nature"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://www.nga.gov/artworks/161665-wild-strawberries-and-carnation-wan-li-bowl"
+          }
+        ]
+      }
+    },
+    {
+      "id": "smk-kms1542",
+      "taxonomy": {
+        "periods": [
+          "modern"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "landscape"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://open.smk.dk/artwork/image/KMS1542"
+          }
+        ]
+      }
+    },
+    {
+      "id": "smk-kms3352",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://open.smk.dk/artwork/image/KMS3352"
+          }
+        ]
+      }
+    },
+    {
+      "id": "smk-kms3696",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "interior",
+          "figure",
+          "daily-life"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://open.smk.dk/artwork/image/KMS3696"
+          }
+        ]
+      }
+    },
+    {
+      "id": "smk-kms7444",
+      "taxonomy": {
+        "periods": [
+          "20th-century"
+        ],
+        "movements": [],
+        "kind": "painting",
+        "subjects": [
+          "interior"
+        ],
+        "sources": [
+          {
+            "label": "소장처 · 제작 시기·재료·작품 해설",
+            "url": "https://open.smk.dk/artwork/image/KMS7444"
+          }
+        ]
+      }
+    }
+  ]
+}

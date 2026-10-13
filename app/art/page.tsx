@@ -1,4 +1,6 @@
-import { matchesSearch, queryText } from '@/lib/search-text';
+import { matchesSearch } from '@/lib/search-text';
+import { artFilterOptions, artTaxonomyTags, hasArtFilters, matchesArtFilters, readArtFilters, type ArtFilterParams } from '@/lib/art-taxonomy';
+import ArtFilters from '@/app/components/ArtFilters';
 import Link from "next/link";
 import ArtworkCard from "./ArtworkCard";
 import ArchiveMasonry from '@/app/components/ArchiveMasonry';
@@ -6,31 +8,21 @@ import { getArtCatalog } from "@/lib/art-catalog";
 import { getPageMetadata } from '@/lib/site-settings';
 
 export async function generateMetadata({ searchParams }: ArtPageProps) {
-  const { q, artist, museum } = await searchParams;
-  return getPageMetadata({ path: '/art', title: '아트 · 작품 아카이브', description: '출처와 이용 근거를 확인한 실제 작품을 작가, 시기, 소장처별로 탐색합니다.', noindex: !!(queryText(q).trim() || queryText(artist) || queryText(museum)) });
+  return getPageMetadata({ path: '/art', title: '아트 · 작품 아카이브', description: '출처와 이용 근거를 확인한 실제 작품을 시대, 사조, 작품 종류, 주제별로 탐색합니다.', noindex: hasArtFilters(readArtFilters(await searchParams)) });
 }
 
 type ArtPageProps = {
-  searchParams: Promise<{ q?: string | string[]; artist?: string | string[]; museum?: string | string[] }>;
+  searchParams: Promise<ArtFilterParams>;
 };
 
 export default async function ArtPage({ searchParams }: ArtPageProps) {
   const { artists, artworks } = await getArtCatalog();
-  const params = await searchParams;
-  const q = queryText(params.q).slice(0, 100).trim();
-  const artist = queryText(params.artist);
-  const museum = queryText(params.museum);
-  const query = q;
+  const filters = readArtFilters(await searchParams);
+  const { q } = filters;
   const museums = [...new Set(artworks.map((artwork) => artwork.museum))].sort();
   const filteredArtworks = artworks.filter((artwork) => {
     const names = artwork.artist_ids.flatMap(id => { const person = artists.find(a => a.id === id); return [person?.name,person?.name_ko]; });
-    const match = matchesSearch(query, [artwork.title_ko,artwork.title,artwork.artist,artwork.description,artwork.medium,artwork.medium_ko,...artwork.themes,...names]);
-
-    return (
-      match &&
-      (!artist || artwork.artist_ids.includes(artist)) &&
-      (!museum || artwork.museum === museum)
-    );
+    return matchesSearch(q, [artwork.title_ko,artwork.title,artwork.artist,artwork.description,artwork.medium,artwork.medium_ko,...artwork.themes,...names,...artTaxonomyTags(artwork.taxonomy).map(tag => tag.label)]) && matchesArtFilters(artwork, filters);
   });
 
   return (
@@ -38,29 +30,14 @@ export default async function ArtPage({ searchParams }: ArtPageProps) {
       <header className="archive-heading">
         <span className="archive-kicker">작품으로 넓히는 시선</span>
         <h1>아트</h1>
-        <p>실제 작품과 원출처를 함께 살펴보고, 작가와 소장처를 따라 탐색합니다.</p>
+        <p>시대와 사조에서 시작해 작품 종류와 주제를 따라 탐색합니다.</p>
       </header>
 
-      <form className="archive-controls" action="/art" aria-label="작품 필터">
-        <label className="sr-only" htmlFor="art-query">작품 검색</label><input id="art-query" type="search" name="q" defaultValue={q} maxLength={100} placeholder="제목·작가·재료 검색" className="border border-border bg-background p-3 text-sm" />
-        <label className="sr-only" htmlFor="artist-filter">작가</label>
-        <select id="artist-filter" name="artist" defaultValue={artist}>
-          <option value="">모든 작가</option>
-          {artists.map((item) => (
-            <option key={item.id} value={item.id}>{item.name_ko || item.name}</option>
-          ))}
-        </select>
-        <label className="sr-only" htmlFor="museum-filter">소장처</label>
-        <select id="museum-filter" name="museum" defaultValue={museum}>
-          <option value="">모든 소장처</option>
-          {museums.map((item) => <option key={item} value={item}>{item}</option>)}
-        </select>
-        <button className="archive-button">필터 적용</button>
-      </form>
+      <ArtFilters action="/art" filters={filters} options={artFilterOptions(artworks)} artists={artists.map(item => ({ id: item.id, label: item.name_ko || item.name }))} museums={museums} />
 
       <div className="archive-caption">
         <p>{q ? `“${q}” 검색 결과 · ` : '수집한 작품 · '}<strong>{filteredArtworks.length}</strong>점</p>
-        {(q || artist || museum) ? <Link href="/art">조건 초기화</Link> : <Link href="/artists">작가 {artists.length}명 보기 →</Link>}
+        {hasArtFilters(filters) ? <Link href="/art">조건 초기화</Link> : <Link href="/artists">작가 {artists.length}명 보기 →</Link>}
       </div>
 
       {filteredArtworks.length ? (

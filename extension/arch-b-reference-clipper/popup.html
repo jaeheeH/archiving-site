@@ -3,83 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ARCH-B Reference Clipper</title>
+    <title>ARCH-B 참고사이트 등록</title>
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
+    <header class="header">
+      <div class="brand"><img src="icons/48.png" width="32" height="32" alt="ARCH-B" /><div><p class="eyebrow">ARCH-B</p><h1>참고사이트 등록</h1></div></div>
+      <button id="refreshPage" class="icon-button" type="button" aria-label="현재 페이지 다시 읽기" title="현재 페이지 다시 읽기">↻</button>
+    </header>
     <main class="shell">
-      <header class="header">
-        <div>
-          <p class="eyebrow">ARCH-B</p>
-          <h1>Reference Clipper</h1>
-        </div>
-        <button id="refreshPage" class="icon-button" type="button" title="현재 탭 다시 읽기">↻</button>
-      </header>
-
-      <section id="connectPanel" class="panel hidden">
-        <p class="panel-title">확장자 연결이 필요합니다.</p>
-        <p class="muted">ARCH-B에 로그인한 뒤 연결 페이지를 열면 자동으로 연결됩니다.</p>
-        <label>
-          <span>ARCH-B URL</span>
-          <div class="inline-field">
-            <input id="connectBaseUrl" type="url" placeholder="https://www.archbehind.com" />
-            <button id="saveConnectBaseUrl" type="button">저장</button>
-          </div>
-        </label>
-        <button id="connectButton" class="primary-button" type="button">ARCH-B 연결하기</button>
-        <details class="manual-token">
-          <summary>토큰 직접 입력</summary>
-          <textarea id="manualToken" rows="3" placeholder="연결 페이지에서 복사한 토큰"></textarea>
-          <button id="saveTokenButton" class="secondary-button" type="button">토큰 저장</button>
+      <section id="connectPanel" class="panel hidden" aria-label="계정 연결">
+        <p class="panel-title">ARCH-B 계정을 연결해주세요.</p>
+        <p class="muted">참고사이트 관리 권한이 있는 계정으로 로그인한 뒤 연결할 수 있습니다.</p>
+        <label for="connectBaseUrl">ARCH-B 주소</label>
+        <input id="connectBaseUrl" type="url" placeholder="https://www.archbehind.com" />
+        <button id="connectButton" class="primary-button" type="button">로그인하고 연결하기</button>
+        <details>
+          <summary>자동 연결이 안 되나요?</summary>
+          <label for="manualToken">연결 페이지에서 복사한 토큰</label>
+          <textarea id="manualToken" rows="3" spellcheck="false"></textarea>
+          <button id="saveTokenButton" class="secondary-button" type="button">토큰으로 연결</button>
         </details>
       </section>
 
-      <section id="formPanel" class="panel">
-        <label>
-          <span>ARCH-B URL</span>
-          <div class="inline-field">
-            <input id="baseUrl" type="url" placeholder="https://www.archbehind.com" />
-            <button id="saveBaseUrl" type="button">저장</button>
-          </div>
-        </label>
+      <form id="formPanel" class="panel hidden">
+        <details class="connection-settings">
+          <summary id="connectionLabel">연결 설정</summary>
+          <label for="baseUrl">ARCH-B 주소</label>
+          <div class="inline-field"><input id="baseUrl" type="url" /><button id="saveBaseUrl" type="button">변경</button></div>
+          <button id="clearToken" class="text-button" type="button">연결 해제</button>
+        </details>
+        <label for="title">사이트 이름 <span class="required">필수</span></label>
+        <input id="title" type="text" required maxlength="160" />
+        <label for="url">사이트 주소 <span class="required">필수</span></label>
+        <input id="url" type="url" required maxlength="2048" />
+        <label for="description">소개</label>
+        <textarea id="description" rows="3" maxlength="500" placeholder="이 사이트에서 참고할 수 있는 내용을 적어주세요."></textarea>
+        <fieldset><legend>범주 <span class="required">1–3개 선택</span></legend><div id="categories" class="categories"></div></fieldset>
 
-        <label>
-          <span>제목</span>
-          <input id="title" type="text" />
-        </label>
-
-        <label>
-          <span>URL</span>
-          <input id="url" type="url" />
-        </label>
-
-        <label>
-          <span>설명</span>
-          <textarea id="description" rows="4"></textarea>
-        </label>
-
-        <label>
-          <span>카테고리</span>
-          <select id="category"></select>
-        </label>
-
-        <div class="preview">
-          <div class="preview-image">
-            <img id="previewImage" alt="" />
-          </div>
-          <div>
-            <p id="previewTitle" class="preview-title">현재 페이지</p>
-            <p id="previewUrl" class="preview-url"></p>
-          </div>
+        <div class="image-heading"><label for="imageUrl">썸네일</label><button id="capturePage" class="text-button" type="button">현재 화면 캡처</button></div>
+        <img id="previewImage" class="preview-image hidden" alt="등록할 썸네일 미리보기" referrerpolicy="no-referrer" />
+        <input id="imageUrl" type="url" maxlength="2048" placeholder="대표 이미지 주소" aria-label="썸네일 이미지 주소" />
+        <p id="imageHint" class="muted">대표 이미지가 없으면 현재 보이는 화면을 캡처합니다.</p>
+        <label for="logoUrl">로고</label>
+        <div class="logo-field"><img id="previewLogo" width="24" height="24" alt="로고 미리보기" referrerpolicy="no-referrer" /><input id="logoUrl" type="url" maxlength="2048" placeholder="favicon 또는 로고 이미지 주소" /></div>
+        <div class="form-footer">
+          <p id="status" class="status" role="status" aria-live="polite"></p>
+          <button id="saveReference" class="primary-button" type="submit" disabled>참고사이트 등록</button>
+          <a id="resultLink" class="result-link hidden" target="_blank" rel="noopener noreferrer">등록된 참고사이트 관리하기 ↗</a>
         </div>
-
-        <button id="saveReference" class="primary-button" type="button">ARCH-B에 저장</button>
-        <button id="clearToken" class="text-button" type="button">연결 해제</button>
-      </section>
-
-      <p id="status" class="status"></p>
+      </form>
+      <p id="connectStatus" class="status" role="status" aria-live="polite"></p>
     </main>
-
     <script src="popup.js"></script>
   </body>
 </html>

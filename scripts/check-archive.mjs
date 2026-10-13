@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const artworks = [...JSON.parse(fs.readFileSync(new URL('../research/art-collection/artworks.json', import.meta.url), 'utf8')), ...JSON.parse(fs.readFileSync(new URL('../research/art-collection/expansion.json', import.meta.url), 'utf8')).artworks];
-const { artists } = JSON.parse(fs.readFileSync(new URL('../research/art-collection/artists.json', import.meta.url), 'utf8'));
+const artists = [...JSON.parse(fs.readFileSync(new URL('../research/art-collection/artists.json', import.meta.url), 'utf8')).artists, ...JSON.parse(fs.readFileSync(new URL('../research/art-collection/expansion.json', import.meta.url), 'utf8')).artists];
 const editorial = JSON.parse(fs.readFileSync(new URL('../research/art-collection/editorial.json', import.meta.url), 'utf8'));
 const references = JSON.parse(fs.readFileSync(new URL('../content/references/editorial.json', import.meta.url), 'utf8')).references;
 const base = process.argv[2] || 'http://localhost:3000';
@@ -37,6 +37,12 @@ for (const person of artists) {
   assert.equal(count(await html(`/artists/${person.id}`), 'art'), artworks.filter(work => work.artist_ids.includes(person.id)).length, `${person.id}: complete artist collection`);
 }
 assert.ok((await html('/art/met-437877')).includes('가톨릭 신앙의 알레고리'), 'New artwork detail');
+assert.ok((await html('/art/cma-128072')).includes('모리조의 언니 에드마'), 'New batch includes sourced Korean introductions');
+assert.equal(count(await html('/art?q=모리조&artist=berthe-morisot'), 'art'), 5, 'New artist is searchable in art');
+assert.ok((await html('/search?q=모리조&type=artist')).includes('/artists/berthe-morisot'), 'New artist is discoverable in unified search');
+assert.equal(count(await html('/art?q=함메르쇼이&artist=vilhelm-hammershoi'), 'art'), 5, 'Hammershoi has five searchable works across museums');
+assert.ok((await html('/art/smk-kms3696')).includes('Public Domain (PDM 1.0)'), 'SMK artwork retains its individual reuse declaration');
+assert.ok((await html('/search?q=함메르쇼이&type=artist')).includes('/artists/vilhelm-hammershoi'), 'Hammershoi is discoverable in unified search');
 const referencePage = await html('/references');
 for (const reference of references) assert.ok(referencePage.includes(reference.description) && referencePage.includes(reference.title), reference.title);
 assert.ok((await html('/references')).includes('참고사이트'));
