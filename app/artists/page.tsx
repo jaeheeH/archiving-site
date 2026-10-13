@@ -57,7 +57,7 @@ export default async function ArtistsPage({ searchParams }: ArtistsPageProps) {
                 </div>
                 {artist.name_ko && <p className="archive-card-description">{artist.name}</p>}
                 {artist.profile?.context && <p className="archive-card-meta mt-3">{[artist.profile.lifespan, artist.profile.context].filter(Boolean).join(' · ')}</p>}
-                {artist.profile?.description && <p className="archive-card-description line-clamp-3 mt-3">{artist.profile.description}</p>}
+                {artist.profile?.description && <p className="archive-card-description line-clamp-2 mt-3">{artist.profile.description}</p>}
                 <ArtworkTags taxonomy={(hasWorkFilters ? selectedWorks : artistArtworks).flatMap(work => work.taxonomy ? [work.taxonomy] : [])} groups={['subject']} artist={artist.id} />
               </div>
             </article>

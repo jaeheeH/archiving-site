@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef, type ReactNode } from 'react';
 import { layoutMasonry } from '@/lib/masonry-layout';
 
-export default function ArchiveMasonry({ children, label }: { children: ReactNode; label: string }) {
+export default function ArchiveMasonry({ children, label, id }: { children: ReactNode; label: string; id?: string }) {
   const ref = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
@@ -36,5 +36,5 @@ export default function ArchiveMasonry({ children, label }: { children: ReactNod
     return () => { observer.disconnect(); cancelAnimationFrame(frame); };
   }, [children]);
 
-  return <section ref={ref} aria-label={label} className="archive-masonry">{children}</section>;
+  return <section ref={ref} id={id} aria-label={label} className="archive-masonry">{children}</section>;
 }

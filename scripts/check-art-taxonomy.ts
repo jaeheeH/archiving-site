@@ -39,8 +39,8 @@ assert.deepEqual(parsed.subjects, ['interior', 'landscape']);
 assert(!hasArtFilters(readArtFilters({})));
 assert(hasArtFilters(readArtFilters({ subject: 'interior' })));
 const select = (params: Parameters<typeof readArtFilters>[0]) => works.filter(work => matchesArtFilters(work, readArtFilters(params)));
-assert.equal(select({ artist: 'vilhelm-hammershoi', subject: 'interior' }).length, 3);
-assert.equal(select({ artist: 'vilhelm-hammershoi', subject: ['interior', 'landscape'] }).length, 4, 'Subjects use OR within their group');
+assert.equal(select({ artist: 'vilhelm-hammershoi', subject: 'interior' }).length, 4);
+assert.equal(select({ artist: 'vilhelm-hammershoi', subject: ['interior', 'landscape'] }).length, 5, 'Subjects use OR within their group');
 assert.equal(select({ artist: 'vilhelm-hammershoi', period: '20th-century', subject: 'landscape' }).length, 0, 'Different groups must match the same work');
 assert.equal(select({ period: 'joseon', kind: 'print' }).length, 0);
 assert.equal(select({ subject: 'not-a-subject' }).length, 0);
@@ -71,10 +71,10 @@ if (base) {
     const query = new URLSearchParams();
     for (const [key, value] of Object.entries(params)) for (const item of Array.isArray(value) ? value : [value]) query.append(key, item);
     const page = await html(`/art?${query}`);
-    assert.deepEqual(ids(page, 'art'), select(params).map(work => work.id).sort(), query.toString());
+    assert.deepEqual(ids(page, 'art'), select(params).slice(0, 24).map(work => work.id).sort(), query.toString());
     assert(/<meta name="robots" content="noindex/.test(page), 'Filtered URLs are noindex');
   }
-  assert.equal(ids(await html('/artists?period=20th-century&subject=interior'), 'artists').length, 1);
+  assert.deepEqual(ids(await html('/artists?period=20th-century&subject=interior'), 'artists'), [...new Set(select({ period: '20th-century', subject: 'interior' }).flatMap(work => work.artist_ids))].sort());
   const artistList = await html('/artists?q=%ED%95%A8%EB%A9%94%EB%A5%B4%EC%87%BC%EC%9D%B4');
   assert(artistList.includes('subject=landscape&amp;artist=vilhelm-hammershoi') && artistList.includes('subject=interior&amp;artist=vilhelm-hammershoi'), 'Artist card shows subjects across the collection');
   assert.equal(ids(await html('/artists?period=20th-century&subject=landscape&q=%ED%95%A8%EB%A9%94%EB%A5%B4%EC%87%BC%EC%9D%B4'), 'artists').length, 0, 'Artist filters must match one work, not different works by the same artist');

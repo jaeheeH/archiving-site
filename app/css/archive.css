@@ -52,8 +52,10 @@
 .archive-caption strong { font-weight: 600; color: var(--archive-brand); }
 .archive-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: start; gap: 40px 26px; }
 .archive-masonry { --masonry-columns: 3; position: relative; display: grid; grid-template-columns: repeat(var(--masonry-columns),minmax(0,1fr)); align-items: start; gap: 40px 26px; }
+@media(min-width:1200px) { .archive-art-page > .archive-masonry,.archive-artists-page > .archive-masonry { --masonry-columns: 4; } }
 .archive-masonry[data-layout=ready] > .archive-card { position: absolute; top: 0; left: 0; }
 .archive-masonry .archive-media { aspect-ratio: var(--archive-image-ratio, 1.65); }
+.archive-load-more { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--archive-line); color: var(--archive-muted); font-size: 14px; }
 .archive-card { min-width: 0; }
 .archive-card > a { display: block; }
 .archive-media { position: relative; display: block; width: 100%; aspect-ratio: 1.65; overflow: hidden; background: var(--archive-bg-light); border-radius: 0; }

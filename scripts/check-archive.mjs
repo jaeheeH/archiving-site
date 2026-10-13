@@ -16,7 +16,9 @@ const sample = artworks.find(a => a.artist_ids.length && artworks.filter(b => b.
 const artist = artists.find(a => a.id === sample.artist_ids[0]);
 const params = new URLSearchParams({ q: sample.artist, artist: artist.id, museum: sample.museum });
 const filtered = artworks.filter(a => a.artist_ids.includes(artist.id) && a.museum === sample.museum && `${a.title_ko} ${a.title} ${a.artist} ${a.medium}`.toLocaleLowerCase('ko').includes(sample.artist.toLocaleLowerCase('ko')));
-assert.equal(count(await html('/art'), 'art'), artworks.length);
+assert.equal(count(await html('/art'), 'art'), Math.min(24, artworks.length), 'Initial art list renders only the first batch');
+assert.equal(count(await html('/art?page=2'), 'art'), Math.min(48, artworks.length), 'More appends a second batch');
+assert.equal(count(await html('/art?page=99999'), 'art'), artworks.length, 'The final batch contains the complete collection');
 assert.equal(count(await html(`/art?${params}`), 'art'), filtered.length, 'Artwork search must combine with both filters');
 assert.equal(count(await html('/artists'), 'artist'), artists.length);
 assert.equal(count(await html(`/artists?q=${encodeURIComponent(artist.name)}`), 'artist'), 1, 'Original artist names must remain searchable');
@@ -38,9 +40,9 @@ for (const person of artists) {
 }
 assert.ok((await html('/art/met-437877')).includes('가톨릭 신앙의 알레고리'), 'New artwork detail');
 assert.ok((await html('/art/cma-128072')).includes('모리조의 언니 에드마'), 'New batch includes sourced Korean introductions');
-assert.equal(count(await html('/art?q=모리조&artist=berthe-morisot'), 'art'), 5, 'New artist is searchable in art');
+assert.equal(count(await html('/art?q=모리조&artist=berthe-morisot'), 'art'), artworks.filter(work => work.artist_ids.includes('berthe-morisot')).length, 'Every Morisot work is searchable in art');
 assert.ok((await html('/search?q=모리조&type=artist')).includes('/artists/berthe-morisot'), 'New artist is discoverable in unified search');
-assert.equal(count(await html('/art?q=함메르쇼이&artist=vilhelm-hammershoi'), 'art'), 5, 'Hammershoi has five searchable works across museums');
+assert.equal(count(await html('/art?q=함메르쇼이&artist=vilhelm-hammershoi'), 'art'), artworks.filter(work => work.artist_ids.includes('vilhelm-hammershoi')).length, 'Every Hammershoi work is searchable across museums');
 assert.ok((await html('/art/smk-kms3696')).includes('Public Domain (PDM 1.0)'), 'SMK artwork retains its individual reuse declaration');
 assert.ok((await html('/search?q=함메르쇼이&type=artist')).includes('/artists/vilhelm-hammershoi'), 'Hammershoi is discoverable in unified search');
 const referencePage = await html('/references');

@@ -90,6 +90,15 @@ for (const work of expansion.artworks) {
     assert(source.raw.dimensions.every(row => row.unit === 'centimeter'), work.id);
     const dimensions = ['Netto', 'Brutto'].map(part => ({ part, values: source.raw.dimensions.filter(row => row.part === part).map(row => row.value) })).filter(group => group.values.length);
     assert.equal(work.dimensions, dimensions.map(group => `${group.part}: ${group.values.join(' x ')} cm`).join('; '), work.id);
+  } else if (work.id.startsWith('nga-')) {
+    assert.equal(source.raw.license_evidence.object_media_public_domain, true, work.id);
+    assert.equal(work.license, 'CC0', work.id);
+    assert.equal(work.museum, 'National Gallery of Art', work.id);
+    for (const key of ['title', 'artist', 'date', 'medium', 'dimensions', 'accession', 'source_url', 'preview_url']) assert.equal(work[key], source.raw[key], `${work.id}: official collection ${key}`);
+    if (source.raw.artist_source_url) {
+      const sourceId = new URL(source.raw.artist_source_url).pathname.match(/^\/artists\/(\d+)-/);
+      assert(sourceId && source.creator_source_id === `nga:${sourceId[1]}`, `${work.id}: verified artist record`);
+    }
   }
 }
 assert.equal(expansion.artworks.find(work => work.id === 'bowes-bm-99').license, 'Public Domain (PDM 1.0 · PD-Art)', 'PD-Art must not be relabeled CC0');

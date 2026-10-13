@@ -1,8 +1,10 @@
 import { matchesSearch } from '@/lib/search-text';
-import { artFilterOptions, artTaxonomyTags, hasArtFilters, matchesArtFilters, readArtFilters, type ArtFilterParams } from '@/lib/art-taxonomy';
+import { artFilterOptions, artTaxonomyTags, hasArtFilters, matchesArtFilters, readArtFilters } from '@/lib/art-taxonomy';
+import { artListPage, type ArtListParams } from '@/lib/art-list';
 import ArtFilters from '@/app/components/ArtFilters';
 import Link from "next/link";
 import ArtworkCard from "./ArtworkCard";
+import ArtworkLoadMore from './ArtworkLoadMore';
 import ArchiveMasonry from '@/app/components/ArchiveMasonry';
 import { getArtCatalog } from "@/lib/art-catalog";
 import { getPageMetadata } from '@/lib/site-settings';
@@ -12,18 +14,20 @@ export async function generateMetadata({ searchParams }: ArtPageProps) {
 }
 
 type ArtPageProps = {
-  searchParams: Promise<ArtFilterParams>;
+  searchParams: Promise<ArtListParams>;
 };
 
 export default async function ArtPage({ searchParams }: ArtPageProps) {
   const { artists, artworks } = await getArtCatalog();
-  const filters = readArtFilters(await searchParams);
+  const params = await searchParams;
+  const filters = readArtFilters(params);
   const { q } = filters;
   const museums = [...new Set(artworks.map((artwork) => artwork.museum))].sort();
   const filteredArtworks = artworks.filter((artwork) => {
     const names = artwork.artist_ids.flatMap(id => { const person = artists.find(a => a.id === id); return [person?.name,person?.name_ko]; });
     return matchesSearch(q, [artwork.title_ko,artwork.title,artwork.artist,artwork.description,artwork.medium,artwork.medium_ko,...artwork.themes,...names,...artTaxonomyTags(artwork.taxonomy).map(tag => tag.label)]) && matchesArtFilters(artwork, filters);
   });
+  const pagination = artListPage(filteredArtworks.length, params);
 
   return (
     <main className="archb-archive archive-art-page">
@@ -41,9 +45,12 @@ export default async function ArtPage({ searchParams }: ArtPageProps) {
       </div>
 
       {filteredArtworks.length ? (
-        <ArchiveMasonry label="작품 목록">
-          {filteredArtworks.map((artwork) => <ArtworkCard key={artwork.id} artwork={artwork} />)}
-        </ArchiveMasonry>
+        <>
+          <ArchiveMasonry label="작품 목록" id="artwork-list">
+            {filteredArtworks.slice(0, pagination.shown).map((artwork) => <ArtworkCard key={artwork.id} artwork={artwork} />)}
+          </ArchiveMasonry>
+          <ArtworkLoadMore {...pagination} total={filteredArtworks.length} />
+        </>
       ) : (
         <div className="archive-empty">조건에 맞는 작품이 없습니다.</div>
       )}
