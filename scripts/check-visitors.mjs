@@ -1,11 +1,19 @@
 import assert from 'node:assert/strict';
 import { randomUUID, randomBytes } from 'node:crypto';
-import { publicPage, referrerHost, referrerPath, visitorDevice, ignoredVisitor } from '../lib/site-traffic.ts';
+import { publicPage, visitorPageTitles, referrerHost, referrerPath, visitorDevice, ignoredVisitor } from '../lib/site-traffic.ts';
 import { visitorNetwork, visitorEnvironment } from '../lib/visitor-request.ts';
 
 assert.deepEqual(publicPage('/'), { path: '/', section: '홈', label: '홈' });
 assert.equal(publicPage('/news/read/real-article')?.section, '뉴스');
 assert.equal(publicPage('/artists/artist-1/')?.path, '/artists/artist-1');
+const titles = visitorPageTitles(['/', '/art/shared-id', '/art/original', '/artists/shared-id', '/artists/original', '/news/read/shared-id', '/blog/shared-id', '/gallery/12', '/art/deleted'], {
+  posts: [{ slug: 'shared-id', title: '기사 제목' }],
+  artworks: [{ id: 'shared-id', title: 'Breakfast', title_ko: '아침 식탁' }, { id: 'original', title: 'Original artwork', title_ko: '' }],
+  artists: [{ id: 'shared-id', name: 'Berthe Morisot', name_ko: '베르트 모리조' }, { id: 'original', name: 'Original artist', name_ko: null }],
+  gallery: [{ id: 12, title: '갤러리 자료' }],
+});
+assert.deepEqual(titles, { '/': '홈', '/art/shared-id': '아침 식탁', '/art/original': 'Original artwork', '/artists/shared-id': '베르트 모리조', '/artists/original': 'Original artist', '/news/read/shared-id': '기사 제목', '/blog/shared-id': '기사 제목', '/gallery/12': '갤러리 자료', '/art/deleted': '아트 상세' });
+assert.deepEqual(visitorPageTitles([], { posts: [], artworks: [], artists: [], gallery: [] }), {});
 for (const path of ['/dashboard', '/login', '/mypage', '/api/users', '//foreign.test', '/news/stories?secret=1', '/art/1#anchor', '/news/read', '/news/stories/foo', '/art/../login', '/art/%2fprivate', '/gallery/a/b', '/references\\private']) assert.equal(publicPage(path), null, path);
 assert.equal(referrerHost('https://www.naver.com/search?private=secret', 'www.archbehind.com'), 'naver.com');
 assert.equal(referrerHost('https://archbehind.com/a', 'www.archbehind.com'), null);
@@ -46,8 +54,15 @@ if (base) {
     const response = await post(event, extra);
     assert.equal(response.status, 204); assert.equal(response.headers.get('set-cookie'), null);
   }
-  const anonymous = await fetch(new URL('/dashboard/analytics/visitors', base), { redirect: 'manual' });
-  assert.equal(anonymous.status, 307);
+  for (const path of ['/dashboard/analytics/visitors', '/dashboard/analytics/visitors/sessions', '/dashboard/analytics/visitors/pages']) {
+    const anonymous = await fetch(new URL(path, base), { redirect: 'manual' });
+    assert.equal(anonymous.status, 307, `Anonymous visitor page: ${path}`);
+  }
+  const legacySearch = await fetch(new URL('/dashboard/analytics/visitors?days=5&page=2&q=facebook.com', base), { redirect: 'manual' });
+  assert.equal(legacySearch.status, 307);
+  const loginRedirect = new URL(legacySearch.headers.get('location'), base);
+  assert.equal(loginRedirect.pathname, '/login');
+  assert.equal(loginRedirect.searchParams.get('redirect'), '/dashboard/analytics/visitors?days=5&page=2&q=facebook.com');
   if (process.argv.includes('--live-write')) {
     const { createClient } = await import('@supabase/supabase-js');
     assert.equal(new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname, 'overgjynkrnwayfammid.supabase.co');
@@ -96,13 +111,23 @@ if (base) {
       const authCookie = authCookies.map(value => `${value.name}=${value.value}`).join('; ');
       for (const role of ['user', 'editor', 'sub-admin', 'admin']) {
         const update = await db.from('users').update({ role }).eq('id', accountId); assert.equal(update.error, null);
-        const response = await fetch(new URL('/dashboard/analytics/visitors', base), { headers: { Cookie: authCookie }, redirect: 'manual' });
-        assert.equal(response.status, ['admin', 'sub-admin'].includes(role) ? 200 : 307, `Visitor analysis scope: ${role}`);
-        if (response.status === 200) {
-          const html = await response.text();
-          assert.ok(html.includes('방문 상세 기록') && html.includes('192.0.2.10'));
-          const detail = await fetch(new URL(`/dashboard/analytics/visitors?session=${a.session_hash}#visitor-session-detail`, base), { headers: { Cookie: authCookie } });
+        for (const suffix of ['', '/sessions', '/pages']) {
+          const response = await fetch(new URL(`/dashboard/analytics/visitors${suffix}`, base), { headers: { Cookie: authCookie }, redirect: 'manual' });
+          assert.equal(response.status, ['admin', 'sub-admin'].includes(role) ? 200 : 307, `Visitor analysis scope: ${role} ${suffix}`);
+          if (response.status === 200) {
+            const html = await response.text();
+            assert.ok(html.includes('방문자 분석 메뉴'));
+            assert.equal(html.includes('id="visitor-sessions"'), suffix === '/sessions');
+            assert.equal(html.includes('id="visitor-popular-pages"'), suffix === '/pages');
+            if (suffix === '/sessions') assert.ok(html.includes('192.0.2.10'));
+          }
+        }
+        if (['admin', 'sub-admin'].includes(role)) {
+          const detail = await fetch(new URL(`/dashboard/analytics/visitors/sessions?session=${a.session_hash}#visitor-session-detail`, base), { headers: { Cookie: authCookie } });
           assert.equal(detail.status, 200); assert.ok((await detail.text()).includes('방문 이동 경로'));
+          const legacy = await fetch(new URL(`/dashboard/analytics/visitors?days=5&q=naver.com&session=${a.session_hash}`, base), { headers: { Cookie: authCookie }, redirect: 'manual' });
+          assert.equal(legacy.status, 307);
+          assert.equal(legacy.headers.get('location'), `/dashboard/analytics/visitors/sessions?days=5&q=naver.com&session=${a.session_hash}#visitor-session-detail`);
         }
       }
       if (process.argv.includes('--snapshot')) {

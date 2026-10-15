@@ -15,7 +15,7 @@
 
 ## 로컬 실행
 
-First, run the development server:
+로컬 개발 서버는 Webpack으로 실행합니다. 현재 환경에서 반복된 Turbopack의 기본 모듈 읽기 오류를 피하기 위한 설정입니다.
 
 ```bash
 npm run dev
@@ -134,7 +134,7 @@ npx tsx --env-file=.env.local scripts/check-archb-completion.mjs http://localhos
 
 ## 방문자 분석
 
-대시보드의 방문 요약과 `/dashboard/analytics/visitors`에서 5·7·30일 방문자, 방문 횟수, 페이지 조회, 방문당 조회, 일별 추이, 유입 도메인, 기기·섹션별 분포와 인기 페이지를 확인합니다. 관리자·부관리자만 전체 공개 사이트의 집계를 조회합니다. 기사별 24시간 중복 제외 카운터와는 별도 지표입니다.
+대시보드의 방문 요약과 `/dashboard/analytics/visitors`에서 5·7·30일 방문자, 방문 횟수, 페이지 조회, 방문당 조회, 일별 추이, 유입 도메인, 기기·섹션별 분포를 확인합니다. 방문 상세 기록은 하위 `/sessions`, 인기 페이지는 `/pages`에서 확인하며 페이지를 오갈 때 선택 기간을 유지합니다. 관리자·부관리자만 전체 공개 사이트의 집계를 조회합니다. 기사별 24시간 중복 제외 카운터와는 별도 지표입니다.
 
 공개 페이지를 실제로 열거나 SPA로 이동할 때 `/api/analytics/pageview`에 한 번 전송합니다. 30일의 HttpOnly 쿠키로 브라우저를 구분하고, 방문 쿠키는 마지막 활동 후 30분에 만료됩니다. 임의 ID는 서버 HMAC으로 해시해 ARCH.B의 `site_page_views`에 저장합니다. IP, 계정 정보, 검색어, 쿼리 문자열과 전체 유입 URL은 저장하지 않습니다. 방문 시작의 외부 도메인만 유입 경로에 사용합니다. 봇, 추적 거부(DNT/GPC), 관리·로그인·마이페이지 및 기본 localhost 접속은 제외합니다. 새 방문 시작 시 90일이 지난 기록을 정리합니다.
 

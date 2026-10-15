@@ -5,7 +5,7 @@ import { createPublicClient } from "./supabase/public";
 import { getArtCatalog } from "./art-catalog";
 import { buildDashboardMetrics, dashboardPeriod, type MetricMember, type MetricPost, type MetricView } from "./dashboard-metrics";
 import { editorialSchema } from "./news-editorial";
-import { publicPage, type TrafficStats, type VisitorSessionList, type VisitorEventList } from "./site-traffic";
+import { visitorPageTitles, type TrafficStats, type VisitorSessionList, type VisitorEventList } from "./site-traffic";
 
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -389,6 +389,21 @@ async function readDashboardOperations(context: DashboardContext, days: number) 
   return { ...buildDashboardMetrics(postsResult.value.map(p => ({ ...p, ...readiness.get(p.id) })), viewsResult.status === "fulfilled" ? viewsResult.value : null, membersResult.status === "fulfilled" ? membersResult.value : null, period.days, now), qualityAvailable: qualityResult.status === "fulfilled", warnings };
 }
 
+async function readVisitorPageTitles(context: DashboardContext, paths: string[]) {
+  const slugs = [...new Set(paths.filter(path => /^\/(news\/read|blog)\//.test(path)).map(path => path.split('/').at(-1)!))];
+  const galleryIds = [...new Set(paths.filter(path => /^\/gallery\/\d+$/.test(path)).map(path => Number(path.split('/').at(-1))))];
+  const [posts, catalog, gallery] = await Promise.all([
+    slugs.length ? context.admin.from('posts').select('slug,title').eq('is_published', true).in('slug', slugs) : null,
+    paths.some(path => /^\/(art|artists)\//.test(path)) ? getArtCatalog().catch(error => {
+      console.error('Visitor page catalog read failed:', error);
+      return null;
+    }) : null,
+    galleryIds.length ? context.admin.from('gallery').select('id,title').in('id', galleryIds) : null,
+  ]);
+  if (posts?.error || gallery?.error) console.error('Visitor page titles read failed:', posts?.error || gallery?.error);
+  return visitorPageTitles(paths, { posts: posts?.data || [], artworks: catalog?.artworks || [], artists: catalog?.artists || [], gallery: gallery?.data || [] });
+}
+
 async function readVisitorAnalytics(context: DashboardContext, days: number) {
   if (!["admin", "sub-admin"].includes(context.role)) return null;
   const period = dashboardPeriod(days);
@@ -401,12 +416,8 @@ async function readVisitorAnalytics(context: DashboardContext, days: number) {
     return { period, stats: null, error: "방문 기록을 불러오지 못했습니다. 잠시 후 다시 확인해 주세요." };
   }
   const stats = data as TrafficStats;
-  const slugs = stats.pages.filter(p => /^\/(news\/read|blog)\//.test(p.path)).map(p => p.path.split('/').at(-1)!);
-  if (slugs.length) {
-    const { data: posts } = await context.admin.from("posts").select("slug,title").eq("is_published", true).in("slug", slugs);
-    const titles = new Map((posts || []).map(p => [p.slug, p.title]));
-    stats.pages = stats.pages.map(p => ({ ...p, title: titles.get(p.path.split('/').at(-1)!) || publicPage(p.path)?.label || p.section }));
-  } else stats.pages = stats.pages.map(p => ({ ...p, title: publicPage(p.path)?.label || p.section }));
+  const titles = await readVisitorPageTitles(context, stats.pages.map(page => page.path));
+  stats.pages = stats.pages.map(page => ({ ...page, title: titles[page.path] }));
   return { period, stats, error: null };
 }
 
@@ -424,9 +435,16 @@ export async function getVisitorSessions(days: number, options: { page: number; 
     context.admin.rpc('site_traffic_sessions', { p_start: period.start, p_end: period.now, p_page: options.page, p_query: options.query }),
     /^[a-f0-9]{64}$/.test(options.session) ? context.admin.rpc('site_traffic_session_events', { p_session: options.session, p_start: period.start, p_end: period.now, p_page: options.eventPage }) : Promise.resolve(null),
   ]);
+  const sessionList = list.error ? null : list.data as VisitorSessionList;
+  const eventList = !events || events.error ? null : events.data as VisitorEventList;
+  const pageTitles = await readVisitorPageTitles(context, [...new Set([
+    ...(sessionList?.sessions.flatMap(visit => [visit.entry_path, visit.last_path]) || []),
+    ...(eventList?.events.map(event => event.path) || []),
+  ])]);
   return {
-    list: list.error ? null : list.data as VisitorSessionList,
-    events: !events || events.error ? null : events.data as VisitorEventList,
+    list: sessionList,
+    events: eventList,
+    pageTitles,
     error: list.error || events?.error ? '방문 상세 기록을 불러오지 못했습니다. 잠시 후 다시 확인해 주세요.' : null,
   };
 }

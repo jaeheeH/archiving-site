@@ -37,10 +37,12 @@
 - 작가 목록의 이미지는 선택 조건을 만족하는 작품에서 고르며 일치 작품 수와 전체 수를 구분한다. 상세 페이지의 분류는 현재 수집 작품에서 모아 보여준다.
 - 카드 주제와 상세의 분류를 누르면 해당 작품 목록으로 이동한다. 작가 카드·상세의 분류 링크는 그 작가 조건도 유지한다.
 - 목록은 기존 masonry, 제목 옆 북마크를 유지한다. 필터 상태는 GET 주소에 남고, 조건 초기화와 브라우저 뒤로가기를 지원한다. 주제와 사조는 통합 검색 및 저장 자료 검색에도 포함한다.
+- 아트 목록의 이미지·제목에서 작품 상세로 이동하면 검색·필터·더보기 단계와 작품 위치를 주소에 함께 보존한다. 상세의 복귀 링크는 PC·모바일 모두 ‘아트’로 표시하며 해당 목록과 작품 위치로 연결한다. 직접 연 상세는 기본 아트 목록으로 연결한다.
 - 필터 주소는 `noindex`이며 기본 목록 주소는 기존 대표 주소를 유지한다.
 
 ```powershell
 npx tsx scripts/check-art-taxonomy.ts
+npx tsx scripts/check-art-load-more.ts
 npx tsx scripts/check-art-taxonomy.ts http://localhost:3002
 npx tsx scripts/check-art-editorial.ts
 node scripts/check-archive.mjs http://localhost:3002

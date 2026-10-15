@@ -5,12 +5,13 @@ import type { CSSProperties } from "react";
 import { getArtworkArtist, type Artwork } from "@/lib/art-catalog";
 import ArtworkTags from '@/app/components/ArtworkTags';
 
-export default async function ArtworkCard({ artwork }: { artwork: Artwork }) {
+export default async function ArtworkCard({ artwork, returnTo }: { artwork: Artwork; returnTo?: string }) {
   const artist = await getArtworkArtist(artwork);
+  const href = returnTo ? `/art/${artwork.id}?${new URLSearchParams({ from: `${returnTo}#artwork-${artwork.id}` })}` : `/art/${artwork.id}`;
 
   return (
-    <article className="archive-card archive-art-card group">
-      <Link href={`/art/${artwork.id}`} className="archive-media" style={{ "--archive-image-ratio": artwork.image_width > 0 && artwork.image_height > 0 ? `${artwork.image_width} / ${artwork.image_height}` : "1.65" } as CSSProperties}>
+    <article id={`artwork-${artwork.id}`} className="archive-card archive-art-card group">
+      <Link href={href} className="archive-media" style={{ "--archive-image-ratio": artwork.image_width > 0 && artwork.image_height > 0 ? `${artwork.image_width} / ${artwork.image_height}` : "1.65" } as CSSProperties}>
           <Image
             src={artwork.preview_url}
             alt={`${artwork.title_ko} — ${artist?.name_ko || artwork.artist}`}
@@ -23,7 +24,7 @@ export default async function ArtworkCard({ artwork }: { artwork: Artwork }) {
       <div className="archive-card-copy">
         <p className="archive-card-label">{artwork.museum}</p>
         <div className="archive-card-title-row">
-          <h2><Link href={`/art/${artwork.id}`}>{artwork.title_ko}</Link></h2>
+          <h2><Link href={href}>{artwork.title_ko}</Link></h2>
           <SaveButton type="artwork" id={artwork.id} title={artwork.title_ko} iconOnly />
         </div>
         <p className="archive-card-description">

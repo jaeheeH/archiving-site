@@ -57,6 +57,7 @@
 .archive-masonry .archive-media { aspect-ratio: var(--archive-image-ratio, 1.65); }
 .archive-load-more { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--archive-line); color: var(--archive-muted); font-size: 14px; }
 .archive-card { min-width: 0; }
+.archive-art-card { scroll-margin-top: 100px; }
 .archive-card > a { display: block; }
 .archive-media { position: relative; display: block; width: 100%; aspect-ratio: 1.65; overflow: hidden; background: var(--archive-bg-light); border-radius: 0; }
 .archive-art-card .archive-media,.archive-artist-card .archive-media { background: transparent; aspect-ratio: var(--archive-image-ratio, 1.65); }

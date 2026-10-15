@@ -9,6 +9,8 @@ import ArchiveMasonry from '@/app/components/ArchiveMasonry';
 import { getArtCatalog, getArtwork, getArtworkArtist, getArtworksByArtist } from "@/lib/art-catalog";
 import { jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
 import ArtworkTags from '@/app/components/ArtworkTags';
+import { Suspense } from 'react';
+import ArtworkBackLink from '../ArtworkBackLink';
 
 type ArtworkPageProps = { params: Promise<{ id: string }> };
 
@@ -38,7 +40,7 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
         { '@context': 'https://schema.org', '@type': 'VisualArtwork', '@id': sitePageUrl(`/art/${artwork.id}#artwork`), url: sitePageUrl(`/art/${artwork.id}`), name: artwork.title_ko, alternateName: artwork.title, image: artwork.preview_url, artMedium: artwork.medium_ko || artwork.medium, ...(artist ? { creator: { '@type': 'Person', name: artist.name_ko || artist.name, url: sitePageUrl(`/artists/${artist.id}`) } } : {}), isBasedOn: artwork.source_url },
       ]) }} />
       <nav className="archive-breadcrumb" aria-label="현재 위치">
-        <Link href="/art" className="hover:text-foreground">아트</Link>
+        <Suspense fallback={<Link href="/art" className="hover:text-foreground">아트</Link>}><ArtworkBackLink /></Suspense>
         <span aria-hidden="true">/</span>
         <span>{artwork.title_ko}</span>
       </nav><div className="mb-5 flex justify-end"><SaveButton type="artwork" id={artwork.id} title={artwork.title_ko} /></div>

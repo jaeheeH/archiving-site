@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { ART_PAGE_SIZE, artListPage } from '../lib/art-list';
+import { ART_PAGE_SIZE, artListHref, artListPage, artReturnHref } from '../lib/art-list';
 
 assert.equal(ART_PAGE_SIZE, 24);
 assert.deepEqual(artListPage(220, {}), { page: 1, shown: 24, moreHref: '/art?page=2' });
@@ -17,4 +17,21 @@ assert.equal(url.searchParams.get('q'), filters.q);
 assert.equal(url.searchParams.get('museum'), filters.museum);
 assert.deepEqual(url.searchParams.getAll('subject'), filters.subject);
 assert.equal(artListPage(80, filters).shown, 24, 'A new filter starts at the first batch');
-console.log('Art load-more checks passed: 24-item batches, last batch, filters and invalid page values.');
+assert.equal(artListHref({}), '/art');
+assert.equal(artListHref({ page: '2' }, 2), '/art?page=2');
+const returnTo = artListHref({ ...filters, artist: 'claude-monet', period: 'modern', movement: 'impressionism', kind: 'painting' }, 3);
+const returnUrl = new URL(returnTo, 'https://example.com');
+assert.equal(returnUrl.searchParams.get('page'), '3');
+assert.equal(returnUrl.searchParams.get('q'), filters.q);
+assert.equal(returnUrl.searchParams.get('museum'), filters.museum);
+assert.deepEqual(returnUrl.searchParams.getAll('subject'), filters.subject);
+assert.equal(returnUrl.searchParams.get('artist'), 'claude-monet');
+assert.equal(returnUrl.searchParams.get('period'), 'modern');
+assert.equal(returnUrl.searchParams.get('movement'), 'impressionism');
+assert.equal(returnUrl.searchParams.get('kind'), 'painting');
+assert.equal(artReturnHref(`${returnTo}#artwork-met-437127`), `${returnTo}#artwork-met-437127`);
+assert.equal(artReturnHref('/art'), '/art');
+for (const value of [null, '', '//external.example/art', 'https://external.example/art', 'javascript:alert(1)', '/artists', '/artwork', '/art/other', '/art\\external.example']) {
+  assert.equal(artReturnHref(value), '/art', 'Only the art list can be a return destination');
+}
+console.log('Art navigation checks passed: batches, filters, return destinations and invalid input.');

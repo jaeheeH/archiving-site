@@ -1,6 +1,6 @@
 import { matchesSearch } from '@/lib/search-text';
 import { artFilterOptions, artTaxonomyTags, hasArtFilters, matchesArtFilters, readArtFilters } from '@/lib/art-taxonomy';
-import { artListPage, type ArtListParams } from '@/lib/art-list';
+import { artListHref, artListPage, type ArtListParams } from '@/lib/art-list';
 import ArtFilters from '@/app/components/ArtFilters';
 import Link from "next/link";
 import ArtworkCard from "./ArtworkCard";
@@ -28,6 +28,7 @@ export default async function ArtPage({ searchParams }: ArtPageProps) {
     return matchesSearch(q, [artwork.title_ko,artwork.title,artwork.artist,artwork.description,artwork.medium,artwork.medium_ko,...artwork.themes,...names,...artTaxonomyTags(artwork.taxonomy).map(tag => tag.label)]) && matchesArtFilters(artwork, filters);
   });
   const pagination = artListPage(filteredArtworks.length, params);
+  const returnTo = artListHref(params, pagination.page);
 
   return (
     <main className="archb-archive archive-art-page">
@@ -47,7 +48,7 @@ export default async function ArtPage({ searchParams }: ArtPageProps) {
       {filteredArtworks.length ? (
         <>
           <ArchiveMasonry label="작품 목록" id="artwork-list">
-            {filteredArtworks.slice(0, pagination.shown).map((artwork) => <ArtworkCard key={artwork.id} artwork={artwork} />)}
+            {filteredArtworks.slice(0, pagination.shown).map((artwork) => <ArtworkCard key={artwork.id} artwork={artwork} returnTo={returnTo} />)}
           </ArchiveMasonry>
           <ArtworkLoadMore {...pagination} total={filteredArtworks.length} />
         </>

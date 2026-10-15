@@ -8,6 +8,21 @@ export function publicPage(path: unknown): { path: string; section: string; labe
   return { path: clean, section, label: match[2] ? `${section} 상세` : section };
 }
 
+export function visitorPageTitles(paths: string[], content: {
+  posts: { slug: string; title: string }[];
+  artworks: { id: string; title: string; title_ko: string }[];
+  artists: { id: string; name: string; name_ko: string | null }[];
+  gallery: { id: number; title: string }[];
+}): Record<string, string> {
+  const titles = new Map<string, string>([
+    ...content.posts.flatMap(post => [[`/news/read/${post.slug}`, post.title], [`/blog/${post.slug}`, post.title]] as [string, string][]),
+    ...content.artworks.map(work => [`/art/${work.id}`, work.title_ko || work.title] as [string, string]),
+    ...content.artists.map(artist => [`/artists/${artist.id}`, artist.name_ko || artist.name] as [string, string]),
+    ...content.gallery.map(item => [`/gallery/${item.id}`, item.title] as [string, string]),
+  ]);
+  return Object.fromEntries(paths.map(path => [path, titles.get(path) || publicPage(path)?.label || path]));
+}
+
 export function referrerHost(value: unknown, ownHost: string): string | null {
   if (typeof value !== 'string' || value.length > 2048) return null;
   try {
