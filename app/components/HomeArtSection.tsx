@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/app/components/ArchiveImage";
 import ArtworkCard from "@/app/art/ArtworkCard";
 import { getArtCatalog, getArtworkArtist } from "@/lib/art-catalog";
 
@@ -19,7 +19,6 @@ export default async function HomeArtSection() {
           className="group relative flex min-h-[520px] overflow-hidden rounded-[18px] bg-[#191918] md:min-h-[620px]"
         >
           <Image
-            unoptimized
             src={featured.preview_url}
             alt={`${featured.title_ko} — ${artist?.name_ko || featured.artist}`}
             fill

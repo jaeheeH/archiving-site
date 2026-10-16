@@ -1,4 +1,5 @@
 import { canOptimizeImage } from './public-image';
+import { IMAGE_WIDTHS } from './image-config';
 /**
  * 이미지 URL을 최적화된 형식으로 변환
  * Next Image의 기존 캐시와 이미지 변환을 사용
@@ -14,7 +15,7 @@ export function optimizeImageUrl(
   } = {}
 ): string {
   if (!url || !canOptimizeImage(url)) return url;
-  const width = [16, 32, 64, 128, 256, 384, 640, 828, 1200].find(size => size >= (options.width || 1200)) || 1200;
+  const width = IMAGE_WIDTHS.find(size => size >= (options.width || 1200)) || 1200;
   // Use Next's existing optimizer; arbitrary query parameters on a Storage object do not resize it.
   return `/_next/image?url=${encodeURIComponent(url)}&w=${width}&q=75`;
 }
@@ -23,8 +24,8 @@ export function optimizeImageUrl(
  * srcset 생성 (반응형 이미지)
  */
 export function generateImageSrcSet(url: string): string {
-  const sizes = [400, 800, 1200, 1600];
-  return sizes
+  if (!canOptimizeImage(url)) return '';
+  return IMAGE_WIDTHS.filter(size => size >= 384)
     .map((size) => `${optimizeImageUrl(url, { width: size, format: 'webp' })} ${size}w`)
     .join(', ');
 }
@@ -39,12 +40,14 @@ export function optimizeEditorImages(htmlContent: string): string {
   doc.querySelectorAll('img').forEach((img) => {
     const originalSrc = img.getAttribute('src');
     if (originalSrc) {
-      // 이미지 최적화
-      img.setAttribute('src', optimizeImageUrl(originalSrc, { width: 800, format: 'webp' }));
-      
-      // srcset 추가 (반응형)
-      img.setAttribute('srcset', generateImageSrcSet(originalSrc));
-      img.setAttribute('sizes', '(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1200px');
+      if (canOptimizeImage(originalSrc)) {
+        // 이미지 최적화
+        img.setAttribute('src', optimizeImageUrl(originalSrc, { width: 800, format: 'webp' }));
+
+        // srcset 추가 (반응형)
+        img.setAttribute('srcset', generateImageSrcSet(originalSrc));
+        img.setAttribute('sizes', '(max-width: 640px) 100vw, (max-width: 1024px) 800px, 1200px');
+      }
       
       // 로딩 속성
       img.setAttribute('loading', 'lazy');

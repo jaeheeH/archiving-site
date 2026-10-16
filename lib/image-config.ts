@@ -1,0 +1,3 @@
+export const IMAGE_DEVICE_SIZES = [640, 828, 1200];
+export const IMAGE_SIZES = [16, 32, 48, 64, 96, 128, 192, 256, 384, 480];
+export const IMAGE_WIDTHS = [...IMAGE_SIZES, ...IMAGE_DEVICE_SIZES];

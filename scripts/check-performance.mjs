@@ -7,7 +7,10 @@ import sharp from 'sharp';
 import { newsPage, newsListUrl } from '../lib/news-list.ts';
 import { canOptimizeImage } from '../lib/public-image.ts';
 import { readOgImage } from '../lib/og-image.ts';
-import { optimizeImageUrl } from '../lib/image-optimizer.ts';
+import { optimizeImageUrl, generateImageSrcSet } from '../lib/image-optimizer.ts';
+import { IMAGE_WIDTHS } from '../lib/image-config.ts';
+import NextConfigModule from '../next.config.ts';
+import ArchiveImageModule from '../app/components/ArchiveImage.tsx';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import EditorialModule from '../app/components/EditorialContent.tsx';
@@ -40,6 +43,32 @@ assert.equal(newsListUrl({ page: 1, category: 'all' }), '/news/stories');
 for (const url of ['https://localhost/image', 'http://storage.googleapis.com/image', 'https://evilsupabase.co/image', 'https://storage.googleapis.com:8443/image', 'https://user:password@storage.googleapis.com/image']) assert.equal(canOptimizeImage(url), false);
 const source = 'https://overgjynkrnwayfammid.supabase.co/storage/v1/object/public/images/a.png?token=keep';
 assert.equal(new URL(optimizeImageUrl(source), 'http://test').searchParams.get('url'), source);
+const configure = NextConfigModule.default || NextConfigModule;
+const imageConfig = configure('phase-development-server').images;
+assert.deepEqual([...imageConfig.imageSizes, ...imageConfig.deviceSizes], IMAGE_WIDTHS);
+for (const width of [48, 96, 192, 480]) assert.equal(new URL(optimizeImageUrl(source, { width }), 'http://test').searchParams.get('w'), String(width));
+const srcset = generateImageSrcSet(source).split(', ');
+assert.equal(new Set(srcset.map(candidate => candidate.split(' ')[0])).size, srcset.length);
+for (const candidate of srcset) {
+  const [url, descriptor] = candidate.split(' ');
+  const width = Number(new URL(url, 'http://test').searchParams.get('w'));
+  assert.ok(IMAGE_WIDTHS.includes(width));
+  assert.equal(descriptor, `${width}w`);
+}
+const optimized = optimizeImageUrl(source);
+assert.equal(optimizeImageUrl(optimized), optimized, 'Do not optimize an optimizer URL again');
+assert.equal(generateImageSrcSet(optimized), '');
+assert.equal(canOptimizeImage('/_next/static/media/image.hash.webp'), true);
+assert.equal(canOptimizeImage('https://engineering.fb.com/wp-content/uploads/test.jpg'), true);
+assert.equal(canOptimizeImage('https://engineering.fb.com.attacker.example/test.jpg'), false);
+for (const url of ['https://unknown.example/image.jpg', '/api/private-image', 'data:image/png;base64,aA==']) {
+  assert.equal(optimizeImageUrl(url), url);
+  assert.equal(generateImageSrcSet(url), '');
+}
+const ArchiveImage = ArchiveImageModule.default || ArchiveImageModule;
+const rawImage = renderToStaticMarkup(React.createElement(ArchiveImage, { src: '/check.jpg', alt: '원본', width: 48, height: 48, unoptimized: true }));
+assert.match(rawImage, /src="\/check.jpg"/);
+assert.ok(!rawImage.includes('/_next/image'));
 
 const nativeFetch = globalThis.fetch;
 const webp = await sharp({ create: { width: 30, height: 20, channels: 3, background: '#178a17' } }).webp().toBuffer();
@@ -97,4 +126,4 @@ if (base) {
   assert.ok(fontCss.includes('font-display: swap') && fontCss.includes('unicode-range:') && !fontCss.includes('url(http'));
   console.log(JSON.stringify({ fullNewsBytes: Buffer.byteLength(fullText), listBytes: Buffer.byteLength(listText), listReductionPercent: Math.round(reduction * 100), readerBytes, previousReaderBytes, gzipListBytes: gzipSync(listText).length }));
 }
-console.log('Performance checks passed: pagination, image boundaries, WebP decoding, fallback cards and payload budgets.');
+console.log('Performance checks passed: pagination, image boundaries, responsive widths, original-image opt-out, WebP decoding, fallback cards and payload budgets.');

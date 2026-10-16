@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { PUBLIC_IMAGE_HOSTS } from './lib/public-image';
+import { IMAGE_DEVICE_SIZES, IMAGE_SIZES } from './lib/image-config';
 
 function getSupabaseImageHost() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -61,8 +62,8 @@ const nextConfig: NextConfig = {
           ]
         : []),
     ],
-    deviceSizes: [640, 828, 1200],
-    imageSizes: [16, 32, 64, 128, 256, 384],
+    deviceSizes: IMAGE_DEVICE_SIZES,
+    imageSizes: IMAGE_SIZES,
     qualities: [75],
     minimumCacheTTL: 86400,
   },

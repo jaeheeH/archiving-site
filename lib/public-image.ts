@@ -4,12 +4,12 @@ export const PUBLIC_IMAGE_HOSTS = [
   'images.metmuseum.org', 'openaccess-cdn.clevelandart.org', 'overgjynkrnwayfammid.supabase.co',
   'media.getty.edu', 'api.nga.gov', 'upload.wikimedia.org',
   'iip-thumb.smk.dk',
-  'about.fb.com', 'blog.cloudflare.com', 'blog.developer.adobe.com', 'blogs.nvidia.com',
+  'about.fb.com', 'engineering.fb.com', 'blog.cloudflare.com', 'blog.developer.adobe.com', 'blogs.nvidia.com',
   'cdn-images-1.medium.com', 'design-milk.com', 'files.smashing.media', 'github.com',
   'img.kr.news.samsung.com', 'static.dezeen.com', 'static.toss.im', 'storage.googleapis.com',
 ];
 export function canOptimizeImage(value: string) {
-  if (value.startsWith('/') && !value.startsWith('//')) return !value.startsWith('/api/');
+  if (value.startsWith('/') && !value.startsWith('//')) return !value.startsWith('/api/') && !/^\/_next\/image(?:[?#]|$)/.test(value);
   try {
     const url = new URL(value);
     return url.protocol === 'https:' && !url.username && !url.password && !url.port && PUBLIC_IMAGE_HOSTS.includes(url.hostname)
