@@ -33,7 +33,10 @@ const draftEditorialSchema = z.object({
   paragraphs: z.array(z.union([draftText(1000), section.extend({ heading: draftText(80), paragraphs: z.array(draftText(1000)).max(4), references: z.array(z.object({ label: draftText(100), kind: z.enum(["primary", "reporting"]).default("reporting"), url: z.union([z.literal(""), section.shape.references.unwrap().element.shape.url]) }).strict()).max(3).default([]) })])).max(12),
   points: z.array(draftText(200)).max(4), tags: z.array(draftText(30).min(1)).max(5),
 }).strict().refine(value => editorialText(value.paragraphs).length <= 8000, "본문이 너무 깁니다.");
-export const newsEditSchema = z.object({ article: draftEditorialSchema, is_published: z.boolean() }).strict().superRefine((value, context) => {
+const thumbnailUrlSchema = z.string().trim().max(2000).url().refine(value => {
+  try { const url = new URL(value); return url.protocol === 'https:' && url.hostname === 'overgjynkrnwayfammid.supabase.co' && !url.username && !url.password && !url.port && url.pathname.startsWith('/storage/v1/object/public/posts/'); } catch { return false; }
+}, '업로드한 뉴스 썸네일 주소가 필요합니다.');
+export const newsEditSchema = z.object({ article: draftEditorialSchema, is_published: z.boolean(), thumbnail_url: thumbnailUrlSchema.nullable().optional(), thumbnail_credit: z.string().trim().max(200).optional() }).strict().superRefine((value, context) => {
   if (!value.is_published) return;
   const parsed = editorialSchema.safeParse(value.article);
   if (!parsed.success) for (const issue of parsed.error.issues) context.addIssue({ ...issue, path: ["article", ...issue.path] });

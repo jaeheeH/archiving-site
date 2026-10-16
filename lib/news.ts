@@ -9,11 +9,11 @@ import { NEWS_FORMAT, newsSlug, completedNewsWriting, type NewsArticle } from ".
 export type { NewsArticle } from "./news-record";
 import type { NewsSummary } from './news-list';
 export const NEWS_CACHE_TAG = "archb-news";
-const columns = "id,type,slug,title,subtitle,summary,tags,title_image_url,published_at,content,author_id,category_id";
+const columns = "id,type,slug,title,subtitle,summary,tags,title_image_url,thumbnail_url,published_at,content,author_id,category_id";
 
 type PublishedRow = {
   id: string; type: string; slug: string; title: string; subtitle: string | null; summary: string | null;
-  tags: string[] | null; title_image_url: string | null; published_at: string; category_id: string;
+  tags: string[] | null; title_image_url: string | null; thumbnail_url?: string | null; published_at: string; category_id: string;
   content: { format?: string; category: NewsArticle["category"]; source_url: string; original_title: string; source: string; source_published_at?: string; paragraphs: NewsArticle["paragraphs"]; points: string[] } | null;
 };
 export function mapPublishedRows(rows: PublishedRow[]) {
@@ -21,7 +21,7 @@ export function mapPublishedRows(rows: PublishedRow[]) {
     if (row.type === "blog") return [{ id: row.id, slug: row.slug, kind: "editorial" as const, collection: row.category_id, url: `/news/read/${row.slug}`, original_title: row.title, title: row.title, summary: row.summary || row.subtitle || "", description: row.summary || row.subtitle || "ARCH.B의 관점으로 읽는 이야기.", tags: row.tags || [], image: row.title_image_url, published_at: row.published_at, source: "ARCH.B", category: "editorial" as const, paragraphs: [], points: [] }];
     const content = row.content;
     if (content?.format !== NEWS_FORMAT || !Object.hasOwn(CATEGORIES, content.category) || !Array.isArray(content.paragraphs) || !Array.isArray(content.points)) return [];
-    return [{ id: row.id, slug: row.slug, kind: "news" as const, url: content.source_url, original_title: content.original_title, title: row.title, summary: row.summary || "", description: row.summary || "", tags: row.tags || [], image: row.title_image_url, published_at: content.source_published_at || row.published_at, source: content.source, category: content.category, paragraphs: content.paragraphs, points: content.points }];
+    return [{ id: row.id, slug: row.slug, kind: "news" as const, url: content.source_url, original_title: content.original_title, title: row.title, summary: row.summary || "", description: row.summary || "", tags: row.tags || [], image: row.title_image_url || row.thumbnail_url || null, published_at: content.source_published_at || row.published_at, source: content.source, category: content.category, paragraphs: content.paragraphs, points: content.points }];
   });
 }
 export const readNews = unstable_cache(async () => {

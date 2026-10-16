@@ -16,4 +16,4 @@ export function newsPost(article: Article & Partial<Editorial> & { original_titl
     content: { format: NEWS_FORMAT, source_url: article.url, source: article.source, category: article.category, source_published_at: article.published_at, original_title: article.original_title || article.title, ...(published ? { paragraphs: article.paragraphs, points: article.points } : { source_text: article.source_text || article.description }) },
   };
 }
-export type NewsPost = ReturnType<typeof newsPost> & { id: string; author_id: string | null; created_at: string; updated_at: string; view_count: number; scrap_count: number; content: { paragraphs?: Editorial["paragraphs"]; points?: string[]; source_text?: string; automation?: WritingState; duplicate_review?: DuplicateReview } };
+export type NewsPost = ReturnType<typeof newsPost> & { id: string; author_id: string | null; thumbnail_url: string | null; created_at: string; updated_at: string; view_count: number; scrap_count: number; content: { paragraphs?: Editorial["paragraphs"]; points?: string[]; source_text?: string; thumbnail_credit?: string; automation?: WritingState; duplicate_review?: DuplicateReview } };

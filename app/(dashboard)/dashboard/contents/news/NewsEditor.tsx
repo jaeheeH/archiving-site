@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { useUnsavedChanges } from "@/lib/use-unsaved-changes";
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/news-feeds";
 import type { NewsPost } from "@/lib/news-record";
 import { editorialText, type Editorial } from "@/lib/news-editorial";
 import type { ResearchResult } from "@/lib/news-research";
+import { useImageUpload } from "@/hooks/useImageUpload";
+import ArchiveImage from "@/app/components/ArchiveImage";
 
 const fieldClass = "w-full rounded-md border border-gray-200 bg-white px-3 py-2.5 text-sm leading-6 focus:border-gray-500";
 
@@ -25,6 +27,10 @@ export default function NewsEditor({ postId }: { postId: string }) {
   const [preview, setPreview] = useState<ResearchResult | null>(null);
   const [prepared, setPrepared] = useState<ResearchResult | null>(null);
   const [issues, setIssues] = useState<{ field: string; message: string }[]>([]);
+  const [thumbnailUrl, setThumbnailUrl] = useState('');
+  const [thumbnailCredit, setThumbnailCredit] = useState('');
+  const [thumbnailChanged, setThumbnailChanged] = useState(false);
+  const { uploadImage, uploading } = useImageUpload();
   useUnsavedChanges(dirty);
 
   async function research() {
@@ -56,6 +62,7 @@ export default function NewsEditor({ postId }: { postId: string }) {
       const row = data.data as NewsPost & { type: string };
       if (row.type !== "news" || row.content?.format !== "archb-news-v1") throw new Error("뉴스를 찾을 수 없습니다.");
       setPost(row); setTitle(row.title); setSummary(row.summary || ""); setPoints((row.content.points || []).join("\n")); setTags((row.tags || []).join(", ")); setParagraphs(row.content.paragraphs || []);
+      setThumbnailUrl(row.thumbnail_url || ''); setThumbnailCredit(row.content.thumbnail_credit || ''); setThumbnailChanged(false);
     }).catch(cause => { if (!controller.signal.aborted) setError(cause.message); });
     fetch(`/api/news/${postId}/research`, { signal: controller.signal }).then(async response => {
       if (response.ok) setPrepared((await response.json()).prepared);
@@ -65,9 +72,18 @@ export default function NewsEditor({ postId }: { postId: string }) {
 
   function updateSection(index: number, value: Editorial["paragraphs"][number]) { setDirty(true); setParagraphs(previous => previous.map((section, i) => i === index ? value : section)); }
 
+  async function uploadThumbnail(event: ChangeEvent<HTMLInputElement>) {
+    event.stopPropagation();
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file || busy || researching || uploading) return;
+    const url = await uploadImage(file, `news-thumbnails/${postId}`, false);
+    if (url) { setThumbnailUrl(url); setThumbnailCredit(''); setThumbnailChanged(true); setDirty(true); setNotice('썸네일을 준비했습니다. 저장하면 목록에 반영됩니다.'); }
+  }
+
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!post || busy || researching) return;
+    if (!post || busy || researching || uploading) return;
     const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
     const isPublished = submitter ? submitter.value === "published" : post.is_published;
     const article = {
@@ -78,11 +94,12 @@ export default function NewsEditor({ postId }: { postId: string }) {
     };
     setBusy(true); setNotice(""); setError(""); setIssues([]);
     try {
-      const response = await fetch(`/api/news/${postId}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ article, is_published: isPublished }) });
+      const response = await fetch(`/api/news/${postId}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ article, is_published: isPublished, ...(thumbnailChanged ? { thumbnail_url: thumbnailUrl || null, thumbnail_credit: thumbnailCredit } : {}) }) });
       const result = await response.json();
       if (!response.ok) { setIssues(result.issues || []); throw new Error(result.error || "저장하지 못했습니다."); }
       setDirty(false);
-      setPost({ ...post, title, is_published: isPublished });
+      setPost({ ...post, title, is_published: isPublished, ...(thumbnailChanged ? { thumbnail_url: thumbnailUrl || null } : {}) });
+      setThumbnailChanged(false);
       setNotice(isPublished ? "발행된 기사에 변경사항을 저장했습니다." : "미발행 상태로 저장했습니다.");
     } catch (cause) { setError(cause instanceof Error ? cause.message : "저장하지 못했습니다."); }
     finally { setBusy(false); }
@@ -137,9 +154,19 @@ export default function NewsEditor({ postId }: { postId: string }) {
             {error && <p role="alert" className="text-sm leading-6 text-red-700">{error}</p>}
             {issues.length > 0 && <ul className="space-y-2 text-xs text-red-700">{issues.map((issue, i) => <li key={i}>{issue.field}: {issue.message}</li>)}</ul>}
             {notice && <p role="status" className="text-sm leading-6 text-emerald-700">{notice}</p>}
-            <button type="submit" value={post.is_published ? "published" : "draft"} disabled={busy || researching} className="content-table-create w-full">{busy ? "저장 중…" : post.is_published ? "변경사항 저장" : "임시저장"}</button>
-            <button type="submit" value={post.is_published ? "draft" : "published"} disabled={busy || researching} className="content-table-action w-full">{post.is_published ? "비공개로 저장" : "발행"}</button>
+            <button type="submit" value={post.is_published ? "published" : "draft"} disabled={busy || researching || uploading} className="content-table-create w-full">{busy ? "저장 중…" : post.is_published ? "변경사항 저장" : "임시저장"}</button>
+            <button type="submit" value={post.is_published ? "draft" : "published"} disabled={busy || researching || uploading} className="content-table-action w-full">{post.is_published ? "비공개로 저장" : "발행"}</button>
             {post.is_published && <Link href={`/news/read/${post.slug}`} target="_blank" rel="noopener noreferrer" className="block text-center text-sm text-emerald-700">기사 보기 ↗</Link>}
+          </section>
+          <section aria-label="목록 썸네일" className="space-y-3 rounded-lg border border-gray-200 bg-white p-5">
+            <h2 className="text-sm font-semibold">목록 썸네일</h2>
+            <p className="text-xs leading-6 text-gray-500">원본 이미지가 있으면 목록과 상세에 그대로 사용합니다. 원본이 없는 기사만 아래 썸네일을 목록에 표시하며, 상세 본문에는 넣지 않습니다.</p>
+            {post.title_image_url && <div><p className="mb-2 text-xs font-medium">현재 원본 이미지 · 우선 사용</p><ArchiveImage src={post.title_image_url} width={600} height={400} sizes="280px" alt="현재 기사 원본 이미지" className="h-auto w-full rounded-md" /></div>}
+            {thumbnailUrl && <div><p className="mb-2 text-xs font-medium">별도 썸네일</p><ArchiveImage src={thumbnailUrl} width={600} height={400} sizes="280px" alt="원본 이미지가 없을 때 사용할 목록 썸네일" className="h-auto w-full rounded-md" /></div>}
+            <label className="block text-xs font-medium">별도 썸네일 업로드<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" disabled={busy || researching || uploading} onChange={uploadThumbnail} className="mt-2 block w-full text-xs" /></label>
+            <p className="text-xs leading-5 text-gray-500">JPG·PNG·WebP·GIF, 8MB 이하. 저장해야 반영됩니다.</p>
+            {uploading && <p role="status" className="text-xs">썸네일 업로드 중…</p>}
+            {thumbnailUrl && <><label className="block text-xs">썸네일 출처<input className={`${fieldClass} mt-1`} value={thumbnailCredit} maxLength={200} placeholder="예: ARCH.B · AI 생성" onChange={event => { setThumbnailCredit(event.target.value); setThumbnailChanged(true); setDirty(true); }} /></label><button type="button" disabled={busy || researching || uploading} className="content-table-action" onClick={() => { setThumbnailUrl(''); setThumbnailCredit(''); setThumbnailChanged(true); setDirty(true); }}>별도 썸네일 제거</button></>}
           </section>
           <section className="space-y-3 rounded-lg border border-gray-200 bg-white p-5"><h2 className="text-sm font-semibold">자료 조사·초안 생성</h2><p className="text-xs leading-6 text-gray-500">공식 자료를 우선 조사하고 검토용 초안을 만듭니다. 초안 생성만으로 현재 기사가 바뀌지 않습니다.</p>{prepared && <button type="button" disabled={busy || researching} onClick={() => setPreview(prepared)} className="w-full rounded-md border border-emerald-300 px-4 py-2.5 text-sm text-emerald-700 disabled:opacity-50">보강 초안 검토 · {prepared.research.characterCount}자</button>}<button type="button" onClick={research} disabled={busy || researching} className="w-full rounded-md border border-gray-200 px-4 py-2.5 text-sm disabled:opacity-50">{researching ? '자료 조사 중…' : '자료 조사·초안 생성'}</button></section>
           <section className="space-y-3 rounded-lg border border-gray-200 bg-white p-5"><h2 className="text-sm font-semibold">원출처</h2><p className="text-xs text-gray-500">{CATEGORIES[post.content.category]} · {post.content.source}</p><a href={post.content.source_url} target="_blank" rel="noopener noreferrer" className="block break-words text-sm text-emerald-700 hover:underline">{post.content.original_title} ↗</a>{post.content.source_text && <details className="text-xs leading-6 text-gray-500"><summary className="cursor-pointer">수집한 원문 요약</summary><p className="mt-2 whitespace-pre-wrap">{post.content.source_text}</p></details>}</section>

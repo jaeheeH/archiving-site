@@ -96,7 +96,7 @@ async function getBlogPayload(slug: string): Promise<OgPayload | null> {
     label: data.type === "news" ? "뉴스" : category || "에디토리얼",
     title: data.title,
     description: data.summary || data.subtitle || "ARCH.B에서 기록한 최신 인사이트입니다.",
-    imageUrl: getOgSafeImageUrl(data.thumbnail_url || data.title_image_url),
+    imageUrl: getOgSafeImageUrl(data.type === 'news' ? data.title_image_url || data.thumbnail_url : data.thumbnail_url || data.title_image_url),
     meta: formatDate(data.published_at || data.created_at),
     variant: "blog",
   };

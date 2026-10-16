@@ -18,17 +18,25 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   if (!parsed.success) return Response.json({ error: "제목·요약·본문·참고자료를 확인해주세요.", issues: parsed.error.issues.map(issue => ({ field: issue.path.join("."), message: issue.message })) }, { status: 400 });
   try {
     const db = createAdminClient();
-    const { data: post, error } = await db.from("posts").select("slug,content,published_at").eq("id", id).eq("type", "news").single();
+    const { data: post, error } = await db.from("posts").select("slug,content,published_at,thumbnail_url,updated_at").eq("id", id).eq("type", "news").single();
     if (error || post?.content?.format !== NEWS_FORMAT) return Response.json({ error: "뉴스를 찾을 수 없습니다." }, { status: 404 });
-    const { article, is_published } = parsed.data;
+    const { article, is_published, thumbnail_url, thumbnail_credit } = parsed.data;
     if (article.url !== post.content.source_url) return Response.json({ error: "원출처는 변경할 수 없습니다." }, { status: 400 });
+    const content = { ...post.content, paragraphs: article.paragraphs, points: article.points, duplicate_review: undefined, automation: is_published || editorialSchema.safeParse(article).success ? completedNewsWriting(post.content.automation) : undefined };
+    if (thumbnail_url !== undefined) {
+      if (thumbnail_url !== post.thumbnail_url || !thumbnail_url) delete content.thumbnail_provenance;
+      if (thumbnail_url && thumbnail_credit) content.thumbnail_credit = thumbnail_credit;
+      else delete content.thumbnail_credit;
+    }
     const saved = await db.from("posts").update({
       title: article.title, summary: article.summary, tags: article.tags, is_published,
       published_at: is_published ? post.published_at || post.content.source_published_at || new Date().toISOString() : null,
-      content: { ...post.content, paragraphs: article.paragraphs, points: article.points, duplicate_review: undefined, automation: is_published || editorialSchema.safeParse(article).success ? completedNewsWriting(post.content.automation) : undefined },
+      content,
+      ...(thumbnail_url !== undefined ? { thumbnail_url } : {}),
       updated_at: new Date().toISOString(),
-    }).eq("id", id).eq("type", "news");
+    }).eq("id", id).eq("type", "news").eq("updated_at", post.updated_at).select("id").maybeSingle();
     if (saved.error) throw saved.error;
+    if (!saved.data) return Response.json({ error: "다른 작업에서 기사가 변경됐습니다. 새로고침 후 다시 저장해주세요." }, { status: 409 });
     revalidateTag("archb-news", { expire: 0 });
     revalidatePath("/rss.xml"); revalidatePath("/sitemap.xml");
     revalidateTag(CACHE_TAGS.posts, { expire: 0 });

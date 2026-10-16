@@ -745,7 +745,7 @@ export const getBlogPostData = unstable_cache(
         console.error("Failed to load blog author:", authorRes.error.message);
       }
 
-      const relatedColumns = "id,type,title,subtitle,summary,slug,published_at,created_at,title_image_url,category_id,tags,content:content->category";
+      const relatedColumns = "id,type,title,subtitle,summary,slug,published_at,created_at,title_image_url,thumbnail_url,category_id,tags,content:content->category";
       const baseRelated = () => supabase.from("posts").select(relatedColumns).in("type", ["blog", "news"]).eq("is_published", true).not("published_at", "is", null).neq("id", post.id).order("published_at", { ascending: false });
       const contentCategory = post.type === "news" ? post.content?.category : null;
       const [tagMatches, categoryMatches, recent] = await Promise.all([
@@ -758,7 +758,7 @@ export const getBlogPostData = unstable_cache(
         (item.tags || []).filter(tag => currentTags.has(tag.toLocaleLowerCase('ko'))).length * 10 +
         (contentCategory && item.content === contentCategory || post.category_id && item.category_id === post.category_id ? 3 : 0);
       const relatedPosts = [...new Map([...(tagMatches.data || []), ...(categoryMatches.data || []), ...(recent.data || [])].map(item => [item.id, item])).values()]
-        .sort((a, b) => score(b) - score(a) || Date.parse(b.published_at) - Date.parse(a.published_at)).slice(0, 3).map(item => ({ ...item, content: { category: typeof item.content === "string" && Object.hasOwn(CATEGORIES, item.content) ? item.content as keyof typeof CATEGORIES : undefined } }));
+        .sort((a, b) => score(b) - score(a) || Date.parse(b.published_at) - Date.parse(a.published_at)).slice(0, 3).map(item => ({ ...item, title_image_url: item.type === 'news' ? item.title_image_url || item.thumbnail_url : item.title_image_url, content: { category: typeof item.content === "string" && Object.hasOwn(CATEGORIES, item.content) ? item.content as keyof typeof CATEGORIES : undefined } }));
 
       return {
         post,

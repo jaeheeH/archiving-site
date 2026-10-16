@@ -101,7 +101,7 @@ export async function getBlogRssXml() {
   const items = posts
     .map((post) => {
       const link = `${baseUrl}/news/read/${encodeURIComponent(post.slug)}`;
-      const imageUrl = post.thumbnail_url || post.title_image_url;
+      const imageUrl = post.type === 'news' ? post.title_image_url || post.thumbnail_url : post.thumbnail_url || post.title_image_url;
       const categoryName = post.type === "news" ? CATEGORIES[post.news_category || "design"] : (post.category_id ? categoryMap.get(post.category_id) : "에디토리얼");
 
       return [
