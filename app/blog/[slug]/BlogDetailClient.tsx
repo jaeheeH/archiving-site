@@ -71,6 +71,7 @@ interface BlogDetailClientProps {
     categoryName: string;
     categoryUrl: string;
     source: string;
+    imageCredit?: string;
     description: string;
     points: string[];
     readingMinutes: number;
@@ -516,7 +517,7 @@ export default function BlogDetailClient({
           {post.title_image_url && (
             <figure className="news-detail-thumbnail">
               <ArchiveImage src={post.title_image_url} width={1200} height={800} sizes="(max-width: 1024px) 100vw, 820px" alt={post.title} referrerPolicy="no-referrer" />
-              {news && <figcaption className="news-detail-image-credit">이미지 제공: {news.source} · 원출처 기사</figcaption>}
+              {news && <figcaption className="news-detail-image-credit">{news.imageCredit || `이미지 제공: ${news.source} · 원출처 기사`}</figcaption>}
             </figure>
           )}
 
