@@ -37,7 +37,7 @@ export default function AboutPage() {
       </header>
 
       <div className={styles.visual}>
-        <Image src={hero} alt="" loading="eager" fetchPriority="high" sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1280px) calc(100vw - 48px), 1232px" />
+        <Image unoptimized src={hero} alt="" loading="eager" fetchPriority="high" />
       </div>
 
       <section className={styles.section} aria-labelledby="about-principles">
@@ -71,7 +71,7 @@ export default function AboutPage() {
             <span className={styles.contentNumber} aria-hidden="true">01</span>
             <div className={styles.contentPreview}>
               <p>READ</p>
-              <Image src={newsPreview} alt="신문과 잡지로 표현한 읽을거리" sizes="(max-width: 760px) calc(100vw - 84px), (max-width: 1280px) calc(39.13vw - 72px), 429px" />
+              <Image unoptimized src={newsPreview} alt="신문과 잡지로 표현한 읽을거리" />
             </div>
             <div className={styles.contentBody}>
               <h3>뉴스와 에디토리얼</h3>
@@ -83,7 +83,7 @@ export default function AboutPage() {
             <span className={styles.contentNumber} aria-hidden="true">02</span>
             <div className={styles.contentPreview}>
               <p>EXPLORE</p>
-              <Image src={artPreview} alt="추상 조형물과 회화" sizes="(max-width: 760px) calc(100vw - 84px), (max-width: 1280px) calc(39.13vw - 72px), 429px" />
+              <Image unoptimized src={artPreview} alt="추상 조형물과 회화" />
             </div>
             <div className={styles.contentBody}>
               <h3>작품과 작가</h3>
@@ -98,7 +98,7 @@ export default function AboutPage() {
             <span className={styles.contentNumber} aria-hidden="true">03</span>
             <div className={styles.contentPreview}>
               <p>DISCOVER</p>
-              <Image src={referencesPreview} alt="시각 자료를 분류한 인덱스 카드" sizes="(max-width: 760px) calc(100vw - 84px), (max-width: 1280px) calc(39.13vw - 72px), 429px" />
+              <Image unoptimized src={referencesPreview} alt="시각 자료를 분류한 인덱스 카드" />
             </div>
             <div className={styles.contentBody}>
               <h3>참고사이트</h3>
