@@ -60,7 +60,7 @@ const page = async path => {
   });
   return { html, head, schemas };
 };
-const urls = ['/', '/news/stories', '/news/stories?category=design', '/art', '/artists', '/references', '/gallery', '/privacy', '/terms'];
+const urls = ['/', '/news/stories', '/news/stories?category=design', '/art', '/artists', '/references', '/gallery', '/about', '/privacy', '/terms'];
 for (const path of urls) await page(path);
 const homeVersion = await page('/');
 assert.ok(homeVersion.html.includes(`data-dpl-id="${nextConfig.deploymentId}"`), 'HTML must identify its deployment version');
@@ -86,6 +86,7 @@ const locs = entries.map(item => item.loc);
 assert.equal(new Set(locs).size, locs.length, 'No duplicate sitemap URLs');
 assert.ok(locs.every(url => url.startsWith(root) && !/\/(dashboard|mypage|login|blog)(\/|$)/.test(new URL(url).pathname)));
 assert.ok(locs.includes(`${root}/gallery`));
+assert.ok(locs.includes(`${root}/about`));
 const artPath = new URL(locs.find(url => new URL(url).pathname.startsWith('/art/'))).pathname;
 const artistPath = new URL(locs.find(url => new URL(url).pathname.startsWith('/artists/'))).pathname;
 const galleryPath = new URL(locs.find(url => new URL(url).pathname.startsWith('/gallery/'))).pathname;

@@ -12,7 +12,7 @@ const escapeXml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const db = createPublicClient();
   const { artists, artworks } = await getArtCatalog();
-  const pages: MetadataRoute.Sitemap = ['/', '/news/stories', '/art', '/artists', '/references', '/gallery', '/privacy', '/terms', ...Object.keys(CATEGORIES).map(category => `/news/stories?category=${category}`)].map(path => ({ url: sitePageUrl(path) }));
+  const pages: MetadataRoute.Sitemap = ['/', '/news/stories', '/art', '/artists', '/references', '/gallery', '/about', '/privacy', '/terms', ...Object.keys(CATEGORIES).map(category => `/news/stories?category=${category}`)].map(path => ({ url: sitePageUrl(path) }));
   pages.push(...artworks.map(work => ({ url: sitePageUrl(`/art/${work.id}`), lastModified: lastModified(work.updated_at || work.collected_at), images: [sitePageUrl(work.preview_url)] })));
   pages.push(...artists.map(artist => ({ url: sitePageUrl(`/artists/${artist.id}`), lastModified: lastModified(artist.updated_at) })));
   for (let offset = 0; ; offset += 1000) {
