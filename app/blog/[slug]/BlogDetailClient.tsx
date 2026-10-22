@@ -4,7 +4,6 @@ import { saveLoginHref,notifySaved } from '@/lib/save-intent';
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import NextLink from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import type { JSONContent } from '@tiptap/core';
@@ -441,7 +440,7 @@ export default function BlogDetailClient({
               <div className="flex min-w-0 items-center gap-3">
                 <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--archive-line)] text-[15px] font-bold">
                   {authorAvatar ? (
-                    <Image
+                    <ArchiveImage
                       src={authorAvatar}
                       alt={authorName}
                       fill
@@ -660,7 +659,7 @@ export default function BlogDetailClient({
                   <div className="flex items-start gap-3">
                     <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--archive-line)] text-[14px] font-bold">
                       {authorAvatar ? (
-                        <Image
+                        <ArchiveImage
                           src={authorAvatar}
                           alt={authorName}
                           fill

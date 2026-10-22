@@ -3,7 +3,7 @@ import { useSavedResource } from '@/app/components/SavedProvider';
 import { saveLoginHref,notifySaved } from '@/lib/save-intent';
 
 import { useState, useEffect, useRef, useMemo, useLayoutEffect, useCallback } from 'react';
-import Image from 'next/image';
+import Image from '@/app/components/ArchiveImage';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { useToast } from '@/components/ToastProvider';

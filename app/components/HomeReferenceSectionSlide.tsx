@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/app/components/ArchiveImage";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 

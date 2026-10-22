@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "@/app/components/ArchiveImage";
 import { useRouter } from "next/navigation";
 import imageCompression from "browser-image-compression";
 import { Camera, Loader2, Save, UserRound } from "lucide-react";

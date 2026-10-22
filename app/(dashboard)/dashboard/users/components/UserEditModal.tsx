@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "@/app/components/ArchiveImage";
 import type { User } from "./UserList";
 
 const MAX_AVATAR_BYTES = 2 * 1024 * 1024;

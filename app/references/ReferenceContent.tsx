@@ -5,7 +5,7 @@ import { matchesSearch } from '@/lib/search-text';
 import { saveLoginHref,notifySaved } from '@/lib/save-intent';
 
 import { useEffect, useMemo, useState } from 'react';
-import Image from 'next/image';
+import Image from '@/app/components/ArchiveImage';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from "@/components/ToastProvider";

@@ -3,6 +3,9 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { gzipSync } from 'node:zlib';
+import { createRequire } from 'node:module';
+import { runInNewContext } from 'node:vm';
+import ts from 'typescript';
 import sharp from 'sharp';
 import { newsPage, newsListUrl } from '../lib/news-list.ts';
 import { canOptimizeImage } from '../lib/public-image.ts';
@@ -11,6 +14,8 @@ import { optimizeImageUrl, generateImageSrcSet } from '../lib/image-optimizer.ts
 import { IMAGE_WIDTHS } from '../lib/image-config.ts';
 import NextConfigModule from '../next.config.ts';
 import ArchiveImageModule from '../app/components/ArchiveImage.tsx';
+import { ImageConfigContext } from 'next/dist/shared/lib/image-config-context.shared-runtime.js';
+import { imageConfigDefault } from 'next/dist/shared/lib/image-config.js';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import EditorialModule from '../app/components/EditorialContent.tsx';
@@ -45,6 +50,7 @@ const source = 'https://overgjynkrnwayfammid.supabase.co/storage/v1/object/publi
 assert.equal(new URL(optimizeImageUrl(source), 'http://test').searchParams.get('url'), source);
 const configure = NextConfigModule.default || NextConfigModule;
 const imageConfig = configure('phase-development-server').images;
+assert.ok(!imageConfig.unoptimized, 'Working optimized images must remain enabled');
 assert.deepEqual([...imageConfig.imageSizes, ...imageConfig.deviceSizes], IMAGE_WIDTHS);
 for (const width of [48, 96, 192, 480]) assert.equal(new URL(optimizeImageUrl(source, { width }), 'http://test').searchParams.get('w'), String(width));
 const srcset = generateImageSrcSet(source).split(', ');
@@ -69,6 +75,46 @@ const ArchiveImage = ArchiveImageModule.default || ArchiveImageModule;
 const rawImage = renderToStaticMarkup(React.createElement(ArchiveImage, { src: '/check.jpg', alt: '원본', width: 48, height: 48, unoptimized: true }));
 assert.match(rawImage, /src="\/check.jpg"/);
 assert.ok(!rawImage.includes('/_next/image'));
+for (const src of ['/check.jpg', source]) {
+  const markup = renderToStaticMarkup(React.createElement(ImageConfigContext.Provider, { value: { ...imageConfigDefault, ...imageConfig } },
+    React.createElement(ArchiveImage, { src, alt: '', width: 48, height: 48 })));
+  assert.ok(markup.includes('/_next/image'), 'Try the optimizer before requesting the original');
+}
+
+// Exercise the component's error transition without adding a browser test dependency.
+const require = createRequire(import.meta.url);
+function mountImage(props) {
+  let state = null;
+  let updates = 0;
+  let failures = 0;
+  const loaded = { exports: {} };
+  const code = ts.transpileModule(readFileSync('app/components/ArchiveImage.tsx', 'utf8'), {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true },
+  }).outputText;
+  runInNewContext(code, { exports: loaded.exports, module: loaded, require: name => {
+    if (name === 'react') return { useState: () => [state, value => { state = value; updates++; }] };
+    if (name === '@/lib/public-image') return { canOptimizeImage };
+    return require(name);
+  } });
+  return { render: (nextProps = {}) => loaded.exports.default({ alt: '', ...props, ...nextProps, onError: () => failures++ }).props,
+    counts: () => ({ updates, failures }) };
+}
+for (const src of ['/check.jpg', source, { src: '/imported.webp', width: 48, height: 48 }]) {
+  const image = mountImage({ src });
+  assert.ok(!image.render().unoptimized);
+  image.render().onError({});
+  assert.equal(image.render().unoptimized, true, 'An optimizer error must retry the original');
+  assert.deepEqual(image.counts(), { updates: 1, failures: 0 }, 'Do not report failure before trying the original');
+  image.render().onError({});
+  assert.deepEqual(image.counts(), { updates: 1, failures: 1 }, 'A broken original must not loop');
+  assert.ok(!image.render({ src: '/changed.jpg' }).unoptimized, 'A new image starts with optimization enabled');
+}
+for (const props of [{ src: source, unoptimized: true }, { src: 'https://unknown.example/image.jpg' }, { src: 'blob:preview' }]) {
+  const image = mountImage(props);
+  assert.equal(image.render().unoptimized, true);
+  image.render().onError({});
+  assert.deepEqual(image.counts(), { updates: 0, failures: 1 }, 'Direct images must not be retried as optimizer failures');
+}
 
 const nativeFetch = globalThis.fetch;
 const webp = await sharp({ create: { width: 30, height: 20, channels: 3, background: '#178a17' } }).webp().toBuffer();
@@ -126,4 +172,4 @@ if (base) {
   assert.ok(fontCss.includes('font-display: swap') && fontCss.includes('unicode-range:') && !fontCss.includes('url(http'));
   console.log(JSON.stringify({ fullNewsBytes: Buffer.byteLength(fullText), listBytes: Buffer.byteLength(listText), listReductionPercent: Math.round(reduction * 100), readerBytes, previousReaderBytes, gzipListBytes: gzipSync(listText).length }));
 }
-console.log('Performance checks passed: pagination, image boundaries, responsive widths, original-image opt-out, WebP decoding, fallback cards and payload budgets.');
+console.log('Performance checks passed: pagination, image boundaries, responsive widths, optimizer-to-original fallback, WebP decoding, fallback cards and payload budgets.');

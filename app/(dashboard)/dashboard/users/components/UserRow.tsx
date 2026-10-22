@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
+import Image from "@/app/components/ArchiveImage";
 import type { User } from "./UserList";
 
 type Props = {

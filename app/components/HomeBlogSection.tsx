@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Image from "@/app/components/ArchiveImage";
 import { formatKoreanDate } from "@/lib/date-format";
 
 type BlogPost = {

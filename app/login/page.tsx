@@ -8,6 +8,8 @@ import { createClient } from "@/lib/supabase/client";
 import ColorModeToggle from '@/app/components/ColorModeToggle';
 import BrandLogo from '@/app/components/BrandLogo';
 
+const SHOW_KAKAO_LOGIN = false;
+
 export default function LoginPage() {
   const router = useRouter();
   const supabase = useMemo(() => createClient(), []);
@@ -99,14 +101,14 @@ export default function LoginPage() {
             <i aria-hidden="true" className="ri-google-fill absolute left-4 text-xl" />
             Google로 계속하기
           </button>
-          <button
+          {SHOW_KAKAO_LOGIN && <button
             type="button"
             onClick={loginWithKakao}
             className="relative flex h-12 w-full items-center justify-center rounded-md border border-border bg-background px-12 text-sm font-medium transition-colors hover:bg-muted"
           >
             <i aria-hidden="true" className="ri-kakao-talk-fill absolute left-4 text-xl" />
             카카오로 계속하기
-          </button>
+          </button>}
         </div>
 
         <p className="mt-6 break-keep text-xs leading-6 text-secondary">
