@@ -100,16 +100,20 @@ rows.unshift(...Array.from({ length: 15 }, (_, i) => ({ ...raw(`new-source-${i}`
 result = await writePendingNews(db, viewer, { limit: 8, writer });
 assert.ok(result.items.every(item => /^source-(?:1[5-9]|2[0-2])$/.test(item.id)), 'Previously unprocessed sources must be selected before another fresh item from recently processed sources');
 
-// An unresolved Google citation redirect cannot masquerade as a second verified source.
+// Search citation redirects are never accepted as reusable source documents.
 const originalFetch = globalThis.fetch;
 process.env.GEMINI_API_KEY = 'test-key';
-globalThis.fetch = async input => String(input).includes('vertexaisearch.cloud.google.com') ? new Response(null, { status: 404 }) : Response.json({ candidates: [{ finishReason: 'STOP', content: { parts: [{ text: '확인 가능한 조사 메모' }] }, groundingMetadata: { groundingChunks: [{ web: { uri: 'https://vertexaisearch.cloud.google.com/grounding-api-redirect/unresolved', title: 'Unresolved source' } }], groundingSupports: [{ segment: { text: 'Claim' }, groundingChunkIndices: [0] }] } }] });
+const metadata = urls => ({ urlContextMetadata: { urlMetadata: urls.map(retrievedUrl => ({ retrievedUrl, urlRetrievalStatus: 'URL_RETRIEVAL_STATUS_SUCCESS' })) } });
+globalThis.fetch = async input => {
+  assert.ok(String(input).startsWith('https://generativelanguage.googleapis.com/'), 'The application does not resolve search redirects or fetch arbitrary websites');
+  return Response.json({ candidates: [{ finishReason: 'STOP', content: { parts: [{ text: JSON.stringify({ sources: [{ label: 'Unresolved source', url: 'https://vertexaisearch.cloud.google.com/grounding-api-redirect/unresolved' }] }) }] }, ...metadata([prepared.article.url]) }] });
+};
 try { await assert.rejects(researchNews({ url: prepared.article.url, title: '자료 확인', source: 'Test', category: 'ai' }), /근거 자료가 부족/); }
 finally { globalThis.fetch = originalFetch; if (previousGeminiKey === undefined) delete process.env.GEMINI_API_KEY; else process.env.GEMINI_API_KEY = previousGeminiKey; }
 
 const referenceUrls = [...new Set([prepared.article.url, ...prepared.article.paragraphs.flatMap(section => section.references.map(reference => reference.url))])];
 const generated = { ...prepared.article, primary_source_ids: referenceUrls.map((_, index) => `s${index}`), paragraphs: prepared.article.paragraphs.map(section => ({ ...section, references: section.references.map(reference => ({ label: reference.label, source_id: `s${referenceUrls.indexOf(reference.url)}` })) })) };
-let approve = false, drafts = 0, reviews = 0, interruptedReviews = 0, failureStatus = 0, finishReason = 'STOP';
+let approve = false, drafts = 0, reviews = 0, interruptedReviews = 0, failureStatus = 0, finishReason = 'STOP', retrievedUrls = referenceUrls;
 let requests = [];
 process.env.GEMINI_API_KEY = 'test-key';
 globalThis.fetch = async (input, options) => {
@@ -117,14 +121,16 @@ globalThis.fetch = async (input, options) => {
   requests.push(request);
   if (failureStatus) return Response.json({ error: { message: 'Provider unavailable test-key' } }, { status: failureStatus });
   const system = request.systemInstruction.parts[0].text;
+  const discovery = system.includes('원문 출처 확인 담당자');
   const investigation = system.includes('자료 조사 담당자');
   const reviewing = system.includes('사실 검수 담당자');
-  if (reviewing) reviews++; else if (!investigation) drafts++;
+  if (reviewing) reviews++; else if (!investigation && !discovery) drafts++;
   if (reviewing && interruptedReviews > 0) {
     interruptedReviews--;
     return Response.json({ candidates: [{ finishReason: 'MAX_TOKENS', content: { parts: [{ text: '{"approved":' }] } }] });
   }
-  return Response.json({ candidates: [{ finishReason, content: { parts: [{ text: investigation ? '공식 자료로 확인한 조사 메모' : JSON.stringify(reviewing ? { approved: approve, issues: approve ? [] : ['조사 메모에 없는 성능 단정을 삭제해주세요.'] } : generated) }] }, ...(investigation ? { groundingMetadata: { groundingChunks: referenceUrls.slice(1).map(uri => ({ web: { uri, title: 'Official source' } })), groundingSupports: [{ segment: { text: 'Claim' }, groundingChunkIndices: [0] }] } } : {}) }] });
+  const text = discovery ? JSON.stringify({ sources: referenceUrls.slice(1).map(url => ({ label: 'Official source', url })) }) : investigation ? '공식 자료로 확인한 조사 메모' : JSON.stringify(reviewing ? { approved: approve, issues: approve ? [] : ['조사 메모에 없는 성능 단정을 삭제해주세요.'] } : generated);
+  return Response.json({ candidates: [{ finishReason, content: { parts: [{ text }] }, ...(discovery ? metadata([prepared.article.url]) : investigation ? metadata(retrievedUrls) : {}) }] });
 };
 try {
   const input = { url: prepared.article.url, title: '자료 확인', source: 'Test', category: 'design' };
@@ -133,6 +139,25 @@ try {
   approve = true;
   const checked = await researchNews(input);
   assert.equal(checked.research.qualityReview.passed, true);
+  assert.equal(checked.research.method, 'url-context');
+  assert.ok(['notes', 'queries', 'searchSuggestions'].every(key => !Object.hasOwn(checked.research, key)), 'Intermediate model output and search artifacts are not returned or stored');
+  assert.ok(requests.filter(request => request.tools).every(request => request.tools.length === 1 && Object.hasOwn(request.tools[0], 'url_context')), 'Only explicit URL retrieval is enabled');
+  const beforeEvidenceFailure = drafts;
+  retrievedUrls = [prepared.article.url];
+  await assert.rejects(researchNews(input), /실제 열람한 근거 자료가 부족/);
+  assert.equal(drafts, beforeEvidenceFailure, 'A claimed citation without successful retrieval cannot reach drafting');
+  retrievedUrls = [...referenceUrls, 'https://unexpected.example/source'];
+  await assert.rejects(researchNews(input), /요청한 공개 자료 외/);
+  retrievedUrls = referenceUrls.map((url, index) => index === 1 ? new URL('/canonical-official-document', url).href : url);
+  assert.equal((await researchNews(input)).research.qualityReview.passed, true, 'Same-origin canonical redirects do not disable legitimate source documents');
+  retrievedUrls = referenceUrls;
+  requests = [];
+  await assert.rejects(generate({ tools: [{ google_search: {} }] }, AbortSignal.timeout(1000)), /공개 URL 확인 도구만/);
+  assert.equal(requests.length, 0, 'Search grounding cannot be accidentally re-enabled by another caller');
+  for (const url of ['https://127.0.0.1/private', 'https://[::1]/private', 'https://localhost/private', 'https://user:pass@example.com/private', 'https://example.com/?token=secret', 'https://example.com:8443/private']) {
+    await assert.rejects(researchNews({ ...input, url }), /공개 HTTPS/);
+  }
+  assert.equal(requests.length, 0, 'Private and credential-bearing URLs never reach Gemini');
 
   requests = []; drafts = 0; reviews = 0; interruptedReviews = 1;
   assert.equal((await researchNews(input)).research.qualityReview.passed, true);

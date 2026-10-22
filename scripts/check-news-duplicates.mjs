@@ -14,10 +14,11 @@ assert.equal(duplicateCandidates({ ...korean, publishedAt: '2025-01-01' }, [exis
 
 const fetchBefore = globalThis.fetch, keyBefore = process.env.GEMINI_API_KEY;
 process.env.GEMINI_API_KEY = 'test-only';
-let requests = 0, assessment = { candidate_id: existing.id, confidence: 0.98, reason: '같은 피그마 캔버스 에이전트의 정식 출시를 두 매체가 보도했습니다.' };
+let requests = 0, payload, assessment = { candidate_id: existing.id, confidence: 0.98, reason: '같은 피그마 캔버스 에이전트의 정식 출시를 두 매체가 보도했습니다.' };
 globalThis.fetch = async (_url, options) => {
   requests++;
   const body = JSON.parse(options.body);
+  payload = JSON.parse(body.contents[0].parts[0].text);
   assert.ok(body.systemInstruction.parts[0].text.includes('중복 기사 검토 담당자'), 'No investigation or draft request occurs for a held duplicate');
   assert.equal(body.tools, undefined, 'Duplicate comparison does not require a web search');
   assert.equal(JSON.parse(body.contents[0].parts[0].text).incoming.duplicateCandidates, undefined, 'Only the bounded comparison list is sent');
@@ -28,6 +29,9 @@ try {
   assert.equal(requests, 1, 'A semantic duplicate is held before article generation');
   assessment = { candidate_id: 'none', confidence: 0, reason: '' };
   await checkNewsDuplicate({ ...input, title: 'Figma Agent 2: new pricing and a separate rollout' }, [existing], AbortSignal.timeout(1000));
+  await checkNewsDuplicate(input, [{ ...existing, is_published: false, title: 'CONFIDENTIAL_TITLE', summary: 'CONFIDENTIAL_SUMMARY', source_url: 'https://example.com/?token=secret' }], AbortSignal.timeout(1000));
+  assert.equal(payload.existing[0].title, existing.original_title, 'Private editorial titles are replaced with public source titles');
+  assert.ok(!JSON.stringify(payload).includes('CONFIDENTIAL_') && !JSON.stringify(payload).includes('token=secret'), 'Unpublished edits and credential URLs do not leave the server');
   assessment = { candidate_id: existing.id, confidence: 0.6, reason: '공통 키워드만 있음' };
   await checkNewsDuplicate(input, [existing], AbortSignal.timeout(1000));
   assessment = { candidate_id: 'invented-id', confidence: 0.99, reason: 'Invalid comparison' };
