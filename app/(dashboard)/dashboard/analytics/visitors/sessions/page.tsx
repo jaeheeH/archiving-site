@@ -2,12 +2,13 @@ import { redirect } from 'next/navigation';
 import { getVisitorSessions } from '@/lib/dashboard-data';
 import VisitorSessions from '../../../VisitorSessions';
 import VisitorPage from '../VisitorPage';
+import { analyticsDays } from '@/lib/engagement';
 
 export const dynamic = 'force-dynamic';
 
 export default async function VisitorSessionsPage({ searchParams }: { searchParams: Promise<{ days?: string; page?: string; q?: string; session?: string; eventPage?: string }> }) {
   const params = await searchParams;
-  const days = [5, 7, 30].includes(Number(params.days)) ? Number(params.days) : 7;
+  const days = analyticsDays(params.days);
   const page = Math.min(10000, Math.max(1, parseInt(params.page || '1', 10) || 1));
   const eventPage = Math.min(10000, Math.max(1, parseInt(params.eventPage || '1', 10) || 1));
   const query = typeof params.q === 'string' ? params.q.trim().slice(0, 100) : '';

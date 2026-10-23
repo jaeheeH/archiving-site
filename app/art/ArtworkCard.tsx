@@ -10,7 +10,7 @@ export default async function ArtworkCard({ artwork, returnTo }: { artwork: Artw
   const href = returnTo ? `/art/${artwork.id}?${new URLSearchParams({ from: `${returnTo}#artwork-${artwork.id}` })}` : `/art/${artwork.id}`;
 
   return (
-    <article id={`artwork-${artwork.id}`} className="archive-card archive-art-card group">
+    <article id={`artwork-${artwork.id}`} className="archive-card archive-art-card group" data-analytics-resource={`artwork:${artwork.id}`} data-analytics-path={`/art/${artwork.id}`}>
       <Link href={href} className="archive-media" style={{ "--archive-image-ratio": artwork.image_width > 0 && artwork.image_height > 0 ? `${artwork.image_width} / ${artwork.image_height}` : "1.65" } as CSSProperties}>
           <Image
             src={artwork.preview_url}

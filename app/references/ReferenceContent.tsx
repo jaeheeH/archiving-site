@@ -243,7 +243,7 @@ notifySaved('reference',String(referenceId),data.scraped,user.id,data.scrapCount
   const selectedCategoryName = selectedCategory === 'all' ? '모든 사이트' : selectedCategory;
 
   return (
-    <main className="archb-archive archive-references-page">
+    <main className="archb-archive archive-references-page" data-analytics-query={query} data-analytics-results={filteredReferences.length} data-analytics-scope={selectedCategory}>
 
       <header className="archive-heading">
         <span className="archive-kicker">{SITE_COPY.references.eyebrow}</span>
@@ -287,7 +287,7 @@ notifySaved('reference',String(referenceId),data.scraped,user.id,data.scrapCount
               const isScrapping = scrappingIds.has(reference.id);
 
               return (
-                <article key={reference.id} className="archive-card archive-reference-card group">
+                <article key={reference.id} className="archive-card archive-reference-card group" data-analytics-resource={`reference:${reference.id}`} data-analytics-path="/references">
                 <a
                   href={reference.url}
                   target="_blank"

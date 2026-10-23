@@ -5,7 +5,8 @@ import { createPublicClient } from "./supabase/public";
 import { getArtCatalog } from "./art-catalog";
 import { buildDashboardMetrics, dashboardPeriod, type MetricMember, type MetricPost, type MetricView } from "./dashboard-metrics";
 import { editorialSchema } from "./news-editorial";
-import { visitorPageTitles, type TrafficStats, type VisitorSessionList, type VisitorEventList } from "./site-traffic";
+import { visitorPageTitles, visitorSlugBatches, type TrafficStats, type VisitorSessionList, type VisitorEventList } from "./site-traffic";
+import type { EngagementStats } from './engagement';
 
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -392,16 +393,17 @@ async function readDashboardOperations(context: DashboardContext, days: number) 
 async function readVisitorPageTitles(context: DashboardContext, paths: string[]) {
   const slugs = [...new Set(paths.filter(path => /^\/(news\/read|blog)\//.test(path)).map(path => path.split('/').at(-1)!))];
   const galleryIds = [...new Set(paths.filter(path => /^\/gallery\/\d+$/.test(path)).map(path => Number(path.split('/').at(-1))))];
-  const [posts, catalog, gallery] = await Promise.all([
-    slugs.length ? context.admin.from('posts').select('slug,title').eq('is_published', true).in('slug', slugs) : null,
+  const [postBatches, catalog, gallery] = await Promise.all([
+    Promise.all(visitorSlugBatches(slugs).map(batch => context.admin.from('posts').select('slug,title').eq('is_published', true).in('slug', batch))),
     paths.some(path => /^\/(art|artists)\//.test(path)) ? getArtCatalog().catch(error => {
       console.error('Visitor page catalog read failed:', error);
       return null;
     }) : null,
     galleryIds.length ? context.admin.from('gallery').select('id,title').in('id', galleryIds) : null,
   ]);
-  if (posts?.error || gallery?.error) console.error('Visitor page titles read failed:', posts?.error || gallery?.error);
-  return visitorPageTitles(paths, { posts: posts?.data || [], artworks: catalog?.artworks || [], artists: catalog?.artists || [], gallery: gallery?.data || [] });
+  const error = postBatches.find(result => result.error)?.error || gallery?.error;
+  if (error) console.error('Visitor page titles read failed:', error.message);
+  return visitorPageTitles(paths, { posts: postBatches.flatMap(result => result.data || []), artworks: catalog?.artworks || [], artists: catalog?.artists || [], gallery: gallery?.data || [] });
 }
 
 async function readVisitorAnalytics(context: DashboardContext, days: number) {
@@ -425,6 +427,31 @@ export async function getVisitorAnalytics(days = 7) {
   const context = await getDashboardContext();
   if (!context) return null;
   return readVisitorAnalytics(context, days);
+}
+
+export async function getAudienceAnalytics(days = 7) {
+  const context = await getDashboardContext();
+  if (!context || !['admin', 'sub-admin'].includes(context.role)) return null;
+  const period = dashboardPeriod(days);
+  const args = { p_start: period.start, p_end: period.now, p_previous_start: period.previousStart, p_previous_end: period.previousEnd };
+  const [traffic, engagement, launch] = await Promise.all([
+    readVisitorAnalytics(context, days), context.admin.rpc('site_engagement_stats', args),
+    context.admin.rpc('site_content_launch_stats', { p_start: period.start, p_end: period.now }),
+  ]);
+  const stats = engagement.error ? null : engagement.data as EngagementStats;
+  const launches = (launch.error ? [] : launch.data || []) as { path: string; published_at: string; first7_views: number; observed_days: number }[];
+  const titles = await readVisitorPageTitles(context, [...new Set([
+    ...(stats?.contents.map(item => item.path) || []), ...(stats?.transitions.flatMap(item => [item.from, item.to]) || []),
+    ...(stats?.errorPages.map(item => item.path) || []), ...launches.map(item => item.path),
+  ])]);
+  if (stats) stats.contents = stats.contents.map(item => ({ ...item, title: titles[item.path] }));
+  if (engagement.error || launch.error) console.error('Audience analytics read failed:', engagement.error?.message || launch.error?.message);
+  return {
+    period, traffic: traffic!, stats, titles,
+    launches: launches.map(item => ({ ...item, title: titles[item.path], covered: !!traffic?.stats?.trackingSince && Date.parse(traffic.stats.trackingSince) <= Date.parse(item.published_at) })),
+    error: engagement.error ? '읽기·검색 분석을 불러오지 못했습니다. 잠시 후 다시 확인해 주세요.' : null,
+    launchError: launch.error ? '발행 후 7일 비교를 불러오지 못했습니다.' : null,
+  };
 }
 
 export async function getVisitorSessions(days: number, options: { page: number; query: string; session: string; eventPage: number }) {

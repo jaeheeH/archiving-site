@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { randomUUID, randomBytes } from 'node:crypto';
-import { publicPage, visitorPageTitles, referrerHost, referrerPath, visitorDevice, ignoredVisitor } from '../lib/site-traffic.ts';
+import { publicPage, visitorPageTitles, visitorSlugBatches, referrerHost, referrerPath, visitorDevice, ignoredVisitor } from '../lib/site-traffic.ts';
 import { visitorNetwork, visitorEnvironment } from '../lib/visitor-request.ts';
 
 assert.deepEqual(publicPage('/'), { path: '/', section: '홈', label: '홈' });
@@ -14,6 +14,12 @@ const titles = visitorPageTitles(['/', '/art/shared-id', '/art/original', '/arti
 });
 assert.deepEqual(titles, { '/': '홈', '/art/shared-id': '아침 식탁', '/art/original': 'Original artwork', '/artists/shared-id': '베르트 모리조', '/artists/original': 'Original artist', '/news/read/shared-id': '기사 제목', '/blog/shared-id': '기사 제목', '/gallery/12': '갤러리 자료', '/art/deleted': '아트 상세' });
 assert.deepEqual(visitorPageTitles([], { posts: [], artworks: [], artists: [], gallery: [] }), {});
+const longSlugs = Array.from({length:300},(_,index)=>`${'긴-한글-기사-주소'.repeat(15)}-${index}`);
+const slugBatches = visitorSlugBatches(longSlugs);
+assert.deepEqual(slugBatches.flat(),longSlugs,'Title batches must preserve all article slugs');
+assert.ok(slugBatches.length>1);
+assert.ok(slugBatches.every(batch=>new URLSearchParams({slug:`in.(${batch.join(',')})`}).toString().length<5000),'Encoded title filters stay below request limits');
+assert.deepEqual(visitorSlugBatches([]),[]);
 for (const path of ['/dashboard', '/login', '/mypage', '/api/users', '//foreign.test', '/news/stories?secret=1', '/art/1#anchor', '/news/read', '/news/stories/foo', '/art/../login', '/art/%2fprivate', '/gallery/a/b', '/references\\private']) assert.equal(publicPage(path), null, path);
 assert.equal(referrerHost('https://www.naver.com/search?private=secret', 'www.archbehind.com'), 'naver.com');
 assert.equal(referrerHost('https://archbehind.com/a', 'www.archbehind.com'), null);

@@ -1,0 +1,32 @@
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
+import { metricNumber as number, metricRate as rate, metricTime as time, type EngagementStats } from '@/lib/engagement';
+import ContentPagination from '../../../components/ContentPagination';
+
+type Launch = { path: string; title: string; published_at: string; first7_views: number; observed_days: number; covered: boolean };
+export default function ContentAnalytics({ stats, launches }: { stats: EngagementStats; launches: Launch[] }) {
+  const [section, setSection] = useState('all'), [query, setQuery] = useState(''), [sort, setSort] = useState('views'), [page, setPage] = useState(1);
+  const [inProgress, setInProgress] = useState(false);
+  const rows = stats.contents.filter(row => (section === 'all' || row.section === section) && `${row.title} ${row.path}`.toLowerCase().includes(query.toLowerCase()));
+  const score = (row: typeof rows[number]) => sort === 'depth' ? row.depth ?? -1 : sort === 'active' ? row.activeSeconds ?? -1 : sort === 'save' ? row.saves : sort === 'deep' ? row.measured ? row.deepReads / row.measured : -1 : row.views;
+  rows.sort((a,b) => score(b)-score(a) || b.views-a.views || a.path.localeCompare(b.path));
+  const current = Math.min(page, Math.max(1, Math.ceil(rows.length/15)));
+  const launchesShown = launches.filter(item => inProgress || item.covered && item.observed_days >= 7).sort((a,b) => b.first7_views-a.first7_views).slice(0,30);
+  return <>
+    <section className="operation-card"><div className="operation-section-heading"><div><h2>얼마나 깊게 봤나요?</h2><p>본문 영역 기준 · 실제 건수와 비율을 함께 확인하세요.</p></div></div><div className="audience-depth-grid">
+      {[['평균 활성 읽기',time(stats.activeSeconds),`${number(stats.measured)}건 측정`],['평균 본문 도달',stats.depth === null ? '—' : `${number(stats.depth)}%`,'각 조회의 최대 도달 위치 평균'],['깊게 본 조회',rate(stats.deepReads,stats.measured),`${number(stats.deepReads)} / ${number(stats.measured)}건`],['끝부분 도달',rate(stats.completions,stats.measured),`${number(stats.completions)} / ${number(stats.measured)}건 · 본문 90% 이상`]].map(([label,value,detail]) => <div key={label}><span>{label}</span><strong>{value}</strong><small>{detail}</small></div>)}
+    </div></section>
+    <section className="operation-card" id="content-performance"><div className="operation-section-heading"><div><h2>콘텐츠별 반응</h2><p>선택 기간 조회 상위 300개 페이지 내 비교 · 읽기 지표는 본문 측정 조회 기준</p></div><span className="operation-pill">{number(rows.length)}개</span></div>
+      <div className="audience-filters"><label>분야<select value={section} onChange={e => { setSection(e.target.value); setPage(1); }}><option value="all">전체</option>{[...new Set(stats.contents.map(row => row.section))].map(label => <option key={label}>{label}</option>)}</select></label><label className="audience-query">페이지 검색<input type="search" value={query} onChange={e => { setQuery(e.target.value); setPage(1); }} placeholder="제목 또는 경로" /></label><label>정렬<select value={sort} onChange={e => { setSort(e.target.value); setPage(1); }}><option value="views">조회 많은 순</option><option value="deep">깊게 본 비율</option><option value="active">활성 읽기 시간</option><option value="depth">본문 도달률</option><option value="save">저장 많은 순</option></select></label></div>
+      {rows.length ? <div className="operation-table-scroll" role="region" aria-label="콘텐츠 읽기 깊이와 반응" tabIndex={0}><table className="operation-table visitor-table audience-content-table"><thead><tr><th scope="col">콘텐츠</th><th scope="col">방문자 / 조회</th><th scope="col">활성 읽기</th><th scope="col">본문 도달</th><th scope="col">깊게 봄 / 끝부분</th><th scope="col">저장</th><th scope="col">다음 콘텐츠 / 외부</th></tr></thead><tbody>{rows.slice((current-1)*15,current*15).map(row => <tr key={row.path}>
+        <th scope="row"><Link className="visitor-page-title" href={row.path} target="_blank" rel="noopener noreferrer">{row.title || row.path}</Link><span className="visitor-cell-meta">{row.section} · {row.path}</span><span className="visitor-cell-meta">본문 측정 {number(row.measured)}건</span></th><td>{number(row.visitors)} / {number(row.views)}</td><td>{time(row.activeSeconds)}</td><td>{row.depth === null ? '—' : `${number(row.depth)}%`}{row.depth !== null && <progress className="visitor-share" value={row.depth} max={100} aria-label={`${row.title} 평균 본문 도달률`} />}</td><td>{rate(row.deepReads,row.measured)} / {rate(row.completions,row.measured)}<span className="visitor-cell-meta">{number(row.deepReads)} / {number(row.completions)}건</span></td><td>{row.tracked || row.saves ? number(row.saves) : '—'}<span className="visitor-cell-meta">조회 중 저장 {rate(row.saveViews,row.tracked)}</span></td><td>{row.tracked ? number(row.nextClicks) : '—'} / {row.tracked ? number(row.outbound) : '—'}<span className="visitor-cell-meta">클릭한 조회 수</span></td>
+      </tr>)}</tbody></table></div> : <p className="operation-empty">조건에 맞는 조회 기록이 없습니다.</p>}
+      <ContentPagination label="콘텐츠 분석 목록" page={current} totalPages={Math.max(1,Math.ceil(rows.length/15))} onPageChange={setPage} />
+      <p className="operation-footnote">활성 읽기는 창이 보이고 포커스가 있으며 최근 30초 안에 활동한 시간입니다. 저장률은 새 행동 수집이 적용된 조회 중 같은 상세 화면에서 저장한 비율입니다. 저장 수는 목록에서의 저장도 포함합니다. 저장은 조회별 성공한 저장 동작이며 취소를 반영한 누적 보유 수와 다릅니다. 목록에서 저장한 자료도 해당 콘텐츠에 귀속됩니다. 본문이 없는 목록 페이지의 읽기 깊이는 —로 표시합니다.</p>
+    </section>
+    <section className="operation-card"><div className="operation-section-heading"><div><h2>발행 후 첫 7일 비교</h2><p>선택 기간에 발행된 기사 · 발행 시각부터 같은 길이로 비교 · 상위 30개</p></div></div><label className="audience-checkbox"><input type="checkbox" checked={inProgress} onChange={e => setInProgress(e.target.checked)} />집계 중이거나 과거 기록이 부족한 기사도 보기</label>
+      {launchesShown.length ? <div className="operation-table-scroll" role="region" aria-label="기사 발행 후 첫 7일 조회 비교" tabIndex={0}><table className="operation-table"><thead><tr><th scope="col">기사</th><th scope="col">발행일</th><th scope="col">관찰 기간</th><th scope="col">첫 7일 조회</th></tr></thead><tbody>{launchesShown.map(row => <tr key={row.path}><th scope="row"><Link href={row.path}>{row.title}</Link></th><td>{new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',month:'numeric',day:'numeric'}).format(new Date(row.published_at))}</td><td>{number(row.observed_days)}일</td><td>{!row.covered ? '기록 부족' : row.observed_days < 7 ? `집계 중 ${number(row.first7_views)}건` : `${number(row.first7_views)}건`}</td></tr>)}</tbody></table></div> : <p className="operation-empty">선택 기간에 첫 7일 집계를 완료한 기사가 없습니다. 집계 중인 기사를 포함해 확인할 수 있습니다.</p>}
+    </section>
+  </>;
+}

@@ -18,7 +18,7 @@ export function kstDate(value: string | Date): string {
 }
 
 export function dashboardPeriod(days: number, now = new Date()) {
-  const safeDays = [5, 7, 30].includes(days) ? days : 7;
+  const safeDays = [5, 7, 30, 90].includes(days) ? days : 7;
   const today = kstDate(now);
   const midnight = new Date(`${today}T00:00:00+09:00`).getTime();
   const start = midnight - (safeDays - 1) * DAY;

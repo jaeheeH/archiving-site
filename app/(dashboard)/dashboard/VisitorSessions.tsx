@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import ContentPagination from '../components/ContentPagination';
 import { publicPage, type VisitorSessionList, type VisitorEventList } from '@/lib/site-traffic';
+import { metricTime, metricNumber } from '@/lib/engagement';
 
 const date = (value: string) => new Intl.DateTimeFormat('ko-KR', { timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date(value));
 const deviceNames: Record<string, string> = { desktop: '데스크톱', mobile: '모바일', tablet: '태블릿' };
@@ -48,8 +49,8 @@ export default function VisitorSessions({ data, days, page, query, session }: {
     </section>
     {session && <section className="operation-card" id="visitor-session-detail" aria-labelledby="visitor-session-heading">
       <div className="operation-section-heading"><div><h2 id="visitor-session-heading">방문 이동 경로</h2><p>선택 기간에 기록된 조회 순서 · {data.events?.total ?? '—'}건</p></div><Link className="content-table-action" href={href(page)}>닫기</Link></div>
-      {data.events?.events.length ? <div className="operation-table-scroll" role="region" aria-label="방문 이동 경로 표" tabIndex={0}><table className="operation-table visitor-table visitor-event-table"><thead><tr><th scope="col">순서</th><th scope="col">방문 시각</th><th scope="col">페이지</th><th scope="col">분야</th><th scope="col">IP</th></tr></thead><tbody>
-        {data.events.events.map((event, index) => <tr key={event.id}><td>{(data.events!.page - 1) * 20 + index + 1}</td><td><time dateTime={event.created_at}>{date(event.created_at)}</time>{event.is_entry && <span className="visitor-cell-meta">방문 시작</span>}</td><th scope="row"><PageLink path={event.path} titles={data.pageTitles} /><span className="visitor-cell-meta">{event.path}</span></th><td>{event.section}</td><td><code className="break-all text-xs">{event.ip_address || '미수집'}</code></td></tr>)}
+      {data.events?.events.length ? <div className="operation-table-scroll" role="region" aria-label="방문 이동 경로 표" tabIndex={0}><table className="operation-table visitor-table visitor-event-table"><thead><tr><th scope="col">순서</th><th scope="col">방문 시각</th><th scope="col">페이지</th><th scope="col">활성 시간 · 도달</th><th scope="col">IP</th></tr></thead><tbody>
+        {data.events.events.map((event, index) => <tr key={event.id}><td>{(data.events!.page - 1) * 20 + index + 1}</td><td><time dateTime={event.created_at}>{date(event.created_at)}</time>{event.is_entry && <span className="visitor-cell-meta">방문 시작</span>}</td><th scope="row"><PageLink path={event.path} titles={data.pageTitles} /><span className="visitor-cell-meta">{event.section} · {event.path}</span></th><td>{metricTime(event.active_seconds ?? null)}<span className="visitor-cell-meta">{event.scroll_depth == null ? '본문 미측정' : `본문 ${metricNumber(event.scroll_depth)}%`}</span></td><td><code className="break-all text-xs">{event.ip_address || '미수집'}</code></td></tr>)}
       </tbody></table></div> : <p className="operation-empty">선택 기간에 해당 방문의 조회 기록이 없습니다.</p>}
       {data.events && <ContentPagination label="이동 경로 페이지" page={data.events.page} totalPages={data.events.totalPages} href={target => href(page, session, target)} />}
     </section>}

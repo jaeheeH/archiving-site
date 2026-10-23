@@ -35,7 +35,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
   const related = relatedIds.flatMap(id => { const article = articles.find(item => item.id === id); return article ? [article] : []; });
 
   return (
-    <main className="archb-archive archive-detail">
+    <main className="archb-archive archive-detail" data-analytics-resource={`artist:${artist.id}`} data-analytics-path={`/artists/${artist.id}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd([
         breadcrumb([{ name: '홈', path: '/' }, { name: '작가', path: '/artists' }, { name: artist.name_ko || artist.name, path: `/artists/${artist.id}` }]),
         { '@context': 'https://schema.org', '@type': 'ProfilePage', '@id': sitePageUrl(`/artists/${artist.id}`), citation: profile?.sources?.map(source => source.url), mainEntity: { '@type': 'Person', name: artist.name_ko || artist.name, alternateName: artist.name, description: profile?.description, url: sitePageUrl(`/artists/${artist.id}`) } },
@@ -43,7 +43,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
       <nav className="archive-breadcrumb" aria-label="현재 위치">
         <Link href="/artists" className="hover:text-foreground">작가</Link><span aria-hidden="true">/</span><span>{artist.name_ko || artist.name}</span>
       </nav><div className="mb-5 flex justify-end"><SaveButton type="artist" id={artist.id} title={artist.name_ko || artist.name} /></div>
-      <header className="archive-heading archive-artist-heading">
+      <div data-analytics-body><header className="archive-heading archive-artist-heading">
         <div>
           <span className="archive-kicker">작가 아카이브</span>
           <h1>{artist.name_ko || artist.name}</h1>
@@ -66,7 +66,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
 
       <ul className="archive-tags archive-artist-tags" aria-label="수집 작품의 시대·사조·종류">{artTaxonomyTags(artistArtworks.flatMap(work => work.taxonomy ? [work.taxonomy] : [])).filter(tag => tag.group !== 'subject').map(tag => <li key={`${tag.group}-${tag.id}`}><Link href={`/art?${new URLSearchParams({ artist: artist.id, [tag.group]: tag.id })}`}>{tag.label} 작품 보기</Link></li>)}</ul>
 
-      <ArchiveMasonry label={`${artist.name_ko || artist.name} 작품 목록`}>
+      </div><ArchiveMasonry label={`${artist.name_ko || artist.name} 작품 목록`}>
         {artistArtworks.map((artwork) => <ArtworkCard key={artwork.id} artwork={artwork} />)}
       </ArchiveMasonry>
       {related.length > 0 && <section className="archive-section" aria-labelledby="artist-related-articles"><div className="archive-section-heading"><h2 id="artist-related-articles">함께 읽는 글</h2></div><div className="archive-grid">{related.map(article => <article className="archive-card border-t border-border pt-4" key={article.id}><p className="archive-card-meta">{article.source}</p><h3><Link href={`/news/read/${article.slug}`}>{article.title}</Link></h3><p className="archive-card-description line-clamp-3">{article.summary}</p><Link href={`/news/read/${article.slug}`} className="mt-4 inline-block text-sm underline underline-offset-4">글 읽기 →</Link></article>)}</div></section>}

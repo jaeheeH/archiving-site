@@ -494,7 +494,7 @@ export default function GalleryDetailClient({
   // Render
   // --------------------------------------------------------------------------
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-[var(--archive-canvas)] text-[var(--archive-ink)] lg:overflow-hidden">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-[var(--archive-canvas)] text-[var(--archive-ink)] lg:overflow-hidden" data-analytics-resource={`gallery:${gallery.id}`} data-analytics-path={`/gallery/${gallery.id}`}>
       <button
         onClick={handleClose}
         className="fixed right-6 top-6 z-[60] flex h-9 w-9 items-center justify-center rounded-full bg-[var(--archive-canvas)] text-[var(--archive-ink)] backdrop-blur transition hover:bg-[var(--archive-brand)] hover:text-white lg:hidden"
@@ -505,7 +505,7 @@ export default function GalleryDetailClient({
       </button>
       <div className="flex min-h-full w-full flex-col lg:h-full lg:flex-row">
         {/* Artwork */}
-        <main className="group relative flex min-h-[62vh] min-w-0 flex-1 items-center justify-center bg-[var(--archive-bg-light)] p-4 lg:min-h-0 lg:p-8 position-relative">
+        <main data-analytics-body className="group relative flex min-h-[62vh] min-w-0 flex-1 items-center justify-center bg-[var(--archive-bg-light)] p-4 lg:min-h-0 lg:p-8 position-relative">
           <button
             onClick={handleClose}
             className="hidden h-12 w-12 shrink-0 items-center justify-center  text-[var(--archive-muted)] transition hover:border-[var(--archive-brand)] hover:bg-[var(--archive-brand)]

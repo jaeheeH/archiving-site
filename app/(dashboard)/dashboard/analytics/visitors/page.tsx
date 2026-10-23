@@ -1,5 +1,7 @@
 import { redirect } from 'next/navigation';
-import { getVisitorAnalytics } from '@/lib/dashboard-data';
+import { getAudienceAnalytics } from '@/lib/dashboard-data';
+import { analyticsDays } from '@/lib/engagement';
+import EngagementSummary, { MeasurementNote } from '../EngagementSummary';
 import VisitorAnalytics from '../../VisitorAnalytics';
 import VisitorPage from './VisitorPage';
 
@@ -7,7 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function VisitorsPage({ searchParams }: { searchParams: Promise<{ days?: string; page?: string; q?: string; session?: string; eventPage?: string }> }) {
   const params = await searchParams;
-  const days = [5, 7, 30].includes(Number(params.days)) ? Number(params.days) : 7;
+  const days = analyticsDays(params.days);
   // Keep existing search and visit-detail bookmarks working after the page split.
   if (['page', 'q', 'session', 'eventPage'].some(key => key in params)) {
     const search = new URLSearchParams({ days: String(days) });
@@ -16,7 +18,7 @@ export default async function VisitorsPage({ searchParams }: { searchParams: Pro
     }
     redirect(`/dashboard/analytics/visitors/sessions?${search}${params.session ? '#visitor-session-detail' : '#visitor-sessions'}`);
   }
-  const traffic = await getVisitorAnalytics(days);
-  if (!traffic) redirect('/dashboard');
-  return <VisitorPage days={days} section="overview"><VisitorAnalytics traffic={traffic} days={days} /></VisitorPage>;
+  const data = await getAudienceAnalytics(days);
+  if (!data) redirect('/dashboard');
+  return <VisitorPage days={days} section="overview"><VisitorAnalytics traffic={data.traffic} days={days} />{data.error && <p className="operation-warning" role="alert">{data.error}</p>}{data.stats && <><EngagementSummary stats={data.stats} visitors={data.traffic.stats?.visitors || 0} days={days} /><MeasurementNote since={data.stats.since} /></>}</VisitorPage>;
 }

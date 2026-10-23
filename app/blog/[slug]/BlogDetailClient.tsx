@@ -411,7 +411,7 @@ export default function BlogDetailClient({
   const authorInitial = authorName.charAt(0).toUpperCase();
 
   return (
-    <div className="archive-article news-detail-page min-h-screen bg-[var(--archive-canvas)] text-[var(--archive-ink)]">
+    <div className="archive-article news-detail-page min-h-screen bg-[var(--archive-canvas)] text-[var(--archive-ink)]" data-analytics-resource={`post:${post.id}`} data-analytics-path={`/news/read/${post.slug}`}>
       <article>
         <header className="news-detail-header">
           <div className="mx-auto max-w-[var(--archive-page)] px-6 pt-12">
@@ -520,7 +520,7 @@ export default function BlogDetailClient({
             </figure>
           )}
 
-              <div className="article-editor archive-article-body">
+              <div className="article-editor archive-article-body" data-analytics-body>
                 <div className="tiptap-content">
                   {children}
                 </div>

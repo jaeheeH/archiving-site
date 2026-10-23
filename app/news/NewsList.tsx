@@ -21,7 +21,7 @@ export default function NewsList({ articles, category: initialCategory, query: i
   const chosen = editorPickIds.flatMap(id => articles.find(a => a.id === id) || []);
   const picks = chosen.length ? chosen : articles.slice(0, 3);
   const tags = [...new Set(articles.flatMap(a => a.tags))].slice(0, 10);
-  return <main className="archb-news news-list-page">
+  return <main className="archb-news news-list-page" data-analytics-query={query} data-analytics-results={pagination.total} data-analytics-scope={category}>
     <div className="news-list-intro"><Link href="/" className="news-back">주요 뉴스</Link><h1>뉴스</h1><p>디자인·AI·제품·개발·인테리어의 소식과 ARCH.B 에디토리얼을 함께 읽습니다.</p></div>
     <div className="news-list-layout"><div className="news-list-main">
     <div className="news-list-controls"><nav aria-label="뉴스 분야">{Object.entries({ all: "전체", ...CATEGORIES }).map(([key, label]) => <Link key={key} href={filterUrl('category', key)} aria-current={category === key ? 'page' : undefined} scroll={false}>{label}</Link>)}</nav></div>

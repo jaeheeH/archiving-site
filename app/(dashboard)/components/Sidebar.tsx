@@ -49,6 +49,8 @@ export default function Sidebar() {
       children: [
         { label: "통계 개요", href: "/dashboard/analytics" },
         { label: "방문자 분석", href: "/dashboard/analytics/visitors" },
+        { label: "콘텐츠 분석", href: "/dashboard/analytics/content" },
+        { label: "검색·이용 분석", href: "/dashboard/analytics/search" },
         { label: "블로그", href: "/dashboard/analytics/blog" },
         { label: "갤러리", href: "/dashboard/analytics/gallery" },
         { label: "레퍼런스", href: "/dashboard/analytics/references" },

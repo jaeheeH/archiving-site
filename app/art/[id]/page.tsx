@@ -34,7 +34,7 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
     : [];
 
   return (
-    <main className="archb-archive archive-detail">
+    <main className="archb-archive archive-detail" data-analytics-resource={`artwork:${artwork.id}`} data-analytics-path={`/art/${artwork.id}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd([
         breadcrumb([{ name: '홈', path: '/' }, { name: '아트', path: '/art' }, { name: artwork.title_ko, path: `/art/${artwork.id}` }]),
         { '@context': 'https://schema.org', '@type': 'VisualArtwork', '@id': sitePageUrl(`/art/${artwork.id}#artwork`), url: sitePageUrl(`/art/${artwork.id}`), name: artwork.title_ko, alternateName: artwork.title, image: artwork.preview_url, artMedium: artwork.medium_ko || artwork.medium, ...(artist ? { creator: { '@type': 'Person', name: artist.name_ko || artist.name, url: sitePageUrl(`/artists/${artist.id}`) } } : {}), isBasedOn: artwork.source_url },
@@ -45,7 +45,7 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
         <span>{artwork.title_ko}</span>
       </nav><div className="mb-5 flex justify-end"><SaveButton type="artwork" id={artwork.id} title={artwork.title_ko} /></div>
 
-      <article className="archive-artwork-layout">
+      <div data-analytics-body><article className="archive-artwork-layout">
         <div className="archive-artwork-media">
           <Image
 
@@ -111,7 +111,7 @@ export default async function ArtworkPage({ params }: ArtworkPageProps) {
         <a href={artwork.source_url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-block text-xs leading-6 text-muted-foreground underline underline-offset-4">확인 출처 · 작품 정보 <span aria-hidden="true">↗</span><span className="sr-only"> · 새 창</span></a>
       </section>}
 
-      {related.length > 0 && (
+      </div>{related.length > 0 && (
         <section className="archive-section" aria-labelledby="related-artworks">
           <div className="archive-section-heading">
             <h2 id="related-artworks">이 작가의 다른 작품</h2>

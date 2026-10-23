@@ -28,7 +28,7 @@ export default async function ArtistsPage({ searchParams }: ArtistsPageProps) {
     .sort((a, b) => (a.name_ko || a.name).localeCompare(b.name_ko || b.name, "ko"));
 
   return (
-    <main className="archb-archive archive-artists-page">
+    <main className="archb-archive archive-artists-page" data-analytics-query={q} data-analytics-results={filteredArtists.length} data-analytics-scope={JSON.stringify(filters)}>
       <header className="archive-heading">
         <span className="archive-kicker">만드는 사람을 따라</span>
         <h1>작가</h1>
@@ -45,7 +45,7 @@ export default async function ArtistsPage({ searchParams }: ArtistsPageProps) {
           const selectedWorks = matchingWorks.filter(work => work.artist_ids.includes(artist.id));
           const cover = selectedWorks[0] || artistArtworks[0];
           return (
-            <article key={artist.id} className="archive-card archive-artist-card group">
+            <article key={artist.id} className="archive-card archive-artist-card group" data-analytics-resource={`artist:${artist.id}`} data-analytics-path={`/artists/${artist.id}`}>
               <Link href={`/artists/${artist.id}`} className="archive-media" style={{ "--archive-image-ratio": cover && cover.image_width > 0 && cover.image_height > 0 ? `${cover.image_width} / ${cover.image_height}` : "1.65" } as CSSProperties}>
                 {cover && <Image src={cover.preview_url} alt={`${cover.title_ko} — ${artist.name_ko || artist.name}`} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-contain" />}
               </Link>

@@ -9,7 +9,7 @@ export async function generateMetadata() { return getPageMetadata({ path: '/sear
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string | string[]; type?: string | string[]; page?: string | string[] }> }) {
   const result = searchPage(await getSearchResources(), await searchParams);
   const href = (type: string, page = 1) => `/search?${new URLSearchParams({ q: result.q, type, page: String(page) })}`;
-  return <main className="archb-archive resource-page">
+  return <main className="archb-archive resource-page" data-analytics-query={result.q} data-analytics-results={result.total} data-analytics-scope={result.type}>
     <header className="archive-heading"><span className="archive-kicker">새로운 연결을 찾다</span><h1>통합 검색</h1><p>기사와 작품, 만드는 사람과 참고 자료를 함께 탐색합니다.</p></header>
     <form className="resource-search-form" action="/search"><label className="sr-only" htmlFor="resource-query">통합 검색어</label><input id="resource-query" name="q" type="search" maxLength={100} defaultValue={result.q} placeholder="이름, 주제, 재료로 찾아보세요" /><input type="hidden" name="type" value={result.type} /><button className="archive-button">검색</button></form>
     <nav className="archive-tabs" aria-label="검색 결과 종류">{Object.entries({ all: '전체', ...RESOURCE_LABELS }).map(([type, label]) => <Link key={type} href={href(type)} aria-current={result.type === type ? 'page' : undefined}>{label} <small>{result.counts[type]}</small></Link>)}</nav>

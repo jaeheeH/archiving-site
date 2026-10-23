@@ -2,10 +2,24 @@ export function publicPage(path: unknown): { path: string; section: string; labe
   if (typeof path !== 'string' || path.length > 512 || /[?#\\%\s]/.test(path)) return null;
   const clean = path === '/' ? path : path.replace(/\/$/, '');
   if (clean === '/') return { path: clean, section: '홈', label: '홈' };
+  if (clean === '/search') return { path: clean, section: '검색', label: '통합 검색' };
   const match = clean.match(/^\/(news\/stories|news\/read|blog|art|artists|references|gallery)(?:\/([\p{L}\p{N}_-]+))?$/u);
   if (!match || (match[1] === 'news/stories' && match[2]) || (match[1] === 'news/read' && !match[2])) return null;
   const section = ({ 'news/stories': '뉴스', 'news/read': '뉴스', blog: '뉴스', art: '아트', artists: '작가', references: '참고사이트', gallery: '갤러리' } as Record<string, string>)[match[1]];
   return { path: clean, section, label: match[2] ? `${section} 상세` : section };
+}
+
+// Keep encoded PostgREST filters small, including long Korean article slugs.
+export function visitorSlugBatches(slugs: string[]) {
+  const batches: string[][] = [];
+  let batch: string[] = [], size = 0;
+  for (const slug of slugs) {
+    const cost = encodeURIComponent(slug).length + 3;
+    if (batch.length && size + cost > 4000) { batches.push(batch); batch = []; size = 0; }
+    batch.push(slug); size += cost;
+  }
+  if (batch.length) batches.push(batch);
+  return batches;
 }
 
 export function visitorPageTitles(paths: string[], content: {
@@ -47,6 +61,7 @@ export type VisitorSession = {
   ip_address: string | null; country_code: string | null; device: string; browser: string | null; os: string | null;
 };
 export type VisitorEvent = {
+  active_seconds?: number | null; scroll_depth?: number | null;
   id: string; created_at: string; path: string; section: string; is_entry: boolean;
   referrer_host: string | null; referrer_path: string | null; ip_address: string | null;
   device: string; browser: string | null; os: string | null; country_code: string | null;

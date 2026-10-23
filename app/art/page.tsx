@@ -31,7 +31,7 @@ export default async function ArtPage({ searchParams }: ArtPageProps) {
   const returnTo = artListHref(params, pagination.page);
 
   return (
-    <main className="archb-archive archive-art-page">
+    <main className="archb-archive archive-art-page" data-analytics-query={q} data-analytics-results={filteredArtworks.length} data-analytics-scope={JSON.stringify(filters)}>
       <header className="archive-heading">
         <span className="archive-kicker">작품으로 넓히는 시선</span>
         <h1>아트</h1>

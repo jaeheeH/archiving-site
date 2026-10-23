@@ -11,7 +11,7 @@ function safeHref(value: string) {
 export default function ResourceCard({ item }: { item: Resource }) {
   const href = safeHref(item.url);
   const external = item.type === 'reference';
-  return <article className="resource-card">
+  return <article className="resource-card" data-analytics-resource={`${item.type}:${item.id}`} data-analytics-path={external ? '/references' : href}>
     <Link href={href} className="resource-card-media" aria-label={`${item.title}${external ? ' · 새 창' : ''}`} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{item.image ? <ArchiveImage src={item.image} alt="" fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px" className={['artwork', 'artist', 'reference'].includes(item.type) ? 'object-contain' : 'object-cover'} loading="lazy" /> : <span className="resource-placeholder" aria-hidden="true"><i className={item.type === 'post' ? 'ri-article-line' : 'ri-links-line'} /></span>}</Link>
     <div className="archive-card-copy">
       <p className="archive-card-label">{RESOURCE_LABELS[item.type]}</p>
