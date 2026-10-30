@@ -107,7 +107,7 @@ const pageFunction = pageSource.statements.find(node => ts.isFunctionDeclaration
 let articleData = { post: { ...makePost(0), title_image_url: null }, authorProfile: { nickname: 'ARCH-B' }, article: null };
 const pageModule = { exports: {} };
 const code = ts.transpileModule(pageFunction.getText(pageSource), { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText;
-vm.runInNewContext(code, { exports: pageModule.exports, require: name => mocks[name], getArticleData: async () => articleData, jsonLd, breadcrumb, sitePageUrl, CATEGORIES: categories, extractHeadings: () => [], getNodeText: () => '', editorialText: paragraphs => paragraphs.join(''), ExternalLink: () => null, EditorialContent: () => null, BlogDetailClient: props => createElement('main', null, props.children) });
+vm.runInNewContext(code, { exports: pageModule.exports, require: name => mocks[name], getArticleData: async () => articleData, jsonLd, breadcrumb, sitePageUrl, CATEGORIES: categories, extractHeadings: () => [], getNodeText: () => '', editorialText: paragraphs => paragraphs.join(''), NewsBody: () => null, EditorialContent: () => null, BlogDetailClient: props => createElement('main', null, props.children) });
 const readSchema = async () => {
   const html = renderToStaticMarkup(await pageModule.exports.default({ params: Promise.resolve({ slug: 'story-0' }) }));
   return JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])[1];

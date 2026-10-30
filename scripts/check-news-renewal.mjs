@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { directNewsEdit } from './news-direct-edit.mjs';
+import { editorialReferences, editorialSchema, editorialText } from '../lib/news-editorial.ts';
+
+const fixtures = JSON.parse(fs.readFileSync(new URL('../content/news/review-2026-10-30.json', import.meta.url), 'utf8'));
+const article = fixtures.find(row => row.slug === 'news-fd89251b4b93f481a130').article;
+const before = { id: 'test-id', slug: 'test-slug', title: article.title, summary: article.summary, tags: article.tags, content_hash: 'before-hash', protected_hash: 'protected-hash', article_content: { source_url: article.url, points: article.points, paragraphs: article.paragraphs.filter(s => s.kind === 'reporting' && s.paragraphs.length).slice(0, 3).concat(article.paragraphs.at(-1)) } };
+const snapshot = JSON.stringify(before);
+const result = directNewsEdit(before, { recap: '도입과 주요 내용을 정리하면서 기존의 설계 사실과 수치, 참고자료의 관계를 그대로 보존한 직접 편집 결과다. 풍경과 생활을 연결하는 방식이 집의 서로 다른 장소에서 이어진다.' });
+assert.equal(JSON.stringify(before), snapshot, 'Editing never mutates the backup');
+assert.equal(result.method, 'direct-editorial-review');
+assert.equal(result.article.paragraphs[0].heading, '');
+assert.equal(result.article.paragraphs.at(-2).heading, '');
+assert.equal(result.article.paragraphs.at(-1).heading, 'ARCH.B 의견');
+assert(result.article.paragraphs.slice(0, -1).every(s => s.kind === 'reporting'));
+assert.deepEqual(result.article.tags, before.tags);
+assert.deepEqual(new Set(editorialReferences(article.url, '원출처 기사', result.article.paragraphs).map(r => r.url)), new Set(editorialReferences(article.url, '원출처 기사', before.article_content.paragraphs).map(r => r.url)));
+assert(editorialText(result.article.paragraphs).length >= editorialText(before.article_content.paragraphs).length);
+assert(editorialSchema.safeParse(result.article).success);
+const report = JSON.parse(fs.readFileSync(new URL('../content/news/renewal-2026-10-30.json', import.meta.url), 'utf8'));
+assert.equal(report.articles, report.entries.length);
+assert.equal(new Set(report.entries.map(r => r.id)).size, report.articles);
+assert(report.entries.every(r => r.sources >= 2 && r.characters >= 900 && r.characters <= 4000 && r.headings[0] === '' && r.headings.at(-2) === '' && r.headings.at(-1) === 'ARCH.B 의견'));
+console.log(`News renewal checks passed: ${report.articles} reviewed entries, immutable backups, original links and tags, editorial flow and length bounds.`);

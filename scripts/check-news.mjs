@@ -121,7 +121,7 @@ if (base) {
       assert.ok(html.includes('북마크') && html.includes('Written by'));
     }
     if (path === `/news/read/${newsSlug(expanded.url)}`) {
-      assert.ok(html.includes('ARCH.B 분석') && html.includes('source-credit') && html.includes('이미지 제공:'));
+      assert.ok(html.includes('ARCH.B 의견') && html.includes('source-credit') && html.includes('이미지 제공:'));
       const firstParagraph = published.find(article => article.slug === newsSlug(expanded.url)).paragraphs[0].paragraphs[0];
       assert.ok(html.includes(firstParagraph), 'Processed article body must remain server rendered');
     }

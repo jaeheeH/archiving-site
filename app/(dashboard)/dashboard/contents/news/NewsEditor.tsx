@@ -110,6 +110,7 @@ export default function NewsEditor({ postId }: { postId: string }) {
     <main className="dashboard-container">
       {!post ? <p role={error ? "alert" : "status"} className="text-sm text-gray-500">{error || "뉴스를 불러오는 중…"}</p> : <form onSubmit={save} onChange={() => setDirty(true)} className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_280px]">
         <div className="min-w-0 space-y-6">
+          <aside className="rounded-lg border border-border p-4 text-sm leading-7"><h2 className="font-semibold">발행 전 편집 확인</h2><p className="mt-2 text-muted-foreground">제목에서 누가 무엇을 바꿨는지 바로 알 수 있게 써주세요. 같은 주제의 여러 자료를 한 흐름의 기사로 엮고, 확인된 사실은 “이렇게 제작했다·진행했다”처럼 직접 서술합니다. “자료에 따르면” 같은 출처 소개는 반복하지 않으며 출처는 공개 화면 하단에 모읍니다. 본문은 900~4,000자·3~8개 섹션 안에서 작성하며, 근거가 충분하면 2,600~3,600자를 목표로 배경·진행 과정·구성과 의미를 자세히 설명합니다. 상단 요약으로 핵심 결론을 먼저 전하고, 본문은 배경·핵심 내용·짧은 정리·ARCH.B 의견 순서로 전개합니다. 관련 문단에만 내용 중심의 소제목을 붙이고 도입·정리의 제목은 비워둘 수 있습니다. 같은 요약이나 일반론을 반복하지 않습니다. 사실·업체의 주장·ARCH.B의 해석을 구분하고 직접 해보지 않은 시험·취재를 경험담으로 쓰지 않습니다.</p></aside>
           {preview && <section className="space-y-5 rounded-lg border border-emerald-200 bg-white p-5" aria-label="조사 초안 검토">
             <div><h2 className="text-lg font-semibold">조사 초안 검토</h2><p className="mt-1 text-xs text-gray-500">{preview.research.model} · 본문 {preview.research.characterCount}자 · 참고자료 {preview.research.sources.length}개</p></div>
             <h3 className="text-xl font-bold">{preview.article.title}</h3><p className="text-sm leading-7 text-gray-600">{preview.article.summary}</p>
@@ -125,12 +126,12 @@ export default function NewsEditor({ postId }: { postId: string }) {
             <label className="block text-sm font-medium">키워드<input className={`${fieldClass} mt-2`} value={tags} onChange={event => setTags(event.target.value)} placeholder="쉼표로 구분 · 최대 5개" /></label>
           </section>
           <section className="space-y-5 rounded-lg border border-gray-200 bg-white p-5">
-            <div><h2 className="text-base font-semibold">기사 본문</h2><p className="mt-1 text-xs leading-5 text-gray-500">본문 1,800~3,000자 · 4~6개 섹션 · 원출처 포함 참고자료 2개 이상. 사실과 분석을 구분하고 문단은 빈 줄로 나눕니다.</p><p className="mt-2 text-xs text-gray-500">현재 {editorialText(paragraphs).length}자 · {paragraphs.length}개 섹션</p></div>
+            <div><h2 className="text-base font-semibold">기사 본문</h2><p className="mt-1 text-xs leading-5 text-gray-500">본문 900~4,000자 · 3~8개 섹션 · 원출처 포함 참고자료 2개 이상. 섹션 제목은 입력한 곳만 공개됩니다. “서론·본론·결론” 대신 내용을 설명하는 제목을 쓰고, 묶을 필요가 없으면 비워두세요. 마지막에는 ARCH.B 의견을 적습니다. 글의 성격·참고자료 연결은 내부 검수용입니다. 문단은 빈 줄로 나눕니다.</p><p className="mt-2 text-xs text-gray-500">현재 {editorialText(paragraphs).length}자 · {paragraphs.length}개 섹션</p></div>
             {paragraphs.map((section, index) => <fieldset key={index} className="space-y-4 rounded-md border border-gray-200 p-4">
               <legend className="px-1 text-sm font-semibold">본문 {index + 1}</legend>
               {typeof section !== "string" && <>
-                <label className="block text-sm">섹션 제목<input className={`${fieldClass} mt-1`} value={section.heading} onChange={event => updateSection(index, { ...section, heading: event.target.value })} maxLength={80} /></label>
-                <label className="block text-sm">글의 성격<select className={`${fieldClass} mt-1`} value={section.kind} onChange={event => updateSection(index, { ...section, kind: event.target.value as "reporting" | "analysis" })}><option value="reporting">사실·소식</option><option value="analysis">ARCH.B 분석</option></select></label>
+                <label className="block text-sm">섹션 제목 (선택)<input className={`${fieldClass} mt-1`} value={section.heading} onChange={event => updateSection(index, { ...section, heading: event.target.value })} maxLength={80} /></label>
+                <label className="block text-sm">글의 성격<select className={`${fieldClass} mt-1`} value={section.kind} onChange={event => updateSection(index, { ...section, kind: event.target.value as "reporting" | "analysis" })}><option value="reporting">사실·소식</option><option value="analysis">ARCH.B 의견·해석</option></select></label>
               </>}
               <label className="block text-sm">본문 내용<textarea className={`${fieldClass} mt-1`} value={typeof section === "string" ? section : section.paragraphs.join("\n\n")} onChange={event => updateSection(index, typeof section === "string" ? event.target.value : { ...section, paragraphs: [event.target.value] })} rows={7} /></label>
               {typeof section !== "string" && <div className="space-y-3">
@@ -140,7 +141,7 @@ export default function NewsEditor({ postId }: { postId: string }) {
                   <label className="text-xs">자료 성격<select className={`${fieldClass} mt-1`} value={reference.kind || "reporting"} onChange={event => updateSection(index, { ...section, references: section.references.map((ref, i) => i === refIndex ? { ...ref, kind: event.target.value as "primary" | "reporting" } : ref) })}><option value="reporting">보도·참고자료</option><option value="primary">공식 1차 자료 · 확인함</option></select></label>
                   <button type="button" className="self-end px-2 py-3 text-xs text-gray-500" aria-label={`본문 ${index + 1} 참고자료 ${refIndex + 1} 제거`} onClick={() => updateSection(index, { ...section, references: section.references.filter((_, i) => i !== refIndex) })}>제거</button>
                 </div>)}
-                {section.references.length < 3 && <button type="button" className="text-xs font-medium text-emerald-700" onClick={() => updateSection(index, { ...section, references: [...section.references, { label: "", url: "", kind: "reporting" }] })}>+ 참고자료 추가</button>}
+                {section.references.length < 9 && <button type="button" className="text-xs font-medium text-emerald-700" onClick={() => updateSection(index, { ...section, references: [...section.references, { label: "", url: "", kind: "reporting" }] })}>+ 참고자료 추가</button>}
               </div>}
               <button type="button" className="text-xs text-red-600" onClick={() => { setDirty(true); setParagraphs(previous => previous.filter((_, i) => i !== index)); }}>본문 {index + 1} 제거</button>
             </fieldset>)}

@@ -454,7 +454,7 @@ export default function BlogDetailClient({
                 <div className="min-w-0">
                   <p className="text-[14px] font-bold leading-tight text-[var(--archive-ink)]">{authorName}</p>
                   <p className="archive-index mt-1 text-[12px] text-[var(--archive-muted)]">
-                    {news && `${news.source} 기반 · `}{publishedLabel} · {readingMinutes}분 분량
+                    {publishedLabel} · {readingMinutes}분 분량
                   </p>
                 </div>
               </div>
