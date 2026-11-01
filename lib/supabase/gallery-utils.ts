@@ -78,14 +78,18 @@ export function isStorageNotFoundError(error: unknown) {
 
 export async function removeGalleryStorageAssets(
   admin: ReturnType<typeof createAdminClient>,
-  urls: Array<string | null | undefined>
+  urls: Array<string | null | undefined>,
+  retainedUrls: Array<string | null | undefined> = []
 ) {
+  const retainedPaths = new Set(retainedUrls.map(extractGalleryStoragePath)
+    .filter((path): path is string => Boolean(path)).flatMap(imageAssetPaths));
   const paths = Array.from(
     new Set(
       urls
         .map(extractGalleryStoragePath)
         .filter((path): path is string => Boolean(path))
         .flatMap(imageAssetPaths)
+        .filter(path => !retainedPaths.has(path))
     )
   );
 

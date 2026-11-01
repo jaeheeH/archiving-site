@@ -258,18 +258,6 @@ export default function BlogDetailClient({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post.id, hasRecordedView, authReady]); // post 객체가 변경되는 것을 방지하기 위해 ID 의존
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const elements = Array.from(document.querySelectorAll('.tiptap-content h2, .tiptap-content h3'));
-      elements.forEach((element, index) => {
-        const heading = headings[index];
-        if (heading) element.setAttribute('id', heading.id);
-      });
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [headings]);
-
   // --- Functions ---
 
   const fetchCategory = async (categoryId: string) => {

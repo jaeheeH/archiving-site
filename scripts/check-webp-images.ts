@@ -72,6 +72,11 @@ async function main() {
   const animation = await uploadImageWithVariants(client, 'posts', 'animation.gif', animated, 'image/gif');
   assert.equal(animation.url, animation.original_url);
   assert.equal(checksum(objects.get('animation.gif')!.bytes), checksum(animated));
+  const smallUpload = await uploadImageWithVariants(client, 'posts', 'small.png', small, 'image/png');
+  const smallVariants = preoptimizedVariants(smallUpload.url)!;
+  assert.equal(smallVariants.length, 1, 'A small uploaded original must not be advertised under four larger widths');
+  assert.equal(smallVariants[0].width, 80);
+  assert.equal(originalImageUrl(smallUpload.url), smallUpload.original_url, 'Display-size metadata must not change the original URL');
 
   const stage = (body: unknown) => new Request('https://test.local/api/upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   const prepared = await imageUploadForm(stage({ stage: 'prepare', type: 'image/png', size: 6 * 1024 * 1024 }), client, 'posts', 'owner');
@@ -80,9 +85,10 @@ async function main() {
   assert(signed.path.startsWith('direct/owner/')); assert.equal(signed.bucket, 'posts');
   objects.set(signed.path, { bytes: png, type: 'image/png' });
   const completed = await imageUploadForm(stage({ stage: 'complete', path: signed.path, name: 'original.png', fields: { folder: 'titles', fileName: 'original.png' } }), client, 'posts', 'owner');
-  assert(completed instanceof FormData);
-  assert.equal(completed.get('folder'), 'titles');
-  assert.equal(checksum(Buffer.from(await (completed.get('file') as File).arrayBuffer())), originalChecksum);
+  assert(!(completed instanceof Response));
+  assert.equal(completed.stagingPath, signed.path);
+  assert.equal(completed.formData.get('folder'), 'titles');
+  assert.equal(checksum(Buffer.from(await (completed.formData.get('file') as File).arrayBuffer())), originalChecksum);
   for (const body of [null, { stage: 'prepare', type: 'image/svg+xml', size: 100 }, { stage: 'prepare', type: 'image/png', size: 9 * 1024 * 1024 }, { stage: 'complete', path: signed.path.replace('/owner/', '/another-user/') }, { stage: 'complete', path: 'direct/owner/../../secret.png' }]) {
     const invalid = await imageUploadForm(stage(body), client, 'posts', 'owner');
     assert(invalid instanceof Response); assert.equal(invalid.status, 400);

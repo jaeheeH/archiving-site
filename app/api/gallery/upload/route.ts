@@ -32,8 +32,9 @@ export async function POST(request: NextRequest) {
     if (!permCheck.authorized) return permCheck.error!;
 
     const admin = createAdminClient();
-    const formData = await imageUploadForm(request, admin, 'gallery', permCheck.userId!);
-    if (formData instanceof Response) return formData;
+    const parsed = await imageUploadForm(request, admin, 'gallery', permCheck.userId!);
+    if (parsed instanceof Response) return parsed;
+    const { formData, stagingPath } = parsed;
     const file = formData.get("file");
 
     if (!(file instanceof File)) {
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
     const ext = safeExtension(file);
     const originalPath = `${permCheck.userId}/originals/${createdAt}_${random}.${ext}`;
     const buffer = Buffer.from(await file.arrayBuffer());
-    const uploaded = await uploadImageWithVariants(admin, 'gallery', originalPath, buffer, file.type);
+    const uploaded = await uploadImageWithVariants(admin, 'gallery', originalPath, buffer, file.type, { stagingPath });
     const thumbnail = uploaded.variants.find(item => item.width === 640);
 
     return NextResponse.json({

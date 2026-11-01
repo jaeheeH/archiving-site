@@ -2,13 +2,13 @@
 'use client';
 
 import { uploadImageFile } from '@/lib/upload-image-client';
+import { MAX_BRAND_IMAGE_BYTES as MAX_TRAINING_IMAGE_BYTES } from '@/lib/image-upload-limits';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UploadCloud, X } from 'lucide-react';
 
-const MAX_TRAINING_IMAGE_BYTES = 12 * 1024 * 1024;
 const ALLOWED_TRAINING_IMAGE_TYPES = new Set([
   'image/jpeg',
   'image/png',
@@ -78,6 +78,7 @@ export default function BrandKitPage() {
   const handleSubmit = async () => {
     if (!brandName.trim()) return alert('브랜드 이름을 입력해주세요.');
     if (files.length < 5) return alert('최소 5장 이상의 이미지가 필요합니다. (권장 10~20장)');
+    if (files.some(file => !ALLOWED_TRAINING_IMAGE_TYPES.has(file.type) || file.size > MAX_TRAINING_IMAGE_BYTES)) return alert('JPG, PNG, WebP 이미지만 12MB 이하로 추가할 수 있습니다.');
 
     setLoading(true);
     setUploadProgress('브랜드 생성 중...');
@@ -100,7 +101,6 @@ export default function BrandKitPage() {
       for (let index = 0; index < files.length; index += 1) {
         const file = files[index];
         setUploadProgress(`이미지 최적화 및 업로드 중... (${index + 1}/${files.length})`);
-        if (file.size > 5 * 1024 * 1024) throw new Error('브랜드 이미지는 5MB 이하로 업로드해주세요.');
 
         const formData = new FormData();
         formData.append('brandId', newBrand.id);

@@ -3,6 +3,7 @@ import type { JSONContent } from '@tiptap/core';
 import { getSiteUrl } from '@/lib/site-url';
 import ArchiveImage from './ArchiveImage';
 import EditorialGallery from './EditorialGallery';
+import { createHeadingResolver, renderedHeadingLevel } from '@/lib/article-outline';
 
 function imageSize(value: unknown, fallback: number) {
   const size = Number(value);
@@ -19,8 +20,10 @@ function safeUrl(value: unknown, image = false) {
 
 // The public reader renders stored content as HTML; Tiptap stays in the editor.
 export default function EditorialContent({ content }: { content: JSONContent | JSONContent[] | string | null }) {
+  const resolveHeading = createHeadingResolver();
   const nodes = (items?: JSONContent[]): ReactNode => items?.map((node, index) => <Fragment key={index}>{render(node)}</Fragment>);
   const render = (node: JSONContent): ReactNode => {
+    const heading = resolveHeading(node);
     const children = nodes(node.content);
     const attrs = node.attrs || {};
     const style = ['left', 'center', 'right', 'justify'].includes(attrs.textAlign) ? { textAlign: attrs.textAlign as 'left' } : undefined;
@@ -38,8 +41,8 @@ export default function EditorialContent({ content }: { content: JSONContent | J
       }, node.text || '');
       case 'paragraph': return <p style={style}>{children}</p>;
       case 'heading': {
-        const Tag = `h${Math.max(2, Math.min(6, Math.trunc(Number(attrs.level)) || 2))}` as 'h2';
-        return <Tag style={style}>{children}</Tag>;
+        const Tag = `h${renderedHeadingLevel(attrs.level)}` as 'h2';
+        return <Tag id={heading?.id} style={style}>{children}</Tag>;
       }
       case 'hardBreak': return <br />;
       case 'horizontalRule': return <hr />;

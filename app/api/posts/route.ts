@@ -59,8 +59,9 @@ async function moveImagesToPostFolder(
 
   // 각 이미지를 새 위치로 복사하고 URL 교체
   for (const fileName of new Set(imageUrls)) {
-    const oldPath = `temp/${userId}/${fileName}`;
-    const newPath = `${postType}/${postId}/${fileName}`;
+    const relativePath = fileName.split(/[?#]/)[0];
+    const oldPath = `temp/${userId}/${relativePath}`;
+    const newPath = `${postType}/${postId}/${relativePath}`;
 
     try {
       await copyImageFamily(supabase, 'posts', oldPath, newPath);
@@ -96,7 +97,8 @@ async function moveTempPostAssetToPostFolder(
     return assetUrl;
   }
 
-  const relativePath = assetUrl.slice(tempPrefix.length).split('?')[0];
+  const relativeUrl = assetUrl.slice(tempPrefix.length);
+  const relativePath = relativeUrl.split(/[?#]/)[0];
   if (!relativePath) return assetUrl;
 
   const oldPath = `temp/${userId}/${relativePath}`;
@@ -105,7 +107,7 @@ async function moveTempPostAssetToPostFolder(
   try {
     await copyImageFamily(supabase, 'posts', oldPath, newPath);
 
-    return `${newPrefix}${relativePath}`;
+    return `${newPrefix}${relativeUrl}`;
   } catch (err) {
     console.error(`대표 이미지 이동 실패 (${relativePath}):`, err);
     return assetUrl;

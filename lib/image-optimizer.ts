@@ -27,7 +27,7 @@ export function optimizeImageUrl(
  */
 export function generateImageSrcSet(url: string): string {
   const prepared = preoptimizedVariants(url);
-  if (prepared) return prepared.map(item => `${item.url} ${item.width}w`).join(', ');
+  if (prepared) return prepared.filter(item => item.width !== undefined).map(item => `${item.url} ${item.width}w`).join(', ');
   if (!canOptimizeImage(url)) return '';
   return IMAGE_WIDTHS.filter(size => size >= 384)
     .map((size) => `${optimizeImageUrl(url, { width: size, format: 'webp' })} ${size}w`)

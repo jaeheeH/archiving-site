@@ -32,8 +32,9 @@ export async function POST(request: NextRequest) {
     if (!permCheck.authorized) return permCheck.error!;
 
     const admin = createAdminClient();
-    const formData = await imageUploadForm(request, admin, 'references', permCheck.userId!);
-    if (formData instanceof Response) return formData;
+    const parsed = await imageUploadForm(request, admin, 'references', permCheck.userId!);
+    if (parsed instanceof Response) return parsed;
+    const { formData, stagingPath } = parsed;
     const file = formData.get("file");
     const kind = normalizeKind(formData.get("kind"));
     const maxBytes = kind === "logo" ? MAX_REFERENCE_LOGO_BYTES : MAX_REFERENCE_IMAGE_BYTES;
@@ -58,7 +59,7 @@ export async function POST(request: NextRequest) {
     const filePath = `references/${folder}/${fileName}`;
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    const uploaded = await uploadImageWithVariants(admin, 'references', filePath, buffer, file.type);
+    const uploaded = await uploadImageWithVariants(admin, 'references', filePath, buffer, file.type, { stagingPath });
 
     return NextResponse.json(
       { success: true, ...uploaded },

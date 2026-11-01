@@ -306,7 +306,7 @@ export async function PATCH(req: NextRequest, { params }: Props) {
         previousGallery.thumbnail_url !== nextThumbnailUrl ? previousGallery.thumbnail_url : null,
       ];
 
-      await removeGalleryStorageAssets(adminClient, staleUrls);
+      await removeGalleryStorageAssets(adminClient, staleUrls, [nextImageUrl, nextThumbnailUrl]);
     }
 
     return NextResponse.json({

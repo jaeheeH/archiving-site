@@ -26,9 +26,28 @@ const createHeadingId = (text: string, index: number) => {
   return slug || `section-${index + 1}`;
 };
 
+export const renderedHeadingLevel = (value: unknown) => Math.max(2, Math.min(6, Math.trunc(Number(value)) || 2));
+
+export function createHeadingResolver() {
+  const seenIds = new Set<string>();
+  let index = 0;
+  return (node: JSONContent): ArticleHeading | undefined => {
+    if (node.type !== 'heading') return;
+    const level = renderedHeadingLevel(node.attrs?.level);
+    const text = getNodeText(node).trim();
+    if (level > 3 || !text) return;
+    const baseId = createHeadingId(text, index++);
+    let id = baseId;
+    let suffix = 1;
+    while (seenIds.has(id)) id = `${baseId}-${++suffix}`;
+    seenIds.add(id);
+    return { id, level, text };
+  };
+}
+
 export const extractHeadings = (content: TiptapContent): ArticleHeading[] => {
   const headings: ArticleHeading[] = [];
-  const seenIds = new Map<string, number>();
+  const resolveHeading = createHeadingResolver();
 
   const visit = (node: TiptapContent) => {
     if (!node) return;
@@ -37,20 +56,8 @@ export const extractHeadings = (content: TiptapContent): ArticleHeading[] => {
       node.forEach(visit);
       return;
     }
-    if (node.type === 'heading' && [2, 3].includes(node.attrs?.level)) {
-      const text = getNodeText(node).trim();
-      if (text) {
-        const baseId = createHeadingId(text, headings.length);
-        const seenCount = seenIds.get(baseId) || 0;
-        seenIds.set(baseId, seenCount + 1);
-
-        headings.push({
-          id: seenCount > 0 ? `${baseId}-${seenCount + 1}` : baseId,
-          level: Number(node.attrs?.level || 2),
-          text,
-        });
-      }
-    }
+    const heading = resolveHeading(node);
+    if (heading) headings.push(heading);
 
     if (Array.isArray(node.content)) {
       node.content.forEach(visit);

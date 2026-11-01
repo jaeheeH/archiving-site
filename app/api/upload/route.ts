@@ -50,8 +50,9 @@ export async function POST(request: NextRequest) {
     if (!permCheck.authorized) return permCheck.error;
 
     const supabase = await createClient();
-    const formData = await imageUploadForm(request, supabase, 'posts', permCheck.userId);
-    if (formData instanceof Response) return formData;
+    const parsed = await imageUploadForm(request, supabase, 'posts', permCheck.userId);
+    if (parsed instanceof Response) return parsed;
+    const { formData, stagingPath } = parsed;
     const file = formData.get('file');
     const fileName = getFileNameFromForm(formData);
     const explicitFolder = normalizeFolder(formData.get('folder'));
@@ -94,7 +95,7 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const uploaded = await uploadImageWithVariants(supabase, 'posts', filePath, buffer, file.type);
+    const uploaded = await uploadImageWithVariants(supabase, 'posts', filePath, buffer, file.type, { stagingPath });
 
     return NextResponse.json(
       uploaded,
