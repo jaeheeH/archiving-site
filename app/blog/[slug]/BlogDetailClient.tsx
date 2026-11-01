@@ -513,6 +513,19 @@ export default function BlogDetailClient({
             </section>
           )}
 
+          {headings.length > 2 && (
+            <nav className="article-contents" aria-label="이 글의 목차">
+              <details>
+                <summary>이 글의 목차</summary>
+                <ol>
+                  {headings.map(heading => <li key={heading.id} data-level={heading.level}>
+                    <a href={`#${heading.id}`}>{heading.text}</a>
+                  </li>)}
+                </ol>
+              </details>
+            </nav>
+          )}
+
           {post.title_image_url && (
             <figure className="news-detail-thumbnail">
               <ArchiveImage src={post.title_image_url} width={1200} height={800} sizes="(max-width: 1024px) 100vw, 820px" alt={post.title} referrerPolicy="no-referrer" />

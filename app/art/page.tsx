@@ -10,7 +10,12 @@ import { getArtCatalog } from "@/lib/art-catalog";
 import { getPageMetadata } from '@/lib/site-settings';
 
 export async function generateMetadata({ searchParams }: ArtPageProps) {
-  return getPageMetadata({ path: '/art', title: '아트 · 작품 아카이브', description: '출처와 이용 근거를 확인한 실제 작품을 시대, 사조, 작품 종류, 주제별로 탐색합니다.', noindex: hasArtFilters(readArtFilters(await searchParams)) });
+  const params = await searchParams;
+  const filters = readArtFilters(params);
+  const filtered = hasArtFilters(filters);
+  const { artworks } = await getArtCatalog();
+  const { page } = artListPage(artworks.length, params);
+  return getPageMetadata({ path: filtered ? '/art' : artListHref({}, page), title: `아트 · 작품 아카이브${page > 1 && !filtered ? ` · ${page}페이지` : ''}`, description: '출처와 이용 근거를 확인한 실제 작품을 시대, 사조, 작품 종류, 주제별로 탐색합니다.', noindex: filtered });
 }
 
 type ArtPageProps = {

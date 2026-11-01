@@ -6,7 +6,7 @@ export const PUBLIC_IMAGE_HOSTS = [
   'iip-thumb.smk.dk',
   'about.fb.com', 'engineering.fb.com', 'blog.cloudflare.com', 'blog.developer.adobe.com', 'blogs.nvidia.com',
   'cdn-images-1.medium.com', 'design-milk.com', 'files.smashing.media', 'github.com',
-  'img.kr.news.samsung.com', 'static.dezeen.com', 'static.toss.im', 'storage.googleapis.com',
+  'img.kr.news.samsung.com', 'static.dezeen.com', 'static-2026.dezeen.com', 'static.toss.im', 'storage.googleapis.com',
 ];
 export function canOptimizeImage(value: string) {
   if (value.startsWith('/') && !value.startsWith('//')) return !value.startsWith('/api/') && !/^\/_next\/image(?:[?#]|$)/.test(value);

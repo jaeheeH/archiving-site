@@ -7,6 +7,7 @@ import { createPublicClient } from "@/lib/supabase/public";
 import { CATEGORIES } from './news-feeds';
 import { normalizeAvatarUrl } from "@/lib/avatar-url";
 import { BANNER_COLUMNS, pickBanner, type Banner } from './banners';
+import { relatedPosts as selectRelatedPosts } from './related-posts';
 
 export const CACHE_TAGS = {
   siteSettings: "site-settings",
@@ -753,12 +754,8 @@ export const getBlogPostData = unstable_cache(
         contentCategory ? baseRelated().eq("content->>category", contentCategory).limit(20) : post.category_id ? baseRelated().eq("category_id", post.category_id).limit(20) : Promise.resolve({ data: [], error: null }),
         baseRelated().limit(10),
       ]);
-      const currentTags = new Set<string>((post.tags || []).map((tag: string) => tag.toLocaleLowerCase('ko')));
-      const score = (item: { tags?: string[]; category_id?: string; content?: unknown }) =>
-        (item.tags || []).filter(tag => currentTags.has(tag.toLocaleLowerCase('ko'))).length * 10 +
-        (contentCategory && item.content === contentCategory || post.category_id && item.category_id === post.category_id ? 3 : 0);
-      const relatedPosts = [...new Map([...(tagMatches.data || []), ...(categoryMatches.data || []), ...(recent.data || [])].map(item => [item.id, item])).values()]
-        .sort((a, b) => score(b) - score(a) || Date.parse(b.published_at) - Date.parse(a.published_at)).slice(0, 3).map(item => ({ ...item, title_image_url: item.type === 'news' ? item.title_image_url || item.thumbnail_url : item.title_image_url, content: { category: typeof item.content === "string" && Object.hasOwn(CATEGORIES, item.content) ? item.content as keyof typeof CATEGORIES : undefined } }));
+      const relatedPosts = selectRelatedPosts(post, [...(tagMatches.data || []), ...(categoryMatches.data || []), ...(recent.data || [])], contentCategory)
+        .map(item => ({ ...item, title_image_url: item.type === 'news' ? item.title_image_url || item.thumbnail_url : item.title_image_url, content: { category: typeof item.content === "string" && Object.hasOwn(CATEGORIES, item.content) ? item.content as keyof typeof CATEGORIES : undefined } }));
 
       return {
         post,
@@ -788,7 +785,7 @@ export const getBlogPostData = unstable_cache(
 
     return null;
   },
-  ["blog-post-data-v3"],
+  ["blog-post-data-v4"],
   {
     revalidate: CACHE_SECONDS.long,
     tags: [CACHE_TAGS.posts],

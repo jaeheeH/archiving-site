@@ -5,7 +5,7 @@ import { getPageMetadata } from '@/lib/site-settings';
 
 export async function generateMetadata() { return getPageMetadata({ path: '/privacy', title: '개인정보 처리방침', description: 'ARCH.B의 개인정보 처리방침입니다.' }); }
 
-const POLICY_EFFECTIVE_DATE = new Date("2026-10-08T00:00:00+09:00");
+const POLICY_EFFECTIVE_DATE = new Date("2026-11-01T00:00:00+09:00");
 
 export default function PrivacyPage() {
   const effectiveDate = formatKoreanDate(POLICY_EFFECTIVE_DATE, "long");
@@ -48,7 +48,8 @@ export default function PrivacyPage() {
                 <li><strong>자동 수집 항목:</strong> IP 주소, 쿠키, 서비스 이용 기록, 방문 기록, 기기 정보</li>
               </ul>
             </div>
-            <p className="mt-3 text-gray-600">방문 분석에는 공개 페이지 경로와 이동 순서, 방문 시각, 외부 유입 도메인·경로, 서버에서 확인한 IP 주소·국가 코드, 기기 유형·브라우저·운영체제와 브라우저를 구분하는 해시 처리된 임의 식별값을 사용합니다. 계정 정보, 검색어, URL 쿼리나 URL 조각은 저장하지 않습니다. 방문자 쿠키는 30일, 방문 구분 쿠키는 마지막 활동 후 30분간 유지됩니다. 브라우저의 Do Not Track 및 Global Privacy Control 설정을 따릅니다.</p>
+            <p className="mt-3 text-gray-600">자체 방문 분석에는 공개 페이지 경로와 이동 순서, 방문 시각, 외부 유입 도메인·경로, 서버에서 확인한 IP 주소·국가 코드, 기기 유형·브라우저·운영체제와 브라우저를 구분하는 해시 처리된 임의 식별값을 사용합니다. 활성 읽기 시간·읽은 깊이·저장·링크 이동·오류도 분석합니다. 계정 정보와 연결하지 않으며 전체 URL 쿼리와 URL 조각은 보관하지 않습니다. 유입 분석에는 검증한 utm_source와 utm_medium 값만 사용합니다.</p>
+            <p className="mt-3 text-gray-600">검색 개선을 위해 최대 100자의 검색어, 결과 수, 검색 결과 클릭을 기록합니다. 이메일·전화번호·URL·인증정보 형태의 검색어는 수집 대상에서 제외합니다. 방문자 쿠키는 30일, 방문 구분 쿠키는 마지막 활동 후 30분간 유지됩니다. 자체 방문·행동 분석은 브라우저의 Do Not Track 및 Global Privacy Control 설정을 따릅니다.</p>
           </section>
 
           <section>
@@ -64,14 +65,25 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">4. 사용자의 권리</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">4. Google 분석 및 광고 쿠키</h2>
+            <p>서비스는 Google Analytics와 Google Tag Manager를 통해 방문 통계를 분석하고 Google AdSense 광고를 게재합니다. Google 및 제3자 광고 공급업체는 쿠키를 사용해 사용자가 이 사이트 또는 다른 사이트를 방문한 기록을 바탕으로 광고를 게재할 수 있습니다. Google의 광고 쿠키를 통해 Google과 광고 파트너가 개인 맞춤 광고를 제공할 수 있습니다.</p>
+            <ul className="list-disc pl-5 mt-3 space-y-2">
+              <li><a className="underline underline-offset-4" href="https://policies.google.com/technologies/partner-sites?hl=ko" target="_blank" rel="noopener noreferrer">Google의 파트너 사이트 정보 이용 안내</a>에서 수집·이용 방식을 확인할 수 있습니다.</li>
+              <li><a className="underline underline-offset-4" href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">Google 광고 설정</a>에서 개인 맞춤 광고를 거부하거나 설정을 변경할 수 있습니다.</li>
+              <li><a className="underline underline-offset-4" href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer">제3자 공급업체의 맞춤 광고 선택 안내</a>와 <a className="underline underline-offset-4" href="https://tools.google.com/dlpage/gaoptout?hl=ko" target="_blank" rel="noopener noreferrer">Google Analytics 차단 도구</a>를 이용할 수 있습니다.</li>
+            </ul>
+            <p className="mt-3">Google 등 외부 서비스의 쿠키와 보관 기간은 해당 제공업체의 정책과 사용자의 설정에 따릅니다. 브라우저 설정에서도 쿠키를 삭제하거나 차단할 수 있습니다.</p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">5. 사용자의 권리</h2>
             <p>
               사용자는 언제든지 자신의 개인정보를 조회하거나 수정할 수 있으며, 수집 및 이용에 대한 동의 철회 또는 가입 해지를 요청할 수 있습니다.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">5. 개인정보에 관한 민원서비스</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">6. 개인정보에 관한 민원서비스</h2>
             <p className="mb-4">
               서비스는 고객의 개인정보를 보호하고 개인정보와 관련한 불만을 처리하기 위하여 아래와 같이 관련 부서를 지정하여 운영하고 있습니다.
             </p>
