@@ -53,6 +53,7 @@ export default async function RootLayout({
   const siteUrl = getSiteUrl();
   const ga4Id = normalizeGa4Id(settings?.ga4_id);
   const gtmId = normalizeGtmId(settings?.gtm_id);
+  const ga4ViaGtm = !!gtmId && process.env.NEXT_PUBLIC_GA4_VIA_GTM === 'true';
   const htmlLang = normalizeHtmlLang(settings?.site_language);
 
   return (
@@ -104,8 +105,8 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: COLOR_MODE_INIT_SCRIPT }} />
         <meta name="p:domain_verify" content="bf63e4dfeb108fe297cdffdabe10cd78"/>
 
-        {/* When GTM is configured, its container owns Google Analytics delivery. */}
-        {ga4Id && !gtmId && (
+        {/* A GTM container may only contain other tags, such as Clarity. */}
+        {ga4Id && !ga4ViaGtm && (
           <>
             <Script
               id="archb-ga4-loader"

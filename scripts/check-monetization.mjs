@@ -35,9 +35,9 @@ if (base) {
   const artPage = await fetch(new URL('/art?page=2', base)).then(response => response.text());
   assert.match(artPage, /rel="canonical" href="https:\/\/www\.archbehind\.com\/art\?page=2"/);
   const policy = await fetch(new URL('/privacy', base)).then(response => response.text());
-  assert.ok(policy.includes('Google 분석 및 광고 쿠키') && policy.includes('검색어, 결과 수'));
+  assert.ok(policy.includes('외부 분석 및 광고 쿠키') && policy.includes('검색어, 결과 수') && policy.includes('Microsoft Clarity'));
   assert.ok(!policy.includes('계정 정보, 검색어, URL 쿼리나 URL 조각은 저장하지 않습니다'));
   const home = await fetch(base).then(response => response.text());
-  assert.ok(!/<script[^>]+src="https:\/\/www\.googletagmanager\.com\/gtag\/js/.test(home), 'GTM owns the configured live GA4 tag');
+  assert.ok(home.includes('archb-ga4-loader') && home.includes('archb-gtm'), 'A Clarity-only GTM container must not disable direct GA4 delivery');
 }
-console.log('Monetization checks passed: publisher authorization, relevant recommendations, trusted image origin' + (base ? ', HTTP ads.txt, pagination canonical, privacy and single analytics loader.' : '.'));
+console.log('Monetization checks passed: publisher authorization, relevant recommendations, trusted image origin' + (base ? ', HTTP ads.txt, pagination canonical, privacy and GA4/Clarity delivery.' : '.'));

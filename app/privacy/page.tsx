@@ -65,13 +65,14 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">4. Google 분석 및 광고 쿠키</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">4. 외부 분석 및 광고 쿠키</h2>
             <p>서비스는 Google Analytics와 Google Tag Manager를 통해 방문 통계를 분석하고 Google AdSense 광고를 게재합니다. Google 및 제3자 광고 공급업체는 쿠키를 사용해 사용자가 이 사이트 또는 다른 사이트를 방문한 기록을 바탕으로 광고를 게재할 수 있습니다. Google의 광고 쿠키를 통해 Google과 광고 파트너가 개인 맞춤 광고를 제공할 수 있습니다.</p>
             <ul className="list-disc pl-5 mt-3 space-y-2">
               <li><a className="underline underline-offset-4" href="https://policies.google.com/technologies/partner-sites?hl=ko" target="_blank" rel="noopener noreferrer">Google의 파트너 사이트 정보 이용 안내</a>에서 수집·이용 방식을 확인할 수 있습니다.</li>
               <li><a className="underline underline-offset-4" href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">Google 광고 설정</a>에서 개인 맞춤 광고를 거부하거나 설정을 변경할 수 있습니다.</li>
               <li><a className="underline underline-offset-4" href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer">제3자 공급업체의 맞춤 광고 선택 안내</a>와 <a className="underline underline-offset-4" href="https://tools.google.com/dlpage/gaoptout?hl=ko" target="_blank" rel="noopener noreferrer">Google Analytics 차단 도구</a>를 이용할 수 있습니다.</li>
             </ul>
+            <p className="mt-3">또한 Microsoft Clarity를 통해 클릭·스크롤 등 화면 이용 패턴을 분석합니다. Clarity는 쿠키와 브라우저·기기 정보를 사용할 수 있습니다. 자세한 처리 방식과 선택권은 <a className="underline underline-offset-4" href="https://privacy.microsoft.com/ko-kr/privacystatement" target="_blank" rel="noopener noreferrer">Microsoft 개인정보처리방침</a>에서 확인할 수 있습니다.</p>
             <p className="mt-3">Google 등 외부 서비스의 쿠키와 보관 기간은 해당 제공업체의 정책과 사용자의 설정에 따릅니다. 브라우저 설정에서도 쿠키를 삭제하거나 차단할 수 있습니다.</p>
           </section>
 
