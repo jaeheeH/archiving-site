@@ -16,7 +16,7 @@ for (const tag of html.matchAll(/<img\b[^>]*>/g)) {
   if (!src) continue;
   const url = new URL(src, base);
   const source = url.pathname === '/_next/image' ? url.searchParams.get('url') : url.origin === new URL(base).origin ? url.pathname : url.href;
-  if (source && !/\.(?:svg|ico)(?:\?|$)/i.test(source)) sources.add(source);
+  if (source && !source.startsWith('/optimized/home/') && !/\.(?:svg|ico)(?:\?|$)/i.test(source)) sources.add(source);
 }
 // Keep the random artwork discovery block varied using a prepared subset.
 const catalog = JSON.parse(await readFile('research/art-collection/artworks.json', 'utf8'));
