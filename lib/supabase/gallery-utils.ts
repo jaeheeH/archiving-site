@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "./server";
 import { createAdminClient } from "./admin";
+import { imageAssetPaths } from '@/lib/image-variants';
 
 const MAX_GALLERY_TEXT_LENGTH = 800;
 const MAX_GALLERY_TITLE_LENGTH = 160;
@@ -84,6 +85,7 @@ export async function removeGalleryStorageAssets(
       urls
         .map(extractGalleryStoragePath)
         .filter((path): path is string => Boolean(path))
+        .flatMap(imageAssetPaths)
     )
   );
 

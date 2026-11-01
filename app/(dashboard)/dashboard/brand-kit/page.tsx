@@ -1,11 +1,11 @@
 // app/(dashboard)/dashboard/brand-kit/page.tsx
 'use client';
 
+import { uploadImageFile } from '@/lib/upload-image-client';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import imageCompression from 'browser-image-compression';
 import { UploadCloud, X } from 'lucide-react';
 
 const MAX_TRAINING_IMAGE_BYTES = 12 * 1024 * 1024;
@@ -100,22 +100,13 @@ export default function BrandKitPage() {
       for (let index = 0; index < files.length; index += 1) {
         const file = files[index];
         setUploadProgress(`이미지 최적화 및 업로드 중... (${index + 1}/${files.length})`);
-        const optimizedFile = await imageCompression(file, {
-          maxSizeMB: 1.2,
-          maxWidthOrHeight: 1600,
-          useWebWorker: true,
-          fileType: 'image/jpeg',
-          initialQuality: 0.85,
-        });
+        if (file.size > 5 * 1024 * 1024) throw new Error('브랜드 이미지는 5MB 이하로 업로드해주세요.');
 
         const formData = new FormData();
         formData.append('brandId', newBrand.id);
-        formData.append('file', optimizedFile);
+        formData.append('file', file);
 
-        const uploadRes = await fetch('/api/brands/assets', {
-          method: 'POST',
-          body: formData,
-        });
+        const uploadRes = await uploadImageFile("/api/brands/assets", formData);
         const uploadData = await uploadRes.json();
 
         if (!uploadRes.ok) {

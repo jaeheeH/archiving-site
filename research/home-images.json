@@ -1,0 +1,912 @@
+{
+  "version": 1,
+  "images": {
+    "/logo.png": {
+      "originalSha256": "906688a7d27b75491fbf7e15e8f799ee9dfb4dd604d99b838bf85b9ac9659c94",
+      "originalBytes": 2329,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/e99d3240235990095d90-w160.webp",
+          "bytes": 1306
+        },
+        {
+          "width": 279,
+          "url": "/optimized/home/e99d3240235990095d90-w320.webp",
+          "bytes": 1202
+        }
+      ]
+    },
+    "/logo_white.png": {
+      "originalSha256": "6351ebfeffae9bb8cba9a59e5a22aac7cd9640cdd51a659154ff9572907deb10",
+      "originalBytes": 3037,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/682d84e54c37772a3ddb-w160.webp",
+          "bytes": 1342
+        },
+        {
+          "width": 279,
+          "url": "/optimized/home/682d84e54c37772a3ddb-w320.webp",
+          "bytes": 1202
+        }
+      ]
+    },
+    "https://static-2026.dezeen.com/uploads/2026/10/lebond-norman-foster-watch_dezeen_2364_col_sq3-1024x1024.jpg": {
+      "originalSha256": "e93625610f064a95d76367d71bd2f635d68618f0535b61b0e6bf5fe548e7db1d",
+      "originalBytes": 160765,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/46e39164444ff7306638-w160.webp",
+          "bytes": 4004
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/46e39164444ff7306638-w320.webp",
+          "bytes": 14814
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/46e39164444ff7306638-w640.webp",
+          "bytes": 51222
+        },
+        {
+          "width": 1024,
+          "url": "/optimized/home/46e39164444ff7306638-w1280.webp",
+          "bytes": 101476
+        }
+      ]
+    },
+    "https://design-milk.com/images/2026/10/13.-CLB-Boomerang-0101-e1793125420381-1500x1125.jpg": {
+      "originalSha256": "4ade1f70635ca4ea3d0efb7dd3f4789f459348a31a18f1d16f07a71998130b9a",
+      "originalBytes": 249331,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/658847d794527eb22615-w160.webp",
+          "bytes": 3476
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/658847d794527eb22615-w320.webp",
+          "bytes": 10236
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/658847d794527eb22615-w640.webp",
+          "bytes": 31146
+        },
+        {
+          "width": 1280,
+          "url": "/optimized/home/658847d794527eb22615-w1280.webp",
+          "bytes": 98374
+        }
+      ]
+    },
+    "https://static-2026.dezeen.com/uploads/2026/10/manual-photo-lab-manhatttan-protean-practice_dezeen_2364_sq-1-1024x1024.jpg": {
+      "originalSha256": "a2cf5ccce4ccd447f3ba67d7169cb70d30d4354e143aebdce52832bc7753ef62",
+      "originalBytes": 198241,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/f54620dc663dd5f5113b-w160.webp",
+          "bytes": 6446
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/f54620dc663dd5f5113b-w320.webp",
+          "bytes": 20476
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/f54620dc663dd5f5113b-w640.webp",
+          "bytes": 61956
+        },
+        {
+          "width": 1024,
+          "url": "/optimized/home/f54620dc663dd5f5113b-w1280.webp",
+          "bytes": 122884
+        }
+      ]
+    },
+    "https://engineering.fb.com/wp-content/uploads/2026/10/PrivacyLib-Figure-1.png": {
+      "originalSha256": "e82a139881d9924371fa06d1951230b452dc274ff2ed54a75695b8d2b92cf778",
+      "originalBytes": 48899,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/44a173ad74b28c84a603-w160.webp",
+          "bytes": 1436
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/44a173ad74b28c84a603-w320.webp",
+          "bytes": 3652
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/44a173ad74b28c84a603-w640.webp",
+          "bytes": 8590
+        },
+        {
+          "width": 1280,
+          "url": "/optimized/home/44a173ad74b28c84a603-w1280.webp",
+          "bytes": 17782
+        }
+      ]
+    },
+    "https://design-milk.com/images/2026/10/JaeKo-JK-ForceOfNature-TimesArtMuseumBeijing-%C2%A9-3717-1500x1125.jpg": {
+      "originalSha256": "4609844d87d5ec0f013b46c67b946f81b3ba90285dec04ee70f97d180ea99cea",
+      "originalBytes": 286705,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/2b9c21be14d2aab292a1-w160.webp",
+          "bytes": 4030
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/2b9c21be14d2aab292a1-w320.webp",
+          "bytes": 15098
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/2b9c21be14d2aab292a1-w640.webp",
+          "bytes": 51372
+        },
+        {
+          "width": 1280,
+          "url": "/optimized/home/2b9c21be14d2aab292a1-w1280.webp",
+          "bytes": 153956
+        }
+      ]
+    },
+    "https://static-2026.dezeen.com/uploads/2026/10/other-worlds-es-devlin-exhibition-retrospective-design-museum-london-video-sq_dezeen_2364_col_0-1024x1024.jpg": {
+      "originalSha256": "23e28ce1b72b2b0deae5f559ca91224f0c56d153dd349c53764703504f5df015",
+      "originalBytes": 220127,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/fd6ddcc069dec8ae5515-w160.webp",
+          "bytes": 6620
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/fd6ddcc069dec8ae5515-w320.webp",
+          "bytes": 21970
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/fd6ddcc069dec8ae5515-w640.webp",
+          "bytes": 68578
+        },
+        {
+          "width": 1024,
+          "url": "/optimized/home/fd6ddcc069dec8ae5515-w1280.webp",
+          "bytes": 130286
+        }
+      ]
+    },
+    "https://design-milk.com/images/2026/10/Camera-da-letto-di-lusso-con-vista-sul-Duomo-1-1500x1000.jpg": {
+      "originalSha256": "329329b46e6d2501b92c197d6206b6442263d94e5ee07600460d3882192fb8a1",
+      "originalBytes": 211154,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/1c8ca4dc1df5abdc3c04-w160.webp",
+          "bytes": 3974
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/1c8ca4dc1df5abdc3c04-w320.webp",
+          "bytes": 11606
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/1c8ca4dc1df5abdc3c04-w640.webp",
+          "bytes": 34052
+        },
+        {
+          "width": 1280,
+          "url": "/optimized/home/1c8ca4dc1df5abdc3c04-w1280.webp",
+          "bytes": 94726
+        }
+      ]
+    },
+    "https://static-2026.dezeen.com/uploads/2026/10/apple-music-rebrand_dezeen_2364_hero_14-1536x864-2.jpg": {
+      "originalSha256": "08c736dda43960c7ade1dccb74d480114936b35ea6e79db7f6e2851701efba43",
+      "originalBytes": 40876,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/f8f99061a867281aa496-w160.webp",
+          "bytes": 2120
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/f8f99061a867281aa496-w320.webp",
+          "bytes": 4546
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/f8f99061a867281aa496-w640.webp",
+          "bytes": 9942
+        },
+        {
+          "width": 847,
+          "url": "/optimized/home/f8f99061a867281aa496-w1280.webp",
+          "bytes": 16046
+        }
+      ]
+    },
+    "https://files.smashing.media/articles/how-name-things-choose-accordion-icons/15-accordion-icons.jpg": {
+      "originalSha256": "c37d5bd608d232ad6627ac784f9f2b656bf868595e404da1495a7a59cb6ae3af",
+      "originalBytes": 224599,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/70d90161ba1c50f0c826-w160.webp",
+          "bytes": 6100
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/70d90161ba1c50f0c826-w320.webp",
+          "bytes": 15450
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/70d90161ba1c50f0c826-w640.webp",
+          "bytes": 35708
+        },
+        {
+          "width": 1280,
+          "url": "/optimized/home/70d90161ba1c50f0c826-w1280.webp",
+          "bytes": 79948
+        }
+      ]
+    },
+    "https://overgjynkrnwayfammid.supabase.co/storage/v1/object/public/posts/9079a7b7-0641-436d-9b3d-c0e31b374e6f/news-thumbnails/2026-10-26/individual/9a140d37-d3b6-43dc-81c6-36574e1fdc21-647f6d6397b2.webp": {
+      "originalSha256": "647f6d6397b21b5c35b0bee6be56c396395f5a5269c2f37de09a6e42e1459940",
+      "originalBytes": 103910,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/9a42229fd2cbdf3adb00-w160.webp",
+          "bytes": 5074
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/9a42229fd2cbdf3adb00-w320.webp",
+          "bytes": 13894
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/9a42229fd2cbdf3adb00-w640.webp",
+          "bytes": 35636
+        },
+        {
+          "width": 1200,
+          "url": "/optimized/home/9a42229fd2cbdf3adb00-w1280.webp",
+          "bytes": 92044
+        }
+      ]
+    },
+    "https://overgjynkrnwayfammid.supabase.co/storage/v1/object/public/posts/9079a7b7-0641-436d-9b3d-c0e31b374e6f/news-thumbnails/2026-10-26/individual/3067fe95-b0e4-4b5e-a10d-90fc1fbade67-b5d6a6974bb8.webp": {
+      "originalSha256": "b5d6a6974bb8f8aae53ac176dcd65307dd66df42606315eda95902d7952e5991",
+      "originalBytes": 96808,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/20e1887f5935046e4196-w160.webp",
+          "bytes": 2390
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/20e1887f5935046e4196-w320.webp",
+          "bytes": 6412
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/20e1887f5935046e4196-w640.webp",
+          "bytes": 20470
+        },
+        {
+          "width": 1200,
+          "url": "/optimized/home/20e1887f5935046e4196-w1280.webp",
+          "bytes": 81992
+        }
+      ]
+    },
+    "https://static.toss.im/ipd-tcs/toss_core/live/6dc9854f-7439-4012-85d0-48eb97209fe9/figure-01-task-types.png": {
+      "originalSha256": "7e39f0e7d61e9ea8ccf474dcd16d78a49652f6d24436eaaa9c91f402549fa577",
+      "originalBytes": 463961,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/9d282fe9ad97498b8125-w160.webp",
+          "bytes": 2720
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/9d282fe9ad97498b8125-w320.webp",
+          "bytes": 7838
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/9d282fe9ad97498b8125-w640.webp",
+          "bytes": 23022
+        },
+        {
+          "width": 1280,
+          "url": "/optimized/home/9d282fe9ad97498b8125-w1280.webp",
+          "bytes": 56774
+        }
+      ]
+    },
+    "https://blog.cloudflare.com/_emdash/api/media/file/01M5X2P2KSNBX6J13E3B4219PW.png": {
+      "originalSha256": "df2216382c033d098278e5a22440d5a08e36aec7035ce82bcf9b865c10635ef5",
+      "originalBytes": 224819,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/282bfc5ed49f58ea683a-w160.webp",
+          "bytes": 3290
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/282bfc5ed49f58ea683a-w320.webp",
+          "bytes": 9056
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/282bfc5ed49f58ea683a-w640.webp",
+          "bytes": 21356
+        },
+        {
+          "width": 1200,
+          "url": "/optimized/home/282bfc5ed49f58ea683a-w1280.webp",
+          "bytes": 41738
+        }
+      ]
+    },
+    "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/FitEdge_Metal_Links_Matte_Black.max-600x600.format-webp.webp": {
+      "originalSha256": "82145f661ea40257e200013c6c586e7cc1ca37ddbcde75c2c72e54ddbfab1923",
+      "originalBytes": 18998,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/324c547cf2deee5ca6d7-w160.webp",
+          "bytes": 3450
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/324c547cf2deee5ca6d7-w320.webp",
+          "bytes": 8598
+        },
+        {
+          "width": 600,
+          "url": "/optimized/home/324c547cf2deee5ca6d7-w640.webp",
+          "bytes": 18092
+        }
+      ]
+    },
+    "https://img.kr.news.samsung.com/kr/wp-content/uploads/2026/10/21171354/1-%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%8D%94%EB%A7%8E%EC%9D%80%EC%A0%9C%ED%92%88-JBL-80%EC%A3%BC%EB%85%84-JBL-%ED%94%8C%EB%A0%88%EC%9D%B4%EB%B0%B1-%EA%B0%A4%EB%9F%AC%EB%A6%AC.jpg": {
+      "originalSha256": "1447171dd9b1356f2f4665942e849f94cc78e3ab4b938f729ab07635b9e5462b",
+      "originalBytes": 242898,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/68055ca267c2cf3842d8-w160.webp",
+          "bytes": 4230
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/68055ca267c2cf3842d8-w320.webp",
+          "bytes": 12402
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/68055ca267c2cf3842d8-w640.webp",
+          "bytes": 35386
+        },
+        {
+          "width": 1000,
+          "url": "/optimized/home/68055ca267c2cf3842d8-w1280.webp",
+          "bytes": 72162
+        }
+      ]
+    },
+    "https://static-2026.dezeen.com/uploads/2026/10/essen-central-library-mvrdv-germany-architectre-public-leisure_dezeen_2364_sq-1024x1024.jpg": {
+      "originalSha256": "30c3f90389a7747a99a87656b4b8911b75becbab6f31fac674f105ed9d3b9942",
+      "originalBytes": 156358,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/686edd9f1bda149bf96a-w160.webp",
+          "bytes": 5408
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/686edd9f1bda149bf96a-w320.webp",
+          "bytes": 15040
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/686edd9f1bda149bf96a-w640.webp",
+          "bytes": 41338
+        },
+        {
+          "width": 1024,
+          "url": "/optimized/home/686edd9f1bda149bf96a-w1280.webp",
+          "bytes": 80604
+        }
+      ]
+    },
+    "https://design-milk.com/images/2026/10/mandarin-oriental-the-landmark-joyce-wang-12.jpg": {
+      "originalSha256": "d3adae2f0bfa35a254ee26c5d9c1ad2cfc7d561986c85b405ae3a9aeefa25f47",
+      "originalBytes": 321773,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/9ac746e96c82c0236422-w160.webp",
+          "bytes": 3678
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/9ac746e96c82c0236422-w320.webp",
+          "bytes": 10046
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/9ac746e96c82c0236422-w640.webp",
+          "bytes": 29028
+        },
+        {
+          "width": 1280,
+          "url": "/optimized/home/9ac746e96c82c0236422-w1280.webp",
+          "bytes": 94052
+        }
+      ]
+    },
+    "https://static-2026.dezeen.com/uploads/2026/10/monos-hq_ste-marie_dezeen_sq1-1024x1024.jpg": {
+      "originalSha256": "0972b30d376e137a0e978645dea776fe4d1a894fe398f55a5ad0caf05aeed152",
+      "originalBytes": 118027,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/56e213a7c4f1c1178068-w160.webp",
+          "bytes": 3544
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/56e213a7c4f1c1178068-w320.webp",
+          "bytes": 9570
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/56e213a7c4f1c1178068-w640.webp",
+          "bytes": 31280
+        },
+        {
+          "width": 1024,
+          "url": "/optimized/home/56e213a7c4f1c1178068-w1280.webp",
+          "bytes": 65230
+        }
+      ]
+    },
+    "https://api.nga.gov/iiif/0b9cefb5-1ee4-401a-8154-8d4039191a28/full/1200,/0/default.jpg": {
+      "originalSha256": "4c182e2181f18857ef8e581b03d1b6f84a9529d1923765dbc041355e6cc342f3",
+      "originalBytes": 465528,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/3352475e9a53fa30352b-w160.webp",
+          "bytes": 6550
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/3352475e9a53fa30352b-w320.webp",
+          "bytes": 23932
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/3352475e9a53fa30352b-w640.webp",
+          "bytes": 84082
+        },
+        {
+          "width": 1200,
+          "url": "/optimized/home/3352475e9a53fa30352b-w1280.webp",
+          "bytes": 292312
+        }
+      ]
+    },
+    "https://overgjynkrnwayfammid.supabase.co/storage/v1/object/public/posts/temp/9079a7b7-0641-436d-9b3d-c0e31b374e6f/titles/1781064847948-daulj0-1007.webp": {
+      "originalSha256": "4b74ffe3198d323ba05b5be4f12fe9679be85bd46a4b223be0415e45f1f573d0",
+      "originalBytes": 23106,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/f3617cd4f17b7f9e04d7-w160.webp",
+          "bytes": 1054
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/f3617cd4f17b7f9e04d7-w320.webp",
+          "bytes": 2568
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/f3617cd4f17b7f9e04d7-w640.webp",
+          "bytes": 6070
+        },
+        {
+          "width": 1280,
+          "url": "/optimized/home/f3617cd4f17b7f9e04d7-w1280.webp",
+          "bytes": 13628
+        }
+      ]
+    },
+    "https://overgjynkrnwayfammid.supabase.co/storage/v1/object/public/posts/blog/314c5f84-ddb4-4bcf-9867-878e984f88a5/titles/1780387537821-f37m17-c78fa445485af.webp": {
+      "originalSha256": "8168fcb0bd4eb9695309cf742589f63ae537c288ce3fea5d2cab0f2ca449520a",
+      "originalBytes": 173852,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/9356cf8bf569abeeea1a-w160.webp",
+          "bytes": 2210
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/9356cf8bf569abeeea1a-w320.webp",
+          "bytes": 6454
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/9356cf8bf569abeeea1a-w640.webp",
+          "bytes": 21294
+        },
+        {
+          "width": 1280,
+          "url": "/optimized/home/9356cf8bf569abeeea1a-w1280.webp",
+          "bytes": 65056
+        }
+      ]
+    },
+    "https://openaccess-cdn.clevelandart.org/1941.14/1941.14_web.jpg": {
+      "originalSha256": "3c38844f80cb7e24b6c7ac4a97326ed5aa1f2c6b1fb0033a1d39da91ca54bae5",
+      "originalBytes": 251269,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/b50f7a112225f67ae724-w160.webp",
+          "bytes": 2912
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/b50f7a112225f67ae724-w320.webp",
+          "bytes": 9212
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/b50f7a112225f67ae724-w640.webp",
+          "bytes": 36126
+        },
+        {
+          "width": 900,
+          "url": "/optimized/home/b50f7a112225f67ae724-w1280.webp",
+          "bytes": 89870
+        }
+      ]
+    },
+    "https://openaccess-cdn.clevelandart.org/1947.70/1947.70_web.jpg": {
+      "originalSha256": "e140583ef036b8728efb857dc3621c1570252caf60c63aa2107a2ed16237b8da",
+      "originalBytes": 371253,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/b22c4a4b6214be8a0244-w160.webp",
+          "bytes": 6282
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/b22c4a4b6214be8a0244-w320.webp",
+          "bytes": 27544
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/b22c4a4b6214be8a0244-w640.webp",
+          "bytes": 115246
+        },
+        {
+          "width": 694,
+          "url": "/optimized/home/b22c4a4b6214be8a0244-w1280.webp",
+          "bytes": 147534
+        }
+      ]
+    },
+    "https://images.metmuseum.org/CRDImages/ep/web-large/DP-42549-001.jpg": {
+      "originalSha256": "af0e3486621c210b54932d055294051b5601aa3362af4b84ab97e2831f8163bc",
+      "originalBytes": 221383,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/ba01921c420cab834c7b-w160.webp",
+          "bytes": 5734
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/ba01921c420cab834c7b-w320.webp",
+          "bytes": 24856
+        },
+        {
+          "width": 599,
+          "url": "/optimized/home/ba01921c420cab834c7b-w640.webp",
+          "bytes": 99378
+        }
+      ]
+    },
+    "https://images.metmuseum.org/CRDImages/ep/web-large/DP-13139-001.jpg": {
+      "originalSha256": "7d8d840424e3747c14b203b67192fff726c897bb05cf9d3f7fa227e1ee4510de",
+      "originalBytes": 71388,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/a7a4b37f3876e83bdc80-w160.webp",
+          "bytes": 2288
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/a7a4b37f3876e83bdc80-w320.webp",
+          "bytes": 7324
+        },
+        {
+          "width": 599,
+          "url": "/optimized/home/a7a4b37f3876e83bdc80-w640.webp",
+          "bytes": 21538
+        }
+      ]
+    },
+    "https://images.metmuseum.org/CRDImages/ep/web-large/DP169568.jpg": {
+      "originalSha256": "6f1c4b129cc7302098a4bfc3c835e5b932c3b0fa8566544bdb54a694ab4c7656",
+      "originalBytes": 250496,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/2c2f9296ea75eb58865a-w160.webp",
+          "bytes": 4100
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/2c2f9296ea75eb58865a-w320.webp",
+          "bytes": 14618
+        },
+        {
+          "width": 599,
+          "url": "/optimized/home/2c2f9296ea75eb58865a-w640.webp",
+          "bytes": 52566
+        }
+      ]
+    },
+    "https://images.metmuseum.org/CRDImages/ep/web-large/DP353257.jpg": {
+      "originalSha256": "13120aa067755f1f50d2b900417807ef9da3f8b2b63a1bbea428fe3f2d8d00a9",
+      "originalBytes": 82797,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/c3a0ff283ed5a48be889-w160.webp",
+          "bytes": 4114
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/c3a0ff283ed5a48be889-w320.webp",
+          "bytes": 13428
+        },
+        {
+          "width": 555,
+          "url": "/optimized/home/c3a0ff283ed5a48be889-w640.webp",
+          "bytes": 34550
+        }
+      ]
+    },
+    "https://images.metmuseum.org/CRDImages/ep/web-large/DP-25465-001.jpg": {
+      "originalSha256": "a3fb8768269a7d778d07b5e958ac10825e34d2213361ccf53a2996b35e3117ba",
+      "originalBytes": 109986,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/ac4d7f11dfd7d16dcad3-w160.webp",
+          "bytes": 3668
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/ac4d7f11dfd7d16dcad3-w320.webp",
+          "bytes": 12838
+        },
+        {
+          "width": 599,
+          "url": "/optimized/home/ac4d7f11dfd7d16dcad3-w640.webp",
+          "bytes": 42394
+        }
+      ]
+    },
+    "https://images.metmuseum.org/CRDImages/ep/web-large/DP159891.jpg": {
+      "originalSha256": "5c3a4fc3ca8d7486936c28238d2eef90c93bfd29fd165ab91b535540864f3306",
+      "originalBytes": 82275,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/9ced110445ac3b5866a2-w160.webp",
+          "bytes": 6170
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/9ced110445ac3b5866a2-w320.webp",
+          "bytes": 25490
+        },
+        {
+          "width": 414,
+          "url": "/optimized/home/9ced110445ac3b5866a2-w640.webp",
+          "bytes": 45526
+        }
+      ]
+    },
+    "https://openaccess-cdn.clevelandart.org/1965.233/1965.233_web.jpg": {
+      "originalSha256": "14db1b27f27609fd69f458bfc1c1e683286d01158fd0e67e1f9b7b92cb8af07a",
+      "originalBytes": 245118,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/a062938eff63a0848d86-w160.webp",
+          "bytes": 2610
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/a062938eff63a0848d86-w320.webp",
+          "bytes": 8026
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/a062938eff63a0848d86-w640.webp",
+          "bytes": 24556
+        },
+        {
+          "width": 900,
+          "url": "/optimized/home/a062938eff63a0848d86-w1280.webp",
+          "bytes": 45262
+        }
+      ]
+    },
+    "https://openaccess-cdn.clevelandart.org/1958.39/1958.39_web.jpg": {
+      "originalSha256": "ac1a6162b5249c1ba985965ada21246bf6370d6dfc0954a551656d0e0529c7e4",
+      "originalBytes": 232571,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/11e50b7576afaeecdc2b-w160.webp",
+          "bytes": 4702
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/11e50b7576afaeecdc2b-w320.webp",
+          "bytes": 14296
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/11e50b7576afaeecdc2b-w640.webp",
+          "bytes": 52024
+        },
+        {
+          "width": 723,
+          "url": "/optimized/home/11e50b7576afaeecdc2b-w1280.webp",
+          "bytes": 74814
+        }
+      ]
+    },
+    "https://openaccess-cdn.clevelandart.org/1958.21/1958.21_web.jpg": {
+      "originalSha256": "b8508d3dafd5c7e5abbf7acd8223654326918d5b6941f560d575d9c762d0fda0",
+      "originalBytes": 318974,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/47a37b2f7f52bc4f5669-w160.webp",
+          "bytes": 5506
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/47a37b2f7f52bc4f5669-w320.webp",
+          "bytes": 18112
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/47a37b2f7f52bc4f5669-w640.webp",
+          "bytes": 54374
+        },
+        {
+          "width": 900,
+          "url": "/optimized/home/47a37b2f7f52bc4f5669-w1280.webp",
+          "bytes": 106070
+        }
+      ]
+    },
+    "https://openaccess-cdn.clevelandart.org/1964.420/1964.420_web.jpg": {
+      "originalSha256": "f3b3c8a4df4a3c9b750098c6ab4e0a55b6c6efbd880876490404c77e580b9dc8",
+      "originalBytes": 196208,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/f5a56a9d98fd8ee86caf-w160.webp",
+          "bytes": 3414
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/f5a56a9d98fd8ee86caf-w320.webp",
+          "bytes": 10222
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/f5a56a9d98fd8ee86caf-w640.webp",
+          "bytes": 32524
+        },
+        {
+          "width": 1244,
+          "url": "/optimized/home/f5a56a9d98fd8ee86caf-w1280.webp",
+          "bytes": 103996
+        }
+      ]
+    },
+    "https://openaccess-cdn.clevelandart.org/1921.1239/1921.1239_web.jpg": {
+      "originalSha256": "e516121c316dcc420843fbae9710f772903088c5a1977b65bdd3a432bc0f7d54",
+      "originalBytes": 179089,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/a51d4ca648b5b0c8af1d-w160.webp",
+          "bytes": 5582
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/a51d4ca648b5b0c8af1d-w320.webp",
+          "bytes": 18150
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/a51d4ca648b5b0c8af1d-w640.webp",
+          "bytes": 55260
+        },
+        {
+          "width": 939,
+          "url": "/optimized/home/a51d4ca648b5b0c8af1d-w1280.webp",
+          "bytes": 106120
+        }
+      ]
+    },
+    "https://openaccess-cdn.clevelandart.org/1942.1065/1942.1065_web.jpg": {
+      "originalSha256": "ec4f6d5cf25f2a5706ccbc0668f400536cccb8f74f8dd7682da5768a4d04c2e8",
+      "originalBytes": 235174,
+      "variants": [
+        {
+          "width": 160,
+          "url": "/optimized/home/c65adc602abbf19bcf0a-w160.webp",
+          "bytes": 5510
+        },
+        {
+          "width": 320,
+          "url": "/optimized/home/c65adc602abbf19bcf0a-w320.webp",
+          "bytes": 16880
+        },
+        {
+          "width": 640,
+          "url": "/optimized/home/c65adc602abbf19bcf0a-w640.webp",
+          "bytes": 56088
+        },
+        {
+          "width": 716,
+          "url": "/optimized/home/c65adc602abbf19bcf0a-w1280.webp",
+          "bytes": 71714
+        }
+      ]
+    }
+  }
+}

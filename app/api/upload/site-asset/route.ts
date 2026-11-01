@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getErrorMessage } from "@/lib/error-message";
+import { uploadImageWithVariants } from '@/lib/upload-image';
+import { imageAssetPaths } from '@/lib/image-variants';
 
 const MAX_SITE_ASSET_SIZE = 4 * 1024 * 1024;
 const ALLOWED_SITE_ASSET_TYPES = new Set([
@@ -102,29 +104,16 @@ export async function POST(req: NextRequest) {
     const timestamp = Date.now();
     const fileName = `${folder}/${timestamp}-${sanitizeFileName(file.name)}`;
 
-    // 4. Supabase Storage에 업로드
-    const { data, error } = await adminClient!.storage
-      .from("site-assets")
-      .upload(fileName, file, {
-        cacheControl: "31536000",
-        contentType: file.type,
-        upsert: false,
-      });
-
-    if (error) {
-      throw error;
-    }
-
-    // 5. Public URL 생성
-    const {
-      data: { publicUrl },
-    } = adminClient!.storage.from("site-assets").getPublicUrl(data.path);
+    // Favicons need their original format; content images get prepared WebP files.
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const preserveFormat = /favicon|icon|og-image/.test(folder);
+    const uploaded = await uploadImageWithVariants(adminClient!, 'site-assets', fileName, buffer, file.type, { preserveFormat });
 
     return NextResponse.json({
       success: true,
       data: {
-        path: data.path,
-        url: publicUrl,
+        ...uploaded,
+        ...(preserveFormat ? { path: uploaded.original_path, url: uploaded.original_url } : {}),
       },
     });
   } catch (error: unknown) {
@@ -168,7 +157,7 @@ export async function DELETE(req: NextRequest) {
     // 3. 파일 삭제
     const { error } = await adminClient!.storage
       .from("site-assets")
-      .remove([filePath]);
+      .remove(imageAssetPaths(filePath));
 
     if (error) {
       throw error;

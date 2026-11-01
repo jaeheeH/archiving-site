@@ -2,12 +2,15 @@ import Link from 'next/link';
 import { randomInt } from 'node:crypto';
 import ArchiveImage from './ArchiveImage';
 import { getArtCatalog } from '@/lib/art-catalog';
+import { preoptimizedVariants } from '@/lib/image-variants';
 
 export default async function NewsArchiveDiscovery() {
   let catalog: Awaited<ReturnType<typeof getArtCatalog>>;
   try { catalog = await getArtCatalog(); }
   catch (error) { console.error('Home archive discovery', error); return null; }
-  const works = catalog.artworks.filter(work => work.preview_url);
+  const allWorks = catalog.artworks.filter(work => work.preview_url);
+  const preparedWorks = allWorks.filter(work => preoptimizedVariants(work.preview_url));
+  const works = preparedWorks.length ? preparedWorks : allWorks;
   if (!works.length) return null;
   const work = works[randomInt(works.length)];
   const makers = catalog.artists.filter(artist => works.some(item => item.artist_ids.includes(artist.id)));

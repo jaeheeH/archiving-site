@@ -87,6 +87,10 @@ const admin = {
   }; } },
 };
 const route = loadTs('app/api/extension/references/route.ts', {
+  '@/lib/upload-image': loadTs('lib/upload-image.ts', { './image-variants': loadTs('lib/image-variants.ts', {
+    '@/research/home-images.json': JSON.parse(readFileSync('research/home-images.json', 'utf8')),
+    './public-image': loadTs('lib/public-image.ts'),
+  }) }),
   '@/lib/error-message': { getErrorMessage: error => error.message },
   '@/lib/extension-token': tokens,
   '@/lib/public-data': { CACHE_TAGS: { references: 'references', home: 'home' } },
@@ -108,11 +112,14 @@ const saved = await post(body); assert.equal(saved.status, 200);
 assert.equal((await saved.json()).duplicate, false);
 assert.equal(insert.url, 'https://design.test/'); assert.equal(insert.author, 'test-admin');
 assert.deepEqual(Array.from(insert.range), ['브랜딩', '디자인']); assert.equal(insert.category, '브랜딩');
-assert.equal(uploads.length, 2); assert(uploads.every(upload => upload.options.contentType === 'image/webp'));
+assert.equal(uploads.length, 10);
+const originals = uploads.filter(upload => upload.options.contentType === 'image/png');
+assert.equal(originals.length, 2); assert(originals.every(upload => upload.buffer.equals(png)), 'Preserve uploaded/captured original bytes');
+assert.equal(uploads.filter(upload => upload.options.contentType === 'image/webp').length, 8);
 assert.deepEqual(invalidated, ['references', 'home']);
 existing = { id: 11, url: 'https://design.test' }; insert = null;
 assert.equal((await (await post(body)).json()).duplicate, true);
-assert.equal(insert, null); assert.equal(uploads.length, 2, 'Duplicates must not re-upload assets');
+assert.equal(insert, null); assert.equal(uploads.length, 10, 'Duplicates must not re-upload assets');
 const categoriesResponse = await route.GET(new Request('http://localhost:3002/api/extension/references'));
 assert.equal(categoriesResponse.headers.get('Cache-Control'), 'private, no-store');
 assert.equal((await categoriesResponse.json()).authenticated, false);

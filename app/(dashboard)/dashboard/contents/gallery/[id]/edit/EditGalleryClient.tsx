@@ -1,8 +1,8 @@
 "use client";
 
+import { uploadImageFile } from '@/lib/upload-image-client';
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ToastProvider";
-import imageCompression from "browser-image-compression";
 
 import TagInput from "@/components/TagInput";
 import CategorySelectModal from "@/components/CategorySelectModal";
@@ -154,10 +154,7 @@ export default function EditGalleryClient({
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch("/api/gallery/upload", {
-      method: "POST",
-      body: formData,
-    });
+    const res = await uploadImageFile("/api/gallery/upload", formData);
     const data = await res.json();
 
     if (!res.ok) {
@@ -217,20 +214,13 @@ export default function EditGalleryClient({
   
       // 새 이미지가 업로드된 경우
       if (imageFile) {
-        setStatusText("이미지 최적화 중...");
-        const optimizedFile = await imageCompression(imageFile, {
-          maxSizeMB: 1.8,
-          maxWidthOrHeight: 2200,
-          useWebWorker: true,
-          fileType: "image/jpeg",
-          initialQuality: 0.86,
-        });
-        const dimensions = await getImageDimensions(optimizedFile);
+        setStatusText("원본 이미지 준비 중...");
+        const dimensions = await getImageDimensions(imageFile);
         finalWidth = dimensions.width;
         finalHeight = dimensions.height;
 
         setStatusText("이미지 업로드 중...");
-        const uploadedImage = await uploadImage(optimizedFile);
+        const uploadedImage = await uploadImage(imageFile);
         finalImage = uploadedImage.url;
         finalThumbnail = uploadedImage.thumbnail_url;
   

@@ -6,6 +6,7 @@ import { useState, useEffect, useRef, useMemo, useLayoutEffect, useCallback } fr
 import Image from '@/app/components/ArchiveImage';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
+import { originalImageUrl } from '@/lib/image-variants';
 import { useToast } from '@/components/ToastProvider';
 
 // --- Types ---
@@ -416,13 +417,15 @@ export default function GalleryDetailClient({
   const handleDownload = async () => {
     if (!gallery.image_url) return;
     try {
-      const response = await fetch(gallery.image_url);
+      const original = originalImageUrl(gallery.image_url);
+      const response = await fetch(original);
       if (!response.ok) throw new Error("Download failed");
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `${gallery.title.replace(/\s+/g, "_")}.webp`;
+      const extension = blob.type.split('/')[1]?.replace('jpeg', 'jpg') || 'webp';
+      link.download = `${gallery.title.replace(/\s+/g, "_")}.${extension}`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

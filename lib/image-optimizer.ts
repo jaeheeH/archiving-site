@@ -1,5 +1,6 @@
 import { canOptimizeImage } from './public-image';
 import { IMAGE_WIDTHS } from './image-config';
+import { preoptimizedVariants, preoptimizedUrl } from './image-variants';
 /**
  * 이미지 URL을 최적화된 형식으로 변환
  * Next Image의 기존 캐시와 이미지 변환을 사용
@@ -14,6 +15,7 @@ export function optimizeImageUrl(
     format?: 'webp' | 'jpeg' | 'png';
   } = {}
 ): string {
+  if (preoptimizedVariants(url)) return preoptimizedUrl(url, options.width || 1280);
   if (!url || !canOptimizeImage(url)) return url;
   const width = IMAGE_WIDTHS.find(size => size >= (options.width || 1200)) || 1200;
   // Use Next's existing optimizer; arbitrary query parameters on a Storage object do not resize it.
@@ -24,6 +26,8 @@ export function optimizeImageUrl(
  * srcset 생성 (반응형 이미지)
  */
 export function generateImageSrcSet(url: string): string {
+  const prepared = preoptimizedVariants(url);
+  if (prepared) return prepared.map(item => `${item.url} ${item.width}w`).join(', ');
   if (!canOptimizeImage(url)) return '';
   return IMAGE_WIDTHS.filter(size => size >= 384)
     .map((size) => `${optimizeImageUrl(url, { width: size, format: 'webp' })} ${size}w`)

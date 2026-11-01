@@ -7,6 +7,7 @@ import { createRequire } from 'node:module';
 import { runInNewContext } from 'node:vm';
 import ts from 'typescript';
 import sharp from 'sharp';
+import * as imageVariants from '../lib/image-variants.ts';
 import { newsPage, newsListUrl } from '../lib/news-list.ts';
 import { canOptimizeImage } from '../lib/public-image.ts';
 import { readOgImage } from '../lib/og-image.ts';
@@ -94,6 +95,7 @@ function mountImage(props) {
   runInNewContext(code, { exports: loaded.exports, module: loaded, require: name => {
     if (name === 'react') return { useState: () => [state, value => { state = value; updates++; }] };
     if (name === '@/lib/public-image') return { canOptimizeImage };
+    if (name === '@/lib/image-variants') return imageVariants;
     return require(name);
   } });
   return { render: (nextProps = {}) => loaded.exports.default({ alt: '', ...props, ...nextProps, onError: () => failures++ }).props,

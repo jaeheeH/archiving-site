@@ -22,7 +22,7 @@ function requireBrandId(value: unknown) {
 const SELECTED_THUMBNAIL_FOLDER = '__thumbnail__';
 
 function isBrandAssetImage(name: string) {
-  return /\.(jpe?g|png|webp)$/i.test(name);
+  return /\.(jpe?g|png|webp)$/i.test(name) && (!name.includes('.archb-v1-w') || name.endsWith('.archb-v1-w640.webp'));
 }
 
 function isSelectedThumbnailFile(name: string) {

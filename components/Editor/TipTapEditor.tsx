@@ -2,6 +2,7 @@
 
 'use client';
 
+import { uploadImageFile } from '@/lib/upload-image-client';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
@@ -102,10 +103,7 @@ export default function TipTapEditor({ value, onChange }: TipTapEditorProps) {
       formData.append('file', file);
       formData.append('path', filePath);
 
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await uploadImageFile("/api/upload", formData);
 
       if (!response.ok) {
         throw new Error('업로드 실패');

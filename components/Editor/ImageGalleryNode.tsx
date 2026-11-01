@@ -2,6 +2,7 @@
 
 'use client';
 
+import { uploadImageFile } from '@/lib/upload-image-client';
 import React, { useRef, useState } from 'react';
 import { Node, mergeAttributes, type Editor } from '@tiptap/core';
 import { ReactNodeViewRenderer, NodeViewWrapper } from '@tiptap/react';
@@ -190,10 +191,7 @@ const ImageGalleryComponent = ({
         formData.append('fileName', fileName);
         formData.append('isTemp', 'true');
 
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        });
+        const response = await uploadImageFile("/api/upload", formData);
 
         if (!response.ok) {
           const errorData = await response.json();
