@@ -3,6 +3,8 @@ import { randomUUID } from "crypto";
 
 import { getBrandManagerContext } from "@/lib/brand-manager-auth";
 import { isSafeIdentifierParam } from "@/lib/route-params";
+import { uploadImageWithVariants } from '@/lib/upload-image';
+import { imageUploadForm } from '@/lib/image-upload-form';
 
 const ALLOWED_BRAND_ASSET_TYPES = new Set([
   "image/jpeg",
@@ -22,7 +24,8 @@ export async function POST(request: NextRequest) {
     const context = await getBrandManagerContext();
     if (context.response) return context.response;
 
-    const formData = await request.formData();
+    const formData = await imageUploadForm(request, context.admin, 'brand-assets', context.user.id);
+    if (formData instanceof Response) return formData;
     const brandId = formData.get("brandId");
     const file = formData.get("file");
 
@@ -58,21 +61,8 @@ export async function POST(request: NextRequest) {
     const path = `${brandId}/${Date.now()}_${random}.${ext}`;
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    const { error } = await context.admin.storage.from("brand-assets").upload(path, buffer, {
-      cacheControl: "31536000",
-      contentType: file.type || "image/jpeg",
-      upsert: false,
-    });
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
-
-    const {
-      data: { publicUrl },
-    } = context.admin.storage.from("brand-assets").getPublicUrl(path);
-
-    return NextResponse.json({ success: true, url: publicUrl, path });
+    const uploaded = await uploadImageWithVariants(context.admin, 'brand-assets', path, buffer, file.type);
+    return NextResponse.json({ success: true, ...uploaded });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "서버 오류" },

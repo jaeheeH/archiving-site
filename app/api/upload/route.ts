@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { checkPostEditPermission } from '@/lib/supabase/post-utils';
 import { getErrorMessage } from '@/lib/error-message';
+import { uploadImageWithVariants } from '@/lib/upload-image';
+import { imageUploadForm } from '@/lib/image-upload-form';
 
 const MAX_UPLOAD_SIZE = 8 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = new Set([
@@ -47,7 +49,9 @@ export async function POST(request: NextRequest) {
     const permCheck = await checkPostEditPermission();
     if (!permCheck.authorized) return permCheck.error;
 
-    const formData = await request.formData();
+    const supabase = await createClient();
+    const formData = await imageUploadForm(request, supabase, 'posts', permCheck.userId);
+    if (formData instanceof Response) return formData;
     const file = formData.get('file');
     const fileName = getFileNameFromForm(formData);
     const explicitFolder = normalizeFolder(formData.get('folder'));
@@ -80,8 +84,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = await createClient();
-
     // temp 폴더면 user_id별로 (없으면 'anonymous'), 아니면 일반 폴더에 저장
     const userId = permCheck.userId;
     const pathSegments = isTemp
@@ -92,26 +94,10 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const { error: uploadError } = await supabase.storage
-      .from('posts')
-      .upload(filePath, buffer, {
-        cacheControl: '31536000',
-        contentType: file.type,
-        upsert: false,
-      });
-
-    if (uploadError) {
-      console.error('Supabase 업로드 에러:', uploadError);
-      return NextResponse.json(
-        { error: '이미지 업로드 실패' },
-        { status: 400 }
-      );
-    }
-
-    const { data } = supabase.storage.from('posts').getPublicUrl(filePath);
+    const uploaded = await uploadImageWithVariants(supabase, 'posts', filePath, buffer, file.type);
 
     return NextResponse.json(
-      { url: data.publicUrl },
+      uploaded,
       { status: 200 }
     );
   } catch (error: unknown) {

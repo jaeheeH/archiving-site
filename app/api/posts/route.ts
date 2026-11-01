@@ -8,6 +8,7 @@ import {
 } from '@/lib/public-data';
 import { checkPostEditPermission } from '@/lib/supabase/post-utils';
 import { createAdminClient } from '@/lib/supabase/admin';
+import { copyImageFamily } from '@/lib/upload-image';
 
 type TipTapDocument = {
   content?: unknown;
@@ -57,31 +58,18 @@ async function moveImagesToPostFolder(
   }
 
   // 각 이미지를 새 위치로 복사하고 URL 교체
-  for (const fileName of imageUrls) {
+  for (const fileName of new Set(imageUrls)) {
     const oldPath = `temp/${userId}/${fileName}`;
     const newPath = `${postType}/${postId}/${fileName}`;
 
     try {
-      // 파일 복사 (Supabase는 move가 없어서 copy + delete)
-      const { data: fileData } = await supabase.storage
-        .from('posts')
-        .download(oldPath);
+      await copyImageFamily(supabase, 'posts', oldPath, newPath);
+      // URL 교체
+      const oldUrl = `${tempPrefix}${fileName}`;
+      const newUrl = `${newPrefix}${fileName}`;
+      contentStr = contentStr.replace(new RegExp(oldUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), newUrl);
 
-      if (fileData) {
-        await supabase.storage
-          .from('posts')
-          .upload(newPath, fileData, { cacheControl: '31536000', upsert: true });
-
-        // URL 교체
-        const oldUrl = `${tempPrefix}${fileName}`;
-        const newUrl = `${newPrefix}${fileName}`;
-        contentStr = contentStr.replace(new RegExp(oldUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), newUrl);
-
-        // 원본 temp 파일 삭제
-        await supabase.storage
-          .from('posts')
-          .remove([oldPath]);
-      }
+      // Keep the old family until the post has been saved successfully.
     } catch (err) {
       console.error(`이미지 이동 실패 (${fileName}):`, err);
       // 에러가 나도 계속 진행
@@ -115,17 +103,7 @@ async function moveTempPostAssetToPostFolder(
   const newPath = `${postType}/${postId}/${relativePath}`;
 
   try {
-    const { data: fileData } = await supabase.storage
-      .from('posts')
-      .download(oldPath);
-
-    if (!fileData) return assetUrl;
-
-    await supabase.storage
-      .from('posts')
-      .upload(newPath, fileData, { cacheControl: '31536000', upsert: true });
-
-    await supabase.storage.from('posts').remove([oldPath]);
+    await copyImageFamily(supabase, 'posts', oldPath, newPath);
 
     return `${newPrefix}${relativePath}`;
   } catch (err) {

@@ -105,3 +105,14 @@ html[data-theme="my-design-system"] .editorial-search button:focus-visible{outli
 .news-detail-thumbnail>img{display:block;width:auto;max-width:100%;height:auto;max-height:360px;margin:0 auto;object-fit:contain}
 @media(max-width:1023px){.news-detail-page .news-article-layout>aside{border-left:0;border-top:1px solid var(--archive-line);padding:28px 0 0}}
 @media(max-width:760px){.news-detail-page .news-detail-header>div{padding-top:36px;padding-bottom:0}.news-detail-divider{margin-top:28px}.news-detail-thumbnail>img{max-height:240px}.news-detail-page .news-article-layout>main{padding-top:28px}.news-detail-page .archive-article-summary{padding:20px}.news-detail-page .news-summary-deck{font-size:16px}}
+
+/* Readable actions on both image cards and tinted text cards. */
+.archb-news .news-card-read,
+.archb-news .news-card-read:hover { color: var(--archive-ink); text-decoration: underline; text-underline-offset: 4px; }
+.article-contents { margin: 28px 0; padding: 16px 0; border-block: 1px solid var(--archive-line); font-size: 15px; line-height: 1.7; }
+.article-contents summary { cursor: pointer; min-height: 44px; display: list-item; align-content: center; font-weight: 700; color: var(--archive-ink); }
+.article-contents ol { margin: 12px 0 0; padding: 0; list-style: none; }
+.article-contents li { padding: 2px 0; overflow-wrap: anywhere; }
+.article-contents li[data-level="3"] { margin-left: 16px; }
+.article-contents a { display: block; min-height: 44px; align-content: center; color: var(--archive-ink); text-decoration: underline; text-underline-offset: 4px; }
+.article-contents :is(a, summary):focus-visible { outline: 2px solid var(--archive-brand); outline-offset: 4px; }

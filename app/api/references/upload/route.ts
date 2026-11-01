@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkReferenceEditPermission } from "@/lib/supabase/reference-utils";
+import { uploadImageWithVariants } from '@/lib/upload-image';
+import { imageUploadForm } from '@/lib/image-upload-form';
 
 const MAX_REFERENCE_IMAGE_BYTES = 8 * 1024 * 1024;
 const MAX_REFERENCE_LOGO_BYTES = 4 * 1024 * 1024;
@@ -29,7 +31,9 @@ export async function POST(request: NextRequest) {
     const permCheck = await checkReferenceEditPermission();
     if (!permCheck.authorized) return permCheck.error!;
 
-    const formData = await request.formData();
+    const admin = createAdminClient();
+    const formData = await imageUploadForm(request, admin, 'references', permCheck.userId!);
+    if (formData instanceof Response) return formData;
     const file = formData.get("file");
     const kind = normalizeKind(formData.get("kind"));
     const maxBytes = kind === "logo" ? MAX_REFERENCE_LOGO_BYTES : MAX_REFERENCE_IMAGE_BYTES;
@@ -53,24 +57,11 @@ export async function POST(request: NextRequest) {
     const fileName = `${Date.now()}-${randomUUID()}.${safeExtension(file)}`;
     const filePath = `references/${folder}/${fileName}`;
     const buffer = Buffer.from(await file.arrayBuffer());
-    const admin = createAdminClient();
 
-    const { error } = await admin.storage.from("references").upload(filePath, buffer, {
-      cacheControl: "31536000",
-      contentType: file.type,
-      upsert: false,
-    });
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
-
-    const {
-      data: { publicUrl },
-    } = admin.storage.from("references").getPublicUrl(filePath);
+    const uploaded = await uploadImageWithVariants(admin, 'references', filePath, buffer, file.type);
 
     return NextResponse.json(
-      { success: true, url: publicUrl, path: filePath },
+      { success: true, ...uploaded },
       {
         headers: {
           "Cache-Control": "private, no-store",

@@ -1,5 +1,6 @@
 'use client';
 
+import { uploadImageFile } from '@/lib/upload-image-client';
 import { useToast } from '@/components/ToastProvider';
 
 interface ImageUploadProps {
@@ -25,10 +26,7 @@ export default function ImageUpload({ onUpload, onLoading }: ImageUploadProps) {
       formData.append('file', file);
       formData.append('path', filePath);
 
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await uploadImageFile("/api/upload", formData);
 
       if (!response.ok) {
         throw new Error('업로드 실패');

@@ -1,5 +1,6 @@
 "use client";
 
+import { uploadImageFile } from '@/lib/upload-image-client';
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ToastProvider";
 import CategorySelectModal from "@/components/CategorySelectModal";
@@ -37,9 +38,6 @@ function validateImageFile(file: File, maxBytes: number) {
   return null;
 }
 
-function toWebpFileName(fileName: string) {
-  return fileName.replace(/\.[^.]+$/, "") + ".webp";
-}
 
 export default function ReferenceCreateModal({
   open,
@@ -107,69 +105,14 @@ export default function ReferenceCreateModal({
     };
   }, [logoPreview]);
 
-  // 이미지 리사이징 함수
-  const resizeImage = async (file: File, maxWidth: number, maxHeight: number): Promise<File> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          // 캔버스로 리사이징
-          const canvas = document.createElement("canvas");
-          let width = img.width;
-          let height = img.height;
-
-          // 비율 유지하면서 최대 크기로 조정
-          if (width > height) {
-            if (width > maxWidth) {
-              height = Math.round((height * maxWidth) / width);
-              width = maxWidth;
-            }
-          } else {
-            if (height > maxHeight) {
-              width = Math.round((width * maxHeight) / height);
-              height = maxHeight;
-            }
-          }
-
-          canvas.width = width;
-          canvas.height = height;
-
-          const ctx = canvas.getContext("2d");
-          if (!ctx) {
-            reject(new Error("Failed to get canvas context"));
-            return;
-          }
-
-          ctx.drawImage(img, 0, 0, width, height);
-
-          canvas.toBlob((blob) => {
-            if (!blob) {
-              reject(new Error("Failed to create blob"));
-              return;
-            }
-            const resizedFile = new File([blob], toWebpFileName(file.name), { type: "image/webp" });
-            resolve(resizedFile);
-          }, "image/webp", 0.8);
-        };
-        img.onerror = () => reject(new Error("Failed to load image"));
-        img.src = e.target?.result as string;
-      };
-      reader.onerror = () => reject(new Error("Failed to read file"));
-      reader.readAsDataURL(file);
-    });
-  };
-
+  // 서버에서 원본 보존과 WebP 변환을 함께 처리합니다.
   // 이미지 업로드 함수
   const uploadReferenceAsset = async (file: File, kind: "thumbnail" | "logo") => {
     const formData = new FormData();
     formData.append("kind", kind);
     formData.append("file", file);
 
-    const res = await fetch("/api/references/upload", {
-      method: "POST",
-      body: formData,
-    });
+    const res = await uploadImageFile("/api/references/upload", formData);
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
@@ -187,9 +130,8 @@ export default function ReferenceCreateModal({
   // 썸네일 생성 및 업로드 함수
   const uploadWithThumbnail = async (file: File) => {
     try {
-      // 레퍼런스 목록에서는 썸네일만 사용하므로 원본 업로드는 생략한다.
-      const resizedFile = await resizeImage(file, 640, 1080);
-      return uploadReferenceAsset(resizedFile, "thumbnail");
+      // 원본 파일을 전송하고 서버가 만든 표시용 WebP를 연결합니다.
+      return uploadReferenceAsset(file, "thumbnail");
     } catch (error) {
       console.error("이미지 업로드 실패:", error);
       throw error;

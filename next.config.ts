@@ -70,6 +70,7 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: '/fonts/pretendard-v1.3.9/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }] },
+      { source: '/optimized/home/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }] },
       ...((process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production') ? [{ source: '/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] }] : []),
       ...['dashboard', 'mypage', 'login', 'auth', 'no-access', 'extension'].map(path => ({ source: `/${path}/:path*`, headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] })),
       {

@@ -1,5 +1,6 @@
 'use client';
 
+import { uploadImageFile } from '@/lib/upload-image-client';
 import { useState } from 'react';
 import { useToast } from '@/components/ToastProvider';
 
@@ -38,10 +39,7 @@ export default function TitleSection({
       formData.append('file', file);
       formData.append('path', filePath);
 
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await uploadImageFile("/api/upload", formData);
 
       if (!response.ok) {
         throw new Error('업로드 실패');

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { randomUUID } from "node:crypto";
+import sharp from 'sharp';
+import { uploadImageWithVariants } from '@/lib/upload-image';
 
 import { getErrorMessage } from "@/lib/error-message";
 import {
@@ -10,7 +12,7 @@ import {
 import {
   CACHE_TAGS,
 } from "@/lib/public-data";
-import { readCapturedReferenceImage, readRemoteReferenceImage, referenceImageWebp } from "@/lib/reference-assets";
+import { readCapturedReferenceImage, readRemoteReferenceImage } from "@/lib/reference-assets";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
   getPrimaryReferenceCategory,
@@ -94,10 +96,12 @@ function isReferenceStorageUrl(value: string) {
 
 async function storeReferenceAsset(admin: ReturnType<typeof createAdminClient>, buffer: Buffer, userId: string, kind: "thumbnail" | "logo") {
   const folder = kind === "logo" ? "logos" : "thumbnails";
-  const filePath = "references/extension/" + userId + "/" + folder + "/" + randomUUID() + ".webp";
-  const { error } = await admin.storage.from("references").upload(filePath, buffer, { cacheControl: "31536000", contentType: "image/webp", upsert: false });
-  if (error) throw error;
-  return admin.storage.from("references").getPublicUrl(filePath).data.publicUrl;
+  const { format } = await sharp(buffer, { limitInputPixels: 40_000_000 }).metadata();
+  const extension = format === 'jpeg' ? 'jpg' : format;
+  if (!['jpg', 'png', 'webp', 'gif'].includes(extension || '')) throw new Error('지원하지 않는 이미지 파일입니다.');
+  const filePath = "references/extension/" + userId + "/" + folder + "/" + randomUUID() + '.' + extension;
+  const uploaded = await uploadImageWithVariants(admin, 'references', filePath, buffer, `image/${format}`);
+  return kind === 'logo' ? uploaded.variants.find(item => item.width === 320)?.url || uploaded.url : uploaded.url;
 }
 
 async function uploadRemoteReferenceAsset({ admin, sourceUrl, userId, kind }: {
@@ -107,7 +111,7 @@ async function uploadRemoteReferenceAsset({ admin, sourceUrl, userId, kind }: {
   if (isReferenceStorageUrl(sourceUrl)) return sourceUrl;
   try {
     const buffer = await readRemoteReferenceImage(sourceUrl, kind === "logo" ? MAX_REFERENCE_LOGO_BYTES : MAX_REFERENCE_IMAGE_BYTES);
-    return await storeReferenceAsset(admin, await referenceImageWebp(buffer, kind), userId, kind);
+    return await storeReferenceAsset(admin, buffer, userId, kind);
   } catch { return null; }
 }
 
@@ -242,7 +246,11 @@ export async function POST(req: NextRequest) {
 
     let capturedImage: Buffer | null = null;
     try {
-      if (body.image_data_url !== undefined) capturedImage = await referenceImageWebp(readCapturedReferenceImage(body.image_data_url), "thumbnail");
+      if (body.image_data_url !== undefined) {
+        capturedImage = readCapturedReferenceImage(body.image_data_url);
+        const metadata = await sharp(capturedImage, { limitInputPixels: 40_000_000 }).metadata();
+        if (!['jpeg', 'png', 'webp'].includes(metadata.format || '')) throw new Error('올바른 캡처 이미지가 필요합니다.');
+      }
     } catch (error) { return json({ error: getErrorMessage(error) }, { status: 400 }); }
     const fallbackLogo = getFaviconFallback(referenceUrl);
     const remoteLogoUrl = normalizeReferenceUrl(body.logo_url) || fallbackLogo;

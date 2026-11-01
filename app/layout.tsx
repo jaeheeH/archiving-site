@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from 'next/script';
 import { ToastProvider } from "@/components/ToastProvider";
 import BalsaThemeActivation from "@/app/components/BalsaThemeActivation";
 import VisitorTracker from "@/app/components/VisitorTracker";
@@ -52,6 +53,7 @@ export default async function RootLayout({
   const siteUrl = getSiteUrl();
   const ga4Id = normalizeGa4Id(settings?.ga4_id);
   const gtmId = normalizeGtmId(settings?.gtm_id);
+  const ga4ViaGtm = !!gtmId && process.env.NEXT_PUBLIC_GA4_VIA_GTM === 'true';
   const htmlLang = normalizeHtmlLang(settings?.site_language);
 
   return (
@@ -103,14 +105,17 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: COLOR_MODE_INIT_SCRIPT }} />
         <meta name="p:domain_verify" content="bf63e4dfeb108fe297cdffdabe10cd78"/>
 
-        {/* Google Analytics 4 */}
-        {ga4Id && (
+        {/* A GTM container may only contain other tags, such as Clarity. */}
+        {ga4Id && !ga4ViaGtm && (
           <>
-            <script
-              async
+            <Script
+              id="archb-ga4-loader"
+              strategy="afterInteractive"
               src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}
             />
-            <script
+            <Script
+              id="archb-ga4-config"
+              strategy="afterInteractive"
               dangerouslySetInnerHTML={{
                 __html: `
                   window.dataLayer = window.dataLayer || [];
@@ -125,7 +130,9 @@ export default async function RootLayout({
 
         {/* Google Tag Manager */}
         {gtmId && (
-          <script
+          <Script
+            id="archb-gtm"
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{
               __html: `
                 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

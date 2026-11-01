@@ -1,10 +1,10 @@
 "use client";
 
+import { uploadImageFile } from '@/lib/upload-image-client';
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ToastProvider";
 import DashboardTitle from "@/app/(dashboard)/components/DashboardHeader";
-import imageCompression from "browser-image-compression";
 
 // UI Components
 import TagInput from "@/components/TagInput";
@@ -112,10 +112,7 @@ export default function CreateGalleryPage() {
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await fetch("/api/gallery/upload", {
-      method: "POST",
-      body: formData,
-    });
+    const res = await uploadImageFile("/api/gallery/upload", formData);
     const data = await res.json();
 
     if (!res.ok) {
@@ -150,22 +147,14 @@ export default function CreateGalleryPage() {
 
     try {
       setLoading(true);
-      setStatusText("이미지 최적화 중...");
-
-      const optimizedFile = await imageCompression(imageFile, {
-        maxSizeMB: 1.8,
-        maxWidthOrHeight: 2200,
-        useWebWorker: true,
-        fileType: "image/jpeg",
-        initialQuality: 0.86,
-      });
+      setStatusText("원본 이미지 준비 중...");
 
       // 1. 이미지 크기 감지
-      const { width, height } = await getImageDimensions(optimizedFile);
+      const { width, height } = await getImageDimensions(imageFile);
 
       // 2. Storage에 이미지 업로드
       setStatusText("이미지 업로드 중...");
-      const uploadedImage = await uploadImage(optimizedFile);
+      const uploadedImage = await uploadImage(imageFile);
       const imageUrl = uploadedImage.url;
 
       // 3. Gemini로 이미지 분석
