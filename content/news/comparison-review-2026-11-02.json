@@ -1,0 +1,2971 @@
+[
+  {
+    "id": "3067fe95-b0e4-4b5e-a10d-90fc1fbade67",
+    "slug": "news-d2f4c2d99fe6839a3169",
+    "article": {
+      "url": "https://github.blog/changelog/2026-10-20-github-package-firewall-in-public-preview",
+      "title": "설치 전부터 병합까지 이어지는 깃허브 의존성 통제 체계",
+      "summary": "깃허브가 패키지 방화벽 프리뷰와 디펜다봇 버전 필드 추가, 브랜치 보호 규칙의 룰셋 이전을 함께 발표했다. 패키지 다운로드 경로 차단, 저장소 기록 버전 파악, 브랜치 병합 조건 설정 등 작업 시점에 따른 통제 기준이 구체화됐다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "깃허브가 10월 20일 발표한 의존성 관리 기능들은 개발 생명주기의 서로 다른 작업 지점에 배치된다. 새로 선보인 패키지 방화벽은 네트워크 다운로드 요청을 직접 검사하고, 디펜다봇의 새 필드는 저장소에 이미 선언된 의존성 버전을 확인하며, 브랜치 보호 규칙의 룰셋 일괄 이전은 코드를 병합하는 기준을 제어한다. 이 발표들을 연속적인 과정으로 살펴보면 개발 환경 전반의 통제 지점이 어디에 놓이는지 명확해진다.",
+            "보안 경고를 무작정 누적하는 방식으로는 실제 개발 흐름의 위험을 단계별로 제어하기 어렵다. 외부에서 패키지를 받아오기 전의 사전 정책, 저장소 안에서 확인된 취약점 정보의 정밀성, 완성된 변경 사항을 브랜치에 받아들이는 병합 규칙은 한 가지 도구로 포괄할 수 없는 분리된 영역이다. 동일한 플랫폼 안에서도 누가 정책을 설정하고 어떤 데이터를 기준으로 판단하는지, 그리고 실제 실행 경로가 무엇인지에 따라 관리 책임이 나뉜다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-20-github-package-firewall-in-public-preview",
+              "kind": "primary",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-20-dependabot-alerts-rest-api-now-includes-dependency-versions",
+              "kind": "primary",
+              "label": "디펜다봇 경고의 버전 정보 추가"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-20-bulk-migrate-branch-protections-to-rulesets-for-a-repository",
+              "kind": "primary",
+              "label": "브랜치 보호 규칙 일괄 이전"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "받기 전 단계의 경로 통제와 사후 기록 식별",
+          "paragraphs": [
+            "패키지 방화벽은 로컬 개발 장비나 에이전트의 엔드포인트와 상위 패키지 저장소 사이에서 오가는 메타데이터 요청 및 패키지 다운로드를 가로채 검사한다. 관리자는 새로운 패키지가 등록된 후 일정 시간을 두는 대기 기간을 설정하거나, GitHub Advisory Database의 악성코드 및 취약점 정보, 공급망 관련 검사 기준을 바탕으로 차단 정책을 적용할 수 있다. 기업 계정에서 기능을 켜는 것에 그치지 않고 개발자 장비와 CI 호스트가 직접 외부 저장소로 나가는 대신 방화벽 경로를 경유하도록 설정해야 차단이 성립한다.",
+            "현재 패키지 방화벽은 데이터 레지던시를 포함한 GitHub Enterprise Cloud 고객을 대상으로 제공되는 공개 프리뷰이며 대상은 npm 패키지다. 프리뷰 기간에는 무료로 이용할 수 있고 정식 출시 이후에는 사용량에 따른 과금이 예정되어 있다. 따라서 엔터프라이즈 권한이 있더라도 다운로드 경로 자체를 방화벽 엔드포인트로 바꾸지 않으면 외부 패키지 유입에 대한 통제력이 생기지 않는 구조적 특성을 지닌다.",
+            "반면 이미 저장소에 기록된 의존성을 파악하는 디펜다봇 경고 REST 응답에는 dependency 객체 안에 version_requirement 필드가 추가됐다. 기존 보안 권고가 안내하던 광범위한 취약 버전 범위와 달리, 이 새 필드는 해당 경고에 대해 저장소에 마지막으로 기록된 구체적인 의존성 버전이나 조건을 반환한다. 잠금 파일이 있으면 확정된 특정 버전이 들어가고, 잠금 파일이 없는 매니페스트라면 선언된 버전 조건식이 그대로 담긴다.",
+            "다만 이 필드는 정보가 없으면 null을 반환하며 단일 경고가 여러 취약 버전을 포괄할 때 하나의 기록만 보여줄 수 있고 긴 조건식은 중간에 잘릴 수 있다. 따라서 이 필드 하나만으로 설치된 전체 버전 목록을 완벽하게 파악했다고 간주해서는 안 된다. 보안 권고가 가리키는 일반적 위험 범위와 내 프로젝트 저장소에 남겨진 실제 기록값을 분리해 외부 연동 도구로 넘길 수 있게 된 점이 실질적인 변화다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-20-github-package-firewall-in-public-preview",
+              "kind": "primary",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-20-dependabot-alerts-rest-api-now-includes-dependency-versions",
+              "kind": "primary",
+              "label": "디펜다봇 경고의 버전 정보 추가"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "병합 조건의 룰셋 이전과 실행 상태의 구분",
+          "paragraphs": [
+            "저장소에 설정되어 있던 기존 브랜치 보호 규칙을 룰셋으로 일괄 전환하는 기능은 실제 확정 전에 생성될 룰셋의 구성을 미리 보여준다. 이미 다른 룰셋이 관리하고 있는 보호 규칙을 사전에 확인하거나, 이전 전의 동작을 그대로 유지하기 위해 단일 보호 규칙이 여러 룰셋으로 나뉘어 구성되는 경우를 작업 전에 검토할 수 있다. 이는 단순한 형식 변환이 아니라 브랜치에 가해지는 통제 구조를 명시적으로 재설계하는 과정이다.",
+            "룰셋으로 옮길 때 관리자는 적용 상태를 Active, Evaluate, Disabled 중 하나로 지정해야 한다. 전환과 동시에 규칙을 즉시 강제할지, 브랜치 동작에 영향을 주지 않고 평가 로그만 수집할지, 혹은 비활성화할지를 정한다. 또한 룰셋 생성 이후에 기존 브랜치 보호 규칙을 그대로 남겨둘지 완전히 삭제할지 선택해야 한다. 룰셋이 생성되었다고 해서 보호가 즉시 발효되는 것이 아니므로 적용 상태와 잔존 규칙의 유무를 함께 확인해야 이전 전후의 병합 조건을 안정적으로 유지할 수 있다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-20-bulk-migrate-branch-protections-to-rulesets-for-a-repository",
+              "kind": "primary",
+              "label": "브랜치 보호 규칙 일괄 이전"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "지원 환경의 분리와 패키지 관리자 도구 확장",
+          "paragraphs": [
+            "깃허브는 같은 날 디펜다봇의 패키지 관리자 지원 범위를 넓혀 npm 12, pnpm 11, pnpm 12, Bun 1.4 지원을 시작했다. 이 패키지 관리자 업데이트는 github.com 전체 사용자에게 즉시 적용되며 온프레미스 설치형 환경인 Enterprise Server 3.24 버전에 포함될 예정이다. 디펜다봇 경고에 새로 도입된 버전 필드 역시 github.com과 데이터 레지던시 환경에 동시 제공되며 Enterprise Server에서는 3.24 버전부터 지원된다.",
+            "이처럼 패키지 방화벽은 GitHub Enterprise Cloud 고객 중심의 npm 한정 프리뷰로 운영되는 반면, 디펜다봇의 버전 필드 및 런타임 확장은 github.com 전반과 향후 배포될 Enterprise Server 3.24를 축으로 작동한다. 발표된 네 가지 소식을 단일한 일괄 업데이트로 다루기보다, 네트워크 경로를 수정하는 작업, 경고 데이터를 수집하는 API 연동, 브랜치 병합 규칙 개편, 지원 런타임 버전을 각각의 실행 환경에 맞춰 나누어 점검해야 한다.",
+            "이 공지에는 pnpm 12의 중요한 예외가 붙어 있다. 버전을 고정한 프로젝트의 기본 형식처럼 pnpm-lock.yaml이 두 YAML 문서로 쓰이면 의존성 그래프가 아직 이를 감지하지 못한다. 버전 업데이트는 동작하지만 해당 의존성의 경고와 보안 업데이트는 만들어지지 않고 기존 경고가 닫힐 수도 있다. 업데이트 PR이 생성된다는 사실만으로 취약점 관측까지 정상이라고 판정할 수 없는 경우다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-20-github-package-firewall-in-public-preview",
+              "kind": "primary",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-20-dependabot-alerts-rest-api-now-includes-dependency-versions",
+              "kind": "primary",
+              "label": "디펜다봇 경고의 버전 정보 추가"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-20-dependabot-now-supports-npm-12-pnpm-11-and-12-and-bun-1-4",
+              "kind": "primary",
+              "label": "디펜다봇 패키지 관리자 지원 확대"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-20-dependabot-now-supports-npm-12-pnpm-11-and-12-and-bun-1-4",
+              "kind": "primary",
+              "label": "디펜다봇 패키지 관리자 지원과 pnpm 알려진 제한"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "패키지를 설치하기 전의 유입 경로 차단, 저장소에 등록된 버전의 조건별 식별, 최종 코드를 병합할 때 적용되는 룰셋의 실행 상태는 의존성 관리의 각기 다른 접점을 이룬다. 관리자는 각 기능이 제공하는 범위와 Enterprise Server 3.24 등의 반영 일정을 확인해 자신의 저장소와 인프라에 알맞은 작업 순서를 정해야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-20-github-package-firewall-in-public-preview",
+              "kind": "primary",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-20-dependabot-alerts-rest-api-now-includes-dependency-versions",
+              "kind": "primary",
+              "label": "디펜다봇 경고의 버전 정보 추가"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-20-bulk-migrate-branch-protections-to-rulesets-for-a-repository",
+              "kind": "primary",
+              "label": "브랜치 보호 규칙 일괄 이전"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "도입 판단은 네 기능을 켰는지 세는 대신 같은 의존성이 어떤 경로를 지나는지 따라가면 구체화된다. 개발 장비가 방화벽을 거쳐 패키지를 받고, 커밋된 잠금 파일이 그래프에 반영되고, 발견된 문제를 고치는 PR이 실제 브랜치 규칙을 통과하는지 각각 살펴볼 수 있다. 앞단의 다운로드 허용과 뒷단의 병합 허용은 판단 대상이 다르다. 한 단계의 성공이 다음 단계의 검사를 대체하지 않는다.",
+            "특히 경고가 줄어든 원인을 따져야 한다. 취약한 버전을 고쳐서 감소한 것과 잠금 형식이 감지되지 않아 기존 경고가 닫힌 것은 숫자로만 보면 비슷해도 정반대의 상태다. pnpm 12를 검토하는 팀은 공지의 알려진 제한을 확인하고, 알려진 의존성이 실제 그래프와 경고에 나타나는지부터 대조할 수 있다. 방화벽의 npm 지원과 Dependabot의 pnpm·Bun 버전 지원 역시 서로 다른 기능의 지원 범위다.",
+            "룰셋을 옮길 때도 생성된 규칙 수보다 실제 강제 상태와 대상 브랜치가 중요하다. Evaluate에서 관측한 결과, 기존 규칙의 잔존 여부, 최종 Active 상태를 구분해 기록하면 이전 작업의 완료 기준이 분명해진다. 아래 비교는 공개된 사양과 제한을 정리한 것으로, 기업 방화벽이나 저장소 정책을 실제 배포해 시험한 기록은 아니다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-20-github-package-firewall-in-public-preview",
+              "kind": "primary",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-20-dependabot-alerts-rest-api-now-includes-dependency-versions",
+              "kind": "primary",
+              "label": "디펜다봇 경고의 버전 정보 추가"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-20-bulk-migrate-branch-protections-to-rulesets-for-a-repository",
+              "kind": "primary",
+              "label": "브랜치 보호 규칙 일괄 이전"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "패키지 방화벽은 npm 한정 프리뷰이며 장비와 CI의 다운로드 경로 설정이 필요하다.",
+        "pnpm 12의 두 YAML 문서 잠금 형식은 버전 업데이트와 보안 경고 지원이 다르다.",
+        "경고 감소가 문제 해결인지 감지 누락인지 확인하고 룰셋의 실제 강제 상태도 대조해야 한다."
+      ],
+      "tags": [
+        "개발",
+        "GitHub",
+        "의존성관리",
+        "패키지",
+        "작업환경"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "다운로드 전",
+              "패키지 방화벽",
+              "장비·CI의 실제 프록시 경유 여부, npm 지원 범위"
+            ],
+            [
+              "저장소 관측",
+              "Dependabot 경고 버전 필드",
+              "null·잘린 조건·복수 버전 중 일부만 나타나는 경우"
+            ],
+            [
+              "지원 형식",
+              "npm·pnpm·Bun 업데이트",
+              "pnpm 두 문서 잠금 파일의 그래프·보안 경고 미감지"
+            ],
+            [
+              "병합 전",
+              "브랜치 보호 → 룰셋",
+              "Active/Evaluate/Disabled, 원래 규칙의 잔존 여부"
+            ]
+          ],
+          "type": "table",
+          "title": "의존성이 지나가는 단계마다 다른 확인 항목",
+          "caption": "2026.11.02 GitHub 공식 공지 4건 대조. 기능 지원과 실제 트래픽·그래프 감지·병합 강제를 나누어 읽었다.",
+          "columns": [
+            "단계",
+            "기능",
+            "확인해야 할 공백"
+          ],
+          "afterSection": 3
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "GitHub 공지 4건의 지원 환경과 예외를 대조. 기존 원고가 누락한 pnpm 12 두 문서 잠금 형식의 그래프 감지 제한을 명시. 실서비스 설정은 변경·시험하지 않음.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "358f4336-bb35-4785-b02d-08f90ae7fb1d",
+    "slug": "news-c810738ec79ec179d28f",
+    "article": {
+      "url": "https://engineering.fb.com/2026/10/27/security/privacylib/",
+      "title": "요청 주체와 동작 승인과 데이터 이동을 나누어 통제하는 세 지점",
+      "summary": "에이전트의 인증, 명령 승인, 데이터 접근 정책은 각각 다른 판정이다. GitHub의 두 권한 기능과 Meta PrivacyLib를 대조해 실패 지점을 나눴다. Logger의 저장 직전 검사는 PrivacyLib 전체 중 한 사례이며 지원 경로 밖까지 자동으로 보호하지 않는다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "에이전트에게 도구를 사용할 수 있도록 권한을 설정했다는 표현에는 서로 다른 여러 단계의 판정이 혼재되어 있다. 어떤 계정이나 주체의 자격으로 요청을 전달하는지, 시스템 내부에서 파일과 명령을 어디까지 실제로 다뤄도 되는지, 읽어 들인 자료가 분석용 저장소나 다른 외부 위치로 옮겨가도 되는지는 결코 같은 범주의 질문이 아니다.",
+            "10월 말에 연이어 공개된 깃허브의 두 가지 변경 사항과 메타의 PrivacyLib 설명은 이러한 차이가 실제 실행 지점마다 어떻게 나뉘는지를 분명하게 드러낸다. 깃허브는 개발자가 다루는 제품 환경의 인증과 승인 단계를 다루고, 메타는 사내 인프라 내부에서 자료 접근 자체를 제어하는 기반 설계를 설명한다.",
+            "깃허브는 조직에 설치한 앱이 개별 직원의 로그인 자격 증명에 기대지 않은 채 Copilot SDK 요청을 보낼 수 있는 방식을 공개 프리뷰로 제공했다. 이와 별도로 CLI와 데스크톱 앱, VS Code 환경에서 동작하는 Assisted 권한 방식을 정식 제공으로 전환했다. 메타는 내부 서비스와 에이전트가 데이터에 접근할 때 목적과 도착지를 확인하는 방식을 밝혔다."
+          ],
+          "references": [
+            {
+              "url": "https://engineering.fb.com/2026/10/27/security/privacylib/",
+              "kind": "primary",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-27-github-copilot-supports-server-to-server-authentication",
+              "kind": "primary",
+              "label": "깃허브의 조직용 서버 인증 안내"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-26-github-copilot-assisted-permissions-generally-available",
+              "kind": "primary",
+              "label": "코파일럿 자동 승인 방식의 정식 제공"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "조직의 신원으로 실행하고 관리 체계에 사용량을 귀속하는 구조",
+          "paragraphs": [
+            "깃허브의 서버 간 인증 구조에서 개발자는 GitHub App에 조직용 읽기 전용 Copilot Requests 권한을 부여한 뒤 대상 조직에 설치한다. 이후 짧은 수명을 지닌 설치 접근 토큰을 발급받아 Copilot SDK에 전달하는 방식으로 통신을 구성한다. 개별 직원의 계정 세션 대신 조직에 설치된 앱 자체가 요청 주체로 작동한다.",
+            "이 방식을 통하면 모든 호출 사용량과 청구 내역이 앱 설치를 소유한 조직에 직접 귀속된다. 해당 조직에 설정된 모델 정책과 예산 및 지출 통제 규칙 역시 그대로 적용된다. 조직 소유자는 앱 접근 권한을 상시 확인하고 인공지능 사용량 CSV 파일에 남는 앱 식별자를 통해 구체적인 소모량을 추적할 수 있다.",
+            "조직 차원에서 접근을 즉시 중단해야 할 때에는 해당 앱을 정지하거나 완전히 제거하는 방식을 사용한다. 이 공지가 바꾸는 본질적인 영역은 요청을 실행하는 주체가 누구이며 누구의 관리 범위 아래에 놓이는가이다. 이는 모든 세부 명령이나 시스템 내 모든 자료를 사전에 자동으로 승인한다는 뜻이 아니다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-27-github-copilot-supports-server-to-server-authentication",
+              "kind": "primary",
+              "label": "깃허브의 조직용 서버 인증 안내"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "명령의 안전성을 대형 언어 모델로 판정하고 모드를 제어하는 방식",
+          "paragraphs": [
+            "깃허브의 Assisted 방식은 명령 실행, 파일 시스템 경로 접근, URL 열기 요청을 대형 언어 모델을 통해 실시간으로 평가한다. 모델이 명확히 안전하다고 분류한 요청에 한해서만 중단 없이 진행하며, 그 밖의 모든 요청은 사용자가 직접 승인하도록 넘긴다. 조직의 유효한 토큰을 썼더라도 수행하려는 구체적 행동을 별도로 따져보는 단계다.",
+            "기업 관리자는 모든 동작을 사전에 허용하는 모드를 차단하면서 Assisted 모드만 허용할 수 있고, 필요하다면 Assisted 모드만 따로 비활성화할 수도 있다. 새로운 세션이 시작될 때 적용할 기본 모드 역시 정책으로 지정할 수 있지만, 개별 개발자는 조직 정책이 허용하는 범위 안에서 다른 모드를 골라 전환할 수 있다.",
+            "조직에서 설정한 기본값을 사용할 수 없거나 금지해 둔 조건에서는 수동 승인 모드로 세션이 시작된다. 이처럼 개별 명령에 대한 모델의 위험도 판정, 기업 관리자가 정의한 보안 정책, 실제 개발자의 세션별 모드 선택이 한데 맞물려 에이전트의 실행 범위를 통제하도록 구성되어 있다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-26-github-copilot-assisted-permissions-generally-available",
+              "kind": "primary",
+              "label": "코파일럿 자동 승인 방식의 정식 제공"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "저장 직전의 한 사례와 더 넓은 데이터 접근 경계",
+          "paragraphs": [
+            "메타 PrivacyLib는 여러 데이터·처리 시스템의 클라이언트 안에서 접근 시점에 실행되는 공통 라이브러리다. 시스템을 한 번 통합한 뒤 목적 제한이나 흐름 관측 같은 요구를 모듈로 추가한다. 공개된 Logger 예제는 메시지 전달 시각 같은 메타데이터를 데이터웨어하우스에 쓰기 직전에 검사하지만, 이를 라이브러리 전체가 저장 직전 쓰기만 다룬다는 설명으로 좁혀서는 안 된다.",
+            "모듈의 역할도 다르다. Policy Zones 같은 집행 모듈은 접근을 차단할 수 있고 관찰 모듈은 접근 기록을 수집한다. 에이전트 경로에서는 지원되는 도구 호출에 세션 문맥이 연결되고 하위 서비스로 전달된다. 관찰 기록이 있다는 사실과 차단 정책이 적용됐다는 사실을 구분해야 한다. 목적·도착지 주석과 에이전트 문맥은 해당 집행 경로에서 판정에 쓰인다.",
+            "메타가 설명한 보완 장치는 문맥이 풍부한 클라이언트 검사와 하위 RPC 경계의 검사다. 그러나 이 메커니즘의 관리 경계 밖 경로는 별도 통합이 필요하다고 명시돼 있다. 에이전트가 예상하지 못한 도구를 골랐을 때도 검사한다는 설명에는 지원·활성화된 경로라는 조건이 붙는다. 호출 문맥의 전파와 실제 적용 범위를 확인하지 않고 모든 데이터 이동이 자동으로 막힌다고 일반화할 수는 없다."
+          ],
+          "references": [
+            {
+              "url": "https://engineering.fb.com/2026/10/27/security/privacylib/",
+              "kind": "primary",
+              "label": "메타 PrivacyLib의 접근 경계·관찰·집행 설계"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "같은 파일 전송 요청을 세 질문으로 나누면",
+          "paragraphs": [
+            "조직 앱이 분석 결과를 외부 위치로 전송하려는 상황을 가정해 보자. 설치 토큰이 유효하다는 것은 우선 해당 앱을 요청 주체로 인정한다는 뜻이다. 전송 명령이 Assisted에서 허용됐다는 사실은 그 명령의 요청을 해당 모드로 판단했다는 뜻이다. 데이터에 적용된 이용 목적이나 도착지 정책까지 같은 판정으로 끝난 것은 아니다. 표의 상황은 세 체계가 해결하는 질문을 비교하기 위한 가정이며 GitHub와 Meta 제품을 실제로 연결해 시험한 기록은 아니다.",
+            "실패 대응도 이 구분을 따르면 달라진다. 인증 거절에는 설치 상태·토큰·조직 정책을, 명령 승인 대기에는 세션 모드와 요청 행위를, 데이터 접근 거절에는 목적 문맥·주석·집행 결과를 대조할 수 있다. 관찰 로그만 있는 경로를 차단까지 검증한 경로로 표시하지 않는 것도 중요하다. 자동화가 성공했다는 단일 상태값보다 판정 위치와 경로별 범위를 남기는 기록이 원인을 좁히는 데 유용하다."
+          ],
+          "references": [
+            {
+              "url": "https://engineering.fb.com/2026/10/27/security/privacylib/",
+              "kind": "primary",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-27-github-copilot-supports-server-to-server-authentication",
+              "kind": "primary",
+              "label": "깃허브의 조직용 서버 인증 안내"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-26-github-copilot-assisted-permissions-generally-available",
+              "kind": "primary",
+              "label": "코파일럿 자동 승인 방식의 정식 제공"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "깃허브의 서버 간 인증은 조직에 귀속되는 요청 주체를, Assisted는 구체적인 명령의 승인 여부를 다룬다. PrivacyLib는 통합된 데이터 접근 경계에서 관찰과 집행을 수행한다. 세 기능은 서로 보완할 수 있지만 각각 다른 조건과 적용 범위를 가진다.",
+            "정상적인 신원, 승인된 명령, 허용된 데이터 이용이 모두 같은 말은 아니다. 어디서 어떤 판정을 내렸고 어느 경로에는 적용되지 않았는지 남겨야 실패 원인과 남은 공백을 구체적으로 조사할 수 있다."
+          ],
+          "references": [
+            {
+              "url": "https://engineering.fb.com/2026/10/27/security/privacylib/",
+              "kind": "primary",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-27-github-copilot-supports-server-to-server-authentication",
+              "kind": "primary",
+              "label": "깃허브의 조직용 서버 인증 안내"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-26-github-copilot-assisted-permissions-generally-available",
+              "kind": "primary",
+              "label": "코파일럿 자동 승인 방식의 정식 제공"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "통제 지점이 세 곳으로 분리되면 실패가 발생했을 때 책임 소재와 조사 대상을 혼선 없이 추적할 수 있다. 조직 설치 토큰이 거절당했다면 앱 설치 상태와 주체 검증을 살펴야 하고, 명령 실행이 멈췄다면 적용 모드와 모델의 판정 기준을 점검해야 하며, 쓰기가 차단됐다면 목적 문맥과 도착지 주석을 확인해야 한다. 이를 하나의 권한 오류로 뭉뚱그려서는 원인을 바로잡을 수 없다.",
+            "에이전트 시스템을 설계할 때 무조건 넓은 권한을 사전에 부여하는 방식보다, 판정의 기준과 결과를 분리해 기록으로 남기는 구조를 채택해야 한다. 깃허브가 앱 식별자를 통해 사용량을 조직 관리 화면에 연결하고 메타가 도구 호출 경로와 도착지 주석을 세션 단위로 기록하듯, 판정 지점마다 독립적인 흔적이 남아야 사람이 개입해 동작을 멈추거나 검토할 위치를 명확히 찾을 수 있다.",
+            "다만 이러한 다중 검증 구조를 일반 시스템에 옮겨오려면 데이터 스키마 전반에 목적과 속성을 나타내는 주석 체계가 미리 정리되어 있어야 하고, 도구 호출 시 문맥을 빠짐없이 전달할 수 있는 호출 경로가 갖춰져야 한다. 이러한 인프라 조건이 준비되지 않은 상태에서는 도착지 검사를 흉내 내더라도 실제 쓰기 차단이나 책임 분리 효과를 온전히 거두기 어렵다."
+          ],
+          "references": [
+            {
+              "url": "https://engineering.fb.com/2026/10/27/security/privacylib/",
+              "kind": "primary",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-27-github-copilot-supports-server-to-server-authentication",
+              "kind": "primary",
+              "label": "깃허브의 조직용 서버 인증 안내"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-26-github-copilot-assisted-permissions-generally-available",
+              "kind": "primary",
+              "label": "코파일럿 자동 승인 방식의 정식 제공"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "조직 앱 인증은 요청 주체를 정하며 개별 명령과 데이터 이용을 모두 승인하지 않는다.",
+        "PrivacyLib는 데이터 접근 경계의 공통 라이브러리이며 Logger 쓰기 검사는 한 사례다.",
+        "관찰과 차단, 지원 경로와 경계 밖 경로를 구분해야 통제 범위를 과장하지 않는다."
+      ],
+      "tags": [
+        "에이전트",
+        "접근권한",
+        "깃허브",
+        "메타"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "서버 간 인증",
+              "어느 조직 앱의 요청인가",
+              "모든 명령 또는 데이터 이용의 허용"
+            ],
+            [
+              "Assisted 명령 승인",
+              "요청한 명령·경로·URL을 진행할 수 있나",
+              "자료의 모든 목적·도착지 정책 충족"
+            ],
+            [
+              "PrivacyLib 접근 정책",
+              "통합·활성화된 경로에서 어떤 데이터 이용이 허용되나",
+              "지원 경계 밖 경로의 자동 보호"
+            ]
+          ],
+          "type": "table",
+          "title": "에이전트 요청을 확인하는 세 판정의 차이",
+          "caption": "2026.11.02 GitHub 공식 공지 2건과 Meta 설계 문서 대조. 제품 사이의 연동·침투·차단 시험을 수행한 결과는 아니다.",
+          "columns": [
+            "판정",
+            "확인하는 질문",
+            "이것만으로 보장하지 않는 것"
+          ],
+          "afterSection": 4
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "GitHub 서버 간 인증·Assisted 공지 및 Meta PrivacyLib 직접 대조. Logger 예제를 전체 범위처럼 읽던 설명을 수정하고 관찰/집행, 지원 경로 한계를 명시. 실제 제품 연동 시험 없음.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "68447f24-0926-4a04-a272-602fd89fd335",
+    "slug": "news-c15c1be0aad75fb41fbd",
+    "article": {
+      "url": "https://smashingmagazine.com/2026/10/embracing-playful-imperfection-css-random-function/",
+      "title": "CSS random() 초안과 시연으로 본 절제된 시각적 편차 설계",
+      "summary": "CSS random()은 기본 구조 위에 제한된 편차를 더하는 수단이다. 규격의 공유 범위를 살피고 Chrome 156에서 기본·간격·대체 값 선언을 직접 실행했다. 한 브라우저의 지원 결과와 전체 서비스의 적용 가능성을 구분한다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "디자인 시스템에서 정교한 간격과 일관된 정렬을 구축하던 작업 환경에 작은 불규칙성을 시험하는 시도가 소개됐다. 브레흐트 더라위터는 10월 20일 스매싱 매거진을 통해 CSS random()을 활용한 타이포그래피와 카드 묶음 시연을 공개하며 새로운 표현 방식을 제안했다. 개별 문자마다 조금씩 다른 각도의 회전과 위치 이동을 부여하거나 나열된 카드들이 미세하게 다른 방향을 갖도록 연출하는 작업이다.",
+            "이 시연에서 다루는 무작위성은 화면의 모든 구성 요소를 제약 없이 흔들어 놓는 명령이 아니다. 개발자가 각도나 거리의 상한과 하한을 명확하게 지정하고 그 정해진 경계 안에서만 수치가 달라지도록 유도하는 방식을 취했다. 글자에는 몇 도 안쪽의 미세한 기울기와 몇 픽셀 수준의 이동만 허용해 기본 가독성을 해치지 않도록 조율했다.",
+            "카드의 기본 배열을 안정적으로 유지한 상태에서 표면에 작은 시각적 차이를 얹는다는 점이 이번 실험의 핵심적인 출발선이다. 규칙을 완전히 버리는 대신 화면 요소가 벗어날 수 있는 허용 범위를 사전에 정의함으로써 통제된 화면 질서를 유지하는 접근을 보여준다."
+          ],
+          "references": [
+            {
+              "url": "https://smashingmagazine.com/2026/10/embracing-playful-imperfection-css-random-function/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "규격 초안이 정의하는 범위와 간격 및 값 공유",
+          "paragraphs": [
+            "CSS 값·단위 레벨 5의 현재 편집자 초안은 random()을 최소와 최대 사이에서 적절한 값을 선택하는 수학 함수로 정의하고 있다. 함수의 마지막 인수로 특정 간격을 지정하면 가능한 결과값 역시 해당 간격에 맞춰 단계적으로 제한되는 구조를 취한다. 이를 통해 완전한 연속값뿐만 아니라 이산적인 수치 단계까지 문법 안에서 유연하게 다룰 수 있다.",
+            "예를 들어 0~60px 사이를 15px 간격으로 지정하면 0·15·30·45·60px라는 다섯 개 수치만이 선택 후보군이 된다. 각도나 거리를 연속해서 미세하게 변화시키는 표현과 정해진 몇 단계의 후보 중에서 고르게 만드는 방식은 화면 위에서 서로 다른 조형적 질감을 형성한다. 개발자는 이 간격 인수를 활용해 불규칙성의 거칠기를 직접 제어할 수 있다.",
+            "2026년 10월 27일 편집자 초안은 기본값 auto에서 요소·속성·함수의 위치를 바탕으로 공유 범위를 정한다. 이를 매번 새 난수를 뽑는 자바스크립트 함수 호출처럼 이해하면 안 된다. 이름을 명시해 같은 기반 난수를 공유하거나 요소별로 범위를 좁히는 규칙이 있으며, 서로 다른 범위를 사용하면 같은 기반 난수도 최종 크기는 달라질 수 있다.",
+            "같은 범위의 너비와 높이가 하나의 기반 난수를 공유하면 정사각형을 유지할 수 있다. 반면 이름 없는 일반 커스텀 속성에 random()을 적었다고 계산 결과 하나가 저장되는 것은 아니다. 대입된 속성에서 해석되는 문법과 공유 키를 확인해야 한다. 규격은 변경 가능한 초안이며 문법 지원 여부도 실제 대상 브라우저에서 따로 점검해야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://drafts.csswg.org/css-values-5/",
+              "kind": "primary",
+              "label": "CSS 작업 그룹의 값·단위 레벨 5 편집자 초안"
+            },
+            {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/random",
+              "kind": "primary",
+              "label": "MDN의 random 함수 문법과 호환성"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "수식으로 잡는 뼈대와 미세 편차의 공존",
+          "paragraphs": [
+            "더라위터가 공개한 카드 묶음 시연은 구조와 시각적 표정을 분리하는 원리를 분명하게 드러낸다. 여러 장의 카드가 부채꼴 모양으로 자연스럽게 펼쳐지는 기본 위치는 형제 요소의 순서를 조합한 수학적 수식으로 먼저 계산해 배치했다. 엄격한 계산식이 전체 배열의 안정적인 뼈대를 형성하는 토대가 된다.",
+            "이러한 계산식 위에 작은 무작위 편차를 결합함으로써 동일한 복사본이 기계적으로 나열되어 움직이는 듯한 단조로운 인상을 줄이고자 했다. 수식이 레이아웃의 규칙적인 질서를 잡아 주고 변동 범위가 개별 카드의 고유한 표정을 빚어내는 방식이다. 규칙과 불규칙이 상충하지 않고 층위를 나누어 결합한다.",
+            "글자 시연 역시 문자마다 서로 다른 기울기를 적용하되 마우스 커서를 올리면 다시 반듯하게 정렬되도록 인터랙션을 설계했다. 불규칙한 초기 상태와 정돈된 상태를 유연하게 오갈 수 있게 만들어 시각적 재미와 정보 습득의 편의를 양립시켰다. 정보 구조를 무작위로 섞기보다 동일한 내용을 다른 시각적 리듬으로 드러내는 데 집중한 결과다."
+          ],
+          "references": [
+            {
+              "url": "https://smashingmagazine.com/2026/10/embracing-playful-imperfection-css-random-function/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "표현을 위한 장식과 보조 기술용 텍스트의 분리",
+          "paragraphs": [
+            "문자를 낱개로 꾸미기 위해 여러 개별 요소로 분할하면 스크린 리더와 같은 보조 기술에 전달되는 텍스트 구조가 파편화되어 읽기 경험을 방해할 위험이 있다. 원문 시연은 시각적 연출을 위해 분할된 장식용 문자 묶음을 보조 기술에서 명시적으로 숨기고 온전한 형태의 단어를 별도의 경로로 전달하는 방식을 제시했다.",
+            "카드 시연에서는 키보드 포커스를 받는 순간 기울어진 각도를 곧바로 정돈해 조작 대상이 흔들리지 않도록 처리했다. 사용자가 키보드로 내비게이션을 수행할 때 시각적 편차로 인해 선택 목표를 놓치거나 혼란을 겪지 않도록 조작 상태의 안정성을 보장한 셈이다. 인터랙션의 우선순위를 정확히 설정한 조치다.",
+            "움직임을 부여하는 과정에서도 사용자의 움직임 감소 설정을 확인해 불필요한 흔들림을 억제할 수 있도록 배려했다. 글자 하나가 독립된 조형처럼 개별적으로 움직이더라도 사용자가 받아들여야 할 정보는 명확한 하나의 단어로 유지되어야 한다. 표현 레이어와 접근성 전달 경로를 분리할 때 시각적 실험은 사용성을 해치지 않는다."
+          ],
+          "references": [
+            {
+              "url": "https://smashingmagazine.com/2026/10/embracing-playful-imperfection-css-random-function/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "문법 지원과 실제 너비를 따로 읽어봤다",
+          "paragraphs": [
+            "2026년 11월 2일 Windows의 Chrome 156, DPR 1 환경에서 너비 선언 세 가지를 직접 실행했다. CSS.supports는 기본 범위와 10px 간격 문법 모두 true를 반환했다. 계산된 너비는 random(100px, 200px)이 128.984px, random(100px, 200px, 10px)이 110px였다. 120px를 먼저 주고 @supports 안에서 난수 선언을 덮어쓴 요소는 179.656px였다. 모두 한 번의 관측값이며 새로 열었을 때 같은 숫자가 나온다는 뜻은 아니다.",
+            "120px 대체 값은 기능을 쓰지 못하는 환경에서도 박스가 사라지지 않게 남긴 기본 디자인이다. 이번 환경에서는 지원 조건이 참이어서 난수 선언이 적용됐다. 미지원 브라우저를 실행해 대체 경로까지 확인한 것은 아니다. MDN도 이 기능을 모든 주요 브라우저에 걸쳐 쓸 수 있는 Baseline 기능으로 분류하지 않는다. 아래 코드는 기본값과 향상된 표현을 분리하는 예이며, 보안용 난수나 추첨의 공정성을 검증하는 실험과는 무관하다."
+          ],
+          "references": [
+            {
+              "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/random",
+              "kind": "primary",
+              "label": "MDN의 random 함수 문법과 호환성"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "이번 실험의 핵심은 무제한의 무질서를 화면에 도입하는 것이 아니라 변하지 않을 기본 구조와 변화가 허용되는 표면을 엄격하게 구분하는 데 있다. 최소와 최대의 범위, 단계적 간격을 지정하고 속성 간 난수 공유 방식을 정의하는 규격 초안의 설계는 이러한 의도된 편차를 기술적으로 제어할 수 있는 가능성을 보여준다.",
+            "동시에 화면에 비치는 시각적 표현과 보조 기술이 해석해야 하는 정보 구조를 나누어 설계함으로써 실험적인 디자인이 기본 사용성을 침해하지 않도록 기준을 세웠다. 정돈된 수학적 배열 위에서만 작동하는 제한된 난수는 디지털 화면의 단조로움을 보완하는 유효한 수단으로 자리 잡는다."
+          ],
+          "references": [
+            {
+              "url": "https://smashingmagazine.com/2026/10/embracing-playful-imperfection-css-random-function/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://drafts.csswg.org/css-values-5/",
+              "kind": "primary",
+              "label": "CSS 작업 그룹의 값·단위 레벨 5 편집자 초안"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "디자인 토큰을 하나의 고정된 수치로만 정의하던 기존 규칙에서 벗어나 허용 가능한 변화 범위를 토큰화하는 접근은 시스템의 유연성을 확장하는 계기가 될 수 있다. 모든 구성 요소가 완벽히 동일한 수치를 따르게 강제하기보다 어떤 요소에 어느 정도의 편차를 허용할 것인지 규정하면 일관된 질서 안에서도 자연스러운 시각적 다양성을 확보할 수 있다.",
+            "다만 시각적 편차를 부여하는 행위 자체가 자동으로 디자인의 완성도나 손으로 만든 듯한 감성을 담보해 주지는 않는다. 독자가 즉각 읽어내야 하는 핵심 제목이나 명확한 타깃 영역이 중요한 조작 버튼, 배경에 머무는 장식 요소 중 어디에 어느 수준의 차이를 둘 것인지 결정하는 편집적 판단이 기술 적용에 앞서야 한다.",
+            "기술적으로도 해당 규격은 완성된 권고안이 아닌 지속적인 논의가 필요한 편집자 초안 상태이므로 모든 브라우저 환경에서 동일한 동작을 전제로 삼기에는 한계가 따른다. 시연과 초안에서 확인해야 할 본질은 무작위성의 크기를 무작정 넓히는 것이 아니라 확고한 구조적 뼈대를 지키면서 변화를 어디에 어떻게 배분할 것인지에 대한 정밀한 경계 설정이다."
+          ],
+          "references": [
+            {
+              "url": "https://smashingmagazine.com/2026/10/embracing-playful-imperfection-css-random-function/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://drafts.csswg.org/css-values-5/",
+              "kind": "primary",
+              "label": "CSS 작업 그룹의 값·단위 레벨 5 편집자 초안"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "규격 초안은 최소·최대 수치와 간격, 속성 간 난수 공유 방식을 분리해 제어 경로를 제공한다.",
+        "수식으로 정돈된 기본 배열과 뼈대를 유지하면서 문자 기울기나 카드 방향에 제한된 편차를 준다.",
+        "장식용으로 분리된 문자와 온전한 전달용 텍스트를 나누고 조작 상태의 정돈 기준을 마련해야 한다."
+      ],
+      "tags": [
+        "웹 디자인",
+        "CSS",
+        "타이포그래피",
+        "디자인 시스템"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "random(100px, 200px)",
+              "128.984px",
+              "문법 지원 및 계산값"
+            ],
+            [
+              "random(100px, 200px, 10px)",
+              "110px",
+              "10px 간격에 해당하는 한 관측값"
+            ],
+            [
+              "120px + @supports 안의 random()",
+              "179.656px",
+              "지원 환경의 덮어쓰기 경로"
+            ]
+          ],
+          "type": "table",
+          "title": "직접 실행한 세 가지 너비 선언",
+          "caption": "ARCH.B 직접 확인 · 2026.11.02 · Chrome 156 / DPR 1. 값의 분포·균등성·다른 브라우저 호환성은 시험하지 않았다.",
+          "columns": [
+            "조건",
+            "관측 너비",
+            "확인한 범위"
+          ],
+          "afterSection": 4
+        },
+        {
+          "code": ".box { width: 120px; height: 24px; }\n@supports (width: random(100px, 200px)) {\n  .box { width: random(100px, 200px); }\n}\n/* 간격을 지정할 때는 세 번째 수치 인수를 사용한다. */\n.stepped { width: 120px; width: random(100px, 200px, 10px); }",
+          "type": "code",
+          "title": "기본 너비를 남기는 점진적 적용 예",
+          "language": "css",
+          "afterSection": 4
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "Chrome 156의 CSS.supports와 계산 너비를 직접 읽음. browser-results.json 보관. CSSWG 2026-10-27 초안 및 MDN 대조. 미지원 브라우저와 분포 검증은 수행하지 않음.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "9a140d37-d3b6-43dc-81c6-36574e1fdc21",
+    "slug": "news-dea8ba729eb28582daac",
+    "article": {
+      "url": "https://github.blog/changelog/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api",
+      "title": "깃허브 코파일럿 도구 이름 표기와 산업 비교 지표 및 기본 정책 적용",
+      "summary": "깃허브가 자체 도구 이름 식별, 참여 조직 간 산업 비교 지표, 미설정 정식 기능에 대한 기본 정책 순차 적용을 발표했다. 각 변경은 관측 대상, 동료 집단 비교, 허용 설정을 서로 다른 화면과 조건으로 다룬다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "깃허브는 10월 22일 코파일럿을 운영하는 관리자가 다루는 세 가지 관리 영역의 변경 사항을 알렸다. 사용량 API에서 자체 제작 도구의 세부 명칭을 분류해 표시하고, 영향 대시보드에는 유사 조직과 견줄 수 있는 산업 비교 항목을 추가했다. 동시에 정식 기능의 기본 허용 정책도 순차 적용하기 시작했다.",
+            "이번 변경 사항들은 모두 관리 화면에서 제공되는 정보이지만 각각 응답하는 질문과 대상 영역이 다르다. 사내에서 제작해 배포한 도구를 구성원이 실제로 호출했는지, 유사한 환경의 타 조직과 비교해 어느 위치에 있는지, 그리고 전체 구성원에게 어떤 기능을 기본으로 열어둘 것인지를 분리해 다룬다.",
+            "따라서 세 가지 변경을 단일한 생산성 지표로 묶어 결론을 내리기보다는 관측 대상과 비교 집단, 그리고 권한 결정의 순서로 나누어 접근해야 한다. 각 영역이 제공하는 데이터의 성격과 한계 조건을 명확히 인지할 때 코파일럿 운영 환경의 현주소를 정확하게 읽어낼 수 있다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api",
+              "kind": "primary",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard",
+              "kind": "primary",
+              "label": "깃허브 코파일럿 산업 비교 지표 안내"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-22-global-default-for-copilot-features-generally-available",
+              "kind": "primary",
+              "label": "깃허브 코파일럿 기본 기능 정책 적용 안내"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "자체 제작 도구의 이름 표시와 사용량 지표 변화",
+          "paragraphs": [
+            "사용량 지표는 사용자가 직접 만든 스킬, 사용자 정의 에이전트, MCP 서버, 슬래시 명령 및 플러그인을 기존의 기타 분류 대신 설정된 실제 이름으로 구분해 보여준다. 개별 도구 목록의 노출 한도가 늘어나면서 내부에서 배포한 확장 도구의 활용 여부를 이름 단위로 점검할 수 있게 되었다. 각 totals_by_* 목록은 레코드당 최대 5개에서 25개로 늘었다.",
+            "목록에 표시되지 않는 나머지 도구들은 여전히 기타 항목으로 합산되며, 상호작용 횟수와 고유 도구 사용 수를 계산하는 공식 자체는 바뀌지 않는다. 사내 도구를 배포한 팀은 자신이 붙인 명칭이 보고서에 직접 잡히는지를 확인할 수 있으나, 이 집계만으로 개별 작업의 실제 성공률을 계산할 수는 없다.",
+            "또한 해당 이름 표기는 이번 릴리스 이후 처리된 보고 일자부터 적용되며 이전 기간의 데이터에 소급 적용되지는 않는다. 클라이언트 버전이나 전송 환경에 따라 전달되지 않는 기록이 존재할 수 있으므로, 이름이 세분화된 것과 조직 내 전체 관측이 완전해진 것은 구분해 해석해야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api",
+              "kind": "primary",
+              "label": "원출처 기사"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "산업 비교 지표의 산출 기준과 화면 표기 조건",
+          "paragraphs": [
+            "산업 비교는 기본적으로 꺼져 있고 관리자가 명시적으로 참여해야 한다. 기업 또는 기업에 속하지 않은 조직의 집계 데이터를 근거로 28일 보고 기간의 에이전트 중심 사용 비율과, 에이전트 사용 여부에 따른 풀 리퀘스트 병합률의 관계를 동료 집단과 견준다. 기본 기능 정책이 켜져 있다는 사실만으로 이 비교에 참여한 것은 아니다.",
+            "조직 규모와 산업군을 선택해 비교할 수 있으나 표본이 충분하지 않은 경우에는 같은 규모의 전체 산업군으로 범위를 확장하며 실제 적용된 기준 집단이 화면에 안내된다. 참여 수가 부족하거나 자체 점수를 연산할 비교군이 성립하지 않으면 순위가 표기되지 않을 수 있다.",
+            "데이터 레지던시 환경이 적용된 조직은 동일한 지역 내 참여자 데이터와만 비교된다. 이러한 비교 수치는 영향 대시보드 화면에만 나타나며 사용량 API나 내려받는 별도 보고서에는 포함되지 않으므로, 수치가 보이지 않는 상태 역시 비교 조건 및 표본 한계와 함께 읽어야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard",
+              "kind": "primary",
+              "label": "깃허브 코파일럿 산업 비교 지표 안내"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "정식 기능에 적용되는 미설정 전역 정책의 원칙",
+          "paragraphs": [
+            "기본 정책의 적용 대상은 코파일럿 비즈니스 및 엔터프라이즈 환경에서 활용 가능한 정식 기능과 클라이언트 기능이다. 깃허브는 10월 22일부터 26일까지 해당 정책을 단계적으로 적용한다고 밝혔다.",
+            "이 과정은 아직 관리자가 별도로 선택하지 않은 미설정 항목에 대해 전역 기본값에 따라 활성화 또는 비활성화를 맞추는 일회성 변경이다. 이미 개별 기능에 명시적으로 활성화 여부를 지정해 둔 설정은 그대로 유지되며, 향후 전역 기본값이 수정되더라도 기존의 명시적 선택을 덮어쓰지는 않는다.",
+            "프리뷰 기능의 경우 계속해서 별도의 명시적 참여 절차가 요구된다. 관리자는 AI Controls 화면의 기본 정책 설정과 개별 기능의 명시적 지정 여부를 대조해야 현재 조직에 적용된 기능 허용 상태가 어떤 결정에서 비롯되었는지 명확히 파악할 수 있다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-22-global-default-for-copilot-features-generally-available",
+              "kind": "primary",
+              "label": "깃허브 코파일럿 기본 기능 정책 적용 안내"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "도구 사용이 늘었다는 그래프를 비교하기 전에",
+          "paragraphs": [
+            "릴리스 전에는 기타로 합산되던 사내 도구가 다음 보고서부터 이름으로 보이면, 이름별 그래프는 사용량이 갑자기 생긴 것처럼 보일 수 있다. 그러나 계산식은 바뀌지 않았고 과거 기록의 이름은 소급해서 풀리지 않는다. 이 경우 이름별 증가만 비교하기보다 같은 기간의 전체 상호작용 수와 기타 항목의 감소를 함께 확인해야 한다. 보고 형식 변경과 실제 도입 확대를 구별하기 위한 비교다.",
+            "28일 산업 순위의 변화를 볼 때도 기간과 동료 집단을 기록해야 한다. 같은 규모·산업군의 표본이 부족해 전체 산업으로 넓혀진 결과를 이전의 좁은 집단 순위와 바로 비교하면 기준이 달라진다. 기본 정책의 허용 상태, 클라이언트 버전과 관측 누락, 비교 집단 이름을 같은 날짜에 남기면 원인을 더 좁힐 수 있다. 아래 표는 세 공지의 조건을 대조한 것이며 실제 기업 계정의 생산성이나 구성원 작업을 측정한 결과는 아니다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api",
+              "kind": "primary",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard",
+              "kind": "primary",
+              "label": "깃허브 코파일럿 산업 비교 지표 안내"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-22-global-default-for-copilot-features-generally-available",
+              "kind": "primary",
+              "label": "깃허브 코파일럿 기본 기능 정책 적용 안내"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "이번에 발표된 세 기능은 도구의 식별과 외부 비교, 그리고 관리 권한의 기본값이라는 서로 다른 층위를 구성한다. 사용량 지표는 내부 제작 도구의 식별 가능성을 넓혔고, 산업 대시보드는 28일간 축적된 참여 집단과의 상대적 지점을 화면에 제시한다.",
+            "여기에 10월 26일까지 순차 적용되는 기본 정책은 명시적 설정이 없던 정식 기능의 활성화 기준점을 정리한다. 세 화면의 데이터와 정책이 제공하는 범위가 분리되어 있는 만큼, 각 도구의 성격을 명확히 구별해야 운영 과정에서 혼선을 줄일 수 있다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api",
+              "kind": "primary",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard",
+              "kind": "primary",
+              "label": "깃허브 코파일럿 산업 비교 지표 안내"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-22-global-default-for-copilot-features-generally-available",
+              "kind": "primary",
+              "label": "깃허브 코파일럿 기본 기능 정책 적용 안내"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "산업 대시보드의 풀 리퀘스트 병합률 비교치는 특정 도구가 코드 품질이나 속도를 개선했다는 인과관계를 입증하지 못한다. 해당 수치는 28일 동안 참여 조직에서 관측된 집계 관계일 뿐이며, 과제의 성격이나 작업 난이도를 동일하게 통제한 실험 데이터가 아니기 때문이다.",
+            "도구 이름의 세분화와 산업 비교는 제공되는 경로가 다르다. 산업 순위가 사용량 API나 다운로드 보고서에 포함되지 않으므로 같은 API 응답 안에서 곧바로 결합할 수 있다고 가정하면 안 된다. 별도의 운영 분석을 설계할 수는 있지만 도구 호출이 나타났다는 사실과 결과물의 완성도는 여전히 다른 관측 항목이다.",
+            "따라서 기본 정책을 통해 기능이 일괄 활성화되었거나 도입 지표가 낮게 나타났을 때, 이를 도구의 성공적인 정착이나 차단 상태로 곧바로 단정해서는 안 된다. 내부 도구의 지속적인 효용을 검증하기 위해서는 API 집계치 확인에 그치지 않고 실제 작업 맥락과 검토 기록을 별도로 대조하는 과정이 반드시 병행되어야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-22-custom-skills-agents-and-mcp-servers-in-usage-metrics-api",
+              "kind": "primary",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-22-industry-comparisons-in-the-copilot-impact-dashboard",
+              "kind": "primary",
+              "label": "깃허브 코파일럿 산업 비교 지표 안내"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-22-global-default-for-copilot-features-generally-available",
+              "kind": "primary",
+              "label": "깃허브 코파일럿 기본 기능 정책 적용 안내"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "사용량 지표는 내부 스킬과 에이전트 이름을 분류해 제공하며 기존 집계 수식은 유지한다.",
+        "산업 비교는 28일 집계 데이터를 토대로 대시보드 화면에만 표시된다.",
+        "기본 정책은 미설정된 정식 기능에만 적용되며 명시적 설정과 프리뷰 참여는 유지된다."
+      ],
+      "tags": [
+        "코파일럿",
+        "개발도구",
+        "사용량지표",
+        "팀운영"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "이름별 사용량",
+              "새 형식의 레코드당 최대 25개 + 기타",
+              "릴리스 전후 이름 증가 = 신규 사용 증가"
+            ],
+            [
+              "산업 비교",
+              "참여한 동료 집단과 28일 상대 위치",
+              "순위 상승 = 도구가 생산성을 개선한 인과 효과"
+            ],
+            [
+              "기본 정책",
+              "명시적 선택이 없던 정식 기능의 허용 기준",
+              "허용됨 = 실제 사용됨 또는 산업 비교 참여"
+            ]
+          ],
+          "type": "table",
+          "title": "이름·산업 순위·기본 정책은 서로 다른 질문이다",
+          "caption": "2026.11.02 공식 공지 3건 대조. 산업 비교의 참여 기본값과 일반 기능의 전역 기본 정책을 구별했다.",
+          "columns": [
+            "영역",
+            "읽을 수 있는 것",
+            "바로 결론 내릴 수 없는 것"
+          ],
+          "afterSection": 4
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "GitHub 3건 대조. 25개 한도, 명시적 산업 비교 참여, 보고서 비소급과 집단 변경을 분석. 통합 분석이 불가능하다는 기존 과도한 단정을 수정. 기업 실사용 로그에 접근하지 않음.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "c003e00f-d29e-4d77-90a0-bcbc128da678",
+    "slug": "news-b02e415c5f4a28873ac1",
+    "article": {
+      "url": "https://smashingmagazine.com/2026/10/accordion-icons-which-work-best/",
+      "title": "아이콘을 바꾸기 전에 클릭의 약속부터, 아코디언 메뉴를 다시 읽기",
+      "summary": "아코디언은 제목과 아이콘이 같은 동작을 해야 예측하기 쉽다. 2020년 첫 클릭 연구와 WAI 패턴을 대조하고, 직접 만든 버튼에서 클릭·Enter·Space·초점 이동 여섯 동작을 확인했다. 기능 확인과 사용성 연구의 차이도 짚는다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "모바일 메뉴의 작은 기호는 다음 화면으로 이동할지, 같은 자리에서 내용을 펼칠지 예고한다. 스매싱 매거진의 아코디언 해설을 계기로 다시 살펴볼 문제는 제목과 기호에 서로 다른 일을 맡기는 구성이다. 제목은 링크, 기호는 펼침 버튼이면 한 행 안에서 눌러야 할 위치에 따라 결과가 달라진다. 이 문제를 검토하기 위해 닐슨 노먼 그룹의 2020년 원 연구, WAI의 구현 패턴, 직접 작성한 단일 패널 예제를 나란히 놓았다. 세 자료는 각각 사용자의 기대, 구현 규칙, 실제 상태 전환이라는 다른 질문에 답한다."
+          ],
+          "references": [
+            {
+              "url": "https://smashingmagazine.com/2026/10/accordion-icons-which-work-best/",
+              "kind": "reporting",
+              "label": "스매싱 매거진의 아코디언 아이콘 해설"
+            },
+            {
+              "url": "https://www.nngroup.com/articles/accordion-icons/",
+              "kind": "primary",
+              "label": "닐슨 노먼 그룹의 2020년 원 연구"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "첫 클릭이 무엇을 측정했는지 보기",
+          "paragraphs": [
+            "원 연구는 136명에게 모바일 웹사이트 시제품 11개를 보여주고, 원하는 정보를 찾으려면 어디를 누를지와 그 뒤 무엇이 일어날지 물었다. 시제품은 이미 메뉴가 열린 정적 화면이었다. 실제 사이트를 끝까지 탐색하는 시험이나 모든 기기의 접근성 평가는 아니었다. 연구진은 캐럿·더하기·오른쪽 화살표, 익숙하지 않은 대조 기호와 기호가 없는 조건을 비교했다. 아이콘은 제목 오른쪽에 배치했다. 따라서 결과를 왼쪽 기호나 다른 배치에 그대로 옮기기보다는, 같은 행을 보고 사용자가 어떤 동작을 기대했는지에 대한 자료로 읽는 편이 정확하다."
+          ],
+          "references": [
+            {
+              "url": "https://www.nngroup.com/articles/accordion-icons/",
+              "kind": "primary",
+              "label": "닐슨 노먼 그룹의 2020년 원 연구"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "그림의 방향과 실제 상태를 함께 전달하기",
+          "paragraphs": [
+            "WAI의 아코디언 패턴은 제목에 해당하는 컨트롤을 버튼으로 구성하고, 그 버튼을 문서 구조에 맞는 제목 요소 안에 두도록 설명한다. 연결된 패널이 보이면 aria-expanded를 true로, 닫혀 있으면 false로 제공하며 aria-controls에는 해당 패널의 식별자를 연결한다. 화면의 삼각형이 돌아가는 연출만으로 상태 전달을 끝내지 않는 방식이다. 시각적으로 같은 모양을 써도 버튼에 전달한 상태가 실제 패널과 어긋나면 보조기술 사용자는 다른 정보를 받는다. 기호 선택과 상태 구현을 한 작업으로 검토할 이유가 여기 있다."
+          ],
+          "references": [
+            {
+              "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/",
+              "kind": "primary",
+              "label": "WAI 아코디언 접근성 패턴"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "마우스 밖에서도 유지돼야 하는 같은 약속",
+          "paragraphs": [
+            "패턴은 초점을 받은 제목 버튼에서 Enter나 Space를 누르면 패널을 펼치도록 안내한다. 닫기를 지원하는 구성에서는 같은 키로 접고, Tab과 Shift+Tab은 페이지 안의 초점 가능한 요소를 순서대로 이동한다. 한 번에 하나만 열리게 할지, 여러 패널을 함께 펼칠지는 구성에 따라 달라질 수 있다. 반면 열렸는지 닫혔는지의 안내와 버튼의 실제 동작은 그 선택 안에서 일관돼야 한다. WAI 문서는 이를 구현하는 패턴 안내이지, 특정 아이콘의 전환율을 보증하는 사용성 실험 결과는 아니다."
+          ],
+          "references": [
+            {
+              "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/",
+              "kind": "primary",
+              "label": "WAI 아코디언 접근성 패턴"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "같은 버튼에서 여섯 동작을 직접 확인했다",
+          "paragraphs": [
+            "2026년 11월 2일 Windows의 Chrome 156, 배율 DPR 1인 인앱 브라우저에서 제목과 더하기 기호를 하나의 네이티브 button 안에 넣은 예제를 실행했다. 기호에는 aria-hidden을 주고 제목을 버튼 이름으로 남겼다. 처음에는 패널을 hidden으로 감추고 aria-expanded를 false로 맞췄다. 텍스트를 클릭하자 패널이 열리고 상태가 true가 됐으며, 기호를 클릭하자 다시 닫히고 false가 됐다. 같은 버튼 안에서는 클릭 위치가 다른 동작을 만들지 않았다.",
+            "키보드에서는 Enter로 연 뒤 Tab을 누르면 패널 안 링크로 이동했다. Shift+Tab은 제목 버튼으로 돌아왔고 Space는 패널을 닫았다. 각 단계에서 실제 패널의 hidden 값, 버튼의 aria-expanded 값과 초점 요소를 읽어 대조했다. 아래 표는 이 예제에서 관측한 결과이며 아이콘별 선호도나 작업 완료 시간을 측정한 결과는 아니다. 스크린 리더 낭독과 다른 브라우저 조합도 이번 확인에 포함하지 않았다.",
+            "이 확인의 재현 기준은 화면에 내용이 나타나는 데서 끝나지 않는다. 펼침 상태와 패널 표시가 함께 바뀌고, 열린 내용으로 키보드가 들어갔다가 제목으로 돌아오는지까지 봐야 한다. 실제 서비스에 적용할 때는 닫히는 패널 안에 초점이 남는 경로, 여러 패널을 동시에 여는 정책, 긴 제목의 클릭 영역도 별도로 확인할 수 있다. 단일 패널에서 통과한 결과를 모든 메뉴의 접근성 인증으로 확대할 수는 없다."
+          ],
+          "references": [
+            {
+              "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/",
+              "kind": "primary",
+              "label": "WAI 아코디언 접근성 패턴"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "아코디언의 핵심은 기호 자체보다 클릭·키보드·보조기술에서 같은 상태와 동작을 전달하는 데 있다. 연구가 측정한 첫 클릭과 실제 탐색의 성공도 서로 다른 질문으로 남겨야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://smashingmagazine.com/2026/10/accordion-icons-which-work-best/",
+              "kind": "reporting",
+              "label": "스매싱 매거진의 아코디언 아이콘 해설"
+            },
+            {
+              "url": "https://www.nngroup.com/articles/accordion-icons/",
+              "kind": "primary",
+              "label": "닐슨 노먼 그룹의 2020년 원 연구"
+            },
+            {
+              "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/",
+              "kind": "primary",
+              "label": "WAI 아코디언 접근성 패턴"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "제목과 기호를 하나의 버튼으로 묶으면 어느 쪽을 눌러도 같은 결과를 얻는다. 별도의 페이지 이동이 필요하다면 펼쳐진 목록 안에 목적지가 드러나는 링크를 둘 수 있다. 예를 들어 작품 분류를 펼치는 버튼과 모든 작품을 보는 링크를 구별하는 방식이다. 이는 첫 클릭 연구와 이번 기능 확인을 실제 정보 구조에 연결한 설계 제안이며, 이 배치만으로 탐색 성공률이 높아졌다는 실험 결과는 아니다.",
+            "캐럿·더하기·화살표의 모양을 비교하는 일은 메뉴가 어떤 일을 맡을지 정한 다음에 의미가 생긴다. 분류를 펼칠지, 독립된 페이지로 이동할지, 한 화면에서 여러 정보를 비교하게 할지가 먼저다. 그 결정을 제목의 문구, 클릭 영역, 초점 표시와 상태 안내가 함께 뒷받침해야 한다. 현재 화면을 검토할 때에는 기호를 바꾼 전후의 장식 차이보다 제목과 아이콘을 각각 눌렀을 때 같은 결과를 얻는지 살펴볼 수 있다. 첫 클릭의 예측과 실제 반응이 맞을 때, 사용자는 작은 버튼의 숨은 규칙을 배워야 하는 부담을 덜 수 있다."
+          ],
+          "references": [
+            {
+              "url": "https://www.nngroup.com/articles/accordion-icons/",
+              "kind": "primary",
+              "label": "닐슨 노먼 그룹의 2020년 원 연구"
+            },
+            {
+              "url": "https://smashingmagazine.com/2026/10/accordion-icons-which-work-best/",
+              "kind": "reporting",
+              "label": "스매싱 매거진의 아코디언 아이콘 해설"
+            },
+            {
+              "url": "https://www.w3.org/WAI/ARIA/apg/patterns/accordion/",
+              "kind": "primary",
+              "label": "WAI 아코디언 접근성 패턴"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "136명·11개 정적 시제품 연구와 실제 버튼의 기능 확인은 서로 다른 검증이다.",
+        "직접 작성한 버튼에서 텍스트·기호 클릭과 Enter·Space가 같은 상태 전환을 만들었다.",
+        "펼친 패널의 링크로 Tab 이동과 Shift+Tab 복귀를 확인했으며 스크린 리더 시험은 수행하지 않았다."
+      ],
+      "tags": [
+        "인터랙션디자인",
+        "접근성",
+        "아코디언",
+        "메뉴"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "제목 텍스트 클릭",
+              "열림",
+              "true",
+              "제목 버튼"
+            ],
+            [
+              "기호 클릭",
+              "닫힘",
+              "false",
+              "제목 버튼"
+            ],
+            [
+              "Enter",
+              "열림",
+              "true",
+              "제목 버튼"
+            ],
+            [
+              "열린 상태에서 Tab",
+              "열림 유지",
+              "true",
+              "패널 안 링크"
+            ],
+            [
+              "Shift+Tab",
+              "열림 유지",
+              "true",
+              "제목 버튼"
+            ],
+            [
+              "Space",
+              "닫힘",
+              "false",
+              "제목 버튼"
+            ]
+          ],
+          "type": "table",
+          "title": "한 패널 예제에서 확인한 클릭·키보드 동작",
+          "caption": "ARCH.B 직접 확인 · 2026.11.02 · Windows / Chrome 156 / DPR 1. 단일 예제의 상태 전환 기록이며 사용자 연구나 스크린 리더 시험은 아니다.",
+          "columns": [
+            "조작",
+            "패널",
+            "aria-expanded",
+            "조작 뒤 초점"
+          ],
+          "afterSection": 4
+        },
+        {
+          "code": "<h3><button type=\"button\" id=\"menu-button\"\n  aria-expanded=\"false\" aria-controls=\"panel\">\n  <span>세부 메뉴</span><span id=\"menu-icon\" aria-hidden=\"true\">+</span>\n</button></h3>\n<div id=\"panel\" hidden><a href=\"#destination\">세부 페이지 링크</a></div>\n<script>\nconst button = document.getElementById('menu-button');\nconst panel = document.getElementById('panel');\nbutton.addEventListener('click', () => {\n  const expanded = button.getAttribute('aria-expanded') !== 'true';\n  button.setAttribute('aria-expanded', String(expanded));\n  panel.hidden = !expanded;\n  document.getElementById('menu-icon').textContent = expanded ? '−' : '+';\n});\n</script>",
+          "type": "code",
+          "title": "직접 확인에 사용한 버튼과 패널의 핵심 코드",
+          "language": "html",
+          "afterSection": 4
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "직접 작성한 로컬 예제에서 실제 클릭 2종, Enter, Tab, Shift+Tab, Space 후 DOM 상태와 초점을 확인. browser-results.json에 기록. NN/G 원 연구와 WAI APG 대조.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "d66fd0e3-ac30-466a-9a0d-c0e3c42b48c0",
+    "slug": "news-282497830b35cf32457b",
+    "article": {
+      "url": "https://github.blog/changelog/2026-10-15-email-notifications-for-repository-push-events-have-been-retired",
+      "title": "GitHub, 저장소 push 이메일 종료…액션과 자체 발송 서비스로 전환 안내",
+      "summary": "GitHub가 10월 15일 저장소 push 이벤트의 이메일 알림을 종료했다. 수신 동의 없는 스팸 악용이 이유이며, 계속 필요한 팀은 Actions의 이벤트 필터와 자체 이메일 발송 수단을 구성해야 한다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "깃허브가 2026년 10월 15일부로 저장소 push 이벤트에 대한 이메일 알림 제공을 끝냈다. 회사는 수신자가 동의하기 전에 메일을 받을 수 있어 이 기능이 스팸 발송에 악용됐다고 설명했다. 종료 시점은 앞으로 예정된 날짜가 아니라 공지 당일이며, 기존 방식으로 발생하던 push 이메일은 더 이상 전송되지 않는다. 해당 통지를 운영 기록이나 변경 감지에 사용하던 팀은 알림 경로를 다시 구성해야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-15-email-notifications-for-repository-push-events-have-been-retired",
+              "kind": "primary",
+              "label": "깃허브의 저장소 push 이메일 종료 공지"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "대안에는 별도 이메일 발송 수단이 필요",
+          "paragraphs": [
+            "공지가 제시한 대안은 GitHub Actions에서 push를 계기로 워크플로를 실행하고, 팀이 마련한 SMTP 서버나 이메일 서비스로 메시지를 보내는 방식이다. Actions의 push 이벤트는 커밋이나 태그를 밀어 넣을 때 작업을 시작하게 해 준다. 이벤트를 선언하는 일과 메일을 배달하는 일은 서로 다른 단계다. 워크플로 파일만 추가했다고 기존 수신자 목록과 발송 설정이 자동으로 옮겨지는 것은 아니므로, 보내는 계정과 받는 사람, 본문에 넣을 변경 정보를 별도로 정해야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-15-email-notifications-for-repository-push-events-have-been-retired",
+              "kind": "primary",
+              "label": "깃허브의 저장소 push 이메일 종료 공지"
+            },
+            {
+              "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows",
+              "kind": "primary",
+              "label": "깃허브 액션 실행 이벤트 문서"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "자동화가 만든 push에는 별도 실행 규칙",
+          "paragraphs": [
+            "기존 자동화가 코드를 갱신하는 저장소에서는 토큰의 동작도 영향을 준다. GitHub 문서는 워크플로가 저장소의 GITHUB_TOKEN으로 코드를 push한 경우, push를 대상으로 하는 다른 워크플로가 새로 실행되지 않는다고 설명한다. 재귀 실행을 막는 규칙이므로 사람이 수행한 push에서 메일이 왔다고 자동화의 push에서도 동일하게 동작한다고 단정할 수 없다. 모든 이벤트에 예외가 없다는 의미는 아니며, 문서는 수동·외부 디스패치와 일부 pull request 이벤트에 별도 규칙을 둔다."
+          ],
+          "references": [
+            {
+              "url": "https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow",
+              "kind": "primary",
+              "label": "깃허브 워크플로 실행 조건 문서"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "알림 누락을 실행 조건과 배달로 나눠 본다",
+          "paragraphs": [
+            "예를 들어 main 브랜치의 docs 변경만 메일로 받으려면 브랜치 필터와 경로 필터를 함께 둔다. 이때 main의 문서 수정, main의 소스 수정, 다른 브랜치의 문서 수정은 같은 push여도 선택 결과가 다르다. 아래 표는 공식 규칙에 이 가정을 대입한 예상 결과다. 실제 저장소에 워크플로를 설치하거나 이메일을 발송한 시험은 아니다. 코드도 이벤트 선택 부분만 보여주며 SMTP 연결과 수신자 관리는 포함하지 않는다.",
+            "조사는 먼저 Actions 실행 기록에서 시작할 수 있다. 실행이 없으면 브랜치·경로·토큰 종류를 대조하고, 실행은 성공했는데 메일이 없으면 발송 단계와 서비스의 배달 기록을 확인한다. 저장소의 GITHUB_TOKEN으로 만든 push가 새 push 워크플로를 일으키지 않는 경우에는 SMTP를 고쳐도 실행 누락이 해결되지 않는다. 반대로 워크플로가 시작됐다는 사실만으로 수신함 도착이 증명되지도 않는다.",
+            "알림의 범위를 정할 때는 실패를 보이는 방법도 같이 정해야 한다. 발송 단계가 실패해도 전체 작업을 성공으로 감추면 수신자가 조용한 상태를 변경이 없었다고 오해할 수 있다. 새 통지 경로를 완료했다고 판단하려면 의도한 이벤트의 실행, 발송 서비스의 접수, 수신과 해제 절차를 차례로 점검하는 편이 좋다. 수신 동의와 자격증명 관리는 이 기능 전환에서도 운영자가 맡는 책임이다."
+          ],
+          "references": [
+            {
+              "url": "https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow",
+              "kind": "primary",
+              "label": "깃허브 워크플로 실행 조건 공식 문서"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "push 이메일의 종료는 필요한 알림을 자체 이벤트 처리와 발송 수단으로 옮기게 한다. 기존 수신자를 그대로 복제하기보다 동의와 이벤트 범위를 확인해 새 알림 경로를 구성할 필요가 있다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-15-email-notifications-for-repository-push-events-have-been-retired",
+              "kind": "primary",
+              "label": "깃허브의 저장소 push 이메일 종료 공지"
+            },
+            {
+              "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows",
+              "kind": "primary",
+              "label": "깃허브 액션 실행 이벤트 문서"
+            },
+            {
+              "url": "https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow",
+              "kind": "primary",
+              "label": "깃허브 워크플로 실행 조건 문서"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "공식 이벤트 문서에 따르면 branches 또는 branches-ignore로 대상 브랜치를 제한하고, tags나 tags-ignore로 태그를 선택할 수 있다. paths와 paths-ignore는 변경 파일에 따른 실행 조건을 다룬다. 특히 branches와 paths를 함께 지정하면 두 조건을 모두 충족해야 실행된다. 예를 들어 릴리스 브랜치의 특정 파일 변경만 통지하려는 팀에는 유용하지만, 브랜치 조건만 보고 모든 push가 전달된다고 예상하면 누락처럼 보일 수 있다. 어떤 변경을 알릴지 먼저 정하고 실제 실행 기록과 대조하는 편이 적절하다. 이메일에 변경 파일 목록까지 넣으려면 데이터의 범위도 살펴야 한다. 문서는 Actions에 전달되는 push 페이로드의 commit 객체에 added·removed·modified 속성이 없다고 명시하며, 완전한 커밋 객체는 API로 조회하도록 안내한다. 이벤트 본문에 필요한 정보가 모두 들어 있다고 가정하면 알림이 불완전해질 수 있다.",
+            "SMTP 비밀번호나 발송 서비스의 토큰이 필요한 구성이라면 저장소에 평문으로 넣는 대신 Actions secrets에서 필요한 작업으로 전달할 수 있다. 공식 문서는 secrets 컨텍스트를 통해 입력값이나 환경변수로 제공하는 방법을 안내한다. 조직 수준의 비밀값에는 저장소별 접근 정책도 설정할 수 있다. 이는 발송 자격증명을 관리하는 수단이며 수신 동의를 대신하지 않는다. 종료 사유가 동의 없는 전송이었던 만큼, 팀이 직접 운영하는 대안에서도 수신자가 왜 통지를 받는지와 해제 경로를 명확히 정하는 것이 합리적이다.",
+            "이번 변화의 범위는 저장소 push 이메일 기능이다. 같은 이름의 push 이벤트를 처리하는 Actions 문서는 계속 실행 조건을 제공하므로, 이메일 종료를 push 기반 자동화 전체의 폐지로 이해할 근거는 없다. 전환 작업의 완료 기준도 파일 작성 여부보다 실제 필요한 변경에서 작업이 시작되고, 발송 서비스가 메시지를 처리하며, 의도한 수신자가 받는지까지 이어져야 한다. 발송 실패를 확인할 책임과 수신자 관리, 필요한 변경 정보 조회까지 직접 연결해야 한다는 점이 기존 알림 기능과의 실질적인 운영 차이다."
+          ],
+          "references": [
+            {
+              "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows",
+              "kind": "primary",
+              "label": "깃허브 액션 실행 이벤트 문서"
+            },
+            {
+              "url": "https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets",
+              "kind": "primary",
+              "label": "깃허브 액션 비밀값 사용 문서"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-15-email-notifications-for-repository-push-events-have-been-retired",
+              "kind": "primary",
+              "label": "깃허브의 저장소 push 이메일 종료 공지"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "저장소 push 이벤트의 기존 이메일 알림은 2026년 10월 15일부터 전송되지 않는다.",
+        "GitHub Actions의 push 트리거와 자체 SMTP 서버 또는 이메일 서비스가 대안이다.",
+        "브랜치·경로 필터를 함께 쓰면 두 조건을 모두 충족해야 하며, GITHUB_TOKEN이 만든 push에는 재귀 실행 방지 규칙이 적용된다."
+      ],
+      "tags": [
+        "GitHub",
+        "GitHub Actions",
+        "개발 운영"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "사람이 main에 docs/guide.md 변경 push",
+              "조건 충족 예상",
+              "브랜치와 경로 모두 일치"
+            ],
+            [
+              "사람이 main에 src/app.ts만 변경 push",
+              "조건 미충족 예상",
+              "문서 경로와 불일치"
+            ],
+            [
+              "사람이 feature에 docs/guide.md 변경 push",
+              "조건 미충족 예상",
+              "main 브랜치와 불일치"
+            ],
+            [
+              "저장소 GITHUB_TOKEN으로 같은 문서 push",
+              "새 push 실행 없음",
+              "재귀 실행 방지 규칙 적용"
+            ]
+          ],
+          "type": "table",
+          "title": "main + docs/** 필터를 가정한 실행 조건 비교",
+          "caption": "공식 문서 규칙을 적용한 예측표. 직접 워크플로를 실행하거나 메일을 발송한 결과는 아니다.",
+          "columns": [
+            "이벤트",
+            "선택 여부",
+            "이유"
+          ],
+          "afterSection": 3
+        },
+        {
+          "code": "# 워크플로의 이벤트 선택 부분만 발췌한 예시\n# 별도 jobs 및 동의한 수신자 대상 발송 단계가 필요하다.\non:\n  push:\n    branches: [main]\n    paths:\n      - 'docs/**'",
+          "type": "code",
+          "title": "메일 발송과 분리해서 검토할 이벤트 선택 부분",
+          "language": "text",
+          "afterSection": 3
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "종료 공지 및 Actions push·토큰 실행 문서를 대조하고 main+docs 가정에 규칙을 적용한 예측표를 작성. 이메일 또는 CI 실제 발송·실행은 하지 않음.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "e9e65a00-0d58-4b4e-a94c-154639cffce1",
+    "slug": "news-f5fa4d6131d7db33f0c9",
+    "article": {
+      "url": "https://github.blog/changelog/2026-10-14-github-actions-workflow-lockfiles-in-public-preview",
+      "title": "GitHub Actions 잠금 파일 공개 프리뷰…태그 유지하며 검토한 커밋 실행",
+      "summary": "GitHub Actions 잠금 파일은 태그 이름을 유지하면서 액션과 전이 액션의 실행 커밋을 고정한다. 재사용 워크플로 호출 자체는 별도 SHA 고정이 필요하다. 태그·직접 SHA·잠금 파일을 비교해 무엇이 고정되고 무엇이 남는지 정리했다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "깃허브는 10월 14일 Actions 워크플로 의존성 잠금 파일을 공개 프리뷰로 제공한다고 발표했다. 대상 플랜은 Free, Team, Enterprise Cloud와 데이터 상주형 Enterprise Cloud다. 태그나 브랜치는 검토 후 다른 커밋을 가리킬 수 있는데, 잠금 파일은 이름을 워크플로에 유지하면서 실제 실행을 검토한 커밋에 연결한다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-14-github-actions-workflow-lockfiles-in-public-preview",
+              "kind": "primary",
+              "label": "깃허브 액션 워크플로 잠금 파일 공개 프리뷰"
+            },
+            {
+              "url": "https://docs.github.com/en/actions/concepts/security/workflow-dependency-lockfiles",
+              "kind": "primary",
+              "label": "깃허브 워크플로 의존성 잠금 범위"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "읽기 쉬운 참조와 실제 실행 코드를 나눈다",
+          "paragraphs": [
+            "이 기능은 이동 가능한 참조로 인해 저장소 변경 없이 실행 코드가 달라지는 위험을 줄이려는 수단이다. 그러나 잠근 커밋 자체가 안전한지는 별도 검토 대상이다. 잠금 성공을 악성 코드나 취약점이 없다는 보안 검사 결과로 받아들여서는 안 된다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-14-github-actions-workflow-lockfiles-in-public-preview",
+              "kind": "primary",
+              "label": "깃허브 액션 워크플로 잠금 파일 공개 프리뷰"
+            },
+            {
+              "url": "https://docs.github.com/en/actions/concepts/security/workflow-dependency-lockfiles",
+              "kind": "primary",
+              "label": "깃허브 워크플로 의존성 잠금 범위"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "잠금 파일의 두 부분과 저장소 정체성",
+          "paragraphs": [
+            "공식 개념 문서에서 파일 위치는 .github/workflows/actions.lock이다. GitHub CLI 확장인 gh actions-lock가 생성하며 손으로 편집하지 않도록 안내한다. workflows 영역은 적용한 워크플로별 의존성을, dependencies 영역은 참조가 해석된 커밋과 관련 정보를 담는다.",
+            "각 의존성에는 원래 ref와 실행할 commit, 원본 저장소의 숫자 owner_id·repo_id가 기록된다. 런타임은 이름 뒤에 있는 저장소가 잠갔던 대상인지도 확인한다. 사람이 읽는 이름과 실제 자원의 식별자를 함께 보존한다는 점이 단순히 파일에 해시 문자열을 적는 것과 다른 관리상의 의미다."
+          ],
+          "references": [
+            {
+              "url": "https://docs.github.com/en/actions/concepts/security/workflow-dependency-lockfiles",
+              "kind": "primary",
+              "label": "깃허브 워크플로 의존성 잠금 범위"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "점진 적용하되 범위 안에서는 빠짐없이 기록",
+          "paragraphs": [
+            "워크플로는 하나씩 또는 한꺼번에 잠금 대상으로 편입할 수 있다. 편입된 워크플로는 쓰는 액션 의존성이 모두 잠금 파일에 있어야 하고 기록된 커밋을 실행한다. 그 커밋은 원본 저장소에서 잠금 파일에 기록한 해당 브랜치나 태그로 도달 가능해야 한다. 원본 저장소의 아무 브랜치에 존재하기만 하면 된다는 뜻은 아니다. 관리자는 Require lockfile 정책으로 적용을 요구할 수 있다.",
+            "잠금 범위에는 전이 액션도 들어가지만 jobs.<job_id>.uses 형식의 재사용 워크플로 호출 자체는 들어가지 않는다. 호출은 전체 커밋 SHA로 따로 고정하고, 그 워크플로 내부의 액션은 정의 저장소의 잠금 파일로 관리한다. 호출하는 저장소의 파일 하나로 외부 워크플로의 호출 코드와 내부 액션을 모두 잠갔다고 가정하면 안 된다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-14-github-actions-workflow-lockfiles-in-public-preview",
+              "kind": "primary",
+              "label": "깃허브 액션 워크플로 잠금 파일 공개 프리뷰"
+            },
+            {
+              "url": "https://docs.github.com/en/actions/concepts/security/workflow-dependency-lockfiles",
+              "kind": "primary",
+              "label": "깃허브 워크플로 의존성 잠금 범위"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "태그·직접 SHA·잠금 파일이 바꾸는 범위",
+          "paragraphs": [
+            "동일한 deploy 액션을 가리킨다고 가정해 세 방식을 비교했다. @v3 같은 태그는 사람이 버전을 읽기 쉽지만 태그가 다른 커밋으로 옮겨가면 다음 실행 코드도 바뀔 수 있다. 전체 커밋 SHA를 직접 쓰면 그 액션의 참조는 고정되지만 액션 내부가 부르는 다른 액션까지 자동으로 고정되는 것은 아니다. 잠금 파일은 온보딩한 워크플로의 액션 의존성을 전이 관계까지 기록하고, 저장소 숫자 식별자도 대조한다. 표는 공식 문서의 적용 범위를 비교한 것이며 새 CI 실행을 측정한 결과는 아니다.",
+            "가령 주 액션은 고정했지만 재사용 배포 워크플로는 @main으로 부르는 저장소라면, 잠금 파일이 생겼다는 이유만으로 배포 절차 전체가 고정되지는 않는다. 호출 줄의 전체 SHA와 외부 저장소 안의 잠금 관리 여부를 따로 확인해야 한다. 또한 같은 액션 커밋도 runner 이미지나 입력값, secrets가 바뀌면 다른 결과를 낼 수 있다. 여기서 재현성은 우선 액션 코드의 해석에 관한 것이며 빌드의 모든 입력이 같다는 보증은 아니다."
+          ],
+          "references": [
+            {
+              "url": "https://docs.github.com/en/actions/concepts/security/workflow-dependency-lockfiles",
+              "kind": "primary",
+              "label": "깃허브 워크플로 잠금 범위 공식 문서"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "Actions 잠금 파일은 읽기 쉬운 태그와 검토한 커밋의 실행을 연결한다. 공개 프리뷰의 지원 범위와 재사용 워크플로 내부의 별도 의존성, 업데이트·검토 절차를 함께 관리해야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://github.blog/changelog/2026-10-14-github-actions-workflow-lockfiles-in-public-preview",
+              "kind": "primary",
+              "label": "깃허브 액션 워크플로 잠금 파일 공개 프리뷰"
+            },
+            {
+              "url": "https://docs.github.com/en/actions/concepts/security/workflow-dependency-lockfiles",
+              "kind": "primary",
+              "label": "깃허브 워크플로 의존성 잠금 범위"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "공식 확장의 일반 실행은 이미 잠긴 참조를 무조건 최신 커밋으로 올리지 않는다. 새로 추가된 참조를 해석하고 잠긴 커밋의 유효성을 확인하는 방식이다. 이동하는 브랜치나 일부 버전 태그를 최신 상태로 다시 해석하려면 재잠금 절차를 사용한다. 고정된 상태를 유지하는 작업과 의도적으로 갱신하는 작업을 구분한 설계다.",
+            "파일을 바꾸지 않는 verify는 CI에서 최신성·유효성을 점검하는 데 쓸 수 있다. 반면 verify-local은 네트워크 없이 참조마다 항목이 있는지만 확인하며 항목의 신뢰성을 검사하지 않는다. 두 검사의 이름이 비슷해도 공급망 검증 범위가 같지는 않다. Dependabot은 이미 잠금 대상인 워크플로의 액션 버전을 올릴 때 같은 PR에서 관련 잠금 항목도 다시 생성한다고 공지는 설명한다. 버전 이름만 바꾸고 실행 커밋을 옛 상태로 남기는 불일치를 줄이는 흐름이다. 검토자는 워크플로 변경과 잠금 파일 변경을 함께 살필 수 있다.",
+            "잠금은 업데이트를 불필요하게 만드는 기능이 아니다. 고정된 커밋에 문제가 발견되면 검토한 대안으로 바꾸어야 하고, 새 액션을 추가하면 그 의존성도 포함해야 한다. 반대로 자동으로 최신 버전을 따라가는 일이 안전하다고 가정할 수도 없다. 재현 가능한 실행과 의도적인 갱신을 각각 운영 절차로 두는 것이 중요하다.",
+            "공식 확장 저장소는 아직 1.0 이전의 공개 프리뷰이며 파일 형식·플래그·동작이 바뀔 수 있다고 밝힌다. GitHub Enterprise Server는 지원하지 않는다. 클라우드 플랜에 제공된다는 발표를 자체 서버 전체에 확대 적용할 수 없는 이유다. 도입팀은 대표 워크플로부터 생성 결과를 검토하고 적용 저장소와 재사용 워크플로의 소유 범위를 확인할 수 있다. 그 뒤 CI 검증과 정책 강제를 넓히면 변경 영향을 파악하기 쉽다. 잠금 파일이 제공하는 것은 실행 대상의 고정과 감사 가능한 변경 기록이며, 의존 코드의 안전성 판단을 대체하는 것은 아니다."
+          ],
+          "references": [
+            {
+              "url": "https://github.com/github/gh-actions-lock",
+              "kind": "primary",
+              "label": "깃허브 공식 액션 잠금 확장 구현·검증 조건"
+            },
+            {
+              "url": "https://github.blog/changelog/2026-10-14-github-actions-workflow-lockfiles-in-public-preview",
+              "kind": "primary",
+              "label": "깃허브 액션 워크플로 잠금 파일 공개 프리뷰"
+            },
+            {
+              "url": "https://docs.github.com/en/actions/concepts/security/workflow-dependency-lockfiles",
+              "kind": "primary",
+              "label": "깃허브 워크플로 의존성 잠금 범위"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "태그·브랜치 참조를 유지하면서 잠금 파일의 커밋으로 실행한다.",
+        "의존 커밋과 원본 저장소의 숫자 식별자를 함께 기록한다.",
+        "재사용 워크플로 내부는 이를 정의한 저장소의 잠금 파일이 담당한다.",
+        "공개 프리뷰 확장은 Enterprise Server를 지원하지 않고 형식·동작이 바뀔 수 있다."
+      ],
+      "tags": [
+        "GitHub",
+        "Actions",
+        "공급망보안",
+        "개발도구"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "태그·브랜치",
+              "실행 시점에 참조가 가리키는 커밋",
+              "참조 이동을 감시하고 실행 코드 검토"
+            ],
+            [
+              "전체 SHA 직접 참조",
+              "그 참조의 액션 또는 재사용 워크플로 코드",
+              "내부 의존성의 참조도 별도 확인"
+            ],
+            [
+              "actions.lock",
+              "온보딩한 워크플로의 액션 및 전이 액션",
+              "재사용 워크플로 호출 고정, runner·입력·secrets 관리"
+            ]
+          ],
+          "type": "table",
+          "title": "같은 액션을 참조하는 세 방식의 차이",
+          "caption": "2026.11.02 공식 개념 문서 대조. 잠금 기능은 코드 안전성 검사나 모든 빌드 입력의 고정을 대신하지 않는다.",
+          "columns": [
+            "방식",
+            "고정하는 대상",
+            "별도로 남는 일"
+          ],
+          "afterSection": 4
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "GitHub 공지, 개념 문서, 공식 gh-actions-lock 저장소를 직접 대조. 재사용 워크플로 호출 제외와 ref 도달 가능 조건을 수정. CI나 확장 CLI를 실제 실행한 결과로 쓰지 않음.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "f3f25c55-79d7-4980-82b6-ff205383daad",
+    "slug": "news-a0ffe9da4bda811e6fa6",
+    "article": {
+      "url": "https://toss.tech/article/dw-airflow-migration",
+      "title": "토스 DW 파이프라인, 실행은 도메인별로 나누고 정의는 코드 곁에 모았다",
+      "summary": "토스가 DW 실행 환경을 도메인별로 나누고 의존 관계와 지표 정의를 코드 곁에 모았다. 병행 이관의 결과와 dbt의 참조·컴파일, 문서 구성의 역할을 구분해 살핀다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "토스 데이터 웨어하우스 팀이 중앙 DW Airflow를 도메인별 실행 환경으로 옮기는 과정을 10월 16일 공개했다. 400개가 넘는 DAG가 한 클러스터에 모이면서 배치가 서로 밀리고, 테이블의 생성 경로를 파악하려면 여러 시스템을 찾아야 했다는 설명이다. 새 환경은 도메인별 클러스터로 실행을 분리하되 코드는 한 저장소에서 관리한다. 팀이 밝힌 9월 말 상태는 클러스터 5개와 dbt 모델 983개다. 다만 기존 파이프라인을 큰 규모로 옮긴 곳은 광고 도메인이며, 전사 이관을 마쳤다는 의미는 아니다."
+          ],
+          "references": [
+            {
+              "url": "https://toss.tech/article/dw-airflow-migration",
+              "kind": "primary",
+              "label": "토스의 DW Airflow 이관 기록"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "교체보다 병행 검증을 먼저 했다",
+          "paragraphs": [
+            "팀은 기존 배치를 유지하면서 새 파이프라인으로 같은 데이터를 다시 만들고 결과를 비교했다. 한 마트는 약 3주간 검증했고, 기존 시스템의 의존 관계 정리가 덜 끝났을 때는 전환을 되돌린 뒤 다시 적용했다. Spark와 Jenkins 작업을 모두 새 방식으로 바꾸려 하지는 않았다. 비즈니스 SQL은 dbt 모델로 정리하고, 다른 작업이 만드는 테이블은 별도 선언과 래퍼로 연결했다. 이 기록은 기술을 일괄 교체하는 일정표보다, 계속 운영할 경로와 전환할 경로를 함께 설계한 사례에 가깝다."
+          ],
+          "references": [
+            {
+              "url": "https://toss.tech/article/dw-airflow-migration",
+              "kind": "primary",
+              "label": "토스의 DW Airflow 이관 기록"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "문맥을 코드와 함께 수정하는 구조",
+          "paragraphs": [
+            "설명·품질 규칙과 적재 주체를 모델 옆 설정 파일에 모은 점도 중요하다. 토스는 광고 도메인의 DAG 코드가 2,794줄에서 100줄로, 파이프라인 시간이 4시간에서 2시간 30분으로 줄었다고 밝혔다. 이는 해당 이관의 결과이며 다른 조직의 예상 절감률은 아니다. 팀이 문서 구성에 참고한 디아택시스는 학습용 튜토리얼, 작업 절차, 기술 참조, 배경 설명을 서로 다른 요구로 나눈다. 같은 저장소에 넣는 것에 더해 독자가 어떤 질문을 해결하려는지에 따라 정보의 역할을 구분하는 방식이다."
+          ],
+          "references": [
+            {
+              "url": "https://toss.tech/article/dw-airflow-migration",
+              "kind": "primary",
+              "label": "토스의 DW Airflow 이관 기록"
+            },
+            {
+              "url": "https://diataxis.fr/",
+              "kind": "primary",
+              "label": "디아택시스 기술 문서 구성 원칙"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "참조 관계와 실행 검증은 다른 층이다",
+          "paragraphs": [
+            "dbt 공식 문서에서 ref 함수는 다른 모델의 데이터베이스 객체를 가리키는 동시에 모델 사이의 의존 관계를 만든다. 배포 환경에 맞는 이름으로 치환되고 실행 순서를 정할 그래프에 반영된다. 테이블 이름을 문자열로 적는 방식과 차이가 나는 지점이다. 따라서 모델의 입력을 바꾸는 수정은 SQL 표현만 바꾸는 일이 아니라 의존 구조를 바꾸는 일이기도 하다. 이름이 비슷한 모델이 여러 프로젝트에 있다면 어느 프로젝트의 모델인지 명시하는 참조도 지원한다.",
+            "컴파일 명령은 모델과 검사 등의 SQL을 실행할 수 있는 형태로 만드는 단계다. 이것만으로 데이터가 기대한 의미와 수량을 가졌는지 확인되지는 않는다. 팀이 적용할 때는 참조가 해석되는지, 실제 데이터베이스의 컬럼과 맞는지, 산출물이 업무 기준을 충족하는지를 별개의 검사로 두는 편이 좋다. 자동으로 만든 의존 관계가 정확해지려면 입력을 올바르게 선언해야 하며, 선언되지 않은 외부 작업의 완료 여부를 알아서 추론한다고 기대해서도 안 된다. 이 구분이 코드에 문맥을 모으는 구조를 실제 운영의 신뢰로 연결한다."
+          ],
+          "references": [
+            {
+              "url": "https://docs.getdbt.com/reference/dbt-jinja-functions/ref",
+              "kind": "primary",
+              "label": "디비티 모델 참조 공식 문서"
+            },
+            {
+              "url": "https://docs.getdbt.com/reference/commands/compile",
+              "kind": "primary",
+              "label": "디비티 컴파일 명령 공식 문서"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "코드 감소와 실행 시간 감소의 분모를 나누면",
+          "paragraphs": [
+            "토스가 공개한 전후 수치로 감소율을 다시 계산했다. DAG 코드 2,794줄에서 100줄은 2,694줄 감소이므로 기존 줄 수 대비 약 96.4%다. 파이프라인 4시간에서 2시간 30분은 240분에서 150분, 90분 감소이므로 약 37.5%다. 두 비율은 같은 분모를 쓰지 않는다. 코드가 96.4% 줄었다고 실행이 그만큼 빨라졌다는 뜻도 아니며, 이 숫자만으로 어떤 변경이 시간 감소를 일으켰는지 분리할 수도 없다.",
+            "줄 수는 이 사례에서 수동으로 관리하던 DAG 정의가 얼마나 바뀌었는지를 보여주고, 시간은 해당 배치의 소요를 보여준다. 생성되는 task나 외부 시스템까지 사라졌다고 해석하면 안 된다. 아래 표는 발표 수치에 산식을 적용한 결과이며 토스 인프라를 직접 실행하거나 동일한 작업량으로 벤치마크한 결과가 아니다. 다른 도메인의 예상 효과를 산정할 때는 작업 수·데이터량·의존 대상이 같은 조건인지부터 봐야 한다.",
+            "실행 시간 외에 전환의 안전성을 판단할 기록도 있다. 같은 데이터로 구·신 경로를 약 3주간 병행 비교했고, 외부 의존 sensor 준비 때문에 전환을 되돌린 과정이 남아 있다. 컴파일이 통과하는지, 컬럼이 맞는지, 업무 산출물이 일치하는지, 후속 작업이 올바른 완료 신호를 받는지는 각각 다른 확인이다. 새 정의가 짧다는 사실보다 그 정의가 연결한 실제 운영 경로를 추적할 수 있는지가 이관의 완료 기준에 가깝다."
+          ],
+          "references": [
+            {
+              "url": "https://toss.tech/article/dw-airflow-migration",
+              "kind": "primary",
+              "label": "토스 DW 이관 운영 기록"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "DW 파이프라인은 실행을 도메인별로 나누면서 정의와 의존 관계를 코드 가까이에 모았다. 병행 이관의 기록과 참조·컴파일·문서화가 각각 맡은 역할을 구분해 운영 구조를 읽을 수 있다."
+          ],
+          "references": [
+            {
+              "url": "https://toss.tech/article/dw-airflow-migration",
+              "kind": "primary",
+              "label": "토스의 DW Airflow 이관 기록"
+            },
+            {
+              "url": "https://diataxis.fr/",
+              "kind": "primary",
+              "label": "디아택시스 기술 문서 구성 원칙"
+            },
+            {
+              "url": "https://docs.getdbt.com/reference/dbt-jinja-functions/ref",
+              "kind": "primary",
+              "label": "디비티 모델 참조 공식 문서"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "저장 위치가 하나라도 같은 지표를 여러 곳에서 다르게 설명하면 문맥은 여전히 어긋난다. 이 사례를 참고하는 팀이라면 테이블을 누가 만들고 어떤 입력에 의존하는지, 지표의 계산식과 예외를 누가 승인하는지까지 코드 변경과 연결할 필요가 있다. 디아택시스의 구분을 적용하면 운영 중 필요한 재실행 절차와 설계 배경 설명을 섞지 않을 수 있다. 에이전트가 읽기 좋다는 이유로 문서량부터 늘리기보다 실제 질문에서 누락되는 정보와 정의의 책임자를 찾아 보완하는 접근이 타당하다. 문서가 계산 실행과 검토를 대체하는 것도 아니다.",
+            "토스는 팀 해커톤의 데이터 챗봇 평가도 공개했지만 질문 수가 적고 실행마다 결과가 흔들릴 수 있다고 명시했다. 문맥을 보완한 실험과 시맨틱 레이어로 계산을 실행한 실험은 문항 구성이 달라 직접 비교할 수 없다는 설명도 붙였다. 이 제한을 남겨야 모델 개선과 기반 데이터 정리의 효과를 혼동하지 않는다. 도입을 검토한다면 같은 질문과 같은 데이터 시점으로 검색 정확도, 계산 결과, 실패 시 추적 가능성을 각각 비교하는 편이 좋다. 배치 시간만 줄었는지와 운영자가 결과의 생성 이유를 설명할 수 있는지는 서로 다른 품질 항목이다."
+          ],
+          "references": [
+            {
+              "url": "https://toss.tech/article/dw-airflow-migration",
+              "kind": "primary",
+              "label": "토스의 DW Airflow 이관 기록"
+            },
+            {
+              "url": "https://diataxis.fr/",
+              "kind": "primary",
+              "label": "디아택시스 기술 문서 구성 원칙"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "9월 말 새 환경은 클러스터 5개이며 대규모 이관은 광고 도메인 중심이다.",
+        "기존 배치를 유지하며 새 결과를 나란히 검증했다.",
+        "문맥의 정리와 계산의 검증은 다른 역할이다."
+      ],
+      "tags": [
+        "데이터엔지니어링",
+        "Airflow",
+        "dbt",
+        "개발문서"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "DAG 코드 줄 수",
+              "2,794 → 100줄",
+              "(2,794 − 100) / 2,794 ≈ 96.4%",
+              "관리하는 DAG 코드 규모"
+            ],
+            [
+              "파이프라인 소요",
+              "240 → 150분",
+              "(240 − 150) / 240 = 37.5%",
+              "발표 사례의 경과 시간"
+            ]
+          ],
+          "type": "table",
+          "title": "발표한 전후 값으로 다시 계산한 두 감소율",
+          "caption": "입력값은 토스가 공개한 사례 수치, 비율은 ARCH.B 재계산. 코드 감소율과 속도 개선을 동일한 지표로 취급하지 않았다.",
+          "columns": [
+            "항목",
+            "이전 → 이후",
+            "직접 계산",
+            "해석 범위"
+          ],
+          "afterSection": 4
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "토스 이관 기록, dbt ref/compile, Diataxis 대조. 공개된 줄 수·시간만 재계산. 토스 내부 환경에 접근하거나 새로운 벤치마크를 수행하지 않음.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "f54177fa-3c99-4ab5-81c4-ffde8f9acb91",
+    "slug": "news-fb81b442df2fad5ba5d2",
+    "article": {
+      "url": "https://toss.tech/article/package-management-2",
+      "title": "토스뱅크의 공용 패키지 기준, 호환성·모듈 경계·원본 추적을 함께 다루다",
+      "summary": "토스뱅크가 공용 패키지의 문법 변환과 최종 번들링을 사용 서비스에 맡기고, 배포 단계에서는 모듈 구조와 원본 추적을 보존하는 기준을 공개했다. ESM 선택에 이은 후속 글로, 타입 검사·런타임 API·프레임워크 경계가 서로 다른 호환성 문제라는 점을 보여준다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "토스뱅크가 10월 16일 공용 패키지의 기준을 안정성, 예측 가능성, 디버깅 편의성으로 정리한 글을 공개했다. 앞선 ESM 단일 배포 선택에 이어 패키지를 만드는 팀과 실제 서비스를 만드는 팀의 책임을 나눈 후속 기록이다. 사용하는 서비스는 각자 지원하는 브라우저와 런타임이 다르다. 패키지 팀은 이런 환경에서 동작 가능한 코드를 전달하고, 최종 서비스는 자신의 대상에 맞게 문법 변환과 번들링을 수행한다. 특정 빌드 도구의 속도 순위보다 어떤 변환을 어느 단계에서 맡길지 정한 사례라는 점에서 읽을 만하다."
+          ],
+          "references": [
+            {
+              "url": "https://toss.tech/article/package-management-2",
+              "kind": "primary",
+              "label": "토스뱅크 패키지 기준 후속 글"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "타입 검사와 폴리필로 끝나지 않는 호환성",
+          "paragraphs": [
+            "원문은 문법을 변환하는 도구의 지원 범위와 실행 중 사용하는 API의 제공 여부를 구분한다. 낮은 타깃을 지정해도 변환기가 구현하지 못한 문법까지 처리되는 것은 아니며, 폴리필도 모든 엔진 기능을 완전히 재현할 수는 없다는 설명이다. 호스트가 나중에 트랜스파일한다고 해서 패키지 개발 시점의 검토가 사라지는 것도 아니다. 토스뱅크는 API 지원 범위를 타입 검사에 반영하면서 실제 API와 문법 변환 가능성도 별도로 확인한다고 밝혔다. 코드가 타입 검사를 통과했다는 사실과 대상 기기에서 실행 가능하다는 판단이 서로 다른 이유다."
+          ],
+          "references": [
+            {
+              "url": "https://toss.tech/article/package-management-2",
+              "kind": "primary",
+              "label": "토스뱅크 패키지 기준 후속 글"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "모듈 경계는 프레임워크 동작의 일부",
+          "paragraphs": [
+            "패키지를 미리 하나로 묶으면 파일별 지시문의 적용 범위가 바뀔 수 있다. 토스뱅크는 클라이언트 컴포넌트와 일반 유틸리티가 섞이는 예를 들어 원래 파일 구조를 보존하기로 했다고 설명한다. 넥스트 공식 문서에서 use client는 서버와 클라이언트의 경계를 선언하는 지시문이다. 단순한 주석처럼 다루면 안 된다. 원본의 분리된 구조를 유지하는 선택은 최종 앱이 이 경계를 해석할 정보를 남긴다. 다만 모든 패키지가 번들링을 피해야 한다는 보편 규칙을 제시한 것은 아니며 해당 팀이 사용 환경에 맞춰 선택한 배포 기준이다."
+          ],
+          "references": [
+            {
+              "url": "https://toss.tech/article/package-management-2",
+              "kind": "primary",
+              "label": "토스뱅크 패키지 기준 후속 글"
+            },
+            {
+              "url": "https://nextjs.org/docs/app/api-reference/directives/use-client",
+              "kind": "primary",
+              "label": "넥스트 클라이언트 경계 공식 문서"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "원본 구현으로 돌아가는 선언 소스맵",
+          "paragraphs": [
+            "디버깅을 위해서는 선언 소스맵과 원본 파일을 설치된 패키지에 포함한다. 타입스크립트 공식 설명에 따르면 declarationMap은 타입 선언 파일의 위치를 원래 타입스크립트 소스의 위치에 연결한다. 편집기의 정의 이동에서 선언만 보는 대신 실제 구현을 찾도록 돕는 기능이다. 이것은 런타임 예외를 원본 코드에 매핑하는 일반적인 자바스크립트 소스맵과 목적이 다르다. 패키지를 쓰는 개발자가 옵션을 생략했을 때의 동작이나 오류 조건을 살필 수 있게 한다는 점에서 문서와 타입을 보완하지만, 설명 문서를 전부 대신하지는 않는다."
+          ],
+          "references": [
+            {
+              "url": "https://toss.tech/article/package-management-2",
+              "kind": "primary",
+              "label": "토스뱅크 패키지 기준 후속 글"
+            },
+            {
+              "url": "https://www.typescriptlang.org/tsconfig/declarationMap.html",
+              "kind": "primary",
+              "label": "타입스크립트 선언 소스맵 공식 설명"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ES5 출력에도 Proxy 생성자는 그대로 남았다",
+          "paragraphs": [
+            "호환성의 층위를 구분하기 위해 TypeScript 5.9.3으로 작은 파일을 직접 컴파일했다. target은 ES5, module은 ESNext, lib는 ES2015로 두고 optional chaining을 쓰는 함수와 new Proxy({}, {})를 함께 넣었다. 타입 검사와 출력은 성공했다. 출력에서는 user?.name이 null·undefined를 확인하는 조건식으로 변했지만 new Proxy({}, {})는 그대로 남았다. 낮은 target이 문법을 변환하는 일과 실행 환경에 API를 만들어 주는 일이 다르다는 것을 한 출력에서 확인할 수 있었다.",
+            "같은 실행에서 declaration과 declarationMap을 켜자 .d.ts와 .d.ts.map이 생성됐고 맵의 sources는 ../src/example.ts를 가리켰다. 그 경로에 실제 원본 파일이 존재하는 것도 확인했다. 파일 맨 앞의 use client 지시문은 단일 파일 출력에 유지됐다. 다만 이것은 컴파일 결과의 확인이다. Next.js가 번들 전체를 어떻게 나누는지, 소비 앱의 IDE가 배포 패키지에서 정의 이동을 완성하는지, 구형 브라우저가 실행하는지는 이번 시험에 포함하지 않았다.",
+            "이 결과를 배포 검토에 옮기면 질문이 구체화된다. 문법이 변환됐는지, 필요한 런타임 API가 있는지, 프레임워크 지시문이 어느 모듈에 적용되는지, 선언 맵이 설치된 원본까지 이어지는지를 따로 확인할 수 있다. 타입 검사 성공을 실행 가능성 전체로 읽으면 Proxy 같은 잔여 의존성을 놓칠 수 있고, 소스맵 생성만 확인하면 실제 배포에서 빠진 원본 파일을 놓칠 수 있다."
+          ],
+          "references": [
+            {
+              "url": "https://www.typescriptlang.org/tsconfig/target.html",
+              "kind": "primary",
+              "label": "타입스크립트 target의 문법 변환 범위"
+            },
+            {
+              "url": "https://www.typescriptlang.org/tsconfig/declarationMap.html",
+              "kind": "primary",
+              "label": "타입스크립트 선언 소스맵 공식 설명"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "공용 패키지의 기준은 배포할 모듈과 사용 서비스가 맡을 변환·번들링을 나눴다. 타입 검사와 실제 런타임 API, 프레임워크 경계를 구분해 호환성을 확인하고 원본을 추적할 정보를 보존해야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://toss.tech/article/package-management-2",
+              "kind": "primary",
+              "label": "토스뱅크 패키지 기준 후속 글"
+            },
+            {
+              "url": "https://nextjs.org/docs/app/api-reference/directives/use-client",
+              "kind": "primary",
+              "label": "넥스트 클라이언트 경계 공식 문서"
+            },
+            {
+              "url": "https://www.typescriptlang.org/tsconfig/declarationMap.html",
+              "kind": "primary",
+              "label": "타입스크립트 선언 소스맵 공식 설명"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "이 접근을 참고하는 팀은 저장소 안의 소스 테스트와 실제로 배포한 패키지를 사용하는 검사를 구분할 필요가 있다. 압축된 배포물을 작은 서비스에 설치하고 서버·클라이언트 각각에서 필요한 함수를 불러온 뒤 지원 대상 환경에서 실행해 볼 수 있다. 이 과정에서 원래 포함돼야 할 파일이 빠지거나 지시문이 달라지는 문제를 발견할 수 있다. 패키지 내부에서 잘 동작하는 코드라도 사용하는 앱의 해석 조건이 다르면 결과가 달라질 수 있기 때문이다. 검사의 중심을 빌드 성공 여부에서 사용처의 동작으로 옮기는 제안이다.",
+            "선언 소스맵이 원본을 가리키더라도 배포 파일에 그 경로의 소스가 없으면 기대한 탐색이 이어지지 않는다. 버전을 올릴 때 선언과 원본이 같은 변경을 담았는지, 배포에 필요 없는 내부 파일이 섞이지 않았는지 함께 확인하는 편이 좋다. 최종 변환을 호스트에 맡기는 구조에서는 패키지와 앱의 지원 범위를 공동 문서로 남길 필요도 있다. 누가 어떤 문법을 처리하고 누가 API를 제공하는지 기록하면 문제가 발생했을 때 책임을 추측하는 시간을 줄일 수 있다. 이 사례의 장점은 도구를 하나 더 추가한 데보다 이런 판단 기준을 명시했다는 데 있다.",
+            "소비 앱에서 정의 이동을 직접 실행해 보는 작은 확인도 배포 검토에 넣을 수 있다. 파일이 존재하는지와 편집기가 그 파일까지 연결하는지는 다른 문제이기 때문이다."
+          ],
+          "references": [
+            {
+              "url": "https://toss.tech/article/package-management-2",
+              "kind": "primary",
+              "label": "토스뱅크 패키지 기준 후속 글"
+            },
+            {
+              "url": "https://www.typescriptlang.org/tsconfig/declarationMap.html",
+              "kind": "primary",
+              "label": "타입스크립트 선언 소스맵 공식 설명"
+            },
+            {
+              "url": "https://nextjs.org/docs/app/api-reference/directives/use-client",
+              "kind": "primary",
+              "label": "넥스트 클라이언트 경계 공식 문서"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "문법 변환 가능성과 실행 환경의 API 제공 여부를 나눠 확인한다.",
+        "원본 모듈 구조를 보존해 파일 단위 클라이언트 지시문의 의미를 유지한다.",
+        "선언 소스맵과 원본 파일을 함께 배포해 구현을 추적하도록 한다."
+      ],
+      "tags": [
+        "패키지개발",
+        "TypeScript",
+        "프론트엔드",
+        "모듈"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "optional chaining",
+              "ES5 조건식으로 변환",
+              "대상 엔진에서 앱 전체 실행"
+            ],
+            [
+              "Proxy 생성자",
+              "new Proxy 호출 유지",
+              "대상 엔진의 API 지원"
+            ],
+            [
+              "use client",
+              "단일 파일 선두에 유지",
+              "소비 앱 번들에서의 모듈 경계"
+            ],
+            [
+              "선언 소스맵",
+              "../src/example.ts 연결 및 파일 존재",
+              "배포 패키지 포함 여부와 소비 IDE 탐색"
+            ]
+          ],
+          "type": "table",
+          "title": "직접 만든 파일의 컴파일 결과와 남은 확인",
+          "caption": "ARCH.B 직접 확인 · 2026.11.02 · TypeScript 5.9.3 / ES5 target / ES2015 lib / ESNext module. 토스뱅크 내부 패키지의 실행 시험은 아니다.",
+          "columns": [
+            "항목",
+            "관측 결과",
+            "추가로 확인할 범위"
+          ],
+          "afterSection": 4
+        },
+        {
+          "code": "'use client';\nexport function readName(user) {\n  return user === null || user === void 0 ? void 0 : user.name;\n}\nexport var proxy = new Proxy({}, {});",
+          "type": "code",
+          "title": "같은 ES5 출력에서 달라진 문법과 남은 API",
+          "language": "javascript",
+          "afterSection": 4
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "package-check.mjs로 TypeScript 5.9.3 직접 컴파일. 문법 하향, Proxy 잔존, 단일 파일 지시문, 선언 맵과 원본 존재를 assert. Next 번들·구형 엔진·소비 IDE 실행은 하지 않음.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "f90b7d1a-82ea-4c7d-9fab-984b4b540b91",
+    "slug": "news-68e2ee5d21f7dc1bf4b7",
+    "article": {
+      "url": "https://blog.cloudflare.com/obsessive-inference-optimization/",
+      "title": "AI 리뷰 비용 68% 절감의 안쪽, 클라우드플레어가 반복 입력을 고친 방법",
+      "summary": "클라우드플레어가 AI 코드 리뷰 비용을 줄인 운영 기록을 공개했다. 여러 리뷰어가 나눠 맡은 작업에서 입력의 순서와 도구의 책임, 종료 지점을 살펴본다. 캐시 공식 문서와 함께 읽으면 반복 처리를 없애는 최적화와 판단을 덜 하게 만드는 절약을 구분할 수 있다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "클라우드플레어가 10월 19일 AI 코드 리뷰 비용을 줄인 운영 기록을 공개했다. 가장 비용이 높았던 두 주의 평균 2.43달러와 비교해 현재 리뷰 한 번의 평균 비용은 0.77달러로, 약 68% 낮아졌다는 자체 집계다. 코드 품질 리뷰어에는 높은 추론 설정을 적용한 상태의 수치다."
+          ],
+          "references": [
+            {
+              "url": "https://blog.cloudflare.com/obsessive-inference-optimization/",
+              "kind": "primary",
+              "label": "클라우드플레어의 추론 비용 최적화 기록"
+            },
+            {
+              "url": "https://blog.cloudflare.com/ai-code-review/",
+              "kind": "primary",
+              "label": "클라우드플레어의 기존 코드 리뷰 구조 소개"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "리뷰 한 번의 가격을 다시 계산하다",
+          "paragraphs": [
+            "이 도구의 배경은 4월에 공개한 기존 설계에서 읽을 수 있다. OpenCode 위에 보안·성능·코드 품질 등 역할별 리뷰어를 두고, 조정자가 지적의 중복과 심각도를 정리해 하나의 리뷰로 게시하는 구조다. 여러 역할이 나눠 읽는 만큼 공통 규칙과 역할별 도구, 마지막 게시를 누가 맡는지가 비용을 이해하는 출발점이 된다. 이번 수치에는 모델과 추론 설정 변경도 포함된다."
+          ],
+          "references": [
+            {
+              "url": "https://blog.cloudflare.com/obsessive-inference-optimization/",
+              "kind": "primary",
+              "label": "클라우드플레어의 추론 비용 최적화 기록"
+            },
+            {
+              "url": "https://blog.cloudflare.com/ai-code-review/",
+              "kind": "primary",
+              "label": "클라우드플레어의 기존 코드 리뷰 구조 소개"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "캐시할 부분 앞에 변하는 정보가 들어가 있었다",
+          "paragraphs": [
+            "문제 중 하나는 입력의 배치였다. 여러 저장소가 공유하는 지침 뒤에 저장소별 정보가 붙고, 캐시 경계는 그 묶음 끝에만 있었다. 회사는 공통 부분과 달라지는 부분을 나눠 공통 지침 끝에 경계를 두는 방식으로 수정했다고 밝혔다. 같은 지침을 반복해서 보내더라도 어디까지를 같은 입력으로 인식시키느냐가 달랐던 것이다.",
+            "앤스로픽의 공식 문서는 캐시 경계까지의 내용이 정확히 일치해야 재사용할 수 있다고 설명한다. 캐시는 비슷한 질문의 답을 꺼내는 검색 기능이 아니다. 앞부분의 텍스트나 도구 정의가 바뀌면 같은 접두부로 재사용하기 어렵다. 늘 고정된 지침을 앞에, 시각이나 작업별 정보를 뒤에 두는 배치가 중요한 이유다. 클로드 API의 캐시는 워크스페이스별로 격리된다."
+          ],
+          "references": [
+            {
+              "url": "https://blog.cloudflare.com/obsessive-inference-optimization/",
+              "kind": "primary",
+              "label": "클라우드플레어의 추론 비용 최적화 기록"
+            },
+            {
+              "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+              "kind": "primary",
+              "label": "앤스로픽의 프롬프트 캐싱 공식 문서"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "짧게 답하게 하기 전에 없앤 호출",
+          "paragraphs": [
+            "클라우드플레어는 최종 댓글을 게시할 권한이 없는 하위 리뷰어에게서 게시 도구를 제거했다. 사용할 수 없는 도구를 시도한 뒤 복구하려고 모델을 다시 부르는 흐름을 막기 위해서였다. 댓글을 올린 다음 내용 없는 요약을 한 번 더 생성하던 호출도 없앴다.",
+            "이 두 수정은 답변의 문장을 조금 줄이는 것과 성격이 다르다. 역할에 맞지 않는 선택지를 주고, 종료된 작업을 다시 이어 가게 하던 연결 자체를 정리한 것이다. 도구를 많이 달아 준 구성이 항상 풍부한 작업 경험을 뜻하지는 않는다. 실행할 수 없는 선택지가 남아 있다면 사용자는 보지 못하는 오류 처리와 비용이 뒤에서 이어질 수 있다."
+          ],
+          "references": [
+            {
+              "url": "https://blog.cloudflare.com/obsessive-inference-optimization/",
+              "kind": "primary",
+              "label": "클라우드플레어의 추론 비용 최적화 기록"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "중요한 지적이 줄어든 리뷰어도 있었다",
+          "paragraphs": [
+            "비용 기록에는 품질의 불리한 결과도 포함됐다. 성능 리뷰어를 중간 추론 설정으로 돌렸을 때 중요한 지적이 약 64% 줄었다는 평가다. 회사는 서로 다른 공급사의 AI 평가자들이 발견 사항을 분류하는 방식도 사용했다. 이 평가는 품질의 단서를 주지만 사람이 확인한 결함 전체를 그대로 세는 정답표는 아니다.",
+            "같은 시스템 안에서도 리뷰 역할에 따라 절감의 대가가 달랐다는 점이 핵심이다. 하나의 평균 가격만 보면 호출 구조의 낭비를 줄인 효과와 더 적게 검토해 생긴 절약이 함께 보일 수 있다. 그래서 이 사례의 68%를 모든 코드 리뷰 도구에 그대로 옮길 수 있는 목표치로 삼기보다, 어느 역할에서 무엇을 덜 하게 됐는지와 함께 읽어야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://blog.cloudflare.com/obsessive-inference-optimization/",
+              "kind": "primary",
+              "label": "클라우드플레어의 추론 비용 최적화 기록"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "같은 0.77달러도 기준점을 바꾸면 다르게 보인다",
+          "paragraphs": [
+            "68%라는 수치를 읽을 때는 비교를 시작한 가격을 함께 봐야 한다. 가장 비쌌던 두 주의 평균 2.43달러에서 0.77달러로 내려간 비율은 (2.43−0.77)÷2.43으로 약 68.3%다. 반면 글에 나온 4월 평균 1.19달러를 기준으로 같은 현재 값과 비교하면 약 35.3%다. 어느 쪽도 산술적으로 틀리지 않지만 서로 다른 기간을 답한다. 비용이 한동안 상승했다가 낮아진 흐름을 최고 비용 기준의 비율 하나로 압축하지 않아야 한다.",
+            "처리 시간도 별도로 계산할 수 있다. 발표한 중앙값 4분 9초와 1분 32초를 초로 바꾸면 249초와 92초다. 감소율은 약 63.1%다. 평균 비용과 중앙 처리 시간은 집계 방식부터 다르므로 이를 묶어 단일 효율 점수처럼 취급할 수 없다. 아래 표의 비율은 공개된 입력값을 재계산한 것이며, 새 리뷰를 돌려 비용이나 결함 탐지율을 측정한 결과는 아니다.",
+            "실제 도입을 검토한다면 비용의 기준 기간, 리뷰 건수, 모델·추론 설정, 역할별 지적의 품질을 함께 남기는 편이 좋다. 같은 가격 하락도 반복 입력을 줄여서 생겼는지, 더 가벼운 판단으로 옮겨서 생겼는지에 따라 다음 선택이 달라지기 때문이다. 이 기록은 절감률을 복제하라는 목표보다 비용의 분모와 검토 품질을 함께 공개하는 사례로 읽을 때 유용하다."
+          ],
+          "references": [
+            {
+              "url": "https://blog.cloudflare.com/obsessive-inference-optimization/",
+              "kind": "primary",
+              "label": "클라우드플레어 AI 리뷰 비용 운영 기록"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "AI 리뷰 비용의 개선은 입력 순서와 반복 처리, 도구의 책임과 종료 시점을 다시 정한 결과다. 검토 범위를 줄인 절약과 같은 검토를 덜 반복하게 만든 최적화를 구분해 읽어야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://blog.cloudflare.com/obsessive-inference-optimization/",
+              "kind": "primary",
+              "label": "클라우드플레어의 추론 비용 최적화 기록"
+            },
+            {
+              "url": "https://blog.cloudflare.com/ai-code-review/",
+              "kind": "primary",
+              "label": "클라우드플레어의 기존 코드 리뷰 구조 소개"
+            },
+            {
+              "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+              "kind": "primary",
+              "label": "앤스로픽의 프롬프트 캐싱 공식 문서"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "제작 팀이 이 기록에서 가져갈 질문은 ‘프롬프트를 얼마나 짧게 쓸까’보다 구체적이다. 같은 설명을 매번 다시 읽히는 비용, 불필요한 도구 시도의 비용, 실제 결함을 찾기 위해 쓰는 계산을 서로 나눠 볼 수 있는가다. 앞의 두 가지를 줄이는 설계와 마지막 판단의 깊이를 낮추는 선택은 결과를 읽는 방법도 달라진다.",
+            "공식 문서에 따르면 프롬프트 캐싱은 출력을 바꾸는 기능이 아니라 입력을 재사용하는 방식이다. 따라서 같은 맥락을 유지하면서 중복 처리를 줄일 영역부터 찾는 접근이 가능하다. 예를 들어 공유 검토 규칙이 작업마다 변하는 경로 앞에 안정적으로 놓이는지 살피는 일은, 규칙 자체를 삭제하는 일과 다르다. 이 사례가 보여주는 최적화의 단위는 문장 길이 하나가 아니라 입력의 순서, 도구의 책임, 작업의 종료 지점이다."
+          ],
+          "references": [
+            {
+              "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+              "kind": "primary",
+              "label": "앤스로픽의 프롬프트 캐싱 공식 문서"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "고정 지침과 작업별 입력을 나눠, 재사용할 문맥의 경계를 설계한다.",
+        "비용과 함께 어떤 역할의 검토가 줄었는지를 읽는 것이 운영 평가의 핵심이다."
+      ],
+      "tags": [
+        "개발 도구",
+        "AI 코드 리뷰",
+        "프롬프트 캐싱",
+        "클라우드플레어"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "평균 리뷰 비용 · 최고 비용 두 주 기준",
+              "$2.43 → $0.77",
+              "약 68.3% 감소"
+            ],
+            [
+              "평균 리뷰 비용 · 4월 기준",
+              "$1.19 → $0.77",
+              "약 35.3% 감소"
+            ],
+            [
+              "리뷰 시간 중앙값",
+              "249초 → 92초",
+              "약 63.1% 감소"
+            ]
+          ],
+          "type": "table",
+          "title": "비교 기준에 따라 달라지는 감소율",
+          "caption": "금액·시간은 Cloudflare 자체 발표, 감소율은 ARCH.B 재계산. 기간과 평균·중앙값의 차이를 유지했다. 독립적인 성능 벤치마크는 아니다.",
+          "columns": [
+            "지표",
+            "기준 → 현재",
+            "재계산 결과"
+          ],
+          "afterSection": 5
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "Cloudflare 발표값과 Anthropic 캐시 문서를 대조. 2.43/1.19→0.77 및 249→92 산식 재계산. 새 AI 리뷰·외부 AI API 호출 없음.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "0a1f8194-4f42-45b4-bf05-d0e5b1ce25c8",
+    "slug": "news-9353bcb319e58d4b2115",
+    "article": {
+      "url": "https://design-milk.com/jae-ko-paper-sculptures-striated/",
+      "title": "재 코 ‘스트라이에이티드’, 종이 가공과 설치로 완성하는 조형",
+      "summary": "재 코의 스트라이에이티드 전시는 종이를 감고 압축해 층과 부피로 만드는 작업을 조명한다. 현재 출품 안내와 작가의 대형 설치 비평을 나누어 비교하고, 먹의 흡수 과정과 강도·환경 성능에 대한 추정을 구별했다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "벨기에 앤트워프 22뮤즈에서 재 코의 개인전 스트라이에이티드가 2026년 10월 22일부터 11월 28일까지 열린다. 이번 전시는 작가의 수십 년 작업 전체를 총망라하기보다, 재료의 변형과 자연에 대한 관심이 조형 언어를 형성하던 특정 시기의 작품을 조명한다. 종이를 말고 압축하고 묶고 깎는 과정이 겹친 표면과 부피를 만드는 핵심이다.",
+            "종이는 얇은 평면으로 출발하지만 같은 재료를 여러 겹 모으면 가장자리들이 선이 되고 쌓인 두께가 덩어리가 된다. 전시를 읽는 출발점은 무엇을 닮았는지보다 어떤 공정이 그 표면을 만들었는지에 있다. 다만 이번 출품작의 설명과 작가의 다른 시기 대형 설치를 같은 범위로 다뤄서는 안 된다. 전시 안내와 작가 소개, 이전 작업의 비평을 나누어 대조했다."
+          ],
+          "references": [
+            {
+              "url": "https://design-milk.com/jae-ko-paper-sculptures-striated/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://22muse.com/exhibitions/15/overview/",
+              "kind": "primary",
+              "label": "22뮤즈 스트라이에이티드 전시 안내"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "종이를 감은 뒤 색을 흡수시키는 과정",
+          "paragraphs": [
+            "작가는 사무용 종이와 재활용 종이, 계산기용 종이 띠 등을 풀고 다시 형태를 잡아 잉크에 담근다. 작가 소개에는 건조에 수개월이 걸리는 과정도 설명돼 있다. 스트라이에이티드 전시 안내는 재활용 종이에 먹을 스며들게 한 조각과 말기·압축·묶기·깎기의 공정을 구체적으로 짚는다. 얇은 띠가 반복해서 겹치면서 표면의 나선과 층이 드러나는 방식이다.",
+            "이때 종이의 선은 완성된 덩어리 위에 나중에 그린 무늬와 다르다. 재료가 겹쳐진 가장자리와 형태를 다룬 흔적이 표면에 남는다. 먹의 검정은 종이의 층과 함께 보이고, 일부 작업의 색은 다른 잉크와 처리 과정을 통해 달라진다. 작품마다 재료와 제작 방식을 따로 살펴야 하며 모든 종이 작업이 같은 색과 표면을 가진다고 일반화할 수 없다.",
+            "검토한 소개에는 흡수와 건조의 과정이 있지만 먹이 구조적 결속력을 얼마나 높이는지 수치로 비교한 시험은 없다. 따라서 색을 흡수시킨다는 제작 사실을 접착력이나 강도가 검증됐다는 설명으로 바꾸지 않았다. 조각이 단단한 인상을 준다는 감상과 실제 물성 시험도 서로 다른 근거를 요구한다."
+          ],
+          "references": [
+            {
+              "url": "https://22muse.com/exhibitions/15/overview/",
+              "kind": "primary",
+              "label": "22뮤즈 스트라이에이티드 전시 안내"
+            },
+            {
+              "url": "https://22muse.com/artists/39-jae-ko/overview/",
+              "kind": "primary",
+              "label": "22뮤즈의 재 코 작가·제작 과정 소개"
+            },
+            {
+              "url": "https://www.jae-ko.com/essays",
+              "kind": "primary",
+              "label": "작가 사이트에 수록된 조각·설치 비평"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "벽을 따라 쌓는 작업과 개별 조각의 차이",
+          "paragraphs": [
+            "작가 사이트의 포스 오브 네이처 비평은 크라프트지와 산업용 종이 롤을 대량으로 다루는 다른 방식의 작업을 설명한다. 아래쪽 묶음은 조밀하게 두고 위로 갈수록 느슨하게 쌓아 접힘과 틈이 생긴다. 이때 가장자리는 개별 조각의 표면을 이루는 선을 넘어 벽을 따라 이어지는 공간의 선이 된다.",
+            "먹을 머금은 개별 덩어리는 하나의 윤곽 안에서 조밀한 층을 살피게 한다. 반면 벽을 따라 넓게 쌓는 작업은 묶음 사이의 밀도와 빈 공간, 전체 범위를 함께 보게 한다. 동일하게 종이를 사용해도 성형한 단위의 크기와 배치가 다르므로 감상의 거리와 시선의 이동도 달리 해석할 수 있다. 이는 공개된 제작 설명을 대조한 조형적 해석이다.",
+            "이 비교에 사용한 대형 설치 설명을 이번 개인전의 출품 목록으로 읽어서는 안 된다. 전시 안내는 특정 시기의 작품을 선별했다고 밝히며, 포스 오브 네이처 전체가 현재 전시장에 설치됐다는 확인을 제공하지 않는다. 아래 표는 작업 방식의 차이를 정리한 것이며 22뮤즈 현장을 방문해 배치를 관찰한 기록은 아니다."
+          ],
+          "references": [
+            {
+              "url": "https://22muse.com/exhibitions/15/overview/",
+              "kind": "primary",
+              "label": "22뮤즈 스트라이에이티드 전시 안내"
+            },
+            {
+              "url": "https://www.jae-ko.com/essays",
+              "kind": "primary",
+              "label": "작가 사이트에 수록된 조각·설치 비평"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "같은 종이라는 말 뒤에서 확인할 항목",
+          "paragraphs": [
+            "종이를 사용하는 다른 작가와 비교할 때는 재료명보다 조립 단위를 먼저 정하면 구체적인 질문을 만들 수 있다. 한 장의 면을 접는지, 띠를 감는지, 롤을 묶어 쌓는지에 따라 가장자리가 나타나는 방식이 다르다. 색을 표면에 얹는지 재료 안으로 흡수시키는지, 완성한 덩어리를 옮기는지 현장에서 배열을 만드는지도 구분할 수 있다.",
+            "반대로 사진만으로 고정 방식이나 숨은 보강재 유무를 단정하면 안 된다. 밀도 차이를 설명한 비평이 접착제나 구조물이 전혀 없다는 보증은 아니다. 마찬가지로 재활용 종이를 사용한다는 사실은 재료의 출처를 알려주지만 제작·운송·설치·폐기까지 포함한 환경 영향을 수치로 입증하지는 않는다. 과정의 차이를 확인하는 비교와 성능을 평가하는 검증은 나누어 남겨야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://22muse.com/artists/39-jae-ko/overview/",
+              "kind": "primary",
+              "label": "22뮤즈의 재 코 작가·제작 과정 소개"
+            },
+            {
+              "url": "https://www.jae-ko.com/essays",
+              "kind": "primary",
+              "label": "작가 사이트에 수록된 조각·설치 비평"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "스트라이에이티드는 종이를 가공해 층과 부피로 만드는 작업에 초점을 둔다. 작가의 다른 대형 설치를 함께 읽으면 하나의 덩어리를 성형하는 일과 여러 묶음으로 공간의 선을 만드는 일이 구별된다. 이번 전시의 범위, 제작 공정, 구조·환경 성능의 미확인 항목을 나누면 재료의 이름보다 구체적인 차이가 남는다."
+          ],
+          "references": [
+            {
+              "url": "https://22muse.com/exhibitions/15/overview/",
+              "kind": "primary",
+              "label": "22뮤즈 스트라이에이티드 전시 안내"
+            },
+            {
+              "url": "https://22muse.com/artists/39-jae-ko/overview/",
+              "kind": "primary",
+              "label": "22뮤즈의 재 코 작가·제작 과정 소개"
+            },
+            {
+              "url": "https://www.jae-ko.com/essays",
+              "kind": "primary",
+              "label": "작가 사이트에 수록된 조각·설치 비평"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "종이라는 익숙한 재료의 반전은 단지 큰 크기를 얻었다는 데서 끝나지 않는다. 무엇을 한 단위로 묶고 어느 가장자리를 드러냈는지가 형태를 만든다. 재 코의 작업을 참고하는 관점도 자연을 닮았다는 수사보다 종이의 층과 밀도, 색이 만들어지는 순서에 둘 수 있다. 그 순서를 알면 서로 비슷해 보이는 곡선도 다른 제작 행위의 결과로 읽힌다.",
+            "전시 소개의 역할은 작가의 모든 성취를 한 공간에 모았다고 확대하는 일이 아니다. 현재 선별된 작품이 어떤 시기의 어떤 변화를 보여주는지 설명하고, 다른 작업과의 비교는 그 바깥의 문맥으로 구별하는 편이 정확하다. 재료의 가공을 따라가는 설명과 출품 범위의 구분이 함께 있을 때 독자는 실제 전시에 기대할 것과 작가 전체 작업에서 더 찾아볼 것을 나눌 수 있다."
+          ],
+          "references": [
+            {
+              "url": "https://22muse.com/exhibitions/15/overview/",
+              "kind": "primary",
+              "label": "22뮤즈 스트라이에이티드 전시 안내"
+            },
+            {
+              "url": "https://www.jae-ko.com/essays",
+              "kind": "primary",
+              "label": "작가 사이트에 수록된 조각·설치 비평"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "이번 전시는 특정 시기의 선별된 작품을 다루며 작가의 모든 대형 설치를 포함한다고 확인되지 않았다.",
+        "개별 덩어리의 성형과 산업용 종이 롤의 축적은 같은 재료를 다르게 조직하는 작업이다.",
+        "잉크 흡수·건조의 제작 설명을 강도 개선이나 환경 성능의 정량적 입증으로 바꾸지 않았다."
+      ],
+      "tags": [
+        "재코",
+        "종이조각",
+        "재료",
+        "스트라이에이티드"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "스트라이에이티드 전시의 조각 설명",
+              "재활용 종이·먹, 말기·압축·묶기·깎기",
+              "작가의 모든 설치가 이 전시에 나왔다는 단정"
+            ],
+            [
+              "포스 오브 네이처 비평",
+              "산업용 롤, 아래는 조밀하고 위는 느슨한 축적",
+              "고정재·보강재가 전혀 없다는 단정"
+            ],
+            [
+              "재료·건조 과정",
+              "잉크 흡수와 시간에 따른 건조",
+              "정량적인 강도 개선·환경 성능의 입증"
+            ]
+          ],
+          "type": "table",
+          "title": "출품 안내와 다른 작업의 비평을 나누어 비교하기",
+          "caption": "ARCH.B 공개 자료 대조 · 2026.11.02. 현장 방문, 출품 전수 확인, 재료 물성 시험은 수행하지 않았다.",
+          "columns": [
+            "비교 대상",
+            "자료에 명시된 과정",
+            "확대를 피할 해석"
+          ],
+          "afterSection": 2
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "22Muse 전시·작가 소개와 작가 사이트의 비평 직접 대조. 전시 출품과 전체 작업 범위의 혼동, 먹의 결속력 및 고정재 부재 단정을 수정. 현장·재료 시험 없음.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "1e01a940-d918-47d9-a99c-664d110f3c76",
+    "slug": "news-fd89251b4b93f481a130",
+    "article": {
+      "url": "https://design-milk.com/wyoming-mountain-home-embraces-landscape/",
+      "title": "CLB 아키텍츠, 산비탈을 감싼 부메랑 주택에 안뜰과 계곡 조망을 나누다",
+      "summary": "CLB 아키텍츠가 와이오밍 산비탈에 부메랑 형태의 주택을 설계했다. 꺾인 평면으로 중앙 안뜰과 먼 계곡을 나누고, 목재 바닥·천장과 굽이치는 주방 섬을 배치해 넓은 풍경 사이에 생활의 기준을 만들었다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "산비탈에 집을 놓을 때에는 조망을 여는 방향과 땅에 닿는 높이를 함께 다뤄야 한다. 미국 와이오밍에 자리한 CLB 아키텍츠의 부메랑 주택은 이 두 조건을 꺾인 평면과 두 층의 구성으로 풀었다. 계곡을 향해 열린 바깥 면과 중앙의 안뜰, 경사를 따라 드러나는 아래층이 하나의 집 안에 들어간다.",
+            "이 집을 살펴볼 때에는 부메랑을 닮은 외형 다음의 구성이 중요하다. 같은 건물이 진입하는 방향과 계곡 쪽에서 어떻게 달리 보이는지, 넓은 풍경 사이에 생활 공간이 어떤 크기로 놓였는지를 따라가면 형태와 배치의 관계가 더 분명해진다. 건축의 큰 윤곽과 실내의 작은 대상을 함께 살펴볼 수 있는 사례다."
+          ],
+          "references": [
+            {
+              "url": "https://design-milk.com/wyoming-mountain-home-embraces-landscape/",
+              "kind": "reporting",
+              "label": "디자인밀크의 부메랑 주택 소개와 설계자 인터뷰"
+            },
+            {
+              "url": "https://clbarchitects.com/projects/boomerang/",
+              "kind": "primary",
+              "label": "CLB 아키텍츠의 부메랑 프로젝트 설계 설명"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "한 층으로 도착해 두 층으로 펼쳐지는 집",
+          "paragraphs": [
+            "주택은 접근하는 방향에서 낮은 한 층의 건물처럼 보인다. 문턱을 지나면 계곡 쪽으로 내려가는 두 층이 드러난다. 주된 생활층은 콘크리트 기단 위에 놓고 일부를 지형 위로 돌출시켜, 땅이 낮아지는 방향에서 건물의 다른 높이가 보이도록 했다. 진입할 때 마주한 외형이 집 전체의 규모를 한 번에 드러내지는 않는 구성이다.",
+            "평면은 언덕을 따라 꺾이는 선을 바탕으로 만들었다. 꺾인 부분 안쪽에는 중앙 안뜰을 남기고, 바깥쪽에는 계곡과 먼 산을 향한 면을 열었다. 거실의 넓은 조망과 집 가운데에 생긴 가까운 외부 공간이 한 평면에서 만난다. 창밖을 보는 일도 어느 쪽에 서 있는지에 따라 서로 다른 거리의 풍경을 마주하는 일이 된다.",
+            "이 때문에 위에서 본 모양과 경사지에 놓인 단면을 함께 읽을 필요가 있다. 평면의 굽힘은 안뜰의 위치를 정하고, 층의 높이 차는 계곡 쪽에 다른 생활층을 드러낸다. 부메랑이라는 이름은 이 중 첫 번째 관계를 압축해 보여준다. 여기에 진입 높이와 아래층의 배치를 함께 놓으면, 형태가 실제 공간을 나누는 방식까지 살펴볼 수 있다."
+          ],
+          "references": [
+            {
+              "url": "https://design-milk.com/wyoming-mountain-home-embraces-landscape/",
+              "kind": "reporting",
+              "label": "디자인밀크의 부메랑 주택 소개와 설계자 인터뷰"
+            },
+            {
+              "url": "https://clbarchitects.com/projects/boomerang/",
+              "kind": "primary",
+              "label": "CLB 아키텍츠의 부메랑 프로젝트 설계 설명"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "안뜰과 계곡 사이에 나뉜 생활 공간",
+          "paragraphs": [
+            "주된 생활층에는 주방과 식사 공간을 가족 활동의 중심으로 놓았다. 아래층에는 손님용 공간과 인피니티풀, 체육 공간을 배치했다. 수영장은 수평선과 이어지는 방향으로 놓였다. 거실의 조망, 식사와 조리, 손님이 머무는 자리와 운동하는 자리가 두 층 안에서 각기 다른 역할을 맡는다.",
+            "차고 옆에는 스키실을 두고 매달린 형태의 벽난로와 붙박이 좌석을 마련했다. 집의 중심에 놓인 주방·식사 공간과 별개로 야외 활동에 연결되는 자리를 둔 것이다. 방의 이름만 나열하면 여러 기능을 가진 큰 주택이지만, 이 공간들을 층과 진입 위치에 맞춰 보면 각각의 활동이 건물 안에서 어디에 놓였는지가 구체적으로 드러난다.",
+            "중앙의 안뜰은 이 생활 공간들 사이에 가까운 외부의 기준을 만든다. 계곡을 향한 넓은 면이 먼 산의 윤곽을 담는다면, 안쪽으로 접힌 평면은 집 가운데의 빈 공간을 향한다. 두 방향을 함께 둔 배치는 조망의 크기와 생활의 거리를 달리하는 방식으로 읽을 수 있다. 어느 방에서 무엇을 하는지와 어느 쪽을 바라보는지를 함께 살펴볼 지점이다."
+          ],
+          "references": [
+            {
+              "url": "https://design-milk.com/wyoming-mountain-home-embraces-landscape/",
+              "kind": "reporting",
+              "label": "디자인밀크의 부메랑 주택 소개와 설계자 인터뷰"
+            },
+            {
+              "url": "https://clbarchitects.com/projects/boomerang/",
+              "kind": "primary",
+              "label": "CLB 아키텍츠의 부메랑 프로젝트 설계 설명"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "목재 바탕 위에 놓은 긴 가구와 작품",
+          "paragraphs": [
+            "외부 재료는 나무 거푸집의 흔적이 남은 콘크리트와 시더, 헴록 등으로 구성했다. 실내에서도 목재·강철·콘크리트를 이어 사용하되 각 재료의 표면은 다르게 다뤘다. 콘크리트에는 거푸집의 결을 남기고 강철은 검게 마감했다. 재료를 모두 하나의 색과 질감으로 맞추기보다 서로 다른 표면이 한 공간에서 함께 드러나게 했다.",
+            "바닥과 천장에는 더글러스 전나무를 사용하고 옅은 화이트워시 처리를 했다. 밝게 처리한 목재가 실내의 위아래에서 반복되면서 어두운 강철과 거친 콘크리트 사이에 공통의 바탕을 만든다. 이 반복은 넓은 공간을 읽는 실마리로 볼 수 있다. 서로 다른 부재와 가구가 놓여 있어도 바닥과 천장에 이어진 재료를 따라 실내의 연속성을 살펴볼 수 있기 때문이다.",
+            "그 바탕 위에는 CLB가 맞춤 설계한 20피트, 약 6.1미터 길이의 주방 섬을 놓았다. 긴 조리대는 직선으로 끝나지 않고 굽이치는 윤곽을 만든다. 중앙 계단 위에는 이색성 조각을 매달아 층을 오가는 위치에도 작품을 배치했다. 건축 재료를 절제된 바탕으로 두고 가구와 미술 작업의 표현을 더하면서, 큰 창 너머의 풍경 외에도 실내에서 살펴볼 대상을 마련한 구성이다."
+          ],
+          "references": [
+            {
+              "url": "https://design-milk.com/wyoming-mountain-home-embraces-landscape/",
+              "kind": "reporting",
+              "label": "디자인밀크의 부메랑 주택 소개와 설계자 인터뷰"
+            },
+            {
+              "url": "https://clbarchitects.com/projects/boomerang/",
+              "kind": "primary",
+              "label": "CLB 아키텍츠의 부메랑 프로젝트 설계 설명"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "배치 설명과 에너지 절감 주장은 다른 근거가 필요하다",
+          "paragraphs": [
+            "설계사 프로젝트 설명과 디자인밀크의 보도를 대조하면 두 자료 모두 꺾인 평면, 중앙 안뜰, 계곡을 향한 두 층의 전개를 다룬다. 실내 바닥·천장의 화이트워시 목재와 20피트 주방 섬도 함께 확인할 수 있다. 이 일치는 프로젝트의 구성과 제작 요소를 읽는 근거가 된다. 20피트는 단위 환산으로 6.096미터이며, 약 6.1미터라는 표기는 반올림한 값이다. 가구의 길이를 아는 것과 실제로 사람이 이동할 여유를 측정하는 것은 구별해야 한다.",
+            "보도에는 공기열 히트펌프가 일반적인 냉난방보다 에너지를 30% 적게 쓴다는 설명도 있다. 그러나 이번에 대조한 짧은 설계사 설명에서는 그 비율의 기준 설비, 기후 조건, 측정 기간을 확인할 수 없었다. 두 자료가 공통으로 다루는 안뜰의 위치를 확인한 정도와 같은 수준으로 절감 성능까지 검증했다고 쓸 수는 없다. 이 수치는 보도에 소개된 주장으로 남기고 다른 주택의 예상 절감률로 사용하지 않는 편이 정확하다.",
+            "평면과 단면은 형태의 이유를 설명하고, 재료와 가구의 치수는 실내의 구성을 설명한다. 냉난방 성능에는 부하와 기후, 설비 효율을 포함한 별도의 비교 조건이 필요하다. 사례를 참고할 때 외형의 인상과 측정 성능을 한 묶음으로 평가하지 않아야 한다. 안뜰이 있다는 사실만으로 채광·프라이버시가 확보됐다고 단정하지 않는 것과 같은 구분이다. 이번 검토는 공개 자료 대조와 길이 환산이며 거주 후 성능 측정은 아니다."
+          ],
+          "references": [
+            {
+              "url": "https://design-milk.com/wyoming-mountain-home-embraces-landscape/",
+              "kind": "reporting",
+              "label": "디자인밀크의 부메랑 주택 소개와 설계자 인터뷰"
+            },
+            {
+              "url": "https://clbarchitects.com/projects/boomerang/",
+              "kind": "primary",
+              "label": "CLB 아키텍츠의 부메랑 프로젝트 설계 설명"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "지형과 맞닿는 높이, 안뜰과 계곡을 향한 방향, 반복되는 목재와 개별 가구의 윤곽은 이 집에서 서로 연결된다. 건물 전체의 꺾임이 외부 공간을 나누고 두 층이 활동을 배치하는 동안, 실내에서는 재료와 가구가 더 가까운 크기의 기준이 된다. 외형에서 시작한 이야기가 방의 자리와 손에 닿는 대상까지 이어지는 구조다."
+          ],
+          "references": [
+            {
+              "url": "https://design-milk.com/wyoming-mountain-home-embraces-landscape/",
+              "kind": "reporting",
+              "label": "디자인밀크의 부메랑 주택 소개와 설계자 인터뷰"
+            },
+            {
+              "url": "https://clbarchitects.com/projects/boomerang/",
+              "kind": "primary",
+              "label": "CLB 아키텍츠의 부메랑 프로젝트 설계 설명"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "계곡을 향해 여는 면만 있었다면 설명의 중심은 전망에 머물렀을 것이다. 이 집에는 안뜰을 감싸는 꺾임과 접근 방향에 따른 높이 차, 굽이치는 주방 섬과 계단의 작품이 함께 놓였다. 먼 산을 보는 일과 집 안의 대상을 보는 일이 다른 크기에서 이어진다고 볼 수 있다.",
+            "특히 재료를 반복하는 방식과 가구의 형태를 달리하는 방식을 함께 읽을 만하다. 바닥과 천장의 목재는 공간에 공통의 바탕을 만들고, 주방 섬과 작품은 그 안에서 개별적인 윤곽을 드러낸다. 공간을 일관되게 만드는 선택과 부분에 개성을 주는 선택이 한 구성 안에 공존한다. 이런 관계는 주택 외의 실내를 비교할 때에도 바탕과 강조점이 어디에 놓였는지 살펴보는 기준이 될 수 있다.",
+            "다른 경사지 주택에 이 형태를 적용하려면 땅의 경사와 진입 위치, 필요한 방의 관계를 먼저 검토해야 한다. 안뜰을 만든다는 선택만으로 채광이나 사생활 보호가 해결된다고 볼 수는 없고, 넓은 창과 개방된 공간이 실제 생활에서 어떤 효과를 내는지는 별도의 확인이 필요하다. 이 사례에서 가져올 만한 관점은 부메랑 모양 자체보다, 외부를 향한 열림과 안쪽의 머무는 자리를 함께 설계하는 질문이다."
+          ],
+          "references": [
+            {
+              "url": "https://design-milk.com/wyoming-mountain-home-embraces-landscape/",
+              "kind": "reporting",
+              "label": "디자인밀크의 부메랑 주택 소개와 설계자 인터뷰"
+            },
+            {
+              "url": "https://clbarchitects.com/projects/boomerang/",
+              "kind": "primary",
+              "label": "CLB 아키텍츠의 부메랑 프로젝트 설계 설명"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "산비탈을 따라 꺾인 평면이 중앙 안뜰을 만들고 계곡 쪽의 넓은 조망과 마주 놓인다.",
+        "도착 방향에서 한 층처럼 보이는 집은 계곡으로 내려가며 두 층을 드러낸다.",
+        "화이트워시한 더글러스 전나무와 맞춤 주방 섬이 큰 풍경 사이에 실내의 기준을 만든다."
+      ],
+      "tags": [
+        "주거공간",
+        "CLB아키텍츠",
+        "안뜰",
+        "목재"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "평면·단면",
+              "안뜰을 감싸는 꺾임, 접근면과 계곡면의 층 차이",
+              "거주자의 동선·시선에 대한 실제 이용 기록"
+            ],
+            [
+              "주방 섬 길이",
+              "20ft = 6.096m, 약 6.1m",
+              "주변 통로 폭·동시 사용과 접근성"
+            ],
+            [
+              "냉난방 에너지",
+              "보도의 30% 절감 설명",
+              "비교 설비·기후·사용 조건·측정 기간"
+            ]
+          ],
+          "type": "table",
+          "title": "부메랑 주택에서 확인한 구성과 남겨 둔 성능 질문",
+          "caption": "ARCH.B 문서 대조·단위 환산 · 2026.11.02. 설비 절감률을 독립적으로 측정하지 않았고 추가 사진은 사용하지 않았다.",
+          "columns": [
+            "항목",
+            "공개 자료에서 확인한 것",
+            "추가로 필요한 근거"
+          ],
+          "afterSection": 4
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "CLB 공식 프로젝트 설명과 Design Milk 보도 대조. 20ft를 6.096m로 재계산. 보도의 30% 에너지 절감 주장에 대한 비교 조건 미확인을 명시. 현장·거주 성능 시험 없음.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "6b461a9f-5fe0-4b93-9b95-63742edd93dd",
+    "slug": "news-eb4bf164653138cc7161",
+    "article": {
+      "url": "https://www.dezeen.com/2026/10/27/mvrdv-essen-central-library/",
+      "title": "MVRDV, 옛 백화점을 에센 중앙도서관으로 개조해 개관",
+      "summary": "에센 중앙도서관이 옛 백화점에 개관했다. 책장 군집과 창가 좌석의 설계 설명을 시의 개관일 이용 집계와 대조했다. 방문 1만 175명이라는 초기 관심과 장기적인 체류·소음·길 찾기 성능은 구분해 평가해야 한다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "독일 에센 중앙도서관이 2026년 10월 24일 도심의 옛 백화점 건물에서 새로 문을 열었다. 실내 설계는 MVRDV와 인클루디가 맡았으며 지역 건축사 마이어 아키텍텐과 긴밀하게 협력해 완성했다. 도서관이 들어선 전체 규모는 6개 층에 걸쳐 약 1만㎡에 이르는 방대한 면적이다.",
+            "이번 개조 작업은 서적을 보관하고 열람하는 전형적인 수장 공간에 별도의 방 몇 개를 단순히 덧붙이는 형태에 머물지 않았다. 설계팀은 도서관 직원들과 다각적인 워크숍을 진행하며 집과 일터나 학교 바깥에서 머무는 ‘제3의 장소’라는 개념을 공간 구성의 핵심 출발점으로 설정했다.",
+            "이를 통해 도서관은 시민들이 서가를 거닐며 자료를 찾는 본래의 목적뿐만 아니라, 책 읽기와 자유로운 대화, 다채로운 놀이 활동이 한 건축물 안에서 입체적으로 교차하도록 체계를 세웠다. 옛 상업 시설의 골조를 수용하면서도 시민들의 일상적 활동을 폭넓게 담아내도록 유도한 셈이다."
+          ],
+          "references": [
+            {
+              "url": "https://www.dezeen.com/2026/10/27/mvrdv-essen-central-library/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://essen.de/meldungen/pressemeldung_1607498.de.html",
+              "kind": "primary",
+              "label": "에센시의 개관 결과 안내"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "미디어 빌리지와 층별 색채를 통한 영역 구획",
+          "paragraphs": [
+            "내부 평면 계획의 중심은 책장을 여러 군집으로 묶어 입체적으로 배치한 이른바 ‘미디어 빌리지’에 있다. 둥근 책장들 사이사이에 어린이 놀이 공간, 청소년을 위한 게임 구역, 취미 활동을 즐기는 방 등 쓰임새가 판이한 여러 장소들을 유기적으로 배치해 책장 자체가 구획벽 역할을 하도록 이끌었다.",
+            "층별 색채 적용 방식 또한 층마다 배정된 활동의 성격에 맞추어 의도적으로 차등을 두었다. 아래층에는 활기를 돋우는 붉은색을 중심 색채로 적용했고, 위층으로 올라갈수록 차분하고 정돈된 색조를 단계적으로 활용해 방문객이 자신이 속한 층의 분위기와 활동 성격을 시각적으로 인지할 수 있게 했다.",
+            "이처럼 대형 가구를 통한 영역 구분과 수직적인 색채 계획은 넓은 개방형 공간 안에서 각 구역의 쓰임새를 직관적으로 전달하는 장치로 작동한다. 바닥부터 천장까지 닿는 높은 고정 벽체를 세우지 않고도 프로그램 사이의 경계를 자연스럽게 짓고 공간적 개방감을 유지하는 구성을 택했다."
+          ],
+          "references": [
+            {
+              "url": "https://essen.de/meldungen/pressemeldung_1607498.de.html",
+              "kind": "primary",
+              "label": "에센시의 개관 결과 안내"
+            },
+            {
+              "url": "https://www.mvrdv.com/news/4913/the-library-as-a-%E2%80%9Cthird-place%E2%80%9D-essen-central-library-becomes-a-cultural-hub-with-an-interior-designed-by-mvrdv-and-includi",
+              "kind": "primary",
+              "label": "MVRDV의 설계 설명"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "창가 좌석과 이동 동선의 안내 체계",
+          "paragraphs": [
+            "각 층의 외곽 창가에는 높이가 서로 다른 좌석과 작업 공간이 테두리를 따라 연속해서 배치되었다. 이 창가 좌석들은 서가를 오가는 주요 열람 동선 바깥쪽에 여유 있게 놓여 있어, 책을 빌리거나 자료를 고르러 온 사람뿐 아니라 편안히 쉬거나 대화를 나누려는 사람도 부담 없이 머물 수 있다.",
+            "건물 중앙의 아트리움과 각 층의 파란 안내 지점은 층 사이의 이동과 현재 위치를 알아보는 장치다. 책장 군집의 색과 수직 동선의 안내색이 서로 다른 역할을 맡는다. 설계팀은 이 체계로 방향 파악을 돕고자 했지만, 안내가 실제로 얼마나 잘 작동하는지는 이용자의 경로와 길 찾기 과업을 따로 살펴야 한다.",
+            "메이커스페이스와 음악 연습 공간, 조용한 학습 구역을 함께 마련했다. 활동별 자리를 나눴다는 것은 확인할 수 있지만, 이 배치만으로 모든 소리의 간섭이 해결됐다고 판정할 수는 없다. 서가로 시선을 구획하는 일과 음악 연습의 소리를 차단하는 일에는 다른 확인이 필요하다."
+          ],
+          "references": [
+            {
+              "url": "https://www.dezeen.com/2026/10/27/mvrdv-essen-central-library/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://www.mvrdv.com/news/4913/the-library-as-a-%E2%80%9Cthird-place%E2%80%9D-essen-central-library-becomes-a-cultural-hub-with-an-interior-designed-by-mvrdv-and-includi",
+              "kind": "primary",
+              "label": "MVRDV의 설계 설명"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "개관 전 설계 설명과 개관 후 하루의 기록",
+          "paragraphs": [
+            "설계 개념과 운영 결과는 자료의 작성 시점부터 다르다. MVRDV의 10월 20일 발표는 24일 개관을 예고하며 책장 군집과 창가의 연속 좌석, 파란 안내 지점이 맡을 역할을 설명한다. 에센시의 26일 발표는 실제 개관일의 이용을 집계한다. 시가 밝힌 값은 방문 1만 175명, 신규 도서관 카드 362건, 대출 자료 6,595건이다. 예정된 공간 구성이 개관 행사와 만난 첫 기록으로 읽을 수 있다.",
+            "이 세 숫자는 같은 단위를 세지 않는다. 방문, 카드 발급, 자료 대출을 서로 나누어 즉시 전환율이나 독서 참여율로 만들면 고유 이용자 여부와 중복 대출, 기존 회원을 확인하지 않은 채 분모를 섞게 된다. 개관 당일에는 공연과 워크숍도 열렸다. 하루의 방문 규모를 평일의 지속적인 체류나 혼잡 수준으로 옮겨 읽기 어려운 이유다.",
+            "다음으로 비교할 기록은 도서 대출과 무관하게 머무는 사람이 있는지, 조용한 구역과 공동 활동 구역이 시간대별로 어떻게 쓰이는지다. 창가 자리를 연속해서 만든 선택은 이를 관찰할 구체적인 위치를 제공한다. 시가 공개한 개관일 집계는 초기 관심을 보여주지만, 서로 다른 활동이 장기간 공존하는지는 반복되는 운영 자료로 확인해야 한다. 이번 검토는 두 공식 발표를 대조했으며 현장 이용자나 소음을 직접 측정하지 않았다."
+          ],
+          "references": [
+            {
+              "url": "https://www.mvrdv.com/news/4913/the-library-as-a-%E2%80%9Cthird-place%E2%80%9D-essen-central-library-becomes-a-cultural-hub-with-an-interior-designed-by-mvrdv-and-includi",
+              "kind": "primary",
+              "label": "MVRDV의 설계 설명"
+            },
+            {
+              "url": "https://essen.de/meldungen/pressemeldung_1607498.de.html",
+              "kind": "primary",
+              "label": "에센시 개관일 이용 집계와 운영 시설 안내"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "결과적으로 에센 중앙도서관은 책장을 활용한 공간 분할과 창가 좌석의 여유로운 구성을 통해 정보 검색과 일상적 체류라는 서로 다른 두 가지 요구를 하나의 흐름으로 엮어냈다. 백화점이라는 상업적 공간의 골격을 공공 도서관의 열린 거점으로 전환하는 설계 전략이 구체적인 평면 배치로 구현된 셈이다.",
+            "이처럼 자료 탐색, 놀이, 휴식, 학습이 층별로 연결된 구조는 오늘날 도심 공공건축이 시민들의 복합적인 일상을 담아내는 방식을 명확히 보여준다. 6개 층 전체에 걸쳐 마련된 여러 구역은 방문객의 선택에 따라 각기 다른 방식으로 활용될 수 있는 기반을 갖추고 있다."
+          ],
+          "references": [
+            {
+              "url": "https://www.dezeen.com/2026/10/27/mvrdv-essen-central-library/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://essen.de/meldungen/pressemeldung_1607498.de.html",
+              "kind": "primary",
+              "label": "에센시의 개관 결과 안내"
+            },
+            {
+              "url": "https://www.mvrdv.com/news/4913/the-library-as-a-%E2%80%9Cthird-place%E2%80%9D-essen-central-library-becomes-a-cultural-hub-with-an-interior-designed-by-mvrdv-and-includi",
+              "kind": "primary",
+              "label": "MVRDV의 설계 설명"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "공공시설에서 다양한 프로그램을 혼합할 때 가장 중요한 과제는 함께 묶어도 무방한 활동과 명확히 차단해야 할 활동을 선별하는 일이다. 에센 중앙도서관은 책장 군집과 창가 좌석의 배치를 활용해 동선과 머무름을 분리했으나, 놀이와 대화, 음악 연습과 조용한 학습이 공존하는 공간에서는 가구 배치뿐 아니라 소리 전달에 대한 물리적 제어가 필수적으로 뒷받침되어야 한다.",
+            "이러한 공간 배치 방식을 다른 복합 도서관이나 공공 프로젝트에 적용하려면 구역별 활동 성격에 맞춘 차음과 동선 분리가 초기 설계 단계부터 정밀하게 병행되어야 한다. 현재 공개된 배치도와 설계진의 설명 자료만으로는 현장의 실제 방음 성능이나 이용자 밀집 시의 혼잡도를 충분히 검증하기 어려우므로, 정식 개관 이후 누적되는 실제 운영 데이터와 현장 관찰 결과를 바탕으로 한 실질적인 평가가 반드시 필요하다."
+          ],
+          "references": [
+            {
+              "url": "https://www.mvrdv.com/news/4913/the-library-as-a-%E2%80%9Cthird-place%E2%80%9D-essen-central-library-becomes-a-cultural-hub-with-an-interior-designed-by-mvrdv-and-includi",
+              "kind": "primary",
+              "label": "MVRDV의 설계 설명"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "새 에센 중앙도서관은 2026년 10월 24일 개관했으며 6개 층, 약 1만㎡ 규모다.",
+        "책장을 묶은 미디어 빌리지로 구역을 구획하고 창가에는 연속된 좌석을 배치했다.",
+        "공개된 설계 의도와 실제 운영에서 드러날 소음·혼잡도 등은 구분해 살펴야 한다."
+      ],
+      "tags": [
+        "에센중앙도서관",
+        "MVRDV",
+        "공공공간",
+        "실내디자인"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "MVRDV · 10월 20일",
+              "6개 층·약 1만㎡, 책장 군집·창가 좌석의 설계",
+              "실제 길 찾기 성공률·혼잡·차음 성능"
+            ],
+            [
+              "에센시 · 10월 26일",
+              "개관일 방문 10,175명·신규 카드 362건·대출 6,595건",
+              "지속 방문율·평일 체류·회원 전환율"
+            ]
+          ],
+          "type": "table",
+          "title": "설계 의도와 개관일 집계가 답하는 다른 질문",
+          "caption": "ARCH.B 문서 대조 · 2026.11.02. 방문·카드·대출의 단위를 유지했다. 수치는 에센시 발표이며 현장 측정 결과는 아니다.",
+          "columns": [
+            "자료",
+            "확인한 내용",
+            "이 자료만으로 확인하기 어려운 것"
+          ],
+          "afterSection": 3
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "MVRDV 개관 전 발표와 에센시 개관 후 집계를 대조. 방문·카드·대출의 분모 차이, 안내·차음 효과의 미검증 범위를 명시. 현장 조사 없음.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "7521d1e9-0ab5-40f5-a033-98071a6a5774",
+    "slug": "news-00240dd6d2ef0da21e96",
+    "article": {
+      "url": "https://design-milk.com/gubi-lotus-lamp/",
+      "title": "네 겹의 유리와 강철 지지부로 되살아난 로터스 조명",
+      "summary": "구비가 카를로 나손의 로터스 조명을 재발매했다. 네 유리 갓을 각각 만들어 포개는 공정과 강철 지지부를 대조했다. 제작·조립 설명, 관리 편의의 개선 의도, 실제 빛과 내구 성능을 구분해 읽는다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "구비가 카를로 나손의 1969년 테이블 램프를 로터스라는 이름으로 다시 제작했다. 처음 모델 번호는 LT305였지만 꽃잎을 닮아 수집가들이 붙인 별칭을 정식 이름으로 채택했다. 새로 고안한 꽃 모양이라기보다 네 겹의 유리와 이를 지지하는 구조를 오늘의 생산 과정에서 다시 만드는 작업이다.",
+            "이 조명을 비교할 때는 갓의 실루엣, 유리의 표면, 조립과 유지 관리가 각각 무엇을 바꾸는지 나누어 볼 필요가 있다. 제조사의 제품 소개는 겹친 유리의 인상과 재료를 설명하고 별도의 제작 기록은 한 겹씩 만드는 순서를 보여준다. 이 두 자료를 대조하되 부드러운 빛이라는 표현을 조도나 눈부심 수치의 시험 결과로 받아들이지는 않았다."
+          ],
+          "references": [
+            {
+              "url": "https://design-milk.com/gubi-lotus-lamp/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://gubi.com/en/us/inspiration/editorials/lotus-table-lamp",
+              "kind": "primary",
+              "label": "구비의 로터스 명칭·재발매 소개"
+            },
+            {
+              "url": "https://gubi.com/en/us/inspiration/editorials/the-making-of-lotus",
+              "kind": "primary",
+              "label": "구비의 로터스 제작 단계 설명"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "네 겹은 하나의 덩어리를 깎아서 만들지 않는다",
+          "paragraphs": [
+            "네 개의 갓은 각각 입으로 불어 만든 유리다. 제조사는 녹인 유리를 취해 형태를 잡고 몰드로 최종 곡률과 지름을 맞추는 과정을 설명한다. 같은 외형의 부품 네 개를 반복하는 것이 아니라 서로 다른 크기를 제어해 완성된 요소들이 안팎으로 포개지도록 만든다. 조립한 뒤에는 유리 층이 광원을 가린다.",
+            "표면의 기포에는 풀레고소 기법이 쓰인다. 뜨거운 유리의 처리 과정에서 생기는 미세한 기포가 투과하는 빛을 흩뜨리는 구조다. 완성 전에는 비율과 두께, 투명도와 기포 분포를 검사하고 서서히 냉각하는 단계를 거친다. 구비는 두께·곡률·기포의 작은 차이를 수작업 재료의 특성으로 설명한다.",
+            "이 설명에서 구별할 점은 편차를 허용하는 부분과 맞아야 하는 부분이다. 개별 표면의 기포 위치가 조금 다른 것과 포개지는 크기가 맞지 않는 것은 같은 종류의 차이가 아니다. 네 겹이 한 구조에 조립되려면 부품의 관계는 유지돼야 한다. 제작 기록의 의미는 모든 표면을 똑같이 만들기보다 서로 맞는 관계 안에 재료의 차이를 남긴다는 데 있다."
+          ],
+          "references": [
+            {
+              "url": "https://gubi.com/en/us/inspiration/editorials/the-making-of-lotus",
+              "kind": "primary",
+              "label": "구비의 로터스 제작 단계 설명"
+            },
+            {
+              "url": "https://gubi.com/en/us/products/lotus-table-lamp",
+              "kind": "primary",
+              "label": "구비 로터스 제품 명세와 재료 설명"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "유리 표면의 재질과 베이스 마감은 다른 항목이다",
+          "paragraphs": [
+            "공식 제품 페이지는 갓을 Bubble Glass, 베이스 마감을 Black Chrome으로 표시한다. 한 제품에 함께 있는 명칭이어도 전자는 갓의 재료와 표면, 후자는 받침의 마감에 해당한다. 크롬이라는 이름이 유리 갓 전체에 같은 처리를 했다는 뜻도 아니고, 기포가 금속 지지부의 구조적 성능을 설명하는 것도 아니다.",
+            "제작 설명에서는 완성한 네 유리 요소를 강철 구조 주위에 조립한다고 밝힌다. 이 구조는 갓을 지지하고 광원을 시야에서 가리는 조합에 참여한다. 형태를 만드는 유리 공정과 무게를 받는 지지부의 조립을 분리해 읽어야, 외곽선이 유지돼도 내부 부품이나 접근 방식은 별도로 검토할 수 있다는 점이 보인다."
+          ],
+          "references": [
+            {
+              "url": "https://gubi.com/en/us/products/lotus-table-lamp",
+              "kind": "primary",
+              "label": "구비 로터스 제품 명세와 재료 설명"
+            },
+            {
+              "url": "https://gubi.com/en/us/inspiration/editorials/the-making-of-lotus",
+              "kind": "primary",
+              "label": "구비의 로터스 제작 단계 설명"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "복각의 비교는 외형과 관리 절차를 함께 봐야 한다",
+          "paragraphs": [
+            "디자인밀크 보도는 재발매 과정에서 강철 베이스를 재설계해 안정성과 분해·전구 교체의 편의를 개선하려 했다는 내용을 다룬다. 검토한 제조사 제작 설명에서는 강철 지지 구조와 네 겹 조립을 확인할 수 있다. 다만 구형과 신형의 동일 조건 시험이나 교체 작업의 소요 시간은 확인하지 못했다. 개선 의도, 조립 구조의 존재, 개선 효과의 측정은 세 단계로 구별해야 한다.",
+            "예를 들어 전구에 접근하기 위해 어떤 유리를 먼저 분리하는지, 다시 조립할 때 위치를 어떻게 확인하는지, 파손된 한 겹만 공급받을 수 있는지는 유지 관리에서 중요한 질문이다. 그러나 부품이 나뉘어 보인다는 이유만으로 개별 부품의 판매나 모든 수리 절차가 보장된다고 쓸 수는 없다. 구매나 실무 적용에는 해당 지역의 조립 안내와 교체 부품 정책을 별도로 확인해야 한다.",
+            "빛의 평가도 마찬가지다. 제조사의 부드러운 주변광 설명은 유리와 기포의 표현을 이해하는 단서이지만, 특정 책상에서 읽기에 충분한 조도가 나온다는 검증은 아니다. 사용 전구와 위치, 거리, 주변 조명에 따라 달라질 질문을 형태 설명 하나로 해결할 수 없다. 이번 글은 공개된 제작·제품 자료의 대조이며 실물의 조도나 눈부심, 넘어짐·파손을 시험한 기록은 아니다."
+          ],
+          "references": [
+            {
+              "url": "https://design-milk.com/gubi-lotus-lamp/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://gubi.com/en/us/inspiration/editorials/the-making-of-lotus",
+              "kind": "primary",
+              "label": "구비의 로터스 제작 단계 설명"
+            },
+            {
+              "url": "https://gubi.com/en/us/products/lotus-table-lamp",
+              "kind": "primary",
+              "label": "구비 로터스 제품 명세와 재료 설명"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "로터스의 재발매는 역사적 이름과 네 겹 유리의 구성을 이어간다. 각 갓을 별도로 만드는 공정, 이를 포개어 받치는 강철 구조, 재료와 마감의 다른 역할을 나누면 외형 너머의 제작 논리를 읽을 수 있다. 관리 편의와 광학·장기 내구 성능은 공개된 구조 설명에서 한 단계 더 나아가 확인할 항목으로 남는다."
+          ],
+          "references": [
+            {
+              "url": "https://gubi.com/en/us/inspiration/editorials/lotus-table-lamp",
+              "kind": "primary",
+              "label": "구비의 로터스 명칭·재발매 소개"
+            },
+            {
+              "url": "https://gubi.com/en/us/inspiration/editorials/the-making-of-lotus",
+              "kind": "primary",
+              "label": "구비의 로터스 제작 단계 설명"
+            },
+            {
+              "url": "https://gubi.com/en/us/products/lotus-table-lamp",
+              "kind": "primary",
+              "label": "구비 로터스 제품 명세와 재료 설명"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "복각의 가치는 옛 외곽선이 얼마나 닮았는지와 사용 중 그 형태를 어떻게 유지하는지를 함께 볼 때 구체화된다. 네 겹의 유리는 서로 맞는 크기와 간격을 요구하고, 관리하는 사람은 그 조합을 안전하게 다룰 절차를 필요로 한다. 제작에서 제어한 관계가 청소와 교체에서도 유지돼야 생활 속 물건으로 이어질 수 있다.",
+            "따라서 이 조명에서 가져갈 설계 질문은 장인의 편차를 모두 지우는 방법이 아니다. 표현에 남겨도 되는 표면 차이와 조립에 필요한 일관성을 어디서 구별할지, 다시 분리하는 사람이 그 구별을 알 수 있게 할지다. 부품의 표정과 결합 규칙을 함께 설명하는 자료는 아름다움이라는 평가를 구체적인 제작·관리의 질문으로 옮기는 데 도움이 된다."
+          ],
+          "references": [
+            {
+              "url": "https://gubi.com/en/us/inspiration/editorials/the-making-of-lotus",
+              "kind": "primary",
+              "label": "구비의 로터스 제작 단계 설명"
+            },
+            {
+              "url": "https://gubi.com/en/us/products/lotus-table-lamp",
+              "kind": "primary",
+              "label": "구비 로터스 제품 명세와 재료 설명"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "1969년 LT305의 네 겹 유리 구성을 로터스라는 정식 이름으로 다시 제작했다.",
+        "표면의 수작업 편차와 서로 포개지는 부품의 규격 관계는 구별해야 한다.",
+        "조립 구조와 개선 의도를 확인한 것을 조도·안정성·내구성의 독립 시험 결과로 쓰지 않았다."
+      ],
+      "tags": [
+        "조명디자인",
+        "유리공예",
+        "카를로나손",
+        "로터스",
+        "구비"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "갓",
+              "서로 다른 크기의 입으로 분 유리 4개, 풀레고소 표면",
+              "개별 유리의 충격 강도·파손률"
+            ],
+            [
+              "지지부",
+              "강철 구조 주위에 갓을 조립",
+              "구형 대비 안정성 향상 비율"
+            ],
+            [
+              "관리",
+              "보도에서 다룬 분해·전구 교체 개선 의도",
+              "작업 시간·개별 부품 공급 보장"
+            ],
+            [
+              "빛",
+              "겹친 유리와 기포가 만드는 확산 표현",
+              "특정 위치의 조도·눈부심·독서 적합성"
+            ]
+          ],
+          "type": "table",
+          "title": "제작 사실과 성능 평가를 나누어 보기",
+          "caption": "ARCH.B 자료 대조 · 2026.11.02. 실물 계측·분해·장기 사용 시험은 하지 않았다.",
+          "columns": [
+            "항목",
+            "확인한 제작·제품 설명",
+            "이번 대조로 판정하지 않은 것"
+          ],
+          "afterSection": 3
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "GUBI 공식 제작 단계·명칭 소개와 제품 페이지를 직접 대조. 구형 대비 안정성·안전 향상을 검증된 사실로 쓰던 문장을 수정. 광학·실물 분해·내구 시험 없음.",
+    "externalAiGeneration": false
+  },
+  {
+    "id": "90642a70-5c26-46ba-93b2-54604a2e1d0c",
+    "slug": "news-eb20cc6e345c4c739faf",
+    "article": {
+      "url": "https://www.dezeen.com/2026/10/28/norman-foster-first-watch-lebond/",
+      "title": "러그를 지우고 케이스와 스트랩을 이은 노먼 포스터의 첫 시계",
+      "summary": "노먼 포스터가 시계 브랜드 르본과 함께 선보인 첫 손목시계는 돌출된 러그를 없애고 스트랩이 티타늄 몸체를 감싸도록 설계해 하나의 외곽선을 완성했다. 통합된 형태 속에서도 분리 가능한 교체 구조와 양방향 회전 베젤의 기능적 배치를 충실히 갖췄다.",
+      "paragraphs": [
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "건축가 노먼 포스터가 시계 브랜드 르본과 협업해 첫 손목시계를 선보였다. 10월 28일 디진을 통해 소개된 이번 작업은 시계를 이루는 통상적인 부품 구분을 다시 설정하는 데서 출발했다.",
+            "케이스와 스트랩, 다이얼과 무브먼트를 함께 구상한 작업이다. 포스터는 스케치와 모형으로 치수를 조정하는 과정이 건축 설계와 닮았다고 설명했다. 부품을 따로 볼 때보다 결합했을 때의 전체 윤곽을 먼저 설정한 접근으로 읽을 수 있다.",
+            "가장 눈에 띄는 변화는 케이스 바깥으로 튀어나오는 러그를 과감하게 생략한 점이다. 일반적으로 시곗줄을 고정하는 부품을 없앤 대신 스트랩이 티타늄 몸체를 매끄럽게 감싸면서 이어지도록 유도했다.",
+            "브랜드 측의 공식 설계 설명 역시 스트랩을 케이스의 자연스러운 연장선으로 규정한다. 부품을 연결하는 구조적 장치를 외부로 드러내지 않고 시계 고유의 윤곽 내부로 온전히 흡수한 셈이다."
+          ],
+          "references": [
+            {
+              "url": "https://www.dezeen.com/2026/10/28/norman-foster-first-watch-lebond/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://www.lebondwatches.com/shop/lebond-norman-foster-natural-titanium-edition/",
+              "kind": "primary",
+              "label": "르본 내추럴 티타늄 에디션의 설계·제품 명세"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "몸체와 스트랩이 구성하는 크기와 교체 구조",
+          "paragraphs": [
+            "공식 제품 명세에 따르면 5등급 티타늄 케이스의 지름은 38.5밀리미터이며 두께는 10밀리미터로 제작됐다. 반면 스트랩을 포함한 전체 폭은 40밀리미터라는 수치로 안내된다. 하나의 제품 크기를 두 가지 숫자로 설명하는 까닭은 줄이 결합하는 영역까지 전체 외형을 이루기 때문이다.",
+            "시계 앞면에는 빛 반사를 줄이는 처리를 거친 돔형 사파이어 유리를 얹었고 뒷면 역시 사파이어 유리를 적용했다. 케이스 표면 보호와 투명성을 확보하는 소재 선택이 앞뒤 양면에 고루 반영된 셈이다.",
+            "시곗줄의 소재는 FKM 고무이며 너비는 18밀리미터다. 두 에디션 모두 간편하게 바꿀 수 있는 교체형 통합 스트랩 시스템을 지원하며 티타늄 접이식 버클을 함께 장착했다.",
+            "외형상으로는 매끄럽게 결합된 일체형 윤곽을 띠고 있으나 실제로는 소재와 결합 메커니즘이 정밀하게 분리되어 있다. 포스터가 언급한 사용자별 조합 가능성은 이처럼 독립적으로 분리되는 부품 설계를 바탕으로 성립한다."
+          ],
+          "references": [
+            {
+              "url": "https://www.dezeen.com/2026/10/28/norman-foster-first-watch-lebond/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://www.lebondwatches.com/shop/lebond-norman-foster-natural-titanium-edition/",
+              "kind": "primary",
+              "label": "르본 내추럴 티타늄 에디션의 설계·제품 명세"
+            },
+            {
+              "url": "https://www.lebondwatches.com/shop/lebond-norman-foster-black-edition/",
+              "kind": "primary",
+              "label": "르본 블랙 에디션의 설계·제품 명세"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "베젤을 통한 시간대 표시와 내부 기계 장치",
+          "paragraphs": [
+            "다이얼 바깥 둘레에는 양방향으로 회전 가능한 12시간 눈금 베젤이 장착됐다. 별도의 추가 시침을 두지 않고도 중앙 시침과 회전 베젤의 눈금을 조합해 두 번째 시간대를 곧바로 확인할 수 있는 구성이다.",
+            "르본은 이러한 조작 방식을 포스터의 비행 이력 및 장기간 이어진 여행 경험과 연결해 설명한다. 디진 인터뷰에서도 항공 분야를 향한 지속적인 관심이 단순한 시각적 장식을 넘어 실제 시간 판독 기능으로 이어졌음을 짚었다.",
+            "시계 내부에는 자동으로 태엽이 감기는 스위스 기계식 무브먼트 ETA 2892-A2가 자리잡았다. 날짜 창은 3시 방향에 배치되어 정돈된 균형감을 이룬다.",
+            "화면 전환으로 정보를 분리하는 디지털 기기와 달리 이 시계는 시간대와 날짜, 현재 시각을 단일 원형 다이얼 안에 함께 배치했다. 베젤을 손으로 돌리는 물리적 조작이 곧 판독할 시간의 기준점을 전환하는 행위가 된다."
+          ],
+          "references": [
+            {
+              "url": "https://www.dezeen.com/2026/10/28/norman-foster-first-watch-lebond/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://www.lebondwatches.com/shop/lebond-norman-foster-natural-titanium-edition/",
+              "kind": "primary",
+              "label": "르본 내추럴 티타늄 에디션의 설계·제품 명세"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "티타늄 표면 마감과 회전 로터의 색채 대비",
+          "paragraphs": [
+            "내추럴 티타늄 에디션은 회색 고무 스트랩에 티타늄 금속 고유의 색상을 자연스럽게 이어 붙였다. 브랜드 측은 동일한 금속 소재 위에 샌드블라스트 무광 처리와 광택 처리, 브러시 마감을 정교하게 조합했다고 밝힌다.",
+            "다이얼에 새겨진 원형 브러시 결은 니켈색 바늘 및 케이스와 어우러지며 인접한 색조 안에서 각기 다른 질감을 보여준다. 반면 블랙 에디션은 무광 검정 DLC 처리를 입힌 케이스에 맞춰 검정 다이얼과 바늘, 스트랩을 통일감 있게 배치했다.",
+            "두 제품 모두 시각 표시 눈금과 바늘에 푸른빛을 발산하는 흰색 야광 안료를 채웠다. 조명이 밝을 때 확인되는 회색이나 검정의 단색조 표면 위에 어둠 속에서 빛을 발하는 시각 요소를 겹쳐 놓은 배색이다.",
+            "시계 뒷면의 투명 창을 통해 드러나는 자동 감기용 로터에는 5개의 구멍이 뚫려 있다. 내추럴 버전은 짙은 파랑을, 블랙 버전은 선명한 빨강을 채택했다. 전면부의 차분하고 절제된 색채와 후면 기계 구동부의 강렬한 색채를 뚜렷하게 대비시켰다."
+          ],
+          "references": [
+            {
+              "url": "https://www.lebondwatches.com/shop/lebond-norman-foster-natural-titanium-edition/",
+              "kind": "primary",
+              "label": "르본 내추럴 티타늄 에디션의 설계·제품 명세"
+            },
+            {
+              "url": "https://www.lebondwatches.com/shop/lebond-norman-foster-black-edition/",
+              "kind": "primary",
+              "label": "르본 블랙 에디션의 설계·제품 명세"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "38.5와 40, 그리고 18밀리미터를 구분해 읽기",
+          "paragraphs": [
+            "두 공식 제품 명세에서 케이스 지름은 38.5mm, 스트랩을 포함한 폭은 40mm, 스트랩 폭은 18mm로 일치한다. 전체 폭과 케이스 지름의 차이는 1.5mm다. 하지만 이 차이를 곧바로 양쪽 돌출 길이나 손목에 닿는 두께로 해석할 수는 없다. 제품이 명시한 측정 대상이 다르기 때문이다. 케이스 두께 10mm 역시 전체 외곽 폭과는 다른 방향의 치수다.",
+            "또한 18mm라는 폭만 같으면 일반 스트랩이 호환된다는 뜻은 아니다. 공식 설명은 교체 가능한 통합 시스템을 명시하고 전용 스트랩으로 연결하지만, 검토한 명세만으로 모든 범용 18mm 스트랩의 결합을 확인할 수는 없다. 교체 가능성과 범용 호환은 구분해야 한다. 시각적으로 이어지는 부품을 나중에 바꿀 수 있다는 장점과, 그 교체물을 어떤 규격으로 구할 수 있는지는 별도로 살필 항목이다.",
+            "제품 페이지의 추가 정보에는 2kg과 45×30×20cm도 보인다. 이 값은 시계 자체의 질량이나 케이스 치수라고 설명돼 있지 않으므로 착용 무게와 크기로 가져오지 않았다. 기술 명세의 mm 단위와 판매 시스템의 추가 정보가 한 페이지에 있어도 동일한 대상을 측정한 값으로 합치면 안 된다. 아래 비교는 두 에디션의 공개 명세를 대조한 결과이며 직접 무게를 재거나 손목에 착용한 평가는 아니다."
+          ],
+          "references": [
+            {
+              "url": "https://www.dezeen.com/2026/10/28/norman-foster-first-watch-lebond/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://www.lebondwatches.com/shop/lebond-norman-foster-natural-titanium-edition/",
+              "kind": "primary",
+              "label": "르본 내추럴 티타늄 에디션의 설계·제품 명세"
+            },
+            {
+              "url": "https://www.lebondwatches.com/shop/lebond-norman-foster-black-edition/",
+              "kind": "primary",
+              "label": "르본 블랙 에디션의 설계·제품 명세"
+            }
+          ]
+        },
+        {
+          "kind": "reporting",
+          "heading": "",
+          "paragraphs": [
+            "이처럼 두 에디션은 동일한 규격과 내부 무브먼트를 공유하면서도 금속 가공 방식과 색상 배분을 달리해 완성됐다. 외형의 연속성을 추구하는 형태적 결단과 기계 부품의 물리적 움직임을 노출하는 구조가 한 몸체 안에서 조화를 이룬다.",
+            "러그를 덜어낸 외곽선과 교체형 스트랩, 회전 베젤은 각각 형태와 유지 관리, 시간 판독을 다룬다. 결합부가 시각적으로 정리됐다는 것과 장기간 반복해서 교체해도 내구성이 유지된다는 것은 서로 다른 질문이다."
+          ],
+          "references": [
+            {
+              "url": "https://www.dezeen.com/2026/10/28/norman-foster-first-watch-lebond/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://www.lebondwatches.com/shop/lebond-norman-foster-natural-titanium-edition/",
+              "kind": "primary",
+              "label": "르본 내추럴 티타늄 에디션의 설계·제품 명세"
+            },
+            {
+              "url": "https://www.lebondwatches.com/shop/lebond-norman-foster-black-edition/",
+              "kind": "primary",
+              "label": "르본 블랙 에디션의 설계·제품 명세"
+            }
+          ]
+        },
+        {
+          "kind": "analysis",
+          "heading": "ARCH.B 의견",
+          "paragraphs": [
+            "건축적 개념을 손목시계로 축소했다는 수사보다 금속 케이스와 유연한 고무 스트랩이 맞물리는 접합 구조에 주목해야 한다. 러그를 지웠음에도 서로 다른 두 재료는 하나의 덩어리로 녹아들지 않으며 규격화된 분리 및 교체 기능을 온전히 유지한다.",
+            "통합 설계의 본질은 부품을 영구히 고착하는 데 있지 않고 서로 다른 재질이 만나는 경계와 분할선을 시각적으로 제어하는 기술에 있다. 연속적인 외곽선을 만들어내면서도 유지 보수와 개별 교체 편의를 해치지 않는 물리적 정밀성이 핵심이다.",
+            "회전 베젤과 노출형 로터의 배치는 기능성과 시각적 연출의 균형을 보여준다. 베젤은 복잡한 다기능 바늘을 더하는 대신 물리적 회전으로 2개 시간대를 간결하게 정리하며, 로터의 원색 배색은 무채색 전면부와 대비되는 기계적 활기를 드러낸다.",
+            "전용 형태의 교체형 시스템을 평가할 때는 범용 호환 여부와 대체 부품의 공급도 함께 확인할 필요가 있다. 러그리스 형태가 손목 위에서 제공하는 밀착감과 장기간 반복 교체한 접합부의 내구성은 이번 문서 대조로 판정하지 않았다. 실착과 유지 관리의 평가는 외곽선의 완성도와 구분해서 남겨야 한다."
+          ],
+          "references": [
+            {
+              "url": "https://www.dezeen.com/2026/10/28/norman-foster-first-watch-lebond/",
+              "kind": "reporting",
+              "label": "원출처 기사"
+            },
+            {
+              "url": "https://www.lebondwatches.com/shop/lebond-norman-foster-natural-titanium-edition/",
+              "kind": "primary",
+              "label": "르본 내추럴 티타늄 에디션의 설계·제품 명세"
+            },
+            {
+              "url": "https://www.lebondwatches.com/shop/lebond-norman-foster-black-edition/",
+              "kind": "primary",
+              "label": "르본 블랙 에디션의 설계·제품 명세"
+            }
+          ]
+        }
+      ],
+      "points": [
+        "몸체와 스트랩을 연결하던 돌출 러그를 없애고 고무 스트랩이 티타늄 케이스를 감싸는 통합 외관을 구성했다.",
+        "양방향 회전 12시간 베젤을 더해 중앙 시침과 함께 두 번째 시간대를 읽도록 설계했다.",
+        "동일한 기본 골격 위에 티타늄 표면 마감 방식과 다이얼, 로터의 색상을 다르게 적용한 두 가지 에디션으로 구성됐다."
+      ],
+      "tags": [
+        "제품디자인",
+        "노먼포스터",
+        "시계",
+        "티타늄"
+      ],
+      "blocks": [
+        {
+          "rows": [
+            [
+              "케이스 지름 / 스트랩 포함 폭",
+              "38.5mm / 40mm",
+              "38.5mm / 40mm"
+            ],
+            [
+              "두께 / 스트랩 폭",
+              "10mm / 18mm",
+              "10mm / 18mm"
+            ],
+            [
+              "케이스 마감",
+              "티타늄색 무광·광택·브러시 조합",
+              "무광 검정 DLC"
+            ],
+            [
+              "후면 로터 색",
+              "파랑",
+              "빨강"
+            ],
+            [
+              "교체 방식",
+              "교체형 통합 스트랩",
+              "교체형 통합 스트랩"
+            ]
+          ],
+          "type": "table",
+          "title": "두 에디션의 공통 규격과 다른 마감",
+          "caption": "2026.11.02 르본 공식 제품 명세 대조. 범용 스트랩 호환·착용감·질량·접합부 내구성을 직접 시험하지 않았다.",
+          "columns": [
+            "항목",
+            "내추럴 티타늄",
+            "블랙"
+          ],
+          "afterSection": 4
+        }
+      ]
+    },
+    "checkedAt": "2026-11-02",
+    "method": "direct-comparison-review",
+    "verification": "르본 두 에디션의 공식 명세 대조. 40−38.5=1.5mm 재계산, 치수 대상 구분. 추가 정보의 2kg을 시계 자체 질량으로 사용하지 않음. 범용 호환·실착·내구 시험 없음.",
+    "externalAiGeneration": false
+  }
+]

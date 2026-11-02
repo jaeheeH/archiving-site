@@ -1,0 +1,241 @@
+{
+  "reviewedAt": "2026-11-02",
+  "total": 719,
+  "priorSample": 1,
+  "completedThisRun": 15,
+  "completedTotal": 16,
+  "pending": 703,
+  "externalAiGeneration": false,
+  "publication": "Published content updated in Supabase, read back in full, and checked on all 15 public pages. Runtime code unchanged.",
+  "protectedFields": "Canonical URLs, slugs, tags, images, author, publication status and original publication dates preserved.",
+  "batches": [
+    {
+      "id": "001",
+      "articles": 10
+    },
+    {
+      "id": "002",
+      "articles": 5
+    }
+  ],
+  "completed": [
+    {
+      "id": "0a1f8194-4f42-45b4-bf05-d0e5b1ce25c8",
+      "slug": "news-9353bcb319e58d4b2115",
+      "title": "재 코 ‘스트라이에이티드’, 종이 가공과 설치로 완성하는 조형",
+      "category": "design",
+      "status": "published-and-readback-verified",
+      "batch": "002"
+    },
+    {
+      "id": "6b461a9f-5fe0-4b93-9b95-63742edd93dd",
+      "slug": "news-eb4bf164653138cc7161",
+      "title": "MVRDV, 옛 백화점을 에센 중앙도서관으로 개조해 개관",
+      "category": "interiors",
+      "status": "published-and-readback-verified",
+      "batch": "002"
+    },
+    {
+      "id": "90642a70-5c26-46ba-93b2-54604a2e1d0c",
+      "slug": "news-eb20cc6e345c4c739faf",
+      "title": "러그를 지우고 케이스와 스트랩을 이은 노먼 포스터의 첫 시계",
+      "category": "design",
+      "status": "published-and-readback-verified",
+      "batch": "002"
+    },
+    {
+      "id": "1e01a940-d918-47d9-a99c-664d110f3c76",
+      "slug": "news-fd89251b4b93f481a130",
+      "title": "CLB 아키텍츠, 산비탈을 감싼 부메랑 주택에 안뜰과 계곡 조망을 나누다",
+      "category": "interiors",
+      "status": "published-and-readback-verified",
+      "batch": "002"
+    },
+    {
+      "id": "358f4336-bb35-4785-b02d-08f90ae7fb1d",
+      "slug": "news-c810738ec79ec179d28f",
+      "title": "요청 주체와 동작 승인과 데이터 이동을 나누어 통제하는 세 지점",
+      "category": "ai",
+      "status": "published-and-readback-verified",
+      "batch": "001"
+    },
+    {
+      "id": "c003e00f-d29e-4d77-90a0-bcbc128da678",
+      "slug": "news-b02e415c5f4a28873ac1",
+      "title": "아이콘을 바꾸기 전에 클릭의 약속부터, 아코디언 메뉴를 다시 읽기",
+      "category": "development",
+      "status": "published-and-readback-verified",
+      "batch": "001"
+    },
+    {
+      "id": "7521d1e9-0ab5-40f5-a033-98071a6a5774",
+      "slug": "news-00240dd6d2ef0da21e96",
+      "title": "네 겹의 유리와 강철 지지부로 되살아난 로터스 조명",
+      "category": "design",
+      "status": "published-and-readback-verified",
+      "batch": "002"
+    },
+    {
+      "id": "9a140d37-d3b6-43dc-81c6-36574e1fdc21",
+      "slug": "news-dea8ba729eb28582daac",
+      "title": "깃허브 코파일럿 도구 이름 표기와 산업 비교 지표 및 기본 정책 적용",
+      "category": "development",
+      "status": "published-and-readback-verified",
+      "batch": "001"
+    },
+    {
+      "id": "3067fe95-b0e4-4b5e-a10d-90fc1fbade67",
+      "slug": "news-d2f4c2d99fe6839a3169",
+      "title": "설치 전부터 병합까지 이어지는 깃허브 의존성 통제 체계",
+      "category": "development",
+      "status": "published-and-readback-verified",
+      "batch": "001"
+    },
+    {
+      "id": "68447f24-0926-4a04-a272-602fd89fd335",
+      "slug": "news-c15c1be0aad75fb41fbd",
+      "title": "CSS random() 초안과 시연으로 본 절제된 시각적 편차 설계",
+      "category": "development",
+      "status": "published-and-readback-verified",
+      "batch": "001"
+    },
+    {
+      "id": "f90b7d1a-82ea-4c7d-9fab-984b4b540b91",
+      "slug": "news-68e2ee5d21f7dc1bf4b7",
+      "title": "AI 리뷰 비용 68% 절감의 안쪽, 클라우드플레어가 반복 입력을 고친 방법",
+      "category": "ai",
+      "status": "published-and-readback-verified",
+      "batch": "001"
+    },
+    {
+      "id": "f3f25c55-79d7-4980-82b6-ff205383daad",
+      "slug": "news-a0ffe9da4bda811e6fa6",
+      "title": "토스 DW 파이프라인, 실행은 도메인별로 나누고 정의는 코드 곁에 모았다",
+      "category": "development",
+      "status": "published-and-readback-verified",
+      "batch": "001"
+    },
+    {
+      "id": "f54177fa-3c99-4ab5-81c4-ffde8f9acb91",
+      "slug": "news-fb81b442df2fad5ba5d2",
+      "title": "토스뱅크의 공용 패키지 기준, 호환성·모듈 경계·원본 추적을 함께 다루다",
+      "category": "development",
+      "status": "published-and-readback-verified",
+      "batch": "001"
+    },
+    {
+      "id": "d66fd0e3-ac30-466a-9a0d-c0e3c42b48c0",
+      "slug": "news-282497830b35cf32457b",
+      "title": "GitHub, 저장소 push 이메일 종료…액션과 자체 발송 서비스로 전환 안내",
+      "category": "development",
+      "status": "published-and-readback-verified",
+      "batch": "001"
+    },
+    {
+      "id": "e9e65a00-0d58-4b4e-a94c-154639cffce1",
+      "slug": "news-f5fa4d6131d7db33f0c9",
+      "title": "GitHub Actions 잠금 파일 공개 프리뷰…태그 유지하며 검토한 커밋 실행",
+      "category": "development",
+      "status": "published-and-readback-verified",
+      "batch": "001"
+    },
+    {
+      "id": "ef1c4239-97bc-4284-afbc-084b3ecb0346",
+      "slug": "news-5c9d13f97faabce46da9",
+      "title": "창은 그대로, 카드만 좁혔다…CSS 컨테이너 쿼리 6가지 조건 비교",
+      "category": "development",
+      "status": "prior-sample-published",
+      "batch": null
+    }
+  ],
+  "browserTest": {
+    "date": "2026-11-02",
+    "accordion": [
+      {
+        "action": "label click",
+        "state": {
+          "active": "menu-button",
+          "expanded": "true",
+          "hidden": false
+        }
+      },
+      {
+        "action": "icon click",
+        "state": {
+          "active": "menu-button",
+          "expanded": "false",
+          "hidden": true
+        }
+      },
+      {
+        "action": "Enter",
+        "state": {
+          "active": "menu-button",
+          "expanded": "true",
+          "hidden": false
+        }
+      },
+      {
+        "action": "Tab while open",
+        "state": {
+          "active": "panel-link",
+          "expanded": "true",
+          "hidden": false
+        }
+      },
+      {
+        "action": "Shift+Tab",
+        "state": {
+          "active": "menu-button",
+          "expanded": "true",
+          "hidden": false
+        }
+      },
+      {
+        "action": "Space",
+        "state": {
+          "active": "menu-button",
+          "expanded": "false",
+          "hidden": true
+        }
+      }
+    ],
+    "random": {
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+      "dpr": 1,
+      "basicSupported": true,
+      "stepSupported": true,
+      "plain": "128.984px",
+      "step": "110px",
+      "fallback": "179.656px"
+    }
+  },
+  "packageTest": {
+    "date": "2026-11-02",
+    "typescript": "5.9.3",
+    "target": "ES5",
+    "optionalChainingTransformed": true,
+    "proxyConstructorRemains": true,
+    "useClientPreservedInSingleFile": true,
+    "declarationMapSources": [
+      "../src/example.ts"
+    ],
+    "referencedSourceExists": true,
+    "limits": "No old-browser, Next.js bundle, package-consumer IDE or production package test was performed.",
+    "source": "'use client';\nexport function readName(user?: { name: string }) { return user?.name; }\nexport const proxy = new Proxy({}, {});\n",
+    "emittedJavaScript": "'use client';\nexport function readName(user) { return user === null || user === void 0 ? void 0 : user.name; }\nexport var proxy = new Proxy({}, {});\n"
+  },
+  "checks": [
+    "Existing editorial schema for all 15 articles",
+    "Five decrease-rate calculations and two unit/dimension calculations",
+    "All protected fields unchanged after publication",
+    "Exact public table cells and code text checked",
+    "Before snapshots and guarded rollback retained in local research folder"
+  ],
+  "limits": [
+    "703 articles remain pending.",
+    "Browser tests used Chrome 156 only; no screen-reader or usability study.",
+    "Product and building articles are document comparisons, not site visits or physical performance tests.",
+    "Company figures were attributed; our arithmetic is not an independent benchmark."
+  ]
+}
