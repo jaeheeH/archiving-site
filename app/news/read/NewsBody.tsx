@@ -2,13 +2,17 @@ import { ExternalLink } from 'lucide-react';
 import { Fragment } from 'react';
 import { editorialReferences } from '@/lib/news-editorial';
 import type { NewsArticle } from '@/lib/news-record';
+import NewsContentBlocks from './NewsContentBlocks';
 
 export function NewsBody({ news }: { news: NewsArticle }) {
   const sources = editorialReferences(news.url, news.original_title, news.paragraphs);
   return <div className="reading-body">
-    {news.paragraphs.map((section, index) => typeof section === 'string' ? <p key={index}>{section}</p> : <Fragment key={index}>
-      {section.heading && <h2>{section.heading}</h2>}
-      {section.paragraphs.map((text, paragraphIndex) => <p key={paragraphIndex}>{text}</p>)}
+    {news.paragraphs.map((section, index) => <Fragment key={index}>
+      {typeof section === 'string' ? <p>{section}</p> : <>
+        {section.heading && <h2>{section.heading}</h2>}
+        {section.paragraphs.map((text, paragraphIndex) => <p key={paragraphIndex}>{text}</p>)}
+      </>}
+      <NewsContentBlocks blocks={Array.isArray(news.blocks) ? news.blocks.filter(block => block?.afterSection === index) : []} />
     </Fragment>)}
     <div className="reading-tags">{news.tags.map(tag => <a href={`/news/stories?q=${encodeURIComponent(tag)}`} key={tag}>{tag}</a>)}</div>
     <section className="source-credit" aria-labelledby="news-sources-title">

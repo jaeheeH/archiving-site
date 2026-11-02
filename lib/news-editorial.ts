@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { draftNewsContentBlockSchema, newsContentBlockSchema, uploadedNewsImageUrl } from './news-content-blocks';
 export const NEWS_BODY_LIMITS = { min: 900, max: 4000, minSections: 3, maxSections: 8 } as const;
 const koreanText = (min: number, max: number) => z.string().trim().min(min).max(max).refine(value => /[가-힣]/.test(value), "한국어로 작성해주세요.");
 const section = z.object({
@@ -13,11 +14,16 @@ export const editorialSchema = z.object({
   paragraphs: z.array(z.union([koreanText(30, 1000), section])).min(2).max(12),
   points: z.array(koreanText(8, 200)).min(2).max(4),
   tags: z.array(z.string().trim().min(1).max(30)).min(1).max(5),
+  blocks: z.array(newsContentBlockSchema).max(24).optional(),
 }).strict().superRefine((value, context) => {
   const length = editorialText(value.paragraphs).length;
   if (length < NEWS_BODY_LIMITS.min || length > NEWS_BODY_LIMITS.max) context.addIssue({ code: "custom", path: ["paragraphs"], message: "본문은 900~4,000자로 작성해주세요." });
   if (value.paragraphs.length < NEWS_BODY_LIMITS.minSections || value.paragraphs.length > NEWS_BODY_LIMITS.maxSections || value.paragraphs.some(p => typeof p === "string")) context.addIssue({ code: "custom", path: ["paragraphs"], message: "사실과 분석을 구분한 3~8개 섹션이 필요합니다." });
   const sections = value.paragraphs.filter(p => typeof p !== "string");
+  for (const [index, block] of (value.blocks || []).entries()) {
+    if (block.afterSection >= value.paragraphs.length) context.addIssue({ code: 'custom', path: ['blocks', index, 'afterSection'], message: '본문 안에 표시할 위치를 선택해주세요.' });
+  }
+  if ((value.blocks || []).some(block => value.blocks!.filter(other => other.afterSection === block.afterSection).length > 4)) context.addIssue({ code: 'custom', path: ['blocks'], message: '한 섹션에는 이미지·표·코드를 최대 4개 넣을 수 있습니다.' });
   if (!sections.some(p => p.kind === "reporting") || !sections.some(p => p.kind === "analysis")) context.addIssue({ code: "custom", path: ["paragraphs"], message: "사실·소식과 ARCH.B 분석을 각각 포함해주세요." });
   const referenceRows = sections.flatMap(p => p.references);
   const referenceKey = (url: string) => { const parsed = new URL(url); parsed.hash = ''; parsed.hostname = parsed.hostname.replace(/^www\./, ''); parsed.pathname = parsed.pathname.replace(/\/$/, '') || '/'; for (const key of [...parsed.searchParams.keys()]) if (/^utm_|^(fbclid|gclid)$/i.test(key)) parsed.searchParams.delete(key); parsed.searchParams.sort(); return parsed.href.replace(/%[0-9a-f]{2}/gi, code => code.toUpperCase()); };
@@ -46,10 +52,9 @@ const draftEditorialSchema = z.object({
   url: z.string().url().max(2000), title: draftText(160).min(1), summary: draftText(350),
   paragraphs: z.array(z.union([draftText(1000), section.extend({ heading: draftText(80), paragraphs: z.array(draftText(1000)).max(4), references: z.array(z.object({ label: draftText(100), kind: z.enum(["primary", "reporting"]).default("reporting"), url: z.union([z.literal(""), section.shape.references.unwrap().element.shape.url]) }).strict()).max(9).default([]) })])).max(12),
   points: z.array(draftText(200)).max(4), tags: z.array(draftText(30).min(1)).max(5),
+  blocks: z.array(draftNewsContentBlockSchema).max(24).optional(),
 }).strict().refine(value => editorialText(value.paragraphs).length <= 8000, "본문이 너무 깁니다.");
-const thumbnailUrlSchema = z.string().trim().max(2000).url().refine(value => {
-  try { const url = new URL(value); return url.protocol === 'https:' && url.hostname === 'overgjynkrnwayfammid.supabase.co' && !url.username && !url.password && !url.port && url.pathname.startsWith('/storage/v1/object/public/posts/'); } catch { return false; }
-}, '업로드한 뉴스 썸네일 주소가 필요합니다.');
+const thumbnailUrlSchema = uploadedNewsImageUrl;
 export const newsEditSchema = z.object({ article: draftEditorialSchema, is_published: z.boolean(), thumbnail_url: thumbnailUrlSchema.nullable().optional(), thumbnail_credit: z.string().trim().max(200).optional() }).strict().superRefine((value, context) => {
   if (!value.is_published) return;
   const parsed = editorialSchema.safeParse(value.article);

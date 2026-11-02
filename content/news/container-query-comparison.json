@@ -1,0 +1,191 @@
+{
+  "id": "ef1c4239-97bc-4284-afbc-084b3ecb0346",
+  "slug": "news-5c9d13f97faabce46da9",
+  "article": {
+    "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/",
+    "title": "창은 그대로, 카드만 좁혔다…CSS 컨테이너 쿼리 6가지 조건 비교",
+    "summary": "창 너비를 1,440px로 유지한 채 카드 영역만 320px로 줄이자 미디어 쿼리는 2열을 유지했고 컨테이너 쿼리는 1열로 바뀌었습니다. 같은 카드와 600px 기준으로 여섯 조건을 비교하고, 패딩 때문에 전환 시점이 달라지는 이유까지 확인했습니다.",
+    "paragraphs": [
+      {
+        "heading": "",
+        "kind": "reporting",
+        "paragraphs": [
+          "뉴스 카드 하나가 메인 피드에서는 넓게, 사이드바에서는 좁게 놓일 수 있습니다. 이때 브라우저 창이 넓다는 이유만으로 두 카드에 같은 가로 배치를 적용하면, 좁은 쪽의 제목이 쓸 공간부터 줄어듭니다. 기존에 소개한 CSS 컨테이너 쿼리 기사를 이 상황에서 다시 살펴봤습니다. 개념의 차이가 실제 배치에 어떻게 나타나는지 확인하기 위해, 같은 내용을 담은 카드 두 개를 만들고 창 너비와 카드 영역 너비를 따로 바꿨습니다."
+        ],
+        "references": [
+          {
+            "label": "스매싱 매거진 · 기존 뉴스의 원출처",
+            "kind": "reporting",
+            "url": "https://smashingmagazine.com/2026/09/stop-treating-css-container-queries-traditional-media-queries/"
+          }
+        ]
+      },
+      {
+        "heading": "같은 카드, 같은 600px 기준으로 비교했다",
+        "kind": "reporting",
+        "paragraphs": [
+          "두 카드 모두 분류명·제목·설명을 사용하고, 기본 배치는 1열로 정했습니다. 조건을 만족하면 분류 영역 128px와 본문 영역을 나란히 놓는 2열로 전환합니다. 카드 안쪽 패딩은 16px, 테두리는 1px, 열 간격은 16px로 맞췄습니다. 차이는 전환 조건뿐입니다. 한쪽은 뷰포트가 600px 이상일 때, 다른 쪽은 이름을 지정한 조상 컨테이너의 너비가 600px 이상일 때 2열이 되도록 했습니다.",
+          "2026년 11월 2일 인앱 브라우저의 Chrome 156, 배율 DPR 1 환경에서 여섯 조건을 실행했습니다. 비교용 로컬 예제에서 창 너비, 카드 영역 너비, 패딩·테두리 유무를 바꾼 뒤 실제 요소의 너비와 계산된 그리드 열을 읽었습니다. 이 글에서 표기한 너비는 모두 CSS px입니다. 분류와 본문이 나란한 상태를 2열, 위아래로 쌓인 상태를 1열로 기록했습니다. 특정 기능이 지원된다는 표시만 확인한 것이 아니라, 각 조건에서 배치가 바뀌는지도 함께 확인했습니다."
+        ],
+        "references": []
+      },
+      {
+        "heading": "창을 줄이지 않아도 카드는 좁아진다",
+        "kind": "reporting",
+        "paragraphs": [
+          "창 너비 1,440px와 카드 영역 640px에서는 두 방식 모두 2열이었습니다. 창은 그대로 두고 영역만 320px로 줄이자 차이가 생겼습니다. 미디어 쿼리 쪽은 여전히 넓은 창을 보고 2열을 유지했습니다. 컨테이너 쿼리 쪽은 좁아진 영역을 읽어 1열로 돌아갔습니다. 이 예제에서 본문에 배정된 그리드 너비는 각각 142px와 286px였습니다. 분류 영역과 열 간격을 같은 줄에 남길지 여부가 제목이 놓일 공간을 바꾼 것입니다.",
+          "이 숫자가 모든 카드의 가독성을 보장하지는 않습니다. 이번에는 분류 영역을 128px로 고정했고 글꼴과 문구도 동일하게 사용했습니다. 제목 길이, 언어, 이미지 비율이 달라지면 적절한 전환점도 달라집니다. 확인된 것은 같은 창 안에서도 영역에 따라 서로 다른 배치를 선택할 수 있다는 동작입니다. 반대로 창 자체를 480px로 줄이고 영역을 320px로 두었을 때는 두 방식 모두 1열이 됐습니다. 두 결과가 항상 다른 것도 아닙니다."
+        ],
+        "references": []
+      },
+      {
+        "heading": "640px인데 왜 1열일까",
+        "kind": "reporting",
+        "paragraphs": [
+          "전환 경계도 따로 확인했습니다. 창 너비 1,440px에서 컨테이너의 콘텐츠 너비가 599px일 때는 1열, 600px일 때는 2열이었습니다. 이번에 사용한 min-width: 600px 조건은 정확히 600px을 포함했습니다. 같은 두 조건에서 미디어 쿼리 카드는 창 너비가 바뀌지 않았으므로 계속 2열을 유지했습니다.",
+          "다음에는 컨테이너의 바깥 너비를 640px로 유지하면서 양옆 패딩 24px와 테두리 1px를 추가했습니다. box-sizing: border-box 조건에서 콘텐츠 너비는 640 − 24 × 2 − 1 × 2 = 590px가 됐고, 컨테이너 쿼리 카드는 1열로 바뀌었습니다. W3C의 CSS Conditional Rules Level 5 작업 초안도 width 크기 쿼리의 기준을 콘텐츠 박스로 정의합니다. 개발자 도구에서 바깥 너비만 보고 조건을 만족한다고 판단하면 이 차이를 놓칠 수 있습니다.",
+          "동작을 확인할 때는 창 너비와 컨테이너 너비를 한꺼번에 바꾸지 않는 편이 원인을 구분하기 쉽습니다. 넓은 창을 유지한 상태에서 영역만 바꾸면 카드가 무엇을 기준으로 반응하는지 드러납니다. 여기에 패딩과 테두리를 따로 추가하면, 단순히 600px에서 바뀐다는 기록보다 조건을 정확히 남길 수 있습니다. 이번 비교도 이 순서로 실행해 전환 차이가 창 너비 때문인지 콘텐츠 박스의 변화 때문인지 구분했습니다."
+        ],
+        "references": [
+          {
+            "label": "W3C · CSS Conditional Rules Level 5, 크기 쿼리와 width 정의",
+            "kind": "primary",
+            "url": "https://www.w3.org/TR/css-conditional-5/"
+          }
+        ]
+      },
+      {
+        "heading": "먼저 바꿀 곳은 카드가 놓이는 기준이다",
+        "kind": "analysis",
+        "paragraphs": [
+          "한 카드가 넓은 목록과 좁은 보조 영역에 함께 쓰인다면, 카드 내부 배치를 주변의 가용 너비와 연결하는 방식을 검토할 만합니다. 반면 페이지 전체의 열 수나 내비게이션처럼 창의 크기와 함께 움직여야 하는 구성에는 뷰포트 조건이 유용합니다. 미디어 쿼리는 인쇄나 사용자 환경 설정도 다룰 수 있습니다. 이번 비교에서 판단해야 할 지점은 어느 문법이 더 새롭냐보다, 배치를 바꿀 근거가 창에 있는지 카드가 놓인 영역에 있는지였습니다.",
+          "컨테이너를 지정할 때는 스타일을 바꿀 대상의 조상 요소를 선택합니다. 적절한 부모가 이미 있다면 그 요소를 사용할 수 있어, 새 래퍼를 매번 추가해야 하는 것은 아닙니다. 예제에서는 너비에 따른 변화만 필요해 inline-size를 사용했습니다. 600px는 비교를 위한 설정값이지 모든 디자인에 적용할 권장값은 아닙니다. 실제 카드에 옮길 때는 긴 제목과 좁은 영역을 함께 놓고, 필요한 공간을 기준으로 전환점을 다시 정해야 합니다."
+        ],
+        "references": [
+          {
+            "label": "MDN · CSS 컨테이너 쿼리",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries"
+          },
+          {
+            "label": "MDN · 미디어 쿼리 사용하기",
+            "kind": "primary",
+            "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Using"
+          }
+        ]
+      },
+      {
+        "heading": "",
+        "kind": "reporting",
+        "paragraphs": [
+          "이번 여섯 조건에서 차이가 드러난 곳은 넓은 창 안의 좁은 영역과 패딩이 들어간 컨테이너였습니다. 모든 조건에서 페이지 전체의 가로 넘침은 관찰되지 않았지만, 이것만으로 다른 문구와 배치에서도 문제가 없다고 볼 수는 없습니다. 검증 범위는 한 Chromium 환경의 너비 기반 크기 쿼리입니다. Safari·Firefox 호환성, 렌더링 속도, 스타일·스크롤 상태 쿼리와 높이 격리는 이번에 시험하지 않았습니다."
+        ],
+        "references": []
+      },
+      {
+        "heading": "ARCH.B 의견",
+        "kind": "analysis",
+        "paragraphs": [
+          "도입 후보를 고를 때는 같은 카드가 서로 다른 너비에 놓이는 화면부터 살펴보면 좋겠습니다. 이번 예제처럼 창은 넓은데 본문 영역이 142px로 줄어드는 사례를 찾았다면, 컨테이너 기준으로 전환했을 때의 배치를 같은 문구로 나란히 확인할 수 있습니다. 이 비교 과정이 있어야 실제 문제를 고쳤는지 판단할 수 있습니다. 반응형 규칙을 모두 바꾸기 전에 적용할 카드 한 종류와 전환 경계를 먼저 정하는 편이 결과를 확인하기 쉽습니다.",
+          "특히 패딩을 포함한 바깥 너비와 쿼리가 읽는 너비를 구분해 기록할 필요가 있습니다. 화면에서 보이는 크기와 조건식의 기준을 함께 남기면, 간격을 수정한 뒤 배치가 바뀐 이유도 추적할 수 있습니다. 다만 이번 측정으로 유지보수 시간이나 성능이 개선됐다고 말할 수는 없습니다. 여기서 얻은 판단 근거는 좁은 자리에 놓인 카드가 스스로 배치를 바꾸는 동작, 그리고 그 경계가 콘텐츠 너비로 결정된다는 두 가지입니다."
+        ],
+        "references": []
+      }
+    ],
+    "points": [
+      "1,440px 창 안의 320px 영역에서 미디어 쿼리는 2열, 컨테이너 쿼리는 1열로 배치됐습니다.",
+      "바깥 너비가 640px이어도 양옆 패딩 24px와 테두리 1px를 빼면 크기 쿼리가 읽는 너비는 590px였습니다.",
+      "검증 범위는 한 Chromium 환경의 크기 쿼리 동작입니다. 브라우저 전체의 호환성이나 성능을 측정한 결과는 아닙니다."
+    ],
+    "tags": [
+      "CSS",
+      "컨테이너쿼리",
+      "반응형웹",
+      "프론트엔드",
+      "웹표준"
+    ],
+    "blocks": [
+      {
+        "type": "table",
+        "afterSection": 1,
+        "title": "직접 측정한 여섯 가지 조건",
+        "caption": "너비 단위: CSS px · Chrome 156 · 2026.11.02. 패딩과 테두리는 영역의 양옆에 각각 적용했습니다.",
+        "columns": [
+          "창 너비",
+          "영역 바깥 너비",
+          "콘텐츠 너비",
+          "양옆 패딩 / 테두리",
+          "미디어 쿼리",
+          "컨테이너 쿼리"
+        ],
+        "rows": [
+          [
+            "1440",
+            "640",
+            "640",
+            "없음",
+            "2열",
+            "2열"
+          ],
+          [
+            "1440",
+            "320",
+            "320",
+            "없음",
+            "2열",
+            "1열"
+          ],
+          [
+            "1440",
+            "599",
+            "599",
+            "없음",
+            "2열",
+            "1열"
+          ],
+          [
+            "1440",
+            "600",
+            "600",
+            "없음",
+            "2열",
+            "2열"
+          ],
+          [
+            "1440",
+            "640",
+            "590",
+            "24px / 1px",
+            "2열",
+            "1열"
+          ],
+          [
+            "480",
+            "320",
+            "320",
+            "없음",
+            "1열",
+            "1열"
+          ]
+        ]
+      },
+      {
+        "type": "image",
+        "afterSection": 2,
+        "src": "https://overgjynkrnwayfammid.supabase.co/storage/v1/object/public/posts/news-thumbnails/ef1c4239-97bc-4284-afbc-084b3ecb0346/1793581334392-1u4y7e-wide-320.png.archb-v1-w1280.webp?archb-width=1280",
+        "width": 1280,
+        "height": 889,
+        "alt": "창 너비 1440px, 영역 너비 320px에서 미디어 쿼리는 2열, 컨테이너 쿼리는 1열로 표시된 직접 제작 비교 화면",
+        "caption": "같은 창에서 카드 영역만 320px로 줄인 비교용 예제입니다. 실제 ARCH.B 서비스의 화면이나 성능 측정은 아닙니다.",
+        "credit": "ARCH.B 직접 제작·캡처 · 2026.11.02"
+      },
+      {
+        "type": "code",
+        "afterSection": 3,
+        "title": "비교에 사용한 핵심 HTML·CSS",
+        "language": "html",
+        "code": "<!-- 창 너비를 600px보다 넓게 둔 상태에서 비교합니다. -->\n<h2>미디어 쿼리</h2>\n<div class=\"test-slot\" id=\"mq-slot\">\n  <article class=\"card\" id=\"mq-card\">\n    <div class=\"category\">CSS<br>비교 실험</div>\n    <div><h3>같은 기사를 다른 자리에 놓는다면</h3>\n      <p>본문의 넓은 영역과 사이드바의 좁은 영역에서 카드 배치가 어떻게 달라지는지 확인합니다.</p>\n    </div>\n  </article>\n</div>\n\n<h2>컨테이너 쿼리</h2>\n<div class=\"test-slot\" id=\"cq-slot\">\n  <article class=\"card\" id=\"cq-card\">\n    <div class=\"category\">CSS<br>비교 실험</div>\n    <div><h3>같은 기사를 다른 자리에 놓는다면</h3>\n      <p>본문의 넓은 영역과 사이드바의 좁은 영역에서 카드 배치가 어떻게 달라지는지 확인합니다.</p>\n    </div>\n  </article>\n</div>\n\n<style>\n* { box-sizing: border-box; }\n/* 320px를 599px, 600px, 640px로 바꿔 비교합니다. */\n.test-slot { width: 320px; max-width: 100%; min-width: 0; padding: 0; border: 0; }\n/* 640px 조건에서 이 클래스를 두 컨테이너에 추가하면 콘텐츠 너비가 590px가 됩니다. */\n.test-slot.padded { padding: 24px; border: 1px solid; }\n#cq-slot { container: article-card / inline-size; }\n.card {\n  display: grid; grid-template-columns: minmax(0, 1fr);\n  gap: 16px; padding: 16px; border: 1px solid; min-width: 0;\n}\n.card > div { min-width: 0; }\n.card h3 { font-size: 20px; line-height: 1.5; margin: 0 0 10px; overflow-wrap: anywhere; }\n.card p { margin: 0; line-height: 1.7; }\n.category { padding: 12px; font-weight: bold; overflow-wrap: anywhere; }\n@media (min-width: 600px) {\n  #mq-card { grid-template-columns: 128px minmax(0, 1fr); }\n}\n@container article-card (min-width: 600px) {\n  #cq-card { grid-template-columns: 128px minmax(0, 1fr); }\n}\n</style>"
+      }
+    ]
+  }
+}

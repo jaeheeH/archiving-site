@@ -1,0 +1,68 @@
+// Run: npx tsx scripts/check-news-content-blocks.mjs
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { ImageConfigContext } from 'next/dist/shared/lib/image-config-context.shared-runtime.js';
+import { imageConfigDefault } from 'next/dist/shared/lib/image-config.js';
+import { editorialSchema, editorialText, newsEditSchema } from '../lib/news-editorial.ts';
+import { newsContentBlockSchema } from '../lib/news-content-blocks.ts';
+import { newsPost } from '../lib/news-record.ts';
+import { NewsBody } from '../app/news/read/NewsBody.tsx';
+import NewsBlocksEditorModule from '../app/(dashboard)/dashboard/contents/news/NewsBlocksEditor.tsx';
+
+const fixture = JSON.parse(fs.readFileSync(new URL('../content/news/container-query-comparison.json', import.meta.url), 'utf8'));
+const article = editorialSchema.parse(fixture.article);
+const tableBlock = article.blocks.find(block => block.type === 'table');
+const codeBlock = article.blocks.find(block => block.type === 'code');
+const renderNews = news => renderToStaticMarkup(createElement(ImageConfigContext.Provider, { value: { ...imageConfigDefault, remotePatterns: [{ protocol: 'https', hostname: 'overgjynkrnwayfammid.supabase.co' }] } }, createElement(NewsBody, { news })));
+assert(newsEditSchema.safeParse({ article, is_published: true }).success);
+const news = { ...article, original_title: '원출처 기사' };
+const html = renderNews(news);
+const NewsBlocksEditor = NewsBlocksEditorModule.default || NewsBlocksEditorModule;
+const editor = renderToStaticMarkup(createElement(ImageConfigContext.Provider, { value: { ...imageConfigDefault, remotePatterns: [{ protocol: 'https', hostname: 'overgjynkrnwayfammid.supabase.co' }] } }, createElement(NewsBlocksEditor, { blocks: article.blocks, afterSection: 1, disabled: true, onChange: () => {}, uploadImage: async () => null })));
+for (const label of ['본문 이미지 업로드', '이미지 설명 (필수)', '이미지 출처·크레딧 (필수)', '표 데이터', '코드 내용']) assert(editor.includes(label), 'Editors can maintain each media type without editing source code');
+assert(editor.includes('<fieldset disabled=""'), 'Editing is disabled while an upload or save is in progress');
+assert(editor.includes('&lt;style&gt;') && !editor.includes('<style>'));
+const table = html.indexOf('class="news-content-table"');
+const code = html.indexOf('class="news-content-code"');
+assert(table > html.indexOf(article.paragraphs[1].paragraphs.at(-1)));
+assert(table < html.indexOf(article.paragraphs[2].heading));
+assert(code > html.indexOf(article.paragraphs[3].paragraphs.at(-1)));
+assert(code < html.indexOf(article.paragraphs[4].heading));
+assert.equal((html.match(/scope="col"/g) || []).length, 6);
+assert.equal((html.match(/scope="row"/g) || []).length, 6);
+assert(html.includes('tabindex="0"') && html.includes('<caption class="sr-only">'));
+assert(html.includes('&lt;style&gt;') && !html.includes('<style>'));
+assert(html.includes('코드 복사'));
+assert(!html.includes('127.0.0.1:3112'));
+const record = newsPost({ ...article, source: '원출처', category: 'development', published_at: '2026-11-02T00:00:00Z' });
+assert.deepEqual(record.content.blocks, article.blocks, 'Imports must preserve typed content blocks');
+assert.equal(newsPost({ ...article, source: '원출처', category: 'development', published_at: '2026-11-02T00:00:00Z', blocks: [{ ...tableBlock, rows: [['열 수 불일치']] }] }).is_published, false, 'Imports cannot publish incomplete blocks');
+const legacy = { ...article }; delete legacy.blocks;
+assert(editorialSchema.safeParse(legacy).success);
+assert(!renderNews({ ...legacy, original_title: '원출처' }).includes('news-content-table'));
+assert.equal(editorialText(article.paragraphs), editorialText(legacy.paragraphs), 'Media and code do not replace or inflate required reporting');
+
+const image = { type: 'image', afterSection: 2, src: 'https://overgjynkrnwayfammid.supabase.co/storage/v1/object/public/posts/news-body/test.png', alt: '직접 제작한 비교 화면', credit: 'ARCH.B 직접 제작', width: 1440, height: 1000, caption: '같은 창에서 두 배치를 비교한 화면입니다.' };
+assert(newsContentBlockSchema.safeParse(image).success);
+const imageHtml = renderNews({ ...news, blocks: [image] });
+assert(imageHtml.includes('alt="직접 제작한 비교 화면"') && imageHtml.includes('ARCH.B 직접 제작'));
+for (const src of ['javascript:alert(1)', 'data:image/svg+xml,<svg/>', 'file:///secret', 'http://overgjynkrnwayfammid.supabase.co/storage/v1/object/public/posts/a.png', 'https://evil.example/a.png', 'https://user:password@overgjynkrnwayfammid.supabase.co/storage/v1/object/public/posts/a.png']) {
+  assert(!newsContentBlockSchema.safeParse({ ...image, src }).success, 'Only uploaded public news images are allowed');
+}
+for (const change of [{ alt: '' }, { credit: '' }, { width: 0 }]) assert(!newsContentBlockSchema.safeParse({ ...image, ...change }).success);
+const incomplete = { ...article, blocks: [{ ...image, src: '', alt: '', credit: '' }, { ...codeBlock, code: '' }] };
+assert(newsEditSchema.safeParse({ article: incomplete, is_published: false }).success, 'Incomplete media can be saved as a private draft');
+assert(!newsEditSchema.safeParse({ article: incomplete, is_published: true }).success);
+assert(!editorialSchema.safeParse({ ...article, blocks: [{ ...tableBlock, rows: [['열 수 불일치']] }] }).success);
+assert(!editorialSchema.safeParse({ ...article, blocks: [{ ...tableBlock, afterSection: article.paragraphs.length }] }).success);
+assert(!editorialSchema.safeParse({ ...article, blocks: Array(5).fill(tableBlock) }).success);
+assert(!editorialSchema.safeParse({ ...article, blocks: [{ type: 'html', afterSection: 0, html: '<script>alert(1)</script>' }] }).success);
+const unsafeText = '<script>alert("x")</script><img src=x onerror=alert(1)>';
+const escaped = renderNews({ ...news, blocks: [{ ...codeBlock, code: unsafeText }, { ...tableBlock, rows: [[unsafeText, '1', '2', '3', '4', '5']] }] });
+assert(escaped.includes('&lt;script&gt;') && !escaped.includes('<script>'));
+assert(!escaped.includes('<img src="x"'));
+const invalidStored = renderNews({ ...news, blocks: [{ ...image, src: 'javascript:alert(1)' }, null] });
+assert(!invalidStored.includes('news-content-image'), 'Invalid stored blocks fail closed without breaking legacy text');
+console.log('News blocks passed: legacy compatibility, placement, persistence, draft/publish validation, accessible table, image restrictions and escaped code.');

@@ -23,6 +23,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const { article, is_published, thumbnail_url, thumbnail_credit } = parsed.data;
     if (article.url !== post.content.source_url) return Response.json({ error: "원출처는 변경할 수 없습니다." }, { status: 400 });
     const content = { ...post.content, paragraphs: article.paragraphs, points: article.points, duplicate_review: undefined, automation: is_published || editorialSchema.safeParse(article).success ? completedNewsWriting(post.content.automation) : undefined };
+    if (article.blocks !== undefined) content.blocks = article.blocks;
     if (thumbnail_url !== undefined) {
       if (thumbnail_url !== post.thumbnail_url || !thumbnail_url) delete content.thumbnail_provenance;
       if (thumbnail_url && thumbnail_credit) content.thumbnail_credit = thumbnail_credit;

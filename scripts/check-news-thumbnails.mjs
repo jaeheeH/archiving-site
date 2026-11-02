@@ -6,6 +6,7 @@ import ts from 'typescript';
 import * as zod from 'zod';
 import * as crypto from 'node:crypto';
 import {createClient} from '@supabase/supabase-js';
+import * as newsContentBlocks from '../lib/news-content-blocks.ts';
 
 const id='11111111-1111-4111-8111-111111111111';
 const image=`https://overgjynkrnwayfammid.supabase.co/storage/v1/object/public/posts/news-thumbnails/${id}/image.webp`;
@@ -31,7 +32,7 @@ const db=createClient('https://test.supabase.co','test-key',{auth:{persistSessio
   return Response.json(post);
 }}});
 const mocks={
-  zod,'node:crypto':crypto,'server-only':{},
+  zod,'node:crypto':crypto,'server-only':{},'./news-content-blocks':newsContentBlocks,
   'next/cache':{unstable_cache:fn=>fn,revalidateTag:tag=>invalidations.push(tag),revalidatePath:path=>invalidations.push(path)},
   '@/lib/public-data':{CACHE_TAGS:{posts:'public-posts',home:'public-home'}},
   '@/lib/supabase/admin':{createAdminClient:()=>db},
@@ -77,5 +78,15 @@ assert(requested.every(method=>method==='GET'||method==='PATCH'),'Removing a thu
 reset();assert.equal((await call({thumbnail_url:null,thumbnail_credit:''})).status,200);assert.equal(post.thumbnail_url,null);assert.equal(post.content.thumbnail_credit,undefined);assert.equal(post.title_image_url,'https://original.example/photo.jpg');
 reset();concurrent=true;assert.equal((await call({thumbnail_url:replacement})).status,409);assert.equal(post.thumbnail_url,image);assert.equal(invalidations.length,0);
 reset();failed=true;assert.equal((await call({thumbnail_url:replacement})).status,503);assert.equal(post.thumbnail_url,image);assert.equal(invalidations.length,0);
+
+const blocks=[{type:'table',afterSection:0,title:'배치 비교',columns:['항목','결과'],rows:[['좁은 영역','1열']]},{type:'code',afterSection:1,title:'확인한 코드',language:'html',code:'<script>example()</script>'}];
+reset();const protectedPost=structuredClone(post);
+assert.equal((await call({article:{...article,blocks}})).status,200);
+assert.deepEqual(post.content.blocks,blocks,'Typed blocks survive the authenticated save route.');
+assert.deepEqual(mapPublishedRows([post])[0].blocks,blocks,'Public article mapping retains placement and code.');
+for(const field of ['title','summary','title_image_url','thumbnail_url','published_at','is_published','author_id'])assert.deepEqual(post[field],protectedPost[field],field);
+assert.equal((await call()).status,200);assert.deepEqual(post.content.blocks,blocks,'Older editors that omit blocks preserve existing blocks.');
+assert.equal((await call({article:{...article,blocks:[]}})).status,200);assert.deepEqual(post.content.blocks,[],'Explicit removal clears blocks.');
+reset();assert.equal((await call({article:{...article,blocks:[{...blocks[0],afterSection:99}]}})).status,400);assert.equal(updates,0);
 
 console.log('News thumbnail checks passed: original priority, separate list fallback, legacy requests, upload URL validation, ownership, credit, removal, concurrent edits, failure preservation and cache invalidation. No live data changed.');

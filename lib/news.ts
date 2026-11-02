@@ -14,14 +14,14 @@ const columns = "id,type,slug,title,subtitle,summary,tags,title_image_url,thumbn
 type PublishedRow = {
   id: string; type: string; slug: string; title: string; subtitle: string | null; summary: string | null;
   tags: string[] | null; title_image_url: string | null; thumbnail_url?: string | null; published_at: string; category_id: string;
-  content: { format?: string; category: NewsArticle["category"]; source_url: string; original_title: string; source: string; source_published_at?: string; paragraphs: NewsArticle["paragraphs"]; points: string[] } | null;
+  content: { format?: string; category: NewsArticle["category"]; source_url: string; original_title: string; source: string; source_published_at?: string; paragraphs: NewsArticle["paragraphs"]; points: string[]; blocks?: NewsArticle['blocks'] } | null;
 };
 export function mapPublishedRows(rows: PublishedRow[]) {
   return rows.flatMap<NewsArticle>(row => {
     if (row.type === "blog") return [{ id: row.id, slug: row.slug, kind: "editorial" as const, collection: row.category_id, url: `/news/read/${row.slug}`, original_title: row.title, title: row.title, summary: row.summary || row.subtitle || "", description: row.summary || row.subtitle || "ARCH.B의 관점으로 읽는 이야기.", tags: row.tags || [], image: row.title_image_url, published_at: row.published_at, source: "ARCH.B", category: "editorial" as const, paragraphs: [], points: [] }];
     const content = row.content;
     if (content?.format !== NEWS_FORMAT || !Object.hasOwn(CATEGORIES, content.category) || !Array.isArray(content.paragraphs) || !Array.isArray(content.points)) return [];
-    return [{ id: row.id, slug: row.slug, kind: "news" as const, url: content.source_url, original_title: content.original_title, title: row.title, summary: row.summary || "", description: row.summary || "", tags: row.tags || [], image: row.title_image_url || row.thumbnail_url || null, published_at: content.source_published_at || row.published_at, source: content.source, category: content.category, paragraphs: content.paragraphs, points: content.points }];
+    return [{ id: row.id, slug: row.slug, kind: "news" as const, url: content.source_url, original_title: content.original_title, title: row.title, summary: row.summary || "", description: row.summary || "", tags: row.tags || [], image: row.title_image_url || row.thumbnail_url || null, published_at: content.source_published_at || row.published_at, source: content.source, category: content.category, paragraphs: content.paragraphs, points: content.points, ...(content.blocks ? { blocks: content.blocks } : {}) }];
   });
 }
 export const readNews = unstable_cache(async () => {
@@ -82,7 +82,7 @@ export async function saveNewsEditorials(articles: Editorial[], permission: Perm
   if (data?.length !== articles.length) throw new Error("수집된 뉴스만 가공할 수 있습니다.");
   const permissions = await Promise.all(data.map(row => checkPostOwnershipOrAdmin(row.id, permission)));
   if (permissions.some(permission => !permission.authorized)) throw new Error("가공할 권한이 없는 기사가 포함되어 있습니다.");
-  const rows = articles.map(article => { const row = data.find(r => r.slug === newsSlug(article.url))!; return { id: row.id, author_id: row.author_id, type: "news", slug: row.slug, title: article.title, summary: article.summary, tags: article.tags, title_image_url: row.title_image_url, is_published: true, published_at: row.content.source_published_at, content: { ...row.content, source_text: undefined, paragraphs: article.paragraphs, points: article.points, duplicate_review: undefined, automation: completedNewsWriting(row.content.automation) } }; });
+  const rows = articles.map(article => { const row = data.find(r => r.slug === newsSlug(article.url))!; return { id: row.id, author_id: row.author_id, type: "news", slug: row.slug, title: article.title, summary: article.summary, tags: article.tags, title_image_url: row.title_image_url, is_published: true, published_at: row.content.source_published_at, content: { ...row.content, source_text: undefined, paragraphs: article.paragraphs, points: article.points, ...(article.blocks !== undefined ? { blocks: article.blocks } : {}), duplicate_review: undefined, automation: completedNewsWriting(row.content.automation) } }; });
   const saved = await db.from("posts").upsert(rows, { onConflict: "id" });
   if (saved.error) throw saved.error;
   revalidateTag(NEWS_CACHE_TAG, { expire: 0 });
