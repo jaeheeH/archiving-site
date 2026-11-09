@@ -15,7 +15,8 @@ import { getPageMetadata } from '@/lib/site-settings';
 export async function generateMetadata() { return getPageMetadata({ path: '/', title: '디자인·AI·기술 뉴스와 아트 아카이브', description: '디자인과 AI, 제품·개발·공간의 새로운 소식과 ARCH.B의 깊이 있는 시선. 작품·작가·참고사이트를 함께 탐색합니다.' }); }
 export const dynamic = "force-dynamic";
 const path = (article: Article) => `/news/read/${article.slug}`;
-const date = (value: string) => new Intl.DateTimeFormat("ko-KR", { month: "long", day: "numeric", timeZone: "Asia/Seoul" }).format(new Date(value));
+const dateFormat = new Intl.DateTimeFormat("ko-KR", { month: "long", day: "numeric", timeZone: "Asia/Seoul" });
+const date = (value: string) => dateFormat.format(new Date(value));
 const sectionCopy = {
   editorial: { title: "소식을 넘어, 깊이 읽는 시선", description: "작품과 기술, 만드는 사람들의 배경을 읽는 ARCH.B 에디토리얼." },
   design: { title: "형태가 바꾸는 일상", description: "사물과 재료, 새로운 디자인의 가능성." },

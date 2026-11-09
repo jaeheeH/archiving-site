@@ -47,7 +47,7 @@ const mocks = {
   '@/lib/supabase/public': { createPublicClient: () => db },
   '@/lib/news-feeds': { CATEGORIES: categories },
   '@/lib/gallery-search-data': {}, './gallery-search-data': {}, './search-text': {},
-  '@/lib/avatar-url': { normalizeAvatarUrl: value => value }, './banners': {},
+  '@/lib/avatar-url': { normalizeAvatarUrl: value => value }, './banners': {}, './related-posts': {},
   '@/lib/art-catalog': { getArtCatalog: async () => ({ artists: [{ id: 'artist', updated_at: '2026-10-10' }], artworks: [{ id: 'work', preview_url: '/art.jpg?width=600&quality=75', updated_at: '2026-10-10' }] }) },
   'react/jsx-runtime': jsxRuntime,
 };

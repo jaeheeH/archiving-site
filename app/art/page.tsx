@@ -8,6 +8,7 @@ import ArtworkLoadMore from './ArtworkLoadMore';
 import ArchiveMasonry from '@/app/components/ArchiveMasonry';
 import { getArtCatalog } from "@/lib/art-catalog";
 import { getPageMetadata } from '@/lib/site-settings';
+import { ARCHIVE_LIST_IMAGE_SIZES } from '@/lib/image-config';
 
 export async function generateMetadata({ searchParams }: ArtPageProps) {
   const params = await searchParams;
@@ -53,7 +54,7 @@ export default async function ArtPage({ searchParams }: ArtPageProps) {
       {filteredArtworks.length ? (
         <>
           <ArchiveMasonry label="작품 목록" id="artwork-list">
-            {filteredArtworks.slice(0, pagination.shown).map((artwork) => <ArtworkCard key={artwork.id} artwork={artwork} returnTo={returnTo} />)}
+            {filteredArtworks.slice(0, pagination.shown).map((artwork) => <ArtworkCard key={artwork.id} artwork={artwork} returnTo={returnTo} sizes={ARCHIVE_LIST_IMAGE_SIZES} />)}
           </ArchiveMasonry>
           <ArtworkLoadMore {...pagination} total={filteredArtworks.length} />
         </>

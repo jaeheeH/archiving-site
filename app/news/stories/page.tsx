@@ -20,5 +20,5 @@ export default async function StoriesPage({ searchParams }: { searchParams: Prom
   const [{ articles }, placement, banner] = result;
   const resultPage = newsPage(articles, params);
   if (resultPage.requestedPage !== resultPage.pagination.page) redirect(newsListUrl({ ...resultPage.filters, page: resultPage.pagination.page }));
-  return <NewsList articles={articles} banner={banner} editorPickIds={placement.editorPickIds} category={params.category} query={params.q?.slice(0, 100)} source={params.source?.slice(0, 100)} collection={params.collection?.slice(0, 100)} page={resultPage.pagination.page} />;
+  return <NewsList articles={articles} pageData={resultPage} banner={banner} editorPickIds={placement.editorPickIds} />;
 }

@@ -14,6 +14,7 @@ export const CACHE_TAGS = {
   home: "public-home",
   gallery: "public-gallery",
   posts: "public-posts",
+  postCounts: "public-post-counts",
   references: "public-references",
 } as const;
 
@@ -292,10 +293,10 @@ export const getHomeData = unstable_cache(
       categories: categoryMap,
     };
   },
-  ["home-data"],
+  ["home-data-v2"],
   {
     revalidate: CACHE_SECONDS.medium,
-    tags: [CACHE_TAGS.home, CACHE_TAGS.posts, CACHE_TAGS.references],
+    tags: [CACHE_TAGS.home, CACHE_TAGS.posts, CACHE_TAGS.references, CACHE_TAGS.postCounts],
   }
 );
 
@@ -681,10 +682,10 @@ export const getPostsPageData = unstable_cache(
       },
     };
   },
-  ["posts-page-data"],
+  ["posts-page-data-v2"],
   {
     revalidate: CACHE_SECONDS.short,
-    tags: [CACHE_TAGS.posts],
+    tags: [CACHE_TAGS.posts, CACHE_TAGS.postCounts],
   }
 );
 

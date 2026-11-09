@@ -16,7 +16,7 @@ export default function ContentPagination({ page, totalPages, label, href, onPag
     const content = icon ? <i className={icon} aria-hidden="true" /> : target;
     if (disabled) return <button type="button" {...props} disabled>{content}</button>;
     return href
-      ? <Link href={href(target)} {...props}>{content}</Link>
+      ? <Link prefetch={false} href={href(target)} {...props}>{content}</Link>
       : <button type="button" onClick={() => onPageChange?.(target)} {...props}>{content}</button>;
   };
   return <nav className="content-table-pagination" aria-label={label}>

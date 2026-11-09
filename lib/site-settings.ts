@@ -1,4 +1,5 @@
 import { unstable_cache } from "next/cache";
+import { cache } from 'react';
 import { CACHE_SECONDS, CACHE_TAGS } from "@/lib/public-data";
 import { getSiteUrl } from "@/lib/site-url";
 import { SITE_COPY } from "@/lib/site-copy";
@@ -75,9 +76,7 @@ const getCachedSiteSettings = unstable_cache(
       .single();
 
     if (error) {
-      if (error.code !== "PGRST116") {
-        console.error("Site settings 조회 에러:", error);
-      }
+      if (error.code !== "PGRST116") throw error;
       return null;
     }
 
@@ -85,7 +84,7 @@ const getCachedSiteSettings = unstable_cache(
   },
   ["site-settings-v2"],
   {
-    revalidate: CACHE_SECONDS.medium,
+    revalidate: CACHE_SECONDS.long,
     tags: [CACHE_TAGS.siteSettings],
   }
 );
@@ -93,14 +92,14 @@ const getCachedSiteSettings = unstable_cache(
 /**
  * 사이트 설정 가져오기 (공개 레이아웃/메타데이터용)
  */
-export async function getSiteSettings(): Promise<SiteSettings | null> {
+export const getSiteSettings = cache(async (): Promise<SiteSettings | null> => {
   try {
     return await getCachedSiteSettings();
   } catch (error) {
     console.error("Site settings 조회 실패:", error);
     return null;
   }
-}
+});
 
 export async function getPageMetadata(options: Parameters<typeof pageMetadata>[0]) {
   const settings = await getSiteSettings();

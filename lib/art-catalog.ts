@@ -81,7 +81,7 @@ export const getFreshArtCatalog = cache(async () => {
   const artists = (people.data || []).map(row => ({ ...row, artwork_ids: (links.data || []).filter(link => link.artist_id === row.id).map(link => link.artwork_id) })) as Artist[];
   return { artworks: withTaxonomy(artworks), artists, databaseReady: true };
 });
-export const getArtCatalog = unstable_cache(getFreshArtCatalog, ['art-catalog-v4'], { revalidate: 600, tags: [ART_CATALOG_TAG] });
+export const getArtCatalog = cache(unstable_cache(getFreshArtCatalog, ['art-catalog-v4'], { revalidate: 86400, tags: [ART_CATALOG_TAG] }));
 
 export async function getArtwork(id: string) { return (await getArtCatalog()).artworks.find(work => work.id === id); }
 export async function getArtist(id: string) { return (await getArtCatalog()).artists.find(artist => artist.id === id); }

@@ -53,7 +53,7 @@ export async function handleScrap(request: Request, rawId: string, type: Resourc
     if (type === 'post') {
       const updated = await db.from('posts').update({ scrap_count: scrapCount }).eq('id', id);
       if (updated.error) throw updated.error;
-      revalidateTag(CACHE_TAGS.posts, 'max'); revalidateTag(CACHE_TAGS.home, 'max');
+      revalidateTag(CACHE_TAGS.postCounts, 'max');
     }
     return Response.json({ success: true, scraped: desired, scrapCount }, { headers: { 'Cache-Control': 'private, no-store' } });
   } catch (cause) { console.error('Save failed', cause); return Response.json({ error: '저장 처리에 실패했습니다. 다시 시도해주세요.' }, { status: 503 }); }

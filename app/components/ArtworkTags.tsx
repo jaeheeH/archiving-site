@@ -6,6 +6,6 @@ export default function ArtworkTags({ taxonomy, groups, artist }: { taxonomy?: A
   if (!tags.length) return null;
   return <ul className="archive-tags" aria-label="작품 분류">{tags.map(tag => {
     const query = new URLSearchParams({ [tag.group]: tag.id, ...(artist ? { artist } : {}) });
-    return <li key={`${tag.group}-${tag.id}`}><Link href={`/art?${query}`} aria-label={`${tag.label} 작품 보기`}>{tag.label}</Link></li>;
+    return <li key={`${tag.group}-${tag.id}`}><Link prefetch={false} href={`/art?${query}`} aria-label={`${tag.label} 작품 보기`}>{tag.label}</Link></li>;
   })}</ul>;
 }

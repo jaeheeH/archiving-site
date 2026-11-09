@@ -214,6 +214,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages, initi
         {!loading && gallery.length > 0 && totalPages > 1 && (
           <div className={`mt-16 flex flex-wrap items-center justify-center gap-2 transition-opacity duration-200 ${fetching ? 'pointer-events-none opacity-50' : 'opacity-100'}`}>
             <Link
+              prefetch={false}
               href={pageHref(Math.max(1, page - 1))}
               onClick={updatePage}
               aria-disabled={page === 1}
@@ -224,6 +225,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages, initi
             </Link>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
               <Link
+                prefetch={false}
                 key={pageNumber}
                 href={pageHref(pageNumber)}
                 aria-current={pageNumber === page ? "page" : undefined}
@@ -238,6 +240,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages, initi
               </Link>
             ))}
             <Link
+              prefetch={false}
               href={pageHref(Math.min(totalPages, page + 1))}
               onClick={updatePage}
               aria-disabled={page === totalPages}
@@ -256,7 +259,7 @@ export default function GalleryClient({ initialGallery, initialTotalPages, initi
 // --- Image Item Component ---
 function GalleryItemImage({ item, href }: { item: GalleryItem; href: string }) {
   return (
-    <Link href={href} className="gallery-image-card group block break-inside-avoid" aria-label={`${item.title} 이미지 상세`}>
+    <Link prefetch={false} href={href} className="gallery-image-card group block break-inside-avoid" aria-label={`${item.title} 이미지 상세`}>
       <div className="relative w-full overflow-hidden bg-[var(--archive-bg-light)]" style={{ aspectRatio: `${item.image_width} / ${item.image_height}` }}>
         <Image
           src={item.thumbnail_url || item.image_url}

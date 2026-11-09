@@ -21,6 +21,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   if (!parsed.success) return Response.json({ error: 'liked 값은 boolean이어야 합니다.' }, { status: 400 });
   const { data, error } = await createAdminClient().rpc('set_post_like', { p_post_id: id, p_user_id: user.id, p_liked: parsed.data.liked });
   if (error) return Response.json({ error: error.code === 'P0002' ? '기사를 찾을 수 없습니다.' : '좋아요를 저장하지 못했습니다.' }, { status: error.code === 'P0002' ? 404 : 503 });
-  revalidateTag(CACHE_TAGS.posts, { expire: 0 });
+  revalidateTag(CACHE_TAGS.postCounts, { expire: 0 });
   return Response.json(data, { headers: { 'Cache-Control': 'private, no-store' } });
 }

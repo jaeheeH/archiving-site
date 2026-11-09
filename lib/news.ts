@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from 'react';
 import { unstable_cache, revalidateTag, revalidatePath } from "next/cache";
 import { createPublicClient } from "@/lib/supabase/public";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -35,7 +36,7 @@ export const readNews = unstable_cache(async () => {
   articles.sort((a, b) => Date.parse(b.published_at) - Date.parse(a.published_at) || a.id.localeCompare(b.id));
   return { articles, sources: [...FEEDS, { id: "archb-editorial", name: "ARCH.B", category: "editorial" as const, url: "/" }].map(feed => ({ ...feed, count: articles.filter(a => a.source === feed.name).length })) };
 }, ["archb-published-news-and-editorials-v3", JSON.stringify(FEEDS)], { revalidate: 600, tags: [NEWS_CACHE_TAG, "public-posts"] });
-export const readNewsSummaries = unstable_cache(async (): Promise<{ articles: NewsSummary[] }> => {
+export const readNewsSummaries = cache(unstable_cache(async (): Promise<{ articles: NewsSummary[] }> => {
   const articles: NewsSummary[] = [];
   for (let offset = 0; ; offset += 500) {
     const { data, error } = await createPublicClient().from('published_post_summaries').select('*').order('published_at', { ascending: false }).order('id').range(offset, offset + 499);
@@ -49,7 +50,7 @@ export const readNewsSummaries = unstable_cache(async (): Promise<{ articles: Ne
   }
   articles.sort((a,b) => Date.parse(b.published_at) - Date.parse(a.published_at) || a.id.localeCompare(b.id));
   return { articles };
-}, ['published-post-summaries-v1'], { revalidate:600, tags:[NEWS_CACHE_TAG,'public-posts'] });
+}, ['published-post-summaries-v1'], { revalidate:3600, tags:[NEWS_CACHE_TAG,'public-posts'] }));
 export const readNewsArticle = unstable_cache(async (slug: string) => {
   const { data, error } = await createPublicClient().from("posts").select(columns).eq("slug", slug).in("type", ["news", "blog"]).eq("is_published", true).not("published_at", "is", null).maybeSingle();
   if (error) throw error;

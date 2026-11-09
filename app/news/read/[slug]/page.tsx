@@ -11,7 +11,8 @@ import { jsonLd, breadcrumb, sitePageUrl } from '@/lib/seo';
 import { extractHeadings, getNodeText } from '@/lib/article-outline';
 import EditorialContent from '@/app/components/EditorialContent';
 import { NewsBody } from '../NewsBody';
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+export async function generateStaticParams() { return []; }
 const getArticleData = cache(async (slug: string) => {
   const data = await getBlogPostData(slug);
   const article = data?.post ? mapPublishedRows([data.post])[0] : null;

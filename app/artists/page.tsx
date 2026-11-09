@@ -9,6 +9,7 @@ import Image from "@/app/components/ArchiveImage";
 import type { CSSProperties } from "react";
 import { getArtCatalog } from "@/lib/art-catalog";
 import { getPageMetadata } from '@/lib/site-settings';
+import { ARCHIVE_LIST_IMAGE_SIZES } from '@/lib/image-config';
 
 export async function generateMetadata({ searchParams }: ArtistsPageProps) {
   return getPageMetadata({ path: '/artists', title: '작가 아카이브', description: '여러 기관의 작품을 같은 작가별로 연결해 시대, 사조, 주제로 탐색합니다.', noindex: hasArtFilters(readArtFilters(await searchParams)) });
@@ -46,13 +47,13 @@ export default async function ArtistsPage({ searchParams }: ArtistsPageProps) {
           const cover = selectedWorks[0] || artistArtworks[0];
           return (
             <article key={artist.id} className="archive-card archive-artist-card group" data-analytics-resource={`artist:${artist.id}`} data-analytics-path={`/artists/${artist.id}`}>
-              <Link href={`/artists/${artist.id}`} className="archive-media" style={{ "--archive-image-ratio": cover && cover.image_width > 0 && cover.image_height > 0 ? `${cover.image_width} / ${cover.image_height}` : "1.65" } as CSSProperties}>
-                {cover && <Image src={cover.preview_url} alt={`${cover.title_ko} — ${artist.name_ko || artist.name}`} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-contain" />}
+              <Link prefetch={false} href={`/artists/${artist.id}`} className="archive-media" style={{ "--archive-image-ratio": cover && cover.image_width > 0 && cover.image_height > 0 ? `${cover.image_width} / ${cover.image_height}` : "1.65" } as CSSProperties}>
+                {cover && <Image src={cover.preview_url} alt={`${cover.title_ko} — ${artist.name_ko || artist.name}`} fill sizes={ARCHIVE_LIST_IMAGE_SIZES} className="object-contain" />}
               </Link>
               <div className="archive-card-copy">
                 <p className="archive-card-label">{hasWorkFilters ? `조건 일치 ${selectedWorks.length}점 · 전체 ${artistArtworks.length}점` : `작품 ${artistArtworks.length}점 · ${museums.size}개 기관`}</p>
                 <div className="archive-card-title-row">
-                  <h2><Link href={`/artists/${artist.id}`}>{artist.name_ko || artist.name}</Link></h2>
+                  <h2><Link prefetch={false} href={`/artists/${artist.id}`}>{artist.name_ko || artist.name}</Link></h2>
                   <SaveButton type="artist" id={artist.id} title={artist.name_ko || artist.name} iconOnly />
                 </div>
                 {artist.name_ko && <p className="archive-card-description">{artist.name}</p>}

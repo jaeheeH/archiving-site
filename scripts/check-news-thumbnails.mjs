@@ -5,6 +5,7 @@ import vm from 'node:vm';
 import ts from 'typescript';
 import * as zod from 'zod';
 import * as crypto from 'node:crypto';
+import { cache } from 'react';
 import {createClient} from '@supabase/supabase-js';
 import * as newsContentBlocks from '../lib/news-content-blocks.ts';
 
@@ -32,6 +33,7 @@ const db=createClient('https://test.supabase.co','test-key',{auth:{persistSessio
   return Response.json(post);
 }}});
 const mocks={
+  react:{cache},
   zod,'node:crypto':crypto,'server-only':{},'./news-content-blocks':newsContentBlocks,
   'next/cache':{unstable_cache:fn=>fn,revalidateTag:tag=>invalidations.push(tag),revalidatePath:path=>invalidations.push(path)},
   '@/lib/public-data':{CACHE_TAGS:{posts:'public-posts',home:'public-home'}},
