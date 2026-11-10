@@ -786,7 +786,7 @@ export const getBlogPostData = unstable_cache(
 
     return null;
   },
-  ["blog-post-data-v4"],
+  ["blog-post-data-v5"],
   {
     revalidate: CACHE_SECONDS.long,
     tags: [CACHE_TAGS.posts],

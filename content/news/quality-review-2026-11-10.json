@@ -1,6 +1,6 @@
 {
   "date": "2026-11-10",
-  "status": "reviewed",
+  "status": "applied",
   "scope": "39 reviewed findings and the linked Lynx article; no new reporting or performance measurements",
   "articles": 39,
   "findings": 39,
@@ -6608,5 +6608,11 @@
         "추가 독립대조에서 회사가 공개한190만명50:50 PoC·p75시간·적용화면 목록을 확인해 성능·화면미공개 주장을 교정했다. 시간 원값을 그대로 쓰고 원문의18%와 반올림 산식 차이를 임의 해석하지 않았다."
       ]
     }
-  ]
+  ],
+  "applied_at": "2026-11-10T14:29:30.672Z",
+  "verification": {
+    "database_articles": 39,
+    "checked_at": "2026-11-10T14:29:59.755Z",
+    "publication_dates_images_addresses_preserved": true
+  }
 }

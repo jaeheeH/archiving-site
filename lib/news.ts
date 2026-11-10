@@ -50,7 +50,7 @@ export const readNewsSummaries = cache(unstable_cache(async (): Promise<{ articl
   }
   articles.sort((a,b) => Date.parse(b.published_at) - Date.parse(a.published_at) || a.id.localeCompare(b.id));
   return { articles };
-}, ['published-post-summaries-v2'], { revalidate:3600, tags:[NEWS_CACHE_TAG,'public-posts'] }));
+}, ['published-post-summaries-v3'], { revalidate:3600, tags:[NEWS_CACHE_TAG,'public-posts'] }));
 export const readNewsArticle = unstable_cache(async (slug: string) => {
   const { data, error } = await createPublicClient().from("posts").select(columns).eq("slug", slug).in("type", ["news", "blog"]).eq("is_published", true).not("published_at", "is", null).maybeSingle();
   if (error) throw error;
