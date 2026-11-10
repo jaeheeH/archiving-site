@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-11-10T06:59:11.898Z",
         "reason": "Codex: both findings are inactive legacy styles. The identical .news-detail-page .archive-article-summary selector resets border to 0 later in the same stylesheet; .key-points has no TSX, TS, JSX, JS, HTML or MDX references in app, components or lib. Scope only side-tab to this file; keep all other checks active."
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "public/demos/news/llm-chat-accessibility.html"
+        ],
+        "createdAt": "2026-11-10T13:21:45.488Z",
+        "reason": "Agent: production browser computed body 16px, h2 24px and h1 32px; this standalone semantic HTML demo uses the browser heading styles. The detector reports all three as 16px."
       }
     ]
   }
