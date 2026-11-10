@@ -22,7 +22,7 @@ export function mapPublishedRows(rows: PublishedRow[]) {
     if (row.type === "blog") return [{ id: row.id, slug: row.slug, kind: "editorial" as const, collection: row.category_id, url: `/news/read/${row.slug}`, original_title: row.title, title: row.title, summary: row.summary || row.subtitle || "", description: row.summary || row.subtitle || "ARCH.B의 관점으로 읽는 이야기.", tags: row.tags || [], image: row.title_image_url, published_at: row.published_at, source: "ARCH.B", category: "editorial" as const, paragraphs: [], points: [] }];
     const content = row.content;
     if (content?.format !== NEWS_FORMAT || !Object.hasOwn(CATEGORIES, content.category) || !Array.isArray(content.paragraphs) || !Array.isArray(content.points)) return [];
-    return [{ id: row.id, slug: row.slug, kind: "news" as const, url: content.source_url, original_title: content.original_title, title: row.title, summary: row.summary || "", description: row.summary || "", tags: row.tags || [], image: row.title_image_url || row.thumbnail_url || null, published_at: content.source_published_at || row.published_at, source: content.source, category: content.category, paragraphs: content.paragraphs, points: content.points, ...(content.blocks ? { blocks: content.blocks } : {}) }];
+    return [{ id: row.id, slug: row.slug, kind: "news" as const, url: content.source_url, original_title: content.original_title, title: row.title, summary: row.summary || "", description: row.summary || "", tags: row.tags || [], image: row.title_image_url || row.thumbnail_url || null, published_at: row.published_at, source: content.source, category: content.category, paragraphs: content.paragraphs, points: content.points, ...(content.blocks ? { blocks: content.blocks } : {}) }];
   });
 }
 export const readNews = unstable_cache(async () => {
@@ -35,7 +35,7 @@ export const readNews = unstable_cache(async () => {
   }
   articles.sort((a, b) => Date.parse(b.published_at) - Date.parse(a.published_at) || a.id.localeCompare(b.id));
   return { articles, sources: [...FEEDS, { id: "archb-editorial", name: "ARCH.B", category: "editorial" as const, url: "/" }].map(feed => ({ ...feed, count: articles.filter(a => a.source === feed.name).length })) };
-}, ["archb-published-news-and-editorials-v3", JSON.stringify(FEEDS)], { revalidate: 600, tags: [NEWS_CACHE_TAG, "public-posts"] });
+}, ["archb-published-news-and-editorials-v4", JSON.stringify(FEEDS)], { revalidate: 600, tags: [NEWS_CACHE_TAG, "public-posts"] });
 export const readNewsSummaries = cache(unstable_cache(async (): Promise<{ articles: NewsSummary[] }> => {
   const articles: NewsSummary[] = [];
   for (let offset = 0; ; offset += 500) {
@@ -44,18 +44,18 @@ export const readNewsSummaries = cache(unstable_cache(async (): Promise<{ articl
     for (const row of data || []) {
       const editorial = row.type === 'blog';
       if (!editorial && !Object.hasOwn(CATEGORIES, row.news_category)) continue;
-      articles.push({ id: row.id, slug: row.slug, kind: editorial ? 'editorial' : 'news', collection: editorial ? row.category_id : undefined, url: editorial ? `/news/read/${row.slug}` : row.source_url, original_title: editorial ? row.title : row.original_title, title: row.title, summary: row.summary || row.subtitle || '', description: row.summary || row.subtitle || '', tags: row.tags || [], image: row.title_image_url, published_at: editorial ? row.published_at : row.source_published_at || row.published_at, source: editorial ? 'ARCH.B' : row.source, category: editorial ? 'editorial' : row.news_category });
+      articles.push({ id: row.id, slug: row.slug, kind: editorial ? 'editorial' : 'news', collection: editorial ? row.category_id : undefined, url: editorial ? `/news/read/${row.slug}` : row.source_url, original_title: editorial ? row.title : row.original_title, title: row.title, summary: row.summary || row.subtitle || '', description: row.summary || row.subtitle || '', tags: row.tags || [], image: row.title_image_url, published_at: row.published_at, source: editorial ? 'ARCH.B' : row.source, category: editorial ? 'editorial' : row.news_category });
     }
     if (!data || data.length < 500) break;
   }
   articles.sort((a,b) => Date.parse(b.published_at) - Date.parse(a.published_at) || a.id.localeCompare(b.id));
   return { articles };
-}, ['published-post-summaries-v1'], { revalidate:3600, tags:[NEWS_CACHE_TAG,'public-posts'] }));
+}, ['published-post-summaries-v2'], { revalidate:3600, tags:[NEWS_CACHE_TAG,'public-posts'] }));
 export const readNewsArticle = unstable_cache(async (slug: string) => {
   const { data, error } = await createPublicClient().from("posts").select(columns).eq("slug", slug).in("type", ["news", "blog"]).eq("is_published", true).not("published_at", "is", null).maybeSingle();
   if (error) throw error;
   return data ? mapPublishedRows([data as PublishedRow])[0] || null : null;
-}, ["archb-article-by-slug"], { revalidate: 600, tags: [NEWS_CACHE_TAG, "public-posts"] });
+}, ["archb-article-by-slug-v2"], { revalidate: 600, tags: [NEWS_CACHE_TAG, "public-posts"] });
 
 export async function collectNews(authorId: string) {
   const { collectNewsInto } = await import('./news-pipeline');
@@ -83,7 +83,7 @@ export async function saveNewsEditorials(articles: Editorial[], permission: Perm
   if (data?.length !== articles.length) throw new Error("수집된 뉴스만 가공할 수 있습니다.");
   const permissions = await Promise.all(data.map(row => checkPostOwnershipOrAdmin(row.id, permission)));
   if (permissions.some(permission => !permission.authorized)) throw new Error("가공할 권한이 없는 기사가 포함되어 있습니다.");
-  const rows = articles.map(article => { const row = data.find(r => r.slug === newsSlug(article.url))!; return { id: row.id, author_id: row.author_id, type: "news", slug: row.slug, title: article.title, summary: article.summary, tags: article.tags, title_image_url: row.title_image_url, is_published: true, published_at: row.content.source_published_at, content: { ...row.content, source_text: undefined, paragraphs: article.paragraphs, points: article.points, ...(article.blocks !== undefined ? { blocks: article.blocks } : {}), duplicate_review: undefined, automation: completedNewsWriting(row.content.automation) } }; });
+  const rows = articles.map(article => { const row = data.find(r => r.slug === newsSlug(article.url))!; return { id: row.id, author_id: row.author_id, type: "news", slug: row.slug, title: article.title, summary: article.summary, tags: article.tags, title_image_url: row.title_image_url, is_published: true, published_at: row.published_at || new Date().toISOString(), content: { ...row.content, source_text: undefined, paragraphs: article.paragraphs, points: article.points, ...(article.blocks !== undefined ? { blocks: article.blocks } : {}), duplicate_review: undefined, automation: completedNewsWriting(row.content.automation) } }; });
   const saved = await db.from("posts").upsert(rows, { onConflict: "id" });
   if (saved.error) throw saved.error;
   revalidateTag(NEWS_CACHE_TAG, { expire: 0 });

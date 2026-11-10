@@ -12,6 +12,7 @@ import ArchiveImage from '@/app/components/ArchiveImage';
 
 import { normalizeAvatarUrl } from '@/lib/avatar-url';
 import { SITE_COPY } from '@/lib/site-copy';
+import { formatKoreanDate } from '@/lib/date-format';
 import { CATEGORIES } from '@/lib/news-feeds';
 import '../../css/blog/view.scss';
 
@@ -94,6 +95,7 @@ const formatCompactDate = (dateValue: string | null | undefined) =>
     year: 'numeric',
     month: 'numeric',
     day: 'numeric',
+    timeZone: 'Asia/Seoul',
   });
 
 // ---------------------------------------------------------
@@ -388,11 +390,7 @@ export default function BlogDetailClient({
   // ISR 데이터가 확실히 넘어오므로 여기서는 바로 렌더링합니다.
   if (!post) return null;
 
-  const publishedLabel = new Date(post.published_at || post.created_at).toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const publishedLabel = formatKoreanDate(post.published_at || post.created_at);
   const categoryName = news?.categoryName || category?.name || '에디토리얼';
   const authorName = authorProfile?.nickname || authorProfile?.name || 'ARCH.B';
   const authorAvatar = authorProfile?.avatar_url;

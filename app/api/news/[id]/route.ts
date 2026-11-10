@@ -31,7 +31,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     }
     const saved = await db.from("posts").update({
       title: article.title, summary: article.summary, tags: article.tags, is_published,
-      published_at: is_published ? post.published_at || post.content.source_published_at || new Date().toISOString() : null,
+      published_at: is_published ? post.published_at || new Date().toISOString() : null,
       content,
       ...(thumbnail_url !== undefined ? { thumbnail_url } : {}),
       updated_at: new Date().toISOString(),

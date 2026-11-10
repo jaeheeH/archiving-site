@@ -8,6 +8,8 @@ import * as crypto from 'node:crypto';
 import { cache } from 'react';
 import {createClient} from '@supabase/supabase-js';
 import * as newsContentBlocks from '../lib/news-content-blocks.ts';
+import { canOptimizeImage } from '../lib/public-image.ts';
+import { formatKoreanDate } from '../lib/date-format.ts';
 
 const id='11111111-1111-4111-8111-111111111111';
 const image=`https://overgjynkrnwayfammid.supabase.co/storage/v1/object/public/posts/news-thumbnails/${id}/image.webp`;
@@ -21,6 +23,7 @@ function reset(){
 const db=createClient('https://test.supabase.co','test-key',{auth:{persistSession:false},global:{fetch:async(input,options={})=>{
   const url=new URL(typeof input==='string'?input:input.url);
   requested.push(options.method||'GET');
+  if(url.pathname.endsWith('/published_post_summaries'))return Response.json([{...post,news_category:post.content.category,source:post.content.source,source_url:post.content.source_url,source_published_at:post.content.source_published_at,original_title:post.content.original_title}]);
   if(options.method==='PATCH'){
     updates++;
     assert.equal(url.searchParams.get('updated_at'),`eq.${post.updated_at}`);
@@ -51,11 +54,28 @@ function load(path){
 const editorial=load('../lib/news-editorial.ts');
 mocks['./news-editorial']=mocks['@/lib/news-editorial']=editorial;
 const record=load('../lib/news-record.ts');mocks['./news-record']=mocks['@/lib/news-record']=record;
-const {mapPublishedRows}=load('../lib/news.ts');
+const {mapPublishedRows,readNewsSummaries}=load('../lib/news.ts');
 const {PATCH}=load('../app/api/news/[id]/route.ts');
 assert(editorial.editorialSchema.safeParse(article).success,'Use a valid publishable fixture.');
 const payload={article,is_published:true};
 const call=(extra={},headers={})=>PATCH(new Request(`https://archbehind.com/api/news/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json',...headers},body:JSON.stringify({...payload,...extra})}),{params:Promise.resolve({id})});
+
+reset();
+assert.equal(mapPublishedRows([post])[0].published_at,post.published_at,'Article mapping uses the ARCH.B publication date, not the source date.');
+assert.equal((await readNewsSummaries()).articles[0].published_at,post.published_at,'Home and archive summaries use the same publication date as the article.');
+assert.equal(post.content.source_published_at,'2026-10-14T00:00:00Z','Preserve the original publisher date.');
+assert.equal(formatKoreanDate('2026-11-09T23:37:18.121Z'),'2026년 11월 10일','Publication dates use Seoul time even when the server uses UTC.');
+assert(canOptimizeImage('https://webassets.linear.app/images/example.png?auto=format&dpr=2&q=95'),'Linear thumbnails must use the existing WebP optimizer.');
+assert(!canOptimizeImage('https://webassets.linear.app.untrusted.example/image.png'));
+assert(!canOptimizeImage('http://webassets.linear.app/image.png'));
+reset();post.published_at=null;
+const beforePublish=Date.now();
+assert.equal((await call()).status,200);
+assert(Date.parse(post.published_at)>=beforePublish && Date.parse(post.published_at)<=Date.now(),'First publication records the current time instead of backdating to the original source.');
+assert.equal(post.content.source_published_at,'2026-10-14T00:00:00Z');
+const firstPublication=record.newsPost({...article,source:'Original publisher',category:'design',published_at:'2026-10-14T00:00:00Z'});
+assert(Date.parse(firstPublication.published_at)>=beforePublish && Date.parse(firstPublication.published_at)<=Date.now());
+assert.equal(firstPublication.content.source_published_at,'2026-10-14T00:00:00Z');
 
 reset();assert.equal(mapPublishedRows([post])[0].image,post.title_image_url);
 reset();post.title_image_url=null;assert.equal(mapPublishedRows([post])[0].image,image);assert.equal(post.title_image_url,null,'List mapping must not turn the fallback into a detail image.');

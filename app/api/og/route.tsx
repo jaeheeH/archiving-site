@@ -46,6 +46,7 @@ function formatDate(value: string | null | undefined) {
     year: "numeric",
     month: "long",
     day: "numeric",
+    timeZone: "Asia/Seoul",
   });
 }
 

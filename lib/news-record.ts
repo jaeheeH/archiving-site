@@ -12,7 +12,7 @@ export function completedNewsWriting(state?: WritingState, finishedAt = new Date
 export type NewsArticle = Article & Editorial & { id: string; slug: string; original_title: string; kind: "news" | "editorial"; collection?: string };
 export function newsPost(article: Article & Partial<Editorial> & { original_title?: string }) {
   const published = editorialSchema.safeParse({ url: article.url, title: article.title, summary: article.summary, tags: article.tags, paragraphs: article.paragraphs, points: article.points, ...(article.blocks !== undefined ? { blocks: article.blocks } : {}) }).success;
-  return { type: "news", slug: newsSlug(article.url), title: article.title, summary: article.summary || article.description, tags: article.tags, title_image_url: article.image, is_published: published, published_at: published ? article.published_at : null,
+  return { type: "news", slug: newsSlug(article.url), title: article.title, summary: article.summary || article.description, tags: article.tags, title_image_url: article.image, is_published: published, published_at: published ? new Date().toISOString() : null,
     content: { format: NEWS_FORMAT, source_url: article.url, source: article.source, category: article.category, source_published_at: article.published_at, original_title: article.original_title || article.title, ...(published ? { paragraphs: article.paragraphs, points: article.points, ...(article.blocks !== undefined ? { blocks: article.blocks } : {}) } : { source_text: article.source_text || article.description }) },
   };
 }
