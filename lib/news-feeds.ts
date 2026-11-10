@@ -1,6 +1,6 @@
 import { XMLParser, XMLValidator } from "fast-xml-parser";
-export const CATEGORIES = { design: "디자인", development: "개발", ai: "AI", technology: "제품·기술", interiors: "인테리어", editorial: "에디토리얼" } as const;
-export type Category = keyof typeof CATEGORIES;
+import type { Category } from './news-categories';
+export { CATEGORIES, type Category } from './news-categories';
 export type Article = { url: string; title: string; description: string; category: Category; source: string; published_at: string; image: string | null; tags: string[]; source_text?: string };
 export const FEEDS: { id: string; name: string; category: Category; url: string }[] = [
   { id: "dezeen-design", name: "Dezeen", category: "design", url: "https://www.dezeen.com/design/feed/" },

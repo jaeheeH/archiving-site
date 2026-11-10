@@ -1,42 +1,127 @@
-# 항목별 아트·작가 필터 QA
-
-대상은 사용자 주석으로 선택된 LG 홈스타일의 항목별 필터 행과 옵션 패널이다. 아트와 작가의 공유 필터에 이 배치와 탐색 방식을 적용했다. 기존 ARCH.B의 검색, masonry, 작품 이미지, 녹색 선택 색상과 각진 모서리는 요청 범위에 맞춰 유지한다.
-
-## 비교 근거
-
-- Source visual truth: [LG 홈스타일 필터](https://homestyle.lge.co.kr/shop?superCategoryId=2506000003&categoryId=2506000008&subCategoryId=2506000060&name=%EC%B9%A8%EB%8C%80), 사용자 주석 이미지.
-- 기본 상태: `.next-performance/grouped-art-filters/reference-closed.png`와 `artists-closed.png`.
-- 옵션 열림: 같은 폴더의 `reference-open.png`와 `artists-open.png`. 두 이미지를 한 입력에서 함께 열어 전체 배치와 패널의 텍스트·간격·체크 위치를 비교했다.
-- 공통 비교 프레임: 위 네 이미지의 실제 픽셀 크기는 모두 **1536×1232**다. 별도 크롭이나 리사이즈 없이 비교했다. 도메인별 항목명·선택 상태와 기존 페이지 여백은 의도적으로 다르다.
-- 최종 코드 확인: `final-artists-open.png` **1265×1514** 전체 페이지에서 동일한 필터 배치, 열린 주제 패널, 선택 조건과 결과 1명을 확인했다.
-- 모바일: `mobile-art-open.png`, `mobile-artists-open.png` 모두 **375×812**. 390px 모바일 뷰포트 설정에서 캡처된 화면이며 스크롤바·앱 영역을 제외한 실제 이미지 크기를 기록했다. 패널과 긴 소장처명이 화면 안에 들어오고 문서 가로 넘침이 없었다.
-- 추가 작은 화면 비교: `reference-matched-open.png` **1253×705**, `implementation-matched-open.png` **1265×712**. 브라우저 캡처 영역 차이가 있으므로 동일 크기 비교의 근거는 위 1536×1232 쌍으로 삼았다.
-
-## 다섯 가지 시각 검증
-
-- Fonts/typography: 기존 Pretendard, 13px 항목·옵션, 12px 안내를 사용한다. 항목·선택 수·펼치기 아이콘의 위계와 긴 옵션명의 줄바꿈을 확인했다.
-- Spacing/layout: 항목별 최소 44px 버튼, 8px 버튼 간격, 버튼 아래 세로 옵션 패널, 별도 선택 조건 행. PC에서는 280px 패널이며 모바일에서 화면 안에 배치된다. 패널 안 목록은 스크롤한다.
-- Colors/tokens: 기존 ARCH.B 배경·경계선·녹색 선택 토큰을 사용한다. 열린 항목과 선택한 옵션·조건에 같은 녹색이 적용된다. 모서리는 기존 사용자 선호에 맞춰 각지게 유지했다.
-- Image quality/assets: 필터에 신규 래스터 자산은 필요하지 않다. 기존 Remix Icon의 펼치기·해제 아이콘을 사용하며 작품 이미지의 크기·배치를 바꾸지 않았다.
-- Copy/content: 시대·사조·양식·작품 종류·주제·작가·소장처의 기존 분류를 사용한다. 주제 패널에 복수 선택과 OR 조건을 설명한다. 작가 페이지에는 해당 작품을 가진 작가를 보여준다는 안내가 있다.
-
-## 수정·재검증 기록
-
-1. 초기 자동화에서 열린 종류 패널 뒤에 가려진 조건 해제 버튼을 클릭하려다 브라우저 탭 오류가 발생했다. DOM 위치 확인으로 대상이 패널에 가려져 있음을 확인했다. 정상 화면에서의 앱 오류로 재현되지 않았으며 서버·콘솔 오류도 없었다.
-2. 메뉴 닫기 처리를 바깥 클릭·초점 이동으로 단순화하고 Escape 시 항목 버튼으로 초점을 복원했다. 메뉴를 닫은 뒤 소장처·시대 조건을 해제하는 실제 사용 경로는 통과했다.
-3. PC·모바일에서 즉시 선택 적용, 복수 주제 선택, 개별 해제와 키보드 이동을 다시 확인했다. 남은 P0/P1/P2 발견 사항은 없다.
-
-## 동작 검증
-
-- 작가: 시대 선택 즉시 27→8명, 실내 주제 추가 시 1명. 주제 해제 및 뒤로가기로 상태·선택 표시 복원.
-- 아트: 여섯 항목 표시, 함메르쇼이 5점, 주제 복수 선택, 모든 주제 해제, 소장처·종류 조합 및 조건별 해제.
-- 검색: 작성 중인 검색어는 필터 변경으로 제출되지 않고 유지된다. 검색 버튼·Enter로 적용한다. 접힌 메뉴의 선택도 검색 조건에 포함된다.
-- 시대 변경 시 기존 사조와 선택 표시를 함께 초기화한다.
-- 메뉴: 한 번에 한 항목 열림, 바깥 클릭·Tab 초점 이동으로 닫힘, Escape 초점 복원, Enter 열기.
-- 모바일: 메뉴·선택 조건 가로 넘침 없음, 옵션 선택 즉시 결과 갱신.
-- `npm run build`, 공유 컴포넌트 ESLint, `npx tsx scripts/check-art-taxonomy.ts http://localhost:3002` 통과. 분류 검사는 127개 작품·공개 목록·통합 검색을 확인한다.
-- 최종 브라우저 오류 로그: `[]`. 상세 동작 기록은 `.next-performance/grouped-art-filters/checks.json`에 저장했다.
-
-운영 배포와 실제 모바일 기기 검증은 이번 작업에서 수행하지 않았다.
+# Homepage design QA
 
 final result: passed
+
+## Final spacing and commit checks — 2026-11-10
+
+- Artist archive heading: 24 px across desktop and mobile. Mobile artwork captions no longer reserve two lines; one-line titles shrink from 46.4 px to 23.2 px, with a 6 px gap before the artist. One- and two-line titles were checked at 599 and 320 px; desktop keeps its 18 px caption type.
+- Evidence: `home-artist-title-24.jpg` and `home-artwork-mobile-caption-gap.jpg` in the evidence directory below.
+- Integrated the UI changes on the latest remote master in an isolated worktree, preserving upstream image handling, article content styles and descriptive link labels. Type generation, TypeScript, targeted ESLint, homepage HTTP/link checks and whitespace checks passed on the combined code. Production build and physical-device checks were not run.
+
+## Latest Artwork refinement — 2026-11-10
+
+This pass supersedes the earlier fixed desktop image frames, purple palette, filled artist CTA and long Artwork introduction.
+
+- PC artwork images now use their catalog dimensions and natural rendered heights in the existing two staggered flow columns. No square or 4:5 desktop frame remains. Measured examples range from 159 px to 845 px tall at a 341 px column width. Mobile ≤640 px retains the existing square cards in two horizontal rows.
+- Each home request samples up to nine distinct works from the full preview-enabled catalog, without replacing or mutating catalog records. Two fresh HTTP renders each contained nine unique artwork destinations and produced different selections. Selection runs on the server; client hydration receives the same selected children. The nine thumbnails load eagerly at low priority to prepare newly sampled images before the section enters view.
+- Artwork uses sage `#dce8df` with forest `#203b2d`, secondary text `#496351`, and a dark forest artist banner `#253b30`. Text contrast: title 9.65:1, introduction 5.23:1, artist text/link 9.53:1.
+- The artist CTA is a transparent, underlined text link with a 44 px target. Its hover color remains readable against the banner. The Artwork introduction is shortened without a line clamp; at the user's 1125 px viewport it measures 91.78 px at a 30.6 px line height, approximately three lines. Korean words stay together when wrapping.
+- [P2, fixed] A very tall natural-ratio work could leave its caption below the clipped keyboard viewport. Visible keyboard focus now scrolls the caption into view. All nine links passed with the tall-work cohort and again with the new random cohort.
+- Checked at 1307 / 1125 px desktop and 560 / 390 / 320 px mobile. Desktop image boxes follow the image height; mobile rows remain horizontal and square. No page-wide overflow. All nine sampled images loaded in the inspected desktop state; browser console warnings/errors were absent.
+- TypeScript, targeted ESLint, the home-route smoke check, repeated-request random-selection assertions and scoped whitespace checks passed. No new dependency or separate masonry controller was added.
+
+Latest visual evidence in the directory listed below: `home-artwork-random-masonry-sage.jpg` (1125 px viewport, paused desktop flow) and `home-artwork-random-sage-mobile.jpg` (560 px viewport, keyboard-focused two-row flow). The renders were inspected for typography, word wrapping, image proportions, spacing, palette, caption placement, link affordance and responsive behavior. No actionable P0/P1/P2 findings remain. Physical phone gestures and a production build were not run in this pass.
+
+## Latest spacing follow-up — 2026-11-10
+
+- Removed the homepage-only 78 px gap before the footer: 48 px wrapper padding plus 30 px footer margin. The final reference section now meets the full-width footer border directly; the footer's internal padding remains intact.
+- Topic columns use 48 px gaps on desktop and 32 px in the two-column layout. Category rows gain 16 px separation (8 px on mobile), heading-to-list spacing is 28 px (24 px on mobile), and article vertical padding is 24 px.
+- Rendered checks passed at 1545, 900, 390 and 320 CSS px: footer gap is 0, responsive columns remain 3 / 2 / 1, and page width does not exceed the viewport. Scoped whitespace checks passed. No JavaScript changed in this follow-up.
+- Evidence: `home-topic-spacing-expanded.jpg`, `home-topic-spacing-mobile.jpg` and `home-footer-gap-removed.jpg` in the evidence directory below. The desktop and mobile renders were visually inspected.
+
+## Latest annotation pass — 2026-11-10
+
+The latest user annotations supersede the earlier small Artwork heading, mobile vertical lane and visible pause buttons described in the baseline below.
+
+- Artwork: 64 px above 768 px, 40 px at smaller widths. The introduction is expanded to 146 characters; the artist introduction is expanded to 161 characters. Artwork titles now sit in the copy below each image, with no image overlay.
+- Desktop retains two opposing vertical lanes. At ≤640 px, the same nine artworks occupy two opposing horizontal rows. Checked at 560, 390 and 320 CSS px with no page-wide overflow.
+- Visible motion buttons are removed from both sections. Reference cards support pointer dragging in both directions. Measured desktop drags moved the track −281.6 px and +230 px. Neither drag navigated or opened a tab; a subsequent ordinary click opened the expected Motion Examples page. The temporary external tab was closed.
+- A focusable region supports Space to pause/resume without a visible button. Hover and link focus also stop motion; all nine artworks and all nine reference links remain reachable and visible by keyboard. Offscreen tracks were confirmed paused. Reduced-motion preference and document-visibility handling remain in place.
+- [P2, fixed] The mobile media rule overrode the region's focus mask. The focus selector was made more specific; post-fix computed values are `mask-image: none` and a 2 px visible outline. `home-artwork-two-rows-mobile-560.jpg` is the post-fix capture.
+- New browser-console warnings/errors: none. TypeScript, targeted ESLint, the updated home smoke check and scoped whitespace checks passed. No dependency was added.
+
+Latest evidence in the directory listed below:
+
+- `home-artwork-captions-desktop.jpg`: 1603 × 1244 CSS viewport, 1588 × 1232 exported pixels.
+- `home-reference-draggable-desktop.jpg`: same viewport and exported size, no motion button.
+- `home-artwork-two-rows-mobile-560.jpg`: 560 × 1244 CSS viewport, 545 × 1211 exported pixels, keyboard-focused and paused to inspect both rows.
+
+The Design+ composition source and the updated desktop/mobile captures were opened together in one comparison input. Source capture is 1481 × 1244 CSS px; the latest desktop check uses the user's 1603 px context. This is a responsive composition comparison, not a same-viewport pixel match. Palette, authentic image assets, typography, copy, caption placement, spacing and focus state were reviewed. The source's image-title overlays are intentionally replaced by below-image titles per the latest request. No actionable P0/P1/P2 findings remain.
+
+## Earlier baseline and comparison history
+
+## Findings
+
+No actionable P0/P1/P2 findings remain after the keyboard-navigation fix and the final source/render comparison.
+
+## Visual targets and evidence
+
+Implementation: `http://127.0.0.1:3001/`.
+
+Evidence directory: `C:/Users/kadfg/.codex/visualizations/2026/11/09/01a1c2ac-09cb-7e23-bd18-c64d828c4d52/`.
+
+Source visual truth:
+
+- `reference-young-showcase.jpg`: Design+ Young: Showcase and Membership Y, selected by the user as composition references.
+- `reference-sites-list.jpg`: the existing local `/references` page and its thumbnail → name → description cards.
+- The user's latest annotations override the references: normal-size “Artwork” heading, artist introduction inside Artwork, black flowing references, and no home sidebar on mobile.
+
+Rendered implementation:
+
+- `home-artwork-flow-desktop.jpg`: full-color Artwork section, two moving lanes and the artist introduction banner.
+- `home-reference-flow-desktop.jpg`: full-width black reference section with stacked card content.
+- `home-topic-three-columns.jpg`: desktop category order and 3 × 2 grid.
+- `home-mobile-news-457.jpg`: top stories followed directly by topics, with the home sidebar hidden.
+- `home-artwork-flow-mobile-457.jpg`: single Artwork lane and stacked artist banner.
+- `home-reference-flow-mobile-390.jpg`: mobile artist CTA and reference cards.
+- `home-flow-keyboard.jpg`: post-fix visible keyboard navigation inside a scrollable lane.
+
+The source and implementation desktop images were opened together in the same comparison input. The reference-list source and black reference implementation were also compared together in that input. Mobile screenshots and the keyboard screenshot were separately inspected as interaction/responsive evidence.
+
+## Viewport, density and state
+
+- Desktop source and implementation: 1481 × 1244 CSS px; both screenshot files are 1466 × 1231 pixels. The browser screenshot export uses the same scale for both. No resampling or pixel-perfect claim was used.
+- Browser-reported device pixel ratio: 1.
+- Mobile: 457 × 1244 CSS px exported as 442 × 1203 pixels; 390 × 1244 CSS px exported as 375 × 1196 pixels. These validate responsive behavior, rather than a mobile reference image match.
+- Additional layout checks: 1024, 768 and 320 CSS px widths.
+- State: light theme, logged out, real catalog artwork and reference-site content, running motion plus paused and keyboard-focused states. Source portfolio content is intentionally replaced by ARCH.B content.
+- The full-view screenshots make the left text, artist banner, reference thumbnail/copy hierarchy and controls readable. No extra crop was needed; the keyboard-state screenshot supplies a focused interaction check without removing surrounding context.
+
+## Required fidelity surfaces
+
+- **Typography:** existing Pretendard retained. Artwork uses the normal section-title size, 25 px desktop / 23 px mobile, as requested. Category titles remain 600-weight and one line; existing article summaries remain limited to two lines. Reference names are 20 px / 600. App copy describes artwork, artists and references without importing Design+ membership or portfolio copy.
+- **Spacing and layout:** full-bleed colored bands preserve the shared 1232 px inner container. At the desktop check, logo, first news-menu text and topic content all start at x = 117 px. Topics render 디자인 / 개발 / AI, then 제품·기술 / 인테리어 / 에디토리얼. They become two columns at ≤950 px and one at ≤640 px. Home sidebar hides at ≤768 px; this does not hide the news-list sidebar. Artwork uses two 620 px lanes on desktop and one 520 px lane at ≤640 px. The artist banner stacks on mobile, with a 44 px CTA.
+- **Colors and tokens:** lilac Artwork with charcoal text; a charcoal artist banner with lilac copy; black references with light titles and muted descriptions. Measured text contrast ratios: Artwork title 7.58:1, intro 5.55:1, artist copy 7.30:1, reference title 16.12:1 and reference description 10.21:1. These local section tokens also preserve readable focus indicators.
+- **Image quality:** real archive and reference thumbnails retained; no generated or code-drawn substitutes. Artwork uses contain to preserve the complete work, so letterboxing for wide or tall originals is intentional. Reference thumbnails use the same source images as the list page, cropped consistently above the name and description. Offscreen lazy images are expected to load as their cards enter view.
+- **Copy and content:** nine distinct artwork links and nine actual reference sites. A separate artist-gallery block was removed; the text-only artist introduction now lives inside Artwork and links to `/artists`. Category subcopy is removed while article summaries remain.
+
+## Comparison and fix history
+
+1. **Blocked — P2 keyboard clipping.** Pausing a translated track alone left some focused original artworks outside the clipped window. One observed link occupied y = 368–768 while the flow window occupied y = 2004–2624.
+2. **Fix.** A lane becomes static and manually scrollable while one of its links has visible keyboard focus. The edge mask is removed during keyboard exploration, and lane scroll resets when focus leaves. Other lanes pause. Visual loop copies remain hidden from assistive technology and have `tabIndex=-1`.
+3. **Post-fix verification.** Assert-based browser checks reached all nine unique artwork links with their titles visible and all nine unique reference links inside their flow window. Leaving the artwork lanes reset both scroll offsets to zero and restored animation. `home-flow-keyboard.jpg` records the repaired state. The revised desktop capture was compared with the source again; no further P0/P1/P2 differences were found.
+
+## Functional and responsive checks
+
+- Pause freezes transforms; play restores movement. Artwork lanes move in opposite vertical directions and references move horizontally.
+- Hover and visible link focus pause motion. Explicit pause/play controls work independently for the two sections.
+- Artist CTA reached `/artists`; all-sites link reached `/references` in the browser.
+- HTTP smoke check passed for the home page, `/artists` and the nine artwork destinations; duplicate artwork and reference-copy semantics were checked.
+- No page-wide horizontal overflow at 1481, 1024, 768, 457, 390 or 320 CSS px widths. Mobile sidebar hiding and the settled one-lane layout were confirmed.
+- A fresh reload and subsequent interactions produced no new browser console warnings or errors.
+- TypeScript, targeted ESLint and scoped `git diff --check` passed.
+
+## Residual gaps
+
+- No physical-phone or production-build run in this pass.
+- Reduced-motion preference handling was reviewed in source (initially paused, matchMedia listener and cleanup); changing the OS preference was not exercised in the browser.
+- Existing unrelated analytics/server history was outside this visual change. No new console errors occurred during the final clean check.
+
+## Implementation checklist
+
+- [x] Requested content order and normal Artwork title.
+- [x] Artist text introduction nested inside Artwork.
+- [x] Full-color Artwork and black flowing references.
+- [x] Desktop category grid and responsive/sidebar rules.
+- [x] Visible keyboard navigation, loop-copy accessibility and motion controls.
+- [x] Source/render comparison, screenshots and targeted checks.

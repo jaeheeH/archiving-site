@@ -1,6 +1,6 @@
 import { matchesSearch } from './search-text';
 import type { NewsArticle } from './news-record';
-import { CATEGORIES } from './news-feeds';
+import { CATEGORIES } from './news-categories';
 export type NewsSummary = Omit<NewsArticle, 'paragraphs' | 'points' | 'source_text'>;
 export type NewsFilters = { page?: string | number; category?: string; q?: string; source?: string; collection?: string };
 export const NEWS_PAGE_SIZE = 24;

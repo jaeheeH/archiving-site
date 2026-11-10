@@ -8,7 +8,7 @@
 }
 .archb-archive :is(h1,h2,h3) { word-break: keep-all; overflow-wrap: anywhere; }
 .archb-archive a:hover { color: var(--archive-brand); }
-.archb-archive > .archive-heading { background: transparent; padding-bottom: 30px; }
+.archb-archive .archive-heading { background: transparent; padding-bottom: 30px; }
 .archive-heading h1 { font-size: 40px; font-weight: 750; line-height: 1.3; letter-spacing: -1.5px; margin: 18px 0 10px; }
 .archive-heading > p,.archive-heading > div > p:last-child { max-width: 720px; color: var(--archive-muted); font-size: 16px; line-height: 1.8; }
 .archive-heading .archive-kicker,.archive-kicker { font-size: 12px; font-weight: 650; color: var(--archive-brand); letter-spacing: .5px; }
@@ -52,12 +52,17 @@
 .archive-caption strong { font-weight: 600; color: var(--archive-brand); }
 .archive-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); align-items: start; gap: 40px 26px; }
 .archive-masonry { --masonry-columns: 3; position: relative; display: grid; grid-template-columns: repeat(var(--masonry-columns),minmax(0,1fr)); align-items: start; gap: 40px 26px; }
+:is(.archive-art-page,.archive-artists-page) > :is(.archive-heading,.archive-filter) { padding-bottom: 32px; }
+:is(.archive-art-page,.archive-artists-page) > .archive-caption { padding-block: 32px; }
+:is(.archive-art-page,.archive-artists-page) > .archive-masonry { gap: clamp(48px,5vw,64px) clamp(28px,3vw,40px); }
+:is(.archive-art-page,.archive-artists-page) .archive-card-copy { padding-top: 18px; }
+@media(max-width:768px) { :is(.archive-art-page,.archive-artists-page) { padding-inline: 20px; } }
 @media(min-width:1200px) { .archive-art-page > .archive-masonry,.archive-artists-page > .archive-masonry { --masonry-columns: 4; } }
 .archive-masonry[data-layout=ready] > .archive-card { position: absolute; top: 0; left: 0; }
 .archive-masonry .archive-media { aspect-ratio: var(--archive-image-ratio, 1.65); }
 .archive-load-more { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--archive-line); color: var(--archive-muted); font-size: 14px; }
 .archive-card { min-width: 0; }
-.archive-art-card { scroll-margin-top: 100px; }
+.archive-art-card { scroll-margin-top: calc(var(--archive-header-height) + 24px); }
 .archive-card > a { display: block; }
 .archive-media { position: relative; display: block; width: 100%; aspect-ratio: 1.65; overflow: hidden; background: var(--archive-bg-light); border-radius: 0; }
 .archive-art-card .archive-media,.archive-artist-card .archive-media { background: transparent; aspect-ratio: var(--archive-image-ratio, 1.65); }

@@ -8,6 +8,8 @@ import { normalizeAvatarUrl } from "@/lib/avatar-url";
 import ColorModeToggle from '@/app/components/ColorModeToggle';
 import ArchiveImage from '@/app/components/ArchiveImage';
 import BrandLogo from '@/app/components/BrandLogo';
+import { CATEGORIES } from '@/lib/news-categories';
+import { newsListUrl } from '@/lib/news-list';
 
 // 유저 정보 타입 정의
 type UserProfile = {
@@ -114,9 +116,8 @@ export default function Header() {
 
   if (!showHeader) return null;
 
-  // 데스크탑용 메뉴 설정
+  // 아카이브 메뉴
   const menuItems = [
-    { label: "뉴스", href: "/news/stories" },
     { label: "아트", href: "/art" },
     { label: "작가", href: "/artists" },
     { label: "참고사이트", href: "/references" },
@@ -148,41 +149,34 @@ export default function Header() {
     <>
       {/* === Desktop & Common Top Header === */}
       <header className="client-header editorial-header sticky top-0 z-40 bg-white/95 backdrop-blur-md">
-        <div className="contents client-header-frame mx-auto flex max-w-[1280px] items-center px-4 md:px-6">
+        <div className="client-header-frame mx-auto flex max-w-[1280px] items-center">
           <div className="client-header-left flex items-center">
             <Link href="/" className="client-header-logo flex shrink-0 items-center">
               <BrandLogo />
             </Link>
           </div>
 
-          <Suspense fallback={null}><SiteSearch /></Suspense>
+          <div className="editorial-header-actions">
+            <ColorModeToggle />
+            <Suspense fallback={null}><SiteSearch /></Suspense>
+          </div>
 
-          {/* Desktop Navigation (모바일에서 숨김: hidden md:flex) */}
-          <nav aria-label="주요 메뉴" className="client-header-menu ml-auto hidden items-center md:flex">
-            {menuItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={isActive(item.href) ? "page" : undefined}
-                className={`text-[12px] font-bold tracking-[-0.01em] transition-colors ${
-                  isActive(item.href) 
-                    ? "active" 
-                    : "hover:text-foreground"
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
-            {/* Reserve the account area while the session loads. */}
-            <div className="client-header-account flex w-[144px] justify-end">
+            <div className="client-header-account flex max-w-[144px] justify-end">
             {userInfo ? (
-              <div ref={profileMenuRef} className="relative">
+              <div ref={profileMenuRef} className="relative" onKeyDown={event => {
+                if (event.key === 'Escape') {
+                  setProfileMenuOpen(false);
+                  profileMenuRef.current?.querySelector('button')?.focus();
+                }
+              }}>
                 <button
                   type="button"
                   onClick={() => setProfileMenuOpen((open) => !open)}
-                  className="flex max-w-full items-center gap-2 rounded-md py-1 pl-1 pr-2 transition hover:bg-muted"
+                  className="editorial-account-trigger flex max-w-full items-center gap-2 rounded-md py-1 pl-1 pr-2 transition hover:bg-muted"
+                  aria-label="계정 메뉴"
                   aria-expanded={profileMenuOpen}
                   aria-haspopup="menu"
+                  aria-controls="header-account-menu"
                 >
                   <span className="h-8 w-8 overflow-hidden rounded-full border border-border bg-muted">
                     {userInfo.avatar_url ? (
@@ -200,13 +194,14 @@ export default function Header() {
                   <span className="hidden max-w-24 truncate text-sm font-semibold text-foreground lg:block">
                     {userInfo.nickname || "사용자"}
                   </span>
-                  <i className="ri-arrow-down-s-line text-lg text-secondary" />
+                  <i className="ri-arrow-down-s-line text-lg text-secondary" aria-hidden="true" />
                 </button>
 
                 {profileMenuOpen && (
                   <div
+                    id="header-account-menu"
                     role="menu"
-                    className="absolute right-0 top-12 z-50 w-72 overflow-hidden rounded-lg border border-border bg-background p-3 shadow-none"
+                    className="editorial-account-popup absolute right-0 top-12 z-50 w-72 overflow-hidden rounded-lg border border-border bg-background p-3 shadow-none"
                   >
                     <div className="mb-3 flex items-center gap-3 px-2 py-2">
                       <div className="h-12 w-12 overflow-hidden rounded-full bg-muted">
@@ -265,8 +260,14 @@ export default function Header() {
             )}
             </div>
 
-          </nav>
-          <ColorModeToggle className="ml-3" />
+        </div>
+        <div className="editorial-nav-row">
+          <div className="editorial-nav-frame">
+            <Suspense fallback={null}><NewsNavigation /></Suspense>
+            <nav className="editorial-archive-menu" aria-label="아카이브">
+              {menuItems.map(item => <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}><span>{item.label}</span></Link>)}
+            </nav>
+          </div>
         </div>
       </header>
 
@@ -303,52 +304,66 @@ export default function Header() {
   );
 }
 
+function NewsNavigation() {
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const listing = pathname === '/news/stories';
+  const category = listing && Object.hasOwn(CATEGORIES, params.get('category') || '') ? params.get('category') : 'all';
+  const inNews = listing || pathname.startsWith('/news/read/');
+  const filters = listing ? { q: params.get('q') || '', source: params.get('source') || '', collection: params.get('collection') || '' } : {};
+  return <nav className="editorial-news-menu" aria-label="뉴스 분야">
+    {Object.entries({ all: '뉴스', ...CATEGORIES }).map(([key, label]) => <Link prefetch={false} key={key} href={newsListUrl({ ...filters, category: key })} aria-current={inNews && category === key ? 'page' : undefined}><span>{label}</span></Link>)}
+  </nav>;
+}
+
 function SiteSearch() {
   const params = useSearchParams();
   const pathname = usePathname();
-  const mobileSearchRef = useRef<HTMLDetailsElement>(null);
-  const mobileInputRef = useRef<HTMLInputElement>(null);
+  const searchRef = useRef<HTMLDetailsElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const query = pathname === '/search' ? (params.get('q') || '').slice(0, 100) : '';
-  const closeMobileSearch = () => {
-    if (!mobileSearchRef.current) return;
-    mobileSearchRef.current.open = false;
-    mobileSearchRef.current.querySelector('summary')?.focus();
+  const closeSearch = () => {
+    if (!searchRef.current) return;
+    searchRef.current.open = false;
+    searchRef.current.querySelector('summary')?.focus();
   };
 
-  return <>
-    <form className="editorial-search" role="search" aria-label="통합 검색" action="/search" method="get">
-      <label className="sr-only" htmlFor="archb-search-query">통합 검색</label>
-      <input key={query} id="archb-search-query" type="search" name="q" autoComplete="off" defaultValue={query} placeholder="뉴스·작품·작가 검색" maxLength={100} />
-      <button type="submit" aria-label="검색"><i className="ri-search-line" aria-hidden="true" /></button>
-    </form>
-    <details
+  useEffect(() => {
+    const closeOutside = (event: PointerEvent) => {
+      const node = searchRef.current;
+      if (node?.open && !node.contains(event.target as Node)) node.open = false;
+    };
+    document.addEventListener('pointerdown', closeOutside);
+    return () => document.removeEventListener('pointerdown', closeOutside);
+  }, []);
+
+  return <details
       key={`${pathname}?${params.toString()}`}
-      ref={mobileSearchRef}
-      className="editorial-mobile-search"
-      onKeyDown={(event) => { if (event.key === 'Escape') closeMobileSearch(); }}
+      ref={searchRef}
+      className="editorial-search-control"
+      onKeyDown={(event) => { if (event.key === 'Escape') { event.preventDefault(); closeSearch(); } }}
     >
-      <summary aria-label="통합 검색 열기" onClick={(event) => {
+      <summary aria-label="통합 검색 열기" title="통합 검색" onClick={(event) => {
         event.preventDefault();
-        if (!mobileSearchRef.current) return;
-        if (mobileSearchRef.current.open) {
-          closeMobileSearch();
+        if (!searchRef.current) return;
+        if (searchRef.current.open) {
+          closeSearch();
         } else {
-          mobileSearchRef.current.open = true;
-          mobileInputRef.current?.focus();
+          searchRef.current.open = true;
+          inputRef.current?.focus();
         }
       }}><i className="ri-search-line" aria-hidden="true" /></summary>
-      <div className="editorial-mobile-search-panel">
-        <div className="editorial-mobile-search-heading">
-          <label htmlFor="archb-mobile-search-query">통합 검색</label>
-          <button type="button" onClick={closeMobileSearch} aria-label="검색 닫기"><i className="ri-close-line" aria-hidden="true" /></button>
+      <div className="editorial-search-panel">
+        <div className="editorial-search-heading">
+          <label htmlFor="archb-search-query">통합 검색</label>
+          <button type="button" onClick={closeSearch} aria-label="검색 닫기"><i className="ri-close-line" aria-hidden="true" /></button>
         </div>
         <form role="search" aria-label="통합 검색" action="/search" method="get">
-          <input ref={mobileInputRef} id="archb-mobile-search-query" type="search" name="q" autoComplete="off" defaultValue={query} placeholder="검색어를 입력하세요" maxLength={100} enterKeyHint="search" />
+          <input ref={inputRef} id="archb-search-query" type="search" name="q" autoComplete="off" defaultValue={query} placeholder="뉴스·작품·작가 검색" maxLength={100} enterKeyHint="search" />
           <button type="submit">검색</button>
         </form>
       </div>
-    </details>
-  </>;
+    </details>;
 }
 
 function UserMenuLink({ href, icon, label }: { href: string; icon: string; label: string }) {
