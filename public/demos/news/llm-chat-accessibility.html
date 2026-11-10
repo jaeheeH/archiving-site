@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>입력 초점과 완료 알림 — ARCH.B 독립 예제</title>
+<style>
+  :root { font-family: system-ui, sans-serif; line-height: 1.6; color-scheme: light dark; }
+  body { max-width: 42rem; margin: 3rem auto; padding: 0 1rem; }
+  input, button { font: inherit; padding: .6rem; }
+  input { box-sizing: border-box; display: block; width: 100%; margin: .4rem 0; }
+  :focus-visible { outline: 3px solid #087f8c; outline-offset: 3px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+</style>
+<main>
+  <h1>입력하던 자리를 지키는 응답 알림</h1>
+  <p id="instructions">질문을 입력하고 Enter를 세 번 누르세요. 시작, 부분 표시, 완료가 한 단계씩 진행됩니다.
+    네 번째 Enter는 다시 시작합니다. 답은 고정된 문장이며 실제 AI를 호출하지 않습니다.
+    입력한 내용은 서버로 전송하지 않습니다.</p>
+  <form id="demo-form">
+    <label for="prompt">메시지 입력</label>
+    <input id="prompt" type="text" aria-describedby="instructions" autocomplete="off"
+      placeholder="예: 표의 구조를 설명해 주세요">
+    <button type="submit">다음 단계</button>
+  </form>
+  <p id="progress">준비: Enter로 시작하세요.</p>
+  <h2>응답</h2>
+  <p id="reply">아직 응답이 없습니다.</p>
+  <p>이 예제는 입력창의 Enter 조작, DOM 갱신과 초점을 비교합니다. 완료 전용 알림 영역은
+    시작·부분 표시에서 비워 두고 완료 문장만 전달합니다. 실제 서비스의 진행 상태 알림은 별도로 설계해야 합니다.
+    스크린리더 음성·점자 출력이나 사용자 이해도를 검증한 결과는 아닙니다.</p>
+</main>
+<div id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+<script>
+  const form = document.querySelector('#demo-form');
+  const reply = document.querySelector('#reply');
+  const progress = document.querySelector('#progress');
+  const announcer = document.querySelector('#announcer');
+  const stages = [
+    ['시작', '아직 응답이 없습니다.', ''],
+    ['부분 표시', '홈의 방향과 맞물리는', ''],
+    ['완료', '홈의 방향과 맞물리는 면을 먼저 살펴보세요.', '홈의 방향과 맞물리는 면을 먼저 살펴보세요.'],
+  ];
+  let step = 0;
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const [name, text, announcement] = stages[step];
+    progress.textContent = `${step + 1}/3 · ${name}`;
+    reply.textContent = text;
+    announcer.textContent = announcement;
+    step = (step + 1) % stages.length;
+  });
+</script>
+</html>
