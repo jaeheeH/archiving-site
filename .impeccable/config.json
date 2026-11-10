@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "app/css/news.css"
+        ],
+        "createdAt": "2026-11-10T06:59:11.898Z",
+        "reason": "Codex: both findings are inactive legacy styles. The identical .news-detail-page .archive-article-summary selector resets border to 0 later in the same stylesheet; .key-points has no TSX, TS, JSX, JS, HTML or MDX references in app, components or lib. Scope only side-tab to this file; keep all other checks active."
+      }
+    ]
+  }
+}
