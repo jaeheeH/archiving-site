@@ -43,7 +43,10 @@ export default async function Home() {
   const featured = articles.find(a => a.id === placement.featuredId) ?? articles[0];
   const latest = articles.filter(a => a.url !== featured?.url).slice(0, 4);
   const promoted = new Set([featured?.url, ...latest.map(a => a.url)]);
-  const curations = articles.filter(a => curationCategory && a.collection === curationCategory).slice(0,3);
+  const curationCandidates = articles
+    .filter(article => curationCategory && article.collection === curationCategory && !promoted.has(article.url))
+    .slice(0, 3);
+  const curations = curationCandidates.length >= 2 ? curationCandidates : [];
   const tags = [...new Set(articles.flatMap(a => a.tags))].slice(0, 9);
   return <div className="archb-news">
     <a className="skip-link" href="#news-stories">주요 기사로 바로 가기</a>
